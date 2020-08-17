@@ -1,0 +1,6 @@
+fr:
+  formtastic:
+    cancel: Retour
+    actions:
+      create: Valider
+      update: Valider

@@ -1,0 +1,9 @@
+fr:
+  "false": Non
+  "true": Oui
+  date:
+    formats:
+      message: "%e %b %Y"
+  time:
+    formats:
+      message: "%e %b %Y %kh%M"

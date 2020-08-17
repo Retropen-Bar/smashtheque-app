@@ -1,0 +1,18 @@
+@import variables
+
+body.logged_in
+  &.new, &.edit, &.create, &.update
+    ul.errors
+      margin-bottom: 20px
+      padding: 20px
+      background-color: $red
+      color: white
+
+    .input
+      .label
+        font-weight: bold
+
+    input[type="search"]
+      &.select2-search__field
+        height: auto
+
