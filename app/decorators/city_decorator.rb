@@ -1,5 +1,9 @@
 class CityDecorator < BaseDecorator
 
+  def admin_link(options = {})
+    super(options.merge(label: full_name))
+  end
+
   def full_name
     [model.icon, model.name].join
   end

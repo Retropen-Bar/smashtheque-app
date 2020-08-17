@@ -10,9 +10,15 @@ ActiveAdmin.register Player do
     selectable_column
     id_column
     column :name
-    column :characters
-    column :city
-    column :team
+    column :characters do |decorated|
+      decorated.characters_links.join(', ').html_safe
+    end
+    column :city do |decorated|
+      decorated.city_link
+    end
+    column :team do |decorated|
+      decorated.team_link
+    end
     column :created_at
     actions
   end
@@ -51,9 +57,15 @@ ActiveAdmin.register Player do
   show do
     attributes_table do
       row :name
-      row :characters
-      row :city
-      row :team
+      row :characters do |decorated|
+        decorated.characters_links.join('<br/>').html_safe
+      end
+      row :city do |decorated|
+        decorated.city_link
+      end
+      row :team do |decorated|
+        decorated.team_link
+      end
       row :created_at
       row :updated_at
     end

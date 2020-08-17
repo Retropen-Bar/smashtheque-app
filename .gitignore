@@ -43,3 +43,6 @@
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+
+# Ignore seeding data
+/db/seed/*
