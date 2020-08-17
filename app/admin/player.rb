@@ -24,9 +24,18 @@ ActiveAdmin.register Player do
   end
 
   filter :name
-  filter :characters
-  filter :city
-  filter :team
+  filter :characters,
+         as: :select,
+         collection: proc { Character.order(:name).decorate },
+         input_html: { multiple: true, data: { select2: {} } }
+  filter :city,
+         as: :select,
+         collection: proc { City.order(:name).decorate },
+         input_html: { multiple: true, data: { select2: {} } }
+  filter :team,
+         as: :select,
+         collection: proc { Team.order(:name).decorate },
+         input_html: { multiple: true, data: { select2: {} } }
 
   # ---------------------------------------------------------------------------
   # FORM

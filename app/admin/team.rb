@@ -11,7 +11,9 @@ ActiveAdmin.register Team do
     id_column
     column :short_name
     column :name
-    column :players
+    column :players do |decorated|
+      decorated.players_link
+    end
     column :created_at
     actions
   end
@@ -41,7 +43,9 @@ ActiveAdmin.register Team do
     attributes_table do
       row :short_name
       row :name
-      row :players
+      row :players do |decorated|
+        decorated.players_link
+      end
       row :created_at
       row :updated_at
     end

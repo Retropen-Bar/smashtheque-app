@@ -12,7 +12,9 @@ ActiveAdmin.register Character do
     column :name do |decorated|
       decorated.full_name
     end
-    column :players
+    column :players do |decorated|
+      decorated.players_link
+    end
     column :created_at
     actions
   end
@@ -41,7 +43,9 @@ ActiveAdmin.register Character do
     attributes_table do
       row :icon
       row :name
-      row :players
+      row :players do |decorated|
+        decorated.players_link
+      end
       row :created_at
       row :updated_at
     end
