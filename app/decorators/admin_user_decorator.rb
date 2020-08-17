@@ -1,6 +1,6 @@
 class AdminUserDecorator < BaseDecorator
 
-  def discord_name
+  def discord_full_username
     [
       model.discord_username,
       discord_discriminator

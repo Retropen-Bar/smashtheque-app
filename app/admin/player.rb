@@ -1,6 +1,6 @@
-ActiveAdmin.register AdminUser do
+ActiveAdmin.register Player do
 
-  decorate_with AdminUserDecorator
+  decorate_with PlayerDecorator
 
   # ---------------------------------------------------------------------------
   # INDEX
@@ -9,22 +9,18 @@ ActiveAdmin.register AdminUser do
   index do
     selectable_column
     id_column
-    column :avatar_url do |decorated|
-      decorated.avatar_tag(max_height: '32px')
-    end
     column :name
-    column :email
-    column :discord_username do |decorated|
-      decorated.discord_full_username
-    end
+    column :characters
+    column :city
+    column :team
     column :created_at
     actions
   end
 
-  filter :email
-  filter :current_sign_in_at
-  filter :sign_in_count
-  filter :created_at
+  filter :name
+  filter :characters
+  filter :city
+  filter :team
 
   # ---------------------------------------------------------------------------
   # FORM
@@ -32,14 +28,21 @@ ActiveAdmin.register AdminUser do
 
   form do |f|
     f.inputs do
-      f.input :email
-      f.input :password
-      f.input :password_confirmation
+      f.input :name
+      f.input :characters,
+              collection: Character.order(:name),
+              input_html: { multiple: true, data: { select2: {} } }
+      f.input :city,
+              collection: City.order(:name),
+              input_html: { data: { select2: {} } }
+      f.input :team,
+              collection: Team.order(:name),
+              input_html: { data: { select2: {} } }
     end
     f.actions
   end
 
-  permit_params :email, :password, :password_confirmation
+  permit_params :name, :city_id, :team_id, character_ids: []
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -48,14 +51,9 @@ ActiveAdmin.register AdminUser do
   show do
     attributes_table do
       row :name
-      row :email do |decorated|
-        decorated.email_link
-      end
-      row :avatar_url do |decorated|
-        decorated.avatar_tag
-      end
-      row :discord_username
-      row :discord_discriminator
+      row :characters
+      row :city
+      row :team
       row :created_at
       row :updated_at
     end

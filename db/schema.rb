@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_17_211553) do
+ActiveRecord::Schema.define(version: 2020_08_17_221611) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,6 +43,36 @@ ActiveRecord::Schema.define(version: 2020_08_17_211553) do
     t.string "discord_discriminator"
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
+  end
+
+  create_table "characters", force: :cascade do |t|
+    t.string "icon"
+    t.string "name"
+  end
+
+  create_table "characters_players", force: :cascade do |t|
+    t.bigint "character_id"
+    t.bigint "player_id"
+    t.index ["character_id"], name: "index_characters_players_on_character_id"
+    t.index ["player_id"], name: "index_characters_players_on_player_id"
+  end
+
+  create_table "cities", force: :cascade do |t|
+    t.string "icon"
+    t.string "name"
+  end
+
+  create_table "players", force: :cascade do |t|
+    t.bigint "city_id"
+    t.bigint "team_id"
+    t.string "name"
+    t.index ["city_id"], name: "index_players_on_city_id"
+    t.index ["team_id"], name: "index_players_on_team_id"
+  end
+
+  create_table "teams", force: :cascade do |t|
+    t.string "name"
+    t.string "short_name"
   end
 
 end

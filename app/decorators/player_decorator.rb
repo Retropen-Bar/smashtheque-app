@@ -1,0 +1,2 @@
+class PlayerDecorator < BaseDecorator
+end

@@ -2,11 +2,16 @@ fr:
   activerecord:
     models:
       admin_user: Administrateur
+      character: Perso
+      city: Ville
       comment: Commentaire
+      player: Joueur
+      team: Équipe
     attributes:
       shared: &SHARED
         created_at: Ajout
         id: "#"
+        name: Nom
         updated_at: Modification
       admin_user:
         << : *SHARED
@@ -18,5 +23,22 @@ fr:
         password: Mot de passe
         password_confirmation: Confirmation du mot de passe
         sign_in_count: Connexions
+      character:
+        << : *SHARED
+        icon: Icône
+        players: Joueurs
+      city:
+        << : *SHARED
+        icon: Icône
+        players: Joueurs
       comment:
         << : *SHARED
+      player:
+        << : *SHARED
+        characters: Persos
+        city: Ville
+        team: Équipe
+      team:
+        << : *SHARED
+        short_name: Nom court
+        players: Joueurs
