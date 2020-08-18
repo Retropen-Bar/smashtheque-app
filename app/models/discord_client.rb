@@ -138,7 +138,6 @@ class DiscordClient
   # helpers
 
   def compare_existing(existing, tests)
-    puts "compare_existing(#{existing}, #{tests})"
     symbolized_existing = existing.symbolize_keys
     tests.each do |test_k, test_v|
       return false if symbolized_existing[test_k.to_sym] != test_v
