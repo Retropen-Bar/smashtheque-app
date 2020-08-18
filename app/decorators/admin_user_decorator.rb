@@ -11,7 +11,7 @@ class AdminUserDecorator < BaseDecorator
     h.mail_to model.email
   end
 
-  def avatar_tag(max_width: max_width, max_height: max_height)
+  def avatar_tag(max_width: nil, max_height: nil)
     h.image_tag_with_max_size model.avatar_url,
                               max_width: max_width,
                               max_height: max_height
