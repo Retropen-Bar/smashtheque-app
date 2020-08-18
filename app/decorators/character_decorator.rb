@@ -20,4 +20,17 @@ class CharacterDecorator < BaseDecorator
     model.players.count
   end
 
+  def head_icon_tag(max_width: nil, max_height: nil)
+    return nil if model.head_icon_url.blank?
+    h.image_tag_with_max_size model.head_icon_url,
+                              max_width: max_width,
+                              max_height: max_height
+  end
+
+  def emoji_code
+    return nil if model.emoji.blank?
+    ":#{model.emoji}:"
+  end
+
+
 end

@@ -25,6 +25,8 @@ fr:
         sign_in_count: Connexions
       character:
         << : *SHARED
+        emoji: Emoji
+        head_icon_url: Miniature
         icon: Icône
         players: Joueurs
       city:

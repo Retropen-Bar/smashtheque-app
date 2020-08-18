@@ -10,6 +10,18 @@ class DiscordClient
     api_get "/guilds/#{guild_id}"
   end
 
+  def get_guild_emojis(guild_id)
+    @guild_emojis ||= {}
+    @guild_emojis[guild_id] ||= api_get "/guilds/#{guild_id}/emojis"
+  end
+
+  def find_guild_emoji_id(guild_id, emoji_name)
+    get_guild_emojis(guild_id).each do |emoji|
+      return emoji['id'] if emoji['available'] && emoji['name'] == emoji_name
+    end
+    nil
+  end
+
   def get_guild_channels(guild_id)
     @guild_channels ||= {}
     @guild_channels[guild_id] ||= api_get "/guilds/#{guild_id}/channels"
