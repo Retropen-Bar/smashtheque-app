@@ -12,6 +12,7 @@ class AdminUserDecorator < BaseDecorator
   end
 
   def avatar_tag(max_width: nil, max_height: nil)
+    return nil if model.avatar_url.blank?
     h.image_tag_with_max_size model.avatar_url,
                               max_width: max_width,
                               max_height: max_height
