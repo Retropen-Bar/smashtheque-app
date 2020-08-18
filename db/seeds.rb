@@ -14,7 +14,9 @@ Team.destroy_all
 Player.destroy_all
 
 # City
-File.open('db/seed/cities.json') do |file|
+uri = "#{ENV['SEED_DATA_SOURCE_URL']}cities.json"
+puts "seed #{uri}"
+open(uri) do |file|
   cities = JSON.parse(file.read)
   cities.each do |city|
     City.create!(city)
@@ -22,7 +24,9 @@ File.open('db/seed/cities.json') do |file|
 end
 
 # Character
-File.open('db/seed/characters.json') do |file|
+uri = "#{ENV['SEED_DATA_SOURCE_URL']}characters.json"
+puts "seed #{uri}"
+open(uri) do |file|
   characters = JSON.parse(file.read)
   characters.each do |character|
     Character.create!(character)
@@ -30,7 +34,9 @@ File.open('db/seed/characters.json') do |file|
 end
 
 # Team
-File.open('db/seed/teams.json') do |file|
+uri = "#{ENV['SEED_DATA_SOURCE_URL']}teams.json"
+puts "seed #{uri}"
+open(uri) do |file|
   teams = JSON.parse(file.read)
   teams.each do |team|
     Team.create!(team)
@@ -38,7 +44,9 @@ File.open('db/seed/teams.json') do |file|
 end
 
 # Player
-File.open('db/seed/players.json') do |file|
+uri = "#{ENV['SEED_DATA_SOURCE_URL']}players.json"
+puts "seed #{uri}"
+open(uri) do |file|
   players = JSON.parse(file.read)
   players.each do |player|
     Player.create!(
@@ -49,5 +57,3 @@ File.open('db/seed/players.json') do |file|
     )
   end
 end
-
-
