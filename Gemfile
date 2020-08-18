@@ -87,3 +87,6 @@ gem 'figaro'
 
 # filters
 gem 'has_scope'
+
+# Discord
+gem 'discordrb'
