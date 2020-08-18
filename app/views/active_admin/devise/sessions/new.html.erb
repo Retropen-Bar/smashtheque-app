@@ -1,6 +1,3 @@
-<div id="login">
-  <h2><%= render_or_call_method_or_proc_on(self, active_admin_application.site_title) %> <%= title t('active_admin.devise.login.title') %></h2>
-  <div style="text-align: center">
-    <%= button_to 'Discord', admin_user_discord_omniauth_authorize_path %>
-  </div>
-</div>
+<%= javascript_tag do %>
+  window.location.href = '<%= admin_user_discord_omniauth_authorize_path %>';
+<% end %>
