@@ -71,6 +71,7 @@ gem 'toastr-rails'
 # Theming
 gem 'simple_form'
 gem 'bootstrap', '~> 4.3.1'
+gem 'bootstrap4-kaminari-views'
 
 # errors tracking
 gem 'rollbar'
@@ -83,3 +84,6 @@ gem 'paper_trail'
 
 # ENV
 gem 'figaro'
+
+# filters
+gem 'has_scope'

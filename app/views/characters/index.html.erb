@@ -1,0 +1,9 @@
+<h1>Personnages</h1>
+
+<div class="characters">
+  <% @characters.each do |character| %>
+    <%= render 'character', character: character.decorate %>
+  <% end %>
+</div>
+
+<%= paginate @characters, theme: 'twitter-bootstrap-4' %>

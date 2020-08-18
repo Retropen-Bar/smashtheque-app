@@ -6,6 +6,11 @@ Rails.application.routes.draw do
 
   ActiveAdmin.routes(self)
 
-  root to: redirect('/admin')
+  resources :characters, only: [:index, :show]
+  resources :cities, only: [:index, :show]
+  resources :players, only: :index
+  resources :teams, only: [:index, :show]
+
+  root to: 'players#index'
 
 end

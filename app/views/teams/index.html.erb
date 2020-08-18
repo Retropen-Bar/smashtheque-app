@@ -1,0 +1,9 @@
+<h1>Équipes</h1>
+
+<div class="characters">
+  <% @teams.each do |team| %>
+    <%= render 'team', team: team.decorate %>
+  <% end %>
+</div>
+
+<%= paginate @teams, theme: 'twitter-bootstrap-4' %>

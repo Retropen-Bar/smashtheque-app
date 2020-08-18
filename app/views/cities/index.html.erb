@@ -1,0 +1,9 @@
+<h1>Villes</h1>
+
+<div class="characters">
+  <% @cities.each do |city| %>
+    <%= render 'city', city: city.decorate %>
+  <% end %>
+</div>
+
+<%= paginate @cities, theme: 'twitter-bootstrap-4' %>

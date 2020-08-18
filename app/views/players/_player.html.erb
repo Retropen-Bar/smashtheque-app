@@ -1,0 +1,8 @@
+<div class="card">
+  <div class="card-body">
+    <%= player.name %>
+    <% player.characters.each do |character| %>
+      <%= link_to character.decorate.full_name, character %>
+    <% end %>
+  </div>
+</div>
