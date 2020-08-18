@@ -1,4 +1,4 @@
-class TeamsController < ApplicationController
+class TeamsController < PublicController
 
   has_scope :page, default: 1
   has_scope :per

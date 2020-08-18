@@ -1,4 +1,4 @@
-class CharactersController < ApplicationController
+class CharactersController < PublicController
 
   has_scope :page, default: 1
   has_scope :per

@@ -1,4 +1,4 @@
-class PlayersController < ApplicationController
+class PlayersController < PublicController
 
   has_scope :page, default: 1
   has_scope :per
