@@ -2,6 +2,8 @@ ActiveAdmin.register Character do
 
   decorate_with CharacterDecorator
 
+  menu label: 'Persos'
+
   # ---------------------------------------------------------------------------
   # INDEX
   # ---------------------------------------------------------------------------

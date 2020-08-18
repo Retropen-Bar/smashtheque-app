@@ -1,0 +1,29 @@
+<% players_count = Player.count %>
+<% teams_count = Team.count %>
+
+<div class="big-numbers">
+
+  <%= link_to admin_players_path do %>
+    <div class="big-number txt-blue">
+      <div class="big-number--value">
+        <%= number_with_delimiter players_count %>
+      </div>
+      <div class="big-number--title">
+        <%= pluralize_without_count players_count, 'Joueur' %>
+      </div>
+    </div>
+  <% end %>
+
+  <%= link_to admin_teams_path do %>
+    <div class="big-number txt-rose">
+      <div class="big-number--value">
+        <%= number_with_delimiter teams_count %>
+      </div>
+      <div class="big-number--title">
+        <%= pluralize_without_count teams_count, 'Équipe' %>
+      </div>
+    </div>
+  <% end %>
+
+</div>
+

@@ -2,6 +2,8 @@ ActiveAdmin.register Player do
 
   decorate_with PlayerDecorator
 
+  menu label: 'Joueurs'
+
   # ---------------------------------------------------------------------------
   # INDEX
   # ---------------------------------------------------------------------------
