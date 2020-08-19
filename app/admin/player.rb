@@ -13,7 +13,7 @@ ActiveAdmin.register Player do
     id_column
     column :name
     column :characters do |decorated|
-      decorated.characters_links.join(', ').html_safe
+      decorated.characters_links.join(' ').html_safe
     end
     column :city do |decorated|
       decorated.city_link

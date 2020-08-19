@@ -1,11 +1,16 @@
 class CharacterDecorator < BaseDecorator
 
   def admin_link(options = {})
-    super(options.merge(label: full_name))
+    super(options.merge(label: options[:label] || full_name))
+  end
+
+  def admin_head_icon_link(options = {})
+    label = head_icon_tag(max_height: '24px')
+    admin_link(options.merge(label: label))
   end
 
   def full_name
-    [model.icon, model.name].join
+    [head_icon_tag, model.name].join.html_safe
   end
 
   def players_path

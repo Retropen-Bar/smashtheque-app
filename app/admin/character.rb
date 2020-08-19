@@ -14,9 +14,8 @@ ActiveAdmin.register Character do
     column :head_icon_url do |decorated|
       decorated.head_icon_tag(max_height: '32px')
     end
-    column :name do |decorated|
-      decorated.full_name
-    end
+    column :icon
+    column :name
     column :emoji do |decorated|
       decorated.emoji_code
     end
