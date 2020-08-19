@@ -37,7 +37,7 @@ class Player < ApplicationRecord
       # this is creation or an update with changes on the name
       old_name = previous_changes['name'].first
       new_name = previous_changes['name'].last
-      if old_name&.first != new_name&.first
+      if RetropenBot.default.name_letter(old_name) != RetropenBot.default.name_letter(new_name)
         RetropenBot.default.rebuild_abc_for_name old_name
       end
       RetropenBot.default.rebuild_abc_for_name new_name
@@ -47,6 +47,7 @@ class Player < ApplicationRecord
       RetropenBot.default.rebuild_abc_for_name name
     end
 
+    # this handles both existing and new characters
     RetropenBot.default.rebuild_chars_for_characters characters
   end
 

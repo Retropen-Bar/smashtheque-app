@@ -92,6 +92,11 @@ class RetropenBot
     rebuild_abc_others
   end
 
+  def name_letter(name)
+    return nil if name.blank?
+    I18n.transliterate(name.first).downcase
+  end
+
   # ---------------------------------------------------------------------------
   # CHARS
   # ---------------------------------------------------------------------------
@@ -175,11 +180,6 @@ class RetropenBot
   def rebuild_channel_with_players(channel_id, players)
     client.clear_channel channel_id
     fill_channel_with_players channel_id, players
-  end
-
-  def name_letter(name)
-    return nil if name.blank?
-    I18n.transliterate(name.first).downcase
   end
 
 end
