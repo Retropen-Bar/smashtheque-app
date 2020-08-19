@@ -48,7 +48,7 @@ ActiveAdmin.register Player do
       f.input :name
       f.input :characters,
               collection: Character.order(:name),
-              input_html: { multiple: true, data: { select2: {} } }
+              input_html: { multiple: true, data: { select2: { sortable: true, sortedValues: f.object.character_ids } } }
       f.input :city,
               collection: City.order(:name),
               input_html: { data: { select2: {} } }

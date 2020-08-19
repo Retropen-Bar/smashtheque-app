@@ -8,6 +8,8 @@ class Player < ApplicationRecord
   belongs_to :team, optional: true
 
   has_many :characters_players,
+           -> { positioned },
+           inverse_of: :player,
            dependent: :destroy
   has_many :characters,
            through: :characters_players,
@@ -23,7 +25,18 @@ class Player < ApplicationRecord
   # CALLBACKS
   # ---------------------------------------------------------------------------
 
-  after_commit :update_discord
+  # trick to add position
+  def character_ids=(_ids)
+    # ids may come as strings here
+    ids = _ids.map(&:to_i) - [0]
+    super(ids)
+    characters_players.each do |characters_player|
+      idx = ids.index(characters_player.character_id)
+      characters_player.update_attribute :position, idx
+    end
+  end
+
+  # after_commit :update_discord
   def update_discord
     # on create: previous_changes = {"id"=>[nil, <id>], "name"=>[nil, <name>], ...}
     # on update: previous_changes = {"name"=>["old_name", "new_name"], ...}
