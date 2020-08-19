@@ -61,6 +61,19 @@ class Player < ApplicationRecord
         # this is an update, and the city_id didn't change
         RetropenBot.default.rebuild_cities_for_city city
       end
+
+      # team
+      if previous_changes.has_key?('team_id')
+        # this is creation or an update with changes on the team_id
+        old_team_id = previous_changes['team_id'].first
+        new_team_id = previous_changes['team_id'].last
+        RetropenBot.default.rebuild_teams_for_team Team.find(old_team_id) if old_team_id
+        RetropenBot.default.rebuild_teams_for_team Team.find(new_team_id)
+
+      else
+        # this is an update, and the team_id didn't change
+        RetropenBot.default.rebuild_teams_for_team team
+      end
     end
 
     # this handles both existing and new characters

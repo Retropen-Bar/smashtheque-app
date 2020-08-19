@@ -62,11 +62,16 @@ class DiscordClient
     @channels[channel_id] ||= api_get "/channels/#{channel_id}"
   end
 
+  def delete_channel(channel_id)
+    api_delete "/channels/#{channel_id}"
+  end
+
   def channel_messages(channel_id)
     api_get "/channels/#{channel_id}/messages?limit=100"
   end
 
   def create_channel_message(channel_id, content)
+    return false if content.blank?
     split_messages(content).each do |message|
       bot.send_message channel_id, message
     end
@@ -78,8 +83,10 @@ class DiscordClient
 
   def clear_channel(channel_id)
     existing_messages = channel_messages channel_id
-    existing_messages.each do |message|
-      delete_channel_message channel_id, message['id']
+    unless existing_messages.is_a?(Hash) && existing_messages['code'] == 50001
+      existing_messages.each do |message|
+        delete_channel_message channel_id, message['id']
+      end
     end
   end
 

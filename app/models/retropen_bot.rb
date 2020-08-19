@@ -9,6 +9,7 @@ class RetropenBot
   CATEGORY_CHARS1 = 'ROSTER DE A À M'.freeze
   CATEGORY_CHARS2 = 'ROSTER DE N À Z'.freeze
   CATEGORY_CITIES = 'JOUEURS PAR VILLE'.freeze
+  CATEGORY_TEAMS = 'ÉQUIPES FR'.freeze
 
   # ---------------------------------------------------------------------------
   # CONSTRUCTOR
@@ -33,6 +34,11 @@ class RetropenBot
   # ---------------------------------------------------------------------------
   # ABC
   # ---------------------------------------------------------------------------
+
+  def name_letter(name)
+    return nil if name.blank?
+    I18n.transliterate(name.first).downcase
+  end
 
   def abc_category
     @abc_category ||= client.find_or_create_guild_category @guild_id, name: CATEGORY_ABC
@@ -93,11 +99,6 @@ class RetropenBot
     rebuild_abc_others
   end
 
-  def name_letter(name)
-    return nil if name.blank?
-    I18n.transliterate(name.first).downcase
-  end
-
   # ---------------------------------------------------------------------------
   # CHARS
   # ---------------------------------------------------------------------------
@@ -155,13 +156,53 @@ class RetropenBot
   end
 
   def rebuild_cities_for_cities(cities)
-    cities.compact.uniq.each do |city|
+    cities.to_a.compact.uniq.each do |city|
       rebuild_cities_for_city city
     end
   end
 
   def rebuild_cities
-    rebuild_cities_for_cities City.all
+    rebuild_cities_for_cities City.order(:name)
+  end
+
+  # ---------------------------------------------------------------------------
+  # TEAMS
+  # ---------------------------------------------------------------------------
+
+  def team_channel_name(team)
+    team.name.parameterize
+  end
+
+  def teams_category
+    @teams_category ||= client.find_or_create_guild_category @guild_id, name: CATEGORY_TEAMS
+  end
+
+  def rebuild_teams_for_team(team)
+    return false if team.nil?
+    channel = client.find_or_create_guild_text_channel @guild_id,
+                                                       name: team_channel_name(team),
+                                                       parent_id: teams_category['id']
+    rebuild_channel_with_players channel['id'],
+                                 team.players
+  end
+
+  def rebuild_teams_for_teams(teams)
+    teams.to_a.compact.uniq.each do |team|
+      rebuild_teams_for_team team
+    end
+  end
+
+  def rebuild_teams
+    rebuild_teams_for_teams Team.order(:name)
+  end
+
+  def delete_teams
+    existing_channels = client.get_guild_channels @guild_id
+    existing_channels.each do |channel|
+      if channel['parent_id'] == teams_category['id']
+        client.delete_channel channel['id']
+      end
+    end
   end
 
   # ---------------------------------------------------------------------------
