@@ -8,6 +8,7 @@ class RetropenBot
   CHANNEL_ABC_OTHERS = 'symboles-0-9'.freeze
   CATEGORY_CHARS1 = 'ROSTER DE A À M'.freeze
   CATEGORY_CHARS2 = 'ROSTER DE N À Z'.freeze
+  CATEGORY_CITIES = 'JOUEURS PAR VILLE'.freeze
 
   # ---------------------------------------------------------------------------
   # CONSTRUCTOR
@@ -42,7 +43,7 @@ class RetropenBot
                                                            name: letter,
                                                            parent_id: abc_category['id']
     rebuild_channel_with_players abc_channel['id'],
-                                 Player.on_abc(letter).includes(:team, :city, :characters)
+                                 Player.on_abc(letter)
   end
 
   def rebuild_abc_others
@@ -50,7 +51,7 @@ class RetropenBot
                                                                   name: CHANNEL_ABC_OTHERS,
                                                                   parent_id: abc_category['id']
     rebuild_channel_with_players abc_others_channel['id'],
-                                 Player.on_abc_others.includes(:team, :city, :characters)
+                                 Player.on_abc_others
   end
 
   def rebuild_abc_for_name(name)
@@ -122,7 +123,7 @@ class RetropenBot
                                                        name: channel_name,
                                                        parent_id: parent_category['id']
     rebuild_channel_with_players channel['id'],
-                                 character.players.includes(:team, :city, :characters)
+                                 character.players
   end
 
   def rebuild_chars_for_characters(characters)
@@ -132,9 +133,35 @@ class RetropenBot
   end
 
   def rebuild_chars
-    Character.all.each do |character|
-      rebuild_chars_for_character character
+    rebuild_chars_for_characters Character.all
+  end
+
+  # ---------------------------------------------------------------------------
+  # CITIES
+  # ---------------------------------------------------------------------------
+
+  def cities_category
+    @cities_category ||= client.find_or_create_guild_category @guild_id, name: CATEGORY_CITIES
+  end
+
+  def rebuild_cities_for_city(city)
+    return false if city.nil?
+    channel_name = [city.icon, city.name].join
+    channel = client.find_or_create_guild_text_channel @guild_id,
+                                                       name: channel_name,
+                                                       parent_id: cities_category['id']
+    rebuild_channel_with_players channel['id'],
+                                 city.players
+  end
+
+  def rebuild_cities_for_cities(cities)
+    cities.compact.uniq.each do |city|
+      rebuild_cities_for_city city
     end
+  end
+
+  def rebuild_cities
+    rebuild_cities_for_cities City.all
   end
 
   # ---------------------------------------------------------------------------
@@ -170,7 +197,7 @@ class RetropenBot
   end
 
   def fill_channel_with_players(channel_id, players)
-    lines = players.to_a.sort_by{|p| p.name.downcase}.map do |player|
+    lines = players.includes(:team, :city, :characters).to_a.sort_by{|p| p.name.downcase}.map do |player|
       player_abc player
     end.join(DiscordClient::MESSAGE_LINE_SEPARATOR)
 

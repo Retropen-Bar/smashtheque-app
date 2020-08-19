@@ -5,4 +5,14 @@ namespace :retropen do
     RetropenBot.default.rebuild_abc
   end
 
+  desc 'Rebuild chars'
+  task :rebuild_chars => :environment do
+    RetropenBot.default.rebuild_chars
+  end
+
+  desc 'Rebuild cities'
+  task :rebuild_cities => :environment do
+    RetropenBot.default.rebuild_cities
+  end
+
 end
