@@ -18,14 +18,19 @@ class Player < ApplicationRecord
     # on delete: destroyed? = true and old attributes are available
 
     if destroyed?
+      # this is a deletion
       RetropenBot.default.rebuild_for_name name
     elsif previous_changes.has_key?('name')
+      # this is creation or an update with changes on the name
       old_name = previous_changes['name'].first
       new_name = previous_changes['name'].last
       if old_name&.first != new_name&.first
         RetropenBot.default.rebuild_for_name old_name
-        RetropenBot.default.rebuild_for_name new_name
       end
+      RetropenBot.default.rebuild_for_name new_name
+    else
+      # this is an update, and the name didn't change
+      RetropenBot.default.rebuild_for_name name
     end
   end
 
