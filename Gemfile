@@ -90,8 +90,4 @@ gem 'has_scope'
 
 # Discord
 gem 'discordrb'
-
-# Heroku-specific
-group :production do
-  gem 'rbnacl-libsodium'
-end
+gem 'rbnacl-libsodium'
