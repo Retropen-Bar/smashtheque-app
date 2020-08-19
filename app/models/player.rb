@@ -61,13 +61,13 @@ class Player < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   def self.on_abc(letter)
-    where("name ILIKE '#{letter}%'")
+    where("unaccent(name) ILIKE '#{letter}%'")
   end
 
   def self.on_abc_others
     result = self
     ('a'..'z').each do |letter|
-      result = result.where.not("name ILIKE '#{letter}%'")
+      result = result.where.not("unaccent(name) ILIKE '#{letter}%'")
     end
     result
   end

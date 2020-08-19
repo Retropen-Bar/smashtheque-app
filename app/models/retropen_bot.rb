@@ -55,7 +55,7 @@ class RetropenBot
 
   def rebuild_abc_for_name(name)
     return false if name.blank?
-    rebuild_abc_for_letter name.first.downcase
+    rebuild_abc_for_letter name_letter(name)
   end
 
   def rebuild_abc_for_letter(letter)
@@ -80,7 +80,7 @@ class RetropenBot
 
   def rebuild_abc_for_players(players)
     letters = players.map do |player|
-      player&.name&.first&.downcase
+      name_letter player&.name
     end
     rebuild_abc_for_letters letters
   end
@@ -106,7 +106,7 @@ class RetropenBot
 
   def rebuild_chars_for_character(character)
     return false if character.nil?
-    letter = character.name.first.downcase
+    letter = name_letter character.name
     parent_category = if ('a'..'m').include?(letter)
       chars_category1
     else
@@ -175,6 +175,11 @@ class RetropenBot
   def rebuild_channel_with_players(channel_id, players)
     client.clear_channel channel_id
     fill_channel_with_players channel_id, players
+  end
+
+  def name_letter(name)
+    return nil if name.blank?
+    I18n.transliterate(name.first).downcase
   end
 
 end
