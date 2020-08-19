@@ -10,6 +10,8 @@ class RetropenBot
   CATEGORY_CHARS2 = 'ROSTER DE N À Z'.freeze
   CATEGORY_CITIES = 'JOUEURS PAR VILLE'.freeze
   CATEGORY_TEAMS = 'ÉQUIPES FR'.freeze
+  CHANNEL_TEAMS_LIST = 'listing-équipes'.freeze
+  CHANNEL_TEAMS_LU = 'roster-équipes'.freeze
 
   # ---------------------------------------------------------------------------
   # CONSTRUCTOR
@@ -177,23 +179,45 @@ class RetropenBot
     @teams_category ||= client.find_or_create_guild_category @guild_id, name: CATEGORY_TEAMS
   end
 
-  def rebuild_teams_for_team(team)
-    return false if team.nil?
-    channel = client.find_or_create_guild_text_channel @guild_id,
-                                                       name: team_channel_name(team),
-                                                       parent_id: teams_category['id']
-    rebuild_channel_with_players channel['id'],
-                                 team.players
+  def teams_list_channel
+    @teams_list_channel ||= (
+      client.find_or_create_guild_text_channel @guild_id,
+                                               name: CHANNEL_TEAMS_LIST,
+                                               parent_id: teams_category['id']
+    )
   end
 
-  def rebuild_teams_for_teams(teams)
-    teams.to_a.compact.uniq.each do |team|
-      rebuild_teams_for_team team
-    end
+  def teams_lu_channel
+    @teams_lu_channel ||= (
+      client.find_or_create_guild_text_channel @guild_id,
+                                               name: CHANNEL_TEAMS_LU,
+                                               parent_id: teams_category['id']
+    )
+  end
+
+  def rebuild_teams_list
+    lines = Team.order(:name).map do |team|
+      [
+        team.short_name,
+        team.name
+      ].join(' : ')
+    end.join(DiscordClient::MESSAGE_LINE_SEPARATOR)
+    rebuild_channel_with_content teams_list_channel['id'], lines
+  end
+
+  def rebuild_teams_lu
+    lines = Team.order(:name).map do |team|
+      [
+        "**#{team.short_name} : #{team.name}**",
+        players_lines(team.players)
+      ].join(DiscordClient::MESSAGE_LINE_SEPARATOR)
+    end.join(DiscordClient::MESSAGE_LINE_SEPARATOR * 2)
+    rebuild_channel_with_content teams_lu_channel['id'], lines
   end
 
   def rebuild_teams
-    rebuild_teams_for_teams Team.order(:name)
+    rebuild_teams_list
+    rebuild_teams_lu
   end
 
   def delete_teams
@@ -237,17 +261,21 @@ class RetropenBot
     line
   end
 
-  def fill_channel_with_players(channel_id, players)
-    lines = players.includes(:team, :city, :characters).to_a.sort_by{|p| p.name.downcase}.map do |player|
+  def players_lines(players)
+    players.includes(:team, :city, :characters).to_a.sort_by{|p| p.name.downcase}.map do |player|
       player_abc player
     end.join(DiscordClient::MESSAGE_LINE_SEPARATOR)
-
-    client.create_channel_message channel_id, lines
   end
 
   def rebuild_channel_with_players(channel_id, players)
+    rebuild_channel_with_content channel_id, players_lines(players)
+  end
+
+  def rebuild_channel_with_content(channel_id, lines)
+    # TODO: do something smarter here, like editing existing messages
+    # to avoid reaching API limits
     client.clear_channel channel_id
-    fill_channel_with_players channel_id, players
+    client.create_channel_message channel_id, lines
   end
 
 end

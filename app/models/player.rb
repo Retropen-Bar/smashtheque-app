@@ -63,16 +63,10 @@ class Player < ApplicationRecord
       end
 
       # team
-      if previous_changes.has_key?('team_id')
-        # this is creation or an update with changes on the team_id
-        old_team_id = previous_changes['team_id'].first
-        new_team_id = previous_changes['team_id'].last
-        RetropenBot.default.rebuild_teams_for_team Team.find(old_team_id) if old_team_id
-        RetropenBot.default.rebuild_teams_for_team Team.find(new_team_id) if new_team_id
-
-      else
-        # this is an update, and the team_id didn't change
-        RetropenBot.default.rebuild_teams_for_team team
+      if previous_changes.has_key?('team_id') || team_id
+        # player was added to a team, removed from a team, or updated
+        # while it belongs to a team so the teams lineups must be updated
+        RetropenBot.default.rebuild_teams_lu
       end
     end
 
