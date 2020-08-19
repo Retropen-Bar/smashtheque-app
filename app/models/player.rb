@@ -55,7 +55,7 @@ class Player < ApplicationRecord
         old_city_id = previous_changes['city_id'].first
         new_city_id = previous_changes['city_id'].last
         RetropenBot.default.rebuild_cities_for_city City.find(old_city_id) if old_city_id
-        RetropenBot.default.rebuild_cities_for_city City.find(new_city_id)
+        RetropenBot.default.rebuild_cities_for_city City.find(new_city_id) if new_city_id
 
       else
         # this is an update, and the city_id didn't change
@@ -68,7 +68,7 @@ class Player < ApplicationRecord
         old_team_id = previous_changes['team_id'].first
         new_team_id = previous_changes['team_id'].last
         RetropenBot.default.rebuild_teams_for_team Team.find(old_team_id) if old_team_id
-        RetropenBot.default.rebuild_teams_for_team Team.find(new_team_id)
+        RetropenBot.default.rebuild_teams_for_team Team.find(new_team_id) if new_team_id
 
       else
         # this is an update, and the team_id didn't change
