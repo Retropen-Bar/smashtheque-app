@@ -20,4 +20,9 @@ namespace :retropen do
     RetropenBot.default.rebuild_teams
   end
 
+  desc 'Rebuild all'
+  task :rebuild_all => :environment do
+    RetropenBot.default.rebuild_all
+  end
+
 end

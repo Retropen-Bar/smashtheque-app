@@ -33,6 +33,13 @@ class RetropenBot
     @client ||= DiscordClient.new
   end
 
+  def rebuild_all
+    rebuild_abc
+    rebuild_chars
+    rebuild_cities
+    rebuild_teams
+  end
+
   # ---------------------------------------------------------------------------
   # ABC
   # ---------------------------------------------------------------------------
@@ -198,7 +205,7 @@ class RetropenBot
         team.name
       ].join(' : ')
     end.join(DiscordClient::MESSAGE_LINE_SEPARATOR)
-    rebuild_channel_with_content teams_list_channel['id'], lines
+    client.replace_channel_content teams_list_channel['id'], lines
   end
 
   def rebuild_teams_lu
@@ -208,7 +215,7 @@ class RetropenBot
         players_lines(team.players)
       ].join(DiscordClient::MESSAGE_LINE_SEPARATOR)
     end.join(DiscordClient::MESSAGE_LINE_SEPARATOR * 2)
-    rebuild_channel_with_content teams_lu_channel['id'], lines
+    client.replace_channel_content teams_lu_channel['id'], lines
   end
 
   def rebuild_teams
