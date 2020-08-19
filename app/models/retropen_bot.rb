@@ -255,14 +255,7 @@ class RetropenBot
   end
 
   def rebuild_channel_with_players(channel_id, players)
-    rebuild_channel_with_content channel_id, players_lines(players)
-  end
-
-  def rebuild_channel_with_content(channel_id, lines)
-    # TODO: do something smarter here, like editing existing messages
-    # to avoid reaching API limits
-    client.clear_channel channel_id
-    client.create_channel_message channel_id, lines
+    client.replace_channel_content channel_id, players_lines(players)
   end
 
 end

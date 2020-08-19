@@ -77,16 +77,46 @@ class DiscordClient
     end
   end
 
+  def edit_channel_message(channel_id, message_id, content)
+    return false if content.blank?
+    api_patch "/channels/#{channel_id}/messages/#{message_id}", content: content
+  end
+
   def delete_channel_message(channel_id, message_id)
     api_delete "/channels/#{channel_id}/messages/#{message_id}"
   end
 
   def clear_channel(channel_id)
     existing_messages = channel_messages channel_id
-    unless existing_messages.is_a?(Hash) && existing_messages['code'] == 50001
-      existing_messages.each do |message|
-        delete_channel_message channel_id, message['id']
+    return false if existing_messages.is_a?(Hash) && existing_messages['code'] == 50001
+    existing_messages.each do |message|
+      delete_channel_message channel_id, message['id']
+    end
+  end
+
+  def replace_channel_content(channel_id, content)
+    content = '-' if content.blank?
+
+    existing_messages = channel_messages channel_id
+    return false if existing_messages.is_a?(Hash) && existing_messages['code'] == 50001
+    new_messages = split_messages content
+
+    message_idx = 0
+    new_messages.each do |new_message|
+      if message_idx < existing_messages.count
+        # an existing message is available for edition
+        edit_channel_message channel_id, existing_messages[message_idx]['id'], new_message
+      else
+        # all existing messages have been used, we need to create more
+        create_channel_message channel_id, new_message
       end
+      message_idx += 1
+    end
+
+    # some old messages might still be here and need to be deleted
+    while message_idx < existing_messages.count
+      delete_channel_message channel_id, existing_messages[message_idx]['id']
+      message_idx += 1
     end
   end
 
@@ -117,6 +147,24 @@ class DiscordClient
     https.use_ssl = true
 
     request = Net::HTTP::Post.new(url)
+    request["Authorization"] = "Bot #{@token}"
+    request["Content-Type"] = 'application/json'
+    request.body = params.to_json
+
+    response = https.request(request)
+
+    JSON.parse(response.read_body)
+  end
+
+  def api_patch(path, params)
+    puts "=== API REQUEST ==="
+    url = URI("#{Discordrb::API::APIBASE}#{path}")
+    puts "PATCH #{url} #{params.to_json}"
+
+    https = Net::HTTP.new(url.host, url.port)
+    https.use_ssl = true
+
+    request = Net::HTTP::Patch.new(url)
     request["Authorization"] = "Bot #{@token}"
     request["Content-Type"] = 'application/json'
     request.body = params.to_json
