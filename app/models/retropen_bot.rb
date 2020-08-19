@@ -171,10 +171,6 @@ class RetropenBot
   # TEAMS
   # ---------------------------------------------------------------------------
 
-  def team_channel_name(team)
-    team.name.parameterize
-  end
-
   def teams_category
     @teams_category ||= client.find_or_create_guild_category @guild_id, name: CATEGORY_TEAMS
   end
@@ -218,15 +214,6 @@ class RetropenBot
   def rebuild_teams
     rebuild_teams_list
     rebuild_teams_lu
-  end
-
-  def delete_teams
-    existing_channels = client.get_guild_channels @guild_id
-    existing_channels.each do |channel|
-      if channel['parent_id'] == teams_category['id']
-        client.delete_channel channel['id']
-      end
-    end
   end
 
   # ---------------------------------------------------------------------------
