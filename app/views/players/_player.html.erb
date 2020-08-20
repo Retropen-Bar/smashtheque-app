@@ -2,7 +2,7 @@
   <div class="card-body">
     <%= player.name %>
     <% player.characters.each do |character| %>
-      <%= link_to character.decorate.head_icon_tag(max_height: '32px'), character %>
+      <%= link_to character.decorate.emoji_image_tag(max_height: '32px'), character %>
     <% end %>
   </div>
 </div>

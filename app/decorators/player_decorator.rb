@@ -5,7 +5,7 @@ class PlayerDecorator < BaseDecorator
   end
 
   def characters_links
-    model.characters.decorate.map(&:admin_head_icon_link)
+    model.characters.decorate.map(&:admin_emoji_link)
   end
 
   def city_link

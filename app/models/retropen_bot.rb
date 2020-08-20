@@ -229,15 +229,6 @@ class RetropenBot
 
   private
 
-  def character_visual(character)
-    return character.icon if character.emoji.blank?
-
-    found_emoji_id = client.find_guild_emoji_id @guild_id, character.emoji
-    return character.icon if found_emoji_id.nil?
-
-    "<:#{character.emoji}:#{found_emoji_id}>"
-  end
-
   def player_abc(player)
     line = player.name
     if player.team
@@ -249,7 +240,7 @@ class RetropenBot
     if player.characters.any?
       line += " :"
       player.characters.each do |character|
-        line += " #{character_visual(character)}"
+        line += " <:#{character.name.parameterize.gsub('-','')}:#{character.emoji}>"
       end
     end
     line

@@ -48,3 +48,14 @@ open(uri) do |file|
     )
   end
 end
+
+
+# ENV['NO_DISCORD'] = '1'
+# rosters.each do |short_name, player_names|
+#   team = Team.where(short_name: short_name).first!
+#   player_names.each do |player_name|
+#     player = Player.where(name: player_name).first
+#     player&.update_attribute :team, team
+#   end
+# end
+# ENV['NO_DISCORD'] = '0'

@@ -4,13 +4,13 @@ class CharacterDecorator < BaseDecorator
     super(options.merge(label: options[:label] || full_name))
   end
 
-  def admin_head_icon_link(options = {})
-    label = head_icon_tag(max_height: '24px')
+  def admin_emoji_link(options = {})
+    label = emoji_image_tag(max_height: '24px')
     admin_link(options.merge(label: label))
   end
 
   def full_name
-    [head_icon_tag, model.name].join.html_safe
+    [emoji_image_tag, model.name].join.html_safe
   end
 
   def players_path
@@ -25,17 +25,15 @@ class CharacterDecorator < BaseDecorator
     model.players.count
   end
 
-  def head_icon_tag(max_width: nil, max_height: nil)
-    return nil if model.head_icon_url.blank?
-    h.image_tag_with_max_size model.head_icon_url,
+  def emoji_image_url
+    "https://cdn.discordapp.com/emojis/#{model.emoji}.png"
+  end
+
+  def emoji_image_tag(max_width: nil, max_height: nil)
+    return nil if model.emoji.blank?
+    h.image_tag_with_max_size emoji_image_url,
                               max_width: max_width,
                               max_height: max_height
   end
-
-  def emoji_code
-    return nil if model.emoji.blank?
-    ":#{model.emoji}:"
-  end
-
 
 end
