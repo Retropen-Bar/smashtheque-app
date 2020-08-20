@@ -36,7 +36,7 @@ class Player < ApplicationRecord
     end
   end
 
-  # after_commit :update_discord
+  after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] }
   def update_discord
     # on create: previous_changes = {"id"=>[nil, <id>], "name"=>[nil, <name>], ...}
     # on update: previous_changes = {"name"=>["old_name", "new_name"], ...}
@@ -90,6 +90,7 @@ class Player < ApplicationRecord
   # this is required because removing a has_many relation
   # is not visible inside an after_commit callback
   def after_remove_character(character)
+    return true if ENV['NO_DISCORD']
     RetropenBot.default.rebuild_chars_for_character character
   end
 

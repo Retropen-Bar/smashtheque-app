@@ -9,7 +9,7 @@ class Team < ApplicationRecord
   # CALLBACKS
   # ---------------------------------------------------------------------------
 
-  after_commit :update_discord
+  after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] }
   def update_discord
     # on create: previous_changes = {"id"=>[nil, <id>], "name"=>[nil, <name>], ...}
     # on update: previous_changes = {"name"=>["old_name", "new_name"], ...}

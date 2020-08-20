@@ -67,7 +67,9 @@ class DiscordClient
   end
 
   def channel_messages(channel_id)
-    api_get "/channels/#{channel_id}/messages?limit=100"
+    messages = api_get "/channels/#{channel_id}/messages?limit=100"
+    return [] if messages.is_a?(Hash) && messages['code'] == 50001
+    messages.sort_by { |message| message['timestamp'] }
   end
 
   def create_channel_message(channel_id, content)
@@ -87,9 +89,7 @@ class DiscordClient
   end
 
   def clear_channel(channel_id)
-    existing_messages = channel_messages channel_id
-    return false if existing_messages.is_a?(Hash) && existing_messages['code'] == 50001
-    existing_messages.each do |message|
+    channel_messages(channel_id).each do |message|
       delete_channel_message channel_id, message['id']
     end
   end
@@ -98,7 +98,6 @@ class DiscordClient
     content = '-' if content.blank?
 
     existing_messages = channel_messages channel_id
-    return false if existing_messages.is_a?(Hash) && existing_messages['code'] == 50001
     new_messages = split_messages content
 
     message_idx = 0
