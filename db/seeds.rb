@@ -53,7 +53,7 @@ open(uri) do |file|
       name: player['name'],
       city: player['city'].presence && City.find_by!(name: player['city']),
       team: player['team'].presence && Team.find_by!(short_name: player['team']),
-      characters: player['characters'].map{|c| Character.find_by!(name: c)}
+      character_ids: player['characters'].map{|c| Character.find_by!(name: c).id}
     )
   end
 end
