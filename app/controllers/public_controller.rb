@@ -1,9 +1,19 @@
 class PublicController < ApplicationController
 
-  before_action :authenticate_admin_user!
+  before_action :check_access!
 
   def home
 
+  end
+
+  private
+
+  def check_access!
+    # for the first time
+    session[:token] = params[:token] if params[:token]
+
+    # check
+    authenticate_admin_user! unless session[:token] == ENV['PUBLIC_ACCESS_TOKEN']
   end
 
 end
