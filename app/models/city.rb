@@ -13,4 +13,11 @@ class City < ApplicationRecord
     where("unaccent(name) ILIKE '#{letter}%'")
   end
 
+  # ---------------------------------------------------------------------------
+  # global search
+  # ---------------------------------------------------------------------------
+
+  include PgSearch
+  multisearchable against: %i(name)
+
 end

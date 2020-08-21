@@ -91,3 +91,6 @@ gem 'has_scope'
 # Discord
 gem 'discordrb'
 gem 'rbnacl-libsodium'
+
+# global search
+gem 'pg_search'

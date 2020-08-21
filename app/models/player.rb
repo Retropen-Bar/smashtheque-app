@@ -110,4 +110,11 @@ class Player < ApplicationRecord
     result
   end
 
+  # ---------------------------------------------------------------------------
+  # global search
+  # ---------------------------------------------------------------------------
+
+  include PgSearch
+  multisearchable against: %i(name)
+
 end

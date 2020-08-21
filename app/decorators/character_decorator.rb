@@ -9,6 +9,10 @@ class CharacterDecorator < BaseDecorator
     admin_link(options.merge(label: label))
   end
 
+  def pretty_name
+    model.name.titleize
+  end
+
   def full_name
     [emoji_image_tag, model.name.titleize].join.html_safe
   end
@@ -34,6 +38,24 @@ class CharacterDecorator < BaseDecorator
     h.image_tag_with_max_size emoji_image_url,
                               max_width: max_width,
                               max_height: max_height
+  end
+
+  def icon_class
+    'user-circle'
+  end
+
+  def as_autocomplete_result
+    h.content_tag :div, class: 'character' do
+      (
+        h.content_tag :div, class: :emoji do
+          emoji_image_tag
+        end
+      ) + (
+        h.content_tag :div, class: :name do
+          pretty_name
+        end
+      )
+    end
   end
 
 end
