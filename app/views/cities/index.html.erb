@@ -1,6 +1,8 @@
 <h1 class="text-center">Villes</h1>
 
-<div class="characters">
+<%= render 'shared/letters' %>
+
+<div class="cards-list cities">
   <% @cities.each do |city| %>
     <%= render 'city', city: city.decorate %>
   <% end %>

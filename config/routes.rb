@@ -10,10 +10,16 @@ Rails.application.routes.draw do
 
   # public
 
-  resources :characters, only: [:index, :show]
-  resources :cities, only: [:index, :show]
+  resources :characters, only: :index
+  get '/characters/:id' => 'players#character_index', as: :character
+
+  resources :cities, only: :index
+  get '/cities/:id' => 'players#city_index', as: :city
+
   resources :players, only: :index
-  resources :teams, only: [:index, :show]
+
+  resources :teams, only: :index
+  get '/teams/:id' => 'players#team_index', as: :team
 
   root to: 'public#home'
 

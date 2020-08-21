@@ -99,7 +99,7 @@ class Player < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   def self.on_abc(letter)
-    where("unaccent(name) ILIKE '#{letter}%'")
+    letter == '$' ? on_abc_others : where("unaccent(name) ILIKE '#{letter}%'")
   end
 
   def self.on_abc_others

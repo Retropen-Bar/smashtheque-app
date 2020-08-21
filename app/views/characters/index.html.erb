@@ -1,6 +1,8 @@
 <h1>Personnages</h1>
 
-<div class="characters">
+<%= render 'shared/letters' %>
+
+<div class="cards-list characters">
   <% @characters.each do |character| %>
     <%= render 'character', character: character.decorate %>
   <% end %>

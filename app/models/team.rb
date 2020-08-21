@@ -19,4 +19,12 @@ class Team < ApplicationRecord
     RetropenBot.default.rebuild_teams
   end
 
+  # ---------------------------------------------------------------------------
+  # SCOPES
+  # ---------------------------------------------------------------------------
+
+  def self.on_abc(letter)
+    where("unaccent(name) ILIKE '#{letter}%'")
+  end
+
 end

@@ -1,6 +1,8 @@
 <h1 class="text-center">Équipes</h1>
 
-<div class="characters">
+<%= render 'shared/letters' %>
+
+<div class="cards-list teams">
   <% @teams.each do |team| %>
     <%= render 'team', team: team.decorate %>
   <% end %>
