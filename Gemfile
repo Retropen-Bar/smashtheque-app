@@ -70,7 +70,7 @@ gem 'toastr-rails'
 
 # Theming
 gem 'simple_form'
-gem 'bootstrap', '~> 4.3.1'
+gem 'bootstrap', '~> 4.5.2'
 gem 'bootstrap4-kaminari-views'
 
 # errors tracking

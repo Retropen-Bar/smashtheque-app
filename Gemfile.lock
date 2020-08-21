@@ -82,13 +82,13 @@ GEM
       activeadmin (>= 1.1.0, < 3.0)
       font-awesome-sass (~> 5.0)
       jquery-rails
-    autoprefixer-rails (9.8.6.1)
+    autoprefixer-rails (9.8.6.2)
       execjs
     bcrypt (3.1.15)
     bindex (0.8.1)
     bootsnap (1.4.8)
       msgpack (~> 1.0)
-    bootstrap (4.3.1)
+    bootstrap (4.5.2)
       autoprefixer-rails (>= 9.1.0)
       popper_js (>= 1.14.3, < 2)
       sassc-rails (>= 2.0.0)
@@ -370,7 +370,7 @@ DEPENDENCIES
   annotate
   arctic_admin
   bootsnap (>= 1.4.2)
-  bootstrap (~> 4.3.1)
+  bootstrap (~> 4.5.2)
   bootstrap4-kaminari-views
   byebug
   cancancan

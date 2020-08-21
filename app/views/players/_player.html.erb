@@ -1,6 +1,20 @@
-<div class="card">
+<div class="card player">
   <div class="card-body">
-    <%= player.name %>
+    <h5 class="card-title">
+      <% if player.team %>
+        <div class="float-right">
+          <i class="fas fa-users"></i>
+          <%= link_to player.team.name, player.team, class: 'text-muted' %>
+        </div>
+      <% end %>
+      <%= player.name %>
+    </h5>
+    <% if player.city %>
+      <div class="float-right">
+        <i class="fas fa-map-marker-alt"></i>
+        <%= link_to player.city.name.titleize, player.city %>
+      </div>
+    <% end %>
     <% player.characters.each do |character| %>
       <%= link_to character.decorate.emoji_image_tag(max_height: '32px'), character %>
     <% end %>
