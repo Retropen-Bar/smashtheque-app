@@ -1,8 +1,5 @@
 <%= render 'shared/letters' %>
-
-<%= paginate players,
-             theme: 'twitter-bootstrap-4',
-             pagination_class: 'pagination-sm justify-content-center mt-4 mb-4' %>
+<%= render 'shared/pagination', collection: players %>
 
 <div class="cards-list players">
 

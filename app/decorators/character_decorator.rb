@@ -10,7 +10,7 @@ class CharacterDecorator < BaseDecorator
   end
 
   def full_name
-    [emoji_image_tag, model.name].join.html_safe
+    [emoji_image_tag, model.name.titleize].join.html_safe
   end
 
   def players_path

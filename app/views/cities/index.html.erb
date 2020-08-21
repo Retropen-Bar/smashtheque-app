@@ -1,11 +1,14 @@
 <h1 class="text-center">Villes</h1>
 
 <%= render 'shared/letters' %>
+<%= render 'shared/pagination', collection: @cities %>
 
 <div class="cards-list cities">
-  <% @cities.each do |city| %>
-    <%= render 'city', city: city.decorate %>
-  <% end %>
+  <div class="row justify-content-md-center">
+    <div class="col col-4">
+      <% @cities.each do |city| %>
+        <%= render 'city', city: city.decorate %>
+      <% end %>
+    </div>
+  </div>
 </div>
-
-<%= paginate @cities, theme: 'twitter-bootstrap-4' %>

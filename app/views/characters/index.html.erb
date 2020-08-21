@@ -1,11 +1,7 @@
-<h1>Personnages</h1>
+<h1 class="text-center">Personnages</h1>
 
-<%= render 'shared/letters' %>
-
-<div class="cards-list characters">
+<div class="cards-list characters text-center">
   <% @characters.each do |character| %>
     <%= render 'character', character: character.decorate %>
   <% end %>
 </div>
-
-<%= paginate @characters, theme: 'twitter-bootstrap-4' %>

@@ -1,5 +1,9 @@
 <div class="card">
   <div class="card-body">
-    <%= link_to city.full_name, city %>
+    <div class="float-right">
+      <i class="fas fa-users"></i>
+      <%= city.players.count %>
+    </div>
+    <%= link_to city.name.titleize, city %>
   </div>
 </div>

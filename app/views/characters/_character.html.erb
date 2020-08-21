@@ -1,5 +1,8 @@
-<div class="card">
-  <div class="card-body">
-    <%= link_to character.full_name, character %>
+<div class="card" style="display: inline-block; width: 200px;">
+  <div class="card-body text-center">
+    <%= link_to character do %>
+      <%= character.emoji_image_tag %><br/>
+      <%= character.name.titleize %>
+    <% end %>
   </div>
 </div>
