@@ -21,6 +21,8 @@ Rails.application.routes.draw do
   resources :teams, only: :index
   get '/teams/:id' => 'players#team_index', as: :team
 
+  get '/search' => 'search_controller#global'
+
   root to: 'public#home'
 
 end

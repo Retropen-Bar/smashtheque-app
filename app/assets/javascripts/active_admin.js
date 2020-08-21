@@ -8,4 +8,5 @@
 //= require select2_locale_fr
 //= require toastr
 
+//= require_tree ./shared
 //= require_tree ./admin
