@@ -8,8 +8,8 @@ class CityDecorator < BaseDecorator
     model.name.titleize
   end
 
-  def full_name
-    [model.icon, model.name].join
+  def full_name(separator = '&nbsp;')
+    [model.icon, pretty_name].join(separator).html_safe
   end
 
   def players_path
