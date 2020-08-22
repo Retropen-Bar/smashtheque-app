@@ -4,9 +4,7 @@ describe 'Teams API', swagger_doc: 'v1/swagger.json' do
 
   before do
     @token = ApiToken.create!(name: 'Team tests')
-    @teams = (1..5).map do |i|
-      FactoryBot.create(:team)
-    end
+    @teams = FactoryBot.create_list(:team, 5)
   end
 
   path '/api/v1/teams' do

@@ -4,9 +4,7 @@ describe 'Characters API', swagger_doc: 'v1/swagger.json' do
 
   before do
     @token = ApiToken.create!(name: 'Character tests')
-    @characters = (1..5).map do |i|
-      FactoryBot.create(:character)
-    end
+    @characters = FactoryBot.create_list(:character, 5)
   end
 
   path '/api/v1/characters' do

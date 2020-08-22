@@ -45,6 +45,26 @@
         }
       }
     },
+    "/api/v1/players": {
+      "get": {
+        "summary": "Fetches players",
+        "tags": [
+          "Players"
+        ],
+        "responses": {
+          "200": {
+            "description": "players found",
+            "content": {
+            }
+          },
+          "401": {
+            "description": "Invalid credentials",
+            "content": {
+            }
+          }
+        }
+      }
+    },
     "/api/v1/search": {
       "get": {
         "summary": "Searches globally",

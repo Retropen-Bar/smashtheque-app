@@ -4,9 +4,7 @@ describe 'Cities API', swagger_doc: 'v1/swagger.json' do
 
   before do
     @token = ApiToken.create!(name: 'City tests')
-    @cities = (1..3).map do |i|
-      FactoryBot.create(:city)
-    end
+    @cities = FactoryBot.create_list(:city, 3)
   end
 
   path '/api/v1/cities' do
