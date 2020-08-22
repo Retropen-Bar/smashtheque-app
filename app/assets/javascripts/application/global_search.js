@@ -10,7 +10,7 @@
     $input.removeAttr(DATA_KEY);
 
     window.GlobalSearch.configureInput(input, $.extend({
-      url: '/search'
+      url: '/api/v1/search'
     }, options));
   };
 

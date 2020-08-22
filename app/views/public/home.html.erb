@@ -4,6 +4,6 @@
   <p class="lead">
     <%= link_to 'Voir les joueurs', players_path, class: 'btn btn-lg btn-secondary' %>
     <br/><br/>
-    <%= text_field_tag :search, nil, data: { global_search: {} } %>
+    <%= select_tag :search, [], data: { global_search: {} } %>
   </p>
 </main>

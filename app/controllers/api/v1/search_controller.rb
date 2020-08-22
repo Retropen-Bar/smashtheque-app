@@ -1,4 +1,4 @@
-class SearchController < ApplicationController
+class Api::V1::SearchController < Api::V1::BaseController
 
   def global
     render json: {
@@ -8,7 +8,7 @@ class SearchController < ApplicationController
           id: document.id,
           type: document.searchable_type,
           icon: model.icon_class,
-          url: url_for([:admin, model.model]),
+          url: url_for(model.model),
           html: model.as_autocomplete_result
         }
       end

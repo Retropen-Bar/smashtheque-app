@@ -26,6 +26,10 @@ class PlayersController < PublicController
     render 'characters/show'
   end
 
+  def show
+    @player = Player.find(params[:id])
+  end
+
   private
 
   def players(base)

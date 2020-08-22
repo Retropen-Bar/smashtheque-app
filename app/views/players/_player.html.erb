@@ -7,7 +7,7 @@
           <%= link_to player.team.name, player.team, class: 'text-muted' %>
         </div>
       <% end %>
-      <%= player.name %>
+      <%= link_to player.name, player %>
     </h5>
     <% if player.city %>
       <div class="float-right">
