@@ -3,7 +3,8 @@
   var DATA_KEY = 'data-global-search';
 
   var initInput = function(input) {
-    console.log('[global search] initInput', input);
+    // console.log('[global search] initInput', input);
+
     var $input = $(input);
     var options = JSON.parse($input.attr(DATA_KEY));
 
@@ -15,7 +16,8 @@
   };
 
   var init = function() {
-    console.log('[global search] init');
+    // console.log('[global search] init');
+
     $('['+DATA_KEY+']').each(function() {
       initInput(this);
     });
