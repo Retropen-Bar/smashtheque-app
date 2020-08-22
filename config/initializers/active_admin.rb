@@ -235,7 +235,7 @@ ActiveAdmin.setup do |config|
 
   config.namespace :admin do |admin|
     admin.build_menu :default do |menu|
-      menu.add label: 'Interface publique', url: '/', priority: 0
+      menu.add label: '<i class="fas fa-fw fa-globe-europe"></i>Interface publique'.html_safe, url: '/', priority: 100
     end
   end
 

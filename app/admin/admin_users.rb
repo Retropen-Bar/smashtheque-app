@@ -2,7 +2,7 @@ ActiveAdmin.register AdminUser do
 
   decorate_with AdminUserDecorator
 
-  menu label: 'Admins'
+  menu label: '<i class="fas fa-fw fa-shield-alt"></i>Admins'.html_safe
 
   # ---------------------------------------------------------------------------
   # INDEX

@@ -2,7 +2,7 @@ ActiveAdmin.register City do
 
   decorate_with CityDecorator
 
-  menu label: 'Villes'
+  menu label: '<i class="fas fa-fw fa-map-marker-alt"></i>Villes'.html_safe
 
   # ---------------------------------------------------------------------------
   # INDEX

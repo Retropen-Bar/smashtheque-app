@@ -2,7 +2,7 @@ ActiveAdmin.register Character do
 
   decorate_with CharacterDecorator
 
-  menu label: 'Persos'
+  menu label: '<i class="fas fa-fw fa-gamepad"></i>Persos'.html_safe
 
   # ---------------------------------------------------------------------------
   # INDEX

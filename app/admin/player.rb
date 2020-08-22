@@ -2,7 +2,7 @@ ActiveAdmin.register Player do
 
   decorate_with PlayerDecorator
 
-  menu label: 'Joueurs'
+  menu label: '<i class="fas fa-fw fa-user"></i>Joueurs'.html_safe
 
   # ---------------------------------------------------------------------------
   # INDEX

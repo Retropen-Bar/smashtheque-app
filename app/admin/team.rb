@@ -2,7 +2,7 @@ ActiveAdmin.register Team do
 
   decorate_with TeamDecorator
 
-  menu label: 'Équipes'
+  menu label: '<i class="fas fa-fw fa-users"></i>Équipes'.html_safe
 
   # ---------------------------------------------------------------------------
   # INDEX
