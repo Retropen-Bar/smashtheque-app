@@ -16,7 +16,7 @@ class CharactersPlayer < ApplicationRecord
   # so we can't know inside Player#update_discord which characters it had
   after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] }
   def update_discord
-    if player&.destroyed?
+    if player.is_accepted? && player&.destroyed?
       # this is the deletion of a player
       RetropenBot.default.rebuild_chars_for_character character
     end

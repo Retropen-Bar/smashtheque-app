@@ -50,6 +50,7 @@ fr:
         << : *SHARED
         characters: Persos
         city: Ville
+        is_accepted: Validé ?
         team: Équipe
       team:
         << : *SHARED

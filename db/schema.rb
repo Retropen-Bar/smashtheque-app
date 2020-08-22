@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_22_211744) do
+ActiveRecord::Schema.define(version: 2020_08_22_214257) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -96,6 +96,7 @@ ActiveRecord::Schema.define(version: 2020_08_22_211744) do
     t.bigint "city_id"
     t.bigint "team_id"
     t.string "name"
+    t.boolean "is_accepted"
     t.index ["city_id"], name: "index_players_on_city_id"
     t.index ["team_id"], name: "index_players_on_team_id"
   end

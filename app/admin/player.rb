@@ -21,9 +21,14 @@ ActiveAdmin.register Player do
     column :team do |decorated|
       decorated.team_link
     end
+    column :is_accepted
     column :created_at
     actions
   end
+
+  scope :all, default: true
+  scope :accepted
+  scope :to_be_accepted
 
   filter :name
   filter :characters,
@@ -38,6 +43,7 @@ ActiveAdmin.register Player do
          as: :select,
          collection: proc { Team.order(:name).decorate },
          input_html: { multiple: true, data: { select2: {} } }
+  filter :is_accepted
 
   # ---------------------------------------------------------------------------
   # FORM
@@ -55,11 +61,12 @@ ActiveAdmin.register Player do
       f.input :team,
               collection: Team.order(:name),
               input_html: { data: { select2: {} } }
+      f.input :is_accepted
     end
     f.actions
   end
 
-  permit_params :name, :city_id, :team_id, character_ids: []
+  permit_params :name, :city_id, :team_id, :is_accepted, character_ids: []
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -77,10 +84,21 @@ ActiveAdmin.register Player do
       row :team do |decorated|
         decorated.team_link
       end
+      row :is_accepted
       row :created_at
       row :updated_at
     end
     active_admin_comments
+  end
+
+  action_item :accept,
+              only: :show,
+              if: proc { !resource.is_accepted? } do
+    link_to 'Valider', [:accept, :admin, resource]
+  end
+  member_action :accept do
+    resource.update_attribute :is_accepted, true
+    redirect_to [:admin, resource]
   end
 
 end

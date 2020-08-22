@@ -247,7 +247,7 @@ class RetropenBot
   end
 
   def players_lines(players)
-    players.includes(:team, :city, :characters).to_a.sort_by{|p| p.name.downcase}.map do |player|
+    players.accepted.includes(:team, :city, :characters).to_a.sort_by{|p| p.name.downcase}.map do |player|
       player_abc player
     end.join(DiscordClient::MESSAGE_LINE_SEPARATOR)
   end

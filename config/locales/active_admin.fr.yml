@@ -1,0 +1,6 @@
+fr:
+  active_admin:
+    scopes:
+      accepted: Validés
+      all: Tous
+      to_be_accepted: À valider

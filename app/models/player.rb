@@ -36,7 +36,7 @@ class Player < ApplicationRecord
     end
   end
 
-  after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] }
+  after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] || !is_accepted? }
   def update_discord
     # on create: previous_changes = {"id"=>[nil, <id>], "name"=>[nil, <name>], ...}
     # on update: previous_changes = {"name"=>["old_name", "new_name"], ...}
@@ -97,6 +97,14 @@ class Player < ApplicationRecord
   # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
+
+  def self.accepted
+    where(is_accepted: true)
+  end
+
+  def self.to_be_accepted
+    where(is_accepted: [nil, false])
+  end
 
   def self.on_abc(letter)
     letter == '$' ? on_abc_others : where("unaccent(name) ILIKE '#{letter}%'")
