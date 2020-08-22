@@ -1,5 +1,7 @@
 class Api::V1::SearchController < Api::V1::BaseController
 
+  skip_before_action :authenticate_request!
+
   def global
     render json: {
       results: PgSearch.multisearch(params[:term]).map do |document|

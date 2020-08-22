@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_21_090114) do
+ActiveRecord::Schema.define(version: 2020_08_22_211744) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -45,6 +45,23 @@ ActiveRecord::Schema.define(version: 2020_08_21_090114) do
     t.string "discord_discriminator"
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
+  end
+
+  create_table "api_requests", force: :cascade do |t|
+    t.bigint "api_token_id"
+    t.string "remote_ip"
+    t.string "controller"
+    t.string "action"
+    t.datetime "requested_at"
+    t.index ["api_token_id"], name: "index_api_requests_on_api_token_id"
+  end
+
+  create_table "api_tokens", force: :cascade do |t|
+    t.string "name"
+    t.string "token"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["token"], name: "index_api_tokens_on_token", unique: true
   end
 
   create_table "characters", force: :cascade do |t|

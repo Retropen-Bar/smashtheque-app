@@ -1,0 +1,3 @@
+class ApiTokenDecorator < BaseDecorator
+
+end

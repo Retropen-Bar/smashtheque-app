@@ -31,7 +31,7 @@ class Team < ApplicationRecord
   # global search
   # ---------------------------------------------------------------------------
 
-  include PgSearch
+  include PgSearch::Model
   multisearchable against: %i(name)
 
 end

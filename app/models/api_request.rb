@@ -1,23 +1,18 @@
-class City < ApplicationRecord
-
-  has_many :players
-
-  validates :icon, presence: true
-  validates :name, presence: true, uniqueness: true
+class ApiRequest < ApplicationRecord
 
   # ---------------------------------------------------------------------------
-  # SCOPES
+  # RELATIONS
   # ---------------------------------------------------------------------------
 
-  def self.on_abc(letter)
-    where("unaccent(name) ILIKE '#{letter}%'")
-  end
+  belongs_to :api_token, optional: true
 
   # ---------------------------------------------------------------------------
-  # global search
+  # VALIDATIONS
   # ---------------------------------------------------------------------------
 
-  include PgSearch::Model
-  multisearchable against: %i(name)
+  validates :remote_ip, presence: true
+  validates :controller, presence: true
+  validates :action, presence: true
+  validates :requested_at, presence: true
 
 end

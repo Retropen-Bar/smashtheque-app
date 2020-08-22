@@ -1,23 +1,19 @@
-class City < ApplicationRecord
+class ApiToken < ApplicationRecord
 
-  has_many :players
+  # ---------------------------------------------------------------------------
+  # VALIDATIONS
+  # ---------------------------------------------------------------------------
 
-  validates :icon, presence: true
   validates :name, presence: true, uniqueness: true
+  validates :token, presence: true, uniqueness: true
 
   # ---------------------------------------------------------------------------
-  # SCOPES
+  # INITIALIZERS
   # ---------------------------------------------------------------------------
 
-  def self.on_abc(letter)
-    where("unaccent(name) ILIKE '#{letter}%'")
+  def initialize(params = {})
+    super
+    self.token = SecureRandom.hex
   end
-
-  # ---------------------------------------------------------------------------
-  # global search
-  # ---------------------------------------------------------------------------
-
-  include PgSearch::Model
-  multisearchable against: %i(name)
 
 end

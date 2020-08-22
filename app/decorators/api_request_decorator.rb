@@ -1,0 +1,3 @@
+class ApiRequestDecorator < BaseDecorator
+
+end

@@ -2,6 +2,8 @@ fr:
   activerecord:
     models:
       admin_user: Administrateur
+      api_request: Requête API
+      api_token: Token API
       character: Perso
       city: Ville
       comment: Commentaire
@@ -23,6 +25,16 @@ fr:
         password: Mot de passe
         password_confirmation: Confirmation du mot de passe
         sign_in_count: Connexions
+      api_request:
+        << : *SHARED
+        action: Action
+        api_token: Token API
+        controller: Contrôleur
+        remote_ip: IP source
+        requested_at: Date
+      api_token:
+        << : *SHARED
+        token: Token
       character:
         << : *SHARED
         emoji: Emoji
