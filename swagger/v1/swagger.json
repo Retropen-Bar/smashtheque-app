@@ -1,0 +1,112 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Smashthèque API",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/v1/characters": {
+      "get": {
+        "summary": "Fetches characters",
+        "tags": [
+          "Characters"
+        ],
+        "responses": {
+          "200": {
+            "description": "characters found",
+            "content": {
+            }
+          },
+          "401": {
+            "description": "Invalid credentials",
+            "content": {
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cities": {
+      "get": {
+        "summary": "Fetches cities",
+        "tags": [
+          "Cities"
+        ],
+        "responses": {
+          "200": {
+            "description": "cities found",
+            "content": {
+            }
+          },
+          "401": {
+            "description": "Invalid credentials",
+            "content": {
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/search": {
+      "get": {
+        "summary": "Searches globally",
+        "tags": [
+          "Search"
+        ],
+        "security": [
+
+        ],
+        "responses": {
+          "200": {
+            "description": "results found",
+            "content": {
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/teams": {
+      "get": {
+        "summary": "Fetches teams",
+        "tags": [
+          "Teams"
+        ],
+        "responses": {
+          "200": {
+            "description": "teams found",
+            "content": {
+            }
+          },
+          "401": {
+            "description": "Invalid credentials",
+            "content": {
+            }
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{defaultHost}",
+      "variables": {
+        "defaultHost": {
+          "default": "www.example.com"
+        }
+      }
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": [
+
+      ]
+    }
+  ]
+}
