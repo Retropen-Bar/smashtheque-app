@@ -20,7 +20,7 @@
     var $input = $(input);
     $input.select2({
       width: '400px',
-      placeholder: options.placeholder || 'Recherche globale',
+      placeholder: options.placeholder || 'Rechercher un joueur, une équipe, …',
       ajax: {
         url: options.url,
         dataType: 'json',

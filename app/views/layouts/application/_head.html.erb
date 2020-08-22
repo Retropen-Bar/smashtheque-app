@@ -5,6 +5,9 @@
       <span>Smashthèque FR</span>
     <% end %>
   </h5>
+  <div id="main-global-search-container">
+    <%= select_tag :search, [], id: 'main-global-search', data: { global_search: {} } %>
+  </div>
   <nav class="my-2 my-md-0 mr-md-3" id="main-nav">
     <%= link_to players_path, class: 'p-2 text-dark' do %>
       <i class="fas fa-user"></i>

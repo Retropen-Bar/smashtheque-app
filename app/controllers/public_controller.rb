@@ -3,7 +3,8 @@ class PublicController < ApplicationController
   before_action :check_access!
 
   def home
-
+    @players_count = Player.count
+    @teams_count = Team.count
   end
 
   private
