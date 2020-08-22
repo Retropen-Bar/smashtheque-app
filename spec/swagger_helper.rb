@@ -33,6 +33,17 @@ RSpec.configure do |config|
         }
       ],
       components: {
+        schemas: {
+          errors_object: {
+            type: 'object',
+            properties: {
+              errors: { '$ref' => '#/components/schemas/errors_map' }
+            }
+          },
+          errors_map: {
+            type: 'object'
+          }
+        },
         securitySchemes: {
           bearerAuth: {
             type: :http,

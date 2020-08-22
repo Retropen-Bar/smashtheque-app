@@ -33,11 +33,24 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
         end
       end
 
-      response '401', 'Invalid credentials' do
+      response 401, 'invalid credentials' do
         let(:Authorization) { 'Bearer faketoken' }
         run_test!
       end
     end
+
+    # post 'Creates a player' do
+    #   tags 'Players'
+    #   consumes 'application/json'
+
+    #   response 422, 'invalid request' do
+    #     let(:Authorization) { "Bearer #{@token.token}" }
+    #     schema '$ref' => '#/components/schemas/errors_object'
+    #     run_test!
+    #   end
+    # end
+
   end
+
 
 end

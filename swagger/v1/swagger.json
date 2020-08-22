@@ -58,7 +58,7 @@
             }
           },
           "401": {
-            "description": "Invalid credentials",
+            "description": "invalid credentials",
             "content": {
             }
           }
@@ -92,11 +92,43 @@
         "responses": {
           "200": {
             "description": "teams found",
+            "examples": {
+              "application/json": [
+                {
+                  "id": 246,
+                  "name": "Lothal",
+                  "short_name": "Magnaguard"
+                },
+                {
+                  "id": 247,
+                  "name": "Mustafar",
+                  "short_name": "Super Battle Droid"
+                },
+                {
+                  "id": 248,
+                  "name": "Felucia",
+                  "short_name": "Droideka"
+                },
+                {
+                  "id": 249,
+                  "name": "Utapau",
+                  "short_name": "Droideka"
+                },
+                {
+                  "id": 250,
+                  "name": "Naboo",
+                  "short_name": "K-2SO"
+                }
+              ]
+            },
             "content": {
             }
           },
           "401": {
             "description": "Invalid credentials",
+            "examples": {
+              "application/json": false
+            },
             "content": {
             }
           }
@@ -115,6 +147,19 @@
     }
   ],
   "components": {
+    "schemas": {
+      "errors_object": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "$ref": "#/components/schemas/errors_map"
+          }
+        }
+      },
+      "errors_map": {
+        "type": "object"
+      }
+    },
     "securitySchemes": {
       "bearerAuth": {
         "type": "http",
