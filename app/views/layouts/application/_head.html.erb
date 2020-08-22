@@ -5,11 +5,23 @@
       <span>Smashthèque FR</span>
     <% end %>
   </h5>
-  <nav class="my-2 my-md-0 mr-md-3">
-    <%= link_to 'Joueurs', players_path, class: 'p-2 text-dark' %>
-    <%= link_to 'Personnages', characters_path, class: 'p-2 text-dark' %>
-    <%= link_to 'Villes', cities_path, class: 'p-2 text-dark' %>
-    <%= link_to 'Équipes', teams_path, class: 'p-2 text-dark' %>
+  <nav class="my-2 my-md-0 mr-md-3" id="main-nav">
+    <%= link_to players_path, class: 'p-2 text-dark' do %>
+      <i class="fas fa-user"></i>
+      <span>Joueurs</span>
+    <% end %>
+    <%= link_to characters_path, class: 'p-2 text-dark' do %>
+      <%= image_tag 'smash.svg', height: 16 %>
+      <span>Personnages</span>
+    <% end %>
+    <%= link_to cities_path, class: 'p-2 text-dark' do %>
+      <i class="fas fa-map-marker-alt"></i>
+      <span>Villes</span>
+    <% end %>
+    <%= link_to teams_path, class: 'p-2 text-dark' do %>
+      <i class="fas fa-users"></i>
+      <span>Équipes</span>
+    <% end %>
   </nav>
   <%= link_to 'Admin', admin_root_path, class: 'btn btn-outline-primary' %>
 </div>
