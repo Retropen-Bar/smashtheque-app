@@ -2,7 +2,9 @@
 
   <section class="text-center">
     <div class="container">
-      <%= image_tag 'smashtheque-256.png', height: 128, class: 'mb-5' %>
+      <div class="d-none d-md-block mb-5">
+        <%= image_tag 'smashtheque-256.png', height: 128 %>
+      </div>
       <h1>Bienvenue sur Smashthèque FR</h1>
       <p class="lead text-muted mb-5">
         La base de données de la communauté Super Smash Bros. Ultimate de France,<br/>
@@ -11,12 +13,16 @@
       <p class="lead mb-4">
         Vous pouvez&nbsp;:
       </p>
-      <p class="mb-4">
-        <%= link_to "Voir les #{number_with_delimiter @players_count} joueurs", players_path, class: 'btn btn-lg btn-primary mr-5' %>
-        <%= link_to "Voir les #{number_with_delimiter @teams_count} équipes", teams_path, class: 'btn btn-lg btn-primary' %>
-      </p>
+      <div class="row mb-4">
+        <div class="col-sm text-sm-right mb-4">
+          <%= link_to "Voir les #{number_with_delimiter @players_count} joueurs", players_path, class: 'btn btn-lg btn-primary' %>
+        </div>
+        <div class="col-sm text-sm-left">
+          <%= link_to "Voir les #{number_with_delimiter @teams_count} équipes", teams_path, class: 'btn btn-lg btn-primary' %>
+        </div>
+      </div>
       <p>
-        ou utiliser la barre de recherche tout en haut.
+        ou utiliser la barre de recherche en haut de cette page.
       </p>
     </div>
   </section>
