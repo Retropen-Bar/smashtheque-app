@@ -11,11 +11,22 @@ describe 'Characters API', swagger_doc: 'v1/swagger.json' do
 
     get 'Fetches characters' do
       tags 'Characters'
-      consumes 'application/json'
+      produces 'application/json'
       # parameter name: :page, in: :query, type: :string
 
       response '200', 'characters found' do
         let(:Authorization) { "Bearer #{@token.token}" }
+        schema type: :array,
+          items: {
+            type: :object,
+            properties: {
+              id: { type: :integer },
+              icon: { type: :string, example: '👊' },
+              name: { type: :string, example: 'Terry' },
+              emoji: { type: :string, example: '739087535812116572' }
+            }
+          }
+
         run_test! do |response|
           data = JSON.parse(response.body)
           expect(data.count).to eq(5)

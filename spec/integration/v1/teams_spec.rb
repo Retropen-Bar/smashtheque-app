@@ -7,17 +7,11 @@ describe 'Teams API', swagger_doc: 'v1/swagger.json' do
     @teams = FactoryBot.create_list(:team, 5)
   end
 
-  after do |example|
-    example.metadata[:response][:examples] = {
-      'application/json' => !response.body.blank? && JSON.parse(response.body, symbolize_names: true)
-    }
-  end
-
   path '/api/v1/teams' do
 
     get 'Fetches teams' do
       tags 'Teams'
-      consumes 'application/json'
+      produces 'application/json'
       # parameter name: :page, in: :query, type: :string
 
       response 200, 'teams found' do
@@ -26,9 +20,9 @@ describe 'Teams API', swagger_doc: 'v1/swagger.json' do
           items: {
             type: :object,
             properties: {
-              id: { type: :integer },
-              name: { type: :string },
-              short_name: { type: :string }
+              id: { type: :integer, example: 27 },
+              name: { type: :string, example: 'Rétropen-Bar' },
+              short_name: { type: :string, example: 'R-B' }
             }
           }
 

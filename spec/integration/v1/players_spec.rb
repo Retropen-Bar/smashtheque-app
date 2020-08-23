@@ -21,11 +21,29 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
 
     get 'Fetches players' do
       tags 'Players'
-      consumes 'application/json'
+      produces 'application/json'
       # parameter name: :page, in: :query, type: :string
 
       response '200', 'players found' do
         let(:Authorization) { "Bearer #{@token.token}" }
+        schema type: :array,
+          items: {
+            type: :object,
+            properties: {
+              id: { type: :integer, example: 123 },
+              name: { type: :string, example: 'Pixel' },
+              city_id: { type: :integer, nullable: true, example: 42 },
+              team_id: { type: :integer, nullable: true, example: 13 },
+              character_ids: {
+                type: :array,
+                items: {
+                  type: :integer
+                },
+                example: [7,25]
+              }
+            }
+          }
+
         run_test! do |response|
           data = JSON.parse(response.body)
           expect(data.count).to eq(20)
