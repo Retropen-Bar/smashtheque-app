@@ -1,7 +1,9 @@
 <h1 class="text-center">Personnages</h1>
 
-<div class="cards-list characters text-center">
+<div class="cards-list characters">
   <% @characters.each do |character| %>
-    <%= render 'character', character: character.decorate %>
+    <div class="card-container">
+      <%= render 'character', character: character.decorate %>
+    </div>
   <% end %>
 </div>

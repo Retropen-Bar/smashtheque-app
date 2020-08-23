@@ -4,11 +4,9 @@
 <%= render 'shared/pagination', collection: @teams %>
 
 <div class="cards-list teams">
-  <div class="row justify-content-md-center">
-    <div class="col col-4">
-      <% @teams.each do |team| %>
-        <%= render 'team', team: team.decorate %>
-      <% end %>
+  <% @teams.each do |team| %>
+    <div class="card-container">
+      <%= render 'team', team: team.decorate %>
     </div>
-  </div>
+  <% end %>
 </div>

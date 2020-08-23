@@ -1,3 +1,29 @@
 .cards-list
+  text-align: center
+
   .card
-    margin: 20px
+    display: inline-flex
+    margin: 10px 0
+    max-width: 100%
+    text-align: left
+
+    &.character
+      margin: 10px
+      width: 200px
+      text-align: center
+
+      img
+        width: 128px
+
+    &.city
+      width: 300px
+
+    &.player
+      width: 600px
+
+    &.team
+      width: 400px
+
+  &.characters
+    .card-container
+      display: inline-block

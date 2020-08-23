@@ -2,13 +2,9 @@
 <%= render 'shared/pagination', collection: players %>
 
 <div class="cards-list players">
-
-  <div class="row justify-content-md-center">
-    <div class="col col-6">
-      <% players.each do |player| %>
-        <%= render 'players/player', player: player %>
-      <% end %>
+  <% players.each do |player| %>
+    <div class="card-container">
+      <%= render 'players/player', player: player %>
     </div>
-  </div>
-
+  <% end %>
 </div>
