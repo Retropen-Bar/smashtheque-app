@@ -1,0 +1,21 @@
+@import variables
+
+body.index
+  .table_tools
+    .batch_actions_selector
+      margin-bottom: 10px
+
+      ul.dropdown_menu_list
+        li
+          a
+            display: block
+            padding: 10px 0
+
+            &:hover
+              color: $blue
+
+    .scopes
+      ul.table_tools_segmented_control:not(:first-child)
+        li.scope:first-child
+          a
+            margin-left: 10px

@@ -8,6 +8,8 @@ ActiveAdmin.register Player do
   # INDEX
   # ---------------------------------------------------------------------------
 
+  includes :discord_user, :city, :team, :characters
+
   index do
     selectable_column
     id_column
@@ -32,8 +34,12 @@ ActiveAdmin.register Player do
   end
 
   scope :all, default: true
-  scope :accepted
-  scope :to_be_accepted
+
+  scope :accepted, group: :is_accepted
+  scope :to_be_accepted, group: :is_accepted
+
+  scope :with_discord_user, group: :discord_user
+  scope :without_discord_user, group: :discord_user
 
   filter :name
   filter :characters,

@@ -120,6 +120,14 @@ class Player < ApplicationRecord
     result
   end
 
+  def self.with_discord_user
+    where.not(discord_user_id: nil)
+  end
+
+  def self.without_discord_user
+    where(discord_user_id: nil)
+  end
+
   # ---------------------------------------------------------------------------
   # global search
   # ---------------------------------------------------------------------------
