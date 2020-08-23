@@ -16,7 +16,9 @@ ActiveAdmin.register Team do
     column :players do |decorated|
       decorated.players_link
     end
-    column :created_at
+    column :created_at do |decorated|
+      decorated.created_at_date
+    end
     actions
   end
 

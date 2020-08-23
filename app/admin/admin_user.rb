@@ -11,21 +11,21 @@ ActiveAdmin.register AdminUser do
   index do
     selectable_column
     id_column
-    column :avatar_url do |decorated|
-      decorated.avatar_tag(max_height: '32px')
+    column :discord_user do |decorated|
+      decorated.discord_user_admin_link(size: 32)
     end
-    column :name
-    column :email
-    column :discord_username do |decorated|
-      decorated.discord_full_username
+    column :sign_in_count
+    column :current_sign_in_at
+    column :current_sign_in_ip
+    column :created_at do |decorated|
+      decorated.created_at_date
     end
-    column :created_at
     actions
   end
 
-  filter :email
-  filter :current_sign_in_at
   filter :sign_in_count
+  filter :current_sign_in_at
+  filter :current_sign_in_ip
   filter :created_at
 
   # ---------------------------------------------------------------------------
@@ -33,15 +33,16 @@ ActiveAdmin.register AdminUser do
   # ---------------------------------------------------------------------------
 
   form do |f|
+    f.semantic_errors *f.object.errors.keys
     f.inputs do
-      f.input :email
-      f.input :password
-      f.input :password_confirmation
+      f.input :discord_user,
+              collection: DiscordUser.order(:username),
+              input_html: { data: { select2: {} } }
     end
     f.actions
   end
 
-  permit_params :email, :password, :password_confirmation
+  permit_params :discord_user_id
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -49,15 +50,14 @@ ActiveAdmin.register AdminUser do
 
   show do
     attributes_table do
-      row :name
-      row :email do |decorated|
-        decorated.email_link
+      row :discord_user do |decorated|
+        decorated.discord_user_admin_link(size: 32)
       end
-      row :avatar_url do |decorated|
-        decorated.avatar_tag
-      end
-      row :discord_username
-      row :discord_discriminator
+      row :sign_in_count
+      row :current_sign_in_at
+      row :last_sign_in_at
+      row :current_sign_in_ip
+      row :last_sign_in_ip
       row :created_at
       row :updated_at
     end

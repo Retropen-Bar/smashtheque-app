@@ -1,6 +1,6 @@
 class AdminUsers::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def discord
-    admin_user = AdminUser.from_omniauth(request.env["omniauth.auth"])
+    admin_user = AdminUser.from_discord_omniauth(request.env["omniauth.auth"])
 
     if admin_user && admin_user.persisted?
       # this will throw if admin_user is not activated

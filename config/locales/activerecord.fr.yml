@@ -7,6 +7,7 @@ fr:
       character: Perso
       city: Ville
       comment: Commentaire
+      discord_user: Compte Discord
       player: Joueur
       team: Équipe
     attributes:
@@ -17,13 +18,10 @@ fr:
         updated_at: Modification
       admin_user:
         << : *SHARED
-        avatar_url: Avatar
         current_sign_in_at: Session en cours
-        discord_username: Utilisateur Discord
-        email: Email
-        name: Nom
-        password: Mot de passe
-        password_confirmation: Confirmation du mot de passe
+        current_sign_in_ip: IP en cours
+        last_sign_in_at: Session précédente
+        last_sign_in_ip: IP précédente
         sign_in_count: Connexions
       api_request:
         << : *SHARED
@@ -46,10 +44,19 @@ fr:
         players: Joueurs
       comment:
         << : *SHARED
+      discord_user:
+        << : *SHARED
+        admin_user: Admin
+        avatar: Avatar
+        discord_id: ID
+        discriminator: Discriminant
+        player: Joueur
+        username: Pseudo
       player:
         << : *SHARED
         characters: Persos
         city: Ville
+        discord_user: Compte Discord
         is_accepted: Validé ?
         team: Équipe
       team:

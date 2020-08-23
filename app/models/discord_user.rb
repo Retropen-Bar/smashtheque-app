@@ -1,31 +1,42 @@
-class City < ApplicationRecord
+class DiscordUser < ApplicationRecord
 
   # ---------------------------------------------------------------------------
   # RELATIONS
   # ---------------------------------------------------------------------------
 
-  has_many :players
+  has_one :admin_user, dependent: :nullify
+  has_one :player, dependent: :nullify
 
   # ---------------------------------------------------------------------------
   # VALIDATIONS
   # ---------------------------------------------------------------------------
 
-  validates :icon, presence: true
-  validates :name, presence: true, uniqueness: true
+  validates :discord_id, presence: true, uniqueness: true
 
   # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
 
-  def self.on_abc(letter)
-    where("unaccent(name) ILIKE '#{letter}%'")
+  def self.with_admin_user
+    where(id: AdminUser.select(:discord_user_id))
   end
 
   # ---------------------------------------------------------------------------
-  # GLOBAL SEARCH
+  # HELPERS
   # ---------------------------------------------------------------------------
 
-  include PgSearch::Model
-  multisearchable against: %i(name)
+  def fetch_discord_data
+    client = DiscordClient.new
+    data = client.get_user discord_id
+    self.attributes = {
+      username: data['username'],
+      discriminator: data['discriminator'],
+      avatar: data['avatar']
+    }
+  end
+
+  def is_admin?
+    !!admin_user
+  end
 
 end

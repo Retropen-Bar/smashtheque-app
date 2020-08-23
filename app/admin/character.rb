@@ -19,7 +19,6 @@ ActiveAdmin.register Character do
     column :players do |decorated|
       decorated.players_link
     end
-    column :created_at
     actions
   end
 
@@ -54,8 +53,6 @@ ActiveAdmin.register Character do
       row :players do |decorated|
         decorated.players_link
       end
-      row :created_at
-      row :updated_at
     end
     active_admin_comments
   end

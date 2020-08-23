@@ -6,6 +6,7 @@ class Player < ApplicationRecord
 
   belongs_to :city, optional: true
   belongs_to :team, optional: true
+  belongs_to :discord_user, optional: true
 
   has_many :characters_players,
            -> { positioned },
@@ -20,6 +21,7 @@ class Player < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   validates :name, presence: true
+  validates :discord_user, uniqueness: { allow_nil: true }
 
   # ---------------------------------------------------------------------------
   # CALLBACKS

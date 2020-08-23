@@ -1,26 +1,47 @@
 class AdminUser < ApplicationRecord
 
-  devise :database_authenticatable,
-         :recoverable, :rememberable, :validatable
+  # ---------------------------------------------------------------------------
+  # MODULES
+  # ---------------------------------------------------------------------------
 
+  devise :database_authenticatable
+  devise :trackable
   devise :omniauthable, omniauth_providers: %i[discord]
 
-  def self.from_omniauth(auth)
+  # ---------------------------------------------------------------------------
+  # RELATIONS
+  # ---------------------------------------------------------------------------
+
+  belongs_to :discord_user
+
+  # ---------------------------------------------------------------------------
+  # VALIDATIONS
+  # ---------------------------------------------------------------------------
+
+  validates :discord_user, uniqueness: true
+
+  # ---------------------------------------------------------------------------
+  # HELPERS
+  # ---------------------------------------------------------------------------
+
+  def self.from_discord_omniauth(auth)
     puts "User#from_omniauth(#{auth.inspect})"
 
-    user = find_by(email: auth.info.email)
-    return false if user.nil?
+    # make sure auth comes from Discord
+    return false unless auth.provider.to_sym == :discord
 
-    case auth.provider.to_sym
-    when :discord
-      user.avatar_url = auth.info.image
-      user.name = auth.info.name
-      user.discord_username = auth.extra.raw_info.username
-      user.discord_discriminator = auth.extra.raw_info.discriminator
-      user.save!
-    end
+    # find & update DiscordUser
+    discord_user = DiscordUser.find_by(discord_id: auth.uid)
+    return false if discord_user.nil?
+    discord_user.attributes = {
+      username: auth.extra.raw_info.username,
+      discriminator: auth.extra.raw_info.discriminator,
+      avatar: auth.extra.raw_info.avatar
+    }
+    discord_user.save!
 
-    user
+    # find & return AdminUser
+    discord_user.admin_user
   end
 
 end

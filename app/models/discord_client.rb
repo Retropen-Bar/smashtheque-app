@@ -6,6 +6,10 @@ class DiscordClient
     @token = token || ENV['DISCORD_BOT_TOKEN']
   end
 
+  def get_user(user_id)
+    api_get "/users/#{user_id}"
+  end
+
   def get_guild(guild_id)
     api_get "/guilds/#{guild_id}"
   end

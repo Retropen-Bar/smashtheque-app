@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_22_214257) do
+ActiveRecord::Schema.define(version: 2020_08_23_230143) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -32,24 +32,21 @@ ActiveRecord::Schema.define(version: 2020_08_22_214257) do
   end
 
   create_table "admin_users", force: :cascade do |t|
-    t.string "email", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "avatar_url"
-    t.string "name"
-    t.string "discord_username"
-    t.string "discord_discriminator"
-    t.index ["email"], name: "index_admin_users_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
+    t.bigint "discord_user_id"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.inet "current_sign_in_ip"
+    t.inet "last_sign_in_ip"
+    t.string "encrypted_password", default: "", null: false
+    t.index ["discord_user_id"], name: "index_admin_users_on_discord_user_id", unique: true
   end
 
   create_table "api_requests", force: :cascade do |t|
     t.bigint "api_token_id"
-    t.string "remote_ip"
+    t.inet "remote_ip"
     t.string "controller"
     t.string "action"
     t.datetime "requested_at"
@@ -83,6 +80,16 @@ ActiveRecord::Schema.define(version: 2020_08_22_214257) do
     t.string "name"
   end
 
+  create_table "discord_users", force: :cascade do |t|
+    t.string "discord_id"
+    t.string "username"
+    t.string "discriminator"
+    t.string "avatar"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["discord_id"], name: "index_discord_users_on_discord_id", unique: true
+  end
+
   create_table "pg_search_documents", force: :cascade do |t|
     t.text "content"
     t.string "searchable_type"
@@ -97,13 +104,19 @@ ActiveRecord::Schema.define(version: 2020_08_22_214257) do
     t.bigint "team_id"
     t.string "name"
     t.boolean "is_accepted"
+    t.bigint "discord_user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["city_id"], name: "index_players_on_city_id"
+    t.index ["discord_user_id"], name: "index_players_on_discord_user_id"
     t.index ["team_id"], name: "index_players_on_team_id"
   end
 
   create_table "teams", force: :cascade do |t|
     t.string "name"
     t.string "short_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

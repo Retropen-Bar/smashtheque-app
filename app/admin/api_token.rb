@@ -16,7 +16,9 @@ ActiveAdmin.register ApiToken do
     id_column
     column :name
     column :token
-    column :created_at
+    column :created_at do |decorated|
+      decorated.created_at_date
+    end
     actions
   end
 

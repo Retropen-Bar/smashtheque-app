@@ -12,6 +12,9 @@ ActiveAdmin.register Player do
     selectable_column
     id_column
     column :name
+    column :discord_user do |decorated|
+      decorated.discord_user_admin_link(size: 32)
+    end
     column :characters do |decorated|
       decorated.characters_links.join(' ').html_safe
     end
@@ -22,7 +25,9 @@ ActiveAdmin.register Player do
       decorated.team_link
     end
     column :is_accepted
-    column :created_at
+    column :created_at do |decorated|
+      decorated.created_at_date
+    end
     actions
   end
 
@@ -52,6 +57,9 @@ ActiveAdmin.register Player do
   form do |f|
     f.inputs do
       f.input :name
+      f.input :discord_user,
+              collection: DiscordUser.order(:username),
+              input_html: { data: { select2: {} } }
       f.input :characters,
               collection: Character.order(:name),
               input_html: { multiple: true, data: { select2: { sortable: true, sortedValues: f.object.character_ids } } }
@@ -66,7 +74,7 @@ ActiveAdmin.register Player do
     f.actions
   end
 
-  permit_params :name, :city_id, :team_id, :is_accepted, character_ids: []
+  permit_params :name, :city_id, :team_id, :is_accepted, :discord_user_id, character_ids: []
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -75,6 +83,9 @@ ActiveAdmin.register Player do
   show do
     attributes_table do
       row :name
+      row :discord_user do |decorated|
+        decorated.discord_user_admin_link(size: 32)
+      end
       row :characters do |decorated|
         decorated.characters_links.join('<br/>').html_safe
       end

@@ -1,21 +1,11 @@
 class AdminUserDecorator < BaseDecorator
 
-  def discord_full_username
-    [
-      model.discord_username,
-      discord_discriminator
-    ].join('#')
+  def discord_user_admin_link(size: nil)
+    model.discord_user.decorate.admin_link(size: size)
   end
 
-  def email_link
-    h.mail_to model.email
-  end
-
-  def avatar_tag(max_width: nil, max_height: nil)
-    return nil if model.avatar_url.blank?
-    h.image_tag_with_max_size model.avatar_url,
-                              max_width: max_width,
-                              max_height: max_height
+  def full_name(size: nil)
+    model.discord_user.decorate.full_name(size: size)
   end
 
 end
