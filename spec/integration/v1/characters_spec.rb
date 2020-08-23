@@ -16,16 +16,7 @@ describe 'Characters API', swagger_doc: 'v1/swagger.json' do
 
       response '200', 'characters found' do
         let(:Authorization) { "Bearer #{@token.token}" }
-        schema type: :array,
-          items: {
-            type: :object,
-            properties: {
-              id: { type: :integer },
-              icon: { type: :string, example: '👊' },
-              name: { type: :string, example: 'Terry' },
-              emoji: { type: :string, example: '739087535812116572' }
-            }
-          }
+        schema '$ref' => '#/components/schemas/characters_array'
 
         run_test! do |response|
           data = JSON.parse(response.body)

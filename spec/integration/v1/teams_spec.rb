@@ -16,15 +16,7 @@ describe 'Teams API', swagger_doc: 'v1/swagger.json' do
 
       response 200, 'teams found' do
         let(:Authorization) { "Bearer #{@token.token}" }
-        schema type: :array,
-          items: {
-            type: :object,
-            properties: {
-              id: { type: :integer, example: 27 },
-              name: { type: :string, example: 'Rétropen-Bar' },
-              short_name: { type: :string, example: 'R-B' }
-            }
-          }
+        schema '$ref' => '#/components/schemas/teams_array'
 
         run_test! do |response|
           data = JSON.parse(response.body)

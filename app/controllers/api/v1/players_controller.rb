@@ -13,7 +13,7 @@ class Api::V1::PlayersController < Api::V1::BaseController
     attributes = player_params
     player = Player.new(attributes)
     if player.save
-      render json: player
+      render json: player, status: :created
     else
       render json: { errors: player.errors }, status: :unprocessable_entity
     end

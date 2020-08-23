@@ -16,15 +16,7 @@ describe 'Cities API', swagger_doc: 'v1/swagger.json' do
 
       response '200', 'cities found' do
         let(:Authorization) { "Bearer #{@token.token}" }
-        schema type: :array,
-          items: {
-            type: :object,
-            properties: {
-              id: { type: :integer, example: 13 },
-              name: { type: :string, example: 'Paris' },
-              icon: { type: :string, example: '🌳' }
-            }
-          }
+        schema '$ref' => '#/components/schemas/cities_array'
 
         run_test! do |response|
           data = JSON.parse(response.body)

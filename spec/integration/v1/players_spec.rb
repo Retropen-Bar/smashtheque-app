@@ -15,6 +15,15 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
         team: ([nil]+@teams).sample
       )
     end
+    @valid_player = FactoryBot.attributes_for(
+      :player,
+      character_id: @characters.sample((0..3).to_a.sample).map(&:id),
+      city_id: ([nil]+@cities).sample&.id,
+      team_id: ([nil]+@teams).sample&.id
+    )
+    @invalid_player = {
+      name: ''
+    }
   end
 
   path '/api/v1/players' do
@@ -26,23 +35,7 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
 
       response '200', 'players found' do
         let(:Authorization) { "Bearer #{@token.token}" }
-        schema type: :array,
-          items: {
-            type: :object,
-            properties: {
-              id: { type: :integer, example: 123 },
-              name: { type: :string, example: 'Pixel' },
-              city_id: { type: :integer, nullable: true, example: 42 },
-              team_id: { type: :integer, nullable: true, example: 13 },
-              character_ids: {
-                type: :array,
-                items: {
-                  type: :integer
-                },
-                example: [7,25]
-              }
-            }
-          }
+        schema '$ref' => '#/components/schemas/players_array'
 
         run_test! do |response|
           data = JSON.parse(response.body)
@@ -57,16 +50,31 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
       end
     end
 
-    # post 'Creates a player' do
-    #   tags 'Players'
-    #   consumes 'application/json'
+    post 'Creates a player' do
+      tags 'Players'
+      consumes 'application/json'
+      produces 'application/json'
+      parameter name: :player, in: :body, schema: { '$ref' => '#/components/schemas/player_payload' }
 
-    #   response 422, 'invalid request' do
-    #     let(:Authorization) { "Bearer #{@token.token}" }
-    #     schema '$ref' => '#/components/schemas/errors_object'
-    #     run_test!
-    #   end
-    # end
+      response '201', 'Player created' do
+        let(:Authorization) { "Bearer #{@token.token}" }
+        let(:player) { @valid_player }
+        schema '$ref' => '#/components/schemas/player'
+
+        run_test! do |response|
+          data = JSON.parse(response.body)
+          expect(data['name']).to eq(@valid_player[:name])
+          # TODO: test more data
+        end
+      end
+
+      response 422, 'invalid request' do
+        let(:Authorization) { "Bearer #{@token.token}" }
+        let(:player) { @invalid_player }
+        schema '$ref' => '#/components/schemas/errors_object'
+        run_test!
+      end
+    end
 
   end
 

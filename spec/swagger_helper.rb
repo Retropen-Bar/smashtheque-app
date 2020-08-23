@@ -33,17 +33,95 @@ RSpec.configure do |config|
         }
       ],
       components: {
-        # schemas: {
-        #   errors_object: {
-        #     type: 'object',
-        #     properties: {
-        #       errors: { '$ref' => '#/components/schemas/errors_map' }
-        #     }
-        #   },
-        #   errors_map: {
-        #     type: 'object'
-        #   }
-        # },
+        schemas: {
+          character: {
+            type: :object,
+            properties: {
+              id: { type: :integer },
+              icon: { type: :string, example: '👊' },
+              name: { type: :string, example: 'Terry' },
+              emoji: { type: :string, example: '739087535812116572' }
+            }
+          },
+          characters_array: {
+            type: :array,
+            items: {
+              '$ref' => '#/components/schemas/character'
+            }
+          },
+          city: {
+            type: :object,
+            properties: {
+              id: { type: :integer, example: 13 },
+              name: { type: :string, example: 'Paris' },
+              icon: { type: :string, example: '🌳' }
+            }
+          },
+          cities_array: {
+            type: :array,
+            items: {
+              '$ref' => '#/components/schemas/city'
+            }
+          },
+          persisted: {
+            type: :object,
+            properties: {
+              id: { type: :integer, example: 123 }
+            }
+          },
+          player_payload: {
+            type: :object,
+            properties: {
+              name: { type: :string, example: 'Pixel' },
+              city_id: { type: :integer, nullable: true, example: 42 },
+              team_id: { type: :integer, nullable: true, example: 13 },
+              character_ids: {
+                type: :array,
+                items: {
+                  type: :integer
+                },
+                example: [7,25]
+              }
+            }
+          },
+          player: {
+            allOf: [
+              { '$ref' => '#/components/schemas/persisted' },
+              { '$ref' => '#/components/schemas/player_payload' }
+            ]
+          },
+          players_array: {
+            type: :array,
+            items: {
+              '$ref' => '#/components/schemas/player'
+            }
+          },
+          error: {
+            type: :object
+          },
+          errors_object: {
+            type: :object,
+            properties: {
+              errors: {
+                '$ref' => '#/components/schemas/error'
+              }
+            }
+          },
+          team: {
+            type: :object,
+            properties: {
+              id: { type: :integer, example: 27 },
+              name: { type: :string, example: 'Rétropen-Bar' },
+              short_name: { type: :string, example: 'R-B' }
+            }
+          },
+          teams_array: {
+            type: :array,
+            items: {
+              '$ref' => '#/components/schemas/team'
+            }
+          }
+        },
         securitySchemes: {
           bearerAuth: {
             type: :http,
