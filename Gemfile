@@ -33,6 +33,7 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   # tests
   gem 'rspec-rails'
+  gem 'rswag-specs'
   gem 'factory_bot_rails'
   gem 'faker'
 end
@@ -101,4 +102,5 @@ gem 'rbnacl-libsodium'
 gem 'pg_search'
 
 # API doc
-gem 'rswag'
+gem 'rswag-api'
+gem 'rswag-ui'
