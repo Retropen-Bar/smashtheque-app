@@ -1,0 +1,19 @@
+@import variables
+
+.button,
+#title_bar #titlebar_right .action_item a,
+body.index .table_actions a.member_link
+  &.blue
+    background-color: $blue
+    color: $black
+  &.green
+    background-color: $green
+    // color: $black
+  &.red
+    background-color: $error
+  &.yellow
+    background-color: $yellow
+    color: $black
+
+#title_bar #titlebar_right .action_item a[data-method="delete"][data-confirm]
+  background-color: $error

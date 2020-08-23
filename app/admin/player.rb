@@ -111,7 +111,7 @@ ActiveAdmin.register Player do
   action_item :accept,
               only: :show,
               if: proc { !resource.is_accepted? } do
-    link_to 'Valider', [:accept, :admin, resource]
+    link_to 'Valider', [:accept, :admin, resource], class: 'green'
   end
   member_action :accept do
     resource.update_attribute :is_accepted, true

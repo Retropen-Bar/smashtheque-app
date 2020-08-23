@@ -7,3 +7,6 @@ fr:
       with_admin_user: Admin
       with_discord_user: Relié à Discord
       without_discord_user: Non relié à Discord
+    new_model: Créer
+    edit_model: Modifier
+    delete_model: Supprimer
