@@ -4,7 +4,7 @@
                 {on_abc: nil},
                 class: "nav-link #{'active' if !params[:on_abc]}" %>
   </li>
-  <% (['$']+('a'..'z').to_a).each do |letter| %>
+  <% (('a'..'z').to_a+['$']).each do |letter| %>
     <li class="nav-item">
       <%= link_to letter.upcase,
                   {on_abc: letter},
