@@ -1,7 +1,8 @@
 @import variables
 
-#site-title
-  a
+#main-nav
+
+  a.navbar-brand
     &, &:hover
       text-decoration: none
       color: $dark-gray
@@ -13,23 +14,23 @@
       display: inline-block
       vertical-align: middle
 
-#main-global-search-container
-  margin-right: 100px
+  ul.navbar-nav
+    li.nav-item
+      a
+        &, &:hover
+          text-decoration: none
 
-  #main-global-search
-    width: 400px
+        img, i, span
+          display: inline-block
+          vertical-align: middle
 
-nav#main-nav
-  a
-    &, &:hover
-      text-decoration: none
+        img
 
-    img, i, span
-      display: inline-block
-      vertical-align: middle
+        i
 
-    img
+        span
 
-    i
+  form#main-global-search-form
+    select
+      width: 285px
 
-    span

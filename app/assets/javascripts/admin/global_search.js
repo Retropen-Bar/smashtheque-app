@@ -1,7 +1,7 @@
 (function($) {
 
   var generateInput = function() {
-    return $('<select id="global_search_input">');
+    return $('<select id="global_search_input" style="width: 400px">');
   };
 
   var init = function() {

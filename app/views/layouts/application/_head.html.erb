@@ -1,30 +1,56 @@
-<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-5 bg-white border-bottom shadow-sm">
-  <h5 class="my-0 mr-md-auto font-weight-normal" id="site-title">
-    <%= link_to root_path do %>
-      <%= image_tag 'smashtheque-64.png', width: 32 %>
-      <span>Smashthèque FR</span>
-    <% end %>
-  </h5>
-  <div id="main-global-search-container">
-    <%= select_tag :search, [], id: 'main-global-search', data: { global_search: {} } %>
+<nav class="navbar navbar-expand-lg
+            bg-white border-bottom shadow-sm"
+     id="main-nav">
+
+  <%= link_to root_path, class: 'navbar-brand' do %>
+    <%= image_tag 'smashtheque-64.png', width: 32 %>
+    <span>Smashthèque FR</span>
+  <% end %>
+
+  <button class="navbar-toggler border" type="button"
+    data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto text-center text-lg-left">
+      <li class="nav-item">
+        <%= link_to players_path, class: 'nav-link' do %>
+          <i class="fas fa-user"></i>
+          <span>Joueurs</span>
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <%= link_to characters_path, class: 'nav-link' do %>
+          <%= image_tag 'smash.svg', height: 16 %>
+          <span>Personnages</span>
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <%= link_to cities_path, class: 'nav-link' do %>
+          <i class="fas fa-map-marker-alt"></i>
+          <span>Villes</span>
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <%= link_to teams_path, class: 'nav-link' do %>
+          <i class="fas fa-users"></i>
+          <span>Équipes</span>
+        <% end %>
+      </li>
+      <!-- <li class="nav-item">
+        <%= link_to 'Admin', admin_root_path, class: 'btn btn-outline-primary' %>
+      </li> -->
+    </ul>
+    <form class="form-inline my-2 my-lg-0" id="main-global-search-form">
+      <%= select_tag :search, [],
+            class: 'form-control',
+            type: :search,
+            placeholder: 'Recherche globale',
+            'aria-label' => 'Recherche globale',
+            data: { global_search: {} } %>
+    </form>
   </div>
-  <nav class="my-2 my-md-0 mr-md-3" id="main-nav">
-    <%= link_to players_path, class: 'p-2 text-dark' do %>
-      <i class="fas fa-user"></i>
-      <span>Joueurs</span>
-    <% end %>
-    <%= link_to characters_path, class: 'p-2 text-dark' do %>
-      <%= image_tag 'smash.svg', height: 16 %>
-      <span>Personnages</span>
-    <% end %>
-    <%= link_to cities_path, class: 'p-2 text-dark' do %>
-      <i class="fas fa-map-marker-alt"></i>
-      <span>Villes</span>
-    <% end %>
-    <%= link_to teams_path, class: 'p-2 text-dark' do %>
-      <i class="fas fa-users"></i>
-      <span>Équipes</span>
-    <% end %>
-  </nav>
-  <%= link_to 'Admin', admin_root_path, class: 'btn btn-outline-primary' %>
-</div>
+
+</nav>
