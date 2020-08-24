@@ -56,9 +56,11 @@ fr:
         << : *SHARED
         characters: Persos
         city: Ville
+        city_id: Ville
         discord_user: Compte Discord
         is_accepted: Validé ?
         team: Équipe
+        team_id: Équipe
       team:
         << : *SHARED
         short_name: Nom court

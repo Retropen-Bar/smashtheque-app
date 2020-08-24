@@ -1,0 +1,30 @@
+panel I18n.t("active_admin.paper_trail.dashboard.title"), id: 'active_admin-paper_trail-dashboard' do
+
+  versions = PaperTrail::Version.order('id desc').includes(:item).limit(20)
+
+  admin_user_ids = versions.map { |v| v.whodunnit&.split(':')&.first }
+  admins = Hash[AdminUser.where(id: admin_user_ids).map { |a| [a.id, a] }]
+
+  table_for versions do
+    column I18n.t("active_admin.paper_trail.dashboard.columns.item") do |version|
+      if version.item
+        version.item.decorate.admin_link
+      end
+    end
+    column I18n.t("active_admin.paper_trail.dashboard.columns.type") do |version|
+      version.item_type.constantize.model_name.human
+    end
+    column I18n.t("active_admin.paper_trail.dashboard.columns.modified_at") do |version|
+      l version.created_at, format: :short
+    end
+    column I18n.t("active_admin.paper_trail.dashboard.columns.whodunnit") do |version|
+      admin_user_id, admin_user_email = version.whodunnit&.split(':')
+      if admin = admins[admin_user_id.to_i]
+        auto_link admin
+      else
+        admin_user_email
+      end
+    end
+  end
+
+end

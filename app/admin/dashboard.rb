@@ -7,6 +7,7 @@ ActiveAdmin.register_page "Dashboard" do
 
   content title: proc { I18n.t("active_admin.dashboard") } do
     render 'numbers'
+    render 'paper_trail'
   end
 
 end

@@ -1,0 +1,23 @@
+fr:
+  active_admin:
+    paper_trail:
+      dashboard:
+        title: Dernières modifications
+        columns:
+          item: Élément
+          type: Type
+          modified_at: Modifié le
+          whodunnit: Par
+      history:
+        created_at: "Date"
+        object_changes: "Modifications"
+        show_link: Retour
+        title: Historique des versions
+        whodunnit: "Auteur"
+      sidebar:
+        title: Historique
+        version_number: "Révision :"
+        created_at: "Créée :"
+        whodunnit: "Par :"
+        current_version: "&laquo; Revenir à la dernière version"
+        history_link: Historique des révisions

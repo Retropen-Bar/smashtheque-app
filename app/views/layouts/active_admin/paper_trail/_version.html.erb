@@ -1,0 +1,61 @@
+<div class="pt-version">
+  <div class="pt-version-number">
+    <span class="pt-nav-links">
+      <% if @version_number < @versions_count %>
+        <% if @version_number == @versions_count - 1 %>
+          <%= link_to "&larr;".html_safe %>
+        <% else %>
+          <%= link_to "&larr;".html_safe, { version: @version_number + 1 } %>
+        <% end %>
+      <% end %>
+      <% if @version_number > 1 %>
+        <%= link_to "&rarr;".html_safe, { version: @version_number - 1 } %>
+      <% else %>
+        <span class="pt-empty-nav-link"></span>
+      <% end %>
+    </span>
+    <span class="pt-label">
+      <%= t('active_admin.paper_trail.sidebar.version_number') %>
+    </span>
+    <span class="pt-value">
+      <%= @version_number %> / <%= @versions_count %>
+    </span>
+  </div>
+
+  <div class="pt-details">
+    <% if @version_date %>
+      <div class="pt-created-at">
+        <span class="pt-label">
+          <%= t('active_admin.paper_trail.sidebar.created_at') %>
+        </span>
+        <span class="pt-value">
+          <%= l(@version_date, format: :short) %>
+        </span>
+      </div>
+    <% end %>
+    <% if @version_author %>
+      <div class="pt-whodunnit">
+        <span class="pt-label">
+          <%= t('active_admin.paper_trail.sidebar.whodunnit') %>
+        </span>
+        <span class="pt-value">
+          <% if @version_author.is_a?(ActiveRecord::Base) %>
+            <%= auto_link @version_author %>
+          <% else %>
+            <%= @version_author %>
+          <% end %>
+        </span>
+      </div>
+    <% end %>
+  </div>
+
+  <% unless resource.paper_trail.live? %>
+    <div class="pt-go-back">
+      <%= link_to t('active_admin.paper_trail.sidebar.current_version').html_safe %>
+    </div>
+  <% end %>
+
+  <div class="pt-history-link">
+    <%= link_to t('active_admin.paper_trail.sidebar.history_link'), [:history, :admin, resource], class: 'button' %>
+  </div>
+</div>
