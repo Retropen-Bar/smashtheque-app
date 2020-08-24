@@ -144,6 +144,25 @@ class Player < ApplicationRecord
   end
 
   # ---------------------------------------------------------------------------
+  # HELPERS
+  # ---------------------------------------------------------------------------
+
+  delegate :discord_id,
+           to: :discord_user,
+           allow_nil: true
+
+  delegate :discord_id,
+           to: :creator,
+           prefix: true
+
+  def as_json(options = nil)
+    super.merge(
+      discord_id: discord_id,
+      creator_discord_id: creator_discord_id
+    )
+  end
+
+  # ---------------------------------------------------------------------------
   # GLOBAL SEARCH
   # ---------------------------------------------------------------------------
 

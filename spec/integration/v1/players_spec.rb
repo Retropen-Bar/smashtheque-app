@@ -45,7 +45,19 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
         run_test! do |response|
           data = JSON.parse(response.body)
           expect(data.count).to eq(20)
-          # TODO: test more data
+          player = Player.find(data.first['id'])
+          expect(data.first.symbolize_keys).to include(
+            id: player.id,
+            city_id: player.city_id,
+            team_id: player.team_id,
+            name: player.name,
+            is_accepted: player.is_accepted,
+            discord_user_id: player.discord_user_id,
+            discord_id: player.discord_id,
+            character_names: player.character_names,
+            creator_id: player.creator_id,
+            creator_discord_id: player.creator_discord_id
+          )
         end
       end
 
