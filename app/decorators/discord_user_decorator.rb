@@ -21,7 +21,7 @@ class DiscordUserDecorator < BaseDecorator
     [
       model.username,
       discriminator
-    ].join('#')
+    ].compact.join('#')
   end
 
   def avatar_url(size = nil)

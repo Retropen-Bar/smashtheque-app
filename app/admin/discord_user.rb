@@ -29,11 +29,22 @@ ActiveAdmin.register DiscordUser do
 
   scope :all
   scope :with_admin_user
+  scope :unknown
 
   filter :discord_id
   filter :username
   filter :discriminator
   filter :created_at
+
+  action_item :fetch_unknown,
+              only: :index,
+              if: proc { DiscordUser.unknown.any? } do
+    link_to 'Compléter', fetch_unknown_admin_discord_users_path, class: 'blue'
+  end
+  collection_action :fetch_unknown do
+    DiscordUser.fetch_unknown
+    redirect_to request.referer, notice: 'Données récupérées'
+  end
 
   # ---------------------------------------------------------------------------
   # FORM

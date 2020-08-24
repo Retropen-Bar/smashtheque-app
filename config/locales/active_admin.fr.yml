@@ -4,6 +4,7 @@ fr:
       accepted: Validés
       all: Tous
       to_be_accepted: À valider
+      unknown: Inconnus
       with_admin_user: Admin
       with_discord_user: Relié à Discord
       without_discord_user: Non relié à Discord

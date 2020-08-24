@@ -21,6 +21,10 @@ class DiscordUser < ApplicationRecord
     where(id: AdminUser.select(:discord_user_id))
   end
 
+  def self.unknown
+    where(username: nil)
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------
@@ -33,6 +37,13 @@ class DiscordUser < ApplicationRecord
       discriminator: data['discriminator'],
       avatar: data['avatar']
     }
+  end
+
+  def self.fetch_unknown
+    unknown.find_each do |discord_user|
+      discord_user.fetch_discord_data
+      discord_user.save!
+    end
   end
 
   def is_admin?
