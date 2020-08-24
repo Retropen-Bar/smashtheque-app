@@ -75,6 +75,7 @@ RSpec.configure do |config|
               name: { type: :string, example: 'Pixel' },
               city_id: { type: :integer, nullable: true, example: 42 },
               team_id: { type: :integer, nullable: true, example: 13 },
+              discord_id: { type: :string, nullable: true, example: '608210202952466464' },
               character_ids: {
                 type: :array,
                 items: {

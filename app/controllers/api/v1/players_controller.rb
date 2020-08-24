@@ -22,7 +22,7 @@ class Api::V1::PlayersController < Api::V1::BaseController
   private
 
   def player_params
-    params.require(:player).permit(:name, :city_id, :team_id, character_ids: [])
+    params.require(:player).permit(:name, :city_id, :team_id, :discord_id, character_ids: [])
   end
 
 end

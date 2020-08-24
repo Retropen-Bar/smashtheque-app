@@ -38,6 +38,10 @@ class Player < ApplicationRecord
     end
   end
 
+  def discord_id=(discord_id)
+    self.discord_user = DiscordUser.where(discord_id: discord_id).first_or_create!
+  end
+
   after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] || !is_accepted? }
   def update_discord
     # on create: previous_changes = {"id"=>[nil, <id>], "name"=>[nil, <name>], ...}

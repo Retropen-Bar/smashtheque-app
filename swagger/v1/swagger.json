@@ -99,7 +99,7 @@
             }
           },
           "422": {
-            "description": "invalid request",
+            "description": "unprocessable entity",
             "content": {
               "application/json": {
                 "schema": {
@@ -113,7 +113,12 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/player_payload"
+                "type": "object",
+                "properties": {
+                  "player": {
+                    "$ref": "#/components/schemas/player_payload"
+                  }
+                }
               }
             }
           }
@@ -250,6 +255,11 @@
             "type": "integer",
             "nullable": true,
             "example": 13
+          },
+          "discord_id": {
+            "type": "string",
+            "nullable": true,
+            "example": "608210202952466464"
           },
           "character_ids": {
             "type": "array",

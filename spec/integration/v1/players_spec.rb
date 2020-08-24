@@ -15,15 +15,16 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
         team: ([nil]+@teams).sample
       )
     end
-    @valid_player = FactoryBot.attributes_for(
+    @existing_discord_user = DiscordUser.create!(discord_id: '666')
+    @players.first.update_attribute :discord_user, @existing_discord_user
+    @new_discord_id = '123456789'
+    @valid_player_attributes = FactoryBot.attributes_for(
       :player,
-      character_id: @characters.sample((0..3).to_a.sample).map(&:id),
+      character_ids: @characters.sample((0..3).to_a.sample).map(&:id),
       city_id: ([nil]+@cities).sample&.id,
-      team_id: ([nil]+@teams).sample&.id
+      team_id: ([nil]+@teams).sample&.id,
+      discord_id: @new_discord_id
     )
-    @invalid_player = {
-      name: ''
-    }
   end
 
   path '/api/v1/players' do
@@ -54,25 +55,70 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
       tags 'Players'
       consumes 'application/json'
       produces 'application/json'
-      parameter name: :player, in: :body, schema: { '$ref' => '#/components/schemas/player_payload' }
+      parameter name: :player_json, in: :body, schema: {
+        type: :object,
+        properties: {
+          player: {
+            '$ref' => '#/components/schemas/player_payload'
+          }
+        }
+      }
 
       response '201', 'Player created' do
         let(:Authorization) { "Bearer #{@token.token}" }
-        let(:player) { @valid_player }
+        let(:player_json) do
+          {
+            player: @valid_player_attributes
+          }
+        end
         schema '$ref' => '#/components/schemas/player'
 
         run_test! do |response|
           data = JSON.parse(response.body)
-          expect(data['name']).to eq(@valid_player[:name])
+          expect(data['name']).to eq(@valid_player_attributes[:name])
+          created_discord_user = DiscordUser.last
+          expect(created_discord_user.discord_id).to eq(@new_discord_id)
+          expect(data['discord_user_id']).to eq(created_discord_user.id)
           # TODO: test more data
         end
       end
 
-      response 422, 'invalid request' do
-        let(:Authorization) { "Bearer #{@token.token}" }
-        let(:player) { @invalid_player }
-        schema '$ref' => '#/components/schemas/errors_object'
-        run_test!
+      response 422, 'unprocessable entity' do
+
+        context 'Missing attributes' do
+          let(:Authorization) { "Bearer #{@token.token}" }
+          let(:player_json) do
+            {
+              player: @valid_player_attributes.merge(
+                name: ''
+              )
+            }
+          end
+          schema '$ref' => '#/components/schemas/errors_object'
+
+          run_test! do |response|
+            data = JSON.parse(response.body)
+            expect(data['errors']).to have_key('name')
+          end
+        end
+
+        context 'Discord ID already taken' do
+          let(:Authorization) { "Bearer #{@token.token}" }
+          let(:player_json) do
+            {
+              player: @valid_player_attributes.merge(
+                discord_id: @existing_discord_user.discord_id
+              )
+            }
+          end
+          schema '$ref' => '#/components/schemas/errors_object'
+
+          run_test! do |response|
+            data = JSON.parse(response.body)
+            expect(data['errors']).to have_key('discord_user')
+          end
+        end
+
       end
     end
 
