@@ -46,17 +46,42 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
           data = JSON.parse(response.body)
           expect(data.count).to eq(20)
           player = Player.find(data.first['id'])
-          expect(data.first.symbolize_keys).to include(
-            id: player.id,
-            city_id: player.city_id,
-            team_id: player.team_id,
-            name: player.name,
-            is_accepted: player.is_accepted,
-            discord_user_id: player.discord_user_id,
-            discord_id: player.discord_id,
+          expect(data.first.deep_symbolize_keys).to include(
+            character_ids: player.characters_players.order(:position).map(&:character_id),
             character_names: player.character_names,
+            characters: player.characters_players.order(:position).map(&:character).map do |c|
+              {
+                id: c.id,
+                emoji: c.emoji,
+                name: c.name
+              }
+            end,
+            city: player.city.presence && {
+              id: player.city.id,
+              icon: player.city.icon,
+              name: player.city.name
+            },
+            city_id: player.city_id,
+            creator: {
+              id: player.creator.id,
+              discord_id: player.creator.discord_id
+            },
+            creator_discord_id: player.creator_discord_id,
             creator_id: player.creator_id,
-            creator_discord_id: player.creator_discord_id
+            discord_id: player.discord_id,
+            discord_user: player.discord_user.presence && {
+              id: player.discord_user.id,
+              discord_id: player.discord_user.discord_id
+            },
+            discord_user_id: player.discord_user_id,
+            id: player.id,
+            is_accepted: player.is_accepted,
+            name: player.name,
+            team: player.team.presence && {
+              id: player.team.id,
+              name: player.team.name
+            },
+            team_id: player.team_id
           )
         end
       end

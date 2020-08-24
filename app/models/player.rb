@@ -156,10 +156,30 @@ class Player < ApplicationRecord
            prefix: true
 
   def as_json(options = nil)
-    super.merge(
-      discord_id: discord_id,
-      creator_discord_id: creator_discord_id
-    )
+    result = super((options || {}).merge(
+      include: {
+        characters: {
+          only: %i(id emoji name)
+        },
+        city: {
+          only: %i(id icon name)
+        },
+        creator: {
+          only: %i(id discord_id)
+        },
+        discord_user: {
+          only: %i(id discord_id)
+        },
+        team: {
+          only: %i(id name)
+        }
+      },
+      methods: %i(character_ids creator_discord_id discord_id)
+    ))
+    result[:city] = nil unless result.has_key?('city')
+    result[:team] = nil unless result.has_key?('team')
+    result[:discord_user] = nil unless result.has_key?('discord_user')
+    result
   end
 
   # ---------------------------------------------------------------------------
