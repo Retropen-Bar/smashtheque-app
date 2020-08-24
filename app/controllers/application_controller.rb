@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def user_for_paper_trail
-    admin_user_signed_in? ? [current_admin_user.id, current_admin_user.email].join(':') : '0:anonymous'
+    admin_user_signed_in? ? [current_admin_user.id, current_admin_user.discord_user_username].join(':') : '0:anonymous'
   end
 
   private

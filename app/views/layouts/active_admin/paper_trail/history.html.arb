@@ -4,12 +4,12 @@ panel t('active_admin.paper_trail.history.title') do
       l(v.created_at, format: :short)
     end
     column t('active_admin.paper_trail.history.whodunnit') do |v|
-      whodunnit_id, whodunnit_email = v.whodunnit&.split(':')
+      whodunnit_id, whodunnit_name = v.whodunnit&.split(':')
       whodunnit = AdminUser.where(id: whodunnit_id).first
       if whodunnit
-        auto_link whodunnit
+        whodunnit.decorate.admin_link
       else
-        whodunnit_email
+        whodunnit_name
       end
     end
     column t('active_admin.paper_trail.history.object_changes') do |v|

@@ -44,4 +44,11 @@ class AdminUser < ApplicationRecord
     discord_user.admin_user
   end
 
+  delegate :discord_id,
+           to: :discord_user
+
+  delegate :username,
+           to: :discord_user,
+           prefix: true
+
 end
