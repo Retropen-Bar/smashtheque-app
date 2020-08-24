@@ -119,7 +119,7 @@ ActiveAdmin.register Player do
         decorated.team_link
       end
       row :creator do |decorated|
-        decorated.creator_link
+        decorated.creator_link(size: 32)
       end
       row :is_accepted
       row :created_at
