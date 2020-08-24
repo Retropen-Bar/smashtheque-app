@@ -19,9 +19,29 @@ panel t('active_admin.paper_trail.history.title') do
           old_value, new_value = change
           tr do
             td v.item_type.constantize.human_attribute_name(attribute), class: 'pt-attribute'
-            td old_value || '∅'
+            td do
+              if old_value.nil?
+                '∅'
+              else
+                if old_value.is_a?(Array)
+                  old_value.join(', ')
+                else
+                  old_value
+                end
+              end
+            end
             td "&rarr;".html_safe
-            td new_value
+            td do
+              if new_value.nil?
+                '∅'
+              else
+                if new_value.is_a?(Array)
+                  new_value.join(', ')
+                else
+                  new_value
+                end
+              end
+            end
           end
         end
       end

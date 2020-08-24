@@ -54,6 +54,8 @@ fr:
         username: Pseudo
       player:
         << : *SHARED
+        character_ids: Persos
+        character_names: Persos
         characters: Persos
         city: Ville
         city_id: Ville

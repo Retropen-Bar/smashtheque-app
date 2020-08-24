@@ -20,8 +20,14 @@ class Player < ApplicationRecord
   # VALIDATIONS
   # ---------------------------------------------------------------------------
 
+  before_validation :set_character_names
+
   validates :name, presence: true
   validates :discord_user, uniqueness: { allow_nil: true }
+
+  def set_character_names
+    self.character_names = characters.reload.map(&:name)
+  end
 
   # ---------------------------------------------------------------------------
   # CALLBACKS
