@@ -1,7 +1,7 @@
 class CharacterDecorator < BaseDecorator
 
   def admin_link(options = {})
-    super(options.merge(label: options[:label] || full_name))
+    super(options.merge(label: options[:label] || full_name(max_height: '32px')))
   end
 
   def admin_emoji_link(options = {})
@@ -13,8 +13,8 @@ class CharacterDecorator < BaseDecorator
     model.name.titleize
   end
 
-  def full_name
-    [emoji_image_tag, model.name.titleize].join.html_safe
+  def full_name(max_width: nil, max_height: nil)
+    [emoji_image_tag(max_width: max_width, max_height: max_height), model.name.titleize].join.html_safe
   end
 
   def players_path
@@ -37,7 +37,8 @@ class CharacterDecorator < BaseDecorator
     return nil if model.emoji.blank?
     h.image_tag_with_max_size emoji_image_url,
                               max_width: max_width,
-                              max_height: max_height
+                              max_height: max_height,
+                              class: 'emoji'
   end
 
   def icon_class
