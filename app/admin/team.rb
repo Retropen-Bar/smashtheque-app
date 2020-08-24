@@ -2,6 +2,8 @@ ActiveAdmin.register Team do
 
   decorate_with TeamDecorator
 
+  has_paper_trail
+
   menu label: '<i class="fas fa-fw fa-users"></i>Équipes'.html_safe
 
   # ---------------------------------------------------------------------------

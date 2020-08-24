@@ -28,4 +28,10 @@ class City < ApplicationRecord
   include PgSearch::Model
   multisearchable against: %i(name)
 
+  # ---------------------------------------------------------------------------
+  # VERSIONS
+  # ---------------------------------------------------------------------------
+
+  has_paper_trail
+
 end

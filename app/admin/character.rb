@@ -2,6 +2,8 @@ ActiveAdmin.register Character do
 
   decorate_with CharacterDecorator
 
+  has_paper_trail
+
   menu label: '<i class="fas fa-fw fa-gamepad"></i>Persos'.html_safe
 
   # ---------------------------------------------------------------------------
@@ -18,6 +20,9 @@ ActiveAdmin.register Character do
     column :name
     column :players do |decorated|
       decorated.players_link
+    end
+    column :created_at do |decorated|
+      decorated.created_at_date
     end
     actions
   end
@@ -53,6 +58,8 @@ ActiveAdmin.register Character do
       row :players do |decorated|
         decorated.players_link
       end
+      row :created_at
+      row :updated_at
     end
     active_admin_comments
   end

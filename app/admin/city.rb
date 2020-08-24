@@ -2,6 +2,8 @@ ActiveAdmin.register City do
 
   decorate_with CityDecorator
 
+  has_paper_trail
+
   menu label: '<i class="fas fa-fw fa-map-marker-alt"></i>Villes'.html_safe
 
   # ---------------------------------------------------------------------------
@@ -16,6 +18,9 @@ ActiveAdmin.register City do
     end
     column :players do |decorated|
       decorated.players_link
+    end
+    column :created_at do |decorated|
+      decorated.created_at_date
     end
     actions
   end
@@ -47,6 +52,8 @@ ActiveAdmin.register City do
       row :players do |decorated|
         decorated.players_link
       end
+      row :created_at
+      row :updated_at
     end
     active_admin_comments
   end
