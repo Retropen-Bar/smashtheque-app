@@ -63,12 +63,6 @@ RSpec.configure do |config|
               '$ref' => '#/components/schemas/city'
             }
           },
-          persisted: {
-            type: :object,
-            properties: {
-              id: { type: :integer, example: 123 }
-            }
-          },
           player_payload: {
             type: :object,
             properties: {
@@ -87,10 +81,94 @@ RSpec.configure do |config|
             }
           },
           player: {
-            allOf: [
-              { '$ref' => '#/components/schemas/persisted' },
-              { '$ref' => '#/components/schemas/player_payload' }
-            ]
+            type: :object,
+            properties: {
+              id: { type: :integer, example: 123 },
+              name: { type: :string, example: 'Pixel' },
+              is_accepted: { type: :boolean, nullable: true, example: true },
+              created_at: { type: :string, example: '2020-08-23T23:05:16.671Z' },
+              updated_at: { type: :string, example: '2020-08-24T17:47:04.630Z' },
+
+              character_ids: {
+                type: :array,
+                items: {
+                  type: :integer
+                },
+                example: [7, 25]
+              },
+              character_names: {
+                type: :array,
+                items: {
+                  type: :string
+                },
+                example: ['yoshi', 'bowser']
+              },
+              characters: {
+                type: :array,
+                items: {
+                  type: :object,
+                  properties: {
+                    id: { type: :integer, example: 7 },
+                    name: { type: :string, example: 'yoshi' },
+                    emoji: { type: :string, example: '737480513744273500' }
+                  }
+                },
+                example: [
+                  {
+                    id: 7,
+                    name: 'yoshi',
+                    emoji: '737480513744273500'
+                  },
+                  {
+                    id: 25,
+                    name: 'bowser',
+                    emoji: '737480497332224100'
+                  }
+                ]
+              },
+
+              city_id: { type: :integer, nullable: true, example: 42 },
+              city: {
+                type: :object,
+                nullable: true,
+                properties: {
+                  id: { type: :integer, example: 42 },
+                  icon: { type: :string, example: '🗼' },
+                  name: { type: :string, example: 'paris' }
+                }
+              },
+
+              creator_discord_id: { type: :string, example: '608210202952466464' },
+              creator_id: { type: :integer, example: 7 },
+              creator: {
+                type: :object,
+                properties: {
+                  id: { type: :integer, example: 7 },
+                  discord_id: { type: :string, example: '608210202952466464' }
+                }
+              },
+
+              discord_id: { type: :string, nullable: true, example: '608210202952466464' },
+              discord_user_id: { type: :integer, nullable: true, example: 7 },
+              discord_user: {
+                type: :object,
+                nullable: true,
+                properties: {
+                  id: { type: :integer, example: 7 },
+                  discord_id: { type: :string, example: '608210202952466464' }
+                }
+              },
+
+              team_id: { type: :integer, nullable: true, example: 13 },
+              team: {
+                type: :object,
+                nullable: true,
+                properties: {
+                  id: { type: :integer, example: 13 },
+                  name: { type: :string, example: 'Rétropen-Bar' }
+                }
+              }
+            }
           },
           players_array: {
             type: :array,
