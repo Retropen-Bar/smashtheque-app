@@ -4,6 +4,7 @@ class Player < ApplicationRecord
   # RELATIONS
   # ---------------------------------------------------------------------------
 
+  belongs_to :creator, class_name: :DiscordUser
   belongs_to :city, optional: true
   belongs_to :team, optional: true
   belongs_to :discord_user, optional: true
@@ -46,6 +47,10 @@ class Player < ApplicationRecord
 
   def discord_id=(discord_id)
     self.discord_user = DiscordUser.where(discord_id: discord_id).first_or_create!
+  end
+
+  def creator_discord_id=(discord_id)
+    self.creator = DiscordUser.where(discord_id: discord_id).first_or_create!
   end
 
   after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] || !is_accepted? }

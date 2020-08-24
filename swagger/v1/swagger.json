@@ -242,6 +242,11 @@
       "player_payload": {
         "type": "object",
         "properties": {
+          "creator_discord_id": {
+            "type": "string",
+            "nullable": true,
+            "example": "608210202952466464"
+          },
           "name": {
             "type": "string",
             "example": "Pixel"

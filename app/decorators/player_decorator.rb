@@ -14,8 +14,12 @@ class PlayerDecorator < BaseDecorator
     model.team&.decorate&.admin_link
   end
 
-  def discord_user_admin_link(size: nil)
-    model.discord_user&.decorate&.admin_link(size: size)
+  def creator_link(options = {})
+    model.creator.decorate.admin_link options
+  end
+
+  def discord_user_admin_link(options = {})
+    model.discord_user&.decorate&.admin_link options
   end
 
   def icon_class

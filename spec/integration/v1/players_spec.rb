@@ -7,23 +7,27 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
     @teams = FactoryBot.create_list(:team, 5)
     @characters = FactoryBot.create_list(:character, 5)
     @cities = FactoryBot.create_list(:city, 3)
+    @first_creator_discord_id = '777'
     @players = (1..20).map do |i|
       FactoryBot.create(
         :player,
         characters: @characters.sample((0..3).to_a.sample),
         city: ([nil]+@cities).sample,
-        team: ([nil]+@teams).sample
+        team: ([nil]+@teams).sample,
+        creator_discord_id: @first_creator_discord_id
       )
     end
     @existing_discord_user = DiscordUser.create!(discord_id: '666')
     @players.first.update_attribute :discord_user, @existing_discord_user
     @new_discord_id = '123456789'
+    @other_new_discord_id = '123123'
     @valid_player_attributes = FactoryBot.attributes_for(
       :player,
       character_ids: @characters.sample((0..3).to_a.sample).map(&:id),
       city_id: ([nil]+@cities).sample&.id,
       team_id: ([nil]+@teams).sample&.id,
-      discord_id: @new_discord_id
+      discord_id: @new_discord_id,
+      creator_discord_id: @other_new_discord_id
     )
   end
 
@@ -76,9 +80,17 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
         run_test! do |response|
           data = JSON.parse(response.body)
           expect(data['name']).to eq(@valid_player_attributes[:name])
-          created_discord_user = DiscordUser.last
-          expect(created_discord_user.discord_id).to eq(@new_discord_id)
-          expect(data['discord_user_id']).to eq(created_discord_user.id)
+
+          expect(DiscordUser.count).to eq(4)
+
+          created_player_discord_user = DiscordUser.find_by(discord_id: @new_discord_id)
+          expect(created_player_discord_user).to be_instance_of(DiscordUser)
+          expect(data['discord_user_id']).to eq(created_player_discord_user.id)
+
+          created_creator_discord_user = DiscordUser.find_by(discord_id: @other_new_discord_id)
+          expect(created_creator_discord_user).to be_instance_of(DiscordUser)
+          expect(data['creator_id']).to eq(created_creator_discord_user.id)
+
           # TODO: test more data
         end
       end

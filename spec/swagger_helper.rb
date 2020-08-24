@@ -72,6 +72,7 @@ RSpec.configure do |config|
           player_payload: {
             type: :object,
             properties: {
+              creator_discord_id: { type: :string, nullable: true, example: '608210202952466464' },
               name: { type: :string, example: 'Pixel' },
               city_id: { type: :integer, nullable: true, example: 42 },
               team_id: { type: :integer, nullable: true, example: 13 },

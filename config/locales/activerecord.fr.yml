@@ -59,6 +59,8 @@ fr:
         characters: Persos
         city: Ville
         city_id: Ville
+        creator: Ajouté par
+        creator_id: Ajouté par
         discord_user: Compte Discord
         is_accepted: Validé ?
         team: Équipe

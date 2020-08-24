@@ -28,6 +28,9 @@ ActiveAdmin.register Player do
     column :team do |decorated|
       decorated.team_link
     end
+    column :creator do |decorated|
+      decorated.creator_link(size: 32)
+    end
     column :is_accepted
     column :created_at do |decorated|
       decorated.created_at_date
@@ -43,6 +46,10 @@ ActiveAdmin.register Player do
   scope :with_discord_user, group: :discord_user
   scope :without_discord_user, group: :discord_user
 
+  filter :creator,
+         as: :select,
+         collection: proc { DiscordUser.order(:username).decorate },
+         input_html: { multiple: true, data: { select2: {} } }
   filter :name
   filter :characters,
          as: :select,
@@ -61,6 +68,14 @@ ActiveAdmin.register Player do
   # ---------------------------------------------------------------------------
   # FORM
   # ---------------------------------------------------------------------------
+
+  controller do
+    def build_new_resource
+      resource = super
+      resource.creator = current_admin_user.discord_user
+      resource
+    end
+  end
 
   form do |f|
     f.inputs do
@@ -102,6 +117,9 @@ ActiveAdmin.register Player do
       end
       row :team do |decorated|
         decorated.team_link
+      end
+      row :creator do |decorated|
+        decorated.creator_link
       end
       row :is_accepted
       row :created_at

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_24_011252) do
+ActiveRecord::Schema.define(version: 2020_08_24_013448) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -112,7 +112,9 @@ ActiveRecord::Schema.define(version: 2020_08_24_011252) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "character_names", default: [], array: true
+    t.bigint "creator_id"
     t.index ["city_id"], name: "index_players_on_city_id"
+    t.index ["creator_id"], name: "index_players_on_creator_id"
     t.index ["discord_user_id"], name: "index_players_on_discord_user_id"
     t.index ["team_id"], name: "index_players_on_team_id"
   end
