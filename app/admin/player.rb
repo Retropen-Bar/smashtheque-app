@@ -10,7 +10,7 @@ ActiveAdmin.register Player do
   # INDEX
   # ---------------------------------------------------------------------------
 
-  includes :discord_user, :city, :team, :characters
+  includes :characters, :city, :creator, :discord_user, :team
 
   index do
     selectable_column

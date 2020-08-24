@@ -5,7 +5,9 @@ class Api::V1::PlayersController < Api::V1::BaseController
   has_scope :on_abc
 
   def index
-    players = apply_scopes(Player.order(:name)).includes(:team, :city, :characters)
+    players = apply_scopes(Player.order(:name)).includes(
+      :characters, :city, :creator, :discord_user, :team
+    )
     render json: players
   end
 
