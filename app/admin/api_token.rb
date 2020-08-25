@@ -5,7 +5,7 @@ ActiveAdmin.register ApiToken do
   menu label: 'Tokens',
        parent: '<i class="fas fa-fw fa-terminal"></i>API'.html_safe
 
-  actions :index, :show, :new, :create
+  # actions :index, :show, :new, :create, :delete
 
   # ---------------------------------------------------------------------------
   # INDEX
