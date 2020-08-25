@@ -13,6 +13,15 @@ class Api::V1::PlayersController < Api::V1::BaseController
 
   def create
     attributes = player_params
+
+    if Player.where(name: attributes[:name]).any? && !name_confirmation
+      render json: {
+        errors: {
+          name: :already_known
+        }
+      }, status: :unprocessable_entity and return
+    end
+
     player = Player.new(attributes)
     if player.save
       render json: player, status: :created
@@ -25,6 +34,10 @@ class Api::V1::PlayersController < Api::V1::BaseController
 
   def player_params
     params.require(:player).permit(:name, :city_id, :team_id, :discord_id, :creator_discord_id, character_ids: [])
+  end
+
+  def name_confirmation
+    params.require(:player).permit(:name_confirmation)[:name_confirmation] == true
   end
 
 end
