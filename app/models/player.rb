@@ -158,9 +158,9 @@ class Player < ApplicationRecord
   def as_json(options = nil)
     result = super((options || {}).merge(
       include: {
-        characters: {
-          only: %i(id emoji name)
-        },
+        # characters: {
+        #   only: %i(id emoji name)
+        # },
         city: {
           only: %i(id icon name)
         },
@@ -174,8 +174,17 @@ class Player < ApplicationRecord
           only: %i(id name)
         }
       },
-      methods: %i(character_ids creator_discord_id discord_id)
+      methods: %i(creator_discord_id discord_id) #character_ids
     ))
+    # temp hack until we find why sometimes order is not OK
+    result[:character_ids] = characters_players.order(:position).map(&:character_id)
+    result[:characters] = characters_players.order(:position).map(&:character).map do |c|
+      {
+        id: c.id,
+        emoji: c.emoji,
+        name: c.name
+      }
+    end
     result[:city] = nil unless result.has_key?('city')
     result[:team] = nil unless result.has_key?('team')
     result[:discord_user] = nil unless result.has_key?('discord_user')

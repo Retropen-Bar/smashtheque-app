@@ -17,7 +17,7 @@ class Api::V1::PlayersController < Api::V1::BaseController
   end
 
   def create
-    attributes = player_params
+    attributes = player_create_params
     name_confirmation = attributes.delete(:name_confirmation) == true
 
     existing_players = Player.where(name: attributes[:name]).pluck(:id)
@@ -33,10 +33,35 @@ class Api::V1::PlayersController < Api::V1::BaseController
     end
   end
 
+  def update
+    player = Player.find(params[:id])
+
+    attributes = player_update_params
+    name_confirmation = attributes.delete(:name_confirmation) == true
+
+    if attributes[:name] != player.name
+      existing_other_players = Player.where(name: attributes[:name]).pluck(:id)
+      if existing_other_players.any? && !name_confirmation
+        render_errors({ name: :already_known, existing_ids: existing_other_players }, :unprocessable_entity) and return
+      end
+    end
+
+    player.attributes = attributes
+    if player.save
+      render json: player
+    else
+      render_errors player.errors, :unprocessable_entity
+    end
+  end
+
   private
 
-  def player_params
+  def player_create_params
     params.require(:player).permit(:name, :name_confirmation, :city_id, :team_id, :discord_id, :creator_discord_id, character_ids: [])
+  end
+
+  def player_update_params
+    params.require(:player).permit(:name, :name_confirmation, :city_id, :team_id, :discord_id, character_ids: [])
   end
 
 end

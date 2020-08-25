@@ -175,7 +175,6 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
 
   end
 
-
   path '/api/v1/players/{id}' do
     parameter name: :id, in: :path, type: :integer, required: true
 
@@ -198,6 +197,130 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
       response 401, 'invalid credentials' do
         let(:Authorization) { 'Bearer faketoken' }
         let(:id) { @fetched_player.id }
+        run_test!
+      end
+
+      response 404, 'not found' do
+        let(:Authorization) { "Bearer #{@token.token}" }
+        let(:id) { Player.last.id + 1 }
+        run_test!
+      end
+    end
+
+    patch 'Updates a player' do
+      tags 'Players'
+      consumes 'application/json'
+      produces 'application/json'
+      parameter name: :player_json, in: :body, schema: {
+        type: :object,
+        properties: {
+          player: {
+            '$ref' => '#/components/schemas/player_payload'
+          }
+        }
+      }
+
+      response '200', 'Player updated' do
+        let(:Authorization) { "Bearer #{@token.token}" }
+        let(:player) { Player.last }
+        let(:id) { player.id }
+        schema '$ref' => '#/components/schemas/player'
+
+        context 'Acceptable attributes' do
+          let(:new_name) { player.name + '_mod' }
+          let(:player_json) do
+            {
+              player: {
+                name: new_name
+              }
+            }
+          end
+
+          run_test! do |response|
+            player.reload
+            expect(player.name).to eq(new_name)
+            # TODO: try to update more attributes
+            data = JSON.parse(response.body).deep_symbolize_keys
+            target = JSON.parse(player.to_json).deep_symbolize_keys
+            expect(data).to include(target)
+          end
+        end
+
+        context 'Name included but not changed' do
+          let(:player_json) do
+            {
+              player: {
+                name: player.name
+              }
+            }
+          end
+
+          run_test!
+        end
+
+        context 'Name already taken with confirmation' do
+          let(:player_json) do
+            {
+              player: {
+                name: Player.first.name,
+                name_confirmation: true
+              }
+            }
+          end
+
+          run_test!
+        end
+      end
+
+      response 422, 'unprocessable entity' do
+        let(:Authorization) { "Bearer #{@token.token}" }
+        let(:player) { Player.last }
+        let(:id) { player.id }
+        schema '$ref' => '#/components/schemas/errors_object'
+
+        context 'Empty name' do
+          let(:player_json) do
+            {
+              player: {
+                name: ''
+              }
+            }
+          end
+
+          run_test! do |response|
+            data = JSON.parse(response.body).deep_symbolize_keys
+            expect(data[:errors]).to have_key(:name)
+          end
+        end
+
+        context 'Name already taken without confirmation' do
+          let(:player_json) do
+            {
+              player: {
+                name: Player.first.name
+              }
+            }
+          end
+
+          run_test! do |response|
+            data = JSON.parse(response.body).deep_symbolize_keys
+            expect(data[:errors]).to have_key(:name)
+            expect(data[:errors]).to have_key(:existing_ids)
+          end
+        end
+      end
+
+      response 401, 'invalid credentials' do
+        let(:Authorization) { 'Bearer faketoken' }
+        let(:id) { Player.last.id }
+        let(:player_json) { {} }
+        run_test!
+      end
+
+      response 404, 'not found' do
+        let(:Authorization) { "Bearer #{@token.token}" }
+        let(:id) { Player.last.id + 1 }
+        let(:player_json) { {} }
         run_test!
       end
     end

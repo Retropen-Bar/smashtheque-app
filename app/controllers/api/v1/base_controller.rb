@@ -5,6 +5,8 @@ class Api::V1::BaseController < ApiController
   before_action :authenticate_request!
   before_action :log_request!
 
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+
   protected
 
   def bearer_token
@@ -33,6 +35,10 @@ class Api::V1::BaseController < ApiController
     render json: {
       errors: errors
     }, status: status
+  end
+
+  def record_not_found
+    head :not_found and return
   end
 
 end
