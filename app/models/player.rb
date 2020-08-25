@@ -46,7 +46,11 @@ class Player < ApplicationRecord
   end
 
   def discord_id=(discord_id)
-    self.discord_user = DiscordUser.where(discord_id: discord_id).first_or_create!
+    if discord_id
+      self.discord_user = DiscordUser.where(discord_id: discord_id).first_or_create!
+    else
+      self.discord_user = nil
+    end
   end
 
   def creator_discord_id=(discord_id)

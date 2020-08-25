@@ -226,7 +226,7 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
         let(:id) { player.id }
         schema '$ref' => '#/components/schemas/player'
 
-        context 'Acceptable attributes' do
+        context 'Acceptable name' do
           let(:new_name) { player.name + '_mod' }
           let(:player_json) do
             {
@@ -269,6 +269,23 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
           end
 
           run_test!
+        end
+
+        context 'Removing Discord ID' do
+          let(:player) { Player.with_discord_user.last }
+          let(:id) { player.id }
+          let(:player_json) do
+            {
+              player: {
+                discord_id: nil
+              }
+            }
+          end
+
+          run_test! do |response|
+            player.reload
+            expect(player.discord_user).to be_nil
+          end
         end
       end
 
