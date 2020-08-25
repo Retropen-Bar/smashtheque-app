@@ -107,28 +107,81 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
 
       response '201', 'Player created' do
         let(:Authorization) { "Bearer #{@token.token}" }
-        let(:player_json) do
-          {
-            player: @valid_player_attributes
-          }
-        end
         schema '$ref' => '#/components/schemas/player'
 
-        run_test! do |response|
-          data = JSON.parse(response.body)
-          expect(data['name']).to eq(@valid_player_attributes[:name])
+        context 'Acceptable attributes' do
+          let(:player_json) do
+            {
+              player: @valid_player_attributes
+            }
+          end
 
-          expect(DiscordUser.count).to eq(4)
+          run_test! do |response|
+            data = JSON.parse(response.body).deep_symbolize_keys
+            expect(data[:name]).to eq(@valid_player_attributes[:name])
 
-          created_player_discord_user = DiscordUser.find_by(discord_id: @new_discord_id)
-          expect(created_player_discord_user).to be_instance_of(DiscordUser)
-          expect(data['discord_user_id']).to eq(created_player_discord_user.id)
+            expect(DiscordUser.count).to eq(4)
 
-          created_creator_discord_user = DiscordUser.find_by(discord_id: @other_new_discord_id)
-          expect(created_creator_discord_user).to be_instance_of(DiscordUser)
-          expect(data['creator_id']).to eq(created_creator_discord_user.id)
+            created_player_discord_user = DiscordUser.find_by(discord_id: @new_discord_id)
+            expect(created_player_discord_user).to be_instance_of(DiscordUser)
+            expect(data[:discord_user_id]).to eq(created_player_discord_user.id)
 
-          # TODO: test more data
+            created_creator_discord_user = DiscordUser.find_by(discord_id: @other_new_discord_id)
+            expect(created_creator_discord_user).to be_instance_of(DiscordUser)
+            expect(data[:creator_id]).to eq(created_creator_discord_user.id)
+
+            player = Player.find(data[:id])
+            expect(data).to include(
+              character_ids: player.characters_players.order(:position).map(&:character_id),
+              character_names: player.character_names,
+              characters: player.characters_players.order(:position).map(&:character).map do |c|
+                {
+                  id: c.id,
+                  emoji: c.emoji,
+                  name: c.name
+                }
+              end,
+              city: player.city.presence && {
+                id: player.city.id,
+                icon: player.city.icon,
+                name: player.city.name
+              },
+              city_id: player.city_id,
+              creator: {
+                id: player.creator.id,
+                discord_id: player.creator.discord_id
+              },
+              creator_discord_id: player.creator_discord_id,
+              creator_id: player.creator_id,
+              discord_id: player.discord_id,
+              discord_user: player.discord_user.presence && {
+                id: player.discord_user.id,
+                discord_id: player.discord_user.discord_id
+              },
+              discord_user_id: player.discord_user_id,
+              id: player.id,
+              is_accepted: player.is_accepted,
+              name: player.name,
+              team: player.team.presence && {
+                id: player.team.id,
+                name: player.team.name
+              },
+              team_id: player.team_id
+            )
+          end
+        end
+
+        context 'Name already taken with confirmation' do
+          let(:player_json) do
+            {
+              player: @valid_player_attributes.merge(
+                name: Player.last.name,
+                name_confirmation: true
+              )
+            }
+          end
+
+          run_test!
         end
       end
 
@@ -165,6 +218,23 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
           run_test! do |response|
             data = JSON.parse(response.body)
             expect(data['errors']).to have_key('discord_user')
+          end
+        end
+
+        context 'Name already taken without confirmation' do
+          let(:Authorization) { "Bearer #{@token.token}" }
+          let(:player_json) do
+            {
+              player: @valid_player_attributes.merge(
+                name: Player.last.name
+              )
+            }
+          end
+          schema '$ref' => '#/components/schemas/errors_object'
+
+          run_test! do |response|
+            data = JSON.parse(response.body)
+            expect(data['errors']).to have_key('name')
           end
         end
 
