@@ -156,6 +156,66 @@
             "description": "invalid credentials",
             "content": {
             }
+          },
+          "404": {
+            "description": "not found",
+            "content": {
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Updates a player",
+        "tags": [
+          "Players"
+        ],
+        "parameters": [
+
+        ],
+        "responses": {
+          "200": {
+            "description": "Player updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/player"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "unprocessable entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors_object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "invalid credentials",
+            "content": {
+            }
+          },
+          "404": {
+            "description": "not found",
+            "content": {
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "player": {
+                    "$ref": "#/components/schemas/player_payload"
+                  }
+                }
+              }
+            }
           }
         }
       }
