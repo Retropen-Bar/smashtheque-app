@@ -13,6 +13,7 @@ class Api::V1::PlayersController < Api::V1::BaseController
 
   def create
     attributes = player_params
+    name_confirmation = attributes.delete(:name_confirmation) == true
 
     if Player.where(name: attributes[:name]).any? && !name_confirmation
       render json: {
@@ -33,11 +34,7 @@ class Api::V1::PlayersController < Api::V1::BaseController
   private
 
   def player_params
-    params.require(:player).permit(:name, :city_id, :team_id, :discord_id, :creator_discord_id, character_ids: [])
-  end
-
-  def name_confirmation
-    params.require(:player).permit(:name_confirmation)[:name_confirmation] == true
+    params.require(:player).permit(:name, :name_confirmation, :city_id, :team_id, :discord_id, :creator_discord_id, character_ids: [])
   end
 
 end
