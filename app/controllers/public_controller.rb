@@ -1,10 +1,14 @@
 class PublicController < ApplicationController
 
-  before_action :check_access!
+  before_action :check_access!, except: :rollbar_test
 
   def home
     @players_count = Player.count
     @teams_count = Team.count
+  end
+
+  def rollbar_test
+    raise "This is a test"
   end
 
   private

@@ -38,6 +38,8 @@ Rails.application.routes.draw do
   resources :teams, only: :index
   get '/teams/:id' => 'players#team_index', as: :team
 
+  get '/rollbar' => 'public#rollbar_test'
+
   root to: 'public#home'
 
 end
