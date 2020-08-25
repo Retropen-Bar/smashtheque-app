@@ -8,6 +8,8 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
     @characters = FactoryBot.create_list(:character, 5)
     @cities = FactoryBot.create_list(:city, 3)
     @first_creator_discord_id = '777'
+    @admin_discord_user = FactoryBot.create(:discord_user)
+    @admin_user = AdminUser.create(discord_user: @admin_discord_user)
     @players = (1..20).map do |i|
       FactoryBot.create(
         :player,
@@ -86,19 +88,39 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
             data = JSON.parse(response.body).deep_symbolize_keys
             expect(data[:name]).to eq(@valid_player_attributes[:name])
 
-            expect(DiscordUser.count).to eq(4)
+            expect(DiscordUser.count).to eq(5)
+
+            player = Player.find(data[:id])
+            expect(player.is_accepted).to be_falsey
 
             created_player_discord_user = DiscordUser.find_by(discord_id: @new_discord_id)
             expect(created_player_discord_user).to be_instance_of(DiscordUser)
-            expect(data[:discord_user_id]).to eq(created_player_discord_user.id)
+            expect(player.discord_user).to eq(created_player_discord_user)
 
             created_creator_discord_user = DiscordUser.find_by(discord_id: @other_new_discord_id)
             expect(created_creator_discord_user).to be_instance_of(DiscordUser)
-            expect(data[:creator_id]).to eq(created_creator_discord_user.id)
+            expect(player.creator).to eq(created_creator_discord_user)
 
             player = Player.find(data[:id])
             target = JSON.parse(player.to_json).deep_symbolize_keys
             expect(data).to include(target)
+          end
+        end
+
+        context 'Created by an admin' do
+          let(:player_json) do
+            {
+              player: @valid_player_attributes.merge(
+                creator_discord_id: @admin_discord_user.discord_id
+              )
+            }
+          end
+
+          run_test! do |response|
+            data = JSON.parse(response.body).deep_symbolize_keys
+            player = Player.find(data[:id])
+            expect(player.is_accepted).to be_truthy
+            expect(player.creator).to eq(@admin_discord_user)
           end
         end
 

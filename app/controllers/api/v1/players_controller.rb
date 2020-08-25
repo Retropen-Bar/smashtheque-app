@@ -26,6 +26,9 @@ class Api::V1::PlayersController < Api::V1::BaseController
     end
 
     player = Player.new(attributes)
+    # auto-accept players created by an admin
+    player.is_accepted = true if player.creator.is_admin?
+
     if player.save
       render json: player, status: :created
     else
