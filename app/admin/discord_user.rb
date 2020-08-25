@@ -72,6 +72,10 @@ ActiveAdmin.register DiscordUser do
       row :username do |decorated|
         decorated.discriminated_username
       end
+      row :player
+      row :admin_user do |decorated|
+        decorated.admin_user_status
+      end
       row :created_at
       row :updated_at
     end
