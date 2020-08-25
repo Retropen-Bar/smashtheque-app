@@ -16,18 +16,14 @@ class Api::V1::PlayersController < Api::V1::BaseController
     name_confirmation = attributes.delete(:name_confirmation) == true
 
     if Player.where(name: attributes[:name]).any? && !name_confirmation
-      render json: {
-        errors: {
-          name: :already_known
-        }
-      }, status: :unprocessable_entity and return
+      render_errors({ name: :already_known }, :unprocessable_entity) and return
     end
 
     player = Player.new(attributes)
     if player.save
       render json: player, status: :created
     else
-      render json: { errors: player.errors }, status: :unprocessable_entity
+      render_errors player.errors, :unprocessable_entity
     end
   end
 
