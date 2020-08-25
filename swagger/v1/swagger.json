@@ -125,6 +125,41 @@
         }
       }
     },
+    "/api/v1/players/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Fetches a player",
+        "tags": [
+          "Players"
+        ],
+        "responses": {
+          "200": {
+            "description": "player found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/player"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "invalid credentials",
+            "content": {
+            }
+          }
+        }
+      }
+    },
     "/api/v1/search": {
       "get": {
         "summary": "Searches globally",

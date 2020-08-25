@@ -11,12 +11,18 @@ class Api::V1::PlayersController < Api::V1::BaseController
     render json: players
   end
 
+  def show
+    player = Player.find(params[:id])
+    render json: player
+  end
+
   def create
     attributes = player_params
     name_confirmation = attributes.delete(:name_confirmation) == true
 
-    if Player.where(name: attributes[:name]).any? && !name_confirmation
-      render_errors({ name: :already_known }, :unprocessable_entity) and return
+    existing_players = Player.where(name: attributes[:name]).pluck(:id)
+    if existing_players.any? && !name_confirmation
+      render_errors({ name: :already_known, existing_ids: existing_players }, :unprocessable_entity) and return
     end
 
     player = Player.new(attributes)
