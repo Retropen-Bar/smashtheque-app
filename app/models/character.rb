@@ -26,6 +26,6 @@ class Character < ApplicationRecord
   # VERSIONS
   # ---------------------------------------------------------------------------
 
-  has_paper_trail
+  has_paper_trail unless: Proc.new { ENV['NO_PAPERTRAIL'] }
 
 end
