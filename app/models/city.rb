@@ -10,7 +10,7 @@ class City < ApplicationRecord
   # VALIDATIONS
   # ---------------------------------------------------------------------------
 
-  validates :icon, presence: true
+  # validates :icon, presence: true
   validates :name, presence: true, uniqueness: true
 
   # ---------------------------------------------------------------------------

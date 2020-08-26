@@ -9,7 +9,7 @@ class CityDecorator < BaseDecorator
   end
 
   def full_name(separator = '&nbsp;')
-    [model.icon, pretty_name].join(separator).html_safe
+    [model.icon, pretty_name].compact.join(separator).html_safe
   end
 
   def players_path
@@ -30,15 +30,9 @@ class CityDecorator < BaseDecorator
 
   def as_autocomplete_result
     h.content_tag :div, class: 'city' do
-      (
-        h.content_tag :div, class: :icon do
-          icon
-        end
-      ) + (
-        h.content_tag :div, class: :name do
-          pretty_name
-        end
-      )
+      h.content_tag :div, class: :name do
+        pretty_name
+      end
     end
   end
 
