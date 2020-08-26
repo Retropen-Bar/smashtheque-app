@@ -14,6 +14,29 @@ class DiscordClient
     api_get "/guilds/#{guild_id}"
   end
 
+  def get_guild_roles(guild_id)
+    @guild_roles ||= {}
+    @guild_roles[guild_id] ||= api_get "/guilds/#{guild_id}/roles"
+  end
+
+  def find_guild_role_id(guild_id, role_name)
+    get_guild_roles(guild_id).each do |role|
+      return role['id'] if role['name'] == role_name
+    end
+    nil
+  end
+
+  def bot_user_id
+    bot.profile.id.to_s
+  end
+
+  def find_guild_bot_role_id(guild_id)
+    get_guild_roles(guild_id).each do |role|
+      return role['id'] if (role['tags'] || {})['bot_id'] == bot_user_id
+    end
+    nil
+  end
+
   def get_guild_emojis(guild_id)
     @guild_emojis ||= {}
     @guild_emojis[guild_id] ||= api_get "/guilds/#{guild_id}/emojis"
@@ -58,7 +81,30 @@ class DiscordClient
       compare_existing channel, find_params
     end
     return found_channel if found_channel
-    create_guild_text_channel(guild_id, find_params.merge(create_params))
+
+    # create
+    read_only = create_params.delete(:readonly)
+    params = find_params.merge(create_params)
+    if read_only
+      everyone_id = find_guild_role_id guild_id, '@everyone'
+      bot_role_id = find_guild_bot_role_id guild_id
+      raise 'Role @everyone not found on guild' unless everyone_id
+      params[:permission_overwrites] = [
+        {
+          type: :role,
+          id: everyone_id,
+          allow: 0,
+          deny: 456768 # deny everything to @everyone
+        }, {
+          type: :role,
+          id: bot_role_id,
+          deny: 0,
+          allow: 523328 # allow all text operations to bot
+        }
+      ]
+    end
+
+    create_guild_text_channel(guild_id, params)
   end
 
   def channel(channel_id)
@@ -71,12 +117,14 @@ class DiscordClient
   end
 
   def channel_messages(channel_id)
+    raise 'Channel ID is empty' if channel_id.blank?
     messages = api_get "/channels/#{channel_id}/messages?limit=100"
-    return [] if messages.is_a?(Hash) && messages['code'] == 50001
+    return [] if messages.is_a?(Hash)
     messages.sort_by { |message| message['timestamp'] }
   end
 
   def create_channel_message(channel_id, content)
+    raise 'Channel ID is empty' if channel_id.blank?
     return false if content.blank?
     split_messages(content).each do |message|
       bot.send_message channel_id, message

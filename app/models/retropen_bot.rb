@@ -54,17 +54,18 @@ class RetropenBot
   end
 
   def rebuild_abc_letter(letter)
-    abc_channel = client.find_or_create_guild_text_channel @guild_id,
-                                                           name: letter,
-                                                           parent_id: abc_category['id']
+    abc_channel = find_or_create_readonly_channel @guild_id,
+                                                  name: letter,
+                                                  parent_id: abc_category['id']
+
     rebuild_channel_with_players abc_channel['id'],
                                  Player.on_abc(letter)
   end
 
   def rebuild_abc_others
-    abc_others_channel = client.find_or_create_guild_text_channel @guild_id,
-                                                                  name: CHANNEL_ABC_OTHERS,
-                                                                  parent_id: abc_category['id']
+    abc_others_channel = find_or_create_readonly_channel @guild_id,
+                                                         name: CHANNEL_ABC_OTHERS,
+                                                         parent_id: abc_category['id']
     rebuild_channel_with_players abc_others_channel['id'],
                                  Player.on_abc_others
   end
@@ -129,9 +130,9 @@ class RetropenBot
       chars_category2
     end
     channel_name = [character.icon, character.name].join
-    channel = client.find_or_create_guild_text_channel @guild_id,
-                                                       name: channel_name,
-                                                       parent_id: parent_category['id']
+    channel = find_or_create_readonly_channel @guild_id,
+                                              name: channel_name,
+                                              parent_id: parent_category['id']
     rebuild_channel_with_players channel['id'],
                                  character.players
   end
@@ -157,9 +158,9 @@ class RetropenBot
   def rebuild_cities_for_city(city)
     return false if city.nil?
     channel_name = [city.icon, city.name].join
-    channel = client.find_or_create_guild_text_channel @guild_id,
-                                                       name: channel_name,
-                                                       parent_id: cities_category['id']
+    channel = find_or_create_readonly_channel @guild_id,
+                                              name: channel_name,
+                                              parent_id: cities_category['id']
     rebuild_channel_with_players channel['id'],
                                  city.players
   end
@@ -184,17 +185,17 @@ class RetropenBot
 
   def teams_list_channel
     @teams_list_channel ||= (
-      client.find_or_create_guild_text_channel @guild_id,
-                                               name: CHANNEL_TEAMS_LIST,
-                                               parent_id: teams_category['id']
+      find_or_create_readonly_channel @guild_id,
+                                      name: CHANNEL_TEAMS_LIST,
+                                      parent_id: teams_category['id']
     )
   end
 
   def teams_lu_channel
     @teams_lu_channel ||= (
-      client.find_or_create_guild_text_channel @guild_id,
-                                               name: CHANNEL_TEAMS_LU,
-                                               parent_id: teams_category['id']
+      find_or_create_readonly_channel @guild_id,
+                                      name: CHANNEL_TEAMS_LU,
+                                      parent_id: teams_category['id']
     )
   end
 
@@ -254,6 +255,12 @@ class RetropenBot
 
   def rebuild_channel_with_players(channel_id, players)
     client.replace_channel_content channel_id, players_lines(players)
+  end
+
+  def find_or_create_readonly_channel(guild_id, find_params, create_params = {})
+    client.find_or_create_guild_text_channel guild_id,
+                                             find_params,
+                                             create_params.merge(readonly: true)
   end
 
 end
