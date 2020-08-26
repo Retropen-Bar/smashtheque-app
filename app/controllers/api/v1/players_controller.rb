@@ -4,6 +4,7 @@ class Api::V1::PlayersController < Api::V1::BaseController
   has_scope :per
   has_scope :on_abc
   has_scope :by_name
+  has_scope :by_name_like
 
   def index
     players = apply_scopes(Player.order(:name)).includes(

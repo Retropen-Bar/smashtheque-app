@@ -123,6 +123,13 @@ class Player < ApplicationRecord
     where(name: name)
   end
 
+  def self.by_name_like(name)
+    where(
+      'unaccent(name) ILIKE ?',
+      I18n.transliterate(name)
+    )
+  end
+
   def self.accepted
     where(is_accepted: true)
   end

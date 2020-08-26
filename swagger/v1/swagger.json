@@ -72,6 +72,15 @@
             }
           },
           {
+            "name": "by_name_like",
+            "in": "query",
+            "required": false,
+            "description": "Search by similar name (ignoring case and accents)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "page",
             "in": "query",
             "required": false,

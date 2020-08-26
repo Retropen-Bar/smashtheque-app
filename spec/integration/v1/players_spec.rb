@@ -44,6 +44,11 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
                 type: :string,
                 required: false,
                 description: 'Search by exact name (case-sensitive)'
+      parameter name: :by_name_like,
+                in: :query,
+                type: :string,
+                required: false,
+                description: 'Search by similar name (ignoring case and accents)'
       parameter name: :page,
                 in: :query,
                 type: :integer,
