@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+
+  postgres:
+    image: postgres:12
+    environment:
+      POSTGRES_USER: rails
+      POSTGRES_PASSWORD: rails
+    volumes:
+      - ./docker/data/postgres/etc:/etc/postgresql
+      - ./docker/data/postgres/log:/var/log/postgresql
+      - ./docker/data/postgres/lib/data:/var/lib/postgresql/data
+    restart: always
+
+  rails:
+    build: .
+    volumes:
+      - .:/rails
+      - ./docker-entrypoint.sh:/usr/local/bin/docker-entrypoint.sh
+    ports:
+      - 3000:3000
+    environment:
+      DATABASE_URL: postgres://rails:rails@postgres:5432/rails

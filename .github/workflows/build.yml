@@ -1,0 +1,34 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+      - build/*
+    tags:
+      - v*
+
+jobs:
+
+  build:
+
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # - uses: satackey/action-docker-layer-caching@v0.0.4
+
+      - name: Build & Push to Docker Hub
+        uses: docker/build-push-action@v1
+        with:
+          dockerfile: Dockerfile.release
+          tag_with_ref: true
+          repository: retropenbar/smashtheque-app
+          cache_froms: retropenbar/smashtheque-app:develop
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          always_pull: true

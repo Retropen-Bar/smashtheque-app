@@ -47,6 +47,9 @@ yarn-debug.log*
 # Ignore seeding data
 /db/seed/*
 
+# Ignore Docker data
+/docker/data
+
 # Other files
 .DS_Store
 latest.dump

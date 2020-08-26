@@ -1,0 +1,28 @@
+# GIT
+.git
+.gitignore
+
+# Docker
+Dockerfile*
+.dockerignore
+docker
+!/docker/rails
+docker-compose.yml
+docker-compose.override.yml
+
+# Rails
+/config/application.yml
+/config/database.yml
+/config/master.key
+
+# Dev
+.byebug_history
+.circleci
+.codeclimate.yml
+tmp
+
+# Other
+**/.DS_Store
+**/.editorconfig
+**/.idea
+**/README.md

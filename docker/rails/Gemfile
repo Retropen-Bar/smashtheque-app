@@ -104,8 +104,3 @@ gem 'pg_search'
 # API doc
 gem 'rswag-api'
 gem 'rswag-ui'
-
-group :production do
-  # for assets compilation
-  gem 'activerecord-nulldb-adapter'
-end
