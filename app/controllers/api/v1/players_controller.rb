@@ -63,11 +63,11 @@ class Api::V1::PlayersController < Api::V1::BaseController
   private
 
   def player_create_params
-    params.require(:player).permit(:name, :name_confirmation, :city_id, :team_id, :discord_id, :creator_discord_id, character_ids: [])
+    params.require(:player).permit(:name, :name_confirmation, :city_name, :city_id, :team_id, :discord_id, :creator_discord_id, character_ids: [])
   end
 
   def player_update_params
-    params.require(:player).permit(:name, :name_confirmation, :city_id, :team_id, :discord_id, character_ids: [])
+    params.require(:player).permit(:name, :name_confirmation, :city_name, :city_id, :team_id, :discord_id, character_ids: [])
   end
 
 end

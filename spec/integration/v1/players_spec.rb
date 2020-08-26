@@ -178,6 +178,25 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
 
           run_test!
         end
+
+        context 'Unknown city' do
+          let(:new_city_name) { FactoryBot.attributes_for(:city)[:name] }
+          let(:player_json) do
+            attributes = @valid_player_attributes
+            attributes.delete(:city_id)
+            attributes[:city_name] = new_city_name
+            {
+              player: attributes
+            }
+          end
+
+          run_test! do |response|
+            data = JSON.parse(response.body).deep_symbolize_keys
+            player = Player.find(data[:id])
+            expect(City.last.name).to eq(new_city_name)
+            expect(player.city.name).to eq(new_city_name)
+          end
+        end
       end
 
       response 422, 'unprocessable entity' do

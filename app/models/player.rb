@@ -57,6 +57,14 @@ class Player < ApplicationRecord
     self.creator = DiscordUser.where(discord_id: discord_id).first_or_create!
   end
 
+  def city_name=(city_name)
+    if city_name
+      self.city = City.where(name: city_name).first_or_create!
+    else
+      self.city = nil
+    end
+  end
+
   after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] || !is_accepted? }
   def update_discord
     # on create: previous_changes = {"id"=>[nil, <id>], "name"=>[nil, <name>], ...}

@@ -54,7 +54,7 @@ RSpec.configure do |config|
             properties: {
               id: { type: :integer, example: 13 },
               name: { type: :string, example: 'Paris' },
-              icon: { type: :string, example: '🌳' }
+              icon: { type: :string, nullable: true, example: '🌳' }
             }
           },
           cities_array: {
@@ -133,7 +133,7 @@ RSpec.configure do |config|
                 nullable: true,
                 properties: {
                   id: { type: :integer, example: 42 },
-                  icon: { type: :string, example: '🗼' },
+                  icon: { type: :string, nullable: true, example: '🗼' },
                   name: { type: :string, example: 'paris' }
                 }
               },
