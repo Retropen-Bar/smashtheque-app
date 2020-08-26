@@ -3,7 +3,7 @@ class Api::V1::PlayersController < Api::V1::BaseController
   has_scope :page, default: 1
   has_scope :per
   has_scope :on_abc
-  has_scope :by_discord_id
+  has_scope :by_discord_id, allow_blank: true
   has_scope :by_name
   has_scope :by_name_like
 

@@ -128,10 +128,10 @@ class Player < ApplicationRecord
   end
 
   def self.by_discord_id(discord_id)
-    if discord_id
-      joins(:discord_user).where(discord_users: { discord_id: discord_id })
-    else
+    if discord_id.blank?
       where(discord_user: nil)
+    else
+      joins(:discord_user).where(discord_users: { discord_id: discord_id })
     end
   end
 
