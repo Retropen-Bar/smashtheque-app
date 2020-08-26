@@ -39,18 +39,31 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
     get 'Fetches players' do
       tags 'Players'
       produces 'application/json'
-      # parameter name: :page, in: :query, type: :string
+      parameter name: :by_name, in: :query, type: :string, required: false
 
       response '200', 'players found' do
         let(:Authorization) { "Bearer #{@token.token}" }
         schema '$ref' => '#/components/schemas/players_array'
 
-        run_test! do |response|
-          data = JSON.parse(response.body)
-          expect(data.count).to eq(20)
-          player = Player.find(data.first['id'])
-          target = JSON.parse(player.to_json)
-          expect(data.first).to include(target)
+        context 'without filters' do
+          run_test! do |response|
+            data = JSON.parse(response.body).map(&:deep_symbolize_keys)
+            expect(data.count).to eq(Player.count)
+            player = Player.find(data.first[:id])
+            target = JSON.parse(player.to_json).deep_symbolize_keys
+            expect(data.first).to include(target)
+          end
+        end
+
+        context 'with name filter' do
+          let(:player) { Player.last }
+          let(:by_name) { player.name }
+
+          run_test! do |response|
+            data = JSON.parse(response.body).map(&:deep_symbolize_keys)
+            expect(data.count).to eq(Player.where(name: player.name).count)
+            expect(data.first[:id]).to eq(player.id)
+          end
         end
       end
 

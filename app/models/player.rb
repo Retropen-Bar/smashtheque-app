@@ -119,6 +119,10 @@ class Player < ApplicationRecord
   # SCOPES
   # ---------------------------------------------------------------------------
 
+  def self.by_name(name)
+    where(name: name)
+  end
+
   def self.accepted
     where(is_accepted: true)
   end
@@ -181,8 +185,8 @@ class Player < ApplicationRecord
       methods: %i(creator_discord_id discord_id) #character_ids
     ))
     # temp hack until we find why sometimes order is not OK
-    result[:character_ids] = characters_players.order(:position).map(&:character_id)
-    result[:characters] = characters_players.order(:position).map(&:character).map do |c|
+    result[:character_ids] = characters_players.sort_by(&:position).map(&:character_id)
+    result[:characters] = characters_players.sort_by(&:position).map(&:character).map do |c|
       {
         id: c.id,
         emoji: c.emoji,
