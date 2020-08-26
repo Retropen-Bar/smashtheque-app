@@ -81,7 +81,7 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
 
         context 'with name filter' do
           let(:player) { Player.last }
-          let(:by_name) { player.name }
+          let(:by_name) { CGI.escape(player.name) }
 
           run_test! do |response|
             data = JSON.parse(response.body).map(&:deep_symbolize_keys)

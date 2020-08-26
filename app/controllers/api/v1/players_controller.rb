@@ -22,7 +22,7 @@ class Api::V1::PlayersController < Api::V1::BaseController
     attributes = player_create_params
     name_confirmation = attributes.delete(:name_confirmation) == true
 
-    existing_players = Player.where(name: attributes[:name]).pluck(:id)
+    existing_players = Player.by_name_like(attributes[:name]).pluck(:id)
     if existing_players.any? && !name_confirmation
       render_errors({ name: :already_known, existing_ids: existing_players }, :unprocessable_entity) and return
     end
