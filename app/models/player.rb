@@ -127,6 +127,14 @@ class Player < ApplicationRecord
     where('unaccent(name) ILIKE unaccent(?)', name)
   end
 
+  def self.by_discord_id(discord_id)
+    if discord_id
+      joins(:discord_user).where(discord_users: { discord_id: discord_id })
+    else
+      where(discord_user: nil)
+    end
+  end
+
   def self.accepted
     where(is_accepted: true)
   end

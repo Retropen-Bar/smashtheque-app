@@ -81,6 +81,15 @@
             }
           },
           {
+            "name": "by_discord_id",
+            "in": "query",
+            "required": false,
+            "description": "Search by Discord ID. Use an empty value to search for players without a Discord ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "page",
             "in": "query",
             "required": false,
