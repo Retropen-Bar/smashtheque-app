@@ -39,7 +39,26 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
     get 'Fetches players' do
       tags 'Players'
       produces 'application/json'
-      parameter name: :by_name, in: :query, type: :string, required: false
+      parameter name: :by_name,
+                in: :query,
+                type: :string,
+                required: false,
+                description: 'Search by exact name (case-sensitive)'
+      parameter name: :page,
+                in: :query,
+                type: :integer,
+                required: false,
+                description: 'Select page for offset search (default = 1)'
+      parameter name: :per,
+                in: :query,
+                type: :integer,
+                required: false,
+                description: 'Select page size for offset search (default = 25)'
+      parameter name: :on_abc,
+                in: :query,
+                type: :string,
+                required: false,
+                description: "Search by name initial (ignoring case). Use '$' to search for all other initial values (numbers, symbols, etc.)"
 
       response '200', 'players found' do
         let(:Authorization) { "Bearer #{@token.token}" }

@@ -61,6 +61,44 @@
         "tags": [
           "Players"
         ],
+        "parameters": [
+          {
+            "name": "by_name",
+            "in": "query",
+            "required": false,
+            "description": "Search by exact name (case-sensitive)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "Select page for offset search (default = 1)",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "per",
+            "in": "query",
+            "required": false,
+            "description": "Select page size for offset search (default = 25)",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "on_abc",
+            "in": "query",
+            "required": false,
+            "description": "Search by name initial (ignoring case). Use '$' to search for all other initial values (numbers, symbols, etc.)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "players found",
