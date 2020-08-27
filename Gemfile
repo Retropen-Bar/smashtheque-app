@@ -103,6 +103,9 @@ gem 'rbnacl-libsodium'
 # global search
 gem 'pg_search'
 
+# GraphQL
+gem 'graphql-client'
+
 # API doc
 gem 'rswag-api'
 gem 'rswag-ui'

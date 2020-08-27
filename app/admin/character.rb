@@ -4,7 +4,7 @@ ActiveAdmin.register Character do
 
   has_paper_trail
 
-  menu label: '<i class="fas fa-fw fa-gamepad"></i>Persos'.html_safe
+  menu label: proc { image_tag('smash.svg', height: 16, class: 'logo')+'Persos' }
 
   # ---------------------------------------------------------------------------
   # INDEX

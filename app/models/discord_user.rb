@@ -22,6 +22,7 @@ class DiscordUser < ApplicationRecord
 
   has_one :admin_user, dependent: :nullify
   has_one :player, dependent: :nullify
+  has_one :smash_gg_user, dependent: :nullify
 
   has_many :discord_guild_admins,
            inverse_of: :discord_user,
@@ -96,6 +97,14 @@ class DiscordUser < ApplicationRecord
       result = result.where.not("unaccent(username) ILIKE '#{letter}%'")
     end
     result
+  end
+
+  def self.by_discriminated_username(discriminated_username)
+    username, discriminator = discriminated_username.split('#')
+    where(
+      username: username,
+      discriminator: discriminator
+    )
   end
 
   # ---------------------------------------------------------------------------

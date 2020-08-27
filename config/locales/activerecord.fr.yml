@@ -19,6 +19,7 @@ fr:
       recurring_tournament: Série
       reward: Récompense
       reward_condition: Condition de récompense
+      smash_gg_user: Compte smash.gg
       team: Équipe
       tournament_event: Édition
       twitch_channel: Chaîne Twitch
@@ -173,6 +174,11 @@ fr:
         reward: Récompense
         size_max: Taille max
         size_min: Taille min
+        team: Équipe
+        team_id: Équipe
+      smash_gg_user:
+        << : *SHARED
+        smashgg_id: ID
       team:
         << : *SHARED
         admins: Admins
