@@ -59,7 +59,8 @@ class Player < ApplicationRecord
 
   def city_name=(city_name)
     if city_name
-      self.city = City.by_name_like(city_name).first_or_create!
+      # City#by_name_like does a weird search, so we need to precise @name for create
+      self.city = City.by_name_like(city_name).first_or_create!(name: city_name)
     else
       self.city = nil
     end

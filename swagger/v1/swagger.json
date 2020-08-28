@@ -300,6 +300,17 @@
         "tags": [
           "Teams"
         ],
+        "parameters": [
+          {
+            "name": "by_short_name_like",
+            "in": "query",
+            "required": false,
+            "description": "Search by similar short_name (ignoring case)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "teams found",
@@ -371,6 +382,7 @@
           },
           "icon": {
             "type": "string",
+            "nullable": true,
             "example": "🌳"
           }
         }
@@ -511,6 +523,7 @@
               },
               "icon": {
                 "type": "string",
+                "nullable": true,
                 "example": "🗼"
               },
               "name": {

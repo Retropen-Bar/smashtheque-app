@@ -12,7 +12,11 @@ describe 'Teams API', swagger_doc: 'v1/swagger.json' do
     get 'Fetches teams' do
       tags 'Teams'
       produces 'application/json'
-      # parameter name: :page, in: :query, type: :string
+      parameter name: :by_short_name_like,
+                in: :query,
+                type: :string,
+                required: false,
+                description: 'Search by similar short_name (ignoring case)'
 
       response 200, 'teams found' do
         let(:Authorization) { "Bearer #{@token.token}" }

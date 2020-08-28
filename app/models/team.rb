@@ -27,6 +27,10 @@ class Team < ApplicationRecord
     where("unaccent(name) ILIKE '#{letter}%'")
   end
 
+  def self.by_short_name_like(short_name)
+    where('short_name ILIKE ?', short_name)
+  end
+
   # ---------------------------------------------------------------------------
   # global search
   # ---------------------------------------------------------------------------
