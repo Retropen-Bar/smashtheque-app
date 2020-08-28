@@ -47,6 +47,17 @@
         "tags": [
           "Cities"
         ],
+        "parameters": [
+          {
+            "name": "by_name_like",
+            "in": "query",
+            "required": false,
+            "description": "Search by similar name (ignoring case and accents)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "cities found",
