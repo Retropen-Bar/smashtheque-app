@@ -21,6 +21,10 @@ class City < ApplicationRecord
     where("unaccent(name) ILIKE '#{letter}%'")
   end
 
+  def self.by_name_like(name)
+    where('unaccent(name) ILIKE unaccent(?)', name)
+  end
+
   # ---------------------------------------------------------------------------
   # GLOBAL SEARCH
   # ---------------------------------------------------------------------------
