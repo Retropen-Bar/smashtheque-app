@@ -15,6 +15,10 @@ class Character < ApplicationRecord
     where("unaccent(name) ILIKE '#{letter}%'")
   end
 
+  def self.by_emoji(emoji)
+    where(emoji: emoji)
+  end
+
   # ---------------------------------------------------------------------------
   # global search
   # ---------------------------------------------------------------------------

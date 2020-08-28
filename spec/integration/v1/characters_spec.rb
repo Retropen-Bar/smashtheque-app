@@ -12,7 +12,11 @@ describe 'Characters API', swagger_doc: 'v1/swagger.json' do
     get 'Fetches characters' do
       tags 'Characters'
       produces 'application/json'
-      # parameter name: :page, in: :query, type: :string
+      parameter name: :by_emoji,
+                in: :query,
+                type: :string,
+                required: false,
+                description: 'Search by emoji ID'
 
       response '200', 'characters found' do
         let(:Authorization) { "Bearer #{@token.token}" }

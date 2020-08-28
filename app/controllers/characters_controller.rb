@@ -1,7 +1,9 @@
 class CharactersController < PublicController
 
+  has_scope :by_emoji
+
   def index
-    @characters = Character.all
+    @characters = apply_scopes(Character).all
   end
 
 end

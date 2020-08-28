@@ -11,6 +11,17 @@
         "tags": [
           "Characters"
         ],
+        "parameters": [
+          {
+            "name": "by_emoji",
+            "in": "query",
+            "required": false,
+            "description": "Search by emoji ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "characters found",
