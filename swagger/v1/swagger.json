@@ -75,6 +75,51 @@
             }
           }
         }
+      },
+      "post": {
+        "summary": "Creates a city",
+        "tags": [
+          "Cities"
+        ],
+        "parameters": [
+
+        ],
+        "responses": {
+          "201": {
+            "description": "City created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/city"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "unprocessable entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors_object"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "$ref": "#/components/schemas/city_payload"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v1/players": {
@@ -389,6 +434,20 @@
         "type": "array",
         "items": {
           "$ref": "#/components/schemas/character"
+        }
+      },
+      "city_payload": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Paris"
+          },
+          "icon": {
+            "type": "string",
+            "nullable": true,
+            "example": "🌳"
+          }
         }
       },
       "city": {

@@ -143,7 +143,6 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
             expect(created_creator_discord_user).to be_instance_of(DiscordUser)
             expect(player.creator).to eq(created_creator_discord_user)
 
-            player = Player.find(data[:id])
             target = JSON.parse(player.to_json).deep_symbolize_keys
             expect(data).to include(target)
           end
@@ -215,6 +214,7 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
           run_test! do |response|
             data = JSON.parse(response.body).deep_symbolize_keys
             expect(data[:errors]).to have_key(:name)
+            expect(data[:errors][:name]).to eq(['blank'])
           end
         end
 
@@ -232,15 +232,17 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
           run_test! do |response|
             data = JSON.parse(response.body).deep_symbolize_keys
             expect(data[:errors]).to have_key(:discord_user)
+            expect(data[:errors][:discord_user]).to eq(['already_taken'])
           end
         end
 
         context 'Name already taken without confirmation' do
           let(:Authorization) { "Bearer #{@token.token}" }
+          let(:existing_player) { Player.last }
           let(:player_json) do
             {
               player: @valid_player_attributes.merge(
-                name: Player.last.name
+                name: existing_player.name
               )
             }
           end
@@ -249,7 +251,9 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
           run_test! do |response|
             data = JSON.parse(response.body).deep_symbolize_keys
             expect(data[:errors]).to have_key(:name)
+            expect(data[:errors][:name]).to eq('already_known')
             expect(data[:errors]).to have_key(:existing_ids)
+            expect(data[:errors][:existing_ids]).to eq([existing_player.id])
           end
         end
 

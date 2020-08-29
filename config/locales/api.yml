@@ -1,0 +1,23 @@
+api:
+  activerecord:
+    errors:
+      models:
+        shared:
+          attributes: &SHARED_ATTRIBUTES
+            blank: blank
+            required: required
+            taken: already_taken
+            unique: not_unique
+
+        city:
+          attributes:
+            name:
+              << : *SHARED_ATTRIBUTES
+        player:
+          attributes:
+            creator:
+              << : *SHARED_ATTRIBUTES
+            discord_user:
+              << : *SHARED_ATTRIBUTES
+            name:
+              << : *SHARED_ATTRIBUTES

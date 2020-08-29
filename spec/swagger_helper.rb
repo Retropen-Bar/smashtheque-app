@@ -49,6 +49,13 @@ RSpec.configure do |config|
               '$ref' => '#/components/schemas/character'
             }
           },
+          city_payload: {
+            type: :object,
+            properties: {
+              name: { type: :string, example: 'Paris' },
+              icon: { type: :string, nullable: true, example: '🌳' }
+            }
+          },
           city: {
             type: :object,
             properties: {
