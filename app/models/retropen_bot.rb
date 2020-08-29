@@ -129,7 +129,7 @@ class RetropenBot
     else
       chars_category2
     end
-    channel_name = [character.icon, character.name].join
+    channel_name = [character.icon, character.name.parameterize].join
     channel = find_or_create_readonly_channel @guild_id,
                                               name: channel_name,
                                               parent_id: parent_category['id']
@@ -157,7 +157,7 @@ class RetropenBot
 
   def rebuild_cities_for_city(city)
     return false if city.nil?
-    channel_name = [city.icon, city.name].join
+    channel_name = [city.icon, city.name.parameterize].join
     channel = find_or_create_readonly_channel @guild_id,
                                               name: channel_name,
                                               parent_id: cities_category['id']
