@@ -11,7 +11,14 @@ class City < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   # validates :icon, presence: true
-  validates :name, presence: true, uniqueness: true
+  validates :name, presence: true#, uniqueness: true
+  validate :name_should_be_unique
+
+  def name_should_be_unique
+    if self.class.by_name_like(name).any?
+      errors.add(:name, :unique)
+    end
+  end
 
   # ---------------------------------------------------------------------------
   # SCOPES
