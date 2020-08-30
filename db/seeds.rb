@@ -4,6 +4,8 @@
 # Team.destroy_all
 # Player.destroy_all
 
+ENV['NO_DISCORD'] = '1'
+
 # City
 uri = "#{ENV['SEED_DATA_SOURCE_URL']}cities.json"
 puts "seed #{uri}"
@@ -49,13 +51,4 @@ open(uri) do |file|
   end
 end
 
-
-# ENV['NO_DISCORD'] = '1'
-# rosters.each do |short_name, player_names|
-#   team = Team.where(short_name: short_name).first!
-#   player_names.each do |player_name|
-#     player = Player.where(name: player_name).first
-#     player&.update_attribute :team, team
-#   end
-# end
-# ENV['NO_DISCORD'] = '0'
+ENV['NO_DISCORD'] = '0'
