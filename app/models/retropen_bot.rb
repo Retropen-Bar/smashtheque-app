@@ -8,7 +8,8 @@ class RetropenBot
   CHANNEL_ABC_OTHERS = 'symboles-0-9'.freeze
   CATEGORY_CHARS1 = 'ROSTER DE A À M'.freeze
   CATEGORY_CHARS2 = 'ROSTER DE N À Z'.freeze
-  CATEGORY_CITIES = 'JOUEURS PAR VILLE'.freeze
+  CATEGORY_CITIES = 'JOUEURS FR : VILLES MAJEURES'.freeze
+  CATEGORY_COUNTRIES = 'JOUEURS FR : PAYS MAJEURS'.freeze
   CATEGORY_TEAMS = 'ÉQUIPES FR'.freeze
   CHANNEL_TEAMS_LIST = 'listing-équipes'.freeze
   CHANNEL_TEAMS_LU = 'roster-équipes'.freeze
@@ -36,7 +37,7 @@ class RetropenBot
   def rebuild_all
     rebuild_abc
     rebuild_chars
-    rebuild_cities
+    rebuild_locations
     rebuild_teams
   end
 
@@ -159,33 +160,48 @@ class RetropenBot
   end
 
   # ---------------------------------------------------------------------------
-  # CITIES
+  # LOCATIONS
   # ---------------------------------------------------------------------------
 
   def cities_category
     client.find_or_create_guild_category @guild_id, name: CATEGORY_CITIES
   end
 
-  def rebuild_cities_for_city(city, cities_category_id = nil)
-    return false if city.nil?
-    channel_name = [city.icon, city.name.parameterize].join
-    channel = find_or_create_readonly_channel @guild_id,
-                                              name: channel_name,
-                                              parent_id: cities_category_id || cities_category['id']
-    rebuild_channel_with_players channel['id'],
-                                 city.players
+  def countries_category
+    client.find_or_create_guild_category @guild_id, name: CATEGORY_COUNTRIES
   end
 
-  def rebuild_cities_for_cities(cities, _cities_category_id = nil)
-    cities_category_id = _cities_category_id || cities_category['id']
-    cities.to_a.compact.uniq.each do |city|
-      rebuild_cities_for_city city, cities_category_id
+  def rebuild_locations_for_location(location, cities_category_id: nil, countries_category_id: nil)
+    return false if location.nil?
+    parent_category_id = if location.is_a?(Locations::Country)
+      countries_category_id || countries_category['id']
+    else
+      cities_category_id || cities_category['id']
+    end
+    channel_name = [location.icon, location.name.parameterize].join
+    channel = find_or_create_readonly_channel @guild_id,
+                                              name: channel_name,
+                                              parent_id: parent_category_id
+    rebuild_channel_with_players channel['id'],
+                                 location.players
+  end
+
+  def rebuild_locations_for_locations(locations, cities_category_id: nil, countries_category_id: nil)
+    _cities_category_id = cities_category_id || cities_category['id']
+    _countries_category_id = countries_category_id || countries_category['id']
+    locations.to_a.compact.uniq.each do |city|
+      rebuild_locations_for_city city,
+                              cities_category_id: _cities_category_id,
+                              countries_category_id: _countries_category_id
     end
   end
 
-  def rebuild_cities(_cities_category_id = nil)
-    cities_category_id = _cities_category_id || cities_category['id']
-    rebuild_cities_for_cities City.order(:name), cities_category_id
+  def rebuild_locations(cities_category_id: nil, countries_category_id: nil)
+    _cities_category_id = cities_category_id || cities_category['id']
+    _countries_category_id = countries_category_id || countries_category['id']
+    rebuild_locations_for_locations Location.order(:name),
+                              cities_category_id: _cities_category_id,
+                              countries_category_id: _countries_category_id
   end
 
   # ---------------------------------------------------------------------------
@@ -247,8 +263,8 @@ class RetropenBot
     if player.team
       line += " [#{player.team.short_name}]"
     end
-    if player.city
-      line += " [#{player.city.name}]"
+    if player.location
+      line += " [#{player.location.name}]"
     end
     if player.characters.any?
       line += " :"
@@ -260,7 +276,7 @@ class RetropenBot
   end
 
   def players_lines(players)
-    players.accepted.includes(:team, :city, :characters).to_a.sort_by{|p| p.name.downcase}.map do |player|
+    players.accepted.includes(:team, :location, :characters).to_a.sort_by{|p| p.name.downcase}.map do |player|
       player_abc player
     end.join(DiscordClient::MESSAGE_LINE_SEPARATOR)
   end

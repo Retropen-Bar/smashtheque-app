@@ -5,7 +5,7 @@ class Player < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   belongs_to :creator, class_name: :DiscordUser
-  belongs_to :city, optional: true
+  belongs_to :location, optional: true
   belongs_to :team, optional: true
   belongs_to :discord_user, optional: true
 
@@ -57,13 +57,16 @@ class Player < ApplicationRecord
     self.creator = DiscordUser.where(discord_id: discord_id).first_or_create!
   end
 
-  def city_name=(city_name)
-    if city_name
-      # City#by_name_like does a weird search, so we need to precise @name for create
-      self.city = City.by_name_like(city_name).first_or_create!(name: city_name)
+  def location_name=(location_name)
+    if location_name
+      # Location#by_name_like does a weird search, so we need to precise @name for create
+      self.location = Location.by_name_like(location_name).first_or_create!(name: location_name)
     else
-      self.city = nil
+      self.location = nil
     end
+  end
+  def city_name=(city_name)
+    location_name=(city_name)
   end
 
   after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] || !is_accepted? }
@@ -75,7 +78,7 @@ class Player < ApplicationRecord
     if destroyed?
       # this is a deletion
       RetropenBot.default.rebuild_abc_for_name name
-      RetropenBot.default.rebuild_cities_for_city city if city
+      RetropenBot.default.rebuild_locations_for_location location if location
     else
       # name
       if previous_changes.has_key?('name')
@@ -92,17 +95,17 @@ class Player < ApplicationRecord
         RetropenBot.default.rebuild_abc_for_name name
       end
 
-      # city
-      if previous_changes.has_key?('city_id')
-        # this is creation or an update with changes on the city_id
-        old_city_id = previous_changes['city_id'].first
-        new_city_id = previous_changes['city_id'].last
-        RetropenBot.default.rebuild_cities_for_city City.find(old_city_id) if old_city_id
-        RetropenBot.default.rebuild_cities_for_city City.find(new_city_id) if new_city_id
+      # location
+      if previous_changes.has_key?('location_id')
+        # this is creation or an update with changes on the location_id
+        old_location_id = previous_changes['location_id'].first
+        new_location_id = previous_changes['location_id'].last
+        RetropenBot.default.rebuild_locations_for_location Location.find(old_location_id) if old_location_id
+        RetropenBot.default.rebuild_locations_for_location Location.find(new_location_id) if new_location_id
 
       else
-        # this is an update, and the city_id didn't change
-        RetropenBot.default.rebuild_cities_for_city city
+        # this is an update, and the location_id didn't change
+        RetropenBot.default.rebuild_locations_for_location location
       end
 
       # team
@@ -190,7 +193,7 @@ class Player < ApplicationRecord
         # characters: {
         #   only: %i(id emoji name)
         # },
-        city: {
+        location: {
           only: %i(id icon name)
         },
         creator: {
@@ -214,7 +217,7 @@ class Player < ApplicationRecord
         name: c.name
       }
     end
-    result[:city] = nil unless result.has_key?('city')
+    result[:location] = nil unless result.has_key?('location')
     result[:team] = nil unless result.has_key?('team')
     result[:discord_user] = nil unless result.has_key?('discord_user')
     result

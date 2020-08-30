@@ -5,9 +5,13 @@ fr:
       api_request: Requête API
       api_token: Token API
       character: Perso
-      city: Ville
       comment: Commentaire
       discord_user: Compte Discord
+      location: Localisation
+      locations/city: Ville
+      locations/country: Pays
+      locations_city: Ville
+      locations_country: Pays
       player: Joueur
       team: Équipe
     attributes:
@@ -38,10 +42,15 @@ fr:
         emoji: Emoji
         icon: Icône
         players: Joueurs
-      city:
+      location: &LOCATION
         << : *SHARED
         icon: Icône
         players: Joueurs
+        type: Type
+      locations/city:
+        << : *LOCATION
+      locations/country:
+        << : *LOCATION
       comment:
         << : *SHARED
       discord_user:
@@ -57,8 +66,8 @@ fr:
         character_ids: Persos
         character_names: Persos
         characters: Persos
-        city: Ville
-        city_id: Ville
+        location: Localisation
+        location_id: Localisation
         creator: Ajouté par
         creator_id: Ajouté par
         discord_user: Compte Discord

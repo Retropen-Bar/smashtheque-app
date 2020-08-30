@@ -9,7 +9,7 @@ api:
             taken: already_taken
             unique: not_unique
 
-        city:
+        location:
           attributes:
             name:
               << : *SHARED_ATTRIBUTES

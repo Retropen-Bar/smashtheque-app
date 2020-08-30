@@ -6,8 +6,8 @@ class PlayerDecorator < BaseDecorator
     end
   end
 
-  def city_link
-    model.city&.decorate&.admin_link
+  def location_link
+    model.location&.decorate&.admin_link
   end
 
   def team_link

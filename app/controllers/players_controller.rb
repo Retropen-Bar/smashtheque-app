@@ -8,10 +8,10 @@ class PlayersController < PublicController
     @players = players Player.all
   end
 
-  def city_index
-    @city = City.find(params[:id]).decorate
-    @players = players @city.model.players
-    render 'cities/show'
+  def location_index
+    @location = Location.find(params[:id]).decorate
+    @players = players @location.model.players
+    render 'locations/show'
   end
 
   def team_index
@@ -33,7 +33,7 @@ class PlayersController < PublicController
   private
 
   def players(base)
-    apply_scopes(base.accepted.order(:name)).includes(:team, :city, :characters)
+    apply_scopes(base.accepted.order(:name)).includes(:team, :location, :characters)
   end
 
 end

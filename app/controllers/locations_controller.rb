@@ -1,4 +1,4 @@
-class CitiesController < PublicController
+class LocationsController < PublicController
 
   has_scope :page, default: 1
   has_scope :per
@@ -6,7 +6,7 @@ class CitiesController < PublicController
   has_scope :by_name_like
 
   def index
-    @cities = apply_scopes(City).all
+    @locations = apply_scopes(Location).all
   end
 
 end

@@ -1,0 +1,12 @@
+<h1 class="page-title">Villes</h1>
+
+<%= render 'shared/letters' %>
+<%= render 'shared/pagination', collection: @locations %>
+
+<div class="cards-list locations">
+  <% @locations.each do |location| %>
+    <div class="card-container">
+      <%= render 'location', location: location.decorate %>
+    </div>
+  <% end %>
+</div>

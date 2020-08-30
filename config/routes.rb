@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :characters, only: :index
-      resources :cities, only: [:index, :create]
+      resources :locations, only: [:index, :create]
       resources :players, only: [:index, :show, :create, :update]
       resources :teams, only: :index
       get '/search' => 'search#global'
@@ -30,8 +30,8 @@ Rails.application.routes.draw do
   resources :characters, only: :index
   get '/characters/:id' => 'players#character_index', as: :character
 
-  resources :cities, only: :index
-  get '/cities/:id' => 'players#city_index', as: :city
+  resources :locations, only: :index
+  get '/locations/:id' => 'players#location_index', as: :location
 
   resources :players, only: [:index, :show]
 

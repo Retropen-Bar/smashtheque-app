@@ -10,7 +10,7 @@ ActiveAdmin.register Player do
   # INDEX
   # ---------------------------------------------------------------------------
 
-  includes :characters, :city, :creator, :discord_user, :team
+  includes :characters, :location, :creator, :discord_user, :team
 
   index do
     selectable_column
@@ -22,8 +22,8 @@ ActiveAdmin.register Player do
     column :characters do |decorated|
       decorated.characters_links.join(' ').html_safe
     end
-    column :city do |decorated|
-      decorated.city_link
+    column :location do |decorated|
+      decorated.location_link
     end
     column :team do |decorated|
       decorated.team_link
@@ -55,9 +55,9 @@ ActiveAdmin.register Player do
          as: :select,
          collection: proc { Character.order(:name).decorate },
          input_html: { multiple: true, data: { select2: {} } }
-  filter :city,
+  filter :location,
          as: :select,
-         collection: proc { City.order(:name).decorate },
+         collection: proc { Location.order(:name).decorate },
          input_html: { multiple: true, data: { select2: {} } }
   filter :team,
          as: :select,
@@ -86,8 +86,8 @@ ActiveAdmin.register Player do
       f.input :characters,
               collection: Character.order(:name),
               input_html: { multiple: true, data: { select2: { sortable: true, sortedValues: f.object.character_ids } } }
-      f.input :city,
-              collection: City.order(:name),
+      f.input :location,
+              collection: Location.order(:name),
               input_html: { data: { select2: {} } }
       f.input :team,
               collection: Team.order(:name),
@@ -97,7 +97,7 @@ ActiveAdmin.register Player do
     f.actions
   end
 
-  permit_params :name, :city_id, :team_id, :is_accepted, :discord_user_id, character_ids: []
+  permit_params :name, :location_id, :team_id, :is_accepted, :discord_user_id, character_ids: []
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -112,8 +112,8 @@ ActiveAdmin.register Player do
       row :characters do |decorated|
         decorated.characters_links.join('<br/>').html_safe
       end
-      row :city do |decorated|
-        decorated.city_link
+      row :location do |decorated|
+        decorated.location_link
       end
       row :team do |decorated|
         decorated.team_link

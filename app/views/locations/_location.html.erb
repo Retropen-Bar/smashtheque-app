@@ -1,0 +1,9 @@
+<div class="card location">
+  <div class="card-body">
+    <div class="float-right">
+      <i class="fas fa-users"></i>
+      <%= location.players.count %>
+    </div>
+    <%= link_to location.full_name, location_path(location) %>
+  </div>
+</div>

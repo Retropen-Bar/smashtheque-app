@@ -1,4 +1,4 @@
-class CityDecorator < BaseDecorator
+class LocationDecorator < BaseDecorator
 
   def admin_link(options = {})
     super(options.merge(label: full_name))
@@ -13,7 +13,7 @@ class CityDecorator < BaseDecorator
   end
 
   def players_path
-    admin_players_path(q: {city_id_in: [model.id]})
+    admin_players_path(q: {location_id_in: [model.id]})
   end
 
   def players_link
@@ -29,7 +29,7 @@ class CityDecorator < BaseDecorator
   end
 
   def as_autocomplete_result
-    h.content_tag :div, class: 'city' do
+    h.content_tag :div, class: 'location' do
       h.content_tag :div, class: :name do
         pretty_name
       end

@@ -9,10 +9,10 @@
       <% end %>
       <%= link_to player.name, player %>
     </h5>
-    <% if player.city %>
+    <% if player.location %>
       <div class="float-right">
         <i class="fas fa-map-marker-alt"></i>
-        <%= link_to player.city.name.titleize, player.city %>
+        <%= link_to player.location.name.titleize, location_path(player.location) %>
       </div>
     <% end %>
     <% player.characters.each do |character| %>

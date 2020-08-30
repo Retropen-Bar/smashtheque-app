@@ -1,10 +1,11 @@
-ActiveAdmin.register City do
+ActiveAdmin.register Locations::Country do
 
-  decorate_with CityDecorator
+  decorate_with Locations::CountryDecorator
 
   has_paper_trail
 
-  menu label: '<i class="fas fa-fw fa-map-marker-alt"></i>Villes'.html_safe
+  menu  parent: '<i class="fas fa-fw fa-map-marker-alt"></i>Localisations'.html_safe,
+        label: 'Pays'
 
   # ---------------------------------------------------------------------------
   # INDEX
@@ -56,6 +57,15 @@ ActiveAdmin.register City do
       row :updated_at
     end
     active_admin_comments
+  end
+
+  action_item :make_city,
+              only: :show do
+    link_to 'Transformer en ville', [:make_city, :admin, resource], class: 'green'
+  end
+  member_action :make_city do
+    resource.update_attribute :type, 'Locations::City'
+    redirect_to admin_locations_city_path(resource)
   end
 
 end

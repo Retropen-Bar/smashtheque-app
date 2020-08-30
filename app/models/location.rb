@@ -1,4 +1,4 @@
-class City < ApplicationRecord
+class Location < ApplicationRecord
 
   # ---------------------------------------------------------------------------
   # RELATIONS

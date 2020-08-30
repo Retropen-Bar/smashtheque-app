@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_24_013448) do
+ActiveRecord::Schema.define(version: 2020_08_30_223941) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -77,13 +77,6 @@ ActiveRecord::Schema.define(version: 2020_08_24_013448) do
     t.index ["player_id"], name: "index_characters_players_on_player_id"
   end
 
-  create_table "cities", force: :cascade do |t|
-    t.string "icon"
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "discord_users", force: :cascade do |t|
     t.string "discord_id"
     t.string "username"
@@ -92,6 +85,15 @@ ActiveRecord::Schema.define(version: 2020_08_24_013448) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["discord_id"], name: "index_discord_users_on_discord_id", unique: true
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.string "icon"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "type", null: false
+    t.index ["type"], name: "index_locations_on_type"
   end
 
   create_table "pg_search_documents", force: :cascade do |t|
@@ -104,7 +106,7 @@ ActiveRecord::Schema.define(version: 2020_08_24_013448) do
   end
 
   create_table "players", force: :cascade do |t|
-    t.bigint "city_id"
+    t.bigint "location_id"
     t.bigint "team_id"
     t.string "name"
     t.boolean "is_accepted"
@@ -113,10 +115,39 @@ ActiveRecord::Schema.define(version: 2020_08_24_013448) do
     t.datetime "updated_at", null: false
     t.text "character_names", default: [], array: true
     t.bigint "creator_id"
-    t.index ["city_id"], name: "index_players_on_city_id"
+    t.bigint "smash_gg_user_id"
     t.index ["creator_id"], name: "index_players_on_creator_id"
     t.index ["discord_user_id"], name: "index_players_on_discord_user_id"
+    t.index ["location_id"], name: "index_players_on_location_id"
+    t.index ["smash_gg_user_id"], name: "index_players_on_smash_gg_user_id"
     t.index ["team_id"], name: "index_players_on_team_id"
+  end
+
+  create_table "smash_gg_users", force: :cascade do |t|
+    t.integer "smashgg_id", null: false
+    t.bigint "discord_user_id"
+    t.text "bio"
+    t.string "birthday"
+    t.string "gender_pronoun"
+    t.string "name"
+    t.string "slug"
+    t.string "city"
+    t.string "country"
+    t.string "country_id"
+    t.string "state"
+    t.string "state_id"
+    t.string "player_id"
+    t.string "gamer_tag"
+    t.string "prefix"
+    t.string "banner_url"
+    t.string "avatar_url"
+    t.string "discord_discriminated_username"
+    t.string "twitch_username"
+    t.string "twitter_username"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["discord_user_id"], name: "index_smash_gg_users_on_discord_user_id"
+    t.index ["smashgg_id"], name: "index_smash_gg_users_on_smashgg_id", unique: true
   end
 
   create_table "teams", force: :cascade do |t|
