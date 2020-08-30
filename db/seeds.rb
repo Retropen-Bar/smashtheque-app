@@ -41,11 +41,13 @@ uri = "#{ENV['SEED_DATA_SOURCE_URL']}players.json"
 puts "seed #{uri}"
 open(uri) do |file|
   players = JSON.parse(file.read)
+  creator = DiscordUser.first
   players.each do |player|
     Player.create!(
       name: player['name'],
       city: player['city'].presence && City.find_by!(name: player['city']),
       team: player['team'].presence && Team.find_by!(short_name: player['team']),
+      creator: creator
       character_ids: player['characters'].map{|c| Character.find_by!(name: c).id}
     )
   end
