@@ -140,22 +140,22 @@ class RetropenBot
                                  character.players
   end
 
-  def rebuild_chars_for_characters(characters, _chars_category1_id: nil, _chars_category2_id: nil)
-    chars_category1_id = _chars_category1_id || chars_category1['id']
-    chars_category2_id = _chars_category2_id || chars_category2['id']
+  def rebuild_chars_for_characters(characters, chars_category1_id: nil, chars_category2_id: nil)
+    _chars_category1_id = chars_category1_id || chars_category1['id']
+    _chars_category2_id = chars_category2_id || chars_category2['id']
     characters.compact.uniq.each do |character|
       rebuild_chars_for_character character,
-                                  chars_category1_id: chars_category1_id,
-                                  chars_category2_id: chars_category2_id
+                                  chars_category1_id: _chars_category1_id,
+                                  chars_category2_id: _chars_category2_id
     end
   end
 
-  def rebuild_chars(_chars_category1_id: nil, _chars_category2_id: nil)
-    chars_category1_id = _chars_category1_id || chars_category1['id']
-    chars_category2_id = _chars_category2_id || chars_category2['id']
+  def rebuild_chars(chars_category1_id: nil, chars_category2_id: nil)
+    _chars_category1_id = chars_category1_id || chars_category1['id']
+    _chars_category2_id = chars_category2_id || chars_category2['id']
     rebuild_chars_for_characters Character.all,
-                                 chars_category1_id: chars_category1_id,
-                                 chars_category2_id: chars_category2_id
+                                 chars_category1_id: _chars_category1_id,
+                                 chars_category2_id: _chars_category2_id
   end
 
   # ---------------------------------------------------------------------------
