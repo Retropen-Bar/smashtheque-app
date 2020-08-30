@@ -50,63 +50,66 @@ class RetropenBot
   end
 
   def abc_category
-    @abc_category ||= client.find_or_create_guild_category @guild_id, name: CATEGORY_ABC
+    client.find_or_create_guild_category @guild_id, name: CATEGORY_ABC
   end
 
-  def rebuild_abc_letter(letter)
+  def rebuild_abc_letter(letter, abc_category_id = nil)
     abc_channel = find_or_create_readonly_channel @guild_id,
                                                   name: letter,
-                                                  parent_id: abc_category['id']
+                                                  parent_id: abc_category_id || abc_category['id']
 
     rebuild_channel_with_players abc_channel['id'],
                                  Player.on_abc(letter)
   end
 
-  def rebuild_abc_others
+  def rebuild_abc_others(abc_category_id = nil)
     abc_others_channel = find_or_create_readonly_channel @guild_id,
                                                          name: CHANNEL_ABC_OTHERS,
-                                                         parent_id: abc_category['id']
+                                                         parent_id: abc_category_id || abc_category['id']
     rebuild_channel_with_players abc_others_channel['id'],
                                  Player.on_abc_others
   end
 
-  def rebuild_abc_for_name(name)
+  def rebuild_abc_for_name(name, abc_category_id = nil)
     return false if name.blank?
-    rebuild_abc_for_letter name_letter(name)
+    rebuild_abc_for_letter name_letter(name), abc_category_id
   end
 
-  def rebuild_abc_for_letter(letter)
+  def rebuild_abc_for_letter(letter, abc_category_id = nil)
     if ('a'..'z').include?(letter)
-      rebuild_abc_letter letter
+      rebuild_abc_letter letter, abc_category_id
     else
-      rebuild_abc_others
+      rebuild_abc_others abc_category_id
     end
   end
 
-  def rebuild_abc_for_letters(letters)
+  def rebuild_abc_for_letters(letters, _abc_category_id = nil)
+    abc_category_id = _abc_category_id || abc_category['id']
     need_rebuild_abc_others = false
     letters.compact.uniq.each do |letter|
       if ('a'..'z').include?(letter)
-        rebuild_abc_letter letter
+        rebuild_abc_letter letter, abc_category_id
       else
         need_rebuild_abc_others = true
       end
     end
-    rebuild_abc_others if need_rebuild_abc_others
+    rebuild_abc_others(abc_category_id) if need_rebuild_abc_others
   end
 
-  def rebuild_abc_for_players(players)
+  def rebuild_abc_for_players(players, _abc_category_id = nil)
+    abc_category_id = _abc_category_id || abc_category['id']
     letters = players.map do |player|
       name_letter player&.name
     end
-    rebuild_abc_for_letters letters
+    rebuild_abc_for_letters letters, abc_category_id
   end
 
-  def rebuild_abc
+  def rebuild_abc(_abc_category_id = nil)
+    abc_category_id = _abc_category_id || abc_category['id']
     ('a'..'z').each do |letter|
-      rebuild_abc_letter letter
+      rebuild_abc_letter letter, abc_category_id
     end
-    rebuild_abc_others
+    rebuild_abc_others abc_category_id
   end
 
   # ---------------------------------------------------------------------------
@@ -114,37 +117,45 @@ class RetropenBot
   # ---------------------------------------------------------------------------
 
   def chars_category1
-    @chars_category1 ||= client.find_or_create_guild_category @guild_id, name: CATEGORY_CHARS1
+    client.find_or_create_guild_category @guild_id, name: CATEGORY_CHARS1
   end
 
   def chars_category2
-    @chars_category2 ||= client.find_or_create_guild_category @guild_id, name: CATEGORY_CHARS2
+    client.find_or_create_guild_category @guild_id, name: CATEGORY_CHARS2
   end
 
-  def rebuild_chars_for_character(character)
+  def rebuild_chars_for_character(character, chars_category1_id: nil, chars_category2_id: nil)
     return false if character.nil?
     letter = name_letter character.name
-    parent_category = if ('a'..'m').include?(letter)
-      chars_category1
+    parent_category_id = if ('a'..'m').include?(letter)
+      chars_category1_id || chars_category1['id']
     else
-      chars_category2
+      chars_category2_id || chars_category2['id']
     end
     channel_name = [character.icon, character.name.parameterize].join
     channel = find_or_create_readonly_channel @guild_id,
                                               name: channel_name,
-                                              parent_id: parent_category['id']
+                                              parent_id: parent_category_id
     rebuild_channel_with_players channel['id'],
                                  character.players
   end
 
-  def rebuild_chars_for_characters(characters)
+  def rebuild_chars_for_characters(characters, _chars_category1_id: nil, _chars_category2_id: nil)
+    chars_category1_id = _chars_category1_id || chars_category1['id']
+    chars_category2_id = _chars_category2_id || chars_category2['id']
     characters.compact.uniq.each do |character|
-      rebuild_chars_for_character character
+      rebuild_chars_for_character character,
+                                  chars_category1_id: chars_category1_id,
+                                  chars_category2_id: chars_category2_id
     end
   end
 
-  def rebuild_chars
-    rebuild_chars_for_characters Character.all
+  def rebuild_chars(_chars_category1_id: nil, _chars_category2_id: nil)
+    chars_category1_id = _chars_category1_id || chars_category1['id']
+    chars_category2_id = _chars_category2_id || chars_category2['id']
+    rebuild_chars_for_characters Character.all,
+                                 chars_category1_id: chars_category1_id,
+                                 chars_category2_id: chars_category2_id
   end
 
   # ---------------------------------------------------------------------------
@@ -152,27 +163,29 @@ class RetropenBot
   # ---------------------------------------------------------------------------
 
   def cities_category
-    @cities_category ||= client.find_or_create_guild_category @guild_id, name: CATEGORY_CITIES
+    client.find_or_create_guild_category @guild_id, name: CATEGORY_CITIES
   end
 
-  def rebuild_cities_for_city(city)
+  def rebuild_cities_for_city(city, cities_category_id = nil)
     return false if city.nil?
     channel_name = [city.icon, city.name.parameterize].join
     channel = find_or_create_readonly_channel @guild_id,
                                               name: channel_name,
-                                              parent_id: cities_category['id']
+                                              parent_id: cities_category_id || cities_category['id']
     rebuild_channel_with_players channel['id'],
                                  city.players
   end
 
-  def rebuild_cities_for_cities(cities)
+  def rebuild_cities_for_cities(cities, _cities_category_id = nil)
+    cities_category_id = _cities_category_id || cities_category['id']
     cities.to_a.compact.uniq.each do |city|
-      rebuild_cities_for_city city
+      rebuild_cities_for_city city, cities_category_id
     end
   end
 
-  def rebuild_cities
-    rebuild_cities_for_cities City.order(:name)
+  def rebuild_cities(_cities_category_id = nil)
+    cities_category_id = _cities_category_id || cities_category['id']
+    rebuild_cities_for_cities City.order(:name), cities_category_id
   end
 
   # ---------------------------------------------------------------------------
@@ -180,48 +193,47 @@ class RetropenBot
   # ---------------------------------------------------------------------------
 
   def teams_category
-    @teams_category ||= client.find_or_create_guild_category @guild_id, name: CATEGORY_TEAMS
+    client.find_or_create_guild_category @guild_id, name: CATEGORY_TEAMS
   end
 
-  def teams_list_channel
-    @teams_list_channel ||= (
-      find_or_create_readonly_channel @guild_id,
-                                      name: CHANNEL_TEAMS_LIST,
-                                      parent_id: teams_category['id']
-    )
+  def teams_list_channel(teams_category_id = nil)
+    find_or_create_readonly_channel @guild_id,
+                                    name: CHANNEL_TEAMS_LIST,
+                                    parent_id: teams_category_id || teams_category['id']
   end
 
-  def teams_lu_channel
-    @teams_lu_channel ||= (
-      find_or_create_readonly_channel @guild_id,
-                                      name: CHANNEL_TEAMS_LU,
-                                      parent_id: teams_category['id']
-    )
+  def teams_lu_channel(teams_category_id = nil)
+    find_or_create_readonly_channel @guild_id,
+                                    name: CHANNEL_TEAMS_LU,
+                                    parent_id: teams_category_id || teams_category['id']
   end
 
-  def rebuild_teams_list
+  def rebuild_teams_list(_teams_category_id = nil)
+    teams_category_id = _teams_category_id || teams_category['id']
     lines = Team.order(:name).map do |team|
       [
         team.short_name,
         team.name
       ].join(' : ')
     end.join(DiscordClient::MESSAGE_LINE_SEPARATOR)
-    client.replace_channel_content teams_list_channel['id'], lines
+    client.replace_channel_content teams_list_channel(teams_category_id)['id'], lines
   end
 
-  def rebuild_teams_lu
+  def rebuild_teams_lu(_teams_category_id = nil)
+    teams_category_id = _teams_category_id || teams_category['id']
     lines = Team.order(:name).map do |team|
       [
         "**#{team.short_name} : #{team.name}**",
         players_lines(team.players)
       ].join(DiscordClient::MESSAGE_LINE_SEPARATOR)
     end.join(DiscordClient::MESSAGE_LINE_SEPARATOR * 2)
-    client.replace_channel_content teams_lu_channel['id'], lines
+    client.replace_channel_content teams_lu_channel(teams_category_id)['id'], lines
   end
 
-  def rebuild_teams
-    rebuild_teams_list
-    rebuild_teams_lu
+  def rebuild_teams(_teams_category_id = nil)
+    teams_category_id = _teams_category_id || teams_category['id']
+    rebuild_teams_list teams_category_id
+    rebuild_teams_lu teams_category_id
   end
 
   # ---------------------------------------------------------------------------
@@ -258,6 +270,8 @@ class RetropenBot
   end
 
   def find_or_create_readonly_channel(guild_id, find_params, create_params = {})
+    # TODO: handle channel creation errors
+    # e.g. {"parent_id"=>["Maximum number of channels in category reached (50)"]}
     client.find_or_create_guild_text_channel guild_id,
                                              find_params,
                                              create_params.merge(readonly: true)

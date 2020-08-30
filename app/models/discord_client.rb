@@ -15,8 +15,10 @@ class DiscordClient
   end
 
   def get_guild_roles(guild_id)
-    @guild_roles ||= {}
-    @guild_roles[guild_id] ||= api_get "/guilds/#{guild_id}/roles"
+    # cache is problematic for now
+    # @guild_roles ||= {}
+    # @guild_roles[guild_id] ||= api_get "/guilds/#{guild_id}/roles"
+    api_get "/guilds/#{guild_id}/roles"
   end
 
   def find_guild_role_id(guild_id, role_name)
@@ -38,8 +40,10 @@ class DiscordClient
   end
 
   def get_guild_emojis(guild_id)
-    @guild_emojis ||= {}
-    @guild_emojis[guild_id] ||= api_get "/guilds/#{guild_id}/emojis"
+    # cache is problematic for now
+    # @guild_emojis ||= {}
+    # @guild_emojis[guild_id] ||= api_get "/guilds/#{guild_id}/emojis"
+    api_get "/guilds/#{guild_id}/emojis"
   end
 
   def find_guild_emoji_id(guild_id, emoji_name)
@@ -50,8 +54,10 @@ class DiscordClient
   end
 
   def get_guild_channels(guild_id)
-    @guild_channels ||= {}
-    @guild_channels[guild_id] ||= api_get "/guilds/#{guild_id}/channels"
+    # cache is problematic for now
+    # @guild_channels ||= {}
+    # @guild_channels[guild_id] ||= api_get "/guilds/#{guild_id}/channels"
+    api_get "/guilds/#{guild_id}/channels"
   end
 
   def create_guild_category(guild_id, params)
@@ -108,8 +114,10 @@ class DiscordClient
   end
 
   def channel(channel_id)
-    @channels ||= {}
-    @channels[channel_id] ||= api_get "/channels/#{channel_id}"
+    # cache is problematic for now
+    # @channels ||= {}
+    # @channels[channel_id] ||= api_get "/channels/#{channel_id}"
+    api_get "/channels/#{channel_id}"
   end
 
   def delete_channel(channel_id)
