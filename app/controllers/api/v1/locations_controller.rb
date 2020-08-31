@@ -13,6 +13,7 @@ class Api::V1::LocationsController < Api::V1::BaseController
   def create
     attributes = location_create_params
     location = Location.new(attributes)
+    location.type = Locations::City if location.type.nil?
     if location.save
       render json: location, status: :created
     else

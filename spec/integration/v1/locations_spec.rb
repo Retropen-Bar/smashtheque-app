@@ -72,6 +72,16 @@ describe 'Locations API', swagger_doc: 'v1/swagger.json' do
             expect(data).to include(target)
           end
         end
+
+        context 'Without type given' do
+          let(:location_json) do
+            {
+              location: @valid_location_attributes.merge(type: nil)
+            }
+          end
+
+          run_test!
+        end
       end
 
       response 422, 'unprocessable entity' do
