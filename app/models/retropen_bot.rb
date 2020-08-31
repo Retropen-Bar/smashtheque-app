@@ -4,10 +4,10 @@ class RetropenBot
   # CONSTANTS
   # ---------------------------------------------------------------------------
 
-  CATEGORY_ABC = 'ABÉCÉDAIRE DES JOUEURS FR'.freeze
+  CATEGORY_ABC = 'JOUEURS FR : ABÉCÉDAIRE'.freeze
   CHANNEL_ABC_OTHERS = 'symboles-0-9'.freeze
-  CATEGORY_CHARS1 = 'ROSTER DE A À M'.freeze
-  CATEGORY_CHARS2 = 'ROSTER DE N À Z'.freeze
+  CATEGORY_CHARS1 = 'JOUEURS FR : ROSTER A-M'.freeze
+  CATEGORY_CHARS2 = 'JOUEURS FR : ROSTER N-Z'.freeze
   CATEGORY_CITIES = 'JOUEURS FR : VILLES MAJEURES'.freeze
   CATEGORY_COUNTRIES = 'JOUEURS FR : PAYS MAJEURS'.freeze
   CATEGORY_TEAMS = 'ÉQUIPES FR'.freeze
