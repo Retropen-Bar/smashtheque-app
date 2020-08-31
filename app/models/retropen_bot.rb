@@ -173,6 +173,7 @@ class RetropenBot
 
   def rebuild_locations_for_location(location, cities_category_id: nil, countries_category_id: nil)
     return false if location.nil?
+    return false unless location.is_main?
     parent_category_id = if location.is_a?(Locations::Country)
       countries_category_id || countries_category['id']
     else
@@ -189,8 +190,8 @@ class RetropenBot
   def rebuild_locations_for_locations(locations, cities_category_id: nil, countries_category_id: nil)
     _cities_category_id = cities_category_id || cities_category['id']
     _countries_category_id = countries_category_id || countries_category['id']
-    locations.to_a.compact.uniq.each do |city|
-      rebuild_locations_for_location city,
+    locations.to_a.compact.uniq.each do |location|
+      rebuild_locations_for_location location,
                                      cities_category_id: _cities_category_id,
                                      countries_category_id: _countries_category_id
     end

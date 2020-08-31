@@ -20,6 +20,7 @@ ActiveAdmin.register Locations::Country do
     column :players do |decorated|
       decorated.players_link
     end
+    column :is_main
     column :created_at do |decorated|
       decorated.created_at_date
     end
@@ -27,6 +28,7 @@ ActiveAdmin.register Locations::Country do
   end
 
   filter :name
+  filter :is_main
 
   # ---------------------------------------------------------------------------
   # FORM
@@ -36,11 +38,12 @@ ActiveAdmin.register Locations::Country do
     f.inputs do
       f.input :icon
       f.input :name
+      f.input :is_main
     end
     f.actions
   end
 
-  permit_params :icon, :name
+  permit_params :icon, :name, :is_main
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -53,6 +56,7 @@ ActiveAdmin.register Locations::Country do
       row :players do |decorated|
         decorated.players_link
       end
+      row :is_main
       row :created_at
       row :updated_at
     end

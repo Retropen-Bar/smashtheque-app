@@ -49,8 +49,10 @@ fr:
         type: Type
       locations/city:
         << : *LOCATION
+        is_main: Ville majeure ?
       locations/country:
         << : *LOCATION
+        is_main: Pays majeur ?
       comment:
         << : *SHARED
       discord_user:
