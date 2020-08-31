@@ -190,9 +190,9 @@ class RetropenBot
     _cities_category_id = cities_category_id || cities_category['id']
     _countries_category_id = countries_category_id || countries_category['id']
     locations.to_a.compact.uniq.each do |city|
-      rebuild_locations_for_city city,
-                              cities_category_id: _cities_category_id,
-                              countries_category_id: _countries_category_id
+      rebuild_locations_for_location city,
+                                     cities_category_id: _cities_category_id,
+                                     countries_category_id: _countries_category_id
     end
   end
 
@@ -200,8 +200,8 @@ class RetropenBot
     _cities_category_id = cities_category_id || cities_category['id']
     _countries_category_id = countries_category_id || countries_category['id']
     rebuild_locations_for_locations Location.order(:name),
-                              cities_category_id: _cities_category_id,
-                              countries_category_id: _countries_category_id
+                                    cities_category_id: _cities_category_id,
+                                    countries_category_id: _countries_category_id
   end
 
   # ---------------------------------------------------------------------------

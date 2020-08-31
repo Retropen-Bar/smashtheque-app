@@ -60,13 +60,18 @@ class Player < ApplicationRecord
   def location_name=(location_name)
     if location_name
       # Location#by_name_like does a weird search, so we need to precise @name for create
-      self.location = Location.by_name_like(location_name).first_or_create!(name: location_name)
+      self.location = Location.by_name_like(location_name).first_or_create!(
+        type: Locations::City, # by default
+        name: location_name
+      )
     else
       self.location = nil
     end
   end
+
+  # TODO: remove this when bot has been updated
   def city_name=(city_name)
-    location_name=(city_name)
+    self.location_name = city_name
   end
 
   after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] || !is_accepted? }

@@ -49,14 +49,14 @@ RSpec.configure do |config|
               '$ref' => '#/components/schemas/character'
             }
           },
-          city_payload: {
+          location_payload: {
             type: :object,
             properties: {
               name: { type: :string, example: 'Paris' },
               icon: { type: :string, nullable: true, example: '🌳' }
             }
           },
-          city: {
+          location: {
             type: :object,
             properties: {
               id: { type: :integer, example: 13 },
@@ -64,10 +64,10 @@ RSpec.configure do |config|
               icon: { type: :string, nullable: true, example: '🌳' }
             }
           },
-          cities_array: {
+          locations_array: {
             type: :array,
             items: {
-              '$ref' => '#/components/schemas/city'
+              '$ref' => '#/components/schemas/location'
             }
           },
           player_payload: {
@@ -75,7 +75,7 @@ RSpec.configure do |config|
             properties: {
               creator_discord_id: { type: :string, nullable: true, example: '608210202952466464' },
               name: { type: :string, example: 'Pixel' },
-              city_id: { type: :integer, nullable: true, example: 42 },
+              location_id: { type: :integer, nullable: true, example: 42 },
               team_id: { type: :integer, nullable: true, example: 13 },
               discord_id: { type: :string, nullable: true, example: '608210202952466464' },
               character_ids: {
@@ -134,8 +134,8 @@ RSpec.configure do |config|
                 ]
               },
 
-              city_id: { type: :integer, nullable: true, example: 42 },
-              city: {
+              location_id: { type: :integer, nullable: true, example: 42 },
+              location: {
                 type: :object,
                 nullable: true,
                 properties: {

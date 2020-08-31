@@ -23,7 +23,7 @@ class Api::V1::LocationsController < Api::V1::BaseController
   private
 
   def location_create_params
-    params.require(:location).permit(:name, :icon)
+    params.require(:location).permit(:type, :name, :icon)
   end
 
 end

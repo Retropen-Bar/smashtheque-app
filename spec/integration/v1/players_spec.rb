@@ -6,7 +6,7 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
     @token = ApiToken.create!(name: 'Player tests')
     @teams = FactoryBot.create_list(:team, 5)
     @characters = FactoryBot.create_list(:character, 5)
-    @cities = FactoryBot.create_list(:city, 3)
+    @locations = FactoryBot.create_list(:location, 3)
     @first_creator_discord_id = '777'
     @admin_discord_user = FactoryBot.create(:discord_user)
     @admin_user = AdminUser.create(discord_user: @admin_discord_user)
@@ -14,7 +14,7 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
       FactoryBot.create(
         :player,
         characters: @characters.sample((0..3).to_a.sample),
-        city: ([nil]+@cities).sample,
+        location: ([nil]+@locations).sample,
         team: ([nil]+@teams).sample,
         creator_discord_id: @first_creator_discord_id
       )
@@ -27,7 +27,7 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
     @valid_player_attributes = FactoryBot.attributes_for(
       :player,
       character_ids: @characters.sample((0..3).to_a.sample).map(&:id),
-      city_id: ([nil]+@cities).sample&.id,
+      location_id: ([nil]+@locations).sample&.id,
       team_id: ([nil]+@teams).sample&.id,
       discord_id: @new_discord_id,
       creator_discord_id: @other_new_discord_id
@@ -178,12 +178,12 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
           run_test!
         end
 
-        context 'Unknown city' do
-          let(:new_city_name) { FactoryBot.attributes_for(:city)[:name] }
+        context 'Unknown location' do
+          let(:new_location_name) { FactoryBot.attributes_for(:location)[:name] }
           let(:player_json) do
             attributes = @valid_player_attributes
-            attributes.delete(:city_id)
-            attributes[:city_name] = new_city_name
+            attributes.delete(:location_id)
+            attributes[:location_name] = new_location_name
             {
               player: attributes
             }
@@ -192,8 +192,8 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
           run_test! do |response|
             data = JSON.parse(response.body).deep_symbolize_keys
             player = Player.find(data[:id])
-            expect(City.last.name).to eq(new_city_name)
-            expect(player.city.name).to eq(new_city_name)
+            expect(Location.last.name).to eq(new_location_name)
+            expect(player.location.name).to eq(new_location_name)
           end
         end
       end

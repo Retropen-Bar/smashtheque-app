@@ -1,17 +1,17 @@
 require 'swagger_helper'
 
-describe 'Cities API', swagger_doc: 'v1/swagger.json' do
+describe 'Locations API', swagger_doc: 'v1/swagger.json' do
 
   before do
-    @token = ApiToken.create!(name: 'City tests')
-    @cities = FactoryBot.create_list(:city, 3)
-    @valid_city_attributes = FactoryBot.attributes_for(:city)
+    @token = ApiToken.create!(name: 'Location tests')
+    @locations = FactoryBot.create_list(:location, 3)
+    @valid_location_attributes = FactoryBot.attributes_for(:location)
   end
 
-  path '/api/v1/cities' do
+  path '/api/v1/locations' do
 
-    get 'Fetches cities' do
-      tags 'Cities'
+    get 'Fetches locations' do
+      tags 'Locations'
       produces 'application/json'
       parameter name: :by_name_like,
                 in: :query,
@@ -19,9 +19,9 @@ describe 'Cities API', swagger_doc: 'v1/swagger.json' do
                 required: false,
                 description: 'Search by similar name (ignoring case and accents)'
 
-      response '200', 'cities found' do
+      response '200', 'locations found' do
         let(:Authorization) { "Bearer #{@token.token}" }
-        schema '$ref' => '#/components/schemas/cities_array'
+        schema '$ref' => '#/components/schemas/locations_array'
 
         run_test! do |response|
           data = JSON.parse(response.body)
@@ -36,39 +36,39 @@ describe 'Cities API', swagger_doc: 'v1/swagger.json' do
       end
     end
 
-    post 'Creates a city' do
-      tags 'Cities'
+    post 'Creates a location' do
+      tags 'Locations'
       consumes 'application/json'
       produces 'application/json'
-      parameter name: :city_json, in: :body, schema: {
+      parameter name: :location_json, in: :body, schema: {
         type: :object,
         properties: {
-          city: {
-            '$ref' => '#/components/schemas/city_payload'
+          location: {
+            '$ref' => '#/components/schemas/location_payload'
           }
         }
       }
 
-      response 201, 'City created' do
+      response 201, 'Location created' do
         let(:Authorization) { "Bearer #{@token.token}" }
-        schema '$ref' => '#/components/schemas/city'
+        schema '$ref' => '#/components/schemas/location'
 
         context 'Acceptable attributes' do
-          let(:city_json) do
+          let(:location_json) do
             {
-              city: @valid_city_attributes
+              location: @valid_location_attributes
             }
           end
 
           run_test! do |response|
             data = JSON.parse(response.body).deep_symbolize_keys
-            expect(data[:name]).to eq(@valid_city_attributes[:name])
-            expect(data[:icon]).to eq(@valid_city_attributes[:icon])
+            expect(data[:name]).to eq(@valid_location_attributes[:name])
+            expect(data[:icon]).to eq(@valid_location_attributes[:icon])
 
-            expect(City.count).to eq(4)
+            expect(Location.count).to eq(4)
 
-            city = City.find(data[:id])
-            target = JSON.parse(city.to_json).deep_symbolize_keys
+            location = Location.find(data[:id])
+            target = JSON.parse(location.to_json).deep_symbolize_keys
             expect(data).to include(target)
           end
         end
@@ -78,9 +78,9 @@ describe 'Cities API', swagger_doc: 'v1/swagger.json' do
 
         context 'Missing attributes' do
           let(:Authorization) { "Bearer #{@token.token}" }
-          let(:city_json) do
+          let(:location_json) do
             {
-              city: @valid_city_attributes.merge(
+              location: @valid_location_attributes.merge(
                 name: ''
               )
             }
@@ -96,10 +96,10 @@ describe 'Cities API', swagger_doc: 'v1/swagger.json' do
 
         context 'Name already taken' do
           let(:Authorization) { "Bearer #{@token.token}" }
-          let(:city_json) do
+          let(:location_json) do
             {
-              city: @valid_city_attributes.merge(
-                name: City.last.name
+              location: @valid_location_attributes.merge(
+                name: Location.last.name
               )
             }
           end

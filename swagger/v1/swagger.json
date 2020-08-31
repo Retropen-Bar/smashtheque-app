@@ -41,11 +41,11 @@
         }
       }
     },
-    "/api/v1/cities": {
+    "/api/v1/locations": {
       "get": {
-        "summary": "Fetches cities",
+        "summary": "Fetches locations",
         "tags": [
-          "Cities"
+          "Locations"
         ],
         "parameters": [
           {
@@ -60,11 +60,11 @@
         ],
         "responses": {
           "200": {
-            "description": "cities found",
+            "description": "locations found",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/cities_array"
+                  "$ref": "#/components/schemas/locations_array"
                 }
               }
             }
@@ -77,20 +77,20 @@
         }
       },
       "post": {
-        "summary": "Creates a city",
+        "summary": "Creates a location",
         "tags": [
-          "Cities"
+          "Locations"
         ],
         "parameters": [
 
         ],
         "responses": {
           "201": {
-            "description": "City created",
+            "description": "Location created",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/city"
+                  "$ref": "#/components/schemas/location"
                 }
               }
             }
@@ -112,8 +112,8 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "city": {
-                    "$ref": "#/components/schemas/city_payload"
+                  "location": {
+                    "$ref": "#/components/schemas/location_payload"
                   }
                 }
               }
@@ -436,7 +436,7 @@
           "$ref": "#/components/schemas/character"
         }
       },
-      "city_payload": {
+      "location_payload": {
         "type": "object",
         "properties": {
           "name": {
@@ -450,7 +450,7 @@
           }
         }
       },
-      "city": {
+      "location": {
         "type": "object",
         "properties": {
           "id": {
@@ -468,10 +468,10 @@
           }
         }
       },
-      "cities_array": {
+      "locations_array": {
         "type": "array",
         "items": {
-          "$ref": "#/components/schemas/city"
+          "$ref": "#/components/schemas/location"
         }
       },
       "player_payload": {
@@ -486,7 +486,7 @@
             "type": "string",
             "example": "Pixel"
           },
-          "city_id": {
+          "location_id": {
             "type": "integer",
             "nullable": true,
             "example": 42
@@ -589,12 +589,12 @@
               }
             ]
           },
-          "city_id": {
+          "location_id": {
             "type": "integer",
             "nullable": true,
             "example": 42
           },
-          "city": {
+          "location": {
             "type": "object",
             "nullable": true,
             "properties": {

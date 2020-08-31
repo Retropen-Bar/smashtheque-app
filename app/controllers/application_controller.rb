@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
 
   before_action :set_time_zone
+  before_action :set_locale
 
   def status
     render plain: 'OK', status: 200
@@ -18,6 +19,10 @@ class ApplicationController < ActionController::Base
     if time_zone = cookies[:time_zone]
       Time.zone = ActiveSupport::TimeZone[time_zone]
     end
+  end
+
+  def set_locale
+    I18n.locale = :fr
   end
 
 end

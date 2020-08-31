@@ -15,7 +15,7 @@ class Location < ApplicationRecord
   validate :name_should_be_unique
 
   def name_should_be_unique
-    if self.class.by_name_like(name).any?
+    if Location.by_name_like(name).any?
       errors.add(:name, :unique)
     end
   end

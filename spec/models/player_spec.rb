@@ -46,12 +46,12 @@ RSpec.describe Player, type: :model do
             name: c.name
           }
         end,
-        city: @player1.city.presence && {
-          id: @player1.city.id,
-          icon: @player1.city.icon,
-          name: @player1.city.name
+        location: @player1.location.presence && {
+          id: @player1.location.id,
+          icon: @player1.location.icon,
+          name: @player1.location.name
         },
-        city_id: @player1.city_id,
+        location_id: @player1.location_id,
         creator: {
           id: @player1.creator.id,
           discord_id: @player1.creator.discord_id
