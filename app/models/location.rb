@@ -4,7 +4,7 @@ class Location < ApplicationRecord
   # RELATIONS
   # ---------------------------------------------------------------------------
 
-  has_many :players
+  has_many :players, dependent: :nullify
 
   # ---------------------------------------------------------------------------
   # VALIDATIONS
