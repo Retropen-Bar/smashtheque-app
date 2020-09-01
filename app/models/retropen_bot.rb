@@ -265,7 +265,7 @@ class RetropenBot
       line += " [#{player.team.short_name}]"
     end
     if player.location
-      line += " [#{player.location.name}]"
+      line += " [#{player.location.name.titleize}]"
     end
     if player.characters.any?
       line += " :"
