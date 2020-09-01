@@ -19,6 +19,27 @@ class AdminUser < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   validates :discord_user, uniqueness: true
+  validates :level, presence: true, inclusion: { in: Ability::LEVELS }
+
+  # ---------------------------------------------------------------------------
+  # SCOPES
+  # ---------------------------------------------------------------------------
+
+  def self.not_root
+    where(is_root: false)
+  end
+
+  def self.helps
+    not_root.where(level: Ability::LEVEL_HELP)
+  end
+
+  def self.admins
+    not_root.where(level: Ability::LEVEL_ADMIN)
+  end
+
+  def self.roots
+    where(is_root: true)
+  end
 
   # ---------------------------------------------------------------------------
   # HELPERS

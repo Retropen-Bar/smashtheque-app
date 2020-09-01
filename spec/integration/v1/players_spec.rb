@@ -130,8 +130,6 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
             data = JSON.parse(response.body).deep_symbolize_keys
             expect(data[:name]).to eq(@valid_player_attributes[:name])
 
-            expect(DiscordUser.count).to eq(5)
-
             player = Player.find(data[:id])
             expect(player.is_accepted).to be_falsey
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_31_214808) do
+ActiveRecord::Schema.define(version: 2020_09_01_210521) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -41,6 +41,8 @@ ActiveRecord::Schema.define(version: 2020_08_31_214808) do
     t.inet "current_sign_in_ip"
     t.inet "last_sign_in_ip"
     t.string "encrypted_password", default: "", null: false
+    t.boolean "is_root", default: false, null: false
+    t.string "level", null: false
     t.index ["discord_user_id"], name: "index_admin_users_on_discord_user_id", unique: true
   end
 

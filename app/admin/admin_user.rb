@@ -14,6 +14,9 @@ ActiveAdmin.register AdminUser do
     column :discord_user do |decorated|
       decorated.discord_user_admin_link(size: 32)
     end
+    column :level do |decorated|
+      decorated.level_status
+    end
     column :sign_in_count
     column :current_sign_in_at
     column :current_sign_in_ip
@@ -22,6 +25,12 @@ ActiveAdmin.register AdminUser do
     end
     actions
   end
+
+  scope :all, default: true
+
+  scope :helps, group: :level
+  scope :admins, group: :level
+  scope :roots, group: :level
 
   filter :sign_in_count
   filter :current_sign_in_at
@@ -36,13 +45,16 @@ ActiveAdmin.register AdminUser do
     f.semantic_errors *f.object.errors.keys
     f.inputs do
       f.input :discord_user,
-              collection: DiscordUser.order(:username),
+              collection: admin_user_discord_user_select_collection,
               input_html: { data: { select2: {} } }
+      f.input :level,
+              collection: admin_user_level_select_collection,
+              input_html: { disabled: f.object.is_root? }
     end
     f.actions
   end
 
-  permit_params :discord_user_id
+  permit_params :discord_user_id, :level
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -52,6 +64,9 @@ ActiveAdmin.register AdminUser do
     attributes_table do
       row :discord_user do |decorated|
         decorated.discord_user_admin_link(size: 32)
+      end
+      row :level do |decorated|
+        decorated.level_status
       end
       row :sign_in_count
       row :current_sign_in_at

@@ -13,6 +13,10 @@ class ApplicationController < ActionController::Base
     admin_user_signed_in? ? [current_admin_user.id, current_admin_user.discord_user_username].join(':') : '0:anonymous'
   end
 
+  def access_denied(error)
+    render plain: 'Unauthorized', status: :unauthorized
+  end
+
   private
 
   def set_time_zone

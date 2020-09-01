@@ -26,7 +26,12 @@ fr:
         current_sign_in_ip: IP en cours
         last_sign_in_at: Session précédente
         last_sign_in_ip: IP précédente
+        level: Rôle
         sign_in_count: Connexions
+      admin_user/level:
+        0_help: Aide
+        1_admin: Admin
+        root: Sysadmin
       api_request:
         << : *SHARED
         action: Action

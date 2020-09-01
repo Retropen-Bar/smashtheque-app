@@ -2,7 +2,10 @@ fr:
   active_admin:
     scopes:
       accepted: Validés
+      admins: Admins
       all: Tous
+      helps: Aides
+      roots: Sysadmins
       to_be_accepted: À valider
       unknown: Inconnus
       with_admin_user: Admin

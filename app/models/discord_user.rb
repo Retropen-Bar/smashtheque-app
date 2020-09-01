@@ -21,6 +21,10 @@ class DiscordUser < ApplicationRecord
     where(id: AdminUser.select(:discord_user_id))
   end
 
+  def self.known
+    where.not(username: nil)
+  end
+
   def self.unknown
     where(username: nil)
   end

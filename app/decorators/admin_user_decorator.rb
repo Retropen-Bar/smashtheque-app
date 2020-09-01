@@ -13,4 +13,17 @@ class AdminUserDecorator < BaseDecorator
     model.discord_user.decorate.full_name(size: size)
   end
 
+  LEVEL_COLORS = {
+    Ability::LEVEL_HELP => :rose,
+    Ability::LEVEL_ADMIN => :blue,
+    root: :green
+  }
+
+  def level_status
+    key = model.is_root? ? :root : model.level
+    arbre do
+      status_tag AdminUser.human_attribute_name("level.#{key}"), class: LEVEL_COLORS[key]
+    end
+  end
+
 end
