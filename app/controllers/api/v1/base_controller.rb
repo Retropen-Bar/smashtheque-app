@@ -31,7 +31,7 @@ class Api::V1::BaseController < ApiController
   end
 
   def render_errors(errors, status)
-    puts "[API] Responding with errors: #{errors.to_json}"
+    logger.debug "[API] Responding with errors: #{errors.to_json}"
     render json: {
       errors: errors
     }, status: status
