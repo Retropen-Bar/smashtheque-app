@@ -124,9 +124,9 @@ class DiscordClient
     api_delete "/channels/#{channel_id}"
   end
 
-  def channel_messages(channel_id)
+  def channel_messages(channel_id, limit = 100)
     raise 'Channel ID is empty' if channel_id.blank?
-    messages = api_get "/channels/#{channel_id}/messages?limit=100"
+    messages = api_get "/channels/#{channel_id}/messages?limit=#{limit}"
     return [] if messages.is_a?(Hash)
     messages.sort_by { |message| message['timestamp'] }
   end
@@ -230,7 +230,16 @@ class DiscordClient
 
     response = https.request(request)
 
-    JSON.parse(response.read_body)
+    puts "=== API RESPONSE ==="
+    puts response.inspect
+
+    if response.is_a?(Net::HTTPTooManyRequests)
+      puts 'too many requests, wait for a bit and retry'
+      sleep 5
+      api_patch(path, params)
+    else
+      JSON.parse(response.read_body)
+    end
   end
 
   def api_delete(path)
