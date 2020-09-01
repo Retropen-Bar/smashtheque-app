@@ -171,8 +171,8 @@ ActiveAdmin.setup do |config|
   config.localize_format = :long
 
   # == Setting a Favicon
-  #
-  # config.favicon = 'favicon.ico'
+
+  config.favicon = '/favicon-32.png'
 
   # == Meta Tags
   #

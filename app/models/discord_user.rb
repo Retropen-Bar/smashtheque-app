@@ -47,6 +47,9 @@ class DiscordUser < ApplicationRecord
     unknown.find_each do |discord_user|
       discord_user.fetch_discord_data
       discord_user.save!
+      # we need to wait a bit between each request,
+      # otherwise Discord return empty results
+      sleep 1
     end
   end
 
