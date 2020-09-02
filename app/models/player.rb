@@ -82,8 +82,8 @@ class Player < ApplicationRecord
 
     if destroyed?
       # this is a deletion
-      RetropenBot.default.rebuild_abc_for_name name
-      RetropenBot.default.rebuild_locations_for_location location if location
+      RetropenBotScheduler.rebuild_abc_for_name name
+      RetropenBotScheduler.rebuild_locations_for_location location if location
     else
       # name
       if previous_changes.has_key?('name')
@@ -91,13 +91,13 @@ class Player < ApplicationRecord
         old_name = previous_changes['name'].first
         new_name = previous_changes['name'].last
         if RetropenBot.default.name_letter(old_name) != RetropenBot.default.name_letter(new_name)
-          RetropenBot.default.rebuild_abc_for_name old_name
+          RetropenBotScheduler.rebuild_abc_for_name old_name
         end
-        RetropenBot.default.rebuild_abc_for_name new_name
+        RetropenBotScheduler.rebuild_abc_for_name new_name
 
       else
         # this is an update, and the name didn't change
-        RetropenBot.default.rebuild_abc_for_name name
+        RetropenBotScheduler.rebuild_abc_for_name name
       end
 
       # location
@@ -105,31 +105,31 @@ class Player < ApplicationRecord
         # this is creation or an update with changes on the location_id
         old_location_id = previous_changes['location_id'].first
         new_location_id = previous_changes['location_id'].last
-        RetropenBot.default.rebuild_locations_for_location Location.find(old_location_id) if old_location_id
-        RetropenBot.default.rebuild_locations_for_location Location.find(new_location_id) if new_location_id
+        RetropenBotScheduler.rebuild_locations_for_location Location.find(old_location_id) if old_location_id
+        RetropenBotScheduler.rebuild_locations_for_location Location.find(new_location_id) if new_location_id
 
       else
         # this is an update, and the location_id didn't change
-        RetropenBot.default.rebuild_locations_for_location location
+        RetropenBotScheduler.rebuild_locations_for_location location
       end
 
       # team
       if previous_changes.has_key?('team_id') || team_id
         # player was added to a team, removed from a team, or updated
         # while it belongs to a team so the teams lineups must be updated
-        RetropenBot.default.rebuild_teams_lu
+        RetropenBotScheduler.rebuild_teams_lu
       end
     end
 
     # this handles both existing and new characters
-    RetropenBot.default.rebuild_chars_for_characters characters
+    RetropenBotScheduler.rebuild_chars_for_characters characters
   end
 
   # this is required because removing a has_many relation
   # is not visible inside an after_commit callback
   def after_remove_character(character)
     return true if ENV['NO_DISCORD']
-    RetropenBot.default.rebuild_chars_for_character character
+    RetropenBotScheduler.rebuild_chars_for_character character
   end
 
   # ---------------------------------------------------------------------------

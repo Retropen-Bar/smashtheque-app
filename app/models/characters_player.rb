@@ -18,7 +18,7 @@ class CharactersPlayer < ApplicationRecord
   def update_discord
     if player.is_accepted? && player&.destroyed?
       # this is the deletion of a player
-      RetropenBot.default.rebuild_chars_for_character character
+      RetropenBotScheduler.rebuild_chars_for_character character
     end
   end
 

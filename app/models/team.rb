@@ -16,7 +16,7 @@ class Team < ApplicationRecord
     # on delete: destroyed? = true and old attributes are available
 
     # in any case, both the teams list and the teams lineups must be updated
-    RetropenBot.default.rebuild_teams
+    RetropenBotScheduler.rebuild_teams
   end
 
   # ---------------------------------------------------------------------------
