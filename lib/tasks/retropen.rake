@@ -11,8 +11,8 @@ namespace :retropen do
   end
 
   desc 'Rebuild cities'
-  task :rebuild_cities => :environment do
-    RetropenBot.default.rebuild_cities
+  task :rebuild_locations => :environment do
+    RetropenBot.default.rebuild_locations
   end
 
   desc 'Rebuild teams'
