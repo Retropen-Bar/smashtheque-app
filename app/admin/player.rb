@@ -71,6 +71,16 @@ ActiveAdmin.register Player do
          input_html: { multiple: true, data: { select2: {} } }
   filter :is_accepted
 
+  action_item :rebuild_all,
+              only: :index,
+              if: proc { current_admin_user.is_root? } do
+    link_to 'Rebuild', [:rebuild_all, :admin, :players], class: 'blue'
+  end
+  collection_action :rebuild_all do
+    RetropenBotScheduler.rebuild_all
+    redirect_to request.referer, notice: 'Demande effectuée'
+  end
+
   # ---------------------------------------------------------------------------
   # FORM
   # ---------------------------------------------------------------------------

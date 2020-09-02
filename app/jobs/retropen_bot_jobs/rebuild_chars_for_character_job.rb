@@ -1,4 +1,4 @@
-class RetropenBotJobs::RebuildCharsForCharacter < ApplicationJob
+class RetropenBotJobs::RebuildCharsForCharacterJob < ApplicationJob
   queue_as :chars
 
   def perform(character, chars_category1_id: nil, chars_category2_id: nil)

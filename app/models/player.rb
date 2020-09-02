@@ -90,7 +90,7 @@ class Player < ApplicationRecord
         # this is creation or an update with changes on the name
         old_name = previous_changes['name'].first
         new_name = previous_changes['name'].last
-        if RetropenBot.default.name_letter(old_name) != RetropenBot.default.name_letter(new_name)
+        if RetropenBot.name_letter(old_name) != RetropenBot.name_letter(new_name)
           RetropenBotScheduler.rebuild_abc_for_name old_name
         end
         RetropenBotScheduler.rebuild_abc_for_name new_name

@@ -1,6 +1,7 @@
 class DiscordClient
 
   MESSAGE_LINE_SEPARATOR = "\n".freeze
+  SLEEP_TIMER = (ENV['DISCORD_SLEEP'] || 5).to_i
 
   def initialize(token: nil)
     @token = token || ENV['DISCORD_BOT_TOKEN']
@@ -234,8 +235,8 @@ class DiscordClient
     puts response.inspect
 
     if response.is_a?(Net::HTTPTooManyRequests)
-      puts 'too many requests, wait for a bit and retry'
-      sleep 5
+      puts "too many requests, wait for #{SLEEP_TIMER}s and retry"
+      sleep SLEEP_TIMER
       api_patch(path, params)
     else
       JSON.parse(response.read_body)

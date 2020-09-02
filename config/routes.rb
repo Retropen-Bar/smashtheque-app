@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
 
   # ADMIN
@@ -7,6 +9,10 @@ Rails.application.routes.draw do
   devise_for :admin_users, devise_config
 
   ActiveAdmin.routes(self)
+
+  # SIDEKIQ
+
+  mount Sidekiq::Web => '/sidekiq'
 
   # API
 
