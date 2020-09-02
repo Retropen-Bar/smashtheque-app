@@ -54,20 +54,20 @@ ActiveAdmin.register Player do
 
   filter :creator,
          as: :select,
-         collection: proc { DiscordUser.order(:username).decorate },
+         collection: proc { player_creator_select_collection },
          input_html: { multiple: true, data: { select2: {} } }
   filter :name
   filter :characters,
          as: :select,
-         collection: proc { Character.order(:name).decorate },
+         collection: proc { player_characters_select_collection },
          input_html: { multiple: true, data: { select2: {} } }
   filter :location,
          as: :select,
-         collection: proc { Location.order(:name).decorate },
+         collection: proc { player_location_select_collection },
          input_html: { multiple: true, data: { select2: {} } }
   filter :team,
          as: :select,
-         collection: proc { Team.order(:name).decorate },
+         collection: proc { player_team_select_collection },
          input_html: { multiple: true, data: { select2: {} } }
   filter :is_accepted
 
@@ -87,16 +87,18 @@ ActiveAdmin.register Player do
     f.inputs do
       f.input :name
       f.input :discord_user,
-              collection: DiscordUser.order(:username),
+              collection: player_discord_user_select_collection,
               input_html: { data: { select2: {} } }
       f.input :characters,
-              collection: Character.order(:name),
+              collection: player_characters_select_collection,
               input_html: { multiple: true, data: { select2: { sortable: true, sortedValues: f.object.character_ids } } }
       f.input :location,
-              collection: Location.order(:name),
+              collection: player_location_select_collection,
+              include_blank: 'Aucune',
               input_html: { data: { select2: {} } }
       f.input :team,
-              collection: Team.order(:name),
+              collection: player_team_select_collection,
+              include_blank: 'Aucune',
               input_html: { data: { select2: {} } }
       f.input :is_accepted
     end

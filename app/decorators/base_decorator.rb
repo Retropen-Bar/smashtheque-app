@@ -25,7 +25,7 @@ class BaseDecorator < Draper::Decorator
     options[:class] = [
       options[:class],
       model.respond_to?(:discarded?) && (model.discarded? ? 'discarded' : 'kept') || nil
-    ].compact.join(' ')
+    ].reject(&:blank?).join(' ')
     h.link_to txt, [:admin, model], options
   end
 

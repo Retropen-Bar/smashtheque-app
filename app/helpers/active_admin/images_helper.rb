@@ -9,7 +9,9 @@ module ActiveAdmin::ImagesHelper
     options = options.symbolize_keys
 
     max_width = options.delete(:max_width)
+    max_width = "#{max_width}px" if max_width && max_width.is_a?(Integer)
     max_height = options.delete(:max_height)
+    max_height = "#{max_height}px" if max_height && max_height.is_a?(Integer)
     with_link = options.delete(:with_link)
     link_options = options.delete(:link_options)
 

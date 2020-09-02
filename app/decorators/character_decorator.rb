@@ -14,7 +14,7 @@ class CharacterDecorator < BaseDecorator
   end
 
   def full_name(max_width: nil, max_height: nil)
-    [emoji_image_tag(max_width: max_width, max_height: max_height), model.name.titleize].join.html_safe
+    [emoji_image_tag(max_width: max_width, max_height: max_height), pretty_name].join.html_safe
   end
 
   def players_path

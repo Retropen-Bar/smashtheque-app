@@ -9,7 +9,7 @@ class LocationDecorator < BaseDecorator
   end
 
   def full_name(separator = '&nbsp;')
-    [model.icon, pretty_name].compact.join(separator).html_safe
+    [model.icon, pretty_name].reject(&:blank?).join(separator).html_safe
   end
 
   def players_path
