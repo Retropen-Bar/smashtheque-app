@@ -105,6 +105,9 @@ gem 'pg_search'
 gem 'rswag-api'
 gem 'rswag-ui'
 
+# Jobs
+gem 'sidekiq'
+
 group :production do
   # for assets compilation
   gem 'activerecord-nulldb-adapter'

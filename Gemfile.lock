@@ -110,6 +110,7 @@ GEM
       xpath (~> 3.2)
     childprocess (3.0.0)
     concurrent-ruby (1.1.7)
+    connection_pool (2.2.3)
     crass (1.0.6)
     devise (4.7.2)
       bcrypt (~> 3.0)
@@ -298,6 +299,7 @@ GEM
       ffi
     rbnacl-libsodium (1.0.16)
       rbnacl (>= 3.0.1)
+    redis (4.2.1)
     regexp_parser (1.7.1)
     request_store (1.5.0)
       rack (>= 1.4)
@@ -351,6 +353,10 @@ GEM
     selenium-webdriver (3.142.7)
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
+    sidekiq (6.1.1)
+      connection_pool (>= 2.2.2)
+      rack (~> 2.0)
+      redis (>= 4.2.0)
     simple_form (5.0.2)
       actionpack (>= 5.0)
       activemodel (>= 5.0)
@@ -440,6 +446,7 @@ DEPENDENCIES
   sass-rails (>= 6)
   select2-rails
   selenium-webdriver
+  sidekiq
   simple_form
   sprockets (= 3.7.2)
   toastr-rails
