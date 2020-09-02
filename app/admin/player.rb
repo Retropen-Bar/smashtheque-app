@@ -125,6 +125,29 @@ ActiveAdmin.register Player do
       row :created_at
       row :updated_at
     end
+    panel 'Doublons potentiels', style: 'margin-top: 50px' do
+      table_for resource.potential_duplicates.decorate, i18n: Player do
+        column :name do |decorated|
+          decorated.admin_link
+        end
+        column :characters do |decorated|
+          decorated.characters_links.join(' ').html_safe
+        end
+        column :location do |decorated|
+          decorated.location_link
+        end
+        column :team do |decorated|
+          decorated.team_link
+        end
+        column :creator do |decorated|
+          decorated.creator_link(size: 32)
+        end
+        column :is_accepted
+        column :created_at do |decorated|
+          decorated.created_at_date
+        end
+      end
+    end
     active_admin_comments
   end
 

@@ -228,6 +228,10 @@ class Player < ApplicationRecord
     result
   end
 
+  def potential_duplicates
+    self.class.by_name_like(name).where.not(id: id)
+  end
+
   # ---------------------------------------------------------------------------
   # GLOBAL SEARCH
   # ---------------------------------------------------------------------------
