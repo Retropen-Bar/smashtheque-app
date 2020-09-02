@@ -32,8 +32,7 @@ RUN rm -rf  \
   docker-entrypoint.sh \
   docker-entrypoint.release.sh \
   log \
-  spec \
-  swagger
+  spec
 
 # Precompile Rails assets
 RUN bundle exec rake SECRET_KEY_BASE=secret DATABASE_URL=nulldb://null ASSETS_PRECOMPILE=1 assets:precompile
