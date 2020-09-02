@@ -53,6 +53,7 @@ class Ability
 
     # Player
     can manage_or_cru, Player
+    can :accept, Player
 
     # Team
     can manage_or_cru, Team

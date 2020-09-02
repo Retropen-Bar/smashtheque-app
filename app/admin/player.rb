@@ -15,7 +15,9 @@ ActiveAdmin.register Player do
   index do
     selectable_column
     id_column
-    column :name
+    column :name do |decorated|
+      link_to decorated.indicated_name, [:admin, decorated.model]
+    end
     column :discord_user do |decorated|
       decorated.discord_user_admin_link(size: 32)
     end
@@ -35,7 +37,11 @@ ActiveAdmin.register Player do
     column :created_at do |decorated|
       decorated.created_at_date
     end
-    actions
+    actions do |decorated|
+      if !decorated.is_accepted? && !decorated.model.potential_duplicates.any?
+        link_to 'Valider', [:accept, :admin, decorated.model], class: 'member_link green'
+      end
+    end
   end
 
   scope :all, default: true
@@ -158,7 +164,7 @@ ActiveAdmin.register Player do
   end
   member_action :accept do
     resource.update_attribute :is_accepted, true
-    redirect_to [:admin, resource]
+    redirect_to request.referer
   end
 
 end

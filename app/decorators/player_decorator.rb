@@ -1,5 +1,13 @@
 class PlayerDecorator < BaseDecorator
 
+  def indicated_name
+    classes = []
+    if !model.is_accepted? && model.potential_duplicates.any?
+      classes << 'txt-error-underline'
+    end
+    h.content_tag :span, model.name, class: classes
+  end
+
   def characters_links
     model.characters.map do |character|
       character.decorate.admin_emoji_link

@@ -94,6 +94,9 @@ RSpec.describe Ability, type: :model do
     it 'create a Player' do
       expect(@help.can?(:create, Player)).to be_truthy
     end
+    it 'accept a Player' do
+      expect(@help.can?(:accept, Player)).to be_truthy
+    end
     it 'create a Team' do
       expect(@help.can?(:create, Team)).to be_truthy
     end
