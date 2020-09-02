@@ -31,7 +31,7 @@ fr:
       admin_user/level:
         0_help: Aide
         1_admin: Admin
-        root: Sysadmin
+        root: Superadmin
       api_request:
         << : *SHARED
         action: Action

@@ -5,7 +5,7 @@ fr:
       admins: Admins
       all: Tous
       helps: Aides
-      roots: Sysadmins
+      roots: Superadmins
       to_be_accepted: À valider
       unknown: Inconnus
       with_admin_user: Admin
