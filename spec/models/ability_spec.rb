@@ -100,6 +100,12 @@ RSpec.describe Ability, type: :model do
     it 'create a Team' do
       expect(@help.can?(:create, Team)).to be_truthy
     end
+    it 'access dashboard' do
+      expect(@help.can?(:read, ActiveAdmin::Page.new(nil, 'Dashboard', {}))).to be_truthy
+    end
+    it 'use global search' do
+      expect(@help.can?(:read, ActiveAdmin::Page.new(nil, 'Search', {}))).to be_truthy
+    end
   end
 
 end

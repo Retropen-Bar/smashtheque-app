@@ -14,9 +14,6 @@ class Ability
 
     manage_or_cru = level >= LEVEL_ADMIN ? :manage : :cru
 
-    # Dashboard
-    can :read, ActiveAdmin::Page, name: 'Dashboard'
-
     # AdminUser
     if level >= LEVEL_ADMIN
       can :manage, AdminUser
@@ -57,6 +54,10 @@ class Ability
 
     # Team
     can manage_or_cru, Team
+
+    # Other admin pages
+    can :read, ActiveAdmin::Page, name: 'Dashboard'
+    can :read, ActiveAdmin::Page, name: 'Search'
 
     # root
     if user.is_root?
