@@ -54,6 +54,7 @@ EXPOSE 3000
 
 # An entrypoint to run migrations and so on
 COPY docker-entrypoint.release.sh /usr/local/bin/docker-entrypoint.sh
+COPY docker-entrypoint.sidekiq.sh /usr/local/bin/docker-entrypoint-sidekiq.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
