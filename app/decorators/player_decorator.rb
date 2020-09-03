@@ -8,6 +8,14 @@ class PlayerDecorator < BaseDecorator
     h.content_tag :span, model.name, class: classes
   end
 
+  def name_or_indicated_name
+    if model.is_accepted?
+      model.name
+    else
+      indicated_name
+    end
+  end
+
   def characters_links
     model.characters.map do |character|
       character.decorate.admin_emoji_link

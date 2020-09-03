@@ -16,7 +16,7 @@ ActiveAdmin.register Player do
     selectable_column
     id_column
     column :name do |decorated|
-      link_to decorated.indicated_name, [:admin, decorated.model]
+      link_to decorated.name_or_indicated_name, [:admin, decorated.model]
     end
     column :discord_user do |decorated|
       decorated.discord_user_admin_link(size: 32)

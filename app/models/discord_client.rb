@@ -165,7 +165,14 @@ class DiscordClient
     new_messages.each do |new_message|
       if message_idx < existing_messages.count
         # an existing message is available for edition
-        edit_channel_message channel_id, existing_messages[message_idx]['id'], new_message
+        existing_message = existing_messages[message_idx]
+        # but only update it if needed
+        if existing_message['content'].eql?(new_message)
+          puts 'existing message is already OK, no need to update it'
+        else
+          puts 'existing message is different, we need to update it'
+          edit_channel_message channel_id, existing_message['id'], new_message
+        end
       else
         # all existing messages have been used, we need to create more
         create_channel_message channel_id, new_message
