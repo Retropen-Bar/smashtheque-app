@@ -17,8 +17,8 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
       FactoryBot.create(
         :player,
         characters: @characters.sample((0..3).to_a.sample),
-        location: ([nil]+@locations).sample,
-        team: ([nil]+@teams).sample,
+        locations: @locations.sample((0..3).to_a.sample),
+        teams: @teams.sample((0..3).to_a.sample),
         creator_discord_id: @first_creator_discord_id
       )
     end
@@ -30,8 +30,8 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
     @valid_player_attributes = FactoryBot.attributes_for(
       :player,
       character_ids: @characters.sample((0..3).to_a.sample).map(&:id),
-      location_id: ([nil]+@locations).sample&.id,
-      team_id: ([nil]+@teams).sample&.id,
+      location_ids: @locations.sample((0..3).to_a.sample).map(&:id),
+      team_ids: @teams.sample((0..3).to_a.sample).map(&:id),
       discord_id: @new_discord_id,
       creator_discord_id: @other_new_discord_id
     )
@@ -177,25 +177,6 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
           end
 
           run_test!
-        end
-
-        context 'Unknown location' do
-          let(:new_location_name) { FactoryBot.attributes_for(:location)[:name] }
-          let(:player_json) do
-            attributes = @valid_player_attributes
-            attributes.delete(:location_id)
-            attributes[:location_name] = new_location_name
-            {
-              player: attributes
-            }
-          end
-
-          run_test! do |response|
-            data = JSON.parse(response.body).deep_symbolize_keys
-            player = Player.find(data[:id])
-            expect(Location.last.name).to eq(new_location_name)
-            expect(player.location.name).to eq(new_location_name)
-          end
         end
       end
 

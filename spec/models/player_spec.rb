@@ -46,12 +46,15 @@ RSpec.describe Player, type: :model do
             name: c.name
           }
         end,
-        location: @player1.location.presence && {
-          id: @player1.location.id,
-          icon: @player1.location.icon,
-          name: @player1.location.name
-        },
-        location_id: @player1.location_id,
+        location_ids: @player1.locations_players.order(:position).map(&:location_id),
+        location_names: @player1.location_names,
+        locations: @player1.locations_players.order(:position).map(&:location).map do |l|
+          {
+            id: l.id,
+            icon: l.icon,
+            name: l.name
+          }
+        end,
         creator: {
           id: @player1.creator.id,
           discord_id: @player1.creator.discord_id
@@ -67,11 +70,15 @@ RSpec.describe Player, type: :model do
         id: @player1.id,
         is_accepted: @player1.is_accepted,
         name: @player1.name,
-        team: @player1.team.presence && {
-          id: @player1.team.id,
-          name: @player1.team.name
-        },
-        team_id: @player1.team_id
+        team_ids: @player1.players_teams.order(:position).map(&:team_id),
+        team_names: @player1.team_names,
+        teams: @player1.players_teams.order(:position).map(&:team).map do |t|
+          {
+            id: t.id,
+            short_name: t.short_name,
+            name: t.name
+          }
+        end
       )
     end
   end
