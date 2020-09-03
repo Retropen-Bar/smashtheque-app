@@ -1,3 +1,7 @@
 <h1 class="page-title"><%= @player.name %></h1>
 
-<%= render 'player', player: @player %>
+<div class="cards-list players">
+  <div class="card-container">
+    <%= render 'player', player: @player %>
+  </div>
+</div>

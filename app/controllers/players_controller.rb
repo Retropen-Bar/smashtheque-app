@@ -33,7 +33,7 @@ class PlayersController < PublicController
   private
 
   def players(base)
-    apply_scopes(base.accepted.order(:name)).includes(:team, :location, :characters)
+    apply_scopes(base.accepted.order(:name)).includes(:teams, :locations, :characters)
   end
 
 end

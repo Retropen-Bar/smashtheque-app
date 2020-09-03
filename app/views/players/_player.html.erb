@@ -1,18 +1,18 @@
 <div class="card player">
   <div class="card-body">
     <h5 class="card-title">
-      <% if player.team %>
-        <div class="float-right">
+      <% player.teams.each do |team| %>
+        <div class="player-team">
           <i class="fas fa-users"></i>
-          <%= link_to player.team.name, player.team, class: 'text-muted' %>
+          <%= link_to team.name, team, class: 'text-muted' %>
         </div>
       <% end %>
       <%= link_to player.name, player %>
     </h5>
-    <% if player.location %>
-      <div class="float-right">
+    <% player.locations.each do |location| %>
+      <div class="player-location">
         <i class="fas fa-map-marker-alt"></i>
-        <%= link_to player.location.name.titleize, location_path(player.location) %>
+        <%= link_to location.name.titleize, location_path(location) %>
       </div>
     <% end %>
     <% player.characters.each do |character| %>

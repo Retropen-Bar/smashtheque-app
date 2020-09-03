@@ -4,8 +4,8 @@ class Team < ApplicationRecord
   # RELATIONS
   # ---------------------------------------------------------------------------
 
-  has_many :locations_players, dependent: :destroy
-  has_many :players, through: :locations_players
+  has_many :players_teams, dependent: :destroy
+  has_many :players, through: :players_teams
 
   # ---------------------------------------------------------------------------
   # VALIDATIONS
