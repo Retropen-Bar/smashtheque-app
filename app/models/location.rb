@@ -4,7 +4,8 @@ class Location < ApplicationRecord
   # RELATIONS
   # ---------------------------------------------------------------------------
 
-  has_many :players, dependent: :nullify
+  has_many :locations_players, dependent: :destroy
+  has_many :players, through: :locations_players
 
   # ---------------------------------------------------------------------------
   # VALIDATIONS

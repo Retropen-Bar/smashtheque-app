@@ -14,12 +14,16 @@ class PlayerDecorator < BaseDecorator
     end
   end
 
-  def location_link
-    model.location&.decorate&.admin_link
+  def locations_links
+    model.locations.map do |location|
+      location.decorate.admin_link
+    end
   end
 
-  def team_link
-    model.team&.decorate&.admin_link
+  def teams_links
+    model.teams.map do |team|
+      team.decorate.admin_link
+    end
   end
 
   def creator_link(options = {})

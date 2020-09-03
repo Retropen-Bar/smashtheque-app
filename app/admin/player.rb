@@ -10,7 +10,7 @@ ActiveAdmin.register Player do
   # INDEX
   # ---------------------------------------------------------------------------
 
-  includes :characters, :location, :creator, :discord_user, :team
+  includes :characters, :locations, :creator, :discord_user, :teams
 
   index do
     selectable_column
@@ -24,11 +24,11 @@ ActiveAdmin.register Player do
     column :characters do |decorated|
       decorated.characters_links.join(' ').html_safe
     end
-    column :location do |decorated|
-      decorated.location_link
+    column :locations do |decorated|
+      decorated.locations_links.join(' ').html_safe
     end
-    column :team do |decorated|
-      decorated.team_link
+    column :teams do |decorated|
+      decorated.teams_links.join(' ').html_safe
     end
     column :creator do |decorated|
       decorated.creator_link(size: 32)
@@ -61,13 +61,13 @@ ActiveAdmin.register Player do
          as: :select,
          collection: proc { player_characters_select_collection },
          input_html: { multiple: true, data: { select2: {} } }
-  filter :location,
+  filter :locations,
          as: :select,
-         collection: proc { player_location_select_collection },
+         collection: proc { player_locations_select_collection },
          input_html: { multiple: true, data: { select2: {} } }
-  filter :team,
+  filter :teams,
          as: :select,
-         collection: proc { player_team_select_collection },
+         collection: proc { player_teams_select_collection },
          input_html: { multiple: true, data: { select2: {} } }
   filter :is_accepted
 
@@ -102,20 +102,21 @@ ActiveAdmin.register Player do
       f.input :characters,
               collection: player_characters_select_collection,
               input_html: { multiple: true, data: { select2: { sortable: true, sortedValues: f.object.character_ids } } }
-      f.input :location,
-              collection: player_location_select_collection,
+      f.input :locations,
+              collection: player_locations_select_collection,
               include_blank: 'Aucune',
-              input_html: { data: { select2: {} } }
-      f.input :team,
-              collection: player_team_select_collection,
+              input_html: { multiple: true, data: { select2: { sortable: true, sortedValues: f.object.location_ids } } }
+      f.input :teams,
+              collection: player_teams_select_collection,
               include_blank: 'Aucune',
-              input_html: { data: { select2: {} } }
+              input_html: { multiple: true, data: { select2: { sortable: true, sortedValues: f.object.team_ids } } }
       f.input :is_accepted
     end
     f.actions
   end
 
-  permit_params :name, :location_id, :team_id, :is_accepted, :discord_user_id, character_ids: []
+  permit_params :name, :is_accepted, :discord_user_id,
+                character_ids: [], location_ids: [], team_ids: []
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -130,11 +131,11 @@ ActiveAdmin.register Player do
       row :characters do |decorated|
         decorated.characters_links.join('<br/>').html_safe
       end
-      row :location do |decorated|
-        decorated.location_link
+      row :locations do |decorated|
+        decorated.locations_links.join('<br/>').html_safe
       end
-      row :team do |decorated|
-        decorated.team_link
+      row :teams do |decorated|
+        decorated.teams_links.join('<br/>').html_safe
       end
       row :creator do |decorated|
         decorated.creator_link(size: 32)
@@ -151,11 +152,11 @@ ActiveAdmin.register Player do
         column :characters do |decorated|
           decorated.characters_links.join(' ').html_safe
         end
-        column :location do |decorated|
-          decorated.location_link
+        column :locations do |decorated|
+          decorated.locations_links.join(' ').html_safe
         end
-        column :team do |decorated|
-          decorated.team_link
+        column :teams do |decorated|
+          decorated.teams_links.join(' ').html_safe
         end
         column :creator do |decorated|
           decorated.creator_link(size: 32)

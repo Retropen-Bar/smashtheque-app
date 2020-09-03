@@ -5,8 +5,6 @@ class Player < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   belongs_to :creator, class_name: :DiscordUser
-  belongs_to :location, optional: true
-  belongs_to :team, optional: true
   belongs_to :discord_user, optional: true
 
   has_many :characters_players,
@@ -17,18 +15,44 @@ class Player < ApplicationRecord
            through: :characters_players,
            after_remove: :after_remove_character
 
+  has_many :locations_players,
+           -> { positioned },
+           inverse_of: :player,
+           dependent: :destroy
+  has_many :locations,
+           through: :locations_players,
+           after_remove: :after_remove_location
+
+  has_many :players_teams,
+           -> { positioned },
+           inverse_of: :player,
+           dependent: :destroy
+  has_many :teams,
+           through: :players_teams,
+           after_remove: :after_remove_team
+
   # ---------------------------------------------------------------------------
   # VALIDATIONS
   # ---------------------------------------------------------------------------
 
   before_validation :set_character_names
-
-  validates :name, presence: true
-  validates :discord_user, uniqueness: { allow_nil: true }
+  before_validation :set_location_names
+  before_validation :set_team_names
 
   def set_character_names
     self.character_names = characters.reload.map(&:name)
   end
+
+  def set_location_names
+    self.location_names = locations.reload.map(&:name)
+  end
+
+  def set_team_names
+    self.team_names = teams.reload.map(&:name)
+  end
+
+  validates :name, presence: true
+  validates :discord_user, uniqueness: { allow_nil: true }
 
   # ---------------------------------------------------------------------------
   # CALLBACKS
@@ -45,6 +69,28 @@ class Player < ApplicationRecord
     end
   end
 
+  # trick to add position
+  def location_ids=(_ids)
+    # ids may come as strings here
+    ids = _ids.map(&:to_i) - [0]
+    super(ids)
+    locations_players.each do |locations_player|
+      idx = ids.index(locations_player.location_id)
+      locations_player.update_attribute :position, idx
+    end
+  end
+
+  # trick to add position
+  def team_ids=(_ids)
+    # ids may come as strings here
+    ids = _ids.map(&:to_i) - [0]
+    super(ids)
+    players_teams.each do |players_team|
+      idx = ids.index(players_team.team_id)
+      players_team.update_attribute :position, idx
+    end
+  end
+
   def discord_id=(discord_id)
     if discord_id
       self.discord_user = DiscordUser.where(discord_id: discord_id).first_or_create!
@@ -57,23 +103,6 @@ class Player < ApplicationRecord
     self.creator = DiscordUser.where(discord_id: discord_id).first_or_create!
   end
 
-  def location_name=(location_name)
-    if location_name
-      # Location#by_name_like does a weird search, so we need to precise @name for create
-      self.location = Location.by_name_like(location_name).first_or_create!(
-        type: Locations::City, # by default
-        name: location_name
-      )
-    else
-      self.location = nil
-    end
-  end
-
-  # TODO: remove this when bot has been updated
-  def city_name=(city_name)
-    self.location_name = city_name
-  end
-
   after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] || !is_accepted? }
   def update_discord
     # on create: previous_changes = {"id"=>[nil, <id>], "name"=>[nil, <name>], ...}
@@ -83,7 +112,6 @@ class Player < ApplicationRecord
     if destroyed?
       # this is a deletion
       RetropenBotScheduler.rebuild_abc_for_name name
-      RetropenBotScheduler.rebuild_locations_for_location location if location
     else
       # name
       if previous_changes.has_key?('name')
@@ -99,37 +127,34 @@ class Player < ApplicationRecord
         # this is an update, and the name didn't change
         RetropenBotScheduler.rebuild_abc_for_name name
       end
-
-      # location
-      if previous_changes.has_key?('location_id')
-        # this is creation or an update with changes on the location_id
-        old_location_id = previous_changes['location_id'].first
-        new_location_id = previous_changes['location_id'].last
-        RetropenBotScheduler.rebuild_locations_for_location Location.find(old_location_id) if old_location_id
-        RetropenBotScheduler.rebuild_locations_for_location Location.find(new_location_id) if new_location_id
-
-      else
-        # this is an update, and the location_id didn't change
-        RetropenBotScheduler.rebuild_locations_for_location location
-      end
-
-      # team
-      if previous_changes.has_key?('team_id') || team_id
-        # player was added to a team, removed from a team, or updated
-        # while it belongs to a team so the teams lineups must be updated
-        RetropenBotScheduler.rebuild_teams_lu
-      end
     end
 
     # this handles both existing and new characters
     RetropenBotScheduler.rebuild_chars_for_characters characters
+
+    # this handles both existing and new locations
+    RetropenBotScheduler.rebuild_locations_for_locations locations
   end
 
   # this is required because removing a has_many relation
   # is not visible inside an after_commit callback
   def after_remove_character(character)
-    return true if ENV['NO_DISCORD']
+    return true if ENV['NO_DISCORD'] || !is_accepted?
     RetropenBotScheduler.rebuild_chars_for_character character
+  end
+
+  # this is required because removing a has_many relation
+  # is not visible inside an after_commit callback
+  def after_remove_location(location)
+    return true if ENV['NO_DISCORD'] || !is_accepted?
+    RetropenBotScheduler.rebuild_locations_for_location location
+  end
+
+  # this is required because removing a has_many relation
+  # is not visible inside an after_commit callback
+  def after_remove_team(team)
+    return true if ENV['NO_DISCORD'] || !is_accepted?
+    RetropenBotScheduler.rebuild_teams_lu
   end
 
   # ---------------------------------------------------------------------------
@@ -193,12 +218,13 @@ class Player < ApplicationRecord
            prefix: true
 
   def as_json(options = nil)
+    reload
     result = super((options || {}).merge(
       include: {
-        # characters: {
-        #   only: %i(id emoji name)
-        # },
-        location: {
+        characters: {
+          only: %i(id emoji name)
+        },
+        locations: {
           only: %i(id icon name)
         },
         creator: {
@@ -207,23 +233,18 @@ class Player < ApplicationRecord
         discord_user: {
           only: %i(id discord_id)
         },
-        team: {
-          only: %i(id name)
+        teams: {
+          only: %i(id short_name name)
         }
       },
-      methods: %i(creator_discord_id discord_id) #character_ids
+      methods: %i(
+        character_ids
+        creator_discord_id
+        discord_id
+        location_ids
+        team_ids
+      )
     ))
-    # temp hack until we find why sometimes order is not OK
-    result[:character_ids] = characters_players.sort_by(&:position).map(&:character_id)
-    result[:characters] = characters_players.sort_by(&:position).map(&:character).map do |c|
-      {
-        id: c.id,
-        emoji: c.emoji,
-        name: c.name
-      }
-    end
-    result[:location] = nil unless result.has_key?('location')
-    result[:team] = nil unless result.has_key?('team')
     result[:discord_user] = nil unless result.has_key?('discord_user')
     result
   end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_01_210521) do
+ActiveRecord::Schema.define(version: 2020_09_03_200239) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -99,6 +99,14 @@ ActiveRecord::Schema.define(version: 2020_09_01_210521) do
     t.index ["type"], name: "index_locations_on_type"
   end
 
+  create_table "locations_players", force: :cascade do |t|
+    t.bigint "player_id"
+    t.bigint "location_id"
+    t.integer "position"
+    t.index ["location_id"], name: "index_locations_players_on_location_id"
+    t.index ["player_id"], name: "index_locations_players_on_player_id"
+  end
+
   create_table "pg_search_documents", force: :cascade do |t|
     t.text "content"
     t.string "searchable_type"
@@ -119,11 +127,21 @@ ActiveRecord::Schema.define(version: 2020_09_01_210521) do
     t.text "character_names", default: [], array: true
     t.bigint "creator_id"
     t.bigint "smash_gg_user_id"
+    t.text "location_names", default: [], array: true
+    t.text "team_names", default: [], array: true
     t.index ["creator_id"], name: "index_players_on_creator_id"
     t.index ["discord_user_id"], name: "index_players_on_discord_user_id"
     t.index ["location_id"], name: "index_players_on_location_id"
     t.index ["smash_gg_user_id"], name: "index_players_on_smash_gg_user_id"
     t.index ["team_id"], name: "index_players_on_team_id"
+  end
+
+  create_table "players_teams", force: :cascade do |t|
+    t.bigint "player_id"
+    t.bigint "team_id"
+    t.integer "position"
+    t.index ["player_id"], name: "index_players_teams_on_player_id"
+    t.index ["team_id"], name: "index_players_teams_on_team_id"
   end
 
   create_table "smash_gg_users", force: :cascade do |t|

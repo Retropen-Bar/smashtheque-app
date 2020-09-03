@@ -1,6 +1,15 @@
 class Team < ApplicationRecord
 
-  has_many :players, dependent: :nullify
+  # ---------------------------------------------------------------------------
+  # RELATIONS
+  # ---------------------------------------------------------------------------
+
+  has_many :locations_players, dependent: :destroy
+  has_many :players, through: :locations_players
+
+  # ---------------------------------------------------------------------------
+  # VALIDATIONS
+  # ---------------------------------------------------------------------------
 
   validates :short_name, presence: true
   validates :name, presence: true
