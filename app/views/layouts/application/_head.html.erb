@@ -13,7 +13,7 @@
     <i class="fas fa-bars"></i>
   </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+  <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto text-center text-lg-left">
       <li class="nav-item">
         <%= link_to players_path, class: 'nav-link' do %>
@@ -43,7 +43,7 @@
         <%= link_to 'Admin', admin_root_path, class: 'btn btn-outline-primary' %>
       </li> -->
     </ul>
-    <form class="form-inline my-2 my-lg-0" id="main-global-search-form">
+    <form class="form-inline my-2 my-lg-0 d-inline-flex" id="main-global-search-form">
       <%= select_tag :search, [],
             class: 'form-control',
             type: :search,
