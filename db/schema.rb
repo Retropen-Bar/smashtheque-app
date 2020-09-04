@@ -72,8 +72,8 @@ ActiveRecord::Schema.define(version: 2020_09_04_194529) do
   end
 
   create_table "characters_players", force: :cascade do |t|
-    t.bigint "character_id"
-    t.bigint "player_id"
+    t.bigint "character_id", null: false
+    t.bigint "player_id", null: false
     t.integer "position"
     t.index ["character_id", "player_id"], name: "index_characters_players_on_character_id_and_player_id", unique: true
     t.index ["character_id"], name: "index_characters_players_on_character_id"
@@ -101,8 +101,8 @@ ActiveRecord::Schema.define(version: 2020_09_04_194529) do
   end
 
   create_table "locations_players", force: :cascade do |t|
-    t.bigint "player_id"
-    t.bigint "location_id"
+    t.bigint "player_id", null: false
+    t.bigint "location_id", null: false
     t.integer "position"
     t.index ["location_id", "player_id"], name: "index_locations_players_on_location_id_and_player_id", unique: true
     t.index ["location_id"], name: "index_locations_players_on_location_id"
@@ -139,8 +139,8 @@ ActiveRecord::Schema.define(version: 2020_09_04_194529) do
   end
 
   create_table "players_teams", force: :cascade do |t|
-    t.bigint "player_id"
-    t.bigint "team_id"
+    t.bigint "player_id", null: false
+    t.bigint "team_id", null: false
     t.integer "position"
     t.index ["player_id", "team_id"], name: "index_players_teams_on_player_id_and_team_id", unique: true
     t.index ["player_id"], name: "index_players_teams_on_player_id"
