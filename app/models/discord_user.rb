@@ -57,4 +57,8 @@ class DiscordUser < ApplicationRecord
     !!admin_user
   end
 
+  def is_known?
+    !!username
+  end
+
 end

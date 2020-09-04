@@ -4,10 +4,18 @@ class DiscordUserDecorator < BaseDecorator
     super(
       options.merge(
         label: (
-          options[:label] || full_name(size: options[:size])
+          options[:label] || full_name_or_id(size: options[:size])
         )
       )
     )
+  end
+
+  def full_name_or_id(size: nil)
+    if model.is_known?
+      full_name(size: size)
+    else
+      "##{model.discord_id}"
+    end
   end
 
   def full_name(size: nil)
