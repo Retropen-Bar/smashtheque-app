@@ -13,7 +13,7 @@ class LocationDecorator < BaseDecorator
   end
 
   def players_path
-    admin_players_path(q: {location_id_in: [model.id]})
+    admin_players_path(q: {locations_players_location_id_in: [model.id]})
   end
 
   def players_link

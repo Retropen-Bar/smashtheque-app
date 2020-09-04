@@ -9,7 +9,7 @@ class TeamDecorator < BaseDecorator
   end
 
   def players_path
-    admin_players_path(q: {team_id_in: [model.id]})
+    admin_players_path(q: {players_teams_team_id_in: [model.id]})
   end
 
   def players_link
