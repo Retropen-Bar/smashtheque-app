@@ -1,6 +1,8 @@
 api:
   activerecord:
     errors:
+      messages:
+        record_invalid: invalid
       models:
         shared:
           attributes: &SHARED_ATTRIBUTES
