@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_03_200239) do
+ActiveRecord::Schema.define(version: 2020_09_04_194529) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 2020_09_03_200239) do
     t.bigint "character_id"
     t.bigint "player_id"
     t.integer "position"
+    t.index ["character_id", "player_id"], name: "index_characters_players_on_character_id_and_player_id", unique: true
     t.index ["character_id"], name: "index_characters_players_on_character_id"
     t.index ["player_id"], name: "index_characters_players_on_player_id"
   end
@@ -103,6 +104,7 @@ ActiveRecord::Schema.define(version: 2020_09_03_200239) do
     t.bigint "player_id"
     t.bigint "location_id"
     t.integer "position"
+    t.index ["location_id", "player_id"], name: "index_locations_players_on_location_id_and_player_id", unique: true
     t.index ["location_id"], name: "index_locations_players_on_location_id"
     t.index ["player_id"], name: "index_locations_players_on_player_id"
   end
@@ -140,6 +142,7 @@ ActiveRecord::Schema.define(version: 2020_09_03_200239) do
     t.bigint "player_id"
     t.bigint "team_id"
     t.integer "position"
+    t.index ["player_id", "team_id"], name: "index_players_teams_on_player_id_and_team_id", unique: true
     t.index ["player_id"], name: "index_players_teams_on_player_id"
     t.index ["team_id"], name: "index_players_teams_on_team_id"
   end
