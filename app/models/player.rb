@@ -61,7 +61,7 @@ class Player < ApplicationRecord
   # trick to add position
   def character_ids=(_ids)
     # ids may come as strings here
-    ids = _ids.map(&:to_i) - [0]
+    ids = (_ids.map(&:to_i) - [0]).uniq
     super(ids)
     characters_players.each do |characters_player|
       idx = ids.index(characters_player.character_id)
@@ -72,7 +72,7 @@ class Player < ApplicationRecord
   # trick to add position
   def location_ids=(_ids)
     # ids may come as strings here
-    ids = _ids.map(&:to_i) - [0]
+    ids = (_ids.map(&:to_i) - [0]).uniq
     super(ids)
     locations_players.each do |locations_player|
       idx = ids.index(locations_player.location_id)
@@ -83,7 +83,7 @@ class Player < ApplicationRecord
   # trick to add position
   def team_ids=(_ids)
     # ids may come as strings here
-    ids = _ids.map(&:to_i) - [0]
+    ids = (_ids.map(&:to_i) - [0]).uniq
     super(ids)
     players_teams.each do |players_team|
       idx = ids.index(players_team.team_id)
