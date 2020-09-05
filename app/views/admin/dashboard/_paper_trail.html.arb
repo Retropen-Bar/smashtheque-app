@@ -8,7 +8,7 @@ panel I18n.t("active_admin.paper_trail.dashboard.title"), id: 'active_admin-pape
   table_for versions do
     column I18n.t("active_admin.paper_trail.dashboard.columns.item") do |version|
       if version.item
-        version.item.decorate.admin_link
+        version.item.admin_decorate.admin_link
       end
     end
     column I18n.t("active_admin.paper_trail.dashboard.columns.type") do |version|
@@ -20,7 +20,7 @@ panel I18n.t("active_admin.paper_trail.dashboard.title"), id: 'active_admin-pape
     column I18n.t("active_admin.paper_trail.dashboard.columns.whodunnit") do |version|
       admin_user_id, admin_user_name = version.whodunnit&.split(':')
       if admin = admins[admin_user_id.to_i]
-        admin.decorate.admin_link
+        admin.admin_decorate.admin_link
       else
         admin_user_name
       end
