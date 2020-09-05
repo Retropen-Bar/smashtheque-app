@@ -16,7 +16,7 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
     @players = (1..20).map do |i|
       FactoryBot.create(
         :player,
-        characters: @characters.sample((0..3).to_a.sample),
+        characters: @characters.sample((1..3).to_a.sample),
         locations: @locations.sample((0..3).to_a.sample),
         teams: @teams.sample((0..3).to_a.sample),
         creator_discord_id: @first_creator_discord_id
@@ -29,7 +29,7 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
     @other_new_discord_id = '123123'
     @valid_player_attributes = FactoryBot.attributes_for(
       :player,
-      character_ids: @characters.sample((0..3).to_a.sample).map(&:id),
+      character_ids: @characters.sample((1..3).to_a.sample).map(&:id),
       location_ids: @locations.sample((0..3).to_a.sample).map(&:id),
       team_ids: @teams.sample((0..3).to_a.sample).map(&:id),
       discord_id: @new_discord_id,
@@ -143,6 +143,10 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
             created_creator_discord_user = DiscordUser.find_by(discord_id: @other_new_discord_id)
             expect(created_creator_discord_user).to be_instance_of(DiscordUser)
             expect(player.creator).to eq(created_creator_discord_user)
+
+            expect(player.character_ids).to eq(@valid_player_attributes[:character_ids])
+            expect(player.location_ids).to eq(@valid_player_attributes[:location_ids])
+            expect(player.team_ids).to eq(@valid_player_attributes[:team_ids])
 
             target = JSON.parse(player.to_json).deep_symbolize_keys
             expect(data).to include(target)

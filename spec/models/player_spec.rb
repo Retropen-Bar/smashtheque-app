@@ -8,6 +8,8 @@ RSpec.describe Player, type: :model do
     @discord_user2 = FactoryBot.create(:discord_user)
     @player1 = FactoryBot.create(:player, creator: @discord_creator, discord_user: @discord_user1)
     @new_player = FactoryBot.build(:player, creator: @discord_creator)
+    @characters = FactoryBot.create_list(:character, 5)
+    @invalid_player = FactoryBot.build(:player)
   end
 
   context 'is valid' do
@@ -80,6 +82,70 @@ RSpec.describe Player, type: :model do
           }
         end
       )
+    end
+  end
+
+  context 'character_ids=' do
+    it 'creates with positions' do
+      character_ids = @characters.map(&:id)
+      player = FactoryBot.build(:player,
+        creator: @discord_creator,
+        character_ids: character_ids
+      )
+      player.save!
+
+      # make sure those CharactersPlayer have been created and linked properly
+      created_characters_players = CharactersPlayer.order(:position).last(@characters.count)
+      expect(created_characters_players.pluck(:player_id)).to eq([player.id]*@characters.count)
+      expect(created_characters_players.pluck(:character_id)).to eq(character_ids)
+      expect(created_characters_players.pluck(:position)).to eq((0..@characters.count-1).to_a)
+    end
+
+    it 'updates with positions' do
+      # make sure this player didn't already have any characters
+      expect(CharactersPlayer.where(player: @player1).count).to eq(0)
+
+      character_ids = @characters.map(&:id)
+      @player1.character_ids = character_ids
+      @player1.save!
+
+      # make sure those CharactersPlayer have been created and linked properly
+      created_characters_players = CharactersPlayer.order(:position).last(@characters.count)
+      expect(created_characters_players.pluck(:player_id)).to eq([@player1.id]*@characters.count)
+      expect(created_characters_players.pluck(:character_id)).to eq(character_ids)
+      expect(created_characters_players.pluck(:position)).to eq((0..@characters.count-1).to_a)
+    end
+
+    it 'fills positions even on a new and invalid player' do
+      # make sure @invalid_player is indeed invalid and new
+      expect(@invalid_player).to_not be_valid
+      expect(@invalid_player.persisted?).to be_falsy
+
+      character_ids = @characters.map(&:id)
+      @invalid_player.character_ids = character_ids
+
+      positions = @invalid_player.characters_players.map(&:position)
+      expect(positions).to eq((0..@characters.count-1).to_a)
+    end
+
+    it 'and allows to save afterwards' do
+      # make sure @invalid_player is indeed invalid and new
+      expect(@invalid_player).to_not be_valid
+      expect(@invalid_player.persisted?).to be_falsy
+
+      character_ids = @characters.map(&:id)
+      @invalid_player.character_ids = character_ids
+
+      # now we fix the invalidity
+      @invalid_player.creator = @discord_creator
+      expect(@invalid_player).to be_valid
+      @invalid_player.save!
+
+      # make sure those CharactersPlayer have been created and linked properly
+      created_characters_players = CharactersPlayer.order(:position).last(@characters.count)
+      expect(created_characters_players.pluck(:player_id)).to eq([@invalid_player.id]*@characters.count)
+      expect(created_characters_players.pluck(:character_id)).to eq(character_ids)
+      expect(created_characters_players.pluck(:position)).to eq((0..@characters.count-1).to_a)
     end
   end
 

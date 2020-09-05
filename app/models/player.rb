@@ -65,7 +65,8 @@ class Player < ApplicationRecord
     super(ids)
     characters_players.each do |characters_player|
       idx = ids.index(characters_player.character_id)
-      characters_player.update_attribute :position, idx
+      characters_player.position = idx
+      characters_player.save if characters_player.persisted?
     end
   end
 
@@ -76,7 +77,8 @@ class Player < ApplicationRecord
     super(ids)
     locations_players.each do |locations_player|
       idx = ids.index(locations_player.location_id)
-      locations_player.update_attribute :position, idx
+      locations_player.position = idx
+      locations_player.save if locations_player.persisted?
     end
   end
 
@@ -87,7 +89,8 @@ class Player < ApplicationRecord
     super(ids)
     players_teams.each do |players_team|
       idx = ids.index(players_team.team_id)
-      players_team.update_attribute :position, idx
+      players_team.position = idx
+      players_team.save if players_team.persisted?
     end
   end
 
