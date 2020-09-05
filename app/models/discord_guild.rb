@@ -28,6 +28,14 @@ class DiscordGuild < ApplicationRecord
     where(icon: nil)
   end
 
+  def self.by_related_type(v)
+    where(related_type: v)
+  end
+
+  def self.by_related_id(v)
+    where(related_id: v)
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------

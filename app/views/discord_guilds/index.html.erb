@@ -1,0 +1,9 @@
+<h1 class="page-title">Serveurs Discord</h1>
+
+<div class="cards-list discord-guilds">
+  <% @discord_guilds.each do |discord_guild| %>
+    <div class="card-container">
+      <%= render 'discord_guild', discord_guild: discord_guild.decorate %>
+    </div>
+  <% end %>
+</div>

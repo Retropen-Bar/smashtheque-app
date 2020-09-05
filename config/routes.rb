@@ -36,6 +36,8 @@ Rails.application.routes.draw do
   resources :characters, only: :index
   get '/characters/:id' => 'players#character_index', as: :character
 
+  resources :discord_guilds, only: [:index, :show]
+
   resources :locations, only: :index
   get '/locations/:id' => 'players#location_index', as: :location
 
