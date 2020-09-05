@@ -64,6 +64,7 @@ fr:
         << : *SHARED
       discord_guild:
         << : *SHARED
+        admins: Admins
         discord_id: ID
         icon: Icône
         invitation_url: URL d'invitation
@@ -73,6 +74,7 @@ fr:
       discord_user:
         << : *SHARED
         admin_user: Admin
+        administrated_discord_guilds: Serveurs Discord administrés
         avatar: Avatar
         discord_id: ID
         discriminator: Discriminant

@@ -6,6 +6,13 @@ class DiscordGuild < ApplicationRecord
 
   belongs_to :related, polymorphic: true, optional: true
 
+  has_many :discord_guild_admins,
+           inverse_of: :discord_guild,
+           dependent: :destroy
+  has_many :admins,
+           through: :discord_guild_admins,
+           source: :discord_user
+
   # ---------------------------------------------------------------------------
   # VALIDATIONS
   # ---------------------------------------------------------------------------

@@ -21,6 +21,9 @@ ActiveAdmin.register DiscordGuild do
     column :related do |decorated|
       decorated.related_admin_link
     end
+    column :admins do |decorated|
+      decorated.admins_admin_links(size: 32).join('<br/>').html_safe
+    end
     column :created_at do |decorated|
       decorated.created_at_date
     end
@@ -55,11 +58,14 @@ ActiveAdmin.register DiscordGuild do
               collection: discord_guild_related_global_select_collection,
               input_html: { data: { select2: {} } }
       f.input :invitation_url
+      f.input :admins,
+              collection: discord_guild_admins_select_collection,
+              input_html: { multiple: true, data: { select2: {} } }
     end
     f.actions
   end
 
-  permit_params :discord_id, :related_gid, :invitation_url
+  permit_params :discord_id, :related_gid, :invitation_url, admin_ids: []
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -80,6 +86,9 @@ ActiveAdmin.register DiscordGuild do
       end
       row :invitation_url do |decorated|
         decorated.invitation_link
+      end
+      row :admins do |decorated|
+        decorated.admins_admin_links(size: 32).join('<br/>').html_safe
       end
       row :created_at
       row :updated_at

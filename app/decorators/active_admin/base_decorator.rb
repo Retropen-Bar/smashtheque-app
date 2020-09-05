@@ -15,7 +15,7 @@ module ActiveAdmin::BaseDecorator
       options[:class],
       model.respond_to?(:discarded?) && (model.discarded? ? 'discarded' : 'kept') || nil
     ].reject(&:blank?).join(' ')
-    h.link_to txt, [:admin, model], options
+    h.link_to txt, (options[:url] || [:admin, model]), options
   end
 
 end

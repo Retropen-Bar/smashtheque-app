@@ -153,10 +153,10 @@ ActiveAdmin.register Player do
           decorated.characters_admin_links.join(' ').html_safe
         end
         column :locations do |decorated|
-          decorated.locations_admin_links.join(' ').html_safe
+          decorated.locations_admin_links.join('<br/>').html_safe
         end
         column :teams do |decorated|
-          decorated.teams_admin_links.join(' ').html_safe
+          decorated.teams_admin_links.join('<br/>').html_safe
         end
         column :creator do |decorated|
           decorated.creator_admin_link(size: 32)

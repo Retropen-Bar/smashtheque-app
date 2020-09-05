@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_05_151621) do
+ActiveRecord::Schema.define(version: 2020_09_05_230856) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -80,6 +80,17 @@ ActiveRecord::Schema.define(version: 2020_09_05_151621) do
     t.index ["player_id"], name: "index_characters_players_on_player_id"
   end
 
+  create_table "discord_guild_admins", force: :cascade do |t|
+    t.bigint "discord_guild_id", null: false
+    t.bigint "discord_user_id", null: false
+    t.string "role"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["discord_guild_id", "discord_user_id"], name: "index_dga_on_both_ids", unique: true
+    t.index ["discord_guild_id"], name: "index_discord_guild_admins_on_discord_guild_id"
+    t.index ["discord_user_id"], name: "index_discord_guild_admins_on_discord_user_id"
+  end
+
   create_table "discord_guilds", force: :cascade do |t|
     t.string "discord_id"
     t.string "name"
@@ -100,6 +111,10 @@ ActiveRecord::Schema.define(version: 2020_09_05_151621) do
     t.string "avatar"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "token"
+    t.string "refresh_token"
+    t.boolean "token_expires"
+    t.integer "token_expires_at"
     t.index ["discord_id"], name: "index_discord_users_on_discord_id", unique: true
   end
 

@@ -77,6 +77,9 @@ ActiveAdmin.register DiscordUser do
       row :admin_user do |decorated|
         decorated.admin_user_status
       end
+      row :administrated_discord_guilds do |decorated|
+        decorated.administrated_discord_guilds_admin_links(size: 32).join('<br/>').html_safe
+      end
       row :created_at
       row :updated_at
     end

@@ -1,5 +1,9 @@
 module ActiveAdmin::DiscordGuildsHelper
 
+  def discord_guild_administrators_select_collection
+    DiscordUser.known.order(:username).decorate
+  end
+
   def discord_guild_related_global_select_collection
     characters = Character.order(:name).map do |character|
       [
