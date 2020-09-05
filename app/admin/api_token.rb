@@ -1,6 +1,6 @@
 ActiveAdmin.register ApiToken do
 
-  decorate_with ApiTokenDecorator
+  decorate_with ActiveAdmin::ApiTokenDecorator
 
   menu label: 'Tokens',
        parent: '<i class="fas fa-fw fa-terminal"></i>API'.html_safe
@@ -16,6 +16,9 @@ ActiveAdmin.register ApiToken do
     id_column
     column :name
     column :token
+    column :api_requests do |decorated|
+      decorated.api_requests_admin_link
+    end
     column :created_at do |decorated|
       decorated.created_at_date
     end
@@ -46,6 +49,9 @@ ActiveAdmin.register ApiToken do
     attributes_table do
       row :name
       row :token
+      row :api_requests do |decorated|
+        decorated.api_requests_admin_link
+      end
       row :created_at
       row :updated_at
     end

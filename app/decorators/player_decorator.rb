@@ -16,32 +16,6 @@ class PlayerDecorator < BaseDecorator
     end
   end
 
-  def characters_links
-    model.characters.map do |character|
-      character.decorate.admin_emoji_link
-    end
-  end
-
-  def locations_links
-    model.locations.map do |location|
-      location.decorate.admin_link
-    end
-  end
-
-  def teams_links
-    model.teams.map do |team|
-      team.decorate.admin_link
-    end
-  end
-
-  def creator_link(options = {})
-    model.creator.decorate.admin_link options
-  end
-
-  def discord_user_admin_link(options = {})
-    model.discord_user&.decorate&.admin_link options
-  end
-
   def icon_class
     :user
   end

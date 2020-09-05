@@ -6,6 +6,7 @@ class Location < ApplicationRecord
 
   has_many :locations_players, dependent: :destroy
   has_many :players, through: :locations_players
+  has_many :discord_guilds, as: :related, dependent: :nullify
 
   # ---------------------------------------------------------------------------
   # VALIDATIONS

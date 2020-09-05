@@ -2,6 +2,7 @@ class Character < ApplicationRecord
 
   has_many :characters_players, dependent: :destroy
   has_many :players, through: :characters_players
+  has_many :discord_guilds, as: :related, dependent: :nullify
 
   validates :name, presence: true, uniqueness: true
   validates :icon, presence: true

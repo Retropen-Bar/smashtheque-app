@@ -1,6 +1,6 @@
 ActiveAdmin.register Team do
 
-  decorate_with TeamDecorator
+  decorate_with ActiveAdmin::TeamDecorator
 
   has_paper_trail
 
@@ -16,7 +16,7 @@ ActiveAdmin.register Team do
     column :short_name
     column :name
     column :players do |decorated|
-      decorated.players_link
+      decorated.players_admin_link
     end
     column :created_at do |decorated|
       decorated.created_at_date
@@ -50,7 +50,10 @@ ActiveAdmin.register Team do
       row :short_name
       row :name
       row :players do |decorated|
-        decorated.players_link
+        decorated.players_admin_link
+      end
+      row :discord_guilds do |decorated|
+        decorated.discord_guilds_admin_links
       end
       row :created_at
       row :updated_at

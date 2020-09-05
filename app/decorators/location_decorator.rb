@@ -1,23 +1,11 @@
 class LocationDecorator < BaseDecorator
 
-  def admin_link(options = {})
-    super(options.merge(label: full_name))
-  end
-
   def pretty_name
     model.name.titleize
   end
 
   def full_name(separator = '&nbsp;')
     [model.icon, pretty_name].reject(&:blank?).join(separator).html_safe
-  end
-
-  def players_path
-    admin_players_path(q: {locations_players_location_id_in: [model.id]})
-  end
-
-  def players_link
-    h.link_to players_count, players_path
   end
 
   def players_count

@@ -1,6 +1,6 @@
 ActiveAdmin.register Locations::Country do
 
-  decorate_with Locations::CountryDecorator
+  decorate_with ActiveAdmin::Locations::CountryDecorator
 
   has_paper_trail
 
@@ -18,9 +18,12 @@ ActiveAdmin.register Locations::Country do
       decorated.full_name
     end
     column :players do |decorated|
-      decorated.players_link
+      decorated.players_admin_link
     end
     column :is_main
+    column :discord_guilds do |decorated|
+      decorated.discord_guilds_admin_links
+    end
     column :created_at do |decorated|
       decorated.created_at_date
     end
@@ -54,9 +57,12 @@ ActiveAdmin.register Locations::Country do
       row :icon
       row :name
       row :players do |decorated|
-        decorated.players_link
+        decorated.players_admin_link
       end
       row :is_main
+      row :discord_guilds do |decorated|
+        decorated.discord_guilds_admin_links
+      end
       row :created_at
       row :updated_at
     end

@@ -1,6 +1,6 @@
 ActiveAdmin.register AdminUser do
 
-  decorate_with AdminUserDecorator
+  decorate_with ActiveAdmin::AdminUserDecorator
 
   menu label: '<i class="fas fa-fw fa-shield-alt"></i>Admins'.html_safe
 

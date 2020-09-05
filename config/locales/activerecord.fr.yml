@@ -6,6 +6,7 @@ fr:
       api_token: Token API
       character: Perso
       comment: Commentaire
+      discord_guild: Serveur Discord
       discord_user: Compte Discord
       location: Localisation
       locations/city: Ville
@@ -17,6 +18,7 @@ fr:
     attributes:
       shared: &SHARED
         created_at: Ajout
+        discord_guilds: Serveurs Discord
         id: "#"
         name: Nom
         updated_at: Modification
@@ -60,6 +62,14 @@ fr:
         is_main: Pays majeur ?
       comment:
         << : *SHARED
+      discord_guild:
+        << : *SHARED
+        discord_id: ID
+        icon: Icône
+        invitation_url: URL d'invitation
+        name: Nom
+        related: Sujet principal
+        splash: Bannière
       discord_user:
         << : *SHARED
         admin_user: Admin

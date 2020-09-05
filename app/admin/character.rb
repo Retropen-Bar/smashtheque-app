@@ -1,6 +1,6 @@
 ActiveAdmin.register Character do
 
-  decorate_with CharacterDecorator
+  decorate_with ActiveAdmin::CharacterDecorator
 
   has_paper_trail
 
@@ -13,13 +13,14 @@ ActiveAdmin.register Character do
   index do
     selectable_column
     id_column
-    column :emoji do |decorated|
-      decorated.emoji_image_tag(max_height: '32px')
+    column :name do |decorated|
+      decorated.admin_link
     end
-    column :icon
-    column :name
     column :players do |decorated|
-      decorated.players_link
+      decorated.players_admin_link
+    end
+    column :discord_guilds do |decorated|
+      decorated.discord_guilds_admin_links
     end
     column :created_at do |decorated|
       decorated.created_at_date
@@ -56,7 +57,10 @@ ActiveAdmin.register Character do
       row :icon
       row :name
       row :players do |decorated|
-        decorated.players_link
+        decorated.players_admin_link
+      end
+      row :discord_guilds do |decorated|
+        decorated.discord_guilds_admin_links
       end
       row :created_at
       row :updated_at

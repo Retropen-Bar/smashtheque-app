@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_04_194529) do
+ActiveRecord::Schema.define(version: 2020_09_05_151621) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -78,6 +78,19 @@ ActiveRecord::Schema.define(version: 2020_09_04_194529) do
     t.index ["character_id", "player_id"], name: "index_characters_players_on_character_id_and_player_id", unique: true
     t.index ["character_id"], name: "index_characters_players_on_character_id"
     t.index ["player_id"], name: "index_characters_players_on_player_id"
+  end
+
+  create_table "discord_guilds", force: :cascade do |t|
+    t.string "discord_id"
+    t.string "name"
+    t.string "icon"
+    t.string "splash"
+    t.string "related_type"
+    t.bigint "related_id"
+    t.string "invitation_url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["related_type", "related_id"], name: "index_discord_guilds_on_related_type_and_related_id"
   end
 
   create_table "discord_users", force: :cascade do |t|

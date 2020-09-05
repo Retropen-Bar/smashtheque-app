@@ -1,6 +1,6 @@
 ActiveAdmin.register ApiRequest do
 
-  decorate_with ApiRequestDecorator
+  decorate_with ActiveAdmin::ApiRequestDecorator
 
   menu label: 'Requêtes',
        parent: '<i class="fas fa-fw fa-terminal"></i>API'.html_safe

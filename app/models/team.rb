@@ -6,6 +6,7 @@ class Team < ApplicationRecord
 
   has_many :players_teams, dependent: :destroy
   has_many :players, through: :players_teams
+  has_many :discord_guilds, as: :related, dependent: :nullify
 
   # ---------------------------------------------------------------------------
   # VALIDATIONS

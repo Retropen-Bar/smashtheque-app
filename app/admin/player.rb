@@ -1,6 +1,6 @@
 ActiveAdmin.register Player do
 
-  decorate_with PlayerDecorator
+  decorate_with ActiveAdmin::PlayerDecorator
 
   has_paper_trail
 
@@ -22,16 +22,16 @@ ActiveAdmin.register Player do
       decorated.discord_user_admin_link(size: 32)
     end
     column :characters do |decorated|
-      decorated.characters_links.join(' ').html_safe
+      decorated.characters_admin_links.join(' ').html_safe
     end
     column :locations do |decorated|
-      decorated.locations_links.join(' ').html_safe
+      decorated.locations_admin_links.join('<br/>').html_safe
     end
     column :teams do |decorated|
-      decorated.teams_links.join(' ').html_safe
+      decorated.teams_admin_links.join('<br/>').html_safe
     end
     column :creator do |decorated|
-      decorated.creator_link(size: 32)
+      decorated.creator_admin_link(size: 32)
     end
     column :is_accepted
     column :created_at do |decorated|
@@ -129,16 +129,16 @@ ActiveAdmin.register Player do
         decorated.discord_user_admin_link(size: 32)
       end
       row :characters do |decorated|
-        decorated.characters_links.join('<br/>').html_safe
+        decorated.characters_admin_links.join('<br/>').html_safe
       end
       row :locations do |decorated|
-        decorated.locations_links.join('<br/>').html_safe
+        decorated.locations_admin_links.join('<br/>').html_safe
       end
       row :teams do |decorated|
-        decorated.teams_links.join('<br/>').html_safe
+        decorated.teams_admin_links.join('<br/>').html_safe
       end
       row :creator do |decorated|
-        decorated.creator_link(size: 32)
+        decorated.creator_admin_link(size: 32)
       end
       row :is_accepted
       row :created_at
@@ -150,16 +150,16 @@ ActiveAdmin.register Player do
           decorated.admin_link
         end
         column :characters do |decorated|
-          decorated.characters_links.join(' ').html_safe
+          decorated.characters_admin_links.join(' ').html_safe
         end
         column :locations do |decorated|
-          decorated.locations_links.join(' ').html_safe
+          decorated.locations_admin_links.join(' ').html_safe
         end
         column :teams do |decorated|
-          decorated.teams_links.join(' ').html_safe
+          decorated.teams_admin_links.join(' ').html_safe
         end
         column :creator do |decorated|
-          decorated.creator_link(size: 32)
+          decorated.creator_admin_link(size: 32)
         end
         column :is_accepted
         column :created_at do |decorated|
