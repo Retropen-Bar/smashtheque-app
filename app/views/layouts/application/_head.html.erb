@@ -39,9 +39,11 @@
           <span>Équipes</span>
         <% end %>
       </li>
-      <!-- <li class="nav-item">
-        <%= link_to 'Admin', admin_root_path, class: 'btn btn-outline-primary' %>
-      </li> -->
+      <% if admin_user_signed_in? %>
+        <li class="nav-item">
+          <%= link_to 'Admin', admin_root_path, class: 'btn btn-outline-primary' %>
+        </li>
+      <% end %>
     </ul>
     <form class="form-inline my-2 my-lg-0 d-inline-flex" id="main-global-search-form">
       <%= select_tag :search, [],

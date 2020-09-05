@@ -17,13 +17,17 @@
   ul.navbar-nav
     li.nav-item
       a
-        color: $dark-gray
+        &:not(.btn)
+          color: $dark-gray
 
-        &, &:hover
-          text-decoration: none
+          &, &:hover
+            text-decoration: none
 
-        &:hover
-          color: $primary
+          &:hover
+            color: $primary
+
+        &.btn
+          margin-left: 10px
 
         img, i, span
           display: inline-block
