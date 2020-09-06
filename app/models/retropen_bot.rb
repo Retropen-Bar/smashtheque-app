@@ -12,7 +12,9 @@ class RetropenBot
   CATEGORY_COUNTRIES = 'JOUEURS FR : PAYS MAJEURS'.freeze
   CATEGORY_TEAMS = 'ÉQUIPES FR'.freeze
   CHANNEL_TEAMS_LIST = 'listing-équipes'.freeze
-  CHANNEL_TEAMS_LU = 'roster-équipes'.freeze
+  CHANNEL_TEAMS_LU1 = 'roster-équipes-a-i'.freeze
+  CHANNEL_TEAMS_LU2 = 'roster-équipes-j-r'.freeze
+  CHANNEL_TEAMS_LU3 = 'roster-équipes-s-z'.freeze
 
   # ---------------------------------------------------------------------------
   # CONSTRUCTOR
@@ -132,6 +134,10 @@ class RetropenBot
   # TEAMS
   # ---------------------------------------------------------------------------
 
+  # LU 1 : a..i
+  # LU 2 : j..r
+  # LU 3 : s..z + autres
+
   def teams_category
     client.find_or_create_guild_category @guild_id, name: CATEGORY_TEAMS
   end
@@ -142,9 +148,21 @@ class RetropenBot
                                     parent_id: teams_category_id || teams_category['id']
   end
 
-  def teams_lu_channel(teams_category_id = nil)
+  def teams_lu_channel1(teams_category_id = nil)
     find_or_create_readonly_channel @guild_id,
-                                    name: CHANNEL_TEAMS_LU,
+                                    name: CHANNEL_TEAMS_LU1,
+                                    parent_id: teams_category_id || teams_category['id']
+  end
+
+  def teams_lu_channel2(teams_category_id = nil)
+    find_or_create_readonly_channel @guild_id,
+                                    name: CHANNEL_TEAMS_LU2,
+                                    parent_id: teams_category_id || teams_category['id']
+  end
+
+  def teams_lu_channel3(teams_category_id = nil)
+    find_or_create_readonly_channel @guild_id,
+                                    name: CHANNEL_TEAMS_LU3,
                                     parent_id: teams_category_id || teams_category['id']
   end
 
@@ -160,14 +178,33 @@ class RetropenBot
   end
 
   def rebuild_teams_lu(_teams_category_id = nil)
-    teams_category_id = _teams_category_id || teams_category['id']
-    lines = Team.order(:name).map do |team|
-      [
+    # build lines
+    lines1 = []
+    lines2 = []
+    lines3 = []
+    Team.order(:name).each do |team|
+      lines = [
         "**#{team.short_name} : #{team.name}**",
         players_lines(team.players)
       ].join(DiscordClient::MESSAGE_LINE_SEPARATOR)
-    end.join(DiscordClient::MESSAGE_LINE_SEPARATOR * 2)
-    client.replace_channel_content teams_lu_channel(teams_category_id)['id'], lines
+      letter = self.class.name_letter team.name
+      if ('a'..'i').include?(letter)
+        lines1 << lines
+      elsif ('j'..'r').include?(letter)
+        lines2 << lines
+      else
+        lines3 << lines
+      end
+    end
+    lines1 = lines1.join(DiscordClient::MESSAGE_LINE_SEPARATOR * 2)
+    lines2 = lines2.join(DiscordClient::MESSAGE_LINE_SEPARATOR * 2)
+    lines3 = lines3.join(DiscordClient::MESSAGE_LINE_SEPARATOR * 2)
+
+    # rebuild channels
+    teams_category_id = _teams_category_id || teams_category['id']
+    client.replace_channel_content teams_lu_channel1(teams_category_id)['id'], lines1
+    client.replace_channel_content teams_lu_channel2(teams_category_id)['id'], lines2
+    client.replace_channel_content teams_lu_channel3(teams_category_id)['id'], lines3
   end
 
   # ---------------------------------------------------------------------------
