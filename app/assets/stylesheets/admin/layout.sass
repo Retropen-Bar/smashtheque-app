@@ -9,11 +9,6 @@ h1#site_title
 #header
   ul#tabs
     li.menu_item
-      &:nth-child(2)
-        border-bottom: 1px solid #323537
-        padding-bottom: 5px
-        margin-bottom: 5px
-
       a
         i
           margin-right: 10px
@@ -22,3 +17,8 @@ h1#site_title
         & > a
           background-color: $dark-gray
           color: white
+
+    & > li.menu_item:nth-child(2)
+      border-bottom: 1px solid #323537
+      padding-bottom: 5px
+      margin-bottom: 5px

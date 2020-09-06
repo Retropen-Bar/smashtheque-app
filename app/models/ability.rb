@@ -13,6 +13,7 @@ class Ability
     level = user.level || LEVEL_HELP
 
     manage_or_cru = level >= LEVEL_ADMIN ? :manage : :cru
+    manage_or_read = level >= LEVEL_ADMIN ? :manage : :read
 
     # AdminUser
     if level >= LEVEL_ADMIN
@@ -32,18 +33,16 @@ class Ability
     # only root
 
     # Character
-    if level >= LEVEL_ADMIN
-      can :manage, Character
-    else
-      can :read, Character
-    end
+    can manage_or_read, Character
+
+    # DiscordGuild
+    can manage_or_read, DiscordGuild
+
+    # DiscordGuildAdmin
+    can manage_or_read, DiscordGuildAdmin
 
     # DiscordUser
-    if level >= LEVEL_ADMIN
-      can :manage, DiscordUser
-    else
-      can :read, DiscordUser
-    end
+    can manage_or_read, DiscordUser
 
     # Location and subclasses
     can manage_or_cru, Location
