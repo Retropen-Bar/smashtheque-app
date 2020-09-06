@@ -43,6 +43,22 @@ class DiscordUser < ApplicationRecord
     where(username: nil)
   end
 
+  def self.team_admins
+    where(id: TeamAdmin.select(:discord_user_id))
+  end
+
+  def self.on_abc(letter)
+    letter == '$' ? on_abc_others : where("unaccent(username) ILIKE '#{letter}%'")
+  end
+
+  def self.on_abc_others
+    result = self
+    ('a'..'z').each do |letter|
+      result = result.where.not("unaccent(username) ILIKE '#{letter}%'")
+    end
+    result
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------

@@ -17,6 +17,7 @@ class RetropenBot
   CHANNEL_TEAMS_LU3 = 'roster-équipes-s-z-autres'.freeze
   CATEGORY_ACTORS = 'ACTEURS DE LA SCÈNE SMASH'.freeze
   CHANNEL_DISCORD_GUILDS_CHARS = 'commus-fr-par-perso'.freeze
+  CHANNEL_TEAM_ADMINS = 'capitaine-d-équipe'.freeze
 
   # ---------------------------------------------------------------------------
   # CONSTRUCTOR
@@ -223,6 +224,12 @@ class RetropenBot
                                     parent_id: actors_category_id || actors_category['id']
   end
 
+  def team_admins_list_channel(actors_category_id = nil)
+    find_or_create_readonly_channel @guild_id,
+                                    name: CHANNEL_TEAM_ADMINS,
+                                    parent_id: actors_category_id || actors_category['id']
+  end
+
   def rebuild_discord_guilds_chars_list(_actors_category_id = nil)
     actors_category_id = _actors_category_id || actors_category['id']
     discord_guilds = DiscordGuild.by_related_type(Character.to_s)
@@ -252,11 +259,48 @@ class RetropenBot
     )
   end
 
+  def rebuild_team_admins_list(_actors_category_id = nil)
+    actors_category_id = _actors_category_id || actors_category['id']
+
+    admins = {}
+    latest_discord_user_id = 0
+    TeamAdmin.order(:discord_user_id).all.each do |team_admin|
+      # we might have already seen this person
+      next if team_admin.discord_user_id == latest_discord_user_id
+      latest_discord_user_id = team_admin.discord_user_id
+
+      discord_user = team_admin.discord_user
+      name = discord_user.player&.name || discord_user.username
+      letter = self.class.name_letter name
+      admins[letter] ||= []
+      admins[letter] << (
+        [
+          emoji_tag('745255339364057119'),
+          name
+        ] + discord_user.administrated_teams.order(:short_name).map do |team|
+          "[#{team.short_name}]"
+        end
+      ).join(' ')
+    end
+
+    lines = []
+    (('a'..'z').to_a + ['$']).each do |letter|
+      lines << letter.upcase
+      lines += admins[letter] || []
+    end
+    lines = lines.join(DiscordClient::MESSAGE_LINE_SEPARATOR)
+    client.replace_channel_content team_admins_list_channel(actors_category_id)['id'], lines
+  end
+
   # ---------------------------------------------------------------------------
   # PRIVATE
   # ---------------------------------------------------------------------------
 
   private
+
+  def emoji_tag(emoji_id)
+    "<:placeholder:#{emoji_id}>"
+  end
 
   def character_emoji_tag(character)
     "<:#{character.name.parameterize.gsub('-','')}:#{character.emoji}>"

@@ -158,4 +158,10 @@ class RetropenBotScheduler
     )
   end
 
+  def self.rebuild_team_admins_list(actors_category_id: nil)
+    RetropenBotJobs::RebuildTeamAdminsListJob.perform_later(
+      actors_category_id: actors_category_id
+    )
+  end
+
 end

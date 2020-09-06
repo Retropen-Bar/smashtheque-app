@@ -3,6 +3,22 @@ class ActiveAdmin::PlayerDecorator < PlayerDecorator
 
   decorates :player
 
+  def indicated_name
+    classes = []
+    if !model.is_accepted? && model.potential_duplicates.any?
+      classes << 'txt-error-underline'
+    end
+    h.content_tag :span, model.name, class: classes
+  end
+
+  def name_or_indicated_name
+    if model.is_accepted?
+      model.name
+    else
+      indicated_name
+    end
+  end
+
   def characters_admin_links
     model.characters.map do |character|
       character.admin_decorate.admin_emoji_link
