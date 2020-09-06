@@ -157,10 +157,12 @@ class DiscordClient
 
   def replace_channel_content(channel_id, content)
     content = '-' if content.blank?
-
-    existing_messages = channel_messages channel_id
     new_messages = split_messages content
+    replace_channel_messages channel_id, new_messages
+  end
 
+  def replace_channel_messages(channel_id, new_messages)
+    existing_messages = channel_messages channel_id
     message_idx = 0
     new_messages.each do |new_message|
       if message_idx < existing_messages.count

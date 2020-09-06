@@ -148,4 +148,14 @@ class RetropenBotScheduler
     rebuild_teams_lu teams_category_id: _teams_category_id
   end
 
+  # ---------------------------------------------------------------------------
+  # ACTORS
+  # ---------------------------------------------------------------------------
+
+  def self.rebuild_discord_guilds_chars_list(actors_category_id: nil)
+    RetropenBotJobs::RebuildDiscordGuildsCharsListJob.perform_later(
+      actors_category_id: actors_category_id
+    )
+  end
+
 end

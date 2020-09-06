@@ -15,6 +15,14 @@ class DiscordGuildDecorator < BaseDecorator
     ].join('&nbsp;').html_safe
   end
 
+  def name_or_id
+    if model.is_known?
+      model.name
+    else
+      "##{model.discord_id}"
+    end
+  end
+
   def invitation_link
     h.link_to model.invitation_url, model.invitation_url, target: '_blank'
   end

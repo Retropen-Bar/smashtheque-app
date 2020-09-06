@@ -231,7 +231,7 @@ class RetropenBot
                                  .sort_by do |discord_guild|
                                    discord_guild.related.name
                                  end
-    lines = discord_guilds.map do |discord_guild|
+    messages = discord_guilds.map do |discord_guild|
       character = discord_guild.related
       [
         "**#{character.name.upcase}**",
@@ -245,15 +245,12 @@ class RetropenBot
           result
         end.join(', ')
       ].join(' ')
-    end.join(DiscordClient::MESSAGE_LINE_SEPARATOR)
-    client.replace_channel_content(
+    end
+    client.replace_channel_messages(
       discord_guilds_chars_list_channel(actors_category_id)['id'],
-      lines
+      messages
     )
   end
-
-
-CATEGORY_ACTORS
 
   # ---------------------------------------------------------------------------
   # PRIVATE

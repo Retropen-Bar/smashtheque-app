@@ -1,6 +1,7 @@
 :concurrency: 1
 :queues:
   - abc
+  - actors
   - chars
   - locations
   - teams
