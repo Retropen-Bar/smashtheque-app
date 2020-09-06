@@ -71,6 +71,7 @@ fr:
         invitation_url: URL d'invitation
         name: Nom
         related: Sujet principal
+        related_gid: Sujet principal
         splash: Bannière
         twitter_username: Compte Twitter
       discord_guild_admin:
