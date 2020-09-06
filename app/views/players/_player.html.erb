@@ -4,7 +4,7 @@
       <% player.teams.each do |team| %>
         <div class="player-team">
           <i class="fas fa-users"></i>
-          <%= link_to team.name, team, class: 'text-muted' %>
+          <%= link_to team.short_name, team, class: 'text-muted' %>
         </div>
       <% end %>
       <%= link_to player.name, player %>

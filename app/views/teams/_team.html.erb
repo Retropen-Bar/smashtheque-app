@@ -4,6 +4,6 @@
       <i class="fas fa-users"></i>
       <%= team.players.count %>
     </div>
-    <%= link_to team.full_name, team %>
+    <%= link_to team.full_name_with_logo(max_width: 64, max_height: 64), team %>
   </div>
 </div>

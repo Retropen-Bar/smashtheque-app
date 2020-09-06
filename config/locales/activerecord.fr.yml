@@ -103,5 +103,9 @@ fr:
       team:
         << : *SHARED
         admins: Admins
-        short_name: Nom court
+        is_offline: Team offline ?
+        is_online: Team online ?
+        is_sponsor: Sponso ?
+        logo_url: Logo
         players: Joueurs
+        short_name: Nom court
