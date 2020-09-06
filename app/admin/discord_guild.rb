@@ -61,11 +61,13 @@ ActiveAdmin.register DiscordGuild do
       f.input :admins,
               collection: discord_guild_admins_select_collection,
               input_html: { multiple: true, data: { select2: {} } }
+      f.input :twitter_username
     end
     f.actions
   end
 
-  permit_params :discord_id, :related_gid, :invitation_url, admin_ids: []
+  permit_params :discord_id, :related_gid, :invitation_url, :twitter_username,
+                admin_ids: []
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -89,6 +91,9 @@ ActiveAdmin.register DiscordGuild do
       end
       row :admins do |decorated|
         decorated.admins_admin_links(size: 32).join('<br/>').html_safe
+      end
+      row :twitter_username do |decorated|
+        decorated.twitter_link
       end
       row :created_at
       row :updated_at

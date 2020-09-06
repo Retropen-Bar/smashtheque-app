@@ -9,6 +9,10 @@ class ApplicationRecord < ActiveRecord::Base
     self.class.admin_decorator_class
   end
 
+  def self.admin_decorate
+    admin_decorator_class.decorate_collection(all)
+  end
+
   def self.admin_decorator_class(called_on = self)
     prefix = respond_to?(:model_name) ? model_name : name
     decorator_name = "ActiveAdmin::#{prefix}Decorator"

@@ -72,6 +72,7 @@ fr:
         name: Nom
         related: Sujet principal
         splash: Bannière
+        twitter_username: Compte Twitter
       discord_guild_admin:
         << : *SHARED
         discord_guild: Serveur
@@ -100,6 +101,7 @@ fr:
         is_accepted: Validé ?
         team: Équipe
         team_id: Équipe
+        twitter_username: Compte Twitter
       team:
         << : *SHARED
         admins: Admins
@@ -109,3 +111,4 @@ fr:
         logo_url: Logo
         players: Joueurs
         short_name: Nom court
+        twitter_username: Compte Twitter

@@ -53,11 +53,12 @@ ActiveAdmin.register Team do
       f.input :admins,
               collection: team_admins_select_collection,
               input_html: { multiple: true, data: { select2: {} } }
+      f.input :twitter_username
     end
     f.actions
   end
 
-  permit_params :short_name, :name, :logo_url,
+  permit_params :short_name, :name, :logo_url, :twitter_username,
                 :is_offline, :is_online, :is_sponsor,
                 admin_ids: []
 
@@ -83,6 +84,9 @@ ActiveAdmin.register Team do
       end
       row :discord_guilds do |decorated|
         decorated.discord_guilds_admin_links
+      end
+      row :twitter_username do |decorated|
+        decorated.twitter_link
       end
       row :created_at
       row :updated_at

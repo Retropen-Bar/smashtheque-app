@@ -110,12 +110,13 @@ ActiveAdmin.register Player do
               collection: player_teams_select_collection,
               include_blank: 'Aucune',
               input_html: { multiple: true, data: { select2: { sortable: true, sortedValues: f.object.team_ids } } }
+      f.input :twitter_username
       f.input :is_accepted
     end
     f.actions
   end
 
-  permit_params :name, :is_accepted, :discord_user_id,
+  permit_params :name, :is_accepted, :discord_user_id, :twitter_username,
                 character_ids: [], location_ids: [], team_ids: []
 
   # ---------------------------------------------------------------------------
@@ -137,6 +138,9 @@ ActiveAdmin.register Player do
       row :teams do |decorated|
         decorated.teams_admin_links.join('<br/>').html_safe
       end
+      row :twitter_username do |decorated|
+        decorated.twitter_link
+      end
       row :creator do |decorated|
         decorated.creator_admin_link(size: 32)
       end
@@ -145,7 +149,7 @@ ActiveAdmin.register Player do
       row :updated_at
     end
     panel 'Doublons potentiels', style: 'margin-top: 50px' do
-      table_for resource.potential_duplicates.decorate, i18n: Player do
+      table_for resource.potential_duplicates.admin_decorate, i18n: Player do
         column :name do |decorated|
           decorated.admin_link
         end

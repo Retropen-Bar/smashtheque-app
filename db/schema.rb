@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_06_000756) do
+ActiveRecord::Schema.define(version: 2020_09_06_003219) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -101,6 +101,7 @@ ActiveRecord::Schema.define(version: 2020_09_06_000756) do
     t.string "invitation_url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "twitter_username"
     t.index ["related_type", "related_id"], name: "index_discord_guilds_on_related_type_and_related_id"
   end
 
@@ -159,6 +160,7 @@ ActiveRecord::Schema.define(version: 2020_09_06_000756) do
     t.bigint "smash_gg_user_id"
     t.text "location_names", default: [], array: true
     t.text "team_names", default: [], array: true
+    t.string "twitter_username"
     t.index ["creator_id"], name: "index_players_on_creator_id"
     t.index ["discord_user_id"], name: "index_players_on_discord_user_id"
     t.index ["location_id"], name: "index_players_on_location_id"
@@ -221,6 +223,7 @@ ActiveRecord::Schema.define(version: 2020_09_06_000756) do
     t.boolean "is_offline"
     t.boolean "is_online"
     t.boolean "is_sponsor"
+    t.string "twitter_username"
   end
 
   create_table "versions", force: :cascade do |t|
