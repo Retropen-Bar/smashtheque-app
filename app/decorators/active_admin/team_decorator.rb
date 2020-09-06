@@ -4,7 +4,7 @@ class ActiveAdmin::TeamDecorator < TeamDecorator
   decorates :team
 
   def admin_link(options = {})
-    super(options.merge(label: full_name))
+    super(options.merge(label: full_name_with_logo(size: 32)))
   end
 
   def discord_guilds_admin_links(options = {})
