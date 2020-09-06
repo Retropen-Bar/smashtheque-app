@@ -1,19 +1,19 @@
 # if needed
-# City.destroy_all
+# Locations::City.destroy_all
 # Character.destroy_all
 # Team.destroy_all
 # Player.destroy_all
 
 ENV['NO_DISCORD'] = '1'
 
-# City
-unless City.any?
+# Locations::City
+unless Locations::City.any?
   uri = "#{ENV['SEED_DATA_SOURCE_URL']}cities.json"
   puts "seed #{uri}"
   open(uri) do |file|
     cities = JSON.parse(file.read)
     cities.each do |city|
-      City.create!(city)
+      Locations::City.create!(city)
     end
   end
 end
@@ -60,5 +60,33 @@ unless Player.any?
     end
   end
 end
+
+# DiscordGuild
+# unless DiscordGuild.any?
+  uri = "#{ENV['SEED_DATA_SOURCE_URL']}char_guilds.json"
+  puts "seed #{uri}"
+  open(uri) do |file|
+    guilds = JSON.parse(file.read)
+    DiscordGuild.transaction do
+      guilds.each do |character_emoji, guild|
+        puts "seed guild #{guild.inspect} for character with emoji #{character_emoji}"
+        character = Character.by_emoji(character_emoji).first!
+        discord_guild = DiscordGuild.create!(
+          invitation_url: guild['url']
+        )
+        guild['admins'].each do |admin|
+          player = Player.where(name: admin['name']).first!
+          discord_user = player.discord_user
+          raise "unknown DiscordUser for Player ##{player.id}: #{player.name}"
+          DiscordGuildAdmin.create!(
+            discord_guild: discord_guild,
+            discord_user: discord_user,
+            role: admin['role']
+          )
+        end
+      end
+    end
+  end
+# end
 
 ENV['NO_DISCORD'] = '0'

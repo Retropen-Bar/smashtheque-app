@@ -18,7 +18,6 @@ class DiscordGuild < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   validates :discord_id,
-            presence: true,
             uniqueness: {
               allow_nil: true
             }
