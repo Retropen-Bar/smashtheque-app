@@ -59,7 +59,7 @@ ActiveAdmin.register DiscordUser do
 
   form do |f|
     f.inputs do
-      f.input :discord_id
+      f.input :discord_id, input_html: { disabled: f.object.persisted? }
       f.input :administrated_teams,
               collection: discord_user_administrated_teams_select_collection,
               input_html: { multiple: true, data: { select2: {} } }

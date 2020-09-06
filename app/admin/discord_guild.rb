@@ -52,7 +52,7 @@ ActiveAdmin.register DiscordGuild do
 
   form do |f|
     f.inputs do
-      f.input :discord_id, disabled: f.object.persisted?
+      f.input :discord_id, input_html: { disabled: f.object.persisted? }
       f.input :related_gid,
               as: :select,
               collection: discord_guild_related_global_select_collection,
