@@ -235,7 +235,8 @@ ActiveAdmin.setup do |config|
 
   config.namespace :admin do |admin|
     admin.build_menu :default do |menu|
-      menu.add label: '<i class="fas fa-fw fa-globe-europe"></i>Site public'.html_safe, url: '/', priority: 100
+      menu.add label: '<i class="fas fa-fw fa-globe-europe"></i>Site public'.html_safe, url: '/', priority: 0
+      menu.add label: '<i class="fas fa-fw fa-plus"></i>Ajouter un joueur'.html_safe, url: '/admin/players/new', priority: 1
     end
   end
 
