@@ -18,7 +18,7 @@ ActiveAdmin.register DiscordGuildAdmin do
       decorated.discord_guild_admin_link
     end
     column :discord_user do |decorated|
-      decorated.discord_user_admin_link
+      decorated.discord_user_admin_link(size: 32)
     end
     column :role
     column :created_at do |decorated|

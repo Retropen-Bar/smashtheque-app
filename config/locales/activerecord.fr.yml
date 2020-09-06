@@ -7,6 +7,7 @@ fr:
       character: Perso
       comment: Commentaire
       discord_guild: Serveur Discord
+      discord_guild_admin: Admin de serveur Discord
       discord_user: Compte Discord
       location: Localisation
       locations/city: Ville
@@ -71,10 +72,16 @@ fr:
         name: Nom
         related: Sujet principal
         splash: Bannière
+      discord_guild_admin:
+        << : *SHARED
+        discord_guild: Serveur
+        discord_user: Compte
+        role: Rôle
       discord_user:
         << : *SHARED
         admin_user: Admin
-        administrated_discord_guilds: Serveurs Discord administrés
+        administrated_discord_guilds: Serveurs Discord gérés
+        administrated_teams: Équipes gérées
         avatar: Avatar
         discord_id: ID
         discriminator: Discriminant
@@ -95,5 +102,6 @@ fr:
         team_id: Équipe
       team:
         << : *SHARED
+        admins: Admins
         short_name: Nom court
         players: Joueurs

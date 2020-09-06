@@ -22,6 +22,12 @@ ActiveAdmin.register DiscordUser do
     column :admin_user do |decorated|
       decorated.admin_user_status
     end
+    column :administrated_teams do |decorated|
+      decorated.administrated_teams_admin_links(size: 32).join('<br/>').html_safe
+    end
+    column :administrated_discord_guilds do |decorated|
+      decorated.administrated_discord_guilds_admin_links(size: 32).join('<br/>').html_safe
+    end
     column :created_at do |decorated|
       decorated.created_at_date
     end
@@ -54,11 +60,17 @@ ActiveAdmin.register DiscordUser do
   form do |f|
     f.inputs do
       f.input :discord_id
+      f.input :administrated_teams,
+              collection: discord_user_administrated_teams_select_collection,
+              input_html: { multiple: true, data: { select2: {} } }
+      f.input :administrated_discord_guilds,
+              collection: discord_user_administrated_discord_guilds_select_collection,
+              input_html: { multiple: true, data: { select2: {} } }
     end
     f.actions
   end
 
-  permit_params :discord_id
+  permit_params :discord_id, administrated_team_ids: [], administrated_discord_guild_ids: []
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -76,6 +88,9 @@ ActiveAdmin.register DiscordUser do
       row :player
       row :admin_user do |decorated|
         decorated.admin_user_status
+      end
+      row :administrated_teams do |decorated|
+        decorated.administrated_teams_admin_links(size: 32).join('<br/>').html_safe
       end
       row :administrated_discord_guilds do |decorated|
         decorated.administrated_discord_guilds_admin_links(size: 32).join('<br/>').html_safe

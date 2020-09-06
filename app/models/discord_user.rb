@@ -14,6 +14,13 @@ class DiscordUser < ApplicationRecord
            through: :discord_guild_admins,
            source: :discord_guild
 
+  has_many :team_admins,
+           inverse_of: :discord_user,
+           dependent: :destroy
+  has_many :administrated_teams,
+           through: :team_admins,
+           source: :team
+
   # ---------------------------------------------------------------------------
   # VALIDATIONS
   # ---------------------------------------------------------------------------

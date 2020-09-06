@@ -18,6 +18,9 @@ ActiveAdmin.register Team do
     column :players do |decorated|
       decorated.players_admin_link
     end
+    column :admins do |decorated|
+      decorated.admins_admin_links(size: 32).join('<br/>').html_safe
+    end
     column :created_at do |decorated|
       decorated.created_at_date
     end
@@ -35,11 +38,14 @@ ActiveAdmin.register Team do
     f.inputs do
       f.input :short_name
       f.input :name
+      f.input :admins,
+              collection: team_admins_select_collection,
+              input_html: { multiple: true, data: { select2: {} } }
     end
     f.actions
   end
 
-  permit_params :short_name, :name
+  permit_params :short_name, :name, admin_ids: []
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -51,6 +57,9 @@ ActiveAdmin.register Team do
       row :name
       row :players do |decorated|
         decorated.players_admin_link
+      end
+      row :admins do |decorated|
+        decorated.admins_admin_links(size: 32).join('<br/>').html_safe
       end
       row :discord_guilds do |decorated|
         decorated.discord_guilds_admin_links

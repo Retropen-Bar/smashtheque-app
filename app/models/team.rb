@@ -8,6 +8,13 @@ class Team < ApplicationRecord
   has_many :players, through: :players_teams
   has_many :discord_guilds, as: :related, dependent: :nullify
 
+  has_many :team_admins,
+           inverse_of: :team,
+           dependent: :destroy
+  has_many :admins,
+           through: :team_admins,
+           source: :discord_user
+
   # ---------------------------------------------------------------------------
   # VALIDATIONS
   # ---------------------------------------------------------------------------

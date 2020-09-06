@@ -35,4 +35,10 @@ class ActiveAdmin::DiscordUserDecorator < DiscordUserDecorator
     end
   end
 
+  def administrated_teams_admin_links(options = {})
+    model.administrated_teams.map do |team|
+      team.admin_decorate.admin_link(options)
+    end
+  end
+
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_05_230856) do
+ActiveRecord::Schema.define(version: 2020_09_05_234932) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -200,6 +200,16 @@ ActiveRecord::Schema.define(version: 2020_09_05_230856) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["discord_user_id"], name: "index_smash_gg_users_on_discord_user_id"
     t.index ["smashgg_id"], name: "index_smash_gg_users_on_smashgg_id", unique: true
+  end
+
+  create_table "team_admins", force: :cascade do |t|
+    t.bigint "team_id", null: false
+    t.bigint "discord_user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["discord_user_id"], name: "index_team_admins_on_discord_user_id"
+    t.index ["team_id", "discord_user_id"], name: "index_team_admins_on_team_id_and_discord_user_id", unique: true
+    t.index ["team_id"], name: "index_team_admins_on_team_id"
   end
 
   create_table "teams", force: :cascade do |t|
