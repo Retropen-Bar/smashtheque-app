@@ -15,6 +15,8 @@ class RetropenBot
   CHANNEL_TEAMS_LU1 = 'roster-équipes-a-i'.freeze
   CHANNEL_TEAMS_LU2 = 'roster-équipes-j-r'.freeze
   CHANNEL_TEAMS_LU3 = 'roster-équipes-s-z-autres'.freeze
+  CATEGORY_ACTORS = 'ACTEURS DE LA SCÈNE SMASH'.freeze
+  CHANNEL_DISCORD_GUILDS_CHARS = 'commus-fr-par-perso'.freeze
 
   # ---------------------------------------------------------------------------
   # CONSTRUCTOR
@@ -208,10 +210,60 @@ class RetropenBot
   end
 
   # ---------------------------------------------------------------------------
+  # ACTORS
+  # ---------------------------------------------------------------------------
+
+  def actors_category
+    client.find_or_create_guild_category @guild_id, name: CATEGORY_ACTORS
+  end
+
+  def discord_guilds_chars_list_channel(actors_category_id = nil)
+    find_or_create_readonly_channel @guild_id,
+                                    name: CHANNEL_DISCORD_GUILDS_CHARS,
+                                    parent_id: actors_category_id || actors_category['id']
+  end
+
+  def rebuild_discord_guilds_chars_list(_actors_category_id = nil)
+    actors_category_id = _actors_category_id || actors_category['id']
+    discord_guilds = DiscordGuild.by_related_type(Character.to_s)
+                                 .includes(:related)
+                                 .to_a
+                                 .sort_by do |discord_guild|
+                                   discord_guild.related.name
+                                 end
+    lines = discord_guilds.map do |discord_guild|
+      character = discord_guild.related
+      [
+        "**#{character.name.upcase}**",
+        character_emoji_tag(character),
+        discord_guild.invitation_url,
+        "<:princesse:746006429156245536>",
+        discord_guild.discord_guild_admins.map do |discord_guild_admin|
+          discord_user = discord_guild_admin.discord_user
+          result = discord_user.username
+          result += " [#{discord_guild_admin.role}]" unless discord_guild_admin.role.blank?
+          result
+        end.join(', ')
+      ].join(' ')
+    end.join(DiscordClient::MESSAGE_LINE_SEPARATOR)
+    client.replace_channel_content(
+      discord_guilds_chars_list_channel(actors_category_id)['id'],
+      lines
+    )
+  end
+
+
+CATEGORY_ACTORS
+
+  # ---------------------------------------------------------------------------
   # PRIVATE
   # ---------------------------------------------------------------------------
 
   private
+
+  def character_emoji_tag(character)
+    "<:#{character.name.parameterize.gsub('-','')}:#{character.emoji}>"
+  end
 
   def player_abc(player)
     line = player.name
@@ -224,7 +276,7 @@ class RetropenBot
     if player.characters.any?
       line += " :"
       player.characters.each do |character|
-        line += " <:#{character.name.parameterize.gsub('-','')}:#{character.emoji}>"
+        line += " #{character_emoji_tag(character)}"
       end
     end
     line
