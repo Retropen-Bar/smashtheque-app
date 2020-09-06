@@ -14,7 +14,7 @@ class RetropenBot
   CHANNEL_TEAMS_LIST = 'listing-équipes'.freeze
   CHANNEL_TEAMS_LU1 = 'roster-équipes-a-i'.freeze
   CHANNEL_TEAMS_LU2 = 'roster-équipes-j-r'.freeze
-  CHANNEL_TEAMS_LU3 = 'roster-équipes-s-z'.freeze
+  CHANNEL_TEAMS_LU3 = 'roster-équipes-s-z-autres'.freeze
 
   # ---------------------------------------------------------------------------
   # CONSTRUCTOR
