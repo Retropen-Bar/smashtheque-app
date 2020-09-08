@@ -17,7 +17,7 @@ class DiscordUser < ApplicationRecord
   # CALLBACKS
   # ---------------------------------------------------------------------------
 
-  after_create :update_discord
+  after_create_commit :update_discord
   def update_discord
     FetchDiscordUserDataJob.perform_later(self)
   end
