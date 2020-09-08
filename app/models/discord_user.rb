@@ -28,6 +28,15 @@ class DiscordUser < ApplicationRecord
   validates :discord_id, presence: true, uniqueness: true
 
   # ---------------------------------------------------------------------------
+  # CALLBACKS
+  # ---------------------------------------------------------------------------
+
+  after_create_commit :update_discord
+  def update_discord
+    FetchDiscordUserDataJob.perform_later(self)
+  end
+
+  # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
 
