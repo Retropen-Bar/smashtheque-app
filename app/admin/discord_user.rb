@@ -42,8 +42,8 @@ ActiveAdmin.register DiscordUser do
     link_to 'Compléter', fetch_unknown_admin_discord_users_path, class: 'blue'
   end
   collection_action :fetch_unknown do
-    DiscordUser.fetch_unknown
-    redirect_to request.referer, notice: 'Données récupérées'
+    FetchUnknownDiscordUsersJob.perform_later
+    redirect_to request.referer, notice: 'Données en cours de récupération'
   end
 
   # ---------------------------------------------------------------------------
