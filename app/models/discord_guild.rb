@@ -1,3 +1,23 @@
+# == Schema Information
+#
+# Table name: discord_guilds
+#
+#  id               :bigint           not null, primary key
+#  icon             :string
+#  invitation_url   :string
+#  name             :string
+#  related_type     :string
+#  splash           :string
+#  twitter_username :string
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  discord_id       :string
+#  related_id       :bigint
+#
+# Indexes
+#
+#  index_discord_guilds_on_related_type_and_related_id  (related_type,related_id)
+#
 class DiscordGuild < ApplicationRecord
 
   # ---------------------------------------------------------------------------
@@ -25,6 +45,11 @@ class DiscordGuild < ApplicationRecord
   # ---------------------------------------------------------------------------
   # CALLBACKS
   # ---------------------------------------------------------------------------
+
+  after_create_commit :fetch_discord_data_later
+  def fetch_discord_data_later
+    FetchDiscordGuildDataJob.perform_later(self)
+  end
 
   after_commit :update_discord
   def update_discord
@@ -66,12 +91,13 @@ class DiscordGuild < ApplicationRecord
   def fetch_discord_data
     client = DiscordClient.new
     data = client.get_guild discord_id
-    # TODO: check here if we got a proper response or an access error
-    self.attributes = {
-      name: data['name'],
-      icon: data['icon'],
-      splash: data['splash']
-    }
+    if data.has_key?('name')
+      self.attributes = {
+        name: data['name'],
+        icon: data['icon'],
+        splash: data['splash']
+      }
+    end
   end
 
   def self.fetch_unknown

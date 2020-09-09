@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: players_teams
+#
+#  id        :bigint           not null, primary key
+#  position  :integer
+#  player_id :bigint           not null
+#  team_id   :bigint           not null
+#
+# Indexes
+#
+#  index_players_teams_on_player_id              (player_id)
+#  index_players_teams_on_player_id_and_team_id  (player_id,team_id) UNIQUE
+#  index_players_teams_on_team_id                (team_id)
+#
 class PlayersTeam < ApplicationRecord
 
   # ---------------------------------------------------------------------------

@@ -1,3 +1,30 @@
+# == Schema Information
+#
+# Table name: players
+#
+#  id               :bigint           not null, primary key
+#  character_names  :text             default([]), is an Array
+#  is_accepted      :boolean
+#  location_names   :text             default([]), is an Array
+#  name             :string
+#  team_names       :text             default([]), is an Array
+#  twitter_username :string
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  creator_id       :bigint
+#  discord_user_id  :bigint
+#  location_id      :bigint
+#  smash_gg_user_id :bigint
+#  team_id          :bigint
+#
+# Indexes
+#
+#  index_players_on_creator_id        (creator_id)
+#  index_players_on_discord_user_id   (discord_user_id)
+#  index_players_on_location_id       (location_id)
+#  index_players_on_smash_gg_user_id  (smash_gg_user_id)
+#  index_players_on_team_id           (team_id)
+#
 class Player < ApplicationRecord
 
   # ---------------------------------------------------------------------------

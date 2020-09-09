@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: teams
+#
+#  id               :bigint           not null, primary key
+#  is_offline       :boolean
+#  is_online        :boolean
+#  is_sponsor       :boolean
+#  logo_url         :string
+#  name             :string
+#  short_name       :string
+#  twitter_username :string
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#
 class Team < ApplicationRecord
 
   # ---------------------------------------------------------------------------

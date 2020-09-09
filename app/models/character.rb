@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: characters
+#
+#  id         :bigint           not null, primary key
+#  emoji      :string
+#  icon       :string
+#  name       :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
 class Character < ApplicationRecord
 
   has_many :characters_players, dependent: :destroy

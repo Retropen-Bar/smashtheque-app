@@ -1,3 +1,23 @@
+# == Schema Information
+#
+# Table name: discord_users
+#
+#  id               :bigint           not null, primary key
+#  avatar           :string
+#  discriminator    :string
+#  refresh_token    :string
+#  token            :string
+#  token_expires    :boolean
+#  token_expires_at :integer
+#  username         :string
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  discord_id       :string
+#
+# Indexes
+#
+#  index_discord_users_on_discord_id  (discord_id) UNIQUE
+#
 class DiscordUser < ApplicationRecord
 
   # ---------------------------------------------------------------------------
@@ -31,8 +51,8 @@ class DiscordUser < ApplicationRecord
   # CALLBACKS
   # ---------------------------------------------------------------------------
 
-  after_create_commit :update_discord
-  def update_discord
+  after_create_commit :fetch_discord_data_later
+  def fetch_discord_data_later
     FetchDiscordUserDataJob.perform_later(self)
   end
 
