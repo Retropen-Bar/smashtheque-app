@@ -228,7 +228,7 @@ ActiveRecord::Schema.define(version: 2020_09_09_192507) do
 
   create_table "twitch_channels", force: :cascade do |t|
     t.string "username", null: false
-    t.boolean "is_french"
+    t.boolean "is_french", default: false, null: false
     t.string "related_type"
     t.bigint "related_id"
     t.text "description"
@@ -251,7 +251,7 @@ ActiveRecord::Schema.define(version: 2020_09_09_192507) do
 
   create_table "you_tube_channels", force: :cascade do |t|
     t.string "username", null: false
-    t.boolean "is_french"
+    t.boolean "is_french", default: false, null: false
     t.string "related_type"
     t.bigint "related_id"
     t.text "description"

@@ -8,6 +8,10 @@ class LocationDecorator < BaseDecorator
     [model.icon, pretty_name].reject(&:blank?).join(separator).html_safe
   end
 
+  def autocomplete_name
+    full_name
+  end
+
   def players_count
     model.players.count
   end

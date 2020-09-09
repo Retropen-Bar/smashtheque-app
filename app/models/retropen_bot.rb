@@ -18,6 +18,10 @@ class RetropenBot
   CATEGORY_ACTORS = 'ACTEURS DE LA SCÈNE SMASH'.freeze
   CHANNEL_DISCORD_GUILDS_CHARS = 'commus-fr-par-perso'.freeze
   CHANNEL_TEAM_ADMINS = 'capitaine-d-équipe'.freeze
+  CHANNEL_TWITCH_FR = 'twitch-channels-fr'.freeze
+  CHANNEL_TWITCH_WORLD = 'twitch-channels-world'.freeze
+  CHANNEL_YOUTUBE_FR = 'youtube-channels-fr'.freeze
+  CHANNEL_YOUTUBE_WORLD = 'youtube-channels-world'.freeze
 
   # ---------------------------------------------------------------------------
   # CONSTRUCTOR
@@ -230,6 +234,30 @@ class RetropenBot
                                     parent_id: actors_category_id || actors_category['id']
   end
 
+  def twitch_fr_list_channel(actors_category_id = nil)
+    find_or_create_readonly_channel @guild_id,
+                                    name: CHANNEL_TWITCH_FR,
+                                    parent_id: actors_category_id || actors_category['id']
+  end
+
+  def twitch_world_list_channel(actors_category_id = nil)
+    find_or_create_readonly_channel @guild_id,
+                                    name: CHANNEL_TWITCH_WORLD,
+                                    parent_id: actors_category_id || actors_category['id']
+  end
+
+  def youtube_fr_list_channel(actors_category_id = nil)
+    find_or_create_readonly_channel @guild_id,
+                                    name: CHANNEL_YOUTUBE_FR,
+                                    parent_id: actors_category_id || actors_category['id']
+  end
+
+  def youtube_world_list_channel(actors_category_id = nil)
+    find_or_create_readonly_channel @guild_id,
+                                    name: CHANNEL_YOUTUBE_WORLD,
+                                    parent_id: actors_category_id || actors_category['id']
+  end
+
   def rebuild_discord_guilds_chars_list(_actors_category_id = nil)
     actors_category_id = _actors_category_id || actors_category['id']
     discord_guilds = DiscordGuild.by_related_type(Character.to_s)
@@ -292,6 +320,30 @@ class RetropenBot
     client.replace_channel_content team_admins_list_channel(actors_category_id)['id'], lines
   end
 
+  def rebuild_twitch_fr_list(_actors_category_id = nil)
+    actors_category_id = _actors_category_id || actors_category['id']
+    named_lines = video_channels TwitchChannel.french, '743601202716999720'
+    rebuild_channel_with_named_lines twitch_fr_list_channel(actors_category_id)['id'], named_lines
+  end
+
+  def rebuild_twitch_world_list(_actors_category_id = nil)
+    actors_category_id = _actors_category_id || actors_category['id']
+    named_lines = video_channels TwitchChannel.not_french, '743601202716999720'
+    rebuild_channel_with_named_lines twitch_world_list_channel(actors_category_id)['id'], named_lines
+  end
+
+  def rebuild_youtube_fr_list(_actors_category_id = nil)
+    actors_category_id = _actors_category_id || actors_category['id']
+    named_lines = video_channels YouTubeChannel.french, '743601431499767899'
+    rebuild_channel_with_named_lines youtube_fr_list_channel(actors_category_id)['id'], named_lines
+  end
+
+  def rebuild_youtube_world_list(_actors_category_id = nil)
+    actors_category_id = _actors_category_id || actors_category['id']
+    named_lines = video_channels YouTubeChannel.not_french, '743601431499767899'
+    rebuild_channel_with_named_lines youtube_world_list_channel(actors_category_id)['id'], named_lines
+  end
+
   # ---------------------------------------------------------------------------
   # PRIVATE
   # ---------------------------------------------------------------------------
@@ -327,6 +379,48 @@ class RetropenBot
     players.accepted.includes(:teams, :locations, :characters).to_a.sort_by{|p| p.name.downcase}.map do |player|
       player_abc player
     end.join(DiscordClient::MESSAGE_LINE_SEPARATOR)
+  end
+
+  def video_channel_line(model, emoji_id)
+    name = model.username
+
+    line = [
+      emoji_tag(emoji_id),
+      name
+    ].join(' ')
+    details = []
+    unless model.related.nil?
+      details << model.related.decorate.listing_name
+    end
+    unless model.description.blank?
+      details << model.description
+    end
+    if details.any?
+      line += ' -> ' + details.join(', ')
+    end
+
+    line
+  end
+
+  def video_channels(models, emoji_id)
+    result = {}
+    models.order(:username).all.each do |model|
+      line = video_channel_line model, emoji_id
+      letter = self.class.name_letter model.username
+      result[letter] ||= []
+      result[letter] << line
+    end
+    result
+  end
+
+  def rebuild_channel_with_named_lines(channel_id, named_lines)
+    lines = []
+    (('a'..'z').to_a + ['$']).each do |letter|
+      lines << letter.upcase
+      lines += named_lines[letter] || []
+    end
+    lines = lines.join(DiscordClient::MESSAGE_LINE_SEPARATOR)
+    client.replace_channel_content channel_id, lines
   end
 
   def rebuild_channel_with_players(channel_id, players)

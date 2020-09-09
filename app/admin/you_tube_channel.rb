@@ -39,16 +39,18 @@ ActiveAdmin.register YouTubeChannel do
     f.inputs do
       f.input :username
       f.input :is_french
-      f.input :related_gid,
-              as: :select,
-              collection: youtube_channel_related_global_select_collection,
-              input_html: { data: { select2: {} } }
-      f.input :description
+      related_input(f)
+      f.input :description,
+              input_html: { rows: 3 }
     end
     f.actions
   end
 
   permit_params :username, :is_french, :related_gid, :description
+
+  collection_action :related_autocomplete do
+    render json: collection.object.related_autocomplete(params[:term])
+  end
 
   # ---------------------------------------------------------------------------
   # SHOW

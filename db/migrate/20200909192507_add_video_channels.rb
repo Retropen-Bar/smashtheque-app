@@ -2,7 +2,7 @@ class AddVideoChannels < ActiveRecord::Migration[6.0]
   def change
     create_table :you_tube_channels do |t|
       t.string :username, null: false
-      t.boolean :is_french
+      t.boolean :is_french, null: false, default: false
       t.belongs_to :related, polymorphic: true
       t.text :description
       t.timestamps
@@ -11,7 +11,7 @@ class AddVideoChannels < ActiveRecord::Migration[6.0]
 
     create_table :twitch_channels do |t|
       t.string :username, null: false
-      t.boolean :is_french
+      t.boolean :is_french, null: false, default: false
       t.belongs_to :related, polymorphic: true
       t.text :description
       t.timestamps

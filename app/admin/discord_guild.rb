@@ -53,10 +53,7 @@ ActiveAdmin.register DiscordGuild do
   form do |f|
     f.inputs do
       f.input :discord_id, input_html: { disabled: f.object.persisted? }
-      f.input :related_gid,
-              as: :select,
-              collection: discord_guild_related_global_select_collection,
-              input_html: { data: { select2: {} } }
+      related_input(f)
       f.input :invitation_url
       f.input :admins,
               collection: discord_guild_admins_select_collection,
@@ -68,6 +65,10 @@ ActiveAdmin.register DiscordGuild do
 
   permit_params :discord_id, :related_gid, :invitation_url, :twitter_username,
                 admin_ids: []
+
+  collection_action :related_autocomplete do
+    render json: collection.object.related_autocomplete(params[:term])
+  end
 
   # ---------------------------------------------------------------------------
   # SHOW

@@ -21,10 +21,22 @@
 class DiscordGuild < ApplicationRecord
 
   # ---------------------------------------------------------------------------
-  # RELATIONS
+  # CONCERNS
   # ---------------------------------------------------------------------------
 
-  belongs_to :related, polymorphic: true, optional: true
+  include RelatedConcern
+  def self.related_types
+    [
+      Character,
+      Location,
+      Player,
+      Team
+    ]
+  end
+
+  # ---------------------------------------------------------------------------
+  # RELATIONS
+  # ---------------------------------------------------------------------------
 
   has_many :discord_guild_admins,
            inverse_of: :discord_guild,
@@ -68,25 +80,9 @@ class DiscordGuild < ApplicationRecord
     where(icon: nil)
   end
 
-  def self.by_related_type(v)
-    where(related_type: v)
-  end
-
-  def self.by_related_id(v)
-    where(related_id: v)
-  end
-
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------
-
-  def related_gid
-    self.related&.to_global_id&.to_s
-  end
-
-  def related_gid=(gid)
-    self.related = GlobalID::Locator.locate gid
-  end
 
   def fetch_discord_data
     client = DiscordClient.new

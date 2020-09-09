@@ -11,6 +11,14 @@ class TeamDecorator < BaseDecorator
     ].join('&nbsp;').html_safe
   end
 
+  def autocomplete_name
+    full_name
+  end
+
+  def listing_name
+   full_name
+  end
+
   def players_count
     model.players.count
   end

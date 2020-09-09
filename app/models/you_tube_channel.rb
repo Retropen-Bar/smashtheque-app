@@ -4,7 +4,7 @@
 #
 #  id           :bigint           not null, primary key
 #  description  :text
-#  is_french    :boolean
+#  is_french    :boolean          default(FALSE), not null
 #  related_type :string
 #  username     :string           not null
 #  created_at   :datetime         not null
@@ -19,10 +19,18 @@
 class YouTubeChannel < ApplicationRecord
 
   # ---------------------------------------------------------------------------
-  # RELATIONS
+  # CONCERNS
   # ---------------------------------------------------------------------------
 
-  belongs_to :related, polymorphic: true, optional: true
+  include RelatedConcern
+  def self.related_types
+    [
+      Character,
+      Location,
+      Player,
+      Team
+    ]
+  end
 
   # ---------------------------------------------------------------------------
   # VALIDATIONS
@@ -31,27 +39,24 @@ class YouTubeChannel < ApplicationRecord
   validates :username, uniqueness: true
 
   # ---------------------------------------------------------------------------
+  # CALLBACKS
+  # ---------------------------------------------------------------------------
+
+  after_commit :update_discord
+  def update_discord
+    RetropenBotScheduler.rebuild_youtube
+  end
+
+  # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
 
-  def self.by_related_type(v)
-    where(related_type: v)
+  def self.french
+    where(is_french: true)
   end
 
-  def self.by_related_id(v)
-    where(related_id: v)
-  end
-
-  # ---------------------------------------------------------------------------
-  # HELPERS
-  # ---------------------------------------------------------------------------
-
-  def related_gid
-    self.related&.to_global_id&.to_s
-  end
-
-  def related_gid=(gid)
-    self.related = GlobalID::Locator.locate gid
+  def self.not_french
+    where(is_french: false)
   end
 
   # ---------------------------------------------------------------------------

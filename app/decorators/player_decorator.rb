@@ -1,5 +1,13 @@
 class PlayerDecorator < BaseDecorator
 
+  def autocomplete_name
+    model.name
+  end
+
+  def listing_name
+    model.name
+  end
+
   def icon_class
     :user
   end

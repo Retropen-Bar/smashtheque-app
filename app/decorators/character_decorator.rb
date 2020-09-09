@@ -8,6 +8,14 @@ class CharacterDecorator < BaseDecorator
     [emoji_image_tag(max_width: max_width, max_height: max_height), pretty_name].join.html_safe
   end
 
+  def autocomplete_name
+    pretty_name
+  end
+
+  def listing_name
+   full_name
+  end
+
   def players_count
     model.players.count
   end
