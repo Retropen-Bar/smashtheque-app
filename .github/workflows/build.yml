@@ -20,15 +20,35 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      # - uses: satackey/action-docker-layer-caching@v0.0.4
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
 
-      - name: Build & Push to Docker Hub
-        uses: docker/build-push-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Cache Docker layers
+        uses: actions/cache@v2
         with:
-          dockerfile: Dockerfile.release
-          tag_with_ref: true
-          repository: retropenbar/smashtheque-app
-          cache_froms: retropenbar/smashtheque-app:develop
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-          always_pull: true
+
+      - name: Build & Push to Docker Hub
+        uses: docker/build-push-action@v2
+        with:
+          file: ./Dockerfile.release
+          push: true
+          tags: |
+            retropenbar/smashtheque-app:${{ github.sha }}
+            retropenbar/smashtheque-app:${{ steps.extract_branch.outputs.branch }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
