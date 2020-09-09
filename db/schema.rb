@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_06_003219) do
+ActiveRecord::Schema.define(version: 2020_09_09_192507) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -226,6 +226,18 @@ ActiveRecord::Schema.define(version: 2020_09_06_003219) do
     t.string "twitter_username"
   end
 
+  create_table "twitch_channels", force: :cascade do |t|
+    t.string "username", null: false
+    t.boolean "is_french"
+    t.string "related_type"
+    t.bigint "related_id"
+    t.text "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["related_type", "related_id"], name: "index_twitch_channels_on_related_type_and_related_id"
+    t.index ["username"], name: "index_twitch_channels_on_username", unique: true
+  end
+
   create_table "versions", force: :cascade do |t|
     t.string "item_type", null: false
     t.bigint "item_id", null: false
@@ -235,6 +247,18 @@ ActiveRecord::Schema.define(version: 2020_09_06_003219) do
     t.datetime "created_at"
     t.text "object_changes"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
+  end
+
+  create_table "you_tube_channels", force: :cascade do |t|
+    t.string "username", null: false
+    t.boolean "is_french"
+    t.string "related_type"
+    t.bigint "related_id"
+    t.text "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["related_type", "related_id"], name: "index_you_tube_channels_on_related_type_and_related_id"
+    t.index ["username"], name: "index_you_tube_channels_on_username", unique: true
   end
 
 end

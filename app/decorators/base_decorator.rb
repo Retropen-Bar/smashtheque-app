@@ -21,7 +21,7 @@ class BaseDecorator < Draper::Decorator
     h.content_tag :i,
 
     txt = [
-      h.content_tag(:i, '', class: 'fab fa-twitter'),
+      h.content_tag(:i, '', class: 'fab fa-twitter fa-lg'),
       model.twitter_username
     ].join('&nbsp;').html_safe
 

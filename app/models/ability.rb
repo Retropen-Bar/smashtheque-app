@@ -54,6 +54,12 @@ class Ability
     # Team
     can manage_or_cru, Team
 
+    # TwitchChannel
+    can manage_or_cru, TwitchChannel
+
+    # YouTubeChannel
+    can manage_or_cru, YouTubeChannel
+
     # Other admin pages
     can :read, ActiveAdmin::Page, name: 'Dashboard'
     can :read, ActiveAdmin::Page, name: 'Search'

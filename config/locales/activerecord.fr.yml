@@ -16,6 +16,8 @@ fr:
       locations_country: Pays
       player: Joueur
       team: Équipe
+      twitch_channel: Chaîne Twitch
+      you_tube_channel: Chaîne YouTube
     attributes:
       shared: &SHARED
         created_at: Ajout
@@ -113,3 +115,17 @@ fr:
         players: Joueurs
         short_name: Nom court
         twitter_username: Compte Twitter
+      twitch_channel:
+        << : *SHARED
+        description: Détails
+        is_french: Chaîne FR ?
+        related: Sujet principal
+        related_gid: Sujet principal
+        username: Nom
+      you_tube_channel:
+        << : *SHARED
+        description: Détails
+        is_french: Chaîne FR ?
+        related: Sujet principal
+        related_gid: Sujet principal
+        username: Nom
