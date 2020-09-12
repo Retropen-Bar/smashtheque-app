@@ -390,7 +390,11 @@ class RetropenBot
     ].join(' ')
     details = []
     unless model.related.nil?
-      details << model.related.decorate.listing_name
+      details << if model.related.is_a?(Character)
+        character_emoji_tag(model.related)
+      else
+        model.related.decorate.listing_name
+      end
     end
     unless model.description.blank?
       details << model.description

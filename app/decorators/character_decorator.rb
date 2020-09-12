@@ -13,7 +13,7 @@ class CharacterDecorator < BaseDecorator
   end
 
   def listing_name
-   full_name
+   pretty_name
   end
 
   def players_count
