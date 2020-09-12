@@ -75,9 +75,9 @@ end
           invitation_url: guild['url']
         )
         guild['admins'].each do |admin|
-          player = Player.by_name_like(admin['name']).first!
+          player = Player.by_name_like(admin['name']).order(:discord_user_id).first!
           discord_user = player.discord_user
-          raise "unknown DiscordUser for Player ##{player.id}: #{player.name}"
+          raise "unknown DiscordUser for Player ##{player.id}: #{player.name}" if discord_user.nil?
           DiscordGuildAdmin.create!(
             discord_guild: discord_guild,
             discord_user: discord_user,
