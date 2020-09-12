@@ -72,6 +72,7 @@ end
         puts "seed guild #{guild.inspect} for character with emoji #{character_emoji}"
         character = Character.by_emoji(character_emoji).first!
         discord_guild = DiscordGuild.create!(
+          related: character,
           invitation_url: guild['url']
         )
         guild['admins'].each do |admin|

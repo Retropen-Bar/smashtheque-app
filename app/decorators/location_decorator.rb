@@ -12,6 +12,10 @@ class LocationDecorator < BaseDecorator
     full_name
   end
 
+  def listing_name
+    pretty_name
+  end
+
   def players_count
     model.players.count
   end
