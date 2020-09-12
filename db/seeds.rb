@@ -62,7 +62,7 @@ unless Player.any?
 end
 
 # DiscordGuild
-# unless DiscordGuild.any?
+unless DiscordGuild.any?
   uri = "#{ENV['SEED_DATA_SOURCE_URL']}char_guilds.json"
   puts "seed #{uri}"
   open(uri) do |file|
@@ -88,6 +88,6 @@ end
       end
     end
   end
-# end
+end
 
 ENV['NO_DISCORD'] = '0'
