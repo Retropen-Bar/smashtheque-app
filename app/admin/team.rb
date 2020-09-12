@@ -50,9 +50,7 @@ ActiveAdmin.register Team do
       f.input :is_offline
       f.input :is_online
       f.input :is_sponsor
-      f.input :admins,
-              collection: team_admins_select_collection,
-              input_html: { multiple: true, data: { select2: {} } }
+      discord_users_input f, :admins
       f.input :twitter_username
     end
     f.actions

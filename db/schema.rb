@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 2020_09_09_192507) do
   end
 
   create_table "admin_users", force: :cascade do |t|
+    t.string "encrypted_password", default: "", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "discord_user_id"
@@ -40,7 +41,6 @@ ActiveRecord::Schema.define(version: 2020_09_09_192507) do
     t.datetime "last_sign_in_at"
     t.inet "current_sign_in_ip"
     t.inet "last_sign_in_ip"
-    t.string "encrypted_password", default: "", null: false
     t.boolean "is_root", default: false, null: false
     t.string "level", null: false
     t.index ["discord_user_id"], name: "index_admin_users_on_discord_user_id", unique: true
@@ -112,10 +112,6 @@ ActiveRecord::Schema.define(version: 2020_09_09_192507) do
     t.string "avatar"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "token"
-    t.string "refresh_token"
-    t.boolean "token_expires"
-    t.integer "token_expires_at"
     t.index ["discord_id"], name: "index_discord_users_on_discord_id", unique: true
   end
 
@@ -157,14 +153,12 @@ ActiveRecord::Schema.define(version: 2020_09_09_192507) do
     t.datetime "updated_at", null: false
     t.text "character_names", default: [], array: true
     t.bigint "creator_id"
-    t.bigint "smash_gg_user_id"
     t.text "location_names", default: [], array: true
     t.text "team_names", default: [], array: true
     t.string "twitter_username"
     t.index ["creator_id"], name: "index_players_on_creator_id"
     t.index ["discord_user_id"], name: "index_players_on_discord_user_id"
     t.index ["location_id"], name: "index_players_on_location_id"
-    t.index ["smash_gg_user_id"], name: "index_players_on_smash_gg_user_id"
     t.index ["team_id"], name: "index_players_on_team_id"
   end
 
@@ -175,33 +169,6 @@ ActiveRecord::Schema.define(version: 2020_09_09_192507) do
     t.index ["player_id", "team_id"], name: "index_players_teams_on_player_id_and_team_id", unique: true
     t.index ["player_id"], name: "index_players_teams_on_player_id"
     t.index ["team_id"], name: "index_players_teams_on_team_id"
-  end
-
-  create_table "smash_gg_users", force: :cascade do |t|
-    t.integer "smashgg_id", null: false
-    t.bigint "discord_user_id"
-    t.text "bio"
-    t.string "birthday"
-    t.string "gender_pronoun"
-    t.string "name"
-    t.string "slug"
-    t.string "city"
-    t.string "country"
-    t.string "country_id"
-    t.string "state"
-    t.string "state_id"
-    t.string "player_id"
-    t.string "gamer_tag"
-    t.string "prefix"
-    t.string "banner_url"
-    t.string "avatar_url"
-    t.string "discord_discriminated_username"
-    t.string "twitch_username"
-    t.string "twitter_username"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["discord_user_id"], name: "index_smash_gg_users_on_discord_user_id"
-    t.index ["smashgg_id"], name: "index_smash_gg_users_on_smashgg_id", unique: true
   end
 
   create_table "team_admins", force: :cascade do |t|

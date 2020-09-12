@@ -9,8 +9,4 @@ module ActiveAdmin::DiscordGuildAdminsHelper
     end
   end
 
-  def discord_guild_admin_discord_user_select_collection
-    DiscordUser.known.order(:username).decorate
-  end
-
 end

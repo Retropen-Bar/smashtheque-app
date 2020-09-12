@@ -2,17 +2,13 @@
 #
 # Table name: discord_users
 #
-#  id               :bigint           not null, primary key
-#  avatar           :string
-#  discriminator    :string
-#  refresh_token    :string
-#  token            :string
-#  token_expires    :boolean
-#  token_expires_at :integer
-#  username         :string
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  discord_id       :string
+#  id            :bigint           not null, primary key
+#  avatar        :string
+#  discriminator :string
+#  username      :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  discord_id    :string
 #
 # Indexes
 #
@@ -59,6 +55,13 @@ class DiscordUser < ApplicationRecord
   # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
+
+  include PgSearch::Model
+  pg_search_scope :by_keyword,
+                  against: [:discord_id, :username],
+                  using: {
+                    tsearch: { prefix: true }
+                  }
 
   def self.with_admin_user
     where(id: AdminUser.select(:discord_user_id))

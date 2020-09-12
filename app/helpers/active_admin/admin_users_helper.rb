@@ -1,9 +1,5 @@
 module ActiveAdmin::AdminUsersHelper
 
-  def admin_user_discord_user_select_collection
-    DiscordUser.known.order(:username)
-  end
-
   def admin_user_level_select_collection
     Ability::LEVELS.map do |v|
       [

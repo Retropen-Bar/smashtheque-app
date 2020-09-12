@@ -96,9 +96,7 @@ ActiveAdmin.register Player do
   form do |f|
     f.inputs do
       f.input :name
-      f.input :discord_user,
-              collection: player_discord_user_select_collection,
-              input_html: { data: { select2: {} } }
+      discord_user_input f
       f.input :characters,
               collection: player_characters_select_collection,
               input_html: { multiple: true, data: { select2: { sortable: true, sortedValues: f.object.character_ids } } }

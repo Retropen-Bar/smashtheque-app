@@ -44,9 +44,7 @@ ActiveAdmin.register AdminUser do
   form do |f|
     f.semantic_errors *f.object.errors.keys
     f.inputs do
-      f.input :discord_user,
-              collection: admin_user_discord_user_select_collection,
-              input_html: { data: { select2: {} } }
+      discord_user_input f
       f.input :level,
               collection: admin_user_level_select_collection,
               input_html: { disabled: f.object.is_root? }

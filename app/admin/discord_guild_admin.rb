@@ -39,9 +39,7 @@ ActiveAdmin.register DiscordGuildAdmin do
       f.input :discord_guild,
               collection: discord_guild_admin_discord_guild_select_collection,
               input_html: { data: { select2: {} } }
-      f.input :discord_user,
-              collection: discord_guild_admin_discord_user_select_collection,
-              input_html: { data: { select2: {} } }
+      discord_user_input f
       f.input :role
     end
     f.actions

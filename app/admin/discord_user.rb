@@ -114,4 +114,19 @@ ActiveAdmin.register DiscordUser do
     end
   end
 
+  # ---------------------------------------------------------------------------
+  # AUTOCOMPLETE
+  # ---------------------------------------------------------------------------
+
+  collection_action :autocomplete do
+    render json: {
+      results: DiscordUser.by_keyword(params[:term]).map do |discord_user|
+        {
+          id: discord_user.id,
+          text: discord_user.username
+        }
+      end
+    }
+  end
+
 end

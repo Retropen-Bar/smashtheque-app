@@ -4,10 +4,6 @@ module ActiveAdmin::PlayersHelper
     DiscordUser.order(:username).decorate
   end
 
-  def player_discord_user_select_collection
-    DiscordUser.known.order(:username)
-  end
-
   def player_characters_select_collection
     Character.order(:name).map do |character|
       [

@@ -55,9 +55,7 @@ ActiveAdmin.register DiscordGuild do
       f.input :discord_id, input_html: { disabled: f.object.persisted? }
       related_input(f)
       f.input :invitation_url
-      f.input :admins,
-              collection: discord_guild_admins_select_collection,
-              input_html: { multiple: true, data: { select2: {} } }
+      discord_users_input f, :admins
       f.input :twitter_username
     end
     f.actions
