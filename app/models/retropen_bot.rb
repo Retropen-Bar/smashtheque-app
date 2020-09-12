@@ -17,7 +17,7 @@ class RetropenBot
   CHANNEL_TEAMS_LU3 = 'roster-équipes-s-z-autres'.freeze
   CATEGORY_ACTORS = 'ACTEURS DE LA SCÈNE SMASH'.freeze
   CHANNEL_DISCORD_GUILDS_CHARS = 'commus-fr-par-perso'.freeze
-  CHANNEL_TEAM_ADMINS = 'capitaine-d-équipe'.freeze
+  CHANNEL_TEAM_ADMINS = 'capitaines-d-équipe'.freeze
   CHANNEL_TWITCH_FR = 'twitch-channels-fr'.freeze
   CHANNEL_TWITCH_WORLD = 'twitch-channels-world'.freeze
   CHANNEL_YOUTUBE_FR = 'youtube-channels-fr'.freeze
