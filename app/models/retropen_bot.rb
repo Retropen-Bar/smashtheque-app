@@ -401,7 +401,9 @@ class RetropenBot
     ].join(' : ')
     if team.admins.any?
       line += ' ' + emoji_tag(EMOJI_TEAM_ADMIN) + ' '
-      line += team.admins.map(&:username).join(', ')
+      line += team.admins.map do |discord_user|
+        discord_user.player&.name || discord_user.username
+      end.join(', ')
     end
     line
   end
