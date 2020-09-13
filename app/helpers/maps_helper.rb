@@ -4,9 +4,11 @@ module MapsHelper
     markers = []
     players.each do |player|
       player.locations.geocoded.each do |location|
+        main_character = player.characters.first
+        next if main_character.nil?
         marker = {
           icon: {
-            icon_url: player.characters.first.decorate.emoji_image_url,
+            icon_url: main_character.decorate.emoji_image_url,
             icon_size: 32,
             icon_anchor: [16, 16]
           },
