@@ -5,6 +5,11 @@ module MapsHelper
     players.each do |player|
       player.locations.geocoded.each do |location|
         marker = {
+          icon: {
+            icon_url: player.characters.first.decorate.emoji_image_url,
+            icon_size: 32,
+            icon_anchor: [16, 16]
+          },
           latlng: [
             location.latitude,
             location.longitude
