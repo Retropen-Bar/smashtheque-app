@@ -51,7 +51,7 @@ class DiscordGuild < ApplicationRecord
 
   validates :discord_id,
             uniqueness: {
-              allow_nil: true
+              allow_blank: true
             }
 
   # ---------------------------------------------------------------------------
