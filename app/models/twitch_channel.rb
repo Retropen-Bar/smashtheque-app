@@ -5,6 +5,7 @@
 #  id           :bigint           not null, primary key
 #  description  :text
 #  is_french    :boolean          default(FALSE), not null
+#  name         :string           not null
 #  related_type :string
 #  username     :string           not null
 #  created_at   :datetime         not null
@@ -36,7 +37,8 @@ class TwitchChannel < ApplicationRecord
   # VALIDATIONS
   # ---------------------------------------------------------------------------
 
-  validates :username, uniqueness: true
+  validates :username, presence: true, uniqueness: true
+  validates :name, presence: true, uniqueness: true
 
   # ---------------------------------------------------------------------------
   # CALLBACKS

@@ -5,7 +5,7 @@ class TwitchChannelDecorator < BaseDecorator
   end
 
   def channel_link(with_icon: false)
-    txt = model.username
+    txt = model.name
     if with_icon
       txt = '<i class="fab fa-twitch fa-lg"></i> ' + txt
     end

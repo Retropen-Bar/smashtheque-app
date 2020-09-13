@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_09_192507) do
+ActiveRecord::Schema.define(version: 2020_09_13_005108) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -201,6 +201,7 @@ ActiveRecord::Schema.define(version: 2020_09_09_192507) do
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "name", null: false
     t.index ["related_type", "related_id"], name: "index_twitch_channels_on_related_type_and_related_id"
     t.index ["username"], name: "index_twitch_channels_on_username", unique: true
   end
@@ -224,6 +225,7 @@ ActiveRecord::Schema.define(version: 2020_09_09_192507) do
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "name", null: false
     t.index ["related_type", "related_id"], name: "index_you_tube_channels_on_related_type_and_related_id"
     t.index ["username"], name: "index_you_tube_channels_on_username", unique: true
   end

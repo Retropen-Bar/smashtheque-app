@@ -28,6 +28,7 @@ ActiveAdmin.register TwitchChannel do
     actions
   end
 
+  filter :name
   filter :username
   filter :is_french
 
@@ -48,6 +49,7 @@ ActiveAdmin.register TwitchChannel do
   form do |f|
     f.inputs do
       f.input :username
+      f.input :name
       f.input :is_french
       related_input(f)
       f.input :description,
@@ -56,7 +58,7 @@ ActiveAdmin.register TwitchChannel do
     f.actions
   end
 
-  permit_params :username, :is_french, :related_gid, :description
+  permit_params :username, :name, :is_french, :related_gid, :description
 
   collection_action :related_autocomplete do
     render json: collection.object.related_autocomplete(params[:term])

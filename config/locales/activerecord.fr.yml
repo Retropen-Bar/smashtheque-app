@@ -119,13 +119,15 @@ fr:
         << : *SHARED
         description: Détails
         is_french: Chaîne FR ?
+        name: Nom
         related: Sujet principal
         related_gid: Sujet principal
-        username: Nom
+        username: ID Twitch
       you_tube_channel:
         << : *SHARED
         description: Détails
         is_french: Chaîne FR ?
+        name: Nom
         related: Sujet principal
         related_gid: Sujet principal
-        username: Nom
+        username: ID YouTube
