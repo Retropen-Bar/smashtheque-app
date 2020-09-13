@@ -37,7 +37,7 @@ class LocationsPlayer < ApplicationRecord
   # so we can't know inside Player#update_discord which locations it had
   after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] }
   def update_discord
-    if player.is_accepted? && player&.destroyed?
+    if player.is_legit? && player&.destroyed?
       # this is the deletion of a player
       RetropenBotScheduler.rebuild_locations_for_location location
     end

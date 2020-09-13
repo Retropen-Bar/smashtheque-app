@@ -195,7 +195,7 @@ class RetropenBot
       admins = team.team_admins.map(&:discord_user_id)
       lines = ["**#{team.short_name} : #{team.name}**"]
       lines += team.players
-          .accepted
+          .legit
           .includes(:teams, :locations, :characters)
           .to_a
           .sort_by { |p| p.name.downcase }
@@ -389,7 +389,7 @@ class RetropenBot
   end
 
   def players_lines(players)
-    players.accepted.includes(:teams, :locations, :characters).to_a.sort_by{|p| p.name.downcase}.map do |player|
+    players.legit.includes(:teams, :locations, :characters).to_a.sort_by{|p| p.name.downcase}.map do |player|
       player_abc player
     end.join(DiscordClient::MESSAGE_LINE_SEPARATOR)
   end

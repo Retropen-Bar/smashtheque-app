@@ -93,6 +93,7 @@ fr:
         username: Pseudo
       player:
         << : *SHARED
+        ban_details: Détails du ban
         character_ids: Persos
         character_names: Persos
         characters: Persos
@@ -102,6 +103,7 @@ fr:
         creator_id: Ajouté par
         discord_user: Compte Discord
         is_accepted: Validé ?
+        is_banned: Banni ?
         team: Équipe
         team_id: Équipe
         twitter_username: Compte Twitter

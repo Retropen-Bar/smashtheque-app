@@ -32,7 +32,7 @@ class PlayersTeam < ApplicationRecord
   # CALLBACKS
   # ---------------------------------------------------------------------------
 
-  after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] || !player.is_accepted? }
+  after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] || !player.is_legit? }
   def update_discord
     RetropenBotScheduler.rebuild_teams_lu
   end

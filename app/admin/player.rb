@@ -34,6 +34,9 @@ ActiveAdmin.register Player do
       decorated.creator_admin_link(size: 32)
     end
     column :is_accepted
+    column :is_banned do |decorated|
+      decorated.ban_status
+    end
     column :created_at do |decorated|
       decorated.created_at_date
     end
@@ -51,6 +54,8 @@ ActiveAdmin.register Player do
 
   scope :with_discord_user, group: :discord_user
   scope :without_discord_user, group: :discord_user
+
+  scope :banned, group: :is_banned
 
   filter :creator,
          as: :select,
@@ -70,6 +75,7 @@ ActiveAdmin.register Player do
          collection: proc { player_teams_select_collection },
          input_html: { multiple: true, data: { select2: {} } }
   filter :is_accepted
+  filter :is_banned
 
   action_item :rebuild_all,
               only: :index,
@@ -110,11 +116,15 @@ ActiveAdmin.register Player do
               input_html: { multiple: true, data: { select2: { sortable: true, sortedValues: f.object.team_ids } } }
       f.input :twitter_username
       f.input :is_accepted
+      f.input :is_banned
+      f.input :ban_details,
+              input_html: { rows: 5 }
     end
     f.actions
   end
 
   permit_params :name, :is_accepted, :discord_user_id, :twitter_username,
+                :is_banned, :ban_details,
                 character_ids: [], location_ids: [], team_ids: []
 
   # ---------------------------------------------------------------------------
@@ -143,6 +153,8 @@ ActiveAdmin.register Player do
         decorated.creator_admin_link(size: 32)
       end
       row :is_accepted
+      row :is_banned
+      row :ban_details
       row :created_at
       row :updated_at
     end

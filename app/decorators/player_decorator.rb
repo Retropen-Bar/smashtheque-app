@@ -8,6 +8,20 @@ class PlayerDecorator < BaseDecorator
     model.name
   end
 
+  def ban_status
+    if model.is_banned?
+      h.content_tag :span,
+                    'oui',
+                    class: 'status_tag yes',
+                    title: model.ban_details,
+                    data: { tooltip: {} }
+    else
+      arbre do
+        status_tag :no
+      end
+    end
+  end
+
   def icon_class
     :user
   end

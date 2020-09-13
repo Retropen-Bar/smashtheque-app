@@ -3,8 +3,10 @@
 # Table name: players
 #
 #  id               :bigint           not null, primary key
+#  ban_details      :text
 #  character_names  :text             default([]), is an Array
 #  is_accepted      :boolean
+#  is_banned        :boolean          default(FALSE), not null
 #  location_names   :text             default([]), is an Array
 #  name             :string
 #  team_names       :text             default([]), is an Array
@@ -131,7 +133,7 @@ class Player < ApplicationRecord
     self.creator = DiscordUser.where(discord_id: discord_id).first_or_create!
   end
 
-  after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] || !is_accepted? }
+  after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] || !is_legit? }
   def update_discord
     # on create: previous_changes = {"id"=>[nil, <id>], "name"=>[nil, <name>], ...}
     # on update: previous_changes = {"name"=>["old_name", "new_name"], ...}
@@ -167,21 +169,21 @@ class Player < ApplicationRecord
   # this is required because removing a has_many relation
   # is not visible inside an after_commit callback
   def after_remove_character(character)
-    return true if ENV['NO_DISCORD'] || !is_accepted?
+    return true if ENV['NO_DISCORD'] || !is_legit?
     RetropenBotScheduler.rebuild_chars_for_character character
   end
 
   # this is required because removing a has_many relation
   # is not visible inside an after_commit callback
   def after_remove_location(location)
-    return true if ENV['NO_DISCORD'] || !is_accepted?
+    return true if ENV['NO_DISCORD'] || !is_legit?
     RetropenBotScheduler.rebuild_locations_for_location location
   end
 
   # this is required because removing a has_many relation
   # is not visible inside an after_commit callback
   def after_remove_team(team)
-    return true if ENV['NO_DISCORD'] || !is_accepted?
+    return true if ENV['NO_DISCORD'] || !is_legit?
     RetropenBotScheduler.rebuild_teams_lu
   end
 
@@ -211,6 +213,18 @@ class Player < ApplicationRecord
 
   def self.to_be_accepted
     where(is_accepted: [nil, false])
+  end
+
+  def self.banned
+    where(is_banned: true)
+  end
+
+  def self.not_banned
+    where(is_banned: false)
+  end
+
+  def self.legit
+    accepted.not_banned
   end
 
   def self.on_abc(letter)
@@ -279,6 +293,10 @@ class Player < ApplicationRecord
 
   def potential_duplicates
     self.class.by_name_like(name).where.not(id: id)
+  end
+
+  def is_legit?
+    is_accepted? && !is_banned?
   end
 
   # ---------------------------------------------------------------------------

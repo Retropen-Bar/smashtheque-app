@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_13_005108) do
+ActiveRecord::Schema.define(version: 2020_09_13_012404) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -156,6 +156,8 @@ ActiveRecord::Schema.define(version: 2020_09_13_005108) do
     t.text "location_names", default: [], array: true
     t.text "team_names", default: [], array: true
     t.string "twitter_username"
+    t.boolean "is_banned", default: false, null: false
+    t.text "ban_details"
     t.index ["creator_id"], name: "index_players_on_creator_id"
     t.index ["discord_user_id"], name: "index_players_on_discord_user_id"
     t.index ["location_id"], name: "index_players_on_location_id"

@@ -7,6 +7,7 @@
 //= require select2
 //= require select2_locale_fr
 //= require toastr
+//= require tippy-2.5.2
 
 //= require_tree ./shared
 //= require_tree ./admin

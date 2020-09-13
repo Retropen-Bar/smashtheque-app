@@ -3,8 +3,10 @@
 # Table name: players
 #
 #  id               :bigint           not null, primary key
+#  ban_details      :text
 #  character_names  :text             default([]), is an Array
 #  is_accepted      :boolean
+#  is_banned        :boolean          default(FALSE), not null
 #  location_names   :text             default([]), is an Array
 #  name             :string
 #  team_names       :text             default([]), is an Array
