@@ -46,6 +46,16 @@ ActiveAdmin.register DiscordGuild do
     redirect_to request.referer, notice: 'Données récupérées'
   end
 
+  action_item :rebuild,
+              only: :index,
+              if: proc { current_admin_user.is_root? } do
+    link_to 'Rebuild', [:rebuild, :admin, :discord_guilds], class: 'blue'
+  end
+  collection_action :rebuild do
+    RetropenBotScheduler.rebuild_discord_guilds_chars_list
+    redirect_to request.referer, notice: 'Demande effectuée'
+  end
+
   # ---------------------------------------------------------------------------
   # FORM
   # ---------------------------------------------------------------------------

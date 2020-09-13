@@ -38,6 +38,16 @@ ActiveAdmin.register Team do
   filter :is_online
   filter :is_sponsor
 
+  action_item :rebuild,
+              only: :index,
+              if: proc { current_admin_user.is_root? } do
+    link_to 'Rebuild', [:rebuild, :admin, :teams], class: 'blue'
+  end
+  collection_action :rebuild do
+    RetropenBotScheduler.rebuild_teams
+    redirect_to request.referer, notice: 'Demande effectuée'
+  end
+
   # ---------------------------------------------------------------------------
   # FORM
   # ---------------------------------------------------------------------------

@@ -31,6 +31,16 @@ ActiveAdmin.register YouTubeChannel do
   filter :username
   filter :is_french
 
+  action_item :rebuild,
+              only: :index,
+              if: proc { current_admin_user.is_root? } do
+    link_to 'Rebuild', [:rebuild, :admin, :you_tube_channels], class: 'blue'
+  end
+  collection_action :rebuild do
+    RetropenBotScheduler.rebuild_youtube
+    redirect_to request.referer, notice: 'Demande effectuée'
+  end
+
   # ---------------------------------------------------------------------------
   # FORM
   # ---------------------------------------------------------------------------
