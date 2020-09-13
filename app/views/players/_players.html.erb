@@ -1,11 +1,11 @@
 <%= render 'shared/letters' %>
 <%= render 'shared/pagination', collection: players %>
 
-<div class="row">
+<!-- <div class="row">
   <div class="col-6">
     <%= players_map(players.limit(nil).offset(0)) %>
   </div>
-  <div class="col-6">
+  <div class="col-6"> -->
     <div class="cards-list players">
       <% players.each do |player| %>
         <div class="card-container">
@@ -13,8 +13,7 @@
         </div>
       <% end %>
     </div>
-  </div>
-</div>
-
+  <!-- </div>
+</div> -->
 
 <%= render 'shared/pagination', collection: players %>
