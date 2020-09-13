@@ -54,6 +54,7 @@ fr:
         players: Joueurs
       location: &LOCATION
         << : *SHARED
+        address: Adresse
         icon: Icône
         players: Joueurs
         type: Type

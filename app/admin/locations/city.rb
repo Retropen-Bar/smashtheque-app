@@ -17,6 +17,8 @@ ActiveAdmin.register Locations::City do
     column :name do |decorated|
       decorated.full_name
     end
+    column :latitude
+    column :longitude
     column :players do |decorated|
       decorated.players_admin_link
     end
@@ -33,6 +35,15 @@ ActiveAdmin.register Locations::City do
   filter :name
   filter :is_main
 
+  action_item :map, only: :index do
+    link_to 'Carte', map_admin_locations_cities_path
+  end
+
+  collection_action :map do
+    @locations = collection.object
+    render 'admin/locations/map'
+  end
+
   # ---------------------------------------------------------------------------
   # FORM
   # ---------------------------------------------------------------------------
@@ -42,11 +53,17 @@ ActiveAdmin.register Locations::City do
       f.input :icon
       f.input :name
       f.input :is_main
+      address_input f,
+                    {
+                      componentRestrictions: {
+                        country: :fr
+                      }
+                    }
     end
     f.actions
   end
 
-  permit_params :icon, :name, :is_main
+  permit_params :icon, :name, :is_main, :latitude, :longitude
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -56,6 +73,8 @@ ActiveAdmin.register Locations::City do
     attributes_table do
       row :icon
       row :name
+      row :latitude
+      row :longitude
       row :players do |decorated|
         decorated.players_admin_link
       end

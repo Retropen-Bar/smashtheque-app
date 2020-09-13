@@ -73,6 +73,7 @@ gem 'devise-i18n'
 # JS
 gem 'select2-rails'
 gem 'toastr-rails'
+gem 'leaflet-rails'
 
 # Theming
 gem 'simple_form'

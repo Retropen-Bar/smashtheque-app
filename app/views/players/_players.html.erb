@@ -1,12 +1,20 @@
 <%= render 'shared/letters' %>
 <%= render 'shared/pagination', collection: players %>
 
-<div class="cards-list players">
-  <% players.each do |player| %>
-    <div class="card-container">
-      <%= render 'players/player', player: player %>
+<div class="row">
+  <div class="col-6">
+    <%= players_map(players) %>
+  </div>
+  <div class="col-6">
+    <div class="cards-list players">
+      <% players.each do |player| %>
+        <div class="card-container">
+          <%= render 'players/player', player: player %>
+        </div>
+      <% end %>
     </div>
-  <% end %>
+  </div>
 </div>
+
 
 <%= render 'shared/pagination', collection: players %>

@@ -5,6 +5,8 @@
 #  id         :bigint           not null, primary key
 #  icon       :string
 #  is_main    :boolean
+#  latitude   :float
+#  longitude  :float
 #  name       :string
 #  type       :string           not null
 #  created_at :datetime         not null
@@ -48,6 +50,10 @@ class Location < ApplicationRecord
 
   def self.by_name_like(name)
     where('unaccent(name) ILIKE unaccent(?)', name)
+  end
+
+  def self.geocoded
+    where.not(latitude: nil)
   end
 
   # ---------------------------------------------------------------------------
