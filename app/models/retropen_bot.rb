@@ -23,6 +23,11 @@ class RetropenBot
   CHANNEL_YOUTUBE_FR = 'youtube-channels-fr'.freeze
   CHANNEL_YOUTUBE_WORLD = 'youtube-channels-world'.freeze
 
+  EMOJI_GUILD_ADMIN = '746006429156245536'.freeze
+  EMOJI_TEAM_ADMIN = '745255339364057119'.freeze
+  EMOJI_TWITCH = '743601202716999720'.freeze
+  EMOJI_YOUTUBE = '743601431499767899'.freeze
+
   # ---------------------------------------------------------------------------
   # CONSTRUCTOR
   # ---------------------------------------------------------------------------
@@ -176,10 +181,7 @@ class RetropenBot
   def rebuild_teams_list(_teams_category_id = nil)
     teams_category_id = _teams_category_id || teams_category['id']
     lines = Team.order(:name).map do |team|
-      [
-        team.short_name,
-        team.name
-      ].join(' : ')
+      team_line(team)
     end.join(DiscordClient::MESSAGE_LINE_SEPARATOR)
     client.replace_channel_content teams_list_channel(teams_category_id)['id'], lines
   end
@@ -190,10 +192,21 @@ class RetropenBot
     lines2 = []
     lines3 = []
     Team.order(:name).each do |team|
-      lines = [
-        "**#{team.short_name} : #{team.name}**",
-        players_lines(team.players)
-      ].join(DiscordClient::MESSAGE_LINE_SEPARATOR)
+      admins = team.team_admins.map(&:discord_user_id)
+      lines = ["**#{team.short_name} : #{team.name}**"]
+      lines += team.players
+          .accepted
+          .includes(:teams, :locations, :characters)
+          .to_a
+          .sort_by { |p| p.name.downcase }
+          .map do |player|
+        line = player_abc player
+        if admins.include?(player.discord_user_id)
+          line += ' (capitaine)'
+        end
+        line
+      end
+      lines = lines.join(DiscordClient::MESSAGE_LINE_SEPARATOR)
       letter = self.class.name_letter team.name
       if ('a'..'i').include?(letter)
         lines1 << lines
@@ -272,7 +285,7 @@ class RetropenBot
         "**#{character.name.upcase}**",
         character_emoji_tag(character),
         discord_guild.invitation_url,
-        "<:princesse:746006429156245536>",
+        emoji_tag(EMOJI_GUILD_ADMIN),
         discord_guild.discord_guild_admins.map do |discord_guild_admin|
           discord_user = discord_guild_admin.discord_user
           result = discord_user.username
@@ -303,7 +316,7 @@ class RetropenBot
       admins[letter] ||= []
       admins[letter] << (
         [
-          emoji_tag('745255339364057119'),
+          emoji_tag(EMOJI_TEAM_ADMIN),
           name
         ] + discord_user.administrated_teams.order(:short_name).map do |team|
           "[#{team.short_name}]"
@@ -322,25 +335,25 @@ class RetropenBot
 
   def rebuild_twitch_fr_list(_actors_category_id = nil)
     actors_category_id = _actors_category_id || actors_category['id']
-    named_lines = video_channels TwitchChannel.french, '743601202716999720'
+    named_lines = video_channels TwitchChannel.french, EMOJI_TWITCH
     rebuild_channel_with_named_lines twitch_fr_list_channel(actors_category_id)['id'], named_lines
   end
 
   def rebuild_twitch_world_list(_actors_category_id = nil)
     actors_category_id = _actors_category_id || actors_category['id']
-    named_lines = video_channels TwitchChannel.not_french, '743601202716999720'
+    named_lines = video_channels TwitchChannel.not_french, EMOJI_TWITCH
     rebuild_channel_with_named_lines twitch_world_list_channel(actors_category_id)['id'], named_lines
   end
 
   def rebuild_youtube_fr_list(_actors_category_id = nil)
     actors_category_id = _actors_category_id || actors_category['id']
-    named_lines = video_channels YouTubeChannel.french, '743601431499767899'
+    named_lines = video_channels YouTubeChannel.french, EMOJI_YOUTUBE
     rebuild_channel_with_named_lines youtube_fr_list_channel(actors_category_id)['id'], named_lines
   end
 
   def rebuild_youtube_world_list(_actors_category_id = nil)
     actors_category_id = _actors_category_id || actors_category['id']
-    named_lines = video_channels YouTubeChannel.not_french, '743601431499767899'
+    named_lines = video_channels YouTubeChannel.not_french, EMOJI_YOUTUBE
     rebuild_channel_with_named_lines youtube_world_list_channel(actors_category_id)['id'], named_lines
   end
 
@@ -379,6 +392,18 @@ class RetropenBot
     players.accepted.includes(:teams, :locations, :characters).to_a.sort_by{|p| p.name.downcase}.map do |player|
       player_abc player
     end.join(DiscordClient::MESSAGE_LINE_SEPARATOR)
+  end
+
+  def team_line(team)
+    line = [
+      team.short_name,
+      team.name
+    ].join(' : ')
+    if team.admins.any?
+      line += ' ' + emoji_tag(EMOJI_TEAM_ADMIN) + ' '
+      line += team.admins.map(&:username).join(', ')
+    end
+    line
   end
 
   def video_channel_line(model, emoji_id)
