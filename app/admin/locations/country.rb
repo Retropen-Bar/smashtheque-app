@@ -40,7 +40,7 @@ ActiveAdmin.register Locations::Country do
   end
 
   collection_action :map do
-    @locations = collection.object
+    @locations = Locations::Country.all
     @map_options = { center: { zoom: 2 } }
     render 'admin/locations/map'
   end

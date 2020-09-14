@@ -45,7 +45,7 @@ ActiveAdmin.register Locations::City do
   end
 
   collection_action :map do
-    @locations = collection.object
+    @locations = Locations::City.all
     render 'admin/locations/map'
   end
 
