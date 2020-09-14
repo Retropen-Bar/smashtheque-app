@@ -1,19 +1,26 @@
-<%= render 'shared/letters' %>
-<%= render 'shared/pagination', collection: players %>
+<% if @map %>
 
-<!-- <div class="row">
-  <div class="col-6">
-    <%= players_map(players.limit(nil).offset(0)) %>
+  <% if admin_user_signed_in? %>
+    <%= link_to 'Liste', url_for(map: 0), class: 'btn btn-secondary float-right' %>
+  <% end %>
+  <%= players_map(players.limit(nil).offset(0)) %>
+
+<% else %>
+
+  <% if admin_user_signed_in? %>
+    <%= link_to 'Carte', url_for(map: 1), class: 'btn btn-secondary float-right' %>
+  <% end %>
+  <%= render 'shared/letters' %>
+  <%= render 'shared/pagination', collection: players %>
+
+  <div class="cards-list players">
+    <% players.each do |player| %>
+      <div class="card-container">
+        <%= render 'players/player', player: player %>
+      </div>
+    <% end %>
   </div>
-  <div class="col-6"> -->
-    <div class="cards-list players">
-      <% players.each do |player| %>
-        <div class="card-container">
-          <%= render 'players/player', player: player %>
-        </div>
-      <% end %>
-    </div>
-  <!-- </div>
-</div> -->
 
-<%= render 'shared/pagination', collection: players %>
+  <%= render 'shared/pagination', collection: players %>
+
+<% end %>

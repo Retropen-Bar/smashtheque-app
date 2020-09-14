@@ -33,6 +33,7 @@ class PlayersController < PublicController
   private
 
   def players(base)
+    @map = params[:map].to_i == 1
     apply_scopes(base.accepted.order(:name)).includes(:teams, :locations, :characters)
   end
 
