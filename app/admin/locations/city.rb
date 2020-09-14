@@ -35,6 +35,11 @@ ActiveAdmin.register Locations::City do
   filter :name
   filter :is_main
 
+  scope :all, default: true
+
+  scope :not_geocoded, group: :geocoded
+  scope :geocoded, group: :geocoded
+
   action_item :map, only: :index do
     link_to 'Carte', map_admin_locations_cities_path
   end

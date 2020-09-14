@@ -56,6 +56,10 @@ class Location < ApplicationRecord
     where.not(latitude: nil)
   end
 
+  def self.not_geocoded
+    where(latitude: nil)
+  end
+
   # ---------------------------------------------------------------------------
   # GLOBAL SEARCH
   # ---------------------------------------------------------------------------

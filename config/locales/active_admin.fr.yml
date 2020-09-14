@@ -5,7 +5,9 @@ fr:
       admins: Admins
       all: Tous
       banned: Bannis
+      geocoded: Géolocalisé
       helps: Aides
+      not_geocoded: Non géolocalisé
       roots: Superadmins
       to_be_accepted: À valider
       unknown: Inconnus
