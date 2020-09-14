@@ -33,7 +33,7 @@ module MapsHelper
           location.latitude,
           location.longitude
         ],
-        popup: link_to(location.name, [:admin, location])
+        popup: link_to(location.decorate.pretty_name, [:admin, location])
       }
       markers << marker
     end
