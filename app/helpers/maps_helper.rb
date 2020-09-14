@@ -3,7 +3,9 @@ module MapsHelper
   def players_map(players, map_options: {})
     markers = []
     players.each do |player|
-      player.locations.geocoded.each do |location|
+      # player.locations already exists, so don't use the .geocoded scope
+      player.locations.each do |location|
+        next unless location.is_geocoded?
         main_character = player.characters.first
         next if main_character.nil?
         marker = {
