@@ -109,10 +109,11 @@ module MapsHelper
       output << "icons['#{key}'] = L.icon({iconUrl: '#{icon_settings[:icon_url]}', iconSize: #{icon_settings[:icon_size]}, iconAnchor: #{icon_settings[:icon_anchor]}});"
     end
 
+    output << "var markers = L.markerClusterGroup();"
     output << "var layers = {};"
     output << "var marker;"
     markers.each do |layer_id, layer_markers|
-      output << "layers['#{layer_id}'] = L.layerGroup([]).addTo(map);"
+      output << "layers['#{layer_id}'] = L.featureGroup.subGroup(markers, []).addTo(map);"
       layer_markers.each_with_index do |marker, index|
         icon_param = marker[:icon].blank? ? '' : ", {icon: icons['#{marker[:icon]}']}"
         output << "marker = L.marker([#{marker[:latlng][0]}, #{marker[:latlng][1]}]#{icon_param}).addTo(layers['#{layer_id}']);"
@@ -130,6 +131,8 @@ module MapsHelper
       output << "#{key.to_s.camelize(:lower)}: '#{value}',"
     end
     output << "}).addTo(map);"
+
+    output << "markers.addTo(map);"
 
     output << "</script>"
     output.join("\n").html_safe
