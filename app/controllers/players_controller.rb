@@ -34,7 +34,7 @@ class PlayersController < PublicController
 
   def players(base)
     @map = params[:map].to_i == 1
-    apply_scopes(base.accepted.order(:name)).includes(:teams, :locations, :characters)
+    apply_scopes(base.accepted.order(:name)).includes(:discord_user, :teams, :locations, :characters)
   end
 
 end
