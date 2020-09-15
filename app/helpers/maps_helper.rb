@@ -28,7 +28,7 @@ module MapsHelper
               location.latitude,
               location.longitude
             ],
-            popup: link_to(player.name, player)
+            popup: player.decorate.map_popup
           }
         end
       end
