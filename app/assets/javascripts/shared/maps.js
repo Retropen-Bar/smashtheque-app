@@ -46,6 +46,11 @@
     toggleAllMapLayers(element, map_id, show);
   };
 
+  var toggleLayersMenu = function(element) {
+    var $element = $(element);
+    $element.closest('.layers').toggleClass('expanded');
+  };
+
   $(document).on('click', '.layer[data-map][data-layer]', function(e) {
     toggleMapLayerElement(e.currentTarget);
     return false;
@@ -58,6 +63,11 @@
 
   $(document).on('click', '.layer-hide-all[data-map]', function(e) {
     toggleAllMapLayersElements(e.currentTarget, false);
+    return false;
+  });
+
+  $(document).on('click', '.layers .layers-title', function(e) {
+    toggleLayersMenu(e.currentTarget);
     return false;
   });
 

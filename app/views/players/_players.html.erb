@@ -1,9 +1,9 @@
 <% if @map %>
 
   <% if admin_user_signed_in? %>
-    <div class='clearfix'>
+    <!-- <div class='clearfix'>
       <%= link_to 'Liste', url_for(map: 0), class: 'btn btn-secondary float-right' %>
-    </div>
+    </div> -->
   <% end %>
   <%= players_map(players.limit(nil).offset(0)) %>
 

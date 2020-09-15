@@ -4,6 +4,8 @@ class PlayersController < PublicController
   has_scope :per
   has_scope :on_abc
 
+  layout :select_layout
+
   def index
     @players = players Player.all
   end
@@ -35,6 +37,10 @@ class PlayersController < PublicController
   def players(base)
     @map = params[:map].to_i == 1
     apply_scopes(base.accepted.order(:name)).includes(:discord_user, :teams, :locations, :characters)
+  end
+
+  def select_layout
+    @map ? 'map' : 'application'
   end
 
 end

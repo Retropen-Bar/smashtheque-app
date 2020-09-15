@@ -84,6 +84,12 @@ module MapsHelper
 
     if layers.any?
       output << "  <div class='layers'>"
+      output << "    <div class='layers-title noselect clearfix'>"
+      output << "      <div class='float-right'>"
+      output << "        <button type='button' class='navbar-toggler'><i class='fas fa-layer-group'></i></button>"
+      output << "      </div>"
+      output << "      <span>Affichage</span>"
+      output << "    </div>"
       output << "    <div class='layer-top-buttons clearfix'>"
       output << "      <a href='#' class='layer-show-all btn btn-primary btn-sm' data-map='#{container_id}'>Tous</a>"
       output << "      <a href='#' class='layer-hide-all btn btn-secondary btn-sm float-right' data-map='#{container_id}'>Aucun</a>"

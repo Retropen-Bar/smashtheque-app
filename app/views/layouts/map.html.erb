@@ -14,14 +14,12 @@
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
-  <body>
+  <body class="map-layout">
     <%= render partial: 'layouts/application/flash', flash: flash %>
     <%= render partial: 'layouts/application/head' %>
 
-    <div class="container-fluid">
-      <%= yield %>
-    </div>
+    <%= yield %>
 
-    <%= render partial: 'layouts/application/footer' %>
+    <%= render partial: 'layouts/map/footer' %>
   </body>
 </html>
