@@ -115,9 +115,15 @@ class PlayerDecorator < BaseDecorator
 
   def as_autocomplete_result
     h.content_tag :div, class: :player do
-      h.content_tag :div, class: :name do
-        name
-      end
+      (
+        h.content_tag :div, class: :avatar do
+          avatar_tag(32)
+        end
+      ) + (
+        h.content_tag :div, class: :name do
+          name
+        end
+      )
     end
   end
 

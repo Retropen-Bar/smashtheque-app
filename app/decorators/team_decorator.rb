@@ -65,9 +65,15 @@ class TeamDecorator < BaseDecorator
 
   def as_autocomplete_result
     h.content_tag :div, class: 'team' do
-      h.content_tag :div, class: :name do
-        full_name
-      end
+      (
+        h.content_tag :div, class: :avatar do
+          logo_image_tag(max_width: 32)
+        end
+      ) + (
+        h.content_tag :div, class: :name do
+          full_name
+        end
+      )
     end
   end
 

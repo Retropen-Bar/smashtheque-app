@@ -27,7 +27,7 @@ class Api::V1::SearchController < Api::V1::BaseController
           {
             id: document.id,
             type: document.searchable_type,
-            icon: model.icon_class,
+            # icon: model.icon_class,
             url: url,
             html: model.as_autocomplete_result
           }
