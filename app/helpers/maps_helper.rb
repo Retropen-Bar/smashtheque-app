@@ -89,7 +89,7 @@ module MapsHelper
           end
         ].each do |layer_id, layer|
           output << "    <div class='layer layer-visible noselect' data-map='#{container_id}' data-layer='#{layer_id}'>"
-          output << "      <span class='name'>#{layer[:name]}</span>"
+          output << "      <span class='name'>#{layer[:name]} (#{markers[layer_id].count})</span>"
           output << "    </div>"
         end
       output << "  </div>"
