@@ -109,7 +109,7 @@ module MapsHelper
       output << "icons['#{key}'] = L.icon({iconUrl: '#{icon_settings[:icon_url]}', iconSize: #{icon_settings[:icon_size]}, iconAnchor: #{icon_settings[:icon_anchor]}});"
     end
 
-    output << "var markers = L.markerClusterGroup();"
+    output << "var markers = L.markerClusterGroup({showCoverageOnHover: false, zoomToBoundsOnClick: true, removeOutsideVisibleBounds: true});"
     output << "var layers = {};"
     output << "var marker;"
     markers.each do |layer_id, layer_markers|
