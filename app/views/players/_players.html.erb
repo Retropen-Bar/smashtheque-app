@@ -1,18 +1,24 @@
 <% if @map %>
 
-  <% if admin_user_signed_in? %>
-    <!-- <div class='clearfix'>
-      <%= link_to 'Liste', url_for(map: 0), class: 'btn btn-secondary float-right' %>
-    </div> -->
+  <%= players_map(players.limit(nil).offset(0)) do %>
+    <div id="map-list-link">
+      <div class="btn-group" role="group">
+        <%= link_to 'Liste', url_for(map: 0), class: 'btn btn-outline-primary' %>
+        <button type="button" class="btn btn-primary">Carte</button>
+      </div>
+    </div>
   <% end %>
-  <%= players_map(players.limit(nil).offset(0)) %>
 
 <% else %>
 
-  <% if admin_user_signed_in? %>
-    <%= link_to 'Carte', url_for(map: 1), class: 'btn btn-secondary float-right' %>
-  <% end %>
+  <div class="text-center">
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-primary">Liste</button>
+      <%= link_to 'Carte', url_for(map: 1), class: 'btn btn-outline-primary' %>
+    </div>
+  </div>
   <%= render 'shared/letters' %>
+
   <%= render 'shared/pagination', collection: players %>
 
   <div class="cards-list players">

@@ -1,6 +1,6 @@
 module MapsHelper
 
-  def players_map(players, map_options: {})
+  def players_map(players, map_options: {}, &block)
     icons = {}
     markers = {}
     layers = {}
@@ -37,7 +37,8 @@ module MapsHelper
     france_map  markers: markers,
                 layers: layers,
                 icons: icons,
-                options: map_options || {}
+                options: map_options || {},
+                &block
   end
 
   def locations_map(locations, map_options: {})
@@ -59,7 +60,7 @@ module MapsHelper
 
   private
 
-  def france_map(markers:, layers: {}, icons: {}, options: {})
+  def france_map(markers:, layers: {}, icons: {}, options: {}, &block)
     options = {
       attribution: Leaflet.attribution,
       center: {
@@ -104,6 +105,10 @@ module MapsHelper
         output << "    </div>"
       end
       output << "  </div>"
+    end
+
+    if block_given?
+      output << capture(&block)
     end
 
     output << "</div>"

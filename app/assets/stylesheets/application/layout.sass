@@ -59,13 +59,20 @@ body.map-layout
   flex-flow: column
 
   .page-title
-    position: absolute
-    top: 20px
-    left: 50%
-    transform: translateX(-50%)
+    display: none
 
   #main-nav
     // no flex rules, it will grow
+
+  #map-list-link
+    position: absolute
+    top: 10px
+    left: 50%
+    z-index: 2
+
+    .btn-outline-primary
+      &:not(:hover)
+        background: white
 
   & > .map-container
     flex: 1 // 1 and it will fill whole space left if no flex value are set to other children
