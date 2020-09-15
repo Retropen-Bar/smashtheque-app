@@ -83,7 +83,11 @@ module MapsHelper
 
     if layers.any?
       output << "  <div class='layers'>"
-        layers.each do |layer_id, layer|
+        Hash[
+          layers.sort_by do |k, v|
+            v[:name].downcase
+          end
+        ].each do |layer_id, layer|
           output << "    <div class='layer layer-visible noselect' data-map='#{container_id}' data-layer='#{layer_id}'>"
           output << "      <span class='name'>#{layer[:name]}</span>"
           output << "    </div>"
