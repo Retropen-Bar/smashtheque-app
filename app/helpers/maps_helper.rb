@@ -84,15 +84,19 @@ module MapsHelper
 
     if layers.any?
       output << "  <div class='layers'>"
-        Hash[
-          layers.sort_by do |k, v|
-            v[:position]
-          end
-        ].each do |layer_id, layer|
-          output << "    <div class='layer layer-visible noselect' data-map='#{container_id}' data-layer='#{layer_id}'>"
-          output << "      <span class='name'>#{layer[:name]} (#{markers[layer_id].count})</span>"
-          output << "    </div>"
+      output << "    <div class='layer-top-buttons clearfix'>"
+      output << "      <a href='#' class='layer-show-all btn btn-primary btn-sm' data-map='#{container_id}'>Tous</a>"
+      output << "      <a href='#' class='layer-hide-all btn btn-secondary btn-sm float-right' data-map='#{container_id}'>Aucun</a>"
+      output << "    </div>"
+      Hash[
+        layers.sort_by do |k, v|
+          v[:position]
         end
+      ].each do |layer_id, layer|
+        output << "    <div class='layer layer-visible noselect' data-map='#{container_id}' data-layer='#{layer_id}'>"
+        output << "      <span class='name'>#{layer[:name]} (#{markers[layer_id].count})</span>"
+        output << "    </div>"
+      end
       output << "  </div>"
     end
 
