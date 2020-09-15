@@ -19,7 +19,8 @@ module MapsHelper
           name: main_character.decorate.full_name(
             max_width: 32,
             max_height: 32
-          )
+          ),
+          position: main_character.name.downcase
         }
         markers[main_character.id.to_s] ||= []
         markers[main_character.id.to_s] << {
@@ -85,7 +86,7 @@ module MapsHelper
       output << "  <div class='layers'>"
         Hash[
           layers.sort_by do |k, v|
-            v[:name].downcase
+            v[:position]
           end
         ].each do |layer_id, layer|
           output << "    <div class='layer layer-visible noselect' data-map='#{container_id}' data-layer='#{layer_id}'>"
