@@ -8,29 +8,29 @@ module MapsHelper
       # player.locations already exists, so don't use the .geocoded scope
       player.locations.each do |location|
         next unless location.is_geocoded?
-        main_character = player.characters.first
-        next if main_character.nil?
-        icons[main_character.id.to_s] ||= {
-          icon_url: main_character.decorate.emoji_image_url,
-          icon_size: 32,
-          icon_anchor: [16, 16]
-        }
-        layers[main_character.id.to_s] ||= {
-          name: main_character.decorate.full_name(
-            max_width: 32,
-            max_height: 32
-          ),
-          position: main_character.name.downcase
-        }
-        markers[main_character.id.to_s] ||= []
-        markers[main_character.id.to_s] << {
-          icon: main_character.id.to_s,
-          latlng: [
-            location.latitude,
-            location.longitude
-          ],
-          popup: link_to(player.name, player)
-        }
+        player.characters.each do |character|
+          icons[character.id.to_s] ||= {
+            icon_url: character.decorate.emoji_image_url,
+            icon_size: 32,
+            icon_anchor: [16, 16]
+          }
+          layers[character.id.to_s] ||= {
+            name: character.decorate.full_name(
+              max_width: 32,
+              max_height: 32
+            ),
+            position: character.name.downcase
+          }
+          markers[character.id.to_s] ||= []
+          markers[character.id.to_s] << {
+            icon: character.id.to_s,
+            latlng: [
+              location.latitude,
+              location.longitude
+            ],
+            popup: link_to(player.name, player)
+          }
+        end
       end
     end
 
