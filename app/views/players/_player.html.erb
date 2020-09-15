@@ -3,11 +3,10 @@
     <h5 class="card-title">
       <% player.teams.each do |team| %>
         <div class="player-team">
-          <i class="fas fa-users"></i>
-          <%= link_to team.short_name, team, class: 'text-muted' %>
+          <%= link_to team.decorate.short_name_with_logo(max_width: 32, max_height: 32), team, class: 'text-muted' %>
         </div>
       <% end %>
-      <%= link_to player.name, player %>
+      <%= link_to player.decorate.name_with_avatar(size: 64), player %>
     </h5>
     <% player.locations.each do |location| %>
       <div class="player-location">
