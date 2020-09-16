@@ -98,15 +98,15 @@ fr:
         character_ids: Persos
         character_names: Persos
         characters: Persos
-        location: Localisation
-        location_id: Localisation
+        locations: Localisations
+        location_ids: Localisations
         creator: Ajouté par
         creator_id: Ajouté par
         discord_user: Compte Discord
         is_accepted: Validé ?
         is_banned: Banni ?
-        team: Équipe
-        team_id: Équipe
+        teams: Équipes
+        team_ids: Équipes
         twitter_username: Compte Twitter
       team:
         << : *SHARED

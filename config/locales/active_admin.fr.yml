@@ -13,7 +13,9 @@ fr:
       unknown: Inconnus
       with_admin_user: Admin
       with_discord_user: Relié à Discord
+      without_character: Sans perso
       without_discord_user: Non relié à Discord
+      without_location: Sans localisation
     new_model: Créer
     edit_model: Modifier
     delete_model: Supprimer

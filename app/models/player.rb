@@ -249,6 +249,14 @@ class Player < ApplicationRecord
     where(discord_user_id: nil)
   end
 
+  def self.without_location
+    where.not(id: LocationsPlayer.select(:player_id))
+  end
+
+  def self.without_character
+    where.not(id: CharactersPlayer.select(:player_id))
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------

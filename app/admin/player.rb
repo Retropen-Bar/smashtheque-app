@@ -52,8 +52,9 @@ ActiveAdmin.register Player do
   scope :accepted, group: :is_accepted
   scope :to_be_accepted, group: :is_accepted
 
-  scope :with_discord_user, group: :discord_user
-  scope :without_discord_user, group: :discord_user
+  scope :without_discord_user, group: :incomplete
+  scope :without_location, group: :incomplete
+  scope :without_character, group: :incomplete
 
   scope :banned, group: :is_banned
 
