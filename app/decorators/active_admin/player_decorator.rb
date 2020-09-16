@@ -38,7 +38,7 @@ class ActiveAdmin::PlayerDecorator < PlayerDecorator
   end
 
   def creator_admin_link(options = {})
-    model.creator.admin_decorate.admin_link options
+    model.creator&.admin_decorate&.admin_link options
   end
 
   def discord_user_admin_link(options = {})
