@@ -5,6 +5,7 @@
 #  id               :bigint           not null, primary key
 #  background_color :string
 #  background_image :text
+#  background_size  :integer
 #  emoji            :string
 #  icon             :string
 #  name             :string

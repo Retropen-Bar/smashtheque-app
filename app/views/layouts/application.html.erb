@@ -17,7 +17,9 @@
   <body style="<%=
     "background-color: #{@background_color};" if @background_color
   %><%=
-    "background-image: url(\"#{@background_image_url.gsub('"', "\"")}\");background-size: 128px;" if @background_image_url
+    "background-image: url(\"#{@background_image_url.gsub('"', "\"")}\");" if @background_image_url
+  %><%=
+    "background-size: #{@background_size}px;" if @background_image_url
   %>">
     <%= render partial: 'layouts/application/flash', flash: flash %>
     <%= render partial: 'layouts/application/head' %>

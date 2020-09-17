@@ -50,11 +50,13 @@ ActiveAdmin.register Character do
       f.input :name
       f.input :background_color, as: :color
       f.input :background_image
+      f.input :background_size
     end
     f.actions
   end
 
-  permit_params :icon, :name, :emoji, :background_color, :background_image
+  permit_params :icon, :name, :emoji,
+                :background_color, :background_image, :background_size
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -72,6 +74,9 @@ ActiveAdmin.register Character do
       end
       row :background_image do |decorated|
         decorated.background_image_tag(max_width: 64, max_height: 64)
+      end
+      row :background_size do |decorated|
+        decorated.background_size_display
       end
       row :players do |decorated|
         decorated.players_admin_link

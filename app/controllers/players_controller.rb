@@ -27,6 +27,7 @@ class PlayersController < PublicController
     @players = players @character.model.players
     @background_color = @character.background_color
     @background_image_url = @character.background_image_data_url
+    @background_size = @character.background_size || 128
     render 'characters/show'
   end
 

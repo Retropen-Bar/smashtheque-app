@@ -45,6 +45,11 @@ class CharacterDecorator < BaseDecorator
     h.image_tag_with_max_size background_image_data_url, options
   end
 
+  def background_size_display
+    return nil if model.background_size.blank?
+    "#{model.background_size}px"
+  end
+
   def icon_class
     'user-circle'
   end
