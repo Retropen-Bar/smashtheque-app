@@ -33,7 +33,7 @@ class Ability
     # only root
 
     # Character
-    can manage_or_read, Character
+    can manage_or_cru, Character
 
     # DiscordGuild
     can manage_or_read, DiscordGuild
