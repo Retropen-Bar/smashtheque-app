@@ -49,6 +49,8 @@ fr:
         token: Token
       character:
         << : *SHARED
+        background_color: Couleur de fond
+        background_image: Pattern SVG
         emoji: Emoji
         icon: Icône
         players: Joueurs

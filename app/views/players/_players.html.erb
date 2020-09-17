@@ -12,14 +12,16 @@
 <% else %>
 
   <div class="text-center">
-    <div class="btn-group" role="group">
-      <button type="button" class="btn btn-primary">Liste</button>
-      <%= link_to 'Carte', url_for(map: 1), class: 'btn btn-outline-primary' %>
+    <div id="list-toolbar" class="bg-white shadow-sm">
+      <h1 class="page-title"><%= title %></h1>
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-primary">Liste</button>
+        <%= link_to 'Carte', url_for(map: 1), class: 'btn btn-outline-primary' %>
+      </div>
+      <%= render 'shared/letters' %>
+      <%= render 'shared/pagination', collection: players %>
     </div>
   </div>
-  <%= render 'shared/letters' %>
-
-  <%= render 'shared/pagination', collection: players %>
 
   <div class="cards-list players">
     <% players.each do |player| %>

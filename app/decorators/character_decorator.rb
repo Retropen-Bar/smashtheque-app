@@ -32,6 +32,19 @@ class CharacterDecorator < BaseDecorator
                               class: 'emoji'
   end
 
+  def background_image_data_url
+    return nil if model.background_image.blank?
+    [
+      'data:image/svg+xml;base64',
+      Base64.strict_encode64(model.background_image)
+    ].join(',')
+  end
+
+  def background_image_tag(options = {})
+    return nil if model.background_image.blank?
+    h.image_tag_with_max_size background_image_data_url, options
+  end
+
   def icon_class
     'user-circle'
   end

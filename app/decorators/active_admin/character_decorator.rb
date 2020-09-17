@@ -32,4 +32,9 @@ class ActiveAdmin::CharacterDecorator < CharacterDecorator
     h.link_to players_count, players_admin_path
   end
 
+  def colored_background_color
+    return nil if model.background_color.blank?
+    h.content_tag :span, model.background_color, style: "color: #{model.background_color}"
+  end
+
 end

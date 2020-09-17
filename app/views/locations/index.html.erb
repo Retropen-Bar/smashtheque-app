@@ -1,7 +1,10 @@
-<h1 class="page-title">Localisations</h1>
-
-<%= render 'shared/letters' %>
-<%= render 'shared/pagination', collection: @locations %>
+<div class="text-center">
+  <div id="list-toolbar" class="bg-white shadow-sm">
+    <h1 class="page-title">Localisations</h1>
+    <%= render 'shared/letters' %>
+    <%= render 'shared/pagination', collection: @locations %>
+  </div>
+</div>
 
 <div class="cards-list locations">
   <% @locations.each do |location| %>

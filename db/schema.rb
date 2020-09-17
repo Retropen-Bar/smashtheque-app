@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_13_172200) do
+ActiveRecord::Schema.define(version: 2020_09_17_202434) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -69,6 +69,8 @@ ActiveRecord::Schema.define(version: 2020_09_13_172200) do
     t.string "emoji"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "background_color"
+    t.text "background_image"
   end
 
   create_table "characters_players", force: :cascade do |t|

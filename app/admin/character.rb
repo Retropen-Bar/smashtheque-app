@@ -19,6 +19,12 @@ ActiveAdmin.register Character do
     column :players do |decorated|
       decorated.players_admin_link
     end
+    column :background_color do |decorated|
+      decorated.colored_background_color
+    end
+    column :background_image do |decorated|
+      decorated.background_image_tag(max_width: 64, max_height: 64)
+    end
     column :discord_guilds do |decorated|
       decorated.discord_guilds_admin_links
     end
@@ -30,6 +36,9 @@ ActiveAdmin.register Character do
 
   filter :name
 
+  scope :all, default: true
+  scope :without_background
+
   # ---------------------------------------------------------------------------
   # FORM
   # ---------------------------------------------------------------------------
@@ -39,11 +48,13 @@ ActiveAdmin.register Character do
       f.input :emoji
       f.input :icon
       f.input :name
+      f.input :background_color, as: :color
+      f.input :background_image
     end
     f.actions
   end
 
-  permit_params :icon, :name, :emoji
+  permit_params :icon, :name, :emoji, :background_color, :background_image
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -56,6 +67,12 @@ ActiveAdmin.register Character do
       end
       row :icon
       row :name
+      row :background_color do |decorated|
+        decorated.colored_background_color
+      end
+      row :background_image do |decorated|
+        decorated.background_image_tag(max_width: 64, max_height: 64)
+      end
       row :players do |decorated|
         decorated.players_admin_link
       end
@@ -66,6 +83,10 @@ ActiveAdmin.register Character do
       row :updated_at
     end
     active_admin_comments
+  end
+
+  action_item :public, only: :show do
+    link_to 'Page publique', resource, class: 'green'
   end
 
 end

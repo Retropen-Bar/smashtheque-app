@@ -1,7 +1,10 @@
-<h1 class="page-title">Équipes</h1>
-
-<%= render 'shared/letters' %>
-<%= render 'shared/pagination', collection: @teams %>
+<div class="text-center">
+  <div id="list-toolbar" class="bg-white shadow-sm">
+    <h1 class="page-title">Équipes</h1>
+    <%= render 'shared/letters' %>
+    <%= render 'shared/pagination', collection: @teams %>
+  </div>
+</div>
 
 <div class="cards-list teams">
   <% @teams.each do |team| %>

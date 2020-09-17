@@ -25,6 +25,8 @@ class PlayersController < PublicController
   def character_index
     @character = Character.find(params[:id]).decorate
     @players = players @character.model.players
+    @background_color = @character.background_color
+    @background_image_url = @character.background_image_data_url
     render 'characters/show'
   end
 

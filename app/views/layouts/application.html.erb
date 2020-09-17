@@ -14,7 +14,11 @@
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
-  <body>
+  <body style="<%=
+    "background-color: #{@background_color};" if @background_color
+  %><%=
+    "background-image: url(\"#{@background_image_url.gsub('"', "\"")}\");background-size: 128px;" if @background_image_url
+  %>">
     <%= render partial: 'layouts/application/flash', flash: flash %>
     <%= render partial: 'layouts/application/head' %>
 

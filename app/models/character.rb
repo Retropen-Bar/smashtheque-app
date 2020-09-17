@@ -2,12 +2,14 @@
 #
 # Table name: characters
 #
-#  id         :bigint           not null, primary key
-#  emoji      :string
-#  icon       :string
-#  name       :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id               :bigint           not null, primary key
+#  background_color :string
+#  background_image :text
+#  emoji            :string
+#  icon             :string
+#  name             :string
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #
 class Character < ApplicationRecord
 
@@ -29,6 +31,10 @@ class Character < ApplicationRecord
 
   def self.by_emoji(emoji)
     where(emoji: emoji)
+  end
+
+  def self.without_background
+    where(background_color: [nil, ''])
   end
 
   # ---------------------------------------------------------------------------
