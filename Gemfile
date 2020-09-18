@@ -74,6 +74,7 @@ gem 'devise-i18n'
 gem 'select2-rails'
 gem 'toastr-rails'
 gem 'leaflet-rails'
+gem 'jquery-minicolors-rails'
 
 # Theming
 gem 'simple_form'

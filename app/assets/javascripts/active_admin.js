@@ -6,6 +6,7 @@
 //= require html5sortable.min
 //= require select2
 //= require tippy-2.5.2
+//= require jquery.minicolors
 
 //= require shared
 

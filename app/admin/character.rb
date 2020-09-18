@@ -48,7 +48,9 @@ ActiveAdmin.register Character do
       f.input :emoji
       f.input :icon
       f.input :name
-      f.input :background_color, as: :color
+      f.input :background_color,
+              as: :string,
+              input_html: { data: { colorpicker: {} } }
       f.input :background_image
       f.input :background_size
     end
