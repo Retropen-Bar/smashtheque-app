@@ -33,6 +33,12 @@ class PlayersController < PublicController
 
   def show
     @player = Player.find(params[:id])
+    main_character = @player.characters.first&.decorate
+    if main_character
+      @background_color = main_character.background_color
+      @background_image_url = main_character.background_image_data_url
+      @background_size = main_character.background_size || 128
+    end
   end
 
   private
