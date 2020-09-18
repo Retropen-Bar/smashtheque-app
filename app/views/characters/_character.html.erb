@@ -1,8 +1,16 @@
-<div class="card character">
+<div class="card character shadow-sm" style="<%=
+    "background-color: #{character.background_color};" if character.background_color
+  %><%=
+    "background-image: url(\"#{character.background_image_data_url.gsub('"', "\"")}\");" if character.background_image
+  %><%=
+    "background-size: #{(character.background_size || 64)/2}px;" if character.background_image
+  %>">
   <div class="card-body">
     <%= link_to character do %>
       <%= character.emoji_image_tag %><br/>
-      <%= character.name.titleize %>
+      <span class="name">
+        <%= character.name.titleize %>
+      </span>
     <% end %>
   </div>
 </div>
