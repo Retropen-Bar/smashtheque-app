@@ -31,7 +31,11 @@ class DiscordUserDecorator < BaseDecorator
 
   def avatar_tag(size = nil)
     return nil if avatar.blank?
-    h.image_tag avatar_url(size), class: 'avatar'
+    # h.image_tag avatar_url(size), class: 'avatar'
+    h.image_tag_with_max_size avatar_url,
+                              max_width: size,
+                              max_height: size,
+                              class: 'avatar'
   end
 
 end
