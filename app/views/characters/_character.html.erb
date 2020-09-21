@@ -1,9 +1,7 @@
 <div class="card character shadow-sm" style="<%=
-    "background-color: #{character.background_color};" if character.background_color
+    "background-color: #{character.background_color};" unless character.background_color.blank?
   %><%=
-    "background-image: url(\"#{character.background_image_data_url.gsub('"', "\"")}\");" if character.background_image
-  %><%=
-    "background-size: #{(character.background_size || 64)/2}px;" if character.background_image
+    "background-image: url(\"#{character.background_image_data_url.gsub('"', "\"")}\");background-size: 240px;" unless character.background_image.blank?
   %>">
   <div class="card-body">
     <%= link_to character do %>

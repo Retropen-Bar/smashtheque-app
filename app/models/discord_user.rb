@@ -2,17 +2,13 @@
 #
 # Table name: discord_users
 #
-#  id               :bigint           not null, primary key
-#  avatar           :string
-#  discriminator    :string
-#  refresh_token    :string
-#  token            :string
-#  token_expires    :boolean
-#  token_expires_at :integer
-#  username         :string
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  discord_id       :string
+#  id            :bigint           not null, primary key
+#  avatar        :string
+#  discriminator :string
+#  username      :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  discord_id    :string
 #
 # Indexes
 #
