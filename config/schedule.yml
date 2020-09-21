@@ -1,0 +1,4 @@
+refetch_discord_users_data:
+  cron: '0 3 * * * Europe/Paris'
+  queue: :discord
+  class: 'RefetchDiscordUsersDataJob'

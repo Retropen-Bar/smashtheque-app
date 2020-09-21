@@ -95,6 +95,16 @@ class DiscordUser < ApplicationRecord
   # HELPERS
   # ---------------------------------------------------------------------------
 
+  def needs_fetching?
+    return true if avatar.blank?
+    uri = URI(decorate.avatar_url(16))
+    https = Net::HTTP.new(uri.host, uri.port)
+    https.use_ssl = true
+    request = Net::HTTP::Head.new(uri)
+    response = https.request(request)
+    return !response.kind_of?(Net::HTTPSuccess)
+  end
+
   def fetch_discord_data
     client = DiscordClient.new
     data = client.get_user discord_id
