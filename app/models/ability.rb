@@ -43,6 +43,7 @@ class Ability
 
     # DiscordUser
     can manage_or_read, DiscordUser
+    can :fetch_discord_data, DiscordUser
 
     # Location and subclasses
     can manage_or_cru, Location
