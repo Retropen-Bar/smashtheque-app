@@ -96,4 +96,14 @@ ActiveAdmin.register Character do
     link_to 'Page publique', resource, class: 'green'
   end
 
+  action_item :rebuild,
+              only: :show,
+              if: proc { current_admin_user.is_root? } do
+    link_to 'Rebuild', [:rebuild, :admin, resource], class: 'blue'
+  end
+  member_action :rebuild do
+    RetropenBotScheduler.rebuild_chars_for_character resource
+    redirect_to request.referer, notice: 'Demande effectuée'
+  end
+
 end

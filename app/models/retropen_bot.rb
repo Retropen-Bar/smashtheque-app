@@ -371,6 +371,10 @@ class RetropenBot
     "<:#{character.name.parameterize.gsub('-','')}:#{character.emoji}>"
   end
 
+  def escape_message_content(content)
+    content.gsub('_','\_').gsub('*','\*')
+  end
+
   def player_abc(player)
     line = player.name
     player.teams.each do |team|
@@ -385,7 +389,7 @@ class RetropenBot
         line += " #{character_emoji_tag(character)}"
       end
     end
-    line
+    escape_message_content line
   end
 
   def players_lines(players)
@@ -405,7 +409,7 @@ class RetropenBot
         discord_user.player&.name || discord_user.username
       end.join(', ')
     end
-    line
+    escape_message_content line
   end
 
   def video_channel_line(model, emoji_id)
@@ -430,7 +434,7 @@ class RetropenBot
       line += ' -> ' + details.join(', ')
     end
 
-    line
+    escape_message_content line
   end
 
   def video_channels(models, emoji_id)
