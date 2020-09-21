@@ -24,7 +24,8 @@ class DiscordUserDecorator < BaseDecorator
 
   def avatar_url(size = nil)
     return nil if avatar.blank?
-    url = "https://cdn.discordapp.com/avatars/#{model.discord_id}/#{model.avatar}.gif"
+    extension = model.avatar.start_with?('a_') ? :gif : :png
+    url = "https://cdn.discordapp.com/avatars/#{model.discord_id}/#{model.avatar}.#{extension}"
     url += "?size=#{size}" if size
     url
   end
