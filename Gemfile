@@ -109,6 +109,7 @@ gem 'rswag-ui'
 
 # Jobs
 gem 'sidekiq'
+gem 'sidekiq-cron', '~> 1.1'
 
 group :production do
   # for assets compilation
