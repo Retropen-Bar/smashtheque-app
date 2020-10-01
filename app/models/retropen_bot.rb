@@ -288,7 +288,7 @@ class RetropenBot
         emoji_tag(EMOJI_GUILD_ADMIN),
         discord_guild.discord_guild_admins.map do |discord_guild_admin|
           discord_user = discord_guild_admin.discord_user
-          result = discord_user.username
+          result = discord_user.player&.name || discord_user.username
           result += " [#{discord_guild_admin.role}]" unless discord_guild_admin.role.blank?
           result
         end.join(', ')
