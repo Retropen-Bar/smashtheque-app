@@ -278,7 +278,7 @@ class DiscordClient
   def compare_existing(existing, tests)
     symbolized_existing = existing.symbolize_keys
     tests.each do |test_k, test_v|
-      return false if symbolized_existing[test_k.to_sym] != test_v
+      return false if (symbolized_existing[test_k.to_sym] || '').gsub(/[^\w]/, '') != (test_v || '').gsub(/[^\w]/, '')
     end
     true
   end
