@@ -82,11 +82,16 @@ class DiscordClient
     )
   end
 
-  def find_or_create_guild_text_channel(guild_id, find_params, create_params = {})
+  def find_guild_text_channel(guild_id, find_params)
     existing_channels = get_guild_channels(guild_id)
-    found_channel = existing_channels.find do |channel|
+    existing_channels.find do |channel|
       compare_existing channel, find_params
     end
+  end
+
+  def find_or_create_guild_text_channel(guild_id, find_params, create_params = {})
+    puts "[DiscordClient] find_or_create_guild_text_channel(#{guild_id}, #{find_params.inspect}, #{create_params.inspect})"
+    found_channel = find_guild_text_channel(guild_id, find_params)
     return found_channel if found_channel
 
     # create
