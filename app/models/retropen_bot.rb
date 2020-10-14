@@ -277,7 +277,7 @@ class RetropenBot
                                  .includes(:related)
                                  .to_a
                                  .sort_by do |discord_guild|
-                                   discord_guild.related.name
+                                   discord_guild.related.name.downcase
                                  end
     messages = discord_guilds.map do |discord_guild|
       character = discord_guild.related
