@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_17_225739) do
+ActiveRecord::Schema.define(version: 2020_10_22_110759) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -149,8 +149,6 @@ ActiveRecord::Schema.define(version: 2020_09_17_225739) do
   end
 
   create_table "players", force: :cascade do |t|
-    t.bigint "location_id"
-    t.bigint "team_id"
     t.string "name"
     t.boolean "is_accepted"
     t.bigint "discord_user_id"
@@ -165,8 +163,6 @@ ActiveRecord::Schema.define(version: 2020_09_17_225739) do
     t.text "ban_details"
     t.index ["creator_id"], name: "index_players_on_creator_id"
     t.index ["discord_user_id"], name: "index_players_on_discord_user_id"
-    t.index ["location_id"], name: "index_players_on_location_id"
-    t.index ["team_id"], name: "index_players_on_team_id"
   end
 
   create_table "players_teams", force: :cascade do |t|
