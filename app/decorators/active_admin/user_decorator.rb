@@ -1,7 +1,7 @@
-class ActiveAdmin::AdminUserDecorator < AdminUserDecorator
+class ActiveAdmin::UserDecorator < UserDecorator
   include ActiveAdmin::BaseDecorator
 
-  decorates :admin_user
+  decorates :user
 
   def discord_user_admin_link(size: nil)
     model.discord_user&.admin_decorate&.admin_link(size: size)
@@ -25,7 +25,7 @@ class ActiveAdmin::AdminUserDecorator < AdminUserDecorator
   def level_status
     key = model.is_root? ? :root : model.level
     arbre do
-      status_tag AdminUser.human_attribute_name("level.#{key}"), class: LEVEL_COLORS[key]
+      status_tag User.human_attribute_name("level.#{key}"), class: LEVEL_COLORS[key]
     end
   end
 

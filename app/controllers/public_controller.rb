@@ -29,7 +29,7 @@ class PublicController < ApplicationController
     session[:token] = params[:token] if params[:token]
 
     # check
-    authenticate_admin_user! unless session[:token] == ENV['PUBLIC_ACCESS_TOKEN']
+    authenticate_user! unless session[:token] == ENV['PUBLIC_ACCESS_TOKEN']
   end
 
 end

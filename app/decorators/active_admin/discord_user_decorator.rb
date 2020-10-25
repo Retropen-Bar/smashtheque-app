@@ -13,10 +13,10 @@ class ActiveAdmin::DiscordUserDecorator < DiscordUserDecorator
     )
   end
 
-  def admin_user_status
+  def user_status
     arbre do
-      if admin_user = model.admin_user
-        a href: h.auto_url_for(admin_user) do
+      if user = model.user
+        a href: h.auto_url_for(user) do
           status_tag :yes
         end
       else

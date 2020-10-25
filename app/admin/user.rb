@@ -1,6 +1,6 @@
-ActiveAdmin.register AdminUser do
+ActiveAdmin.register User do
 
-  decorate_with ActiveAdmin::AdminUserDecorator
+  decorate_with ActiveAdmin::UserDecorator
 
   menu label: '<i class="fas fa-fw fa-shield-alt"></i>Admins'.html_safe
 
@@ -48,7 +48,7 @@ ActiveAdmin.register AdminUser do
     f.inputs do
       discord_user_input f
       f.input :level,
-              collection: admin_user_level_select_collection,
+              collection: user_level_select_collection,
               input_html: { disabled: f.object.is_root? }
     end
     f.actions

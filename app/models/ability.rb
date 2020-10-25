@@ -8,20 +8,20 @@ class Ability
   def initialize(_user)
     alias_action :create, :read, :update, to: :cru
 
-    @user = _user || AdminUser.new
+    @user = _user || User.new
 
     level = user.level || LEVEL_HELP
 
     manage_or_cru = level >= LEVEL_ADMIN ? :manage : :cru
     manage_or_read = level >= LEVEL_ADMIN ? :manage : :read
 
-    # AdminUser
+    # User
     if level >= LEVEL_ADMIN
-      can :manage, AdminUser
-      cannot :manage, AdminUser, is_root: true
-      can :read, AdminUser
+      can :manage, User
+      cannot :manage, User, is_root: true
+      can :read, User
     elsif user.persisted?
-      can :read, AdminUser
+      can :read, User
     end
 
     # ApiRequest

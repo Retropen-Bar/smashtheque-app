@@ -20,7 +20,7 @@ fr:
       roots: Superadmins
       to_be_accepted: À valider
       unknown: Inconnus
-      with_admin_user: Admin
+      with_user: Admin
       with_discord_user: Relié à Discord
       with_missing_data: Info manquante
       with_missing_graph: Graph manquant

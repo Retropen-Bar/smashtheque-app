@@ -112,7 +112,7 @@ ActiveAdmin.register Character do
 
   action_item :rebuild,
               only: :show,
-              if: proc { current_admin_user.is_root? } do
+              if: proc { current_user.is_root? } do
     link_to 'Rebuild', [:rebuild, :admin, resource], class: 'blue'
   end
   member_action :rebuild do

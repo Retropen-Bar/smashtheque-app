@@ -1,7 +1,7 @@
 fr:
   activerecord:
     models:
-      admin_user: Administrateur
+      user: Administrateur
       api_request: Requête API
       api_token: Token API
       challonge_tournament: Tournoi Challonge
@@ -33,7 +33,7 @@ fr:
         id: "#"
         name: Nom
         updated_at: Modification
-      admin_user:
+      user:
         << : *SHARED
         current_sign_in_at: Session en cours
         current_sign_in_ip: IP en cours
@@ -41,7 +41,7 @@ fr:
         last_sign_in_ip: IP précédente
         level: Rôle
         sign_in_count: Connexions
-      admin_user/level:
+      user/level:
         0_help: Aide
         1_admin: Admin
         root: Superadmin
@@ -111,7 +111,7 @@ fr:
         role: Rôle
       discord_user:
         << : *SHARED
-        admin_user: Admin
+        user: Admin
         administrated_discord_guilds: Serveurs Discord gérés
         administrated_teams: Équipes gérées
         avatar: Avatar

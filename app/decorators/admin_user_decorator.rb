@@ -1,3 +1,0 @@
-class AdminUserDecorator < BaseDecorator
-
-end

@@ -100,7 +100,7 @@ ActiveAdmin.register Player do
 
   action_item :rebuild_all,
               only: :index,
-              if: proc { current_admin_user.is_root? } do
+              if: proc { current_user.is_root? } do
     link_to 'Rebuild', [:rebuild_all, :admin, :players], class: 'blue'
   end
   collection_action :rebuild_all do
@@ -115,7 +115,7 @@ ActiveAdmin.register Player do
   controller do
     def build_new_resource
       resource = super
-      resource.creator = current_admin_user.discord_user
+      resource.creator = current_user.discord_user
       resource
     end
   end

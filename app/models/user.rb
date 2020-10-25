@@ -1,11 +1,12 @@
 # == Schema Information
 #
-# Table name: admin_users
+# Table name: users
 #
 #  id                 :bigint           not null, primary key
 #  current_sign_in_at :datetime
 #  current_sign_in_ip :inet
 #  encrypted_password :string           default(""), not null
+#  is_admin           :boolean          default(FALSE), not null
 #  is_root            :boolean          default(FALSE), not null
 #  last_sign_in_at    :datetime
 #  last_sign_in_ip    :inet
@@ -17,9 +18,9 @@
 #
 # Indexes
 #
-#  index_admin_users_on_discord_user_id  (discord_user_id) UNIQUE
+#  index_users_on_discord_user_id  (discord_user_id) UNIQUE
 #
-class AdminUser < ApplicationRecord
+class User < ApplicationRecord
 
   # ---------------------------------------------------------------------------
   # MODULES
@@ -82,8 +83,8 @@ class AdminUser < ApplicationRecord
     }
     discord_user.save!
 
-    # find & return AdminUser
-    discord_user.admin_user
+    # find & return User
+    discord_user.user
   end
 
   delegate :discord_id,
