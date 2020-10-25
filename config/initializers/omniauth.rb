@@ -4,6 +4,4 @@ Rails.application.config.middleware.use OmniAuth::Builder do
            ENV['DISCORD_CLIENT_ID'],
            ENV['DISCORD_CLIENT_SECRET'],
            scope: 'email identify'
-
-  on_failure { |env| AuthenticationsController.action(:failure).call(env) }
 end

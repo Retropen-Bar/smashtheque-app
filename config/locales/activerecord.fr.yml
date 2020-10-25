@@ -111,7 +111,7 @@ fr:
         role: Rôle
       discord_user:
         << : *SHARED
-        user: Admin
+        user: Utilisateur
         administrated_discord_guilds: Serveurs Discord gérés
         administrated_teams: Équipes gérées
         avatar: Avatar
