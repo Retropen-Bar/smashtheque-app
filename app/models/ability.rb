@@ -36,10 +36,11 @@ class Ability
     can manage_or_cru, Character
 
     # DiscordGuild
-    can manage_or_read, DiscordGuild
+    can manage_or_cru, DiscordGuild
+    can :fetch_discord_data, DiscordGuild
 
     # DiscordGuildAdmin
-    can manage_or_read, DiscordGuildAdmin
+    can manage_or_cru, DiscordGuildAdmin
 
     # DiscordUser
     can manage_or_read, DiscordUser
