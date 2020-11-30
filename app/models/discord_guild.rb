@@ -86,13 +86,27 @@ class DiscordGuild < ApplicationRecord
 
   def fetch_discord_data
     client = DiscordClient.new
-    data = client.get_guild discord_id
-    if data.has_key?('name')
-      self.attributes = {
-        name: data['name'],
-        icon: data['icon'],
-        splash: data['splash']
-      }
+    if discord_id.blank?
+      unless invitation_url.blank?
+        data = client.get_guild_from_invitation(invitation_url)
+        if data.has_key?('guild') && data['guild'].has_key?('name')
+          self.attributes = {
+            discord_id: data['guild']['id'],
+            name: data['guild']['name'],
+            icon: data['guild']['icon'],
+            splash: data['guild']['splash']
+          }
+        end
+      end
+    else
+      data = client.get_guild discord_id
+      if data.has_key?('name')
+        self.attributes = {
+          name: data['name'],
+          icon: data['icon'],
+          splash: data['splash']
+        }
+      end
     end
   end
 

@@ -4,6 +4,15 @@
 # Team.destroy_all
 # Player.destroy_all
 
+DiscordUser.delete_all
+discord_user = DiscordUser.new(discord_id: '608210202952466464')
+discord_user.save!
+AdminUser.create!(
+  discord_user: discord_user,
+  level: Ability::LEVEL_ADMIN,
+  is_root: true
+)
+
 ENV['NO_DISCORD'] = '1'
 
 # Locations::City

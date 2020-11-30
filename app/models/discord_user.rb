@@ -37,6 +37,13 @@ class DiscordUser < ApplicationRecord
            through: :team_admins,
            source: :team
 
+  has_many :recurring_tournament_contacts,
+           inverse_of: :discord_user,
+           dependent: :destroy
+  has_many :administrated_recurring_tournaments,
+           through: :recurring_tournament_contacts,
+           source: :recurring_tournament
+
   # ---------------------------------------------------------------------------
   # VALIDATIONS
   # ---------------------------------------------------------------------------

@@ -8,6 +8,8 @@ fr:
       geocoded: Géolocalisé
       helps: Aides
       not_geocoded: Non géolocalisé
+      offline: Offline
+      online: Online
       roots: Superadmins
       to_be_accepted: À valider
       unknown: Inconnus

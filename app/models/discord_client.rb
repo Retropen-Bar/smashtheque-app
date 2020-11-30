@@ -15,6 +15,11 @@ class DiscordClient
     api_get "/guilds/#{guild_id}"
   end
 
+  def get_guild_from_invitation(invitation_url)
+    invitation_code = invitation_url.gsub 'https://discord.gg/', ''
+    api_get "/invites/#{invitation_code}"
+  end
+
   def get_guild_roles(guild_id)
     # cache is problematic for now
     # @guild_roles ||= {}

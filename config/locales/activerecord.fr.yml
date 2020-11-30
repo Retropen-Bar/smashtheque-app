@@ -15,6 +15,7 @@ fr:
       locations_city: Ville
       locations_country: Pays
       player: Joueur
+      recurring_tournament: Tournoi régulier
       team: Équipe
       twitch_channel: Chaîne Twitch
       you_tube_channel: Chaîne YouTube
@@ -111,6 +112,26 @@ fr:
         teams: Équipes
         team_ids: Équipes
         twitter_username: Compte Twitter
+      recurring_tournament:
+        << : *SHARED
+        contacts: Contacts
+        discord_guild: Serveur Discord
+        is_online: Online ?
+        level: Difficulté
+        name: Tournoi
+        recurring_type: Récurrence
+        registration: Comment s'inscrire
+        size: Taille
+        starts_at: Heure
+        wday: Jour de la semaine
+      recurring_tournament/level:
+        l1_playground: 1 - Cour de récréation
+        l2_anything: 2 - Tout peut arriver
+        l3_glory: 3 - Gloire et honneur
+        l4_experts: 4 - Combattants aguerris
+      recurring_tournament/recurring_type:
+        weekly: Toutes les semaines
+        monthly: Tous les mois
       team:
         << : *SHARED
         admins: Admins

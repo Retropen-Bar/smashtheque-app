@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_22_110759) do
+ActiveRecord::Schema.define(version: 2020_11_30_204230) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -172,6 +172,31 @@ ActiveRecord::Schema.define(version: 2020_10_22_110759) do
     t.index ["player_id", "team_id"], name: "index_players_teams_on_player_id_and_team_id", unique: true
     t.index ["player_id"], name: "index_players_teams_on_player_id"
     t.index ["team_id"], name: "index_players_teams_on_team_id"
+  end
+
+  create_table "recurring_tournament_contacts", force: :cascade do |t|
+    t.bigint "recurring_tournament_id"
+    t.bigint "discord_user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["discord_user_id"], name: "index_recurring_tournament_contacts_on_discord_user_id"
+    t.index ["recurring_tournament_id", "discord_user_id"], name: "index_rtc_on_both_ids", unique: true
+    t.index ["recurring_tournament_id"], name: "index_recurring_tournament_contacts_on_recurring_tournament_id"
+  end
+
+  create_table "recurring_tournaments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "recurring_type", null: false
+    t.integer "wday"
+    t.time "starts_at"
+    t.bigint "discord_guild_id"
+    t.boolean "is_online", default: false, null: false
+    t.string "level"
+    t.integer "size"
+    t.text "registration"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["discord_guild_id"], name: "index_recurring_tournaments_on_discord_guild_id"
   end
 
   create_table "team_admins", force: :cascade do |t|
