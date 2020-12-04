@@ -39,11 +39,17 @@
           <span>Équipes</span>
         <% end %>
       </li>
+      <li class="nav-item">
+        <%= link_to discord_guilds_path, class: 'nav-link' do %>
+          <i class="fab fa-discord"></i>
+          <span>Serveurs</span>
+        <% end %>
+      </li>
       <% if admin_user_signed_in? %>
         <li class="nav-item">
-          <%= link_to discord_guilds_path, class: 'nav-link' do %>
-            <i class="fab fa-discord"></i>
-            <span>Serveurs</span>
+          <%= link_to planning_path, class: 'nav-link' do %>
+            <i class="fas fa-calendar-alt"></i>
+            <span>Planning</span>
           <% end %>
         </li>
       <% end %>
