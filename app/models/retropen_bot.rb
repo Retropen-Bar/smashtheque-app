@@ -273,14 +273,14 @@ class RetropenBot
 
   def rebuild_discord_guilds_chars_list(_actors_category_id = nil)
     actors_category_id = _actors_category_id || actors_category['id']
-    discord_guilds = DiscordGuild.by_related_type(Character.to_s)
-                                 .includes(:related)
-                                 .to_a
-                                 .sort_by do |discord_guild|
-                                   discord_guild.related.name.downcase
-                                 end
-    messages = discord_guilds.map do |discord_guild|
-      character = discord_guild.related
+
+    characters = Character.with_discord_guild
+                          .sort_by do |character|
+                            character.name.downcase
+                          end
+
+    messages = characters.map do |character|
+      discord_guild = character.discord_guilds.first
       [
         "**#{character.name.upcase}**",
         character_emoji_tag(character),

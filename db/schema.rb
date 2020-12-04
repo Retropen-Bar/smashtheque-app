@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_30_204230) do
+ActiveRecord::Schema.define(version: 2020_12_04_210142) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -94,18 +94,29 @@ ActiveRecord::Schema.define(version: 2020_11_30_204230) do
     t.index ["discord_user_id"], name: "index_discord_guild_admins_on_discord_user_id"
   end
 
+  create_table "discord_guild_relateds", force: :cascade do |t|
+    t.bigint "discord_guild_id"
+    t.string "related_type"
+    t.bigint "related_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["discord_guild_id", "related_type", "related_id"], name: "index_dgr_on_all", unique: true
+    t.index ["discord_guild_id"], name: "index_discord_guild_relateds_on_discord_guild_id"
+    t.index ["related_type", "related_id"], name: "index_discord_guild_relateds_on_related_type_and_related_id"
+  end
+
   create_table "discord_guilds", force: :cascade do |t|
     t.string "discord_id"
     t.string "name"
     t.string "icon"
     t.string "splash"
-    t.string "related_type"
-    t.bigint "related_id"
+    t.string "old_related_type"
+    t.bigint "old_related_id"
     t.string "invitation_url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "twitter_username"
-    t.index ["related_type", "related_id"], name: "index_discord_guilds_on_related_type_and_related_id"
+    t.index ["old_related_type", "old_related_id"], name: "index_discord_guilds_on_old_related_type_and_old_related_id"
   end
 
   create_table "discord_users", force: :cascade do |t|

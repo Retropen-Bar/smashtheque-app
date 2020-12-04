@@ -6,33 +6,19 @@
 #  icon             :string
 #  invitation_url   :string
 #  name             :string
-#  related_type     :string
+#  old_related_type :string
 #  splash           :string
 #  twitter_username :string
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  discord_id       :string
-#  related_id       :bigint
+#  old_related_id   :bigint
 #
 # Indexes
 #
-#  index_discord_guilds_on_related_type_and_related_id  (related_type,related_id)
+#  index_discord_guilds_on_old_related_type_and_old_related_id  (old_related_type,old_related_id)
 #
 class DiscordGuild < ApplicationRecord
-
-  # ---------------------------------------------------------------------------
-  # CONCERNS
-  # ---------------------------------------------------------------------------
-
-  include RelatedConcern
-  def self.related_types
-    [
-      Character,
-      Location,
-      Player,
-      Team
-    ]
-  end
 
   # ---------------------------------------------------------------------------
   # RELATIONS
@@ -44,6 +30,17 @@ class DiscordGuild < ApplicationRecord
   has_many :admins,
            through: :discord_guild_admins,
            source: :discord_user
+
+  has_many :discord_guild_relateds,
+           inverse_of: :discord_guild,
+           dependent: :destroy
+  # has_many :relateds,
+  #          through: :discord_guild_relateds,
+  #          source: :related,
+  #          foreign_type: :related_type
+  def relateds
+    discord_guild_relateds.map(&:related)
+  end
 
   # ---------------------------------------------------------------------------
   # VALIDATIONS
@@ -80,9 +77,27 @@ class DiscordGuild < ApplicationRecord
     where(icon: nil)
   end
 
+  def self.by_related_type(v)
+    where(id: DiscordGuildRelated.by_related_type(v).select(:discord_guild_id))
+  end
+
+  def self.by_related_id(v)
+    where(id: DiscordGuildRelated.by_related_id(v).select(:discord_guild_id))
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------
+
+  def related_gids
+    self.discord_guild_relateds.map(&:related_gid)
+  end
+
+  def related_gids=(gids)
+    self.discord_guild_relateds = gids.map(&:presence).compact.map do |gid|
+      self.discord_guild_relateds.build(related_gid: gid)
+    end
+  end
 
   def fetch_discord_data
     client = DiscordClient.new

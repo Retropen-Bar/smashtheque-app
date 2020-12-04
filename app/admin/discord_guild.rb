@@ -9,7 +9,7 @@ ActiveAdmin.register DiscordGuild do
   # INDEX
   # ---------------------------------------------------------------------------
 
-  includes :related
+  includes :discord_guild_relateds
 
   index do
     selectable_column
@@ -18,8 +18,8 @@ ActiveAdmin.register DiscordGuild do
     column :name do |decorated|
       decorated.full_name(size: 32)
     end
-    column :related do |decorated|
-      decorated.related_admin_link
+    column :relateds do |decorated|
+      decorated.relateds_admin_links
     end
     column :admins do |decorated|
       decorated.admins_admin_links(size: 32).join('<br/>').html_safe
@@ -63,7 +63,27 @@ ActiveAdmin.register DiscordGuild do
   form do |f|
     f.inputs do
       f.input :discord_id, input_html: { disabled: f.object.persisted? }
-      related_input(f)
+      f.input :related_gids,
+              {
+                as: :select,
+                collection: f.object.relateds.map do |related|
+                  [
+                    related&.decorate&.autocomplete_name,
+                    related&.to_global_id&.to_s
+                  ]
+                end,
+                input_html: {
+                  multiple: true,
+                  data: {
+                    select2: {
+                      ajax: {
+                        url: url_for([:related_autocomplete, :admin, f.object.class]),
+                        dataType: 'json'
+                      }
+                    }
+                  }
+                }
+              }
       f.input :invitation_url
       discord_users_input f, :admins
       f.input :twitter_username
@@ -71,11 +91,11 @@ ActiveAdmin.register DiscordGuild do
     f.actions
   end
 
-  permit_params :discord_id, :related_gid, :invitation_url, :twitter_username,
-                admin_ids: []
+  permit_params :discord_id, :invitation_url, :twitter_username,
+                admin_ids: [], related_gids: []
 
   collection_action :related_autocomplete do
-    render json: collection.object.related_autocomplete(params[:term])
+    render json: DiscordGuildRelated.related_autocomplete(params[:term])
   end
 
   # ---------------------------------------------------------------------------
@@ -92,8 +112,8 @@ ActiveAdmin.register DiscordGuild do
       row :splash do |decorated|
         decorated.splash_image_tag(32)
       end
-      row :related do |decorated|
-        decorated.related_admin_link
+      row :relateds do |decorated|
+        decorated.relateds_admin_links.join('<br/>').html_safe
       end
       row :invitation_url do |decorated|
         decorated.invitation_link

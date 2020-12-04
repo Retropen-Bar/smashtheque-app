@@ -13,8 +13,10 @@ class ActiveAdmin::DiscordGuildDecorator < DiscordGuildDecorator
     )
   end
 
-  def related_admin_link(options = {})
-    related&.admin_decorate&.admin_link(options)
+  def relateds_admin_links(options = {})
+    model.relateds.map do |related|
+      related.admin_decorate.admin_link(options)
+    end
   end
 
   def admins_admin_links(options = {})

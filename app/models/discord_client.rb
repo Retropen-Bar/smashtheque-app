@@ -179,7 +179,7 @@ class DiscordClient
         # an existing message is available for edition
         existing_message = existing_messages[message_idx]
         # but only update it if needed
-        if existing_message['content'].eql?(new_message)
+        if existing_message['content'].eql?(new_message.strip)
           puts 'existing message is already OK, no need to update it'
         else
           puts 'existing message is different, we need to update it'

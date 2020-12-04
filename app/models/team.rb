@@ -21,7 +21,8 @@ class Team < ApplicationRecord
 
   has_many :players_teams, dependent: :destroy
   has_many :players, through: :players_teams
-  has_many :discord_guilds, as: :related, dependent: :nullify
+  has_many :discord_guild_relateds, as: :related, dependent: :nullify
+  has_many :discord_guilds, through: :discord_guild_relateds
 
   has_many :team_admins,
            inverse_of: :team,
