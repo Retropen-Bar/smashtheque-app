@@ -35,17 +35,20 @@ Rails.application.routes.draw do
   # PUBLIC
 
   resources :characters, only: :index
-  get '/characters/:id' => 'players#character_index', as: :character
+  get 'characters/:id' => 'players#character_index', as: :character
 
   resources :discord_guilds, only: [:index, :show]
 
   resources :locations, only: :index
-  get '/locations/:id' => 'players#location_index', as: :location
+  get 'locations/:id' => 'players#location_index', as: :location
 
   resources :players, only: [:index, :show]
 
   resources :teams, only: :index
-  get '/teams/:id' => 'players#team_index', as: :team
+  get 'teams/:id' => 'players#team_index', as: :team
+
+  resources :recurring_tournaments, only: [:index, :show]
+  get 'planning' => 'public#planning', as: :planning
 
   root to: 'public#home'
 

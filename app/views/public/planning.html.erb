@@ -1,0 +1,35 @@
+<div class="text-center">
+  <div id="list-toolbar">
+    <h1 class="page-title">Planning</h1>
+  </div>
+</div>
+
+<div id="planning"></div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById("planning");
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      themeSystem: 'bootstrap',
+      initialView: 'customTimeGrid',
+      // contentHeight: 400,
+      initialDate: '<%= @monday %>',
+      locale: 'fr',
+      firstDay: 1,
+      height: 'auto',
+      views: {
+        customTimeGrid: {
+          type: 'timeGrid',
+          duration: { days: 7 },
+          // scrollTime: '12:00:00',
+          allDaySlot: false,
+          nowIndicator: true,
+          slotMinTime: '08:00:00',
+          slotDuration: '01:00:00'
+        }
+      },
+      events: '<%= recurring_tournaments_path(format: :json) %>'
+    });
+    calendar.render();
+  });
+</script>

@@ -7,6 +7,10 @@ class PublicController < ApplicationController
     @teams_count = Team.count
   end
 
+  def planning
+    @monday = Date.today.beginning_of_week
+  end
+
   private
 
   def check_access!

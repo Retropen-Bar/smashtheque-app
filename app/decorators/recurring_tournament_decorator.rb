@@ -16,4 +16,22 @@ class RecurringTournamentDecorator < BaseDecorator
     I18n.l(model.starts_at, format: '%Hh%M')
   end
 
+  def date_on_week(monday)
+    d = monday.beginning_of_week + model.wday
+    t = model.starts_at
+    DateTime.new(d.year, d.month, d.day, t.hour, t.min)
+  end
+
+  def description
+    model.name
+  end
+
+  def as_event(week_start:)
+    {
+      title: model.name,
+      start: date_on_week(week_start),
+      description: description
+    }
+  end
+
 end

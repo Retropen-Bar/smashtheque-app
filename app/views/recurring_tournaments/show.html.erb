@@ -1,0 +1,58 @@
+<h1 class="page-title"><%= @recurring_tournament.name %></h1>
+
+<dl>
+
+  <dt>Récurrence</dt>
+  <dd><%= @recurring_tournament.recurring_type_text %></dd>
+
+  <% if @recurring_tournament.recurring_type.to_sym == :weekly %>
+
+    <dt>Jour de la semaine</dt>
+    <dd><%= @recurring_tournament.wday_text %></dd>
+
+  <% end %>
+
+  <dt>Démarrage</dt>
+  <dd><%= @recurring_tournament.starts_at %></dd>
+
+  <% if @recurring_tournament.discord_guild %>
+
+    <dt>Discord</dt>
+    <dd><%= render 'discord_guilds/discord_guild', discord_guild: @recurring_tournament.discord_guild.decorate %></dd>
+
+  <% end %>
+
+  <dt>Localisation</dt>
+  <dd>
+    <% if @recurring_tournament.is_online? %>
+      Online
+    <% else %>
+      Offline
+    <% end %>
+  </dd>
+
+  <dt>Difficulté</dt>
+  <dd><%= @recurring_tournament.level_text %></dd>
+
+  <dt>Taille</dt>
+  <dd><%= @recurring_tournament.size %></dd>
+
+  <dt>Comment s'inscrire</dt>
+  <dd><%= @recurring_tournament.registration %></dd>
+
+  <% if @recurring_tournament.contacts.any? %>
+
+    <dt>Contacts</dt>
+    <dd>
+      <% @recurring_tournament.contacts.each do |discord_user| %>
+        <% if discord_user.player %>
+          <%= render 'players/player', player: discord_user.player %>
+        <% else %>
+          <%= render 'discord_users/discord_user', discord_user: discord_user %>
+        <% end %>
+      <% end %>
+    </dd>
+
+  <% end %>
+
+</dl>
