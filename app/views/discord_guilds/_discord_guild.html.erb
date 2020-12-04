@@ -1,6 +1,6 @@
 <div class="card discord-guild shadow-sm">
   <div class="card-body">
-    <%= link_to discord_guild do %>
+    <%= link_to discord_guild.invitation_url, target: '_blank' do %>
       <%= discord_guild.icon_image_tag %><br/>
       <%= discord_guild.name %>
     <% end %>
