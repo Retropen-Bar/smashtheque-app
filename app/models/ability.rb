@@ -53,6 +53,8 @@ class Ability
     can manage_or_cru, Player
     can :accept, Player
 
+    can manage_or_cru, RecurringTournament
+
     # Team
     can manage_or_cru, Team
 
