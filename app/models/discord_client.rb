@@ -16,7 +16,7 @@ class DiscordClient
   end
 
   def get_guild_from_invitation(invitation_url)
-    invitation_code = invitation_url.gsub(
+    invitation_code = invitation_url.strip.gsub(
       'https://discord.gg/', ''
     ).gsub(
       'https://discord.com/invite/', ''
