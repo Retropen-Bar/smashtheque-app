@@ -7,19 +7,19 @@ class SmashthequeApi
   AUTH_TOKEN = ENV['SMASHTHEQUE_API_TOKEN'].freeze
 
   def self.characters
-    api_get 'characters'
+    api_get 'characters?per=1000'
   end
 
   def self.discord_guilds
-    api_get 'discord_guilds'
+    api_get 'discord_guilds?per=1000'
   end
 
   def self.locations
-    api_get 'locations'
+    api_get 'locations?per=1000'
   end
 
   def self.teams
-    api_get 'teams'
+    api_get 'teams?per=1000'
   end
 
   def self.api_get(path)

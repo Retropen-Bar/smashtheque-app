@@ -30,6 +30,9 @@ class Player < ApplicationRecord
   belongs_to :creator, class_name: :DiscordUser
   belongs_to :discord_user, optional: true
 
+  has_many :discord_guild_relateds, as: :related, dependent: :nullify
+  has_many :discord_guilds, through: :discord_guild_relateds
+
   has_many :characters_players,
            -> { positioned },
            inverse_of: :player,

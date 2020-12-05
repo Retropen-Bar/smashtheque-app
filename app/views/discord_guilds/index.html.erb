@@ -5,6 +5,9 @@
     <a class="nav-link active" id="characters-tab" data-toggle="tab" href="#characters" role="tab" aria-controls="characters" aria-selected="true">Personnages</a>
   </li>
   <li class="nav-item" role="presentation">
+    <a class="nav-link" id="players-tab" data-toggle="tab" href="#players" role="tab" aria-controls="players" aria-selected="false">Joueurs</a>
+  </li>
+  <li class="nav-item" role="presentation">
     <a class="nav-link" id="teams-tab" data-toggle="tab" href="#teams" role="tab" aria-controls="teams" aria-selected="false">Équipes</a>
   </li>
   <li class="nav-item" role="presentation">
@@ -19,6 +22,10 @@
 
   <div class="tab-pane fade show active" id="characters" role="tabpanel" aria-labelledby="characters-tab">
     <%= render 'discord_guilds/discord_guilds', discord_guilds: @character_discord_guilds %>
+  </div>
+
+  <div class="tab-pane fade show active" id="players" role="tabpanel" aria-labelledby="players-tab">
+    <%= render 'discord_guilds/discord_guilds', discord_guilds: @player_discord_guilds %>
   </div>
 
   <div class="tab-pane fade" id="teams" role="tabpanel" aria-labelledby="teams-tab">
