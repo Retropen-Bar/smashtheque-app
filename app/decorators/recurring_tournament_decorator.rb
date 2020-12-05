@@ -27,10 +27,17 @@ class RecurringTournamentDecorator < BaseDecorator
   end
 
   def as_event(week_start:)
+    start = date_on_week(week_start)
+    classes = [
+      "level-#{model.level}"
+    ]
+    duration = 3.hours # TODO: improve this
     {
       title: model.name,
-      start: date_on_week(week_start),
-      description: description
+      start: start,
+      end: start + duration,
+      description: description,
+      classNames: classes
     }
   end
 
