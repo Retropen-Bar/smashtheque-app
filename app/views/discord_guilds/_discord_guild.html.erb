@@ -3,6 +3,15 @@
     <%= link_to discord_guild.invitation_url, target: '_blank' do %>
       <%= discord_guild.icon_image_tag %><br/>
       <%= discord_guild.name %>
+
+      <% characters = discord_guild.related_characters %>
+      <% if characters.any? %>
+        <div class="related-characters">
+          <% characters.each do |character| %>
+            <%= character.decorate.emoji_image_tag %>
+          <% end %>
+        </div>
+      <% end %>
     <% end %>
   </div>
 </div>

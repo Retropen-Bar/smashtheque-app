@@ -34,13 +34,6 @@ class DiscordGuild < ApplicationRecord
   has_many :discord_guild_relateds,
            inverse_of: :discord_guild,
            dependent: :destroy
-  # has_many :relateds,
-  #          through: :discord_guild_relateds,
-  #          source: :related,
-  #          foreign_type: :related_type
-  def relateds
-    discord_guild_relateds.map(&:related)
-  end
 
   # ---------------------------------------------------------------------------
   # VALIDATIONS
@@ -88,6 +81,10 @@ class DiscordGuild < ApplicationRecord
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------
+
+  def relateds
+    discord_guild_relateds.map(&:related)
+  end
 
   def related_gids
     self.discord_guild_relateds.map(&:related_gid)

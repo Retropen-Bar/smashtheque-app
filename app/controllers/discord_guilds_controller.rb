@@ -5,7 +5,9 @@ class DiscordGuildsController < PublicController
 
   def index
     base = DiscordGuild.known
-    @character_discord_guilds = base.by_related_type(Character.to_s).to_a
+    @character_discord_guilds = base.by_related_type(Character.to_s).to_a.sort_by do |g|
+      g.relateds.map(&:name).map(&:downcase).sort.first
+    end
     @team_discord_guilds = base.by_related_type(Team.to_s).to_a
     @location_discord_guilds = base.by_related_type(Location.to_s).to_a
     ids = @character_discord_guilds.map(&:id) +

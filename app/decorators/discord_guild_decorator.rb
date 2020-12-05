@@ -51,4 +51,12 @@ class DiscordGuildDecorator < BaseDecorator
     h.image_tag splash_image_url(size)
   end
 
+  def related_characters
+    model.relateds.select do |related|
+      related.is_a?(Character)
+    end.sort_by do |character|
+      character.name.downcase
+    end
+  end
+
 end
