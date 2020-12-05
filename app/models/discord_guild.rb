@@ -136,4 +136,12 @@ class DiscordGuild < ApplicationRecord
     !!icon
   end
 
+  def as_json(options = nil)
+    result = super(options || {})
+    result[:relateds] = discord_guild_relateds.map do |discord_guild_related|
+      discord_guild_related.as_json
+    end
+    result
+  end
+
 end

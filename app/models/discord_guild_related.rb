@@ -85,4 +85,13 @@ class DiscordGuildRelated < ApplicationRecord
     }
   end
 
+  def as_json(options = nil)
+    super((options || {}).merge(
+      only: %i(related_type),
+      include: {
+        related: {}
+      }
+    ))
+  end
+
 end

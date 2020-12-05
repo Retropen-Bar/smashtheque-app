@@ -10,6 +10,18 @@ class SmashthequeApi
     api_get 'characters'
   end
 
+  def self.discord_guilds
+    api_get 'discord_guilds'
+  end
+
+  def self.locations
+    api_get 'locations'
+  end
+
+  def self.teams
+    api_get 'teams'
+  end
+
   def self.api_get(path)
     url = URI("#{BASE_URL}/#{path}")
 
