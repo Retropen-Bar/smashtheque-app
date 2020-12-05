@@ -22,6 +22,7 @@ Rails.application.routes.draw do
       resources :characters, only: :index
       resources :discord_guilds, only: :index
       resources :locations, only: [:index, :create]
+      resources :recurring_tournaments, only: :index
       resources :players, only: [:index, :show, :create, :update]
       resources :teams, only: :index
       get '/search' => 'search#global'
