@@ -16,7 +16,12 @@ class DiscordClient
   end
 
   def get_guild_from_invitation(invitation_url)
-    invitation_code = invitation_url.gsub 'https://discord.gg/', ''
+    invitation_code = invitation_url.gsub(
+      'https://discord.gg/', ''
+    ).gsub(
+      'https://discord.com/invite/', ''
+    )
+
     api_get "/invites/#{invitation_code}"
   end
 
