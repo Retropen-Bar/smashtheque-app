@@ -106,7 +106,7 @@ class RetropenBot
     else
       chars_category2_id || chars_category2['id']
     end
-    channel_name = [character.icon, character.name.parameterize].join
+    channel_name = character.name.parameterize
     channel = find_or_create_readonly_channel @guild_id,
                                               name: channel_name,
                                               parent_id: parent_category_id
@@ -134,7 +134,7 @@ class RetropenBot
     else
       cities_category_id || cities_category['id']
     end
-    channel_name = [location.icon, location.name.parameterize].join
+    channel_name = location.name.parameterize
     channel = find_or_create_readonly_channel @guild_id,
                                               name: channel_name,
                                               parent_id: parent_category_id
