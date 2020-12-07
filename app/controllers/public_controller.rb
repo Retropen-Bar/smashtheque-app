@@ -7,7 +7,7 @@ class PublicController < ApplicationController
     @teams_count = Team.count
   end
 
-  def planning
+  def planning_online
     @monday = Date.today.beginning_of_week
   end
 

@@ -50,7 +50,7 @@ Rails.application.routes.draw do
   get 'teams/:id' => 'players#team_index', as: :team
 
   resources :recurring_tournaments, only: [:index, :show]
-  get 'planning' => 'public#planning', as: :planning
+  get 'planning/online' => 'public#planning_online', as: :planning
 
   root to: 'public#home'
 
