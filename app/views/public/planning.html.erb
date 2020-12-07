@@ -22,6 +22,16 @@
           </div>
         <% end %>
       </div>
+
+      <div class="col-6">
+        <strong>Taille</strong>
+        <div class="form-row align-items-center">
+          <div class="col-auto">Entre</div>
+          <div class="col-auto"><%= select_tag 'size_min', options_for_select(planning_size_select_collection), class: 'custom-select', id: 'size-min' %></div>
+          <div class="col-auto">et</div>
+          <div class="col-auto"><%= select_tag 'size_max', options_for_select(planning_size_select_collection, RecurringTournament::SIZES.last), class: 'custom-select', id: 'size-max' %></div>
+        </div>
+      </div>
     </div>
 
   <% end %>
@@ -63,6 +73,8 @@
         if (params.by_level_in.length < 1) {
           delete params['by_level_in'];
         }
+        params.by_size_geq = $('form#filters select#size-min').val();
+        params.by_size_leq = $('form#filters select#size-max').val();
         $.ajax({
           dataType: "json",
           url: '<%= recurring_tournaments_path(format: :json) %>',
@@ -73,7 +85,7 @@
       }
     });
     calendar.render();
-    $('form#filters').on('change', 'input', function() {
+    $('form#filters').on('change', 'input, select', function() {
       calendar.refetchEvents();
     });
   });

@@ -9,4 +9,13 @@ module PlanningHelper
     end
   end
 
+  def planning_size_select_collection
+    RecurringTournament::SIZES.map do |v|
+      [
+        RecurringTournamentDecorator.size_name(v),
+        v
+      ]
+    end
+  end
+
 end

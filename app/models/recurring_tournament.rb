@@ -33,13 +33,14 @@ class RecurringTournament < ApplicationRecord
     monthly
   ].freeze
 
-  SIZES = %w[
-    8
-    16
-    32
-    64
-    128
-  ].freeze
+  SIZES = [
+    8,
+    16,
+    32,
+    64,
+    128,
+    1024
+  ]
 
   belongs_to :discord_guild, optional: true
 
@@ -66,6 +67,9 @@ class RecurringTournament < ApplicationRecord
   scope :offline, -> { where(is_online: false) }
 
   scope :by_level_in, -> v { where(level: v) }
+
+  scope :by_size_geq, -> v { where("size >= ?", v) }
+  scope :by_size_leq, -> v { where("size <= ?", v) }
 
   # ---------------------------------------------------------------------------
   # VERSIONS

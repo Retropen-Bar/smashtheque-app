@@ -37,7 +37,12 @@ module ActiveAdmin::RecurringTournamentsHelper
   end
 
   def recurring_tournament_size_select_collection
-    RecurringTournament::SIZES
+    RecurringTournament::SIZES.map do |v|
+      [
+        RecurringTournamentDecorator.size_name(v),
+        v
+      ]
+    end
   end
 
 end

@@ -1,6 +1,8 @@
 class RecurringTournamentsController < PublicController
 
   has_scope :by_level_in, type: :array
+  has_scope :by_size_geq
+  has_scope :by_size_leq
 
   def index
     respond_to do |format|

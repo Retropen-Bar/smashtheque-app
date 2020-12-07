@@ -15,6 +15,10 @@ class RecurringTournamentDecorator < BaseDecorator
     RecurringTournament.human_attribute_name("level.#{model.level}")
   end
 
+  def self.size_name(size)
+    size > 128 ? '128+' : size
+  end
+
   def recurring_type_text
     RecurringTournament.human_attribute_name("recurring_type.#{model.recurring_type}")
   end
@@ -44,7 +48,7 @@ class RecurringTournamentDecorator < BaseDecorator
     ]
     duration = 3.hours # TODO: improve this
     {
-      title: model.name,
+      title: model.name + " (#{model.size})",
       start: start,
       end: start + duration,
       description: description,
