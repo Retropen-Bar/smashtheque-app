@@ -65,6 +65,8 @@ class RecurringTournament < ApplicationRecord
   scope :online, -> { where(is_online: true) }
   scope :offline, -> { where(is_online: false) }
 
+  scope :by_level_in, -> v { where(level: v) }
+
   # ---------------------------------------------------------------------------
   # VERSIONS
   # ---------------------------------------------------------------------------

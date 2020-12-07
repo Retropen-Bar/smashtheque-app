@@ -1,5 +1,16 @@
 class RecurringTournamentDecorator < BaseDecorator
 
+  LEVEL_COLORS = {
+    l1_playground: :green,
+    l2_anything: :blue,
+    l3_glory: :red,
+    l4_experts: :black
+  }
+
+  def self.level_color(level)
+    LEVEL_COLORS[level.to_sym]
+  end
+
   def level_text
     RecurringTournament.human_attribute_name("level.#{model.level}")
   end

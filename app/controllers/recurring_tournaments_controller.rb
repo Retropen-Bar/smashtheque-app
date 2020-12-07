@@ -1,5 +1,7 @@
 class RecurringTournamentsController < PublicController
 
+  has_scope :by_level_in, type: :array
+
   def index
     respond_to do |format|
       format.html {
@@ -7,7 +9,7 @@ class RecurringTournamentsController < PublicController
       }
       format.json {
         start = Date.parse(params[:start])
-        render json: RecurringTournament.all.decorate.map { |rc|
+        render json: apply_scopes(RecurringTournament).all.decorate.map { |rc|
           rc.as_event(week_start: start).merge(
             url: recurring_tournament_path(rc)
           )

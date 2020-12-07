@@ -9,13 +9,6 @@ class ActiveAdmin::RecurringTournamentDecorator < RecurringTournamentDecorator
     end
   end
 
-  LEVEL_COLORS = {
-    l1_playground: :green,
-    l2_anything: :blue,
-    l3_glory: :red,
-    l4_experts: :black
-  }
-
   def level_status
     arbre do
       status_tag level_text, class: LEVEL_COLORS[model.level.to_sym]
