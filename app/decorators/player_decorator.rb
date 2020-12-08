@@ -79,6 +79,10 @@ class PlayerDecorator < BaseDecorator
     :user
   end
 
+  def link
+    h.link_to name_with_avatar(size: 32), player_path(model), class: 'btn btn-outline-primary'
+  end
+
   def as_autocomplete_result
     h.content_tag :div, class: :player do
       h.content_tag :div, class: :name do

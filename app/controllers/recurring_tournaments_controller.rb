@@ -1,5 +1,8 @@
 class RecurringTournamentsController < PublicController
 
+  before_action :set_recurring_tournament, only: %w(show modal)
+  decorates_assigned :recurring_tournament
+
   has_scope :by_level_in, type: :array
   has_scope :by_size_geq
   has_scope :by_size_leq
@@ -21,7 +24,16 @@ class RecurringTournamentsController < PublicController
   end
 
   def show
-    @recurring_tournament = RecurringTournament.find(params[:id]).decorate
+  end
+
+  def modal
+    render :modal, layout: false
+  end
+
+  private
+
+  def set_recurring_tournament
+    @recurring_tournament = RecurringTournament.find(params[:id])
   end
 
 end

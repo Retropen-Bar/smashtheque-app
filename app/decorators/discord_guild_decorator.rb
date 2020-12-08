@@ -51,6 +51,10 @@ class DiscordGuildDecorator < BaseDecorator
     h.image_tag splash_image_url(size)
   end
 
+  def link
+    h.link_to full_name(size: 32), model.invitation_url, target: '_blank', class: 'btn btn-outline-primary'
+  end
+
   def related_characters
     model.relateds.select do |related|
       related.is_a?(Character)

@@ -37,10 +37,6 @@ class RecurringTournamentDecorator < BaseDecorator
     DateTime.new(d.year, d.month, d.day, t.hour, t.min)
   end
 
-  def description
-    model.name
-  end
-
   def as_event(week_start:)
     start = date_on_week(week_start)
     classes = [
@@ -51,8 +47,8 @@ class RecurringTournamentDecorator < BaseDecorator
       title: model.name + " (#{model.size})",
       start: start,
       end: start + duration,
-      description: description,
-      classNames: classes
+      classNames: classes,
+      modal_url: modal_recurring_tournament_path(model)
     }
   end
 

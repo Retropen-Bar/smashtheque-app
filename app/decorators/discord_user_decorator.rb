@@ -39,4 +39,12 @@ class DiscordUserDecorator < BaseDecorator
                               class: 'avatar'
   end
 
+  def player_link
+    model.player.decorate.link
+  end
+
+  def link
+    h.content_tag :div, full_name_or_id(size: 32), class: 'btn btn-outline-secondary'
+  end
+
 end
