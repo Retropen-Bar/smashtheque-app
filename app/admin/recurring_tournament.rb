@@ -10,6 +10,8 @@ ActiveAdmin.register RecurringTournament do
   # INDEX
   # ---------------------------------------------------------------------------
 
+  includes :contacts
+
   index do
     selectable_column
     id_column

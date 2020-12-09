@@ -10,6 +10,8 @@ ActiveAdmin.register Team do
   # INDEX
   # ---------------------------------------------------------------------------
 
+  includes :admins, :discord_guilds
+
   index do
     selectable_column
     id_column
@@ -25,6 +27,9 @@ ActiveAdmin.register Team do
     end
     column :admins do |decorated|
       decorated.admins_admin_links(size: 32).join('<br/>').html_safe
+    end
+    column :discord_guilds do |decorated|
+      decorated.discord_guilds_admin_links
     end
     column :created_at do |decorated|
       decorated.created_at_date

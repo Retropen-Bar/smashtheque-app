@@ -9,7 +9,7 @@ ActiveAdmin.register DiscordUser do
   # INDEX
   # ---------------------------------------------------------------------------
 
-  includes :admin_user, :player
+  includes :admin_user, :player, :administrated_teams, :administrated_discord_guilds
 
   index do
     selectable_column

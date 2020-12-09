@@ -11,6 +11,8 @@ ActiveAdmin.register Locations::Country do
   # INDEX
   # ---------------------------------------------------------------------------
 
+  includes :discord_guilds
+
   index do
     selectable_column
     id_column

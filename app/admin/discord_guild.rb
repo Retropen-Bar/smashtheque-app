@@ -9,7 +9,7 @@ ActiveAdmin.register DiscordGuild do
   # INDEX
   # ---------------------------------------------------------------------------
 
-  includes :discord_guild_relateds
+  includes :admins, discord_guild_relateds: :related
 
   index do
     selectable_column
