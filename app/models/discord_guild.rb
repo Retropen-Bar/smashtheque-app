@@ -134,12 +134,14 @@ class DiscordGuild < ApplicationRecord
   end
 
   def self.fetch_unknown
+    Rails.logger.info "[DiscordGuild] fetch_unknown"
     without_discord do
       unknown.find_each do |discord_guild|
+        Rails.logger.debug "Guild ##{discord_guild.id} is unknown"
         discord_guild.fetch_discord_data
         discord_guild.save!
         # we need to wait a bit between each request,
-        # otherwise Discord return empty results
+        # otherwise Discord returns empty results
         sleep 1
       end
     end
@@ -147,12 +149,15 @@ class DiscordGuild < ApplicationRecord
   end
 
   def self.fetch_broken
+    Rails.logger.info "[DiscordGuild] fetch_broken"
     without_discord do
       find_each do |discord_guild|
         if discord_guild.needs_fetching?
           Rails.logger.debug "Guild ##{discord_guild.id} needs fetching"
           discord_guild.fetch_discord_data
           discord_guild.save!
+          # we need to wait a bit between each request,
+          # otherwise Discord returns empty results
           sleep 1
         end
       end

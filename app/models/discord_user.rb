@@ -123,7 +123,9 @@ class DiscordUser < ApplicationRecord
   end
 
   def self.fetch_unknown
+    Rails.logger.info "[DiscordUser] fetch_unknown"
     unknown.find_each do |discord_user|
+      Rails.logger.debug "User ##{discord_user.id} is unknown"
       discord_user.fetch_discord_data
       discord_user.save!
       # we need to wait a bit between each request,
@@ -133,6 +135,7 @@ class DiscordUser < ApplicationRecord
   end
 
   def self.fetch_broken
+    Rails.logger.info "[DiscordUser] fetch_broken"
     find_each do |discord_user|
       if discord_user.needs_fetching?
         Rails.logger.debug "User ##{discord_user.id} needs fetching"
