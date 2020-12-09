@@ -15,10 +15,11 @@ ActiveAdmin.register Team do
   index do
     selectable_column
     id_column
-    column :short_name
-    column :name do |decorated|
-      decorated.full_name_with_logo(max_height: 32)
+    column :logo do |decorated|
+      decorated.logo_image_tag(max_height: 32)
     end
+    column :short_name
+    column :name
     column :is_offline
     column :is_online
     column :is_sponsor
