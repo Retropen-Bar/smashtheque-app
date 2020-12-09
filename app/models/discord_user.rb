@@ -127,8 +127,21 @@ class DiscordUser < ApplicationRecord
       discord_user.fetch_discord_data
       discord_user.save!
       # we need to wait a bit between each request,
-      # otherwise Discord return empty results
+      # otherwise Discord returns empty results
       sleep 1
+    end
+  end
+
+  def self.fetch_broken
+    find_each do |discord_user|
+      if discord_user.needs_fetching?
+        Rails.logger.debug "User ##{discord_user.id} needs fetching"
+        discord_user.fetch_discord_data
+        discord_user.save!
+        # we need to wait a bit between each request,
+        # otherwise Discord returns empty results
+        sleep 1
+      end
     end
   end
 

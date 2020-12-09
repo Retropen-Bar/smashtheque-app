@@ -1,4 +1,9 @@
-refetch_discord_users_data:
+fetch_broken_discord_users:
   cron: '0 3 * * * Europe/Paris'
   queue: :discord
-  class: 'RefetchDiscordUsersDataJob'
+  class: 'FetchBrokenDiscordUsersJob'
+
+fetch_broken_discord_guilds:
+  cron: '0 4 * * * Europe/Paris'
+  queue: :discord
+  class: 'FetchBrokenDiscordGuildsJob'

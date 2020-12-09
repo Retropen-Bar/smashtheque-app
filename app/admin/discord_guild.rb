@@ -46,6 +46,15 @@ ActiveAdmin.register DiscordGuild do
     redirect_to request.referer, notice: 'Données récupérées'
   end
 
+  action_item :fetch_broken,
+              only: :index do
+    link_to 'Réparer', fetch_broken_admin_discord_guilds_path, class: 'blue'
+  end
+  collection_action :fetch_broken do
+    FetchBrokenDiscordGuildsJob.perform_later
+    redirect_to request.referer, notice: 'Données en cours de réparation'
+  end
+
   action_item :rebuild,
               only: :index,
               if: proc { current_admin_user.is_root? } do

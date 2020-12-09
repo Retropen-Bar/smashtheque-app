@@ -96,40 +96,68 @@ class DiscordGuild < ApplicationRecord
     end
   end
 
+  def needs_fetching?
+    return true if icon.blank?
+    uri = URI(decorate.icon_image_url(16))
+    https = Net::HTTP.new(uri.host, uri.port)
+    https.use_ssl = true
+    request = Net::HTTP::Head.new(uri)
+    response = https.request(request)
+    return !response.kind_of?(Net::HTTPSuccess)
+  end
+
   def fetch_discord_data
     client = DiscordClient.new
-    if discord_id.blank?
-      unless invitation_url.blank?
-        data = client.get_guild_from_invitation(invitation_url)
-        if data.has_key?('guild') && data['guild'].has_key?('name')
+
+    if invitation_url.blank?
+      unless discord_id.blank?
+        data = client.get_guild discord_id
+        if data.has_key?('name')
           self.attributes = {
-            discord_id: data['guild']['id'],
-            name: data['guild']['name'],
-            icon: data['guild']['icon'],
-            splash: data['guild']['splash']
+            name: data['name'],
+            icon: data['icon'],
+            splash: data['splash']
           }
         end
       end
     else
-      data = client.get_guild discord_id
-      if data.has_key?('name')
+      data = client.get_guild_from_invitation(invitation_url)
+      if data.has_key?('guild') && data['guild'].has_key?('name')
         self.attributes = {
-          name: data['name'],
-          icon: data['icon'],
-          splash: data['splash']
+          discord_id: data['guild']['id'],
+          name: data['guild']['name'],
+          icon: data['guild']['icon'],
+          splash: data['guild']['splash']
         }
       end
     end
   end
 
   def self.fetch_unknown
-    unknown.find_each do |discord_guild|
-      discord_guild.fetch_discord_data
-      discord_guild.save!
-      # we need to wait a bit between each request,
-      # otherwise Discord return empty results
-      sleep 1
+    without_discord do
+      unknown.find_each do |discord_guild|
+        discord_guild.fetch_discord_data
+        discord_guild.save!
+        # we need to wait a bit between each request,
+        # otherwise Discord return empty results
+        sleep 1
+      end
     end
+    last.update_discord unless ENV['NO_DISCORD']
+  end
+
+  def self.fetch_broken
+    without_discord do
+      find_each do |discord_guild|
+        if discord_guild.needs_fetching?
+          Rails.logger.debug "Guild ##{discord_guild.id} needs fetching"
+          discord_guild.fetch_discord_data
+          discord_guild.save!
+          sleep 1
+        end
+      end
+    end
+    last.update_discord unless ENV['NO_DISCORD']
   end
 
   def is_known?
