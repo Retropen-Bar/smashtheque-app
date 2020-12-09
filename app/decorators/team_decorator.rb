@@ -6,22 +6,14 @@ class TeamDecorator < BaseDecorator
 
   def full_name_with_logo(options)
     [
-      if model.logo_url.blank?
-        default_logo_image_tag(options)
-      else
-        logo_image_tag(options)
-      end,
+      any_image_tag(options),
       full_name
     ].join('&nbsp;').html_safe
   end
 
   def short_name_with_logo(options)
     [
-      if model.logo_url.blank?
-        default_logo_image_tag(options)
-      else
-        logo_image_tag(options)
-      end,
+      any_image_tag(options),
       short_name
     ].join('&nbsp;').html_safe
   end
@@ -42,13 +34,26 @@ class TeamDecorator < BaseDecorator
     :users
   end
 
+  def any_image_url
+    model.logo_url.presence || first_discord_guild_icon_image_url || default_logo_image_url
+  end
+
+  def any_image_tag(options)
+    h.image_tag_with_max_size any_image_url, options.merge(class: 'avatar')
+  end
+
   def logo_image_tag(options)
     return nil if model.logo_url.blank?
     h.image_tag_with_max_size model.logo_url, options.merge(class: 'avatar')
   end
 
-  def default_logo_image_tag(options)
-    h.image_tag_with_max_size 'default-team-logo.png', options.merge(class: 'avatar')
+  def first_discord_guild_icon_image_url(size = nil)
+    return nil if model.first_discord_guild.nil?
+    model.first_discord_guild.decorate.icon_image_url(size)
+  end
+
+  def default_logo_image_url
+    'default-team-logo.png'
   end
 
   def as_autocomplete_result
