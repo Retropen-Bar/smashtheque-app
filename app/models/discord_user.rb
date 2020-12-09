@@ -104,7 +104,7 @@ class DiscordUser < ApplicationRecord
 
   def needs_fetching?
     return true if avatar.blank?
-    uri = URI(decorate.avatar_url(16))
+    uri = URI(decorate.avatar_url(32))
     https = Net::HTTP.new(uri.host, uri.port)
     https.use_ssl = true
     request = Net::HTTP::Head.new(uri)

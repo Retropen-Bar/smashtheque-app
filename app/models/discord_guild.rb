@@ -98,7 +98,7 @@ class DiscordGuild < ApplicationRecord
 
   def needs_fetching?
     return true if icon.blank?
-    uri = URI(decorate.icon_image_url(16))
+    uri = URI(decorate.icon_image_url(32))
     https = Net::HTTP.new(uri.host, uri.port)
     https.use_ssl = true
     request = Net::HTTP::Head.new(uri)
