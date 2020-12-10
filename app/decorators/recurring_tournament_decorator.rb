@@ -32,7 +32,7 @@ class RecurringTournamentDecorator < BaseDecorator
   end
 
   def date_on_week(monday)
-    d = monday.beginning_of_week + model.wday - 1
+    d = monday.beginning_of_week + ((model.wday + 6) % 7)
     t = model.starts_at
     DateTime.new(d.year, d.month, d.day, t.utc.hour, t.min)
   end

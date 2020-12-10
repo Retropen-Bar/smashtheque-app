@@ -13,7 +13,7 @@ class RecurringTournamentsController < PublicController
         redirect_to planning_path
       }
       format.json {
-        start = Date.parse(params[:start])
+        start = Date.parse(params[:startStr])
         render json: apply_scopes(RecurringTournament).all.decorate.map { |rc|
           rc.as_event(week_start: start).merge(
             url: recurring_tournament_path(rc)
