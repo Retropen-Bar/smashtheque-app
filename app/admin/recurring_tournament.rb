@@ -108,7 +108,9 @@ ActiveAdmin.register RecurringTournament do
         decorated.wday_text
       end
       row :starts_at
-      row :discord_guild
+      row :discord_guild do |decorated|
+        decorated.discord_guild_admin_link
+      end
       row :is_online
       row :level do |decorated|
         decorated.level_status
