@@ -19,4 +19,8 @@ class ActiveAdmin::RecurringTournamentDecorator < RecurringTournamentDecorator
     model.discord_guild.admin_decorate.admin_link(options)
   end
 
+  def formatted_registration
+    h.content_tag :div, model.registration, class: 'free-text'
+  end
+
 end

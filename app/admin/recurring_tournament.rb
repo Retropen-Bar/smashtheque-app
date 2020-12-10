@@ -116,7 +116,9 @@ ActiveAdmin.register RecurringTournament do
         decorated.level_status
       end
       row :size
-      row :registration
+      row :registration do |decorated|
+        decorated.formatted_registration
+      end
       row :contacts do |decorated|
         decorated.contacts_admin_links(size: 32).join('<br/>').html_safe
       end
