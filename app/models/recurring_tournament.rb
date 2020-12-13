@@ -3,6 +3,7 @@
 # Table name: recurring_tournaments
 #
 #  id               :bigint           not null, primary key
+#  date_description :string
 #  is_online        :boolean          default(FALSE), not null
 #  level            :string
 #  name             :string           not null
@@ -32,6 +33,8 @@ class RecurringTournament < ApplicationRecord
     weekly
     bimonthly
     monthly
+    irregular
+    oneshot
   ].freeze
 
   SIZES = [
@@ -81,7 +84,18 @@ class RecurringTournament < ApplicationRecord
   scope :by_size_geq, -> v { where("size >= ?", v) }
   scope :by_size_leq, -> v { where("size <= ?", v) }
 
+  scope :weekly, -> { where(recurring_type: :weekly) }
+  scope :bimonthly, -> { where(recurring_type: :bimonthly) }
+  scope :monthly, -> { where(recurring_type: :monthly) }
+  scope :irregular, -> { where(recurring_type: :irregular) }
+  scope :oneshot, -> { where(recurring_type: :oneshot) }
+
+  scope :recurring, -> { where(recurring_type: %i(weekly bimonthly monthly)) }
   scope :on_wday, -> v { where(wday: v) }
+
+  def is_recurring?
+    %i(weekly bimonthly monthly).include?(recurring_type.to_sym)
+  end
 
   # ---------------------------------------------------------------------------
   # HELPERS

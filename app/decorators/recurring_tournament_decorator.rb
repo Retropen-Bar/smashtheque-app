@@ -16,7 +16,7 @@ class RecurringTournamentDecorator < BaseDecorator
   end
 
   def self.size_name(size)
-    size > 128 ? '128+' : size
+    size && (size > 128 ? '128+' : size)
   end
 
   def recurring_type_text
@@ -25,6 +25,14 @@ class RecurringTournamentDecorator < BaseDecorator
 
   def wday_text
     I18n.t('date.day_names')[model.wday].titlecase
+  end
+
+  def full_date
+    if model.is_recurring?
+      "#{wday_text} à #{starts_at}"
+    else
+      model.date_description
+    end
   end
 
   def starts_at

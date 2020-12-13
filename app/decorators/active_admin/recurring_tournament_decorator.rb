@@ -16,7 +16,7 @@ class ActiveAdmin::RecurringTournamentDecorator < RecurringTournamentDecorator
   end
 
   def discord_guild_admin_link(options = {})
-    model.discord_guild.admin_decorate.admin_link(options)
+    model.discord_guild&.admin_decorate&.admin_link(options)
   end
 
   def formatted_registration

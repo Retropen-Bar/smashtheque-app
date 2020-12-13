@@ -19,10 +19,9 @@ ActiveAdmin.register RecurringTournament do
     column :recurring_type do |decorated|
       decorated.recurring_type_text
     end
-    column :wday do |decorated|
-      decorated.wday_text
+    column 'Date' do |decorated|
+      decorated.full_date
     end
-    column :starts_at
     column :is_online
     column :level do |decorated|
       decorated.level_status
@@ -72,6 +71,7 @@ ActiveAdmin.register RecurringTournament do
   form do |f|
     f.inputs do
       f.input :name
+      f.input :date_description
       f.input :recurring_type,
               collection: recurring_tournament_recurring_type_select_collection,
               input_html: { data: { select2: {} } },
@@ -100,8 +100,8 @@ ActiveAdmin.register RecurringTournament do
     f.actions
   end
 
-  permit_params :name, :recurring_type, :wday, :starts_at, :discord_guild_id,
-                :is_online, :level, :size, :registration,
+  permit_params :name, :recurring_type, :date_description, :wday, :starts_at,
+                :discord_guild_id, :is_online, :level, :size, :registration,
                 contact_ids: []
 
   # ---------------------------------------------------------------------------
@@ -114,10 +114,9 @@ ActiveAdmin.register RecurringTournament do
       row :recurring_type do |decorated|
         decorated.recurring_type_text
       end
-      row :wday do |decorated|
-        decorated.wday_text
+      row 'Date' do |decorated|
+        decorated.full_date
       end
-      row :starts_at
       row :discord_guild do |decorated|
         decorated.discord_guild_admin_link
       end

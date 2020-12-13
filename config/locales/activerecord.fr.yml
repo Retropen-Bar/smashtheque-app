@@ -130,9 +130,11 @@ fr:
         l3_glory: 3 - Gloire et honneur
         l4_experts: 4 - Combattants aguerris
       recurring_tournament/recurring_type:
-        weekly: Toutes les semaines
         bimonthly: Toutes les 2 semaines
+        irregular: Irrégulier
         monthly: Tous les mois
+        oneshot: One-shot
+        weekly: Toutes les semaines
       team:
         << : *SHARED
         admins: Admins

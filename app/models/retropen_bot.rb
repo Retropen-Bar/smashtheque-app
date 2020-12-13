@@ -23,6 +23,8 @@ class RetropenBot
   CHANNEL_YOUTUBE_FR = 'youtube-channels-fr'.freeze
   CHANNEL_YOUTUBE_WORLD = 'youtube-channels-world'.freeze
   CATEGORY_ONLINE_TOURNAMENTS = 'TOURNOIS ONLINE'.freeze
+  CHANNEL_ONLINE_TOURNAMENTS_IRREGULAR = 'irrégulier'.freeze
+  CHANNEL_ONLINE_TOURNAMENTS_ONESHOT = 'one-shot'.freeze
   CHANNEL_ONLINE_TOURNAMENTS_DAYS = %w(
     dimanche
     lundi
@@ -376,6 +378,20 @@ class RetropenBot
     client.find_or_create_guild_category @guild_id, name: CATEGORY_ONLINE_TOURNAMENTS
   end
 
+  def online_tournaments_irregular_channel(_online_tournaments_category_id = nil)
+    online_tournaments_category_id = _online_tournaments_category_id || online_tournaments_category['id']
+    find_or_create_readonly_channel @guild_id,
+                                    name: CHANNEL_ONLINE_TOURNAMENTS_IRREGULAR,
+                                    parent_id: online_tournaments_category_id
+  end
+
+  def online_tournaments_oneshot_channel(_online_tournaments_category_id = nil)
+    online_tournaments_category_id = _online_tournaments_category_id || online_tournaments_category['id']
+    find_or_create_readonly_channel @guild_id,
+                                    name: CHANNEL_ONLINE_TOURNAMENTS_ONESHOT,
+                                    parent_id: online_tournaments_category_id
+  end
+
   def online_tournaments_wday_channel(wday, _online_tournaments_category_id = nil)
     online_tournaments_category_id = _online_tournaments_category_id || online_tournaments_category['id']
     find_or_create_readonly_channel @guild_id,
@@ -383,18 +399,17 @@ class RetropenBot
                                     parent_id: online_tournaments_category_id
   end
 
-  def rebuild_online_tournaments_wday(wday, _online_tournaments_category_id = nil)
+  def rebuild_online_tournaments_channel(recurring_tournaments, channel_id)
     messages = []
-    RecurringTournament.online
-                       .on_wday(wday)
-                       .order(:starts_at)
-                       .decorate
-                       .each do |recurring_tournament|
+    recurring_tournaments.online
+                         .order(:starts_at)
+                         .decorate
+                         .each do |recurring_tournament|
       messages << emoji_tag(EMOJI_TOURNAMENT) * 3
       messages << [
         "Tournoi : #{recurring_tournament.name}",
         "Fréquence : #{recurring_tournament.recurring_type_text}",
-        "Date : #{recurring_tournament.wday_text} à #{recurring_tournament.starts_at}",
+        "Date : #{recurring_tournament.full_date}",
         "Serveur : #{recurring_tournament.discord_guild_invitation_url}",
         "Difficulté : #{recurring_tournament.level_text}",
         "Disponibilité : Ouvert à tous",
@@ -406,8 +421,29 @@ class RetropenBot
       ].join("\n")
     end
     client.replace_channel_messages(
-      online_tournaments_wday_channel(wday, _online_tournaments_category_id)['id'],
+      channel_id,
       messages
+    )
+  end
+
+  def rebuild_online_tournaments_wday(wday, _online_tournaments_category_id = nil)
+    rebuild_online_tournaments_channel(
+      RecurringTournament.recurring.on_wday(wday),
+      online_tournaments_wday_channel(wday, _online_tournaments_category_id)['id']
+    )
+  end
+
+  def rebuild_online_tournaments_irregular(_online_tournaments_category_id = nil)
+    rebuild_online_tournaments_channel(
+      RecurringTournament.irregular,
+      online_tournaments_irregular_channel(_online_tournaments_category_id)['id']
+    )
+  end
+
+  def rebuild_online_tournaments_oneshot(_online_tournaments_category_id = nil)
+    rebuild_online_tournaments_channel(
+      RecurringTournament.oneshot,
+      online_tournaments_oneshot_channel(_online_tournaments_category_id)['id']
     )
   end
 
@@ -417,6 +453,8 @@ class RetropenBot
     (0..6).each do |wday|
       rebuild_online_tournaments_wday wday, online_tournaments_category_id
     end
+    rebuild_online_tournaments_irregular online_tournaments_category_id
+    rebuild_online_tournaments_oneshot online_tournaments_category_id
   end
 
   # ---------------------------------------------------------------------------
