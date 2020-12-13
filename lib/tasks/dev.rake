@@ -68,6 +68,18 @@ namespace :dev do
     ENV['NO_DISCORD'] = '0'
   end
 
+  desc 'Import recurring_tournaments'
+  task :import_recurring_tournaments => :environment do
+    raise "not in development" unless Rails.env.development?
+    raise "some recurring_tournaments exist" if RecurringTournament.any?
+    ENV['NO_DISCORD'] = '1'
+    SmashthequeApi.recurring_tournaments.each do |data|
+      data.delete('id')
+      RecurringTournament.new(data).save!
+    end
+    ENV['NO_DISCORD'] = '0'
+  end
+
   desc 'Import all'
   task :reimport_all => :environment do
     raise "not in development" unless Rails.env.development?
@@ -77,6 +89,7 @@ namespace :dev do
     Team.destroy_all
     Location.destroy_all
     DiscordGuild.destroy_all
+    RecurringTournament.destroy_all
     puts 'import characters'
     Rake::Task['dev:import_characters'].invoke
     puts 'import teams'
@@ -85,6 +98,8 @@ namespace :dev do
     Rake::Task['dev:import_locations'].invoke
     puts 'import discord guilds'
     Rake::Task['dev:import_discord_guilds'].invoke
+    puts 'import recurring tournaments'
+    Rake::Task['dev:import_recurring_tournaments'].invoke
     ENV['NO_DISCORD'] = '0'
   end
 

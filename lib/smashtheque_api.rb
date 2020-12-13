@@ -22,6 +22,10 @@ class SmashthequeApi
     api_get 'teams?per=1000'
   end
 
+  def self.recurring_tournaments
+    api_get 'recurring_tournaments?per=1000'
+  end
+
   def self.api_get(path)
     url = URI("#{BASE_URL}/#{path}")
 
