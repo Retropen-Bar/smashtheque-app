@@ -22,11 +22,22 @@ class RetropenBot
   CHANNEL_TWITCH_WORLD = 'twitch-channels-world'.freeze
   CHANNEL_YOUTUBE_FR = 'youtube-channels-fr'.freeze
   CHANNEL_YOUTUBE_WORLD = 'youtube-channels-world'.freeze
+  CATEGORY_ONLINE_TOURNAMENTS = 'TOURNOIS ONLINE'.freeze
+  CHANNEL_ONLINE_TOURNAMENTS_DAYS = %w(
+    dimanche
+    lundi
+    mardi
+    mercredi
+    jeudi
+    vendredi
+    samedi
+  ).freeze
 
   EMOJI_GUILD_ADMIN = '746006429156245536'.freeze
   EMOJI_TEAM_ADMIN = '745255339364057119'.freeze
   EMOJI_TWITCH = '743601202716999720'.freeze
   EMOJI_YOUTUBE = '743601431499767899'.freeze
+  EMOJI_TOURNAMENT = '743286485930868827'.freeze
 
   # ---------------------------------------------------------------------------
   # CONSTRUCTOR
@@ -355,6 +366,57 @@ class RetropenBot
     actors_category_id = _actors_category_id || actors_category['id']
     named_lines = video_channels YouTubeChannel.not_french, EMOJI_YOUTUBE
     rebuild_channel_with_named_lines youtube_world_list_channel(actors_category_id)['id'], named_lines
+  end
+
+  # ---------------------------------------------------------------------------
+  # TOURNAMENTS
+  # ---------------------------------------------------------------------------
+
+  def online_tournaments_category
+    client.find_or_create_guild_category @guild_id, name: CATEGORY_ONLINE_TOURNAMENTS
+  end
+
+  def online_tournaments_wday_channel(wday, _online_tournaments_category_id = nil)
+    online_tournaments_category_id = _online_tournaments_category_id || online_tournaments_category['id']
+    find_or_create_readonly_channel @guild_id,
+                                    name: CHANNEL_ONLINE_TOURNAMENTS_DAYS[wday],
+                                    parent_id: online_tournaments_category_id
+  end
+
+  def rebuild_online_tournaments_wday(wday, _online_tournaments_category_id = nil)
+    messages = []
+    RecurringTournament.online
+                       .on_wday(wday)
+                       .order(:starts_at)
+                       .decorate
+                       .each do |recurring_tournament|
+      messages << emoji_tag(EMOJI_TOURNAMENT) * 3
+      messages << [
+        "Tournoi : #{recurring_tournament.name}",
+        "Fréquence : #{recurring_tournament.recurring_type_text}",
+        "Date : #{recurring_tournament.wday_text} à #{recurring_tournament.starts_at}",
+        "Serveur : #{recurring_tournament.discord_guild_invitation_url}",
+        "Difficulté : #{recurring_tournament.level_text}",
+        "Disponibilité : Ouvert à tous",
+        "Taille : #{RecurringTournamentDecorator.size_name(recurring_tournament.size)}",
+        "Comment s'inscrire : #{recurring_tournament.registration.gsub(/\R+/, '; ')}",
+        "Contact : " + recurring_tournament.contacts.map do |discord_user|
+          discord_user.player&.name || discord_user.username
+        end.join(', ')
+      ].join("\n")
+    end
+    client.replace_channel_messages(
+      online_tournaments_wday_channel(wday, _online_tournaments_category_id)['id'],
+      messages
+    )
+  end
+
+  def rebuild_online_tournaments(_online_tournaments_category_id = nil)
+    online_tournaments_category_id = _online_tournaments_category_id || online_tournaments_category['id']
+
+    (0..6).each do |wday|
+      rebuild_online_tournaments_wday wday, online_tournaments_category_id
+    end
   end
 
   # ---------------------------------------------------------------------------

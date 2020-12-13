@@ -30,6 +30,7 @@ class RecurringTournament < ApplicationRecord
 
   RECURRING_TYPES = %w[
     weekly
+    bimonthly
     monthly
   ].freeze
 
@@ -60,6 +61,15 @@ class RecurringTournament < ApplicationRecord
   validates :wday, presence: true
 
   # ---------------------------------------------------------------------------
+  # CALLBACKS
+  # ---------------------------------------------------------------------------
+
+  after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] }
+  def update_discord
+    RetropenBotScheduler.rebuild_online_tournaments
+  end
+
+  # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
 
@@ -70,6 +80,17 @@ class RecurringTournament < ApplicationRecord
 
   scope :by_size_geq, -> v { where("size >= ?", v) }
   scope :by_size_leq, -> v { where("size <= ?", v) }
+
+  scope :on_wday, -> v { where(wday: v) }
+
+  # ---------------------------------------------------------------------------
+  # HELPERS
+  # ---------------------------------------------------------------------------
+
+  delegate :invitation_url,
+           to: :discord_guild,
+           prefix: true,
+           allow_nil: true
 
   # ---------------------------------------------------------------------------
   # VERSIONS

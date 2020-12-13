@@ -131,6 +131,7 @@ fr:
         l4_experts: 4 - Combattants aguerris
       recurring_tournament/recurring_type:
         weekly: Toutes les semaines
+        bimonthly: Toutes les 2 semaines
         monthly: Tous les mois
       team:
         << : *SHARED

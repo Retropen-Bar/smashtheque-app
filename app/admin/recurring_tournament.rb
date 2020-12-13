@@ -55,6 +55,16 @@ ActiveAdmin.register RecurringTournament do
          collection: proc { recurring_tournament_level_select_collection },
          input_html: { multiple: true, data: { select2: {} } }
 
+  action_item :rebuild,
+              only: :index,
+              if: proc { current_admin_user.is_root? } do
+    link_to 'Rebuild', [:rebuild, :admin, :recurring_tournaments], class: 'blue'
+  end
+  collection_action :rebuild do
+    RetropenBotScheduler.rebuild_online_tournaments
+    redirect_to request.referer, notice: 'Demande effectuée'
+  end
+
   # ---------------------------------------------------------------------------
   # FORM
   # ---------------------------------------------------------------------------

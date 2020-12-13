@@ -208,4 +208,14 @@ class RetropenBotScheduler
     rebuild_youtube actors_category_id: _actors_category_id
   end
 
+  # ---------------------------------------------------------------------------
+  # TOURNAMENTS
+  # ---------------------------------------------------------------------------
+
+  def self.rebuild_online_tournaments(online_tournaments_category_id: nil)
+    RetropenBotJobs::RebuildOnlineTournamentsJob.perform_later(
+      online_tournaments_category_id: online_tournaments_category_id
+    )
+  end
+
 end
