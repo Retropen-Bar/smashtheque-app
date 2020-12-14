@@ -66,10 +66,34 @@ class TournamentEvent < ApplicationRecord
 
   validates :name, presence: true
   validates :date, presence: true
+  validate :unique_players
+
+  def unique_players
+    _player_ids = player_ids
+    duplicate = PLAYER_NAMES.reverse.find do |player_name|
+      player_id = send(player_name)
+      player_id && _player_ids.count(player_id) > 1
+    end
+    if duplicate
+      original = PLAYER_NAMES.find do |player_name|
+        send(player_name) == send(duplicate)
+      end
+      errors.add(
+        duplicate,
+        TournamentEvent.human_attribute_name(original)
+      )
+    end
+  end
 
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------
+
+  def player_ids
+    PLAYER_NAMES.map do |player_name|
+      send(player_name)
+    end.compact
+  end
 
   # ---------------------------------------------------------------------------
   # VERSIONS
