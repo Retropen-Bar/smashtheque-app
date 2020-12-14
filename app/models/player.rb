@@ -23,6 +23,8 @@
 #
 class Player < ApplicationRecord
 
+  include PgSearch::Model
+
   # ---------------------------------------------------------------------------
   # RELATIONS
   # ---------------------------------------------------------------------------
@@ -190,6 +192,12 @@ class Player < ApplicationRecord
   # SCOPES
   # ---------------------------------------------------------------------------
 
+  pg_search_scope :by_keyword,
+                  against: [:name],
+                  using: {
+                    tsearch: { prefix: true }
+                  }
+
   def self.by_name(name)
     where(name: name)
   end
@@ -310,7 +318,6 @@ class Player < ApplicationRecord
   # GLOBAL SEARCH
   # ---------------------------------------------------------------------------
 
-  include PgSearch::Model
   multisearchable against: %i(name)
 
   # ---------------------------------------------------------------------------

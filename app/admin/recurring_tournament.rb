@@ -4,7 +4,8 @@ ActiveAdmin.register RecurringTournament do
 
   has_paper_trail
 
-  menu label: '<i class="fas fa-fw fa-chess-knight"></i>Tournois'.html_safe
+  menu parent: '<i class="fas fa-fw fa-chess-knight"></i>Tournois'.html_safe,
+       label: 'Séries'
 
   # ---------------------------------------------------------------------------
   # INDEX

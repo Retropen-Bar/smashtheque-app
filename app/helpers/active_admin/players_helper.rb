@@ -31,4 +31,31 @@ module ActiveAdmin::PlayersHelper
     end
   end
 
+  def player_input(form, name = :player, options = {})
+    form.input  name,
+                {
+                  as: :select,
+                  collection: [
+                    [
+                      form.object.send(name)&.name,
+                      form.object.send(name)&.id
+                    ]
+                  ],
+                  input_html: {
+                    data: {
+                      select2: {
+                        minimumInputLength: 3,
+                        ajax: {
+                          delay: 250,
+                          url: autocomplete_admin_players_path,
+                          dataType: 'json'
+                        },
+                        placeholder: 'Nom du joueur',
+                        allowClear: true
+                      }
+                    }
+                  }
+                }.deep_merge(options)
+  end
+
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_13_180643) do
+ActiveRecord::Schema.define(version: 2020_12_13_221733) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -233,6 +233,31 @@ ActiveRecord::Schema.define(version: 2020_12_13_180643) do
     t.string "twitter_username"
   end
 
+  create_table "tournament_events", force: :cascade do |t|
+    t.bigint "recurring_tournament_id"
+    t.string "name", null: false
+    t.date "date", null: false
+    t.bigint "top1_player_id"
+    t.bigint "top2_player_id"
+    t.bigint "top3_player_id"
+    t.bigint "top4_player_id"
+    t.bigint "top5a_player_id"
+    t.bigint "top5b_player_id"
+    t.bigint "top7a_player_id"
+    t.bigint "top7b_player_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["recurring_tournament_id"], name: "index_tournament_events_on_recurring_tournament_id"
+    t.index ["top1_player_id"], name: "index_tournament_events_on_top1_player_id"
+    t.index ["top2_player_id"], name: "index_tournament_events_on_top2_player_id"
+    t.index ["top3_player_id"], name: "index_tournament_events_on_top3_player_id"
+    t.index ["top4_player_id"], name: "index_tournament_events_on_top4_player_id"
+    t.index ["top5a_player_id"], name: "index_tournament_events_on_top5a_player_id"
+    t.index ["top5b_player_id"], name: "index_tournament_events_on_top5b_player_id"
+    t.index ["top7a_player_id"], name: "index_tournament_events_on_top7a_player_id"
+    t.index ["top7b_player_id"], name: "index_tournament_events_on_top7b_player_id"
+  end
+
   create_table "twitch_channels", force: :cascade do |t|
     t.string "username", null: false
     t.boolean "is_french", default: false, null: false
@@ -270,4 +295,13 @@ ActiveRecord::Schema.define(version: 2020_12_13_180643) do
     t.index ["username"], name: "index_you_tube_channels_on_username", unique: true
   end
 
+  add_foreign_key "tournament_events", "players", column: "top1_player_id"
+  add_foreign_key "tournament_events", "players", column: "top2_player_id"
+  add_foreign_key "tournament_events", "players", column: "top3_player_id"
+  add_foreign_key "tournament_events", "players", column: "top4_player_id"
+  add_foreign_key "tournament_events", "players", column: "top5a_player_id"
+  add_foreign_key "tournament_events", "players", column: "top5b_player_id"
+  add_foreign_key "tournament_events", "players", column: "top7a_player_id"
+  add_foreign_key "tournament_events", "players", column: "top7b_player_id"
+  add_foreign_key "tournament_events", "recurring_tournaments"
 end

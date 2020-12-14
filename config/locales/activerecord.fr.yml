@@ -15,8 +15,9 @@ fr:
       locations_city: Ville
       locations_country: Pays
       player: Joueur
-      recurring_tournament: Tournoi régulier
+      recurring_tournament: Série
       team: Équipe
+      tournament_event: Tournoi
       twitch_channel: Chaîne Twitch
       you_tube_channel: Chaîne YouTube
     attributes:
@@ -145,6 +146,19 @@ fr:
         players: Joueurs
         short_name: Nom court
         twitter_username: Compte Twitter
+      tournament_event:
+        << : *SHARED
+        name: Nom
+        date: Date
+        recurring_tournament: Série
+        top1_player: Top 1
+        top2_player: Top 2
+        top3_player: Top 3
+        top4_player: Top 4
+        top5a_player: Top 5a
+        top5b_player: Top 5b
+        top7a_player: Top 7a
+        top7b_player: Top 7b
       twitch_channel:
         << : *SHARED
         description: Détails
