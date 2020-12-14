@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_14_232501) do
+ActiveRecord::Schema.define(version: 2020_12_14_233347) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -268,6 +268,7 @@ ActiveRecord::Schema.define(version: 2020_12_14_232501) do
     t.bigint "top7b_player_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "participants_count"
     t.index ["recurring_tournament_id"], name: "index_tournament_events_on_recurring_tournament_id"
     t.index ["top1_player_id"], name: "index_tournament_events_on_top1_player_id"
     t.index ["top2_player_id"], name: "index_tournament_events_on_top2_player_id"

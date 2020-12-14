@@ -5,6 +5,7 @@
 #  id                      :bigint           not null, primary key
 #  date                    :date             not null
 #  name                    :string           not null
+#  participants_count      :integer
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  recurring_tournament_id :bigint

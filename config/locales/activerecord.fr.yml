@@ -152,6 +152,7 @@ fr:
         date: Date
         graph: Graph
         name: Nom
+        participants_count: Participants
         recurring_tournament: Série
         top1_player: Top 1
         top2_player: Top 2
