@@ -5,7 +5,7 @@ ActiveAdmin.register TournamentEvent do
   has_paper_trail
 
   menu parent: '<i class="fas fa-fw fa-chess-knight"></i>Tournois'.html_safe,
-       label: 'Tournois'
+       label: 'Éditions'
 
   # ---------------------------------------------------------------------------
   # INDEX
@@ -14,9 +14,9 @@ ActiveAdmin.register TournamentEvent do
   index do
     selectable_column
     id_column
+    column :recurring_tournament
     column :name
     column :date
-    column :recurring_tournament
     TournamentEvent::PLAYER_NAMES.each do |player_name|
       column player_name do |decorated|
         decorated.send("#{player_name}_admin_link")
@@ -25,9 +25,9 @@ ActiveAdmin.register TournamentEvent do
     actions
   end
 
+  filter :recurring_tournament
   filter :name
   filter :date
-  filter :recurring_tournament
 
   # ---------------------------------------------------------------------------
   # FORM
@@ -35,8 +35,6 @@ ActiveAdmin.register TournamentEvent do
 
   form do |f|
     f.inputs do
-      f.input :name
-      f.input :date
       f.input :recurring_tournament,
               collection: tournament_event_recurring_tournament_select_collection,
               input_html: {
@@ -48,6 +46,8 @@ ActiveAdmin.register TournamentEvent do
                 }
               },
               include_blank: "Aucun"
+      f.input :name
+      f.input :date
       TournamentEvent::PLAYER_NAMES.each do |player_name|
         player_input f, player_name
       end
@@ -66,9 +66,9 @@ ActiveAdmin.register TournamentEvent do
 
   show do
     attributes_table do
+      row :recurring_tournament
       row :name
       row :date
-      row :recurring_tournament
       TournamentEvent::PLAYER_NAMES.each do |player_name|
         row player_name do |decorated|
           decorated.send("#{player_name}_admin_link")

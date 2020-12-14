@@ -3,6 +3,17 @@ class ActiveAdmin::RecurringTournamentDecorator < RecurringTournamentDecorator
 
   decorates :recurring_tournament
 
+  def tournament_events_admin_link
+    h.link_to(
+      tournament_events_count,
+      admin_tournament_events_path(
+        q: {
+          recurring_tournament_id_eq: model.id
+        }
+      )
+    )
+  end
+
   def contacts_admin_links(options = {})
     model.contacts.map do |discord_user|
       discord_user.admin_decorate.admin_link(options)

@@ -17,7 +17,7 @@ fr:
       player: Joueur
       recurring_tournament: Série
       team: Équipe
-      tournament_event: Tournoi
+      tournament_event: Édition
       twitch_channel: Chaîne Twitch
       you_tube_channel: Chaîne YouTube
     attributes:
@@ -124,6 +124,7 @@ fr:
         registration: Comment s'inscrire
         size: Taille
         starts_at: Heure
+        tournament_events: Éditions
         wday: Jour de la semaine
       recurring_tournament/level:
         l1_playground: 1 - Cour de récréation
