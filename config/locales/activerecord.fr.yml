@@ -149,8 +149,9 @@ fr:
         twitter_username: Compte Twitter
       tournament_event:
         << : *SHARED
-        name: Nom
         date: Date
+        graph: Graph
+        name: Nom
         recurring_tournament: Série
         top1_player: Top 1
         top2_player: Top 2

@@ -51,11 +51,12 @@ ActiveAdmin.register TournamentEvent do
       TournamentEvent::PLAYER_NAMES.each do |player_name|
         player_input f, player_name
       end
+      f.input :graph, as: :file
     end
     f.actions
   end
 
-  permit_params :name, :date, :recurring_tournament_id,
+  permit_params :name, :date, :recurring_tournament_id, :graph,
                 :top1_player_id, :top2_player_id, :top3_player_id,
                 :top4_player_id, :top5a_player_id, :top5b_player_id,
                 :top7a_player_id, :top7b_player_id
@@ -65,17 +66,26 @@ ActiveAdmin.register TournamentEvent do
   # ---------------------------------------------------------------------------
 
   show do
-    attributes_table do
-      row :recurring_tournament
-      row :name
-      row :date
-      TournamentEvent::PLAYER_NAMES.each do |player_name|
-        row player_name do |decorated|
-          decorated.send("#{player_name}_admin_link")
+    columns do
+      column do
+        attributes_table do
+          row :recurring_tournament
+          row :name
+          row :date
+          TournamentEvent::PLAYER_NAMES.each do |player_name|
+            row player_name do |decorated|
+              decorated.send("#{player_name}_admin_link")
+            end
+          end
+          row :created_at
+          row :updated_at
         end
       end
-      row :created_at
-      row :updated_at
+      column do
+        panel 'Graph' do
+          resource.graph_image_tag(max_width: '100%')
+        end
+      end
     end
     active_admin_comments
   end

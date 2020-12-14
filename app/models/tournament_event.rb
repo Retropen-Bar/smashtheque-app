@@ -60,6 +60,8 @@ class TournamentEvent < ApplicationRecord
   belongs_to :top7a_player, class_name: :Player, optional: true
   belongs_to :top7b_player, class_name: :Player, optional: true
 
+  has_one_attached :graph
+
   # ---------------------------------------------------------------------------
   # validations
   # ---------------------------------------------------------------------------
