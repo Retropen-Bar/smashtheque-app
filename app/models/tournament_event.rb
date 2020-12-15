@@ -100,6 +100,22 @@ class TournamentEvent < ApplicationRecord
     end.compact
   end
 
+  def previous_tournament_event
+    return nil if recurring_tournament.nil?
+    recurring_tournament.tournament_events
+                        .where("date < ?", date)
+                        .order(date: :desc)
+                        .first
+  end
+
+  def next_tournament_event
+    return nil if recurring_tournament.nil?
+    recurring_tournament.tournament_events
+                        .where("date > ?", date)
+                        .order(:date)
+                        .first
+  end
+
   # ---------------------------------------------------------------------------
   # VERSIONS
   # ---------------------------------------------------------------------------

@@ -120,4 +120,12 @@ ActiveAdmin.register TournamentEvent do
     active_admin_comments
   end
 
+  action_item :previous, only: :show do
+    resource.previous_tournament_event_admin_link label: '←', class: 'blue'
+  end
+
+  action_item :next, only: :show do
+    resource.next_tournament_event_admin_link label: '→', class: 'blue'
+  end
+
 end
