@@ -156,4 +156,31 @@ class DiscordUser < ApplicationRecord
     !!username
   end
 
+  delegate :id,
+           to: :player,
+           prefix: true,
+           allow_nil: true
+
+  def as_json(options = {})
+    super(options.merge(
+      include: {
+        administrated_discord_guilds: {
+          only: %i(id discord_id icon name)
+        },
+        administrated_recurring_tournaments: {
+          only: %i(id name)
+        },
+        administrated_teams: {
+          only: %i(id short_name name)
+        }
+      },
+      methods: %i(
+        player_id
+        administrated_discord_guild_ids
+        administrated_recurring_tournament_ids
+        administrated_team_ids
+      )
+    ))
+  end
+
 end

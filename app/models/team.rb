@@ -69,11 +69,48 @@ class Team < ApplicationRecord
   end
 
   # ---------------------------------------------------------------------------
-  # SCOPES
+  # HELPERS
   # ---------------------------------------------------------------------------
 
   def first_discord_guild
     discord_guilds.first
+  end
+
+  def admin_discord_ids
+    admins.map(&:discord_id)
+  end
+
+  def logo_url
+    return nil unless logo.attached?
+    logo.service_url
+  end
+
+  def roster_url
+    return nil unless roster.attached?
+    roster.service_url
+  end
+
+  def as_json(options = {})
+    super(options.merge(
+      include: {
+        admins: {
+          only: %i(discord_id avatar discriminator username)
+        },
+        discord_guilds: {
+          only: %i(id discord_id icon name)
+        },
+        players: {
+          only: %i(id name)
+        }
+      },
+      methods: %i(
+        logo_url
+        roster_url
+        admin_discord_ids
+        discord_guild_ids
+        player_ids
+      )
+    ))
   end
 
   # ---------------------------------------------------------------------------

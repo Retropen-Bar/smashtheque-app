@@ -21,10 +21,12 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :characters, only: :index
       resources :discord_guilds, only: :index
+      get '/discord_users/:discord_id', to: 'discord_users#show'
+      resources :discord_users, only: :show
       resources :locations, only: [:index, :create]
       resources :recurring_tournaments, only: :index
       resources :players, only: [:index, :show, :create, :update]
-      resources :teams, only: :index
+      resources :teams, only: [:index, :show, :update]
       get '/search' => 'search#global'
     end
   end

@@ -34,11 +34,6 @@ class TeamDecorator < BaseDecorator
     :users
   end
 
-  def logo_url
-    return nil unless model.logo.attached?
-    model.logo.service_url
-  end
-
   def any_image_url
     logo_url.presence || first_discord_guild_icon_image_url || default_logo_image_url
   end
