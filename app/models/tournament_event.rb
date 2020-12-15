@@ -69,6 +69,7 @@ class TournamentEvent < ApplicationRecord
 
   validates :name, presence: true
   validates :date, presence: true
+  validates :graph, content_type: /\Aimage\/.*\z/
   validate :unique_players
 
   def unique_players

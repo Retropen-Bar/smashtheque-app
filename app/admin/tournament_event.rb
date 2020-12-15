@@ -47,6 +47,7 @@ ActiveAdmin.register TournamentEvent do
                   label: 'Nouveau graph',
                   hint: 'Laissez vide pour ne pas changer',
                   input_html: {
+                    accept: 'image/*',
                     data: {
                       previewpanel: 'current-graph'
                     }
