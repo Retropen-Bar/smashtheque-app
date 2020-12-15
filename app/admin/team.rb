@@ -62,7 +62,12 @@ ActiveAdmin.register Team do
     f.inputs do
       f.input :short_name
       f.input :name
-      f.input :logo_url
+      f.input :logo,
+              as: :file,
+              hint: 'Laissez vide pour ne pas changer',
+              input_html: {
+                accept: 'image/*'
+              }
       f.input :is_offline
       f.input :is_online
       f.input :is_sponsor
@@ -72,7 +77,7 @@ ActiveAdmin.register Team do
     f.actions
   end
 
-  permit_params :short_name, :name, :logo_url, :twitter_username,
+  permit_params :short_name, :name, :logo, :twitter_username,
                 :is_offline, :is_online, :is_sponsor,
                 admin_ids: []
 
@@ -84,7 +89,7 @@ ActiveAdmin.register Team do
     attributes_table do
       row :short_name
       row :name
-      row :logo_url do |decorated|
+      row :logo do |decorated|
         decorated.logo_image_tag(max_height: 64)
       end
       row :is_offline

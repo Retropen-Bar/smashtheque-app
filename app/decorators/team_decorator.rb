@@ -34,8 +34,13 @@ class TeamDecorator < BaseDecorator
     :users
   end
 
+  def logo_url
+    return nil unless model.logo.attached?
+    model.logo.service_url
+  end
+
   def any_image_url
-    model.logo_url.presence || first_discord_guild_icon_image_url || default_logo_image_url
+    logo_url.presence || first_discord_guild_icon_image_url || default_logo_image_url
   end
 
   def any_image_tag(options)
@@ -43,8 +48,9 @@ class TeamDecorator < BaseDecorator
   end
 
   def logo_image_tag(options)
-    return nil if model.logo_url.blank?
-    h.image_tag_with_max_size model.logo_url, options.merge(class: 'avatar')
+    return nil unless model.logo.attached?
+    url = model.logo.service_url
+    h.image_tag_with_max_size url, options.merge(class: 'avatar')
   end
 
   def first_discord_guild_icon_image_url(size = nil)

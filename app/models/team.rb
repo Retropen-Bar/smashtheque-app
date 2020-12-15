@@ -6,7 +6,6 @@
 #  is_offline       :boolean
 #  is_online        :boolean
 #  is_sponsor       :boolean
-#  logo_url         :string
 #  name             :string
 #  short_name       :string
 #  twitter_username :string
@@ -31,12 +30,15 @@ class Team < ApplicationRecord
            through: :team_admins,
            source: :discord_user
 
+  has_one_attached :logo
+
   # ---------------------------------------------------------------------------
   # VALIDATIONS
   # ---------------------------------------------------------------------------
 
   validates :short_name, presence: true
   validates :name, presence: true
+  validates :logo, content_type: /\Aimage\/.*\z/
 
   # ---------------------------------------------------------------------------
   # CALLBACKS
