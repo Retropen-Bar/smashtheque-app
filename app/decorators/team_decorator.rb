@@ -43,11 +43,11 @@ class TeamDecorator < BaseDecorator
     logo_url.presence || first_discord_guild_icon_image_url || default_logo_image_url
   end
 
-  def any_image_tag(options)
+  def any_image_tag(options = {})
     h.image_tag_with_max_size any_image_url, options.merge(class: 'avatar')
   end
 
-  def logo_image_tag(options)
+  def logo_image_tag(options = {})
     return nil unless model.logo.attached?
     url = model.logo.service_url
     h.image_tag_with_max_size url, options.merge(class: 'avatar')
@@ -60,6 +60,12 @@ class TeamDecorator < BaseDecorator
 
   def default_logo_image_url
     'default-team-logo.png'
+  end
+
+  def roster_image_tag(options = {})
+    return nil unless model.roster.attached?
+    url = model.roster.service_url
+    h.image_tag_with_max_size url, options
   end
 
   def as_autocomplete_result

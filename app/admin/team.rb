@@ -59,25 +59,49 @@ ActiveAdmin.register Team do
   # ---------------------------------------------------------------------------
 
   form do |f|
-    f.inputs do
-      f.input :short_name
-      f.input :name
-      f.input :logo,
-              as: :file,
-              hint: 'Laissez vide pour ne pas changer',
-              input_html: {
-                accept: 'image/*'
-              }
-      f.input :is_offline
-      f.input :is_online
-      f.input :is_sponsor
-      discord_users_input f, :admins
-      f.input :twitter_username
+    columns do
+      column do
+        f.inputs do
+          f.input :short_name
+          f.input :name
+          f.input :logo,
+                  as: :file,
+                  hint: 'Laissez vide pour ne pas changer',
+                  input_html: {
+                    accept: 'image/*',
+                    data: {
+                      previewpanel: 'current-logo'
+                    }
+                  }
+          f.input :roster,
+                  as: :file,
+                  hint: 'Laissez vide pour ne pas changer',
+                  input_html: {
+                    accept: 'image/*',
+                    data: {
+                      previewpanel: 'current-roster'
+                    }
+                  }
+          f.input :is_offline
+          f.input :is_online
+          f.input :is_sponsor
+          discord_users_input f, :admins
+          f.input :twitter_username
+        end
+        f.actions
+      end
+      column do
+        panel 'Logo', id: 'current-logo' do
+          f.object.decorate.logo_image_tag
+        end
+        panel 'Roster', id: 'current-roster' do
+          f.object.decorate.roster_image_tag
+        end
+      end
     end
-    f.actions
   end
 
-  permit_params :short_name, :name, :logo, :twitter_username,
+  permit_params :short_name, :name, :logo, :roster, :twitter_username,
                 :is_offline, :is_online, :is_sponsor,
                 admin_ids: []
 
@@ -86,29 +110,38 @@ ActiveAdmin.register Team do
   # ---------------------------------------------------------------------------
 
   show do
-    attributes_table do
-      row :short_name
-      row :name
-      row :logo do |decorated|
-        decorated.logo_image_tag(max_height: 64)
+    columns do
+      column do
+        attributes_table do
+          row :short_name
+          row :name
+          row :logo do |decorated|
+            decorated.logo_image_tag(max_height: 64)
+          end
+          row :is_offline
+          row :is_online
+          row :is_sponsor
+          row :players do |decorated|
+            decorated.players_admin_link
+          end
+          row :admins do |decorated|
+            decorated.admins_admin_links(size: 32).join('<br/>').html_safe
+          end
+          row :discord_guilds do |decorated|
+            decorated.discord_guilds_admin_links
+          end
+          row :twitter_username do |decorated|
+            decorated.twitter_link
+          end
+          row :created_at
+          row :updated_at
+        end
       end
-      row :is_offline
-      row :is_online
-      row :is_sponsor
-      row :players do |decorated|
-        decorated.players_admin_link
+      column do
+        panel 'Roster' do
+          resource.roster_image_tag(max_width: '100%')
+        end
       end
-      row :admins do |decorated|
-        decorated.admins_admin_links(size: 32).join('<br/>').html_safe
-      end
-      row :discord_guilds do |decorated|
-        decorated.discord_guilds_admin_links
-      end
-      row :twitter_username do |decorated|
-        decorated.twitter_link
-      end
-      row :created_at
-      row :updated_at
     end
     active_admin_comments
   end

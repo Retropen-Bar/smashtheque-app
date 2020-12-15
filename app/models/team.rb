@@ -31,6 +31,7 @@ class Team < ApplicationRecord
            source: :discord_user
 
   has_one_attached :logo
+  has_one_attached :roster
 
   # ---------------------------------------------------------------------------
   # VALIDATIONS
@@ -39,6 +40,7 @@ class Team < ApplicationRecord
   validates :short_name, presence: true
   validates :name, presence: true
   validates :logo, content_type: /\Aimage\/.*\z/
+  validates :roster, content_type: /\Aimage\/.*\z/
 
   # ---------------------------------------------------------------------------
   # CALLBACKS
