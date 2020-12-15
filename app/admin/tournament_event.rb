@@ -23,13 +23,19 @@ ActiveAdmin.register TournamentEvent do
         decorated.send("#{player_name}_admin_link")
       end
     end
+    column :is_complete
     actions
   end
+
+  scope :all, default: true
+  scope :with_missing_graph
+  scope :with_missing_players
 
   filter :recurring_tournament
   filter :name
   filter :date
   filter :participants_count
+  filter :is_complete
 
   # ---------------------------------------------------------------------------
   # FORM
@@ -75,6 +81,7 @@ ActiveAdmin.register TournamentEvent do
             TournamentEvent::PLAYER_NAMES.each do |player_name|
               player_input f, player_name
             end
+            f.input :is_complete
           end
           f.actions
         end
@@ -85,7 +92,8 @@ ActiveAdmin.register TournamentEvent do
   permit_params :name, :date, :recurring_tournament_id, :participants_count,
                 :top1_player_id, :top2_player_id, :top3_player_id,
                 :top4_player_id, :top5a_player_id, :top5b_player_id,
-                :top7a_player_id, :top7b_player_id, :bracket_url, :graph
+                :top7a_player_id, :top7b_player_id, :is_complete,
+                :bracket_url, :graph
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -107,6 +115,7 @@ ActiveAdmin.register TournamentEvent do
               decorated.send("#{player_name}_admin_link")
             end
           end
+          row :is_complete
           row :created_at
           row :updated_at
         end

@@ -5,6 +5,7 @@
 #  id                      :bigint           not null, primary key
 #  bracket_url             :string
 #  date                    :date             not null
+#  is_complete             :boolean          default(FALSE), not null
 #  name                    :string           not null
 #  participants_count      :integer
 #  created_at              :datetime         not null
@@ -88,6 +89,29 @@ class TournamentEvent < ApplicationRecord
         TournamentEvent.human_attribute_name(original)
       )
     end
+  end
+
+  # ---------------------------------------------------------------------------
+  # SCOPES
+  # ---------------------------------------------------------------------------
+
+  def self.with_missing_graph
+    where(
+      is_complete: false
+    ).where.not(
+      id: ActiveStorage::Attachment.where(record_type: TournamentEvent.to_s)
+                                   .select(:record_id)
+    )
+  end
+
+  def self.with_missing_players
+    where(
+      is_complete: false
+    ).where(
+      PLAYER_NAMES.map do |player_name|
+        "#{player_name}_id IS NULL"
+      end.join(" OR ")
+    )
   end
 
   # ---------------------------------------------------------------------------

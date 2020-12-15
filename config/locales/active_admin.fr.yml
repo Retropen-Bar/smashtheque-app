@@ -15,6 +15,8 @@ fr:
       unknown: Inconnus
       with_admin_user: Admin
       with_discord_user: Relié à Discord
+      with_missing_graph: Graph manquant
+      with_missing_players: Joueur manquant
       without_background: Sans fond
       without_character: Sans perso
       without_discord_user: Non relié à Discord

@@ -153,6 +153,7 @@ fr:
         bracket_url: Bracket
         date: Date
         graph: Graph
+        is_complete: Complet
         name: Nom
         participants_count: Participants
         recurring_tournament: Série
