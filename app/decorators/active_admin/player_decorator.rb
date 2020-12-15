@@ -19,6 +19,12 @@ class ActiveAdmin::PlayerDecorator < PlayerDecorator
     end
   end
 
+  def admin_link(options = {})
+    super(options.merge(
+      label: name_with_avatar(size: 32)
+    ))
+  end
+
   def characters_admin_links
     model.characters.map do |character|
       character.admin_decorate.admin_emoji_link

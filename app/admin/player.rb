@@ -195,4 +195,19 @@ ActiveAdmin.register Player do
     redirect_to request.referer
   end
 
+  # ---------------------------------------------------------------------------
+  # AUTOCOMPLETE
+  # ---------------------------------------------------------------------------
+
+  collection_action :autocomplete do
+    render json: {
+      results: Player.by_keyword(params[:term]).map do |player|
+        {
+          id: player.id,
+          text: player.name
+        }
+      end
+    }
+  end
+
 end

@@ -55,6 +55,8 @@ class RecurringTournament < ApplicationRecord
            through: :recurring_tournament_contacts,
            source: :discord_user
 
+  has_many :tournament_events
+
   # ---------------------------------------------------------------------------
   # validations
   # ---------------------------------------------------------------------------

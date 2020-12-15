@@ -60,4 +60,8 @@ class RecurringTournamentDecorator < BaseDecorator
     }
   end
 
+  def tournament_events_count
+    model.tournament_events.count
+  end
+
 end

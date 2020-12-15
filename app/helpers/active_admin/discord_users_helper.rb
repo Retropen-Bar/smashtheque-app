@@ -14,8 +14,8 @@ module ActiveAdmin::DiscordUsersHelper
                   as: :select,
                   collection: [
                     [
-                      form.object.discord_user&.username,
-                      form.object.discord_user&.id
+                      form.object.send(name)&.username,
+                      form.object.send(name)&.id
                     ]
                   ],
                   input_html: {

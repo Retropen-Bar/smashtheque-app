@@ -4,7 +4,8 @@ ActiveAdmin.register RecurringTournament do
 
   has_paper_trail
 
-  menu label: '<i class="fas fa-fw fa-chess-knight"></i>Tournois'.html_safe
+  menu parent: '<i class="fas fa-fw fa-chess-knight"></i>Tournois'.html_safe,
+       label: 'Séries'
 
   # ---------------------------------------------------------------------------
   # INDEX
@@ -16,6 +17,9 @@ ActiveAdmin.register RecurringTournament do
     selectable_column
     id_column
     column :name
+    column :tournament_events do |decorated|
+      decorated.tournament_events_admin_link
+    end
     column :recurring_type do |decorated|
       decorated.recurring_type_text
     end
@@ -111,6 +115,9 @@ ActiveAdmin.register RecurringTournament do
   show do
     attributes_table do
       row :name
+      row :tournament_events do |decorated|
+        decorated.tournament_events_admin_link
+      end
       row :recurring_type do |decorated|
         decorated.recurring_type_text
       end

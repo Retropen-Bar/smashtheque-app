@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_13_180643) do
+ActiveRecord::Schema.define(version: 2020_12_14_233347) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -29,6 +29,27 @@ ActiveRecord::Schema.define(version: 2020_12_13_180643) do
     t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id"
     t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
     t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id"
+  end
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
   create_table "admin_users", force: :cascade do |t|
@@ -233,6 +254,32 @@ ActiveRecord::Schema.define(version: 2020_12_13_180643) do
     t.string "twitter_username"
   end
 
+  create_table "tournament_events", force: :cascade do |t|
+    t.bigint "recurring_tournament_id"
+    t.string "name", null: false
+    t.date "date", null: false
+    t.bigint "top1_player_id"
+    t.bigint "top2_player_id"
+    t.bigint "top3_player_id"
+    t.bigint "top4_player_id"
+    t.bigint "top5a_player_id"
+    t.bigint "top5b_player_id"
+    t.bigint "top7a_player_id"
+    t.bigint "top7b_player_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "participants_count"
+    t.index ["recurring_tournament_id"], name: "index_tournament_events_on_recurring_tournament_id"
+    t.index ["top1_player_id"], name: "index_tournament_events_on_top1_player_id"
+    t.index ["top2_player_id"], name: "index_tournament_events_on_top2_player_id"
+    t.index ["top3_player_id"], name: "index_tournament_events_on_top3_player_id"
+    t.index ["top4_player_id"], name: "index_tournament_events_on_top4_player_id"
+    t.index ["top5a_player_id"], name: "index_tournament_events_on_top5a_player_id"
+    t.index ["top5b_player_id"], name: "index_tournament_events_on_top5b_player_id"
+    t.index ["top7a_player_id"], name: "index_tournament_events_on_top7a_player_id"
+    t.index ["top7b_player_id"], name: "index_tournament_events_on_top7b_player_id"
+  end
+
   create_table "twitch_channels", force: :cascade do |t|
     t.string "username", null: false
     t.boolean "is_french", default: false, null: false
@@ -270,4 +317,14 @@ ActiveRecord::Schema.define(version: 2020_12_13_180643) do
     t.index ["username"], name: "index_you_tube_channels_on_username", unique: true
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "tournament_events", "players", column: "top1_player_id"
+  add_foreign_key "tournament_events", "players", column: "top2_player_id"
+  add_foreign_key "tournament_events", "players", column: "top3_player_id"
+  add_foreign_key "tournament_events", "players", column: "top4_player_id"
+  add_foreign_key "tournament_events", "players", column: "top5a_player_id"
+  add_foreign_key "tournament_events", "players", column: "top5b_player_id"
+  add_foreign_key "tournament_events", "players", column: "top7a_player_id"
+  add_foreign_key "tournament_events", "players", column: "top7b_player_id"
+  add_foreign_key "tournament_events", "recurring_tournaments"
 end
