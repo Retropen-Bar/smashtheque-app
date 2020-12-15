@@ -30,6 +30,7 @@ ActiveAdmin.register TournamentEvent do
   scope :all, default: true
   scope :with_missing_graph
   scope :with_missing_players
+  scope :with_missing_data
 
   filter :recurring_tournament
   filter :name

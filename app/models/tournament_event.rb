@@ -114,6 +114,14 @@ class TournamentEvent < ApplicationRecord
     )
   end
 
+  def self.with_missing_data
+    where(
+      is_complete: false
+    ).where(
+      "date < '2018-12-07' OR participants_count IS NULL OR participants_count = 0"
+    )
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------
