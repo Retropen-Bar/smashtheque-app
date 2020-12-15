@@ -1,6 +1,7 @@
 :concurrency: 1
 :queues:
   - abc
+  - active_storage_analysis
   - actors
   - chars
   - discord
