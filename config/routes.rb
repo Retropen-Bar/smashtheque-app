@@ -41,7 +41,15 @@ Rails.application.routes.draw do
   resources :characters, only: :index
   get 'characters/:id' => 'players#character_index', as: :character
 
-  resources :discord_guilds, only: [:index, :show]
+  resources :discord_guilds, only: [:index] do
+    collection do
+      get :characters
+      get :players
+      get :teams
+      get :locations
+      get :others
+    end
+  end
 
   resources :locations, only: :index
   get 'locations/:id' => 'players#location_index', as: :location

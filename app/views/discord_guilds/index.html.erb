@@ -2,42 +2,36 @@
 
 <ul class="nav nav-tabs justify-content-center mt-4 mb-4" id="discord-guild-tabs" role="tablist">
   <li class="nav-item" role="presentation">
-    <a class="nav-link active" id="characters-tab" data-toggle="tab" href="#characters" role="tab" aria-controls="characters" aria-selected="true">Personnages</a>
+    <%= link_to 'Personnages',
+                characters_discord_guilds_path,
+                class: "nav-link #{:active if params[:action].to_sym == :characters}" %>
   </li>
   <li class="nav-item" role="presentation">
-    <a class="nav-link" id="players-tab" data-toggle="tab" href="#players" role="tab" aria-controls="players" aria-selected="false">Joueurs</a>
+    <%= link_to 'Joueurs',
+                players_discord_guilds_path,
+                class: "nav-link #{:active if params[:action].to_sym == :players}" %>
   </li>
   <li class="nav-item" role="presentation">
-    <a class="nav-link" id="teams-tab" data-toggle="tab" href="#teams" role="tab" aria-controls="teams" aria-selected="false">Équipes</a>
+    <%= link_to 'Équipes',
+                teams_discord_guilds_path,
+                class: "nav-link #{:active if params[:action].to_sym == :teams}" %>
   </li>
   <li class="nav-item" role="presentation">
-    <a class="nav-link" id="locations-tab" data-toggle="tab" href="#locations" role="tab" aria-controls="locations" aria-selected="false">Localisations</a>
+    <%= link_to 'Localisations',
+                locations_discord_guilds_path,
+                class: "nav-link #{:active if params[:action].to_sym == :locations}" %>
   </li>
   <li class="nav-item" role="presentation">
-    <a class="nav-link" id="others-tab" data-toggle="tab" href="#others" role="tab" aria-controls="others" aria-selected="false">Autres</a>
+    <%= link_to 'Autres',
+                others_discord_guilds_path,
+                class: "nav-link #{:active if params[:action].to_sym == :others}" %>
   </li>
 </ul>
 
-<div class="tab-content" id="discord-guild-tabs-content">
+<div class="tab-content">
 
-  <div class="tab-pane fade show active" id="characters" role="tabpanel" aria-labelledby="characters-tab">
-    <%= render 'discord_guilds/discord_guilds', discord_guilds: @character_discord_guilds %>
-  </div>
-
-  <div class="tab-pane fade show active" id="players" role="tabpanel" aria-labelledby="players-tab">
-    <%= render 'discord_guilds/discord_guilds', discord_guilds: @player_discord_guilds %>
-  </div>
-
-  <div class="tab-pane fade" id="teams" role="tabpanel" aria-labelledby="teams-tab">
-    <%= render 'discord_guilds/discord_guilds', discord_guilds: @team_discord_guilds %>
-  </div>
-
-  <div class="tab-pane fade" id="locations" role="tabpanel" aria-labelledby="locations-tab">
-    <%= render 'discord_guilds/discord_guilds', discord_guilds: @location_discord_guilds %>
-  </div>
-
-  <div class="tab-pane fade" id="others" role="tabpanel" aria-labelledby="others-tab">
-    <%= render 'discord_guilds/discord_guilds', discord_guilds: @other_discord_guilds %>
+  <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="characters-tab">
+    <%= render 'discord_guilds/discord_guilds', discord_guilds: @discord_guilds %>
   </div>
 
 </div>
