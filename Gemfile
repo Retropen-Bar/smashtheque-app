@@ -111,6 +111,12 @@ gem 'rswag-ui'
 gem 'sidekiq'
 gem 'sidekiq-cron', '~> 1.1'
 
+# AS validations
+gem 'active_storage_validations'
+
+# S3
+gem 'aws-sdk-s3', require: false
+
 group :production do
   # for assets compilation
   gem 'activerecord-nulldb-adapter'
