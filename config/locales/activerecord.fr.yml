@@ -149,6 +149,7 @@ fr:
         twitter_username: Compte Twitter
       tournament_event:
         << : *SHARED
+        bracket_url: Bracket
         date: Date
         graph: Graph
         name: Nom

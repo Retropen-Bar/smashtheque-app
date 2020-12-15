@@ -3,6 +3,7 @@
 # Table name: tournament_events
 #
 #  id                      :bigint           not null, primary key
+#  bracket_url             :string
 #  date                    :date             not null
 #  name                    :string           not null
 #  participants_count      :integer

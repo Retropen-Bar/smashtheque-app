@@ -71,6 +71,7 @@ ActiveAdmin.register TournamentEvent do
             f.input :name
             f.input :date
             f.input :participants_count
+            f.input :bracket_url
             TournamentEvent::PLAYER_NAMES.each do |player_name|
               player_input f, player_name
             end
@@ -84,7 +85,7 @@ ActiveAdmin.register TournamentEvent do
   permit_params :name, :date, :recurring_tournament_id, :participants_count,
                 :top1_player_id, :top2_player_id, :top3_player_id,
                 :top4_player_id, :top5a_player_id, :top5b_player_id,
-                :top7a_player_id, :top7b_player_id, :graph
+                :top7a_player_id, :top7b_player_id, :bracket_url, :graph
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -98,6 +99,9 @@ ActiveAdmin.register TournamentEvent do
           row :name
           row :date
           row :participants_count
+          row :bracket_url do |decorated|
+            decorated.bracket_link
+          end
           TournamentEvent::PLAYER_NAMES.each do |player_name|
             row player_name do |decorated|
               decorated.send("#{player_name}_admin_link")
