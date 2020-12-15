@@ -44,6 +44,10 @@ ActiveAdmin.register Team do
   filter :is_online
   filter :is_sponsor
 
+  action_item :public, only: :show do
+    link_to 'Page publique', resource, class: 'green'
+  end
+
   action_item :rebuild,
               only: :index,
               if: proc { current_admin_user.is_root? } do

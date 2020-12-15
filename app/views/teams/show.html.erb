@@ -1,1 +1,7 @@
 <%= render 'players/players', players: @players, title: @team.full_name_with_logo(max_width: 64, max_height: 64) %>
+
+<% if @team.roster.attached? %>
+  <div class="text-center">
+    <%= @team.roster_image_tag(max_width: '100%') %>
+  </div>
+<% end %>
