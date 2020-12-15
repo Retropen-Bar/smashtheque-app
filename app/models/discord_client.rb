@@ -20,6 +20,8 @@ class DiscordClient
       'https://discord.gg/', ''
     ).gsub(
       'https://discord.com/invite/', ''
+    ).gsub(
+      'https://discordapp.com/invite/', ''
     )
 
     api_get "/invites/#{invitation_code}"
