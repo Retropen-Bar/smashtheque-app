@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_15_005804) do
+ActiveRecord::Schema.define(version: 2020_12_15_011328) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -229,6 +229,7 @@ ActiveRecord::Schema.define(version: 2020_12_15_005804) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "date_description"
+    t.boolean "is_archived", default: false, null: false
     t.index ["discord_guild_id"], name: "index_recurring_tournaments_on_discord_guild_id"
   end
 

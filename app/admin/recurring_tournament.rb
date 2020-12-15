@@ -34,6 +34,7 @@ ActiveAdmin.register RecurringTournament do
     column :contacts do |decorated|
       decorated.contacts_admin_links(size: 32).join('<br/>').html_safe
     end
+    column :is_archived
     column :created_at do |decorated|
       decorated.created_at_date
     end
@@ -41,8 +42,10 @@ ActiveAdmin.register RecurringTournament do
   end
 
   scope :all, default: true
-  scope :online
-  scope :offline
+  scope :archived
+
+  scope :online, group: :location
+  scope :offline, group: :location
 
   filter :name
   filter :recurring_type,
@@ -57,6 +60,7 @@ ActiveAdmin.register RecurringTournament do
          as: :select,
          collection: proc { recurring_tournament_level_select_collection },
          input_html: { multiple: true, data: { select2: {} } }
+  filter :is_archived
 
   action_item :rebuild,
               only: :index,
@@ -100,13 +104,14 @@ ActiveAdmin.register RecurringTournament do
       f.input :registration,
               input_html: { rows: 5 }
       discord_users_input f, :contacts
+      f.input :is_archived
     end
     f.actions
   end
 
   permit_params :name, :recurring_type, :date_description, :wday, :starts_at,
                 :discord_guild_id, :is_online, :level, :size, :registration,
-                contact_ids: []
+                :is_archived, contact_ids: []
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -138,6 +143,7 @@ ActiveAdmin.register RecurringTournament do
       row :contacts do |decorated|
         decorated.contacts_admin_links(size: 32).join('<br/>').html_safe
       end
+      row :is_archived
       row :created_at
       row :updated_at
     end

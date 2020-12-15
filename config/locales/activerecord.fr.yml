@@ -117,6 +117,7 @@ fr:
         << : *SHARED
         contacts: Contacts
         discord_guild: Serveur Discord
+        is_archived: Stoppé ?
         is_online: Online ?
         level: Difficulté
         name: Tournoi

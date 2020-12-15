@@ -4,6 +4,7 @@
 #
 #  id               :bigint           not null, primary key
 #  date_description :string
+#  is_archived      :boolean          default(FALSE), not null
 #  is_online        :boolean          default(FALSE), not null
 #  level            :string
 #  name             :string           not null
@@ -94,6 +95,9 @@ class RecurringTournament < ApplicationRecord
 
   scope :recurring, -> { where(recurring_type: %i(weekly bimonthly monthly)) }
   scope :on_wday, -> v { where(wday: v) }
+
+  scope :archived, -> { where(is_archived: true) }
+  scope :not_archived, -> { where(is_archived: false) }
 
   def is_recurring?
     %i(weekly bimonthly monthly).include?(recurring_type.to_sym)

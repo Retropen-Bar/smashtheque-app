@@ -14,7 +14,9 @@ class RecurringTournamentsController < PublicController
       }
       format.json {
         start = Date.parse(params[:startStr])
-        render json: apply_scopes(RecurringTournament.recurring).all.decorate.map { |rc|
+        render json: apply_scopes(
+          RecurringTournament.recurring.not_archived
+        ).all.decorate.map { |rc|
           rc.as_event(week_start: start).merge(
             url: recurring_tournament_path(rc)
           )

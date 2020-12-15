@@ -402,6 +402,7 @@ class RetropenBot
   def rebuild_online_tournaments_channel(recurring_tournaments, channel_id)
     messages = []
     recurring_tournaments.online
+                         .not_archived
                          .order(:starts_at)
                          .decorate
                          .each do |recurring_tournament|
