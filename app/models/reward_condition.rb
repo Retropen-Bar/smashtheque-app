@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: result_rewards
+# Table name: reward_conditions
 #
 #  id         :bigint           not null, primary key
 #  level      :string           not null
@@ -14,9 +14,16 @@
 #
 # Indexes
 #
-#  index_result_rewards_on_reward_id  (reward_id)
+#  index_reward_conditions_on_reward_id  (reward_id)
 #
-class ResultReward < ApplicationRecord
+class RewardCondition < ApplicationRecord
+
+  RANKS = [1, 2, 3, 4, 5, 7].freeze
+  LEVELS = RecurringTournament::LEVELS.freeze
+
+  # ---------------------------------------------------------------------------
+  # RELATIONS
+  # ---------------------------------------------------------------------------
 
   belongs_to :reward
 
@@ -28,10 +35,10 @@ class ResultReward < ApplicationRecord
   validates :size_max, presence: true
   validates :level,
             presence: true,
-            inclusion: { in: RecurringTournament::LEVELS }
+            inclusion: { in: LEVELS }
   validates :rank,
             presence: true,
-            inclusion: { in: [1, 2, 3, 4, 5, 7] }
+            inclusion: { in: RANKS }
   validates :points, presence: true
 
   # ---------------------------------------------------------------------------

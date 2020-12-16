@@ -16,6 +16,8 @@ fr:
       locations_country: Pays
       player: Joueur
       recurring_tournament: Série
+      reward: Récompense
+      reward_condition: Condition de récompense
       team: Équipe
       tournament_event: Édition
       twitch_channel: Chaîne Twitch
@@ -138,6 +140,19 @@ fr:
         monthly: Tous les mois
         oneshot: One-shot
         weekly: Toutes les semaines
+      reward:
+        << : *SHARED
+        image: Image
+        name: Nom
+        style: Style
+      reward_condition:
+        << : *SHARED
+        level: Difficulté
+        points: Points
+        rank: Rang
+        reward: Récompense
+        size_max: Taille max
+        size_min: Taille min
       team:
         << : *SHARED
         admins: Admins

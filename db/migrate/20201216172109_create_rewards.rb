@@ -4,11 +4,10 @@ class CreateRewards < ActiveRecord::Migration[6.0]
       t.string :name, null: false
       t.text :image, null: false
       t.text :style
-
       t.timestamps
     end
 
-    create_table :result_rewards do |t|
+    create_table :reward_conditions do |t|
       t.belongs_to :reward
       t.integer :size_min, null: false
       t.integer :size_max, null: false

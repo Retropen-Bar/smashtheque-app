@@ -233,7 +233,7 @@ ActiveRecord::Schema.define(version: 2020_12_16_172109) do
     t.index ["discord_guild_id"], name: "index_recurring_tournaments_on_discord_guild_id"
   end
 
-  create_table "result_rewards", force: :cascade do |t|
+  create_table "reward_conditions", force: :cascade do |t|
     t.bigint "reward_id"
     t.integer "size_min", null: false
     t.integer "size_max", null: false
@@ -242,7 +242,7 @@ ActiveRecord::Schema.define(version: 2020_12_16_172109) do
     t.integer "points", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["reward_id"], name: "index_result_rewards_on_reward_id"
+    t.index ["reward_id"], name: "index_reward_conditions_on_reward_id"
   end
 
   create_table "rewards", force: :cascade do |t|

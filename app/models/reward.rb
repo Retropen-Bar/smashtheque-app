@@ -11,7 +11,7 @@
 #
 class Reward < ApplicationRecord
 
-  has_many :result_rewards, dependent: :destroy
+  has_many :reward_conditions, dependent: :destroy
 
   # ---------------------------------------------------------------------------
   # VALIDATIONS

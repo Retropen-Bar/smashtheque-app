@@ -1,4 +1,0 @@
-class ResultRewardDecorator < BaseDecorator
-
-
-end
