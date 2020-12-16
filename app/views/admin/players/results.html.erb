@@ -1,0 +1,22 @@
+<table>
+  <thead>
+    <tr>
+      <th class="text-center">Série</th>
+      <th class="text-center">Édition</th>
+      <th class="text-center">Date</th>
+      <th class="text-center">Participants</th>
+      <th class="text-center">Résultat</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @tournament_events.each do |tournament_event| %>
+      <tr>
+        <th class="text-center"><%= tournament_event.recurring_tournament_admin_link %></th>
+        <th class="text-center"><%= tournament_event.admin_link %></th>
+        <td class="text-center"><%= tournament_event.date %></td>
+        <td class="text-center"><%= tournament_event.participants_count %></td>
+        <td class="text-center"><%= tournament_event.player_rank_name(@player.id) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

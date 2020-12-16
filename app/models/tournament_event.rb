@@ -122,6 +122,15 @@ class TournamentEvent < ApplicationRecord
     )
   end
 
+  def self.with_player(player_id)
+    where(
+      PLAYER_NAMES.map do |player_name|
+        "#{player_name}_id = ?"
+      end.join(" OR "),
+      *PLAYER_NAMES.map { player_id }
+    )
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------

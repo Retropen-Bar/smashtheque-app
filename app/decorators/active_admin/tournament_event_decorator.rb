@@ -9,6 +9,10 @@ class ActiveAdmin::TournamentEventDecorator < TournamentEventDecorator
     end
   end
 
+  def recurring_tournament_admin_link(options = {})
+    recurring_tournament&.admin_decorate&.admin_link(options)
+  end
+
   def previous_tournament_event_admin_link(options = {})
     tournament_event = previous_tournament_event
     if tournament_event

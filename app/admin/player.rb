@@ -195,6 +195,22 @@ ActiveAdmin.register Player do
     redirect_to request.referer
   end
 
+  action_item :results,
+              only: :show do
+    link_to 'Résultats', [:results, :admin, resource]
+  end
+
+  # ---------------------------------------------------------------------------
+  # RESULTS
+  # ---------------------------------------------------------------------------
+
+  member_action :results do
+    @player = resource.decorate
+    @tournament_events = @player.tournament_events
+                                .order(:date)
+                                .admin_decorate
+  end
+
   # ---------------------------------------------------------------------------
   # AUTOCOMPLETE
   # ---------------------------------------------------------------------------

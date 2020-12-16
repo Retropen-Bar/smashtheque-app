@@ -314,6 +314,10 @@ class Player < ApplicationRecord
     is_accepted? && !is_banned?
   end
 
+  def tournament_events
+    TournamentEvent.with_player(id)
+  end
+
   # ---------------------------------------------------------------------------
   # GLOBAL SEARCH
   # ---------------------------------------------------------------------------

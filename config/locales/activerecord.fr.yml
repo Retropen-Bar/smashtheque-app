@@ -165,6 +165,15 @@ fr:
         top5b_player: Top 5b
         top7a_player: Top 7a
         top7b_player: Top 7b
+      tournament_event/rank:
+        top1_player: Top 1
+        top2_player: Top 2
+        top3_player: Top 3
+        top4_player: Top 4
+        top5a_player: Top 5
+        top5b_player: Top 5
+        top7a_player: Top 7
+        top7b_player: Top 7
       twitch_channel:
         << : *SHARED
         description: Détails
