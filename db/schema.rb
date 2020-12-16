@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_15_223736) do
+ActiveRecord::Schema.define(version: 2020_12_16_172109) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -231,6 +231,26 @@ ActiveRecord::Schema.define(version: 2020_12_15_223736) do
     t.string "date_description"
     t.boolean "is_archived", default: false, null: false
     t.index ["discord_guild_id"], name: "index_recurring_tournaments_on_discord_guild_id"
+  end
+
+  create_table "result_rewards", force: :cascade do |t|
+    t.bigint "reward_id"
+    t.integer "size_min", null: false
+    t.integer "size_max", null: false
+    t.string "level", null: false
+    t.integer "rank", null: false
+    t.integer "points", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["reward_id"], name: "index_result_rewards_on_reward_id"
+  end
+
+  create_table "rewards", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "image", null: false
+    t.text "style"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "team_admins", force: :cascade do |t|
