@@ -156,6 +156,9 @@ ActiveAdmin.register Player do
       row :is_accepted
       row :is_banned
       row :ban_details
+      row :rewards do |decorated|
+        decorated.rewards_admin_links({}, class: 'reward-badge-32').join(' ').html_safe
+      end
       row :created_at
       row :updated_at
     end
@@ -205,10 +208,12 @@ ActiveAdmin.register Player do
   # ---------------------------------------------------------------------------
 
   member_action :results do
-    @player = resource.decorate
+    @player = resource.admin_decorate
     @tournament_events = @player.tournament_events
                                 .order(:date)
                                 .admin_decorate
+    @points_total = @player.points_total
+    @tournament_events_count = @tournament_events.count
   end
 
   # ---------------------------------------------------------------------------

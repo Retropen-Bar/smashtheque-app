@@ -60,6 +60,7 @@ class Player < ApplicationRecord
            after_remove: :after_remove_team
 
   has_many :player_reward_conditions, dependent: :destroy
+  has_many :rewards, through: :player_reward_conditions
 
   # ---------------------------------------------------------------------------
   # VALIDATIONS
@@ -318,6 +319,10 @@ class Player < ApplicationRecord
 
   def tournament_events
     TournamentEvent.with_player(id)
+  end
+
+  def points_total
+    player_reward_conditions.points_total
   end
 
   # ---------------------------------------------------------------------------

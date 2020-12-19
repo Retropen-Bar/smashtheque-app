@@ -41,6 +41,10 @@ class PlayerRewardCondition < ApplicationRecord
   delegate :points,
            to: :reward_condition
 
+  def self.points_total
+    joins(:reward_condition).sum(:points)
+  end
+
   # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------

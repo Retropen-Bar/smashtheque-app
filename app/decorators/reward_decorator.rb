@@ -13,13 +13,25 @@ class RewardDecorator < BaseDecorator
     h.image_tag_with_max_size image_data_url, options
   end
 
-  def badge
+  def badge(options = {})
     return nil if model.image.blank?
-    h.content_tag :div, class: 'reward-badge', style: model.style do
+    classes = [
+      'reward-badge',
+      options.delete(:class)
+    ].reject(&:blank?).join(' ')
+    h.content_tag :div, class: classes, style: model.style do
       h.content_tag :div, class: 'reward-badge-circle' do
-        image_tag
+        image_tag(options)
       end
     end
+  end
+
+  def all_badge_sizes
+    [
+      badge(class: 'reward-badge-128'),
+      badge,
+      badge(class: 'reward-badge-32')
+    ].join(' ').html_safe
   end
 
   def formatted_style

@@ -1,3 +1,29 @@
+<div class="big-numbers">
+
+  <div class="big-number txt-blue">
+    <div class="big-number--value">
+      <%= @tournament_events_count %>
+    </div>
+    <div class="big-number--title">
+      <%= pluralize_without_count @tournament_events_count, 'Tournoi' %>
+    </div>
+  </div>
+
+  <div class="big-number txt-green">
+    <div class="big-number--value">
+      <%= @points_total %>
+    </div>
+    <div class="big-number--title">
+      <%= pluralize_without_count @points_total, 'Point' %>
+    </div>
+  </div>
+
+</div>
+
+<div class="text-center" style="margin-bottom: 30px">
+  <%== @player.rewards_admin_links({}, class: 'reward-badge-128').join(' ') %>
+</div>
+
 <table>
   <thead>
     <tr>
@@ -19,7 +45,7 @@
         <td class="text-center"><%= tournament_event.date %></td>
         <td class="text-center"><%= tournament_event.participants_count %></td>
         <td class="text-center"><%= tournament_event.player_rank_name(@player.id) %></td>
-        <td class="text-center"><%= player_reward_condition&.reward_badge %></td>
+        <td class="text-center"><%= player_reward_condition.reward_admin_link %></td>
         <td class="text-center"><%= player_reward_condition&.points %></td>
       </tr>
     <% end %>

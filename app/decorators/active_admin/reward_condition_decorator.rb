@@ -9,8 +9,8 @@ class ActiveAdmin::RewardConditionDecorator < RewardConditionDecorator
     end
   end
 
-  def reward_admin_link(options = {})
-    model.reward&.admin_decorate&.admin_link(options)
+  def reward_admin_link(options = {}, badge_options = {})
+    model.reward&.admin_decorate&.admin_link(options, badge_options)
   end
 
   def player_reward_conditions_admin_path

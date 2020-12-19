@@ -51,4 +51,10 @@ class ActiveAdmin::PlayerDecorator < PlayerDecorator
     model.discord_user&.admin_decorate&.admin_link options
   end
 
+  def rewards_admin_links(options = {}, badge_options = {})
+    rewards.admin_decorate.map do |reward|
+      reward.admin_link(options, badge_options)
+    end
+  end
+
 end

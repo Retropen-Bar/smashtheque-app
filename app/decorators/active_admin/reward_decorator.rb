@@ -3,8 +3,8 @@ class ActiveAdmin::RewardDecorator < RewardDecorator
 
   decorates :reward
 
-  def admin_link(options = {})
-    super(options.merge(label: badge))
+  def admin_link(options = {}, badge_options = {})
+    super(options.merge(label: badge(badge_options)))
   end
 
   def reward_conditions_admin_path
