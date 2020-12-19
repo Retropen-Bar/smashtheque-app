@@ -152,10 +152,13 @@ fr:
         << : *SHARED
         image: Image
         name: Nom
+        reward_conditions: Conditions
+        player_reward_conditions: Obtensions
         style: Style
       reward_condition:
         << : *SHARED
         level: Difficulté
+        player_reward_conditions: Obtensions
         points: Points
         rank: Rang
         reward: Récompense

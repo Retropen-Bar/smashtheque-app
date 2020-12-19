@@ -25,4 +25,8 @@ class RewardConditionDecorator < BaseDecorator
     self.class.rank_value_name(model.rank)
   end
 
+  def player_reward_conditions_count
+    player_reward_conditions.count
+  end
+
 end

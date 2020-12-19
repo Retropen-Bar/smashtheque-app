@@ -5,7 +5,8 @@ ActiveAdmin.register RewardCondition do
   has_paper_trail
 
   menu parent: '<i class="fas fa-fw fa-chess-knight"></i>Tournois'.html_safe,
-       label: 'Conditions de récompense'
+       label: 'Conditions de récompense',
+       priority: 3
 
   # ---------------------------------------------------------------------------
   # INDEX
@@ -28,6 +29,9 @@ ActiveAdmin.register RewardCondition do
       decorated.reward_admin_link
     end
     column :points
+    column :player_reward_conditions do |decorated|
+      decorated.player_reward_conditions_admin_link
+    end
     actions
   end
 
@@ -92,6 +96,9 @@ ActiveAdmin.register RewardCondition do
         decorated.reward_admin_link
       end
       row :points
+      row :player_reward_conditions do |decorated|
+        decorated.player_reward_conditions_admin_link
+      end
       row :created_at
       row :updated_at
     end

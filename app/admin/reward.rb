@@ -5,7 +5,8 @@ ActiveAdmin.register Reward do
   has_paper_trail
 
   menu parent: '<i class="fas fa-fw fa-chess-knight"></i>Tournois'.html_safe,
-       label: 'Récompenses'
+       label: 'Récompenses',
+       priority: 2
 
   # ---------------------------------------------------------------------------
   # INDEX
@@ -17,6 +18,12 @@ ActiveAdmin.register Reward do
     column :name
     column :image do |decorated|
       decorated.badge
+    end
+    column :reward_conditions do |decorated|
+      decorated.reward_conditions_admin_link
+    end
+    column :player_reward_conditions do |decorated|
+      decorated.player_reward_conditions_admin_link
     end
     column :created_at do |decorated|
       decorated.created_at_date
@@ -56,6 +63,12 @@ ActiveAdmin.register Reward do
       end
       row :style do |decorated|
         decorated.formatted_style
+      end
+      row :reward_conditions do |decorated|
+        decorated.reward_conditions_admin_link
+      end
+      row :player_reward_conditions do |decorated|
+        decorated.player_reward_conditions_admin_link
       end
       row :created_at
       row :updated_at

@@ -26,4 +26,12 @@ class RewardDecorator < BaseDecorator
     h.content_tag :div, model.style, class: 'free-text'
   end
 
+  def reward_conditions_count
+    reward_conditions.count
+  end
+
+  def player_reward_conditions_count
+    player_reward_conditions.count
+  end
+
 end

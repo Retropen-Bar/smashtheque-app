@@ -5,7 +5,8 @@ ActiveAdmin.register TournamentEvent do
   has_paper_trail
 
   menu parent: '<i class="fas fa-fw fa-chess-knight"></i>Tournois'.html_safe,
-       label: 'Éditions'
+       label: 'Éditions',
+       priority: 1
 
   # ---------------------------------------------------------------------------
   # INDEX

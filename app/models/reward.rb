@@ -13,6 +13,8 @@ class Reward < ApplicationRecord
 
   has_many :reward_conditions, dependent: :destroy
 
+  has_many :player_reward_conditions, through: :reward_conditions
+
   # ---------------------------------------------------------------------------
   # VALIDATIONS
   # ---------------------------------------------------------------------------
