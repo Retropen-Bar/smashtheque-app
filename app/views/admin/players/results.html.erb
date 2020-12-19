@@ -11,10 +11,10 @@
 
   <div class="big-number txt-rose">
     <div class="big-number--value">
-      <%= @player_reward_conditions_count %>
+      <%= @rewards_count %>
     </div>
     <div class="big-number--title">
-      <%= pluralize_without_count @player_reward_conditions_count, 'Récompense' %>
+      <%= pluralize_without_count @rewards_count, 'Récompense' %>
     </div>
   </div>
 
@@ -30,9 +30,17 @@
 </div>
 
 <div class="text-center" style="margin-bottom: 30px">
-  <% @rewards_counts.each_pair do |reward_id, count| %>
-    <% reward = Reward.find(reward_id).decorate %>
-    <%= reward.badge(count: count) %>
+  <% Reward.grouped_by_level2.each do |(level2, level2_rewards)| %>
+    <div>
+      <% level2_rewards.each do |reward| %>
+        <% count = @rewards_counts[reward.id] %>
+        <% if count %>
+          <%= reward.decorate.badge(count: count) %>
+        <% else %>
+          <%= reward.decorate.badge(class: 'disabled') %>
+        <% end %>
+      <% end %>
+    </div>
   <% end %>
 </div>
 

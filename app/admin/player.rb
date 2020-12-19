@@ -163,8 +163,8 @@ ActiveAdmin.register Player do
       row :best_reward do |decorated|
         decorated.best_reward_admin_link
       end
-      row :rewards do |decorated|
-        decorated.rewards_admin_links({}, class: 'reward-badge-32').join(' ').html_safe
+      row :unique_rewards do |decorated|
+        decorated.unique_rewards_admin_links({}, class: 'reward-badge-32').join(' ').html_safe
       end
       row :created_at
       row :updated_at
@@ -220,6 +220,7 @@ ActiveAdmin.register Player do
                                 .order(:date)
                                 .admin_decorate
     @rewards_counts = @player.rewards_counts
+    @rewards_count = @rewards_counts.values.sum
     @points_total = @player.points_total
     @tournament_events_count = @tournament_events.count
   end

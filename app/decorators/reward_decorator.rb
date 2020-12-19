@@ -64,4 +64,8 @@ class RewardDecorator < BaseDecorator
     players.count
   end
 
+  def level
+    [level1, level2].join('.')
+  end
+
 end

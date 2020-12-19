@@ -12,10 +12,20 @@ ActiveAdmin.register Reward do
   # INDEX
   # ---------------------------------------------------------------------------
 
+  order_by(:level) do |order_clause|
+    if order_clause.order == 'desc'
+      'level1 DESC, level2 DESC'
+    else
+      'level1, level2'
+    end
+  end
+  config.sort_order = 'level_asc'
+
   index do
     selectable_column
     id_column
     column :name
+    column :level, sortable: true
     column :image do |decorated|
       decorated.badge
     end
@@ -32,6 +42,8 @@ ActiveAdmin.register Reward do
   end
 
   filter :name
+  filter :level1
+  filter :level2
 
   # ---------------------------------------------------------------------------
   # FORM
@@ -40,13 +52,15 @@ ActiveAdmin.register Reward do
   form do |f|
     f.inputs do
       f.input :name
-      f.input :image
-      f.input :style
+      f.input :level1
+      f.input :level2
+      f.input :image, input_html: { rows: 10 }
+      f.input :style, input_html: { rows: 5 }
     end
     f.actions
   end
 
-  permit_params :name, :image, :style
+  permit_params :name, :level1, :level2, :image, :style
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -55,6 +69,7 @@ ActiveAdmin.register Reward do
   show do
     attributes_table do
       row :name
+      row :level
       row :badge do |decorated|
         decorated.all_badge_sizes(count: 99)
       end

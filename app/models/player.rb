@@ -328,13 +328,15 @@ class Player < ApplicationRecord
 
   # returns a hash { reward_id => count }
   def rewards_counts
-    player_reward_conditions.joins(:reward_condition)
-                            .group(:reward_id)
-                            .count
+    rewards.ordered_by_level.group(:id).count
   end
 
   def best_reward
     reward_conditions.order(:points).last.reward
+  end
+
+  def unique_rewards
+    Reward.where(id: rewards.select(:id))
   end
 
   # ---------------------------------------------------------------------------

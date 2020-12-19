@@ -118,6 +118,7 @@ fr:
         teams: Équipes
         team_ids: Équipes
         twitter_username: Compte Twitter
+        unique_rewards: Récompenses uniques
       player_reward_condition:
         << : *SHARED
         player: Joueur
@@ -153,6 +154,9 @@ fr:
       reward:
         << : *SHARED
         image: Image
+        level: Niveau
+        level1: Niveau 1
+        level2: Niveau 2
         name: Nom
         reward_conditions: Conditions
         player_reward_conditions: Obtensions
