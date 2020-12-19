@@ -42,7 +42,9 @@ class Player < ApplicationRecord
   belongs_to :discord_user, optional: true
 
   # cache
-  belongs_to :best_player_reward_condition, class_name: :PlayerRewardCondition
+  belongs_to :best_player_reward_condition,
+             class_name: :PlayerRewardCondition,
+             optional: true
 
   has_one :best_reward,
           through: :best_player_reward_condition,
