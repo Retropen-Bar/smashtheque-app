@@ -53,7 +53,7 @@ class ActiveAdmin::PlayerDecorator < PlayerDecorator
 
   def rewards_admin_links(options = {}, badge_options = {})
     rewards.admin_decorate.map do |reward|
-      reward.admin_link(options, badge_options)
+      reward.admin_link(options, badge_options.clone)
     end
   end
 
