@@ -183,7 +183,7 @@ class TournamentEvent < ApplicationRecord
   def compute_rewards
     ids = []
 
-    if participants_count > 0
+    if (participants_count || 0) > 0
       reward_conditions = RewardCondition.by_level(level)
                                          .for_size(participants_count)
       PLAYER_NAMES.each do |player_name|
