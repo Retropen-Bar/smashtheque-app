@@ -109,7 +109,7 @@ class TournamentEvent < ApplicationRecord
   # CALLBACKS
   # ---------------------------------------------------------------------------
 
-  after_commit :compute_rewards
+  after_commit :compute_rewards, if: :persisted?
 
   # ---------------------------------------------------------------------------
   # SCOPES

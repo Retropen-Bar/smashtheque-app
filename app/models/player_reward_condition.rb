@@ -34,6 +34,20 @@ class PlayerRewardCondition < ApplicationRecord
 
   has_one :reward, through: :reward_condition
 
+  has_one :bested_player,
+           class_name: :Player,
+           foreign_key: :best_player_reward_condition_id,
+           dependent: :nullify
+
+  # ---------------------------------------------------------------------------
+  # CALLBACKS
+  # ---------------------------------------------------------------------------
+
+  after_commit :update_player_cache
+  def update_player_cache
+    player.update_cache!
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------

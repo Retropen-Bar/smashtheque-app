@@ -10,7 +10,16 @@ ActiveAdmin.register Player do
   # INDEX
   # ---------------------------------------------------------------------------
 
-  includes :characters, :locations, :creator, :discord_user, :teams
+  order_by(:best_reward_level) do |order_clause|
+    if order_clause.order == 'desc'
+      'best_reward_level1 DESC, best_reward_level2 DESC'
+    else
+      'best_reward_level1, best_reward_level2'
+    end
+  end
+
+  includes :characters, :locations, :creator, :discord_user, :teams,
+           :best_reward
 
   index do
     selectable_column
@@ -27,7 +36,8 @@ ActiveAdmin.register Player do
     column :locations do |decorated|
       decorated.locations_admin_links.join('<br/>').html_safe
     end
-    column :best_reward do |decorated|
+    column :points
+    column :best_reward, sortable: :best_reward_level do |decorated|
       decorated.best_reward_admin_link({}, class: 'reward-badge-32')
     end
     column :teams do |decorated|
@@ -77,7 +87,8 @@ ActiveAdmin.register Player do
          input_html: { multiple: true, data: { select2: {} } }
   filter :is_accepted
   filter :is_banned
-  filter :rewards,
+  filter :points
+  filter :best_reward,
          as: :select,
          collection: proc { Reward.all.admin_decorate },
          input_html: { multiple: true, data: { select2: {} } }
@@ -160,6 +171,7 @@ ActiveAdmin.register Player do
       row :is_accepted
       row :is_banned
       row :ban_details
+      row :points
       row :best_reward do |decorated|
         decorated.best_reward_admin_link
       end
@@ -221,7 +233,6 @@ ActiveAdmin.register Player do
                                 .admin_decorate
     @rewards_counts = @player.rewards_counts
     @rewards_count = @rewards_counts.values.sum
-    @points_total = @player.points_total
     @tournament_events_count = @tournament_events.count
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_19_155546) do
+ActiveRecord::Schema.define(version: 2020_12_19_172025) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -205,6 +205,11 @@ ActiveRecord::Schema.define(version: 2020_12_19_155546) do
     t.string "twitter_username"
     t.boolean "is_banned", default: false, null: false
     t.text "ban_details"
+    t.integer "points"
+    t.bigint "best_player_reward_condition_id"
+    t.string "best_reward_level1"
+    t.string "best_reward_level2"
+    t.index ["best_player_reward_condition_id"], name: "index_players_on_best_player_reward_condition_id"
     t.index ["creator_id"], name: "index_players_on_creator_id"
     t.index ["discord_user_id"], name: "index_players_on_discord_user_id"
   end
@@ -358,6 +363,7 @@ ActiveRecord::Schema.define(version: 2020_12_19_155546) do
   add_foreign_key "player_reward_conditions", "players"
   add_foreign_key "player_reward_conditions", "reward_conditions"
   add_foreign_key "player_reward_conditions", "tournament_events"
+  add_foreign_key "players", "player_reward_conditions", column: "best_player_reward_condition_id"
   add_foreign_key "tournament_events", "players", column: "top1_player_id"
   add_foreign_key "tournament_events", "players", column: "top2_player_id"
   add_foreign_key "tournament_events", "players", column: "top3_player_id"
