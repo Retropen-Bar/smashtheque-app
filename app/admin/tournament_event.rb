@@ -5,7 +5,8 @@ ActiveAdmin.register TournamentEvent do
   has_paper_trail
 
   menu parent: '<i class="fas fa-fw fa-chess-knight"></i>Tournois'.html_safe,
-       label: 'Éditions'
+       label: 'Éditions',
+       priority: 1
 
   # ---------------------------------------------------------------------------
   # INDEX
@@ -120,6 +121,21 @@ ActiveAdmin.register TournamentEvent do
           row :created_at
           row :updated_at
         end
+        panel 'Récompenses obtenues', style: 'margin-top: 50px' do
+          table_for resource.player_reward_conditions.admin_decorate,
+                    i18n: PlayerRewardCondition do
+            column :reward_condition do |decorated|
+              decorated.reward_condition_admin_link
+            end
+            column :player do |decorated|
+              decorated.player_admin_link
+            end
+            column :reward do |decorated|
+              decorated.reward_admin_link
+            end
+            column :points
+          end
+        end
       end
       column do
         panel 'Graph' do
@@ -136,6 +152,16 @@ ActiveAdmin.register TournamentEvent do
 
   action_item :next, only: :show do
     resource.next_tournament_event_admin_link label: '→', class: 'blue'
+  end
+
+  action_item :compute_rewards, only: :show do
+    link_to 'Recalculer les récompenses',
+            action: :compute_rewards,
+            class: 'blue'
+  end
+  member_action :compute_rewards do
+    resource.compute_rewards
+    redirect_to request.referer, notice: 'Calcul effectué'
   end
 
 end

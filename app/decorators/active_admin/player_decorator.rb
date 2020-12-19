@@ -51,4 +51,23 @@ class ActiveAdmin::PlayerDecorator < PlayerDecorator
     model.discord_user&.admin_decorate&.admin_link options
   end
 
+  def unique_rewards_admin_links(options = {}, badge_options = {})
+    unique_rewards.ordered_by_level.admin_decorate.map do |reward|
+      reward.admin_link(options, badge_options.clone)
+    end
+  end
+
+  def best_reward_admin_link(options = {}, badge_options = {})
+    best_reward&.admin_decorate&.admin_link(options, badge_options.clone)
+  end
+
+  def reward_player_reward_conditions_admin_path(reward)
+    admin_player_reward_conditions_path(
+      q: {
+        player_id_in: [model.id],
+        reward_condition_reward_id_in: [reward.id]
+      }
+    )
+  end
+
 end

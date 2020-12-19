@@ -15,7 +15,10 @@ fr:
       locations_city: Ville
       locations_country: Pays
       player: Joueur
+      player_reward_condition: Récompense obtenue
       recurring_tournament: Série
+      reward: Récompense
+      reward_condition: Condition de récompense
       team: Équipe
       tournament_event: Édition
       twitch_channel: Chaîne Twitch
@@ -100,6 +103,7 @@ fr:
       player:
         << : *SHARED
         ban_details: Détails du ban
+        best_reward: Meilleure récompense
         character_ids: Persos
         character_names: Persos
         characters: Persos
@@ -110,9 +114,18 @@ fr:
         discord_user: Compte Discord
         is_accepted: Validé ?
         is_banned: Banni ?
+        rewards: Récompenses
         teams: Équipes
         team_ids: Équipes
         twitter_username: Compte Twitter
+        unique_rewards: Récompenses uniques
+      player_reward_condition:
+        << : *SHARED
+        player: Joueur
+        points: Points
+        reward: Récompense
+        reward_condition: Condition
+        tournament_event: Édition
       recurring_tournament:
         << : *SHARED
         contacts: Contacts
@@ -138,6 +151,26 @@ fr:
         monthly: Tous les mois
         oneshot: One-shot
         weekly: Toutes les semaines
+      reward:
+        << : *SHARED
+        image: Image
+        level: Niveau
+        level1: Niveau 1
+        level2: Niveau 2
+        name: Nom
+        reward_conditions: Conditions
+        player_reward_conditions: Obtensions
+        players: Joueurs
+        style: Style
+      reward_condition:
+        << : *SHARED
+        level: Difficulté
+        player_reward_conditions: Obtensions
+        points: Points
+        rank: Rang
+        reward: Récompense
+        size_max: Taille max
+        size_min: Taille min
       team:
         << : *SHARED
         admins: Admins

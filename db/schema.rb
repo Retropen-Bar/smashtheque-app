@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_15_223736) do
+ActiveRecord::Schema.define(version: 2020_12_19_172025) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -180,6 +180,18 @@ ActiveRecord::Schema.define(version: 2020_12_15_223736) do
     t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable_type_and_searchable_id"
   end
 
+  create_table "player_reward_conditions", force: :cascade do |t|
+    t.bigint "player_id", null: false
+    t.bigint "reward_condition_id", null: false
+    t.bigint "tournament_event_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["player_id", "reward_condition_id", "tournament_event_id"], name: "index_prc_on_all", unique: true
+    t.index ["player_id"], name: "index_player_reward_conditions_on_player_id"
+    t.index ["reward_condition_id"], name: "index_player_reward_conditions_on_reward_condition_id"
+    t.index ["tournament_event_id"], name: "index_player_reward_conditions_on_tournament_event_id"
+  end
+
   create_table "players", force: :cascade do |t|
     t.string "name"
     t.boolean "is_accepted"
@@ -193,6 +205,11 @@ ActiveRecord::Schema.define(version: 2020_12_15_223736) do
     t.string "twitter_username"
     t.boolean "is_banned", default: false, null: false
     t.text "ban_details"
+    t.integer "points"
+    t.bigint "best_player_reward_condition_id"
+    t.string "best_reward_level1"
+    t.string "best_reward_level2"
+    t.index ["best_player_reward_condition_id"], name: "index_players_on_best_player_reward_condition_id"
     t.index ["creator_id"], name: "index_players_on_creator_id"
     t.index ["discord_user_id"], name: "index_players_on_discord_user_id"
   end
@@ -231,6 +248,29 @@ ActiveRecord::Schema.define(version: 2020_12_15_223736) do
     t.string "date_description"
     t.boolean "is_archived", default: false, null: false
     t.index ["discord_guild_id"], name: "index_recurring_tournaments_on_discord_guild_id"
+  end
+
+  create_table "reward_conditions", force: :cascade do |t|
+    t.bigint "reward_id"
+    t.integer "size_min", null: false
+    t.integer "size_max", null: false
+    t.string "level", null: false
+    t.integer "rank", null: false
+    t.integer "points", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["reward_id"], name: "index_reward_conditions_on_reward_id"
+  end
+
+  create_table "rewards", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "image", null: false
+    t.text "style"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "level1", null: false
+    t.integer "level2", null: false
+    t.index ["level1", "level2"], name: "index_rewards_on_level1_and_level2", unique: true
   end
 
   create_table "team_admins", force: :cascade do |t|
@@ -320,6 +360,10 @@ ActiveRecord::Schema.define(version: 2020_12_15_223736) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "player_reward_conditions", "players"
+  add_foreign_key "player_reward_conditions", "reward_conditions"
+  add_foreign_key "player_reward_conditions", "tournament_events"
+  add_foreign_key "players", "player_reward_conditions", column: "best_player_reward_condition_id"
   add_foreign_key "tournament_events", "players", column: "top1_player_id"
   add_foreign_key "tournament_events", "players", column: "top2_player_id"
   add_foreign_key "tournament_events", "players", column: "top3_player_id"

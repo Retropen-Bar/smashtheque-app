@@ -48,6 +48,18 @@ class TournamentEvent < ApplicationRecord
 
   PLAYER_RANKS = %w(1 2 3 4 5a 5b 7a 7b).freeze
   PLAYER_NAMES = PLAYER_RANKS.map{|rank| "top#{rank}_player".to_sym}.freeze
+  PLAYER_NAME_RANK = Hash[
+    PLAYER_RANKS.map do |rank|
+      [
+        "top#{rank}_player".to_sym,
+        case rank
+        when '5a', '5b' then 5
+        when '7a', '7b' then 7
+        else rank.to_i
+        end
+      ]
+    end
+  ].freeze
 
   # ---------------------------------------------------------------------------
   # relations
@@ -64,6 +76,8 @@ class TournamentEvent < ApplicationRecord
   belongs_to :top7b_player, class_name: :Player, optional: true
 
   has_one_attached :graph
+
+  has_many :player_reward_conditions, dependent: :destroy
 
   # ---------------------------------------------------------------------------
   # validations
@@ -90,6 +104,12 @@ class TournamentEvent < ApplicationRecord
       )
     end
   end
+
+  # ---------------------------------------------------------------------------
+  # CALLBACKS
+  # ---------------------------------------------------------------------------
+
+  after_commit :compute_rewards, if: :persisted?
 
   # ---------------------------------------------------------------------------
   # SCOPES
@@ -155,6 +175,38 @@ class TournamentEvent < ApplicationRecord
                         .where("date > ?", date)
                         .order(:date)
                         .first
+  end
+
+  delegate :level,
+           to: :recurring_tournament
+
+  def compute_rewards
+    ids = []
+
+    if participants_count > 0
+      reward_conditions = RewardCondition.by_level(level)
+                                         .for_size(participants_count)
+      PLAYER_NAMES.each do |player_name|
+        if player = send(player_name)
+          reward_condition = reward_conditions.by_rank(
+            PLAYER_NAME_RANK[player_name]
+          ).first
+          if reward_condition
+            ids << PlayerRewardCondition.where(
+              player: player,
+              tournament_event: self,
+              reward_condition: reward_condition
+            ).first_or_create!.id
+          end
+        end
+      end
+    end
+
+    player_reward_conditions.where.not(id: ids).destroy_all
+  end
+
+  def self.compute_all_rewards
+    find_each(&:compute_rewards)
   end
 
   # ---------------------------------------------------------------------------

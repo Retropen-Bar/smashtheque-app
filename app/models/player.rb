@@ -2,24 +2,33 @@
 #
 # Table name: players
 #
-#  id               :bigint           not null, primary key
-#  ban_details      :text
-#  character_names  :text             default([]), is an Array
-#  is_accepted      :boolean
-#  is_banned        :boolean          default(FALSE), not null
-#  location_names   :text             default([]), is an Array
-#  name             :string
-#  team_names       :text             default([]), is an Array
-#  twitter_username :string
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  creator_id       :bigint
-#  discord_user_id  :bigint
+#  id                              :bigint           not null, primary key
+#  ban_details                     :text
+#  best_reward_level1              :string
+#  best_reward_level2              :string
+#  character_names                 :text             default([]), is an Array
+#  is_accepted                     :boolean
+#  is_banned                       :boolean          default(FALSE), not null
+#  location_names                  :text             default([]), is an Array
+#  name                            :string
+#  points                          :integer
+#  team_names                      :text             default([]), is an Array
+#  twitter_username                :string
+#  created_at                      :datetime         not null
+#  updated_at                      :datetime         not null
+#  best_player_reward_condition_id :bigint
+#  creator_id                      :bigint
+#  discord_user_id                 :bigint
 #
 # Indexes
 #
-#  index_players_on_creator_id       (creator_id)
-#  index_players_on_discord_user_id  (discord_user_id)
+#  index_players_on_best_player_reward_condition_id  (best_player_reward_condition_id)
+#  index_players_on_creator_id                       (creator_id)
+#  index_players_on_discord_user_id                  (discord_user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (best_player_reward_condition_id => player_reward_conditions.id)
 #
 class Player < ApplicationRecord
 
@@ -31,6 +40,15 @@ class Player < ApplicationRecord
 
   belongs_to :creator, class_name: :DiscordUser
   belongs_to :discord_user, optional: true
+
+  # cache
+  belongs_to :best_player_reward_condition,
+             class_name: :PlayerRewardCondition,
+             optional: true
+
+  has_one :best_reward,
+          through: :best_player_reward_condition,
+          source: :reward
 
   has_many :discord_guild_relateds, as: :related, dependent: :nullify
   has_many :discord_guilds, through: :discord_guild_relateds
@@ -58,6 +76,10 @@ class Player < ApplicationRecord
   has_many :teams,
            through: :players_teams,
            after_remove: :after_remove_team
+
+  has_many :player_reward_conditions, dependent: :destroy
+  has_many :reward_conditions, through: :player_reward_conditions
+  has_many :rewards, through: :player_reward_conditions
 
   # ---------------------------------------------------------------------------
   # VALIDATIONS
@@ -316,6 +338,40 @@ class Player < ApplicationRecord
 
   def tournament_events
     TournamentEvent.with_player(id)
+  end
+
+  # returns a hash { reward_id => count }
+  def rewards_counts
+    rewards.ordered_by_level.group(:id).count
+  end
+
+  def unique_rewards
+    Reward.where(id: rewards.select(:id))
+  end
+
+  def update_points
+    self.points = player_reward_conditions.points_total
+  end
+
+  def update_best_player_reward_condition
+    self.best_player_reward_condition_id =
+      player_reward_conditions.joins(:reward_condition)
+                              .order(:points)
+                              .last
+                              .id
+  end
+
+  def update_best_reward_level
+    reward = rewards.ordered_by_level.last
+    self.best_reward_level1 = reward&.level1
+    self.best_reward_level2 = reward&.level2
+  end
+
+  def update_cache!
+    update_points
+    update_best_player_reward_condition
+    update_best_reward_level
+    save!
   end
 
   # ---------------------------------------------------------------------------
