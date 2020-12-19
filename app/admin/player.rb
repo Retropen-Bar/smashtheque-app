@@ -216,6 +216,7 @@ ActiveAdmin.register Player do
     @tournament_events = @player.tournament_events
                                 .order(:date)
                                 .admin_decorate
+    @rewards_counts = @player.rewards_counts
     @points_total = @player.points_total
     @tournament_events_count = @tournament_events.count
   end

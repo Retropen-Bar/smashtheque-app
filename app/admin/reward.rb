@@ -56,7 +56,7 @@ ActiveAdmin.register Reward do
     attributes_table do
       row :name
       row :badge do |decorated|
-        decorated.all_badge_sizes
+        decorated.all_badge_sizes(count: 99)
       end
       row :image do |decorated|
         decorated.image_tag(max_width: 64, style: "background: black")

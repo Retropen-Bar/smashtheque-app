@@ -9,6 +9,15 @@
     </div>
   </div>
 
+  <div class="big-number txt-rose">
+    <div class="big-number--value">
+      <%= @player_reward_conditions_count %>
+    </div>
+    <div class="big-number--title">
+      <%= pluralize_without_count @player_reward_conditions_count, 'Récompense' %>
+    </div>
+  </div>
+
   <div class="big-number txt-green">
     <div class="big-number--value">
       <%= @points_total %>
@@ -21,7 +30,10 @@
 </div>
 
 <div class="text-center" style="margin-bottom: 30px">
-  <%== @player.rewards_admin_links({}, class: 'reward-badge-128').join(' ') %>
+  <% @rewards_counts.each_pair do |reward_id, count| %>
+    <% reward = Reward.find(reward_id).decorate %>
+    <%= reward.badge(count: count) %>
+  <% end %>
 </div>
 
 <table>

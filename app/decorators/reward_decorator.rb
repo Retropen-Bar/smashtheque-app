@@ -15,22 +15,36 @@ class RewardDecorator < BaseDecorator
 
   def badge(options = {})
     return nil if model.image.blank?
+
     classes = [
-      'reward-badge',
+      'reward-badge-container',
       options.delete(:class)
     ].reject(&:blank?).join(' ')
-    h.content_tag :div, class: classes, style: model.style do
-      h.content_tag :div, class: 'reward-badge-circle' do
-        image_tag(options)
-      end
+
+    count = options.delete(:count)
+
+    h.content_tag :div, class: classes do
+      (
+        h.content_tag :div, class: 'reward-badge', style: model.style do
+          h.content_tag :div, class: 'reward-badge-circle' do
+            image_tag(options)
+          end
+        end
+      ) + (
+        if count.nil?
+          ''
+        else
+          h.content_tag :div, count, class: 'badge-counter'
+        end
+      )
     end
   end
 
-  def all_badge_sizes
+  def all_badge_sizes(options = {})
     [
-      badge(class: 'reward-badge-128'),
-      badge,
-      badge(class: 'reward-badge-32')
+      badge({class: 'reward-badge-128'}.merge(options)),
+      badge(options.clone),
+      badge({class: 'reward-badge-32'}.merge(options))
     ].join(' ').html_safe
   end
 

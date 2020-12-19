@@ -325,6 +325,13 @@ class Player < ApplicationRecord
     player_reward_conditions.points_total
   end
 
+  # returns a hash { reward_id => count }
+  def rewards_counts
+    player_reward_conditions.joins(:reward_condition)
+                            .group(:reward_id)
+                            .count
+  end
+
   # ---------------------------------------------------------------------------
   # GLOBAL SEARCH
   # ---------------------------------------------------------------------------
