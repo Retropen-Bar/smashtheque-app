@@ -77,6 +77,10 @@ ActiveAdmin.register Player do
          input_html: { multiple: true, data: { select2: {} } }
   filter :is_accepted
   filter :is_banned
+  filter :rewards,
+         as: :select,
+         collection: proc { Reward.all.admin_decorate },
+         input_html: { multiple: true, data: { select2: {} } }
 
   action_item :rebuild_all,
               only: :index,

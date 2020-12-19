@@ -27,4 +27,16 @@ class ActiveAdmin::RewardDecorator < RewardDecorator
     h.link_to player_reward_conditions_count, player_reward_conditions_admin_path
   end
 
+  def players_admin_path
+    admin_players_path(
+      q: {
+        rewards_id_in: [model.id]
+      }
+    )
+  end
+
+  def players_admin_link
+    h.link_to players_count, players_admin_path
+  end
+
 end

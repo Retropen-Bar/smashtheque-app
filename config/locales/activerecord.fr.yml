@@ -155,6 +155,7 @@ fr:
         name: Nom
         reward_conditions: Conditions
         player_reward_conditions: Obtensions
+        players: Joueurs
         style: Style
       reward_condition:
         << : *SHARED

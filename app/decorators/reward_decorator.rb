@@ -46,4 +46,8 @@ class RewardDecorator < BaseDecorator
     player_reward_conditions.count
   end
 
+  def players_count
+    players.count
+  end
+
 end

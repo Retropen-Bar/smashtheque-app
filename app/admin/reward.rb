@@ -70,6 +70,9 @@ ActiveAdmin.register Reward do
       row :player_reward_conditions do |decorated|
         decorated.player_reward_conditions_admin_link
       end
+      row :players do |decorated|
+        decorated.players_admin_link
+      end
       row :created_at
       row :updated_at
     end
