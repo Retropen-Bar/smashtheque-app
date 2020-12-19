@@ -59,6 +59,8 @@ class Player < ApplicationRecord
            through: :players_teams,
            after_remove: :after_remove_team
 
+  has_many :player_reward_conditions, dependent: :destroy
+
   # ---------------------------------------------------------------------------
   # VALIDATIONS
   # ---------------------------------------------------------------------------

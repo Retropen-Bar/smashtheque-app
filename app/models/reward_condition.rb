@@ -27,6 +27,8 @@ class RewardCondition < ApplicationRecord
 
   belongs_to :reward
 
+  has_many :player_reward_conditions, dependent: :destroy
+
   # ---------------------------------------------------------------------------
   # VALIDATIONS
   # ---------------------------------------------------------------------------
@@ -40,6 +42,17 @@ class RewardCondition < ApplicationRecord
             presence: true,
             inclusion: { in: RANKS }
   validates :points, presence: true
+
+  # ---------------------------------------------------------------------------
+  # SCOPES
+  # ---------------------------------------------------------------------------
+
+  scope :by_level, -> v { where(level: v) }
+  scope :by_rank, -> v { where(rank: v) }
+
+  def self.for_size(size)
+    where("size_min <= ?", size).where("size_max >= ?", size)
+  end
 
   # ---------------------------------------------------------------------------
   # VERSIONS
