@@ -27,11 +27,11 @@ ActiveAdmin.register Player do
     column :locations do |decorated|
       decorated.locations_admin_links.join('<br/>').html_safe
     end
+    column :best_reward do |decorated|
+      decorated.best_reward_admin_link({}, class: 'reward-badge-32')
+    end
     column :teams do |decorated|
       decorated.teams_admin_links.join('<br/>').html_safe
-    end
-    column :creator do |decorated|
-      decorated.creator_admin_link(size: 32)
     end
     column :is_accepted
     column :is_banned do |decorated|
@@ -160,6 +160,9 @@ ActiveAdmin.register Player do
       row :is_accepted
       row :is_banned
       row :ban_details
+      row :best_reward do |decorated|
+        decorated.best_reward_admin_link
+      end
       row :rewards do |decorated|
         decorated.rewards_admin_links({}, class: 'reward-badge-32').join(' ').html_safe
       end

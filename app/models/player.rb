@@ -60,6 +60,7 @@ class Player < ApplicationRecord
            after_remove: :after_remove_team
 
   has_many :player_reward_conditions, dependent: :destroy
+  has_many :reward_conditions, through: :player_reward_conditions
   has_many :rewards, through: :player_reward_conditions
 
   # ---------------------------------------------------------------------------
@@ -330,6 +331,10 @@ class Player < ApplicationRecord
     player_reward_conditions.joins(:reward_condition)
                             .group(:reward_id)
                             .count
+  end
+
+  def best_reward
+    reward_conditions.order(:points).last.reward
   end
 
   # ---------------------------------------------------------------------------

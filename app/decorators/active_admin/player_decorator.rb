@@ -57,4 +57,8 @@ class ActiveAdmin::PlayerDecorator < PlayerDecorator
     end
   end
 
+  def best_reward_admin_link(options = {}, badge_options = {})
+    best_reward&.admin_decorate&.admin_link(options, badge_options.clone)
+  end
+
 end

@@ -103,6 +103,7 @@ fr:
       player:
         << : *SHARED
         ban_details: Détails du ban
+        best_reward: Meilleure récompense
         character_ids: Persos
         character_names: Persos
         characters: Persos
