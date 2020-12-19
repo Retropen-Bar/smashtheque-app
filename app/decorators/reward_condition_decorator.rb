@@ -1,5 +1,9 @@
 class RewardConditionDecorator < BaseDecorator
 
+  def name
+    "Condition ##{id}"
+  end
+
   def self.level_value_color(level)
     RecurringTournamentDecorator::LEVEL_COLORS[level.to_sym]
   end
