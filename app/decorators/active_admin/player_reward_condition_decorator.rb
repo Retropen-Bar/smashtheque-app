@@ -3,6 +3,10 @@ class ActiveAdmin::PlayerRewardConditionDecorator < PlayerRewardConditionDecorat
 
   decorates :player_reward_condition
 
+  def name
+    "Condition #{id}"
+  end
+
   def player_admin_link(options = {})
     model.player&.admin_decorate&.admin_link(options)
   end

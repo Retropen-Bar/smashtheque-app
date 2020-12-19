@@ -33,11 +33,13 @@
   <% Reward.grouped_by_level2.each do |(level2, level2_rewards)| %>
     <div>
       <% level2_rewards.each do |reward| %>
-        <% count = @rewards_counts[reward.id] %>
-        <% if count %>
-          <%= reward.decorate.badge(count: count) %>
-        <% else %>
-          <%= reward.decorate.badge(class: 'disabled') %>
+        <%= link_to @player.reward_player_reward_conditions_admin_path(reward) do %>
+          <% count = @rewards_counts[reward.id] %>
+          <% if count %>
+            <%= reward.decorate.badge(count: count) %>
+          <% else %>
+            <%= reward.decorate.badge(class: 'disabled') %>
+          <% end %>
         <% end %>
       <% end %>
     </div>
@@ -52,6 +54,7 @@
       <th class="text-center">Date</th>
       <th class="text-center">Participants</th>
       <th class="text-center">Résultat</th>
+      <th class="text-center">Condition</th>
       <th class="text-center">Badge</th>
       <th class="text-center">Points</th>
     </tr>
@@ -65,6 +68,7 @@
         <td class="text-center"><%= tournament_event.date %></td>
         <td class="text-center"><%= tournament_event.participants_count %></td>
         <td class="text-center"><%= tournament_event.player_rank_name(@player.id) %></td>
+        <td class="text-center"><%= player_reward_condition.admin_link %></td>
         <td class="text-center"><%= player_reward_condition.reward_admin_link %></td>
         <td class="text-center"><%= player_reward_condition&.points %></td>
       </tr>
