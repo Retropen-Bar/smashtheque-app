@@ -53,6 +53,11 @@ class Ability
     can manage_or_cru, Player
     can :accept, Player
 
+    # Reward, RewardCondition & PlayerRewardCondition
+    can manage_or_read, Reward
+    can manage_or_read, RewardCondition
+    can :read, PlayerRewardCondition
+
     # Tournaments
     can manage_or_cru, RecurringTournament
     can manage_or_cru, TournamentEvent
