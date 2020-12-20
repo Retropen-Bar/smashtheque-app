@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_19_172025) do
+ActiveRecord::Schema.define(version: 2020_12_20_110354) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -264,12 +264,11 @@ ActiveRecord::Schema.define(version: 2020_12_19_172025) do
 
   create_table "rewards", force: :cascade do |t|
     t.string "name", null: false
-    t.text "image", null: false
-    t.text "style"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "level1", null: false
     t.integer "level2", null: false
+    t.string "emoji", null: false
     t.index ["level1", "level2"], name: "index_rewards_on_level1_and_level2", unique: true
   end
 

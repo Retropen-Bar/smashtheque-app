@@ -26,7 +26,7 @@ ActiveAdmin.register Reward do
     id_column
     column :name
     column :level, sortable: true
-    column :image do |decorated|
+    column :emoji do |decorated|
       decorated.badge
     end
     column :reward_conditions do |decorated|
@@ -54,13 +54,12 @@ ActiveAdmin.register Reward do
       f.input :name
       f.input :level1
       f.input :level2
-      f.input :image, input_html: { rows: 10 }
-      f.input :style, input_html: { rows: 5 }
+      f.input :emoji
     end
     f.actions
   end
 
-  permit_params :name, :level1, :level2, :image, :style
+  permit_params :name, :level1, :level2, :emoji
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -72,12 +71,6 @@ ActiveAdmin.register Reward do
       row :level
       row :badge do |decorated|
         decorated.all_badge_sizes(count: 99)
-      end
-      row :image do |decorated|
-        decorated.image_tag(max_width: 64, style: "background: black")
-      end
-      row :style do |decorated|
-        decorated.formatted_style
       end
       row :reward_conditions do |decorated|
         decorated.reward_conditions_admin_link

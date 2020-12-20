@@ -1,29 +1,11 @@
-.reward-badge-container
+.reward-badge
   position: relative
   display: inline-block
   margin: 10px
 
-  .reward-badge
+  img
     position: relative
-    display: inline-flex
     width: 64px
-    height: 64px
-    border-radius: 100%
-    background: black
-    align-items: center
-    justify-content: center
-
-    .reward-badge-circle
-      display: inline-flex
-      width: 56px
-      height: 56px
-      border-radius: 100%
-      border: 2px solid white
-      align-items: center
-      justify-content: center
-
-      img
-        width: 36px
 
   .badge-counter
     position: absolute
@@ -43,17 +25,8 @@
     opacity: 0.3
 
   &.reward-badge-128
-    .reward-badge
+    img
       width: 128px
-      height: 128px
-
-      .reward-badge-circle
-        width: 112px
-        height: 112px
-        border-width: 4px
-
-        img
-          width: 72px
 
     .badge-counter
       top: 0
@@ -63,17 +36,8 @@
       font-size: 14px
 
   &.reward-badge-32
-    .reward-badge
+    img
       width: 32px
-      height: 32px
-
-      .reward-badge-circle
-        width: 28px
-        height: 28px
-        border-width: 1px
-
-        img
-          width: 18px
 
     .badge-counter
       top: -10px

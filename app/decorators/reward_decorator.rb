@@ -1,23 +1,14 @@
 class RewardDecorator < BaseDecorator
 
-  def image_data_url
-    return nil if model.image.blank?
-    [
-      'data:image/svg+xml;base64',
-      Base64.strict_encode64(model.image)
-    ].join(',')
-  end
-
-  def image_tag(options = {})
-    return nil if model.image.blank?
-    h.image_tag_with_max_size image_data_url, options
+  def emoji_image_url
+    "https://cdn.discordapp.com/emojis/#{model.emoji}.png"
   end
 
   def badge(options = {})
-    return nil if model.image.blank?
+    return nil if model.emoji.blank?
 
     classes = [
-      'reward-badge-container',
+      'reward-badge',
       options.delete(:class)
     ].reject(&:blank?).join(' ')
 
@@ -25,11 +16,7 @@ class RewardDecorator < BaseDecorator
 
     h.content_tag :div, class: classes do
       (
-        h.content_tag :div, class: 'reward-badge', style: model.style do
-          h.content_tag :div, class: 'reward-badge-circle' do
-            image_tag(options)
-          end
-        end
+        h.image_tag emoji_image_url
       ) + (
         if count.nil?
           ''
@@ -46,10 +33,6 @@ class RewardDecorator < BaseDecorator
       badge(options.clone),
       badge({class: 'reward-badge-32'}.merge(options))
     ].join(' ').html_safe
-  end
-
-  def formatted_style
-    h.content_tag :div, model.style, class: 'free-text'
   end
 
   def reward_conditions_count

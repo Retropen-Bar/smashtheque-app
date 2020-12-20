@@ -3,11 +3,10 @@
 # Table name: rewards
 #
 #  id         :bigint           not null, primary key
-#  image      :text             not null
+#  emoji      :string           not null
 #  level1     :integer          not null
 #  level2     :integer          not null
 #  name       :string           not null
-#  style      :text
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
