@@ -416,8 +416,8 @@ class Player < ApplicationRecord
 
   def update_best_reward
     player_reward_condition =
-      player_reward_conditions.joins(:reward_condition)
-                              .order(:points)
+      player_reward_conditions.joins(:reward)
+                              .order(:level1, :level2, :points)
                               .last
     self.best_player_reward_condition = player_reward_condition
     self.best_reward_level1 = player_reward_condition&.reward&.level1
