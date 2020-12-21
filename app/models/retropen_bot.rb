@@ -34,12 +34,16 @@ class RetropenBot
     vendredi
     samedi
   ).freeze
+  CATEGORY_REWARDS = "L'observatoire d'Harmonie".freeze
+  CHANNEL_REWARDS_ONLINE_RANKING = 'ranking-online'.freeze
+
   EMOJI_GUILD_ADMIN = '746006429156245536'.freeze
   EMOJI_TEAM_ADMIN = '745255339364057119'.freeze
   EMOJI_TWITCH = '743601202716999720'.freeze
   EMOJI_YOUTUBE = '743601431499767899'.freeze
   EMOJI_TOURNAMENT = '743286485930868827'.freeze
   EMOJI_NO_REWARD = '790617900012535838'.freeze
+  EMOJI_POINTS = '790632367487188993'.freeze
 
   # ---------------------------------------------------------------------------
   # CONSTRUCTOR
@@ -459,6 +463,44 @@ class RetropenBot
   end
 
   # ---------------------------------------------------------------------------
+  # REWARDS
+  # ---------------------------------------------------------------------------
+
+  def rewards_category
+    client.find_or_create_guild_category @guild_id, name: CATEGORY_REWARDS
+  end
+
+  def rewards_online_ranking_channel(_rewards_category_id = nil)
+    rewards_category_id = _rewards_category_id || rewards_category['id']
+    find_or_create_readonly_channel @guild_id,
+                                    name: CHANNEL_REWARDS_ONLINE_RANKING,
+                                    parent_id: rewards_category_id
+  end
+
+  def rebuild_rewards_online_ranking_channel(rewards_category_id = nil)
+    players = Player.where("points > 0")
+                    .order(points: :desc)
+                    .legit
+    nb_digits = players.first.points.to_s.size
+    lines = players.includes(:teams, :locations, :characters)
+                   .map do |player|
+      "`#{player.points.to_s.rjust(nb_digits)}`#{emoji_tag(EMOJI_POINTS)}\t" + (
+        player_abc(player)
+      )
+    end.join(DiscordClient::MESSAGE_LINE_SEPARATOR)
+
+    client.replace_channel_content(
+      rewards_online_ranking_channel(rewards_category_id)['id'],
+      lines
+    )
+  end
+
+  def rebuild_rewards(_rewards_category_id = nil)
+    rewards_category_id = _rewards_category_id || rewards_category['id']
+    rebuild_rewards_online_ranking_channel rewards_category_id
+  end
+
+  # ---------------------------------------------------------------------------
   # PRIVATE
   # ---------------------------------------------------------------------------
 
@@ -476,28 +518,43 @@ class RetropenBot
     content.gsub('_','\_').gsub('*','\*')
   end
 
-  def player_abc(player)
-    line = emoji_tag(
-      if player.best_reward
-        player.best_reward.emoji
-      else
-        EMOJI_NO_REWARD
-      end
-    )
+  def player_abc(
+    player,
+    with_best_reward: false,
+    with_teams: true,
+    with_locations: true,
+    with_characters: true
+  )
+    line = ''
+    if with_best_reward
+      line += emoji_tag(
+        if player.best_reward
+          player.best_reward.emoji
+        else
+          EMOJI_NO_REWARD
+        end
+      )
+    end
     line += " #{player.name}"
-    player.teams.each do |team|
-      line += " [#{team.short_name}]"
-    end
-    player.locations.each do |location|
-      line += " [#{location.name.titleize}]"
-    end
-    if player.characters.any?
-      line += " :"
-      player.characters.each do |character|
-        line += " #{character_emoji_tag(character)}"
+    if with_teams
+      player.teams.each do |team|
+        line += " [#{team.short_name}]"
       end
     end
-    escape_message_content line
+    if with_locations
+      player.locations.each do |location|
+        line += " [#{location.name.titleize}]"
+      end
+    end
+    if with_characters
+      if player.characters.any?
+        line += " :"
+        player.characters.each do |character|
+          line += " #{character_emoji_tag(character)}"
+        end
+      end
+    end
+    escape_message_content line.strip
   end
 
   def players_lines(players)
