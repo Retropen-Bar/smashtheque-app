@@ -45,7 +45,7 @@ class PlayerRewardCondition < ApplicationRecord
 
   after_commit :update_player_cache
   def update_player_cache
-    player.update_cache!
+    player.update_cache! unless player.destroyed?
   end
 
   # ---------------------------------------------------------------------------

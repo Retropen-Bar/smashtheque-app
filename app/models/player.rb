@@ -81,6 +81,39 @@ class Player < ApplicationRecord
   has_many :reward_conditions, through: :player_reward_conditions
   has_many :rewards, through: :player_reward_conditions
 
+  has_many :tournament_events_as_top1_player,
+           class_name: :TournamentEvent,
+           foreign_key: :top1_player_id,
+           dependent: :nullify
+  has_many :tournament_events_as_top2_player,
+           class_name: :TournamentEvent,
+           foreign_key: :top2_player_id,
+           dependent: :nullify
+  has_many :tournament_events_as_top3_player,
+           class_name: :TournamentEvent,
+           foreign_key: :top3_player_id,
+           dependent: :nullify
+  has_many :tournament_events_as_top4_player,
+           class_name: :TournamentEvent,
+           foreign_key: :top4_player_id,
+           dependent: :nullify
+  has_many :tournament_events_as_top5a_player,
+           class_name: :TournamentEvent,
+           foreign_key: :top5a_player_id,
+           dependent: :nullify
+  has_many :tournament_events_as_top5b_player,
+           class_name: :TournamentEvent,
+           foreign_key: :top5b_player_id,
+           dependent: :nullify
+  has_many :tournament_events_as_top7a_player,
+           class_name: :TournamentEvent,
+           foreign_key: :top7a_player_id,
+           dependent: :nullify
+  has_many :tournament_events_as_top7b_player,
+           class_name: :TournamentEvent,
+           foreign_key: :top7b_player_id,
+           dependent: :nullify
+
   # ---------------------------------------------------------------------------
   # VALIDATIONS
   # ---------------------------------------------------------------------------
@@ -165,6 +198,12 @@ class Player < ApplicationRecord
     if destroyed?
       # this is a deletion
       RetropenBotScheduler.rebuild_abc_for_name name
+
+      # if points was 0, player had 0 points and 0 rewards
+      # so it was not listed anywhere in the rewards section
+      if points > 0
+        RetropenBotScheduler.rebuild_rewards
+      end
     else
       # name
       if previous_changes.has_key?('name')
@@ -179,6 +218,11 @@ class Player < ApplicationRecord
       else
         # this is an update, and the name didn't change
         RetropenBotScheduler.rebuild_abc_for_name name
+      end
+
+      # rewards
+      if previous_changes.has_key?('points') || points > 0
+        RetropenBotScheduler.rebuild_rewards
       end
     end
 
@@ -285,6 +329,13 @@ class Player < ApplicationRecord
   end
 
   scope :by_best_reward_level1, -> v { where(best_reward_level1: v) }
+  scope :by_best_reward_level2, -> v { where(best_reward_level2: v) }
+  def self.by_best_reward_level(a, b)
+    by_best_reward_level1(a).by_best_reward_level2(b)
+  end
+  def self.by_best_reward(reward)
+    by_best_reward_level(reward.level1, reward.level2)
+  end
 
   # ---------------------------------------------------------------------------
   # HELPERS
@@ -363,24 +414,19 @@ class Player < ApplicationRecord
     self.points = player_reward_conditions.points_total
   end
 
-  def update_best_player_reward_condition
-    self.best_player_reward_condition_id =
+  def update_best_reward
+    player_reward_condition =
       player_reward_conditions.joins(:reward_condition)
                               .order(:points)
                               .last
-                              .id
-  end
-
-  def update_best_reward_level
-    reward = rewards.ordered_by_level.last
-    self.best_reward_level1 = reward&.level1
-    self.best_reward_level2 = reward&.level2
+    self.best_player_reward_condition = player_reward_condition
+    self.best_reward_level1 = player_reward_condition&.reward&.level1
+    self.best_reward_level2 = player_reward_condition&.reward&.level2
   end
 
   def update_cache!
     update_points
-    update_best_player_reward_condition
-    update_best_reward_level
+    update_best_reward
     save!
   end
 

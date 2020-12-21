@@ -511,9 +511,22 @@ class RetropenBot
   end
 
   def rebuild_rewards_level1_channel(level1, rewards_category_id = nil)
-    rebuild_channel_with_players(
+    messages = []
+
+    Reward.by_level1(level1).order(:level2).each do |reward|
+      if reward_condition = reward.reward_conditions.first
+        messages << emoji_tag(reward.emoji)*3
+        messages << [
+          "**Joueurs ayant fait au mieux top #{reward_condition.rank} dans un tournoi de #{reward_condition.size_min} à #{reward_condition.size_max} participants :**",
+          players_lines(Player.by_best_reward(reward)).presence || "Aucun",
+          '-'*25
+        ].join(DiscordClient::MESSAGE_LINE_SEPARATOR)
+      end
+    end
+
+    client.replace_channel_messages(
       rewards_online_level1_channel(level1, rewards_category_id)['id'],
-      Player.by_best_reward_level1(level1)
+      messages
     )
   end
 
@@ -543,15 +556,9 @@ class RetropenBot
     content.gsub('_','\_').gsub('*','\*')
   end
 
-  def player_abc(
-    player,
-    with_best_reward: false,
-    with_teams: true,
-    with_locations: true,
-    with_characters: true
-  )
+  def player_abc(player, options = {})
     line = ''
-    if with_best_reward
+    unless options[:with_best_reward] == false
       line += emoji_tag(
         if player.best_reward
           player.best_reward.emoji
@@ -561,17 +568,17 @@ class RetropenBot
       )
     end
     line += " #{player.name}"
-    if with_teams
+    unless options[:with_teams] == false
       player.teams.each do |team|
         line += " [#{team.short_name}]"
       end
     end
-    if with_locations
+    unless options[:with_locations] == false
       player.locations.each do |location|
         line += " [#{location.name.titleize}]"
       end
     end
-    if with_characters
+    unless options[:with_characters] == false
       if player.characters.any?
         line += " :"
         player.characters.each do |character|
@@ -582,11 +589,11 @@ class RetropenBot
     escape_message_content line.strip
   end
 
-  def players_lines(players)
+  def players_lines(players, options = {})
     players.legit.includes(:teams, :locations, :characters).to_a.sort_by do |player|
       I18n.transliterate(player.name).downcase
     end.map do |player|
-      player_abc player
+      player_abc player, options
     end.join(DiscordClient::MESSAGE_LINE_SEPARATOR)
   end
 
