@@ -178,7 +178,8 @@ class DiscordClient
     replace_channel_messages channel_id, new_messages
   end
 
-  def replace_channel_messages(channel_id, new_messages)
+  def replace_channel_messages(channel_id, _new_messages)
+    new_messages = resplit_messages _new_messages
     existing_messages = channel_messages channel_id
     message_idx = 0
     new_messages.each do |new_message|
@@ -316,6 +317,14 @@ class DiscordClient
     messages << current_message
 
     messages
+  end
+
+  def resplit_messages(messages)
+    result = []
+    messages.each do |message|
+      result += split_messages message
+    end
+    result
   end
 
   def bot
