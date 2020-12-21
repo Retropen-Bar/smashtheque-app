@@ -114,6 +114,7 @@ fr:
         discord_user: Compte Discord
         is_accepted: Validé ?
         is_banned: Banni ?
+        points: Fragments d'étoiles
         rewards: Récompenses
         teams: Équipes
         team_ids: Équipes

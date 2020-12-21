@@ -11,7 +11,7 @@
 #  is_banned                       :boolean          default(FALSE), not null
 #  location_names                  :text             default([]), is an Array
 #  name                            :string
-#  points                          :integer
+#  points                          :integer          default(0), not null
 #  team_names                      :text             default([]), is an Array
 #  twitter_username                :string
 #  created_at                      :datetime         not null

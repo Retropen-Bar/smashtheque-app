@@ -40,6 +40,7 @@ class RetropenBot
   EMOJI_TWITCH = '743601202716999720'.freeze
   EMOJI_YOUTUBE = '743601431499767899'.freeze
   EMOJI_TOURNAMENT = '743286485930868827'.freeze
+  EMOJI_NO_REWARD = '790611878274662431'.freeze
 
   # ---------------------------------------------------------------------------
   # CONSTRUCTOR
@@ -477,15 +478,19 @@ class RetropenBot
   end
 
   def player_abc(player)
-    line = player.name
+    line = emoji_tag(
+      if player.best_reward
+        player.best_reward.emoji
+      else
+        EMOJI_NO_REWARD
+      end
+    )
+    line += " #{player.name}"
     player.teams.each do |team|
       line += " [#{team.short_name}]"
     end
     player.locations.each do |location|
       line += " [#{location.name.titleize}]"
-    end
-    if player.best_reward
-      line += " #{emoji_tag(player.best_reward.emoji)}"
     end
     if player.characters.any?
       line += " :"

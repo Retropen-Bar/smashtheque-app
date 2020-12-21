@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_20_110354) do
+ActiveRecord::Schema.define(version: 2020_12_21_160602) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -205,7 +205,7 @@ ActiveRecord::Schema.define(version: 2020_12_20_110354) do
     t.string "twitter_username"
     t.boolean "is_banned", default: false, null: false
     t.text "ban_details"
-    t.integer "points"
+    t.integer "points", default: 0, null: false
     t.bigint "best_player_reward_condition_id"
     t.string "best_reward_level1"
     t.string "best_reward_level2"
