@@ -284,6 +284,8 @@ class Player < ApplicationRecord
     where.not(id: CharactersPlayer.select(:player_id))
   end
 
+  scope :by_best_reward_level1, -> v { where(best_reward_level1: v) }
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------

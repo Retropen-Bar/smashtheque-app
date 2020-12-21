@@ -36,6 +36,14 @@ class RetropenBot
   ).freeze
   CATEGORY_REWARDS = "L'observatoire d'Harmonie".freeze
   CHANNEL_REWARDS_ONLINE_RANKING = 'ranking-online'.freeze
+  CHANNEL_REWARDS_ONLINE_LEVEL1 = %w(
+    9-16-participants
+    17-24-participants
+    25-32-participants
+    33-64-participants
+    65-128-participants
+    129-1024-participants
+  )
 
   EMOJI_GUILD_ADMIN = '746006429156245536'.freeze
   EMOJI_TEAM_ADMIN = '745255339364057119'.freeze
@@ -477,6 +485,13 @@ class RetropenBot
                                     parent_id: rewards_category_id
   end
 
+  def rewards_online_level1_channel(level1, _rewards_category_id = nil)
+    rewards_category_id = _rewards_category_id || rewards_category['id']
+    find_or_create_readonly_channel @guild_id,
+                                    name: CHANNEL_REWARDS_ONLINE_LEVEL1[level1-1],
+                                    parent_id: rewards_category_id
+  end
+
   def rebuild_rewards_online_ranking_channel(rewards_category_id = nil)
     players = Player.where("points > 0")
                     .order(points: :desc)
@@ -495,9 +510,19 @@ class RetropenBot
     )
   end
 
+  def rebuild_rewards_level1_channel(level1, rewards_category_id = nil)
+    rebuild_channel_with_players(
+      rewards_online_level1_channel(level1, rewards_category_id)['id'],
+      Player.by_best_reward_level1(level1)
+    )
+  end
+
   def rebuild_rewards(_rewards_category_id = nil)
     rewards_category_id = _rewards_category_id || rewards_category['id']
     rebuild_rewards_online_ranking_channel rewards_category_id
+    (1..CHANNEL_REWARDS_ONLINE_LEVEL1.count).each do |level1|
+      rebuild_rewards_level1_channel level1, rewards_category_id
+    end
   end
 
   # ---------------------------------------------------------------------------
