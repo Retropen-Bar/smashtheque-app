@@ -26,7 +26,6 @@ class Reward < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   validates :name, presence: true, uniqueness: true
-  validates :image, presence: true
   validates :level1,
             presence: true,
             numericality: {
@@ -47,6 +46,7 @@ class Reward < ApplicationRecord
 
   scope :by_level1, -> v { where(level1: v) }
   scope :by_level2, -> v { where(level2: v) }
+  scope :by_level, -> (a, b) { where(level1: a, level2: b) }
 
   def self.ordered_by_level(asc = true)
     if asc

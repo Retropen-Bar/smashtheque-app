@@ -349,6 +349,14 @@ class Player < ApplicationRecord
     Reward.where(id: rewards.select(:id))
   end
 
+  def best_rewards
+    Hash[
+      rewards.group(:level1).pluck(:level1, "MAX(level2)")
+    ].map do |level1, level2|
+      Reward.by_level(level1, level2).first
+    end.sort_by(&:level2)
+  end
+
   def update_points
     self.points = player_reward_conditions.points_total
   end

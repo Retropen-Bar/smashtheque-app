@@ -61,6 +61,12 @@ class ActiveAdmin::PlayerDecorator < PlayerDecorator
     best_reward&.admin_decorate&.admin_link(options, badge_options.clone)
   end
 
+  def best_rewards_admin_links(options = {}, badge_options = {})
+    best_rewards.map do |reward|
+      reward.admin_decorate.admin_link(options, badge_options.clone)
+    end
+  end
+
   def reward_player_reward_conditions_admin_path(reward)
     admin_player_reward_conditions_path(
       q: {

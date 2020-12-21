@@ -122,7 +122,7 @@ fr:
       player_reward_condition:
         << : *SHARED
         player: Joueur
-        points: Points
+        points: Fragments d'étoiles
         reward: Récompense
         reward_condition: Condition
         tournament_event: Édition
@@ -166,7 +166,7 @@ fr:
         << : *SHARED
         level: Difficulté
         player_reward_conditions: Obtensions
-        points: Points
+        points: Fragments d'étoiles
         rank: Rang
         reward: Récompense
         size_max: Taille max

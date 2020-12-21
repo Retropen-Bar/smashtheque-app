@@ -484,6 +484,9 @@ class RetropenBot
     player.locations.each do |location|
       line += " [#{location.name.titleize}]"
     end
+    if player.best_reward
+      line += " #{emoji_tag(player.best_reward.emoji)}"
+    end
     if player.characters.any?
       line += " :"
       player.characters.each do |character|
