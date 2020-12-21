@@ -34,13 +34,12 @@ class RetropenBot
     vendredi
     samedi
   ).freeze
-
   EMOJI_GUILD_ADMIN = '746006429156245536'.freeze
   EMOJI_TEAM_ADMIN = '745255339364057119'.freeze
   EMOJI_TWITCH = '743601202716999720'.freeze
   EMOJI_YOUTUBE = '743601431499767899'.freeze
   EMOJI_TOURNAMENT = '743286485930868827'.freeze
-  EMOJI_NO_REWARD = '790611878274662431'.freeze
+  EMOJI_NO_REWARD = '790617900012535838'.freeze
 
   # ---------------------------------------------------------------------------
   # CONSTRUCTOR
