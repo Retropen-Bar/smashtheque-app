@@ -496,7 +496,7 @@ class RetropenBot
     players = Player.where("points > 0")
                     .order(points: :desc)
                     .legit
-    nb_digits = players.first.points.to_s.size
+    nb_digits = players.first&.points&.to_s&.size || 0
     lines = players.includes(:teams, :locations, :characters)
                    .map do |player|
       "`#{player.points.to_s.rjust(nb_digits)}`#{emoji_tag(EMOJI_POINTS)}\t" + (
@@ -590,7 +590,9 @@ class RetropenBot
   end
 
   def players_lines(players, options = {})
-    players.legit.includes(:teams, :locations, :characters).to_a.sort_by do |player|
+    players.legit.includes(
+      :teams, :locations, :characters, :best_reward
+    ).to_a.sort_by do |player|
       I18n.transliterate(player.name).downcase
     end.map do |player|
       player_abc player, options

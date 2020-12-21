@@ -164,7 +164,7 @@ class TournamentEvent < ApplicationRecord
   def previous_tournament_event
     return nil if recurring_tournament.nil?
     recurring_tournament.tournament_events
-                        .where("date < ?", date)
+                        .where("date < ? OR (date = ? AND name < ?)", date, date, name)
                         .order(date: :desc)
                         .first
   end
@@ -172,7 +172,7 @@ class TournamentEvent < ApplicationRecord
   def next_tournament_event
     return nil if recurring_tournament.nil?
     recurring_tournament.tournament_events
-                        .where("date > ?", date)
+                        .where("date > ? OR (date = ? AND name > ?)", date, date, name)
                         .order(:date)
                         .first
   end
