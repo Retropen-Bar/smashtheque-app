@@ -27,4 +27,16 @@ class TournamentEventDecorator < BaseDecorator
     end
   end
 
+  def icon_class
+    'chess-knight'
+  end
+
+  def as_autocomplete_result
+    h.content_tag :div, class: 'tournament-event' do
+      h.content_tag :div, class: :name do
+        name
+      end
+    end
+  end
+
 end

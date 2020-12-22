@@ -11,7 +11,9 @@ namespace :pg_search do
         Locations::City,
         Locations::Country,
         Player,
-        Team
+        RecurringTournament,
+        Team,
+        TournamentEvent
       ].each do |klass|
         puts "Rebuild multisearch for class #{klass}"
         PgSearch::Multisearch.rebuild(klass, false)

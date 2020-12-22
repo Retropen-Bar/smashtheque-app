@@ -64,4 +64,16 @@ class RecurringTournamentDecorator < BaseDecorator
     model.tournament_events.count
   end
 
+  def icon_class
+    'chess'
+  end
+
+  def as_autocomplete_result
+    h.content_tag :div, class: 'recurring-tournament' do
+      h.content_tag :div, class: :name do
+        name
+      end
+    end
+  end
+
 end

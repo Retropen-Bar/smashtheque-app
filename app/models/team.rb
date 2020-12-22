@@ -118,7 +118,7 @@ class Team < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   include PgSearch::Model
-  multisearchable against: %i(name)
+  multisearchable against: %i(name short_name)
 
   # ---------------------------------------------------------------------------
   # VERSIONS
