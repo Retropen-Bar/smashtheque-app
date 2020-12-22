@@ -41,7 +41,7 @@ class Api::V1::TeamsController < Api::V1::BaseController
     params.require(:team).permit(%i(
       name short_name twitter_username
       is_offline is_online is_sponsor
-      logo roster
+      logo logo_url roster roster_url
     ))
   end
 

@@ -85,9 +85,23 @@ class Team < ApplicationRecord
     logo.service_url
   end
 
+  def logo_url=(url)
+    uri = URI.parse(url)
+    open(url) do |f|
+      logo.attach(io: f, filename: File.basename(uri.path))
+    end
+  end
+
   def roster_url
     return nil unless roster.attached?
     roster.service_url
+  end
+
+  def roster_url=(url)
+    uri = URI.parse(url)
+    open(url) do |f|
+      roster.attach(io: f, filename: File.basename(uri.path))
+    end
   end
 
   def as_json(options = {})
