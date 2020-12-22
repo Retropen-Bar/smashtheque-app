@@ -4,7 +4,9 @@ class Api::V1::SearchController < Api::V1::BaseController
 
   def global
     render json: {
-      results: PgSearch.multisearch(params[:term]).map do |document|
+      results: PgSearch.multisearch(params[:term])
+                       .where.not(searchable_type: %i(RecurringTournament TournamentEvent))
+                       .map do |document|
         model = if document.searchable_type == 'Location'
           # hack for weird bug
           Location.find(document.searchable_id).decorate
