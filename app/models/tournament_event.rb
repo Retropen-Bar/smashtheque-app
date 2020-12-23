@@ -177,15 +177,11 @@ class TournamentEvent < ApplicationRecord
                         .first
   end
 
-  delegate :level,
-           to: :recurring_tournament
-
   def compute_rewards
     ids = []
 
     if (participants_count || 0) > 0
-      reward_conditions = RewardCondition.by_level(level)
-                                         .for_size(participants_count)
+      reward_conditions = RewardCondition.for_size(participants_count)
       PLAYER_NAMES.each do |player_name|
         if player = send(player_name)
           reward_condition = reward_conditions.by_rank(

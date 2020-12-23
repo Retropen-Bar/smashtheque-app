@@ -17,9 +17,6 @@ ActiveAdmin.register RewardCondition do
   index do
     selectable_column
     id_column
-    column :level do |decorated|
-      decorated.level_status
-    end
     column :rank do |decorated|
       decorated.rank_name
     end
@@ -35,10 +32,6 @@ ActiveAdmin.register RewardCondition do
     actions
   end
 
-  filter :level,
-         as: :select,
-         collection: proc { reward_condition_level_select_collection },
-         input_html: { multiple: true, data: { select2: {} } }
   filter :rank,
          as: :select,
          collection: proc { reward_condition_rank_select_collection },
@@ -57,10 +50,6 @@ ActiveAdmin.register RewardCondition do
 
   form do |f|
     f.inputs do
-      f.input :level,
-              collection: reward_condition_level_select_collection,
-              input_html: { data: { select2: {} } },
-              include_blank: false
       f.input :rank,
               as: :select,
               collection: reward_condition_rank_select_collection,
@@ -76,7 +65,7 @@ ActiveAdmin.register RewardCondition do
     f.actions
   end
 
-  permit_params :level, :rank, :size_min, :size_max, :reward_id, :points
+  permit_params :rank, :size_min, :size_max, :reward_id, :points
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -84,9 +73,6 @@ ActiveAdmin.register RewardCondition do
 
   show do
     attributes_table do
-      row :level do |decorated|
-        decorated.level_status
-      end
       row :rank do |decorated|
         decorated.rank_name
       end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_21_160602) do
+ActiveRecord::Schema.define(version: 2020_12_22_235043) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -254,7 +254,6 @@ ActiveRecord::Schema.define(version: 2020_12_21_160602) do
     t.bigint "reward_id"
     t.integer "size_min", null: false
     t.integer "size_max", null: false
-    t.string "level", null: false
     t.integer "rank", null: false
     t.integer "points", null: false
     t.datetime "created_at", precision: 6, null: false

@@ -3,7 +3,6 @@
 # Table name: reward_conditions
 #
 #  id         :bigint           not null, primary key
-#  level      :string           not null
 #  points     :integer          not null
 #  rank       :integer          not null
 #  size_max   :integer          not null
@@ -19,7 +18,6 @@
 class RewardCondition < ApplicationRecord
 
   RANKS = [1, 2, 3, 4, 5, 7].freeze
-  LEVELS = RecurringTournament::LEVELS.freeze
 
   # ---------------------------------------------------------------------------
   # RELATIONS
@@ -35,9 +33,6 @@ class RewardCondition < ApplicationRecord
 
   validates :size_min, presence: true
   validates :size_max, presence: true
-  validates :level,
-            presence: true,
-            inclusion: { in: LEVELS }
   validates :rank,
             presence: true,
             inclusion: { in: RANKS }
@@ -47,7 +42,6 @@ class RewardCondition < ApplicationRecord
   # SCOPES
   # ---------------------------------------------------------------------------
 
-  scope :by_level, -> v { where(level: v) }
   scope :by_rank, -> v { where(rank: v) }
 
   def self.for_size(size)
