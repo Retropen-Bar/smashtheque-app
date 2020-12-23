@@ -1,9 +1,11 @@
 <div class="card tournament-event shadow-sm">
   <div class="card-body">
-    <div class="tournament-event-players-count">
-      <i class="fas fa-users"></i>
-      <%= tournament_event.participants_count %>
-    </div>
+    <% if (tournament_event.participants_count || 0) > 0 %>
+      <div class="tournament-event-participants-count">
+        <i class="fas fa-users"></i>
+        <%= tournament_event.participants_count %>
+      </div>
+    <% end %>
     <%= tournament_event.link %>
   </div>
   <% if admin_user_signed_in? %>

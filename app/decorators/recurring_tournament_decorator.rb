@@ -80,4 +80,22 @@ class RecurringTournamentDecorator < BaseDecorator
     h.link_to name, model
   end
 
+  def discord_guild_icon_image_url(size = nil)
+    return nil if model.discord_guild.nil?
+    model.discord_guild.decorate.icon_image_url(size)
+  end
+
+  def discord_guild_icon_image_tag(size = nil, options = {})
+    url = discord_guild_icon_image_url(size)
+    return nil if url.blank?
+    h.image_tag_with_max_size url, options.merge(class: 'avatar')
+  end
+
+  def name_with_logo(size = nil, options = {})
+    [
+      discord_guild_icon_image_tag(size, options),
+      name
+    ].join('&nbsp;').html_safe
+  end
+
 end

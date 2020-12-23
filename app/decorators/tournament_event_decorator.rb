@@ -1,7 +1,14 @@
 class TournamentEventDecorator < BaseDecorator
 
+  def name_with_logo(size = nil, options = {})
+    [
+      recurring_tournament.decorate.discord_guild_icon_image_tag(size, options),
+      name
+    ].join('&nbsp;').html_safe
+  end
+
   def link
-    h.link_to name, model
+    h.link_to name_with_logo(64), model
   end
 
   def recurring_tournament_link
