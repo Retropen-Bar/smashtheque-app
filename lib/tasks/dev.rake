@@ -38,6 +38,35 @@ namespace :dev do
     ENV['NO_DISCORD'] = '0'
   end
 
+  desc 'Import players'
+  task :import_players => :environment do
+    raise "not in development" unless Rails.env.development?
+    raise "some players exist" if Player.any?
+    ENV['NO_DISCORD'] = '1'
+    SmashthequeApi.players.each do |data|
+      data.delete('id')
+      data['character_ids'] = data['character_names'].map do |character_name|
+        Character.find_by!(name: character_name).id
+      end
+      data.delete('characters')
+      data['location_ids'] = data['location_names'].map do |location_name|
+        Location.find_by!(name: location_name).id
+      end
+      data.delete('locations')
+      data['team_ids'] = data['teams'].map do |team|
+        Team.find_by!(name: team['name']).id
+      end
+      data.delete('teams')
+      data.delete('creator')
+      data.delete('discord_user')
+      data.delete('best_player_reward_condition_id')
+      data.delete('best_reward_level1')
+      data.delete('best_reward_level2')
+      Player.new(data).save!
+    end
+    ENV['NO_DISCORD'] = '0'
+  end
+
   desc 'Import discord_guilds'
   task :import_discord_guilds => :environment do
     raise "not in development" unless Rails.env.development?
@@ -88,6 +117,7 @@ namespace :dev do
     Character.destroy_all
     Team.destroy_all
     Location.destroy_all
+    Player.destroy_all
     DiscordGuild.destroy_all
     RecurringTournament.destroy_all
     puts 'import characters'
@@ -96,6 +126,8 @@ namespace :dev do
     Rake::Task['dev:import_teams'].invoke
     puts 'import locations'
     Rake::Task['dev:import_locations'].invoke
+    puts 'import players'
+    Rake::Task['dev:import_players'].invoke
     puts 'import discord guilds'
     Rake::Task['dev:import_discord_guilds'].invoke
     puts 'import recurring tournaments'

@@ -6,6 +6,10 @@ class SmashthequeApi
   BASE_URL = 'https://www.smashtheque.fr/api/v1'.freeze
   AUTH_TOKEN = ENV['SMASHTHEQUE_API_TOKEN'].freeze
 
+  def self.players
+    api_get 'players?per=500'
+  end
+
   def self.characters
     api_get 'characters?per=1000'
   end
