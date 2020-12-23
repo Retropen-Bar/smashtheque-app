@@ -349,7 +349,7 @@ class Player < ApplicationRecord
            to: :creator,
            prefix: true
 
-  def as_json(options = nil)
+  def as_json(options = {})
     reload unless options.delete(:reload) == false
     result = super((options || {}).merge(
       include: {
