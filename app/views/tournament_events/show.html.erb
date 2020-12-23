@@ -1,8 +1,8 @@
 <h1 class="page-title">
-  <%= @tournament_event.name %>
   <% if admin_user_signed_in? %>
     <%= link_to fas_icon_tag('cog'), [:admin, @tournament_event], target: '_blank', class: 'admin-edit-link float-right' %>
   <% end %>
+  <%= @tournament_event.name %>
 </h1>
 
 <div class="row">
