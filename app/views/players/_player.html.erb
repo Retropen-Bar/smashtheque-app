@@ -11,11 +11,19 @@
       <% end %>
       <%= link_to player.decorate.name_with_avatar(size: 64), player, class: 'player-name' %>
     </h5>
-    <% player.locations.each do |location| %>
-      <div class="player-location">
-        <i class="fas fa-map-marker-alt"></i>
-        <%= link_to location.name.titleize, location_path(location) %>
+    <% if defined?(with_points) && with_points %>
+      <div class="player-points">
+        <%= image_tag 'https://cdn.discordapp.com/emojis/790632367487188993.png', height: 32 %>
+        <%= player.points %>
       </div>
+    <% end %>
+    <% unless defined?(with_locations) && with_locations == false %>
+      <% player.locations.each do |location| %>
+        <div class="player-location">
+          <i class="fas fa-map-marker-alt"></i>
+          <%= link_to location.name.titleize, location_path(location) %>
+        </div>
+      <% end %>
     <% end %>
     <% player.characters.each do |character| %>
       <%= link_to character.decorate.emoji_image_tag(max_height: '32px'), character %>

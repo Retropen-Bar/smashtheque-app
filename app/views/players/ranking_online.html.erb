@@ -8,7 +8,11 @@
 <div class="cards-list players">
   <% @players.each_with_index do |player, idx| %>
     <div class="card-container">
-      <%= render 'players/player', player: player, rank: @previous + idx + 1 %>
+      <%= render 'players/player',
+                 player: player,
+                 rank: @previous + idx + 1,
+                 with_points: true,
+                 with_locations: false %>
     </div>
   <% end %>
 </div>
