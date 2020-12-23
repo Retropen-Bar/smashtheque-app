@@ -205,6 +205,33 @@ class TournamentEvent < ApplicationRecord
     find_each(&:compute_rewards)
   end
 
+  def as_json(options = {})
+    super(options.merge(
+      methods: %i(
+        recurring_tournament_name
+        top1_player_name
+        top2_player_name
+        top3_player_name
+        top4_player_name
+        top5a_player_name
+        top5b_player_name
+        top7a_player_name
+        top7b_player_name
+      )
+    ))
+  end
+
+  delegate :name,
+           to: :recurring_tournament,
+           prefix: true
+
+  PLAYER_NAMES.each do |player_name|
+    delegate :name,
+             to: player_name,
+             prefix: true,
+             allow_nil: true
+  end
+
   # ---------------------------------------------------------------------------
   # global search
   # ---------------------------------------------------------------------------

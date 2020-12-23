@@ -109,6 +109,26 @@ namespace :dev do
     ENV['NO_DISCORD'] = '0'
   end
 
+  desc 'Import tournament_events'
+  task :import_tournament_events => :environment do
+    raise "not in development" unless Rails.env.development?
+    raise "some tournament_events exist" if TournamentEvent.any?
+    ENV['NO_DISCORD'] = '1'
+    SmashthequeApi.tournament_events.each do |data|
+      data.delete('id')
+      data['recurring_tournament_id'] = RecurringTournament.find_by!(
+        name: data.delete('recurring_tournament_name')
+      )
+      TournamentEvent::PLAYER_NAMES.each do |player_name|
+        if player_name = data.delete("#{player_name}_name")
+          data["#{player_name}_id"] = Player.find_by!(name: player_name)
+        end
+      end
+      RecurringTournament.new(data).save!
+    end
+    ENV['NO_DISCORD'] = '0'
+  end
+
   desc 'Import all'
   task :reimport_all => :environment do
     raise "not in development" unless Rails.env.development?
@@ -132,6 +152,8 @@ namespace :dev do
     Rake::Task['dev:import_discord_guilds'].invoke
     puts 'import recurring tournaments'
     Rake::Task['dev:import_recurring_tournaments'].invoke
+    puts 'import tournament events'
+    Rake::Task['dev:import_tournament_events'].invoke
     ENV['NO_DISCORD'] = '0'
   end
 
