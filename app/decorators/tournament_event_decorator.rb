@@ -1,5 +1,13 @@
 class TournamentEventDecorator < BaseDecorator
 
+  def public_link
+    h.link_to name, model
+  end
+
+  def recurring_tournament_link
+    recurring_tournament.decorate.public_link
+  end
+
   def bracket_link
     return nil if bracket_url.blank?
     h.link_to bracket_url, bracket_url, target: '_blank'

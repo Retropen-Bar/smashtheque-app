@@ -1,0 +1,16 @@
+<div class="text-center">
+  <div id="list-toolbar">
+    <h1 class="page-title">Éditions passées</h1>
+    <%= render 'shared/pagination', collection: @tournament_events %>
+  </div>
+</div>
+
+<div class="cards-list tournament-events">
+  <% @tournament_events.each do |tournament_event| %>
+    <div class="card-container">
+      <%= render 'tournament_event', tournament_event: tournament_event.decorate %>
+    </div>
+  <% end %>
+</div>
+
+<%= render 'shared/pagination', collection: @tournament_events %>

@@ -1,0 +1,8 @@
+<div class="card recurring-tournament shadow-sm">
+  <div class="card-body">
+    <%= link_to recurring_tournament.name, recurring_tournament_path(recurring_tournament) %>
+  </div>
+  <% if admin_user_signed_in? %>
+    <%= link_to fas_icon_tag('cog'), [:admin, recurring_tournament], target: '_blank', class: 'admin-edit-link' %>
+  <% end %>
+</div>

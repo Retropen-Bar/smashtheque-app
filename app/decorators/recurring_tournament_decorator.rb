@@ -76,4 +76,8 @@ class RecurringTournamentDecorator < BaseDecorator
     end
   end
 
+  def public_link
+    h.link_to name, model
+  end
+
 end

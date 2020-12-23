@@ -1,0 +1,25 @@
+<h1 class="page-title"><%= @tournament_event.name %></h1>
+
+<dl>
+
+  <dt>Série</dt>
+  <dd><%= @tournament_event.recurring_tournament_link %></dd>
+
+
+  <!-- row :recurring_tournament
+  row :name
+  row :date
+  row :participants_count
+  row :bracket_url do |decorated|
+    decorated.bracket_link
+  end
+  TournamentEvent::PLAYER_NAMES.each do |player_name|
+    row player_name do |decorated|
+      decorated.send("#{player_name}_admin_link")
+    end
+  end
+  row :is_complete
+  row :created_at
+  row :updated_at -->
+
+</dl>

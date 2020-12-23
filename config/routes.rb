@@ -69,6 +69,7 @@ Rails.application.routes.draw do
       get :modal
     end
   end
+  resources :tournament_events, only: [:index, :show]
   get 'planning/online' => 'public#planning_online', as: :planning
 
   root to: 'public#home'
