@@ -52,6 +52,7 @@ class Ability
     # Player
     can manage_or_cru, Player
     can :accept, Player
+    can :results, Player
 
     # Reward, RewardCondition & PlayerRewardCondition
     can manage_or_read, Reward

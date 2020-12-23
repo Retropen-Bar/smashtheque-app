@@ -1,11 +1,11 @@
 class TournamentEventDecorator < BaseDecorator
 
-  def public_link
+  def link
     h.link_to name, model
   end
 
   def recurring_tournament_link
-    recurring_tournament.decorate.public_link
+    recurring_tournament.decorate.link
   end
 
   def bracket_link

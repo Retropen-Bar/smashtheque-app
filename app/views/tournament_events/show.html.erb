@@ -1,25 +1,52 @@
-<h1 class="page-title"><%= @tournament_event.name %></h1>
+<h1 class="page-title">
+  <%= @tournament_event.name %>
+  <% if admin_user_signed_in? %>
+    <%= link_to fas_icon_tag('cog'), [:admin, @tournament_event], target: '_blank', class: 'admin-edit-link float-right' %>
+  <% end %>
+</h1>
 
-<dl>
+<div class="row">
 
-  <dt>Série</dt>
-  <dd><%= @tournament_event.recurring_tournament_link %></dd>
+  <div class="col border bg-light shadow p-5 m-3 rounded">
+    <h2 class="text-center mb-5">Infos clé</h2>
 
+    <dl>
 
-  <!-- row :recurring_tournament
-  row :name
-  row :date
-  row :participants_count
-  row :bracket_url do |decorated|
-    decorated.bracket_link
-  end
-  TournamentEvent::PLAYER_NAMES.each do |player_name|
-    row player_name do |decorated|
-      decorated.send("#{player_name}_admin_link")
-    end
-  end
-  row :is_complete
-  row :created_at
-  row :updated_at -->
+      <dt>Série</dt>
+      <dd><%= @tournament_event.recurring_tournament_link %></dd>
 
-</dl>
+      <dt>Date</dt>
+      <dd><%= @tournament_event.date %></dd>
+
+      <dt>Participants</dt>
+      <dd><%= @tournament_event.participants_count || '?' %></dd>
+
+      <% unless @tournament_event.bracket_url.blank? %>
+        <dt>Bracket</dt>
+        <dd><%= @tournament_event.bracket_link %></dd>
+      <% end %>
+
+    </dl>
+  </div>
+
+  <div class="col border bg-light shadow p-5 m-3 rounded">
+    <h2 class="text-center mb-5">Résultat</h2>
+
+    <div class="row justify-content-center">
+      <div class="col-auto">
+        <% TournamentEvent::PLAYER_NAMES.each do |player_name| %>
+          <div class="my-3">
+            <strong>
+              <%= TournamentEvent.human_attribute_name("rank.#{player_name}") %> :
+            </strong> <%= @tournament_event.send(player_name)&.decorate&.link || '?' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-auto text-center m-3">
+    <%= @tournament_event.graph_image_tag max_width: '100%', max_height: 600, class: 'shadow' %>
+  </div>
+
+</div>

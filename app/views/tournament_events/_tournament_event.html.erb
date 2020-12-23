@@ -4,7 +4,7 @@
       <i class="fas fa-users"></i>
       <%= tournament_event.participants_count %>
     </div>
-    <%= tournament_event.public_link %>
+    <%= tournament_event.link %>
   </div>
   <% if admin_user_signed_in? %>
     <%= link_to fas_icon_tag('cog'), [:admin, tournament_event], target: '_blank', class: 'admin-edit-link' %>

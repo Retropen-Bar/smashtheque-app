@@ -164,4 +164,7 @@ ActiveAdmin.register TournamentEvent do
     redirect_to request.referer, notice: 'Calcul effectué'
   end
 
+  action_item :public, only: :show do
+    link_to 'Page publique', resource, class: 'green'
+  end
 end
