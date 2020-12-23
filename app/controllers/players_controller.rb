@@ -47,7 +47,7 @@ class PlayersController < PublicController
             .order(points: :desc)
             .legit
     ).includes(:discord_user, :teams, :locations, :characters)
-    @previous = ((params[:page] || 1) - 1) * (params[:per] || 25)
+    @previous = ((params[:page] || 1).to_i - 1) * (params[:per] || 25).to_i
   end
 
   private
