@@ -350,7 +350,7 @@ class Player < ApplicationRecord
            prefix: true
 
   def as_json(options = nil)
-    reload
+    reload unless options.delete(:reload) == false
     result = super((options || {}).merge(
       include: {
         characters: {

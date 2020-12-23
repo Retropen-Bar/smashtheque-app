@@ -11,7 +11,7 @@ class Api::V1::PlayersController < Api::V1::BaseController
     players = apply_scopes(Player.order(:name)).includes(
       :characters, :locations, :creator, :discord_user, :teams
     )
-    render json: players
+    render json: players.as_json(reload: false)
   end
 
   def show
