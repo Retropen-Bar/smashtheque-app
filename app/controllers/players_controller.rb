@@ -41,6 +41,15 @@ class PlayersController < PublicController
     end
   end
 
+  def ranking_online
+    @players = apply_scopes(
+      Player.where("points > 0")
+            .order(points: :desc)
+            .legit
+    ).includes(:discord_user, :teams, :locations, :characters)
+    @previous = ((params[:page] || 1) - 1) * (params[:per] || 25)
+  end
+
   private
 
   def players(base)

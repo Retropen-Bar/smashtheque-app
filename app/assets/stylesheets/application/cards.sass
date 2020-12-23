@@ -6,11 +6,38 @@
 
   .card
     display: inline-flex
+    position: relative
     margin: 10px 0
     max-width: 100%
     text-align: left
     overflow: hidden
     border: 0
+
+    a.admin-edit-link
+      position: absolute
+      top: 0
+      right: 0
+      background: black
+      color: white !important
+      padding: 2px 4px 4px 10px
+      border-radius: 0 0 0 100%
+
+    &:not(:hover)
+      a.admin-edit-link
+        display: none
+
+    &.with-rank
+      .rank
+        position: absolute
+        left: -30px
+        top: 20px
+        width: 122px
+        height: 24px
+        transform: rotate(-45deg)
+        background: black
+        color: white
+        text-align: center
+        box-shadow: 0 0 10px rgba(0,0,0,0.2)
 
     &.character
       margin: 10px

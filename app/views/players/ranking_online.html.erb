@@ -1,0 +1,16 @@
+<div class="text-center">
+  <div id="list-toolbar">
+    <h1 class="page-title">Ranking online</h1>
+    <%= render 'shared/pagination', collection: @players %>
+  </div>
+</div>
+
+<div class="cards-list players">
+  <% @players.each_with_index do |player, idx| %>
+    <div class="card-container">
+      <%= render 'players/player', player: player, rank: @previous + idx + 1 %>
+    </div>
+  <% end %>
+</div>
+
+<%= render 'shared/pagination', collection: @players %>

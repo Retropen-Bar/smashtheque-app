@@ -54,7 +54,11 @@ Rails.application.routes.draw do
   resources :locations, only: :index
   get 'locations/:id' => 'players#location_index', as: :location
 
-  resources :players, only: [:index, :show]
+  resources :players, only: [:index, :show] do
+    collection do
+      get 'ranking/online' => 'players#ranking_online', as: :online_ranking
+    end
+  end
 
   resources :teams, only: :index
   get 'teams/:id' => 'players#team_index', as: :team
