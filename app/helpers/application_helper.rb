@@ -15,4 +15,10 @@ module ApplicationHelper
     count == 1 ? noun : noun.pluralize
   end
 
+  def admin_edit_link(resource)
+    if admin_user_signed_in?
+      link_to fas_icon_tag('cog'), [:admin, resource], target: '_blank', class: 'admin-edit-link'
+    end
+  end
+
 end

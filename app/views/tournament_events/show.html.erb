@@ -1,8 +1,10 @@
+<%= admin_edit_link(tournament_event) %>
+
 <h1 class="page-title">
-  <% if admin_user_signed_in? %>
-    <%= link_to fas_icon_tag('cog'), [:admin, @tournament_event], target: '_blank', class: 'admin-edit-link float-right' %>
-  <% end %>
-  <%= @tournament_event.name %>
+  <small class="text-muted"><%= tournament_event.recurring_tournament_name %></small><br/>
+  <%= tournament_event.previous_tournament_event_link label: '←', class: 'btn btn-link' %>
+  <%= tournament_event.name %>
+  <%= tournament_event.next_tournament_event_link label: '→', class: 'btn btn-link' %>
 </h1>
 
 <div class="row">
@@ -13,17 +15,17 @@
     <dl>
 
       <dt>Série</dt>
-      <dd><%= @tournament_event.recurring_tournament_link %></dd>
+      <dd><%= tournament_event.recurring_tournament_link %></dd>
 
       <dt>Date</dt>
-      <dd><%= @tournament_event.date %></dd>
+      <dd><%= tournament_event.date %></dd>
 
       <dt>Participants</dt>
-      <dd><%= @tournament_event.participants_count || '?' %></dd>
+      <dd><%= tournament_event.participants_count || '?' %></dd>
 
-      <% unless @tournament_event.bracket_url.blank? %>
+      <% unless tournament_event.bracket_url.blank? %>
         <dt>Bracket</dt>
-        <dd><%= @tournament_event.bracket_link %></dd>
+        <dd><%= tournament_event.bracket_link %></dd>
       <% end %>
 
     </dl>
@@ -38,7 +40,7 @@
           <div class="my-3">
             <strong>
               <%= TournamentEvent.human_attribute_name("rank.#{player_name}") %> :
-            </strong> <%= @tournament_event.send(player_name)&.decorate&.link || '?' %>
+            </strong> <%= tournament_event.send(player_name)&.decorate&.link || '?' %>
           </div>
         <% end %>
       </div>
@@ -46,7 +48,7 @@
   </div>
 
   <div class="col-auto text-center m-3">
-    <%= @tournament_event.graph_image_tag max_width: '100%', max_height: 600, class: 'shadow' %>
+    <%= tournament_event.graph_image_tag max_width: '100%', max_height: 600, class: 'shadow' %>
   </div>
 
 </div>

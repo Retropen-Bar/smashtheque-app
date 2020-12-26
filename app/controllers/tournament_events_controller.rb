@@ -1,5 +1,7 @@
 class TournamentEventsController < PublicController
 
+  decorates_assigned :tournament_event
+
   has_scope :page, default: 1
   has_scope :per
 
@@ -8,7 +10,7 @@ class TournamentEventsController < PublicController
   end
 
   def show
-    @tournament_event = TournamentEvent.find(params[:id]).decorate
+    @tournament_event = TournamentEvent.find(params[:id])
   end
 
 end

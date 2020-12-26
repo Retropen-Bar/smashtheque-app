@@ -28,4 +28,10 @@ class BaseDecorator < Draper::Decorator
     h.link_to txt, twitter_url, target: '_blank'
   end
 
+  def link(options = {})
+    txt = options.delete(:label) || name
+    url = options.delete(:url) || model
+    h.link_to txt, url, options
+  end
+
 end

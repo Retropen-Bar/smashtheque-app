@@ -1,7 +1,6 @@
+<%= admin_edit_link(recurring_tournament) %>
+
 <h1 class="page-title">
-  <% if admin_user_signed_in? %>
-    <%= link_to fas_icon_tag('cog'), [:admin, recurring_tournament], target: '_blank', class: 'admin-edit-link float-right' %>
-  <% end %>
   <%= recurring_tournament.name %>
 </h1>
 

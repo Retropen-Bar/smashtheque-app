@@ -6,7 +6,5 @@
     </div>
     <%= link_to location.full_name, location_path(location) %>
   </div>
-  <% if admin_user_signed_in? %>
-    <%= link_to fas_icon_tag('cog'), [:admin, location], target: '_blank', class: 'admin-edit-link' %>
-  <% end %>
+  <%= admin_edit_link(location) %>
 </div>

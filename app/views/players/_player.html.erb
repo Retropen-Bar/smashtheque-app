@@ -29,7 +29,5 @@
       <%= link_to character.decorate.emoji_image_tag(max_height: '32px'), character %>
     <% end %>
   </div>
-  <% if admin_user_signed_in? %>
-    <%= link_to fas_icon_tag('cog'), [:admin, player], target: '_blank', class: 'admin-edit-link' %>
-  <% end %>
+  <%= admin_edit_link(player) %>
 </div>

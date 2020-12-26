@@ -14,7 +14,5 @@
       <% end %>
     <% end %>
   </div>
-  <% if admin_user_signed_in? %>
-    <%= link_to fas_icon_tag('cog'), [:admin, discord_guild], target: '_blank', class: 'admin-edit-link' %>
-  <% end %>
+  <%= admin_edit_link(discord_guild) %>
 </div>

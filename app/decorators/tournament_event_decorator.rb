@@ -7,8 +7,8 @@ class TournamentEventDecorator < BaseDecorator
     ].join('&nbsp;').html_safe
   end
 
-  def link
-    h.link_to name_with_logo(64), model
+  def link(options = {})
+    super({label: name_with_logo(64)}.merge(options))
   end
 
   def recurring_tournament_link
@@ -51,6 +51,32 @@ class TournamentEventDecorator < BaseDecorator
       h.content_tag :div, class: :name do
         name
       end
+    end
+  end
+
+  def previous_tournament_event_link(options = {})
+    tournament_event = previous_tournament_event
+    if tournament_event
+      tournament_event.decorate.link(options)
+    else
+      options[:class] = [
+        options[:class],
+        :disabled
+      ].reject(&:blank?).join(' ')
+      h.link_to options[:label], '#', options
+    end
+  end
+
+  def next_tournament_event_link(options = {})
+    tournament_event = next_tournament_event
+    if tournament_event
+      tournament_event.decorate.link(options)
+    else
+      options[:class] = [
+        options[:class],
+        :disabled
+      ].reject(&:blank?).join(' ')
+      h.link_to options[:label], '#', options
     end
   end
 
