@@ -7,7 +7,7 @@ class PlayersController < PublicController
   layout :select_layout
 
   def index
-    @players = players Player.all
+    @players = players Player
   end
 
   def location_index
@@ -32,7 +32,7 @@ class PlayersController < PublicController
   end
 
   def show
-    @player = Player.find(params[:id])
+    @player = Player.legit.find(params[:id])
     main_character = @player.characters.first&.decorate
     if main_character
       @background_color = main_character.background_color
@@ -54,7 +54,9 @@ class PlayersController < PublicController
 
   def players(base)
     @map = params[:map].to_i == 1
-    apply_scopes(base.accepted.order(:name)).includes(:discord_user, :teams, :locations, :characters)
+    apply_scopes(
+      base.legit.order(:name)
+    ).includes(:discord_user, :teams, :locations, :characters)
   end
 
   def select_layout

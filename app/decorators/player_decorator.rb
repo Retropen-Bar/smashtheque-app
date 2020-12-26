@@ -80,7 +80,14 @@ class PlayerDecorator < BaseDecorator
   end
 
   def link(options = {})
-    h.link_to name_with_avatar(size: 32), player_path(model), options
+    if model.is_legit?
+      h.link_to name_with_avatar(size: 32), player_path(model), options
+    else
+      [
+        default_avatar(32),
+        '-'
+      ].join('&nbsp;').html_safe
+    end
   end
 
   def as_autocomplete_result
