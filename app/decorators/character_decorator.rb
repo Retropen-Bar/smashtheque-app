@@ -68,4 +68,8 @@ class CharacterDecorator < BaseDecorator
     end
   end
 
+  def link(options = {})
+    super({label: emoji_image_tag(max_height: '32px')}.merge(options))
+  end
+
 end

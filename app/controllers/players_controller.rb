@@ -1,5 +1,7 @@
 class PlayersController < PublicController
 
+  decorates_assigned :player
+
   has_scope :page, default: 1
   has_scope :per
   has_scope :on_abc

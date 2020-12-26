@@ -6,27 +6,29 @@
     <h5 class="card-title">
       <% player.teams.each do |team| %>
         <div class="player-team">
-          <%= link_to team.decorate.short_name_with_logo(max_width: 32, max_height: 32), team %>
+          <%= team.decorate.link %>
         </div>
       <% end %>
-      <%= link_to player.decorate.name_with_avatar(size: 64), player, class: 'player-name' %>
+      <div class='player-name'>
+        <%= player.link(avatar_size: 64) %>
+        <%= player.best_reward&.decorate&.badge(class: 'reward-badge-32') %>
+      </div>
     </h5>
     <% if defined?(with_points) && with_points %>
       <div class="player-points">
-        <%= image_tag 'https://cdn.discordapp.com/emojis/790632367487188993.png', height: 32 %>
-        <%= player.points %>
+        <%= player.points_count %>
       </div>
     <% end %>
     <% unless defined?(with_locations) && with_locations == false %>
       <% player.locations.each do |location| %>
         <div class="player-location">
           <i class="fas fa-map-marker-alt"></i>
-          <%= link_to location.name.titleize, location_path(location) %>
+          <%= location.decorate.link %>
         </div>
       <% end %>
     <% end %>
     <% player.characters.each do |character| %>
-      <%= link_to character.decorate.emoji_image_tag(max_height: '32px'), character %>
+      <%= character.decorate.link %>
     <% end %>
   </div>
   <%= admin_edit_link(player) %>

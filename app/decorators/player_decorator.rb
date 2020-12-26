@@ -79,12 +79,20 @@ class PlayerDecorator < BaseDecorator
     :user
   end
 
+  def points_count
+    [
+      h.image_tag('https://cdn.discordapp.com/emojis/790632367487188993.png', height: 32),
+      points
+    ].join('&nbsp;').html_safe
+  end
+
   def link(options = {})
+    avatar_size = options.delete(:avatar_size) || 32
     if model.is_legit?
-      h.link_to name_with_avatar(size: 32), player_path(model), options
+      super({label: name_with_avatar(size: avatar_size)}.merge(options))
     else
       [
-        default_avatar(32),
+        default_avatar(avatar_size),
         '-'
       ].join('&nbsp;').html_safe
     end

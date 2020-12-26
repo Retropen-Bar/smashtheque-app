@@ -9,7 +9,7 @@
   <% @players.each_with_index do |player, idx| %>
     <div class="card-container">
       <%= render 'players/player',
-                 player: player,
+                 player: player.decorate,
                  rank: @previous + idx + 1,
                  with_points: true,
                  with_locations: false %>

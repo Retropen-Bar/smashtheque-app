@@ -26,7 +26,7 @@
   <div class="cards-list players">
     <% players.each do |player| %>
       <div class="card-container">
-        <%= render 'players/player', player: player %>
+        <%= render 'players/player', player: player.decorate %>
       </div>
     <% end %>
   </div>

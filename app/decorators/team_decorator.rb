@@ -71,4 +71,8 @@ class TeamDecorator < BaseDecorator
     end
   end
 
+  def link(options = {})
+    super({label: short_name_with_logo(max_width: 32, max_height: 32)}.merge(options))
+  end
+
 end

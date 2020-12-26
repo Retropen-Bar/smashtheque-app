@@ -225,6 +225,10 @@ ActiveAdmin.register Player do
     link_to 'Résultats', [:results, :admin, resource]
   end
 
+  action_item :public, only: :show do
+    link_to 'Page publique', resource, class: 'green'
+  end
+
   # ---------------------------------------------------------------------------
   # RESULTS
   # ---------------------------------------------------------------------------

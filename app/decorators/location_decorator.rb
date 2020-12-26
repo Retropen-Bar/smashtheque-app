@@ -32,4 +32,11 @@ class LocationDecorator < BaseDecorator
     end
   end
 
+  def link(options = {})
+    super({
+      label: name.titleize,
+      url: location_path(model)
+    }.merge(options))
+  end
+
 end
