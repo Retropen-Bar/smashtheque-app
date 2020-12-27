@@ -1,29 +1,64 @@
-<main role="main" class="inner cover text-center" id="home-main">
+<main role="main" class="inner cover text-center py-5" id="home-main">
 
   <section class="text-center">
     <div class="container">
-      <div class="d-none d-md-block mb-5">
-        <%= image_tag 'smashtheque-256.png', height: 128 %>
-      </div>
-      <h1>Bienvenue sur Smashthèque FR</h1>
-      <p class="lead text-muted mb-5">
+
+      <h1 class="display-1">Bienvenue sur la Smashthèque</h1>
+
+      <p class="lead text-muted">
         La base de données de la communauté Super Smash Bros. Ultimate de France,<br/>
         fondée par le <a href="https://twitter.com/RetropenBar" target="_blank">Rétropen-Bar</a> et également administrée par red, Moon Key, <a href="https://twitter.com/Nixop" target="_blank">Nixop</a> et <a href="https://twitter.com/MidzTml" target="_blank">MIDZ</a>.
       </p>
-      <p class="lead mb-4">
-        Vous pouvez&nbsp;:
-      </p>
-      <div class="row mb-4">
-        <div class="col-sm text-sm-right mb-4">
-          <%= link_to "Voir les #{number_with_delimiter @players_count} joueurs", players_path, class: 'btn btn-lg btn-primary' %>
+
+      <div class="row my-5">
+        <div class="col">
+          <%= link_to players_path, class: 'display-4 d-block text-body text-decoration-none' do %>
+            <%= number_with_delimiter(@players_count) %><br/>
+            <small class="text-muted font-weight-lighter">joueurs</small>
+          <% end %>
         </div>
-        <div class="col-sm text-sm-left">
-          <%= link_to "Voir les #{number_with_delimiter @teams_count} équipes", teams_path, class: 'btn btn-lg btn-primary' %>
+        <div class="col">
+          <%= link_to teams_path, class: 'display-4 d-block text-body text-decoration-none' do %>
+            <%= number_with_delimiter(@teams_count) %><br/>
+            <small class="text-muted font-weight-lighter">équipes</small>
+          <% end %>
+        </div>
+        <div class="col">
+          <%= image_tag 'smashtheque-256.png', height: 128 %>
+        </div>
+        <div class="col">
+          <%= link_to recurring_tournaments_path, class: 'display-4 d-block text-body text-decoration-none' do %>
+            <%= number_with_delimiter(@recurring_tournaments_count) %><br/>
+            <small class="text-muted font-weight-lighter">tournois</small>
+          <% end %>
+        </div>
+        <div class="col">
+          <%= link_to tournament_events_path, class: 'display-4 d-block text-body text-decoration-none' do %>
+            <%= number_with_delimiter(@tournament_events_count) %><br/>
+            <small class="text-muted font-weight-lighter">éditions</small>
+          <% end %>
         </div>
       </div>
-      <p>
-        ou utiliser la barre de recherche en haut de cette page.
-      </p>
+
+      <div>
+        <%= link_to 'https://discord.gg/2HwUAyw', class: 'btn btn-lg btn-discord mx-2' do %>
+          <%= fab_icon_tag :discord, %w(mr-2) %>
+          Smashthèque FR
+        <% end %>
+        <%= link_to players_path(map: 1), class: 'btn btn-lg btn-primary mx-2' do %>
+          <%= fas_icon_tag :map, %w(mr-2) %>
+          Carte des joueurs
+        <% end %>
+        <%= link_to planning_path, class: 'btn btn-lg btn-primary mx-2' do %>
+          <%= fas_icon_tag 'calendar-alt', %w(mr-2) %>
+          Planning hebdo
+        <% end %>
+        <%= link_to online_ranking_players_path, class: 'btn btn-lg btn-primary mx-2' do %>
+          <%= fas_icon_tag 'star', %w(mr-2) %>
+          Observatoire d'Harmonie
+        <% end %>
+      </div>
+
     </div>
   </section>
 

@@ -5,6 +5,8 @@ class PublicController < ApplicationController
   def home
     @players_count = Player.count
     @teams_count = Team.count
+    @recurring_tournaments_count = RecurringTournament.count
+    @tournament_events_count = TournamentEvent.count
   end
 
   def planning_online
