@@ -1,7 +1,7 @@
-<div class="card player <%= 'with-rank' if defined?(rank) %>">
+<div class="card player <%= 'with-rank' if defined?(with_rank) && with_rank %>">
   <div class="card-body">
-    <% if defined?(rank) %>
-      <div class="rank">#<%= rank %></div>
+    <% if defined?(with_rank) && with_rank %>
+      <div class="rank">#<%= player.rank %></div>
     <% end %>
     <h5 class="card-title">
       <% player.teams.each do |team| %>

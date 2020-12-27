@@ -115,6 +115,7 @@ fr:
         is_accepted: Validé ?
         is_banned: Banni ?
         points: Fragments d'étoiles
+        rank: Classement
         rewards: Récompenses
         teams: Équipes
         team_ids: Équipes

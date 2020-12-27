@@ -12,6 +12,7 @@
 #  location_names                  :text             default([]), is an Array
 #  name                            :string
 #  points                          :integer          default(0), not null
+#  rank                            :integer
 #  team_names                      :text             default([]), is an Array
 #  twitter_username                :string
 #  created_at                      :datetime         not null

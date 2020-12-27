@@ -45,11 +45,8 @@ class PlayersController < PublicController
 
   def ranking_online
     @players = apply_scopes(
-      Player.where("points > 0")
-            .order(points: :desc)
-            .legit
+      Player.ranked.order(:rank)
     ).includes(:discord_user, :teams, :locations, :characters)
-    @previous = ((params[:page] || 1).to_i - 1) * (params[:per] || 25).to_i
   end
 
   private

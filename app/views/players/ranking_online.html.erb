@@ -10,7 +10,7 @@
     <div class="card-container">
       <%= render 'players/player',
                  player: player.decorate,
-                 rank: @previous + idx + 1,
+                 with_rank: true,
                  with_points: true,
                  with_locations: false %>
     </div>

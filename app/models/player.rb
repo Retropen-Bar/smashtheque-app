@@ -12,6 +12,7 @@
 #  location_names                  :text             default([]), is an Array
 #  name                            :string
 #  points                          :integer          default(0), not null
+#  rank                            :integer
 #  team_names                      :text             default([]), is an Array
 #  twitter_username                :string
 #  created_at                      :datetime         not null
@@ -328,6 +329,9 @@ class Player < ApplicationRecord
     where.not(id: CharactersPlayer.select(:player_id))
   end
 
+  scope :with_points, -> { where("points > 0") }
+  scope :ranked, -> { where.not(rank: nil) }
+
   scope :by_best_reward_level1, -> v { where(best_reward_level1: v) }
   scope :by_best_reward_level2, -> v { where(best_reward_level2: v) }
   def self.by_best_reward_level(a, b)
@@ -428,6 +432,20 @@ class Player < ApplicationRecord
     update_points
     update_best_reward
     save!
+  end
+
+  def self.update_ranks!
+    subquery =
+      Player.with_points
+            .legit
+            .select(:id, "ROW_NUMBER() OVER(ORDER BY points DESC) AS newrank")
+
+    Player.update_all("
+      rank = pointed.newrank
+      FROM (#{subquery.to_sql}) pointed
+      WHERE players.id = pointed.id
+    ")
+    Player.where.not(id: Player.with_points.legit.select(:id)).update_all(rank: nil)
   end
 
   # ---------------------------------------------------------------------------

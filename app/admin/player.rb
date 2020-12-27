@@ -36,6 +36,7 @@ ActiveAdmin.register Player do
     column :locations do |decorated|
       decorated.locations_admin_links.join('<br/>').html_safe
     end
+    column :rank
     column :points
     column :best_reward, sortable: :best_reward_level do |decorated|
       decorated.best_reward_admin_link({}, class: 'reward-badge-32')
@@ -87,6 +88,7 @@ ActiveAdmin.register Player do
          input_html: { multiple: true, data: { select2: {} } }
   filter :is_accepted
   filter :is_banned
+  filter :rank
   filter :points
   filter :best_reward,
          as: :select,
@@ -171,6 +173,7 @@ ActiveAdmin.register Player do
       row :is_accepted
       row :is_banned
       row :ban_details
+      row :rank
       row :points
       row :best_reward do |decorated|
         decorated.best_reward_admin_link
