@@ -82,7 +82,7 @@ class PlayerDecorator < BaseDecorator
   def points_count
     [
       h.image_tag('https://cdn.discordapp.com/emojis/790632367487188993.png', height: 32),
-      points
+      h.number_with_delimiter(points)
     ].join('&nbsp;').html_safe
   end
 
