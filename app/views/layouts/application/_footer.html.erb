@@ -4,7 +4,14 @@
       <li><a href="https://github.com/Retropen-Bar">GitHub</a></li>
       <li><a href="https://twitter.com/Retropen_Bar">Twitter</a></li>
       <li><a href="/admin">Admin</a></li>
+      <% if admin_user_signed_in? %>
+        <li>
+          <%= link_to '+ Ajouter un joueur', new_admin_player_path, class: 'text-primary' %>
+        </li>
+      <% end %>
     </ul>
-    <p>Conçu et développé avec amour par les Rétropen-Barmen avec l'aide de quelques contributeurs.</p>
+    <p>
+      Fondée par le <a href="https://twitter.com/RetropenBar" target="_blank">Rétropen-Bar</a>, également administrée par red, Moon Key, <a href="https://twitter.com/Nixop" target="_blank">Nixop</a> et <a href="https://twitter.com/MidzTml" target="_blank">MIDZ</a>.
+    </p>
   </div>
 </footer>

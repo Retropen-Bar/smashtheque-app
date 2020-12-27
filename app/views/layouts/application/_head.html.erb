@@ -66,10 +66,3 @@
   </div>
 
 </nav>
-
-<% if admin_user_signed_in? %>
-  <nav class="nav" id="admin-nav">
-    <%= link_to 'Admin', admin_root_path, class: 'nav-link btn btn-outline-secondary' %>
-    <%= link_to '+ Ajouter un joueur', new_admin_player_path, class: 'nav-link btn btn-outline-primary' %>
-  </nav>
-<% end %>
