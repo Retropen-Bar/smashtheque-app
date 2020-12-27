@@ -12,13 +12,13 @@
 
       <div class="row my-5">
         <div class="col">
-          <%= link_to players_path, class: 'display-4 d-block text-body text-decoration-none' do %>
+          <%= link_to players_path, class: 'display-4 d-block text-decoration-none' do %>
             <%= number_with_delimiter(@players_count) %><br/>
             <small class="text-muted font-weight-lighter">joueurs</small>
           <% end %>
         </div>
         <div class="col">
-          <%= link_to teams_path, class: 'display-4 d-block text-body text-decoration-none' do %>
+          <%= link_to teams_path, class: 'display-4 d-block text-decoration-none' do %>
             <%= number_with_delimiter(@teams_count) %><br/>
             <small class="text-muted font-weight-lighter">équipes</small>
           <% end %>
@@ -27,13 +27,13 @@
           <%= image_tag 'smashtheque-256.png', height: 128 %>
         </div>
         <div class="col">
-          <%= link_to recurring_tournaments_path, class: 'display-4 d-block text-body text-decoration-none' do %>
+          <%= link_to recurring_tournaments_path, class: 'display-4 d-block text-decoration-none' do %>
             <%= number_with_delimiter(@recurring_tournaments_count) %><br/>
             <small class="text-muted font-weight-lighter">tournois</small>
           <% end %>
         </div>
         <div class="col">
-          <%= link_to tournament_events_path, class: 'display-4 d-block text-body text-decoration-none' do %>
+          <%= link_to tournament_events_path, class: 'display-4 d-block text-decoration-none' do %>
             <%= number_with_delimiter(@tournament_events_count) %><br/>
             <small class="text-muted font-weight-lighter">éditions</small>
           <% end %>

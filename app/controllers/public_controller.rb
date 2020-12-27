@@ -3,10 +3,10 @@ class PublicController < ApplicationController
   before_action :check_access! if ENV['HIDE_WEBSITE']
 
   def home
-    @players_count = Player.count
-    @teams_count = Team.count
-    @recurring_tournaments_count = RecurringTournament.count
-    @tournament_events_count = TournamentEvent.count
+    @players_count = Rails.env.development? ? 4149 : Player.count
+    @teams_count = Rails.env.development? ? 136 : Team.count
+    @recurring_tournaments_count = Rails.env.development? ? 73 : RecurringTournament.count
+    @tournament_events_count = Rails.env.development? ? 1050 : TournamentEvent.count
   end
 
   def planning_online
