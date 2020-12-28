@@ -7,6 +7,11 @@
       </div>
     <% end %>
     <%= tournament_event.link %>
+    <div class="clearfix">
+      <div class="tournament-event-date">
+        <%= l tournament_event.date, format: :long %>
+      </div>
+    </div>
   </div>
   <%= admin_edit_link(tournament_event) %>
 </div>

@@ -6,7 +6,7 @@ class TournamentEventsController < PublicController
   has_scope :per
 
   def index
-    @tournament_events = apply_scopes(TournamentEvent.order("date")).all
+    @tournament_events = apply_scopes(TournamentEvent.order(date: :desc)).all
   end
 
   def show

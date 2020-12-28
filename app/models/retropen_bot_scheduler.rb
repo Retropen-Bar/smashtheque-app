@@ -222,10 +222,8 @@ class RetropenBotScheduler
   # REWARDS
   # ---------------------------------------------------------------------------
 
-  def self.rebuild_rewards(rewards_category_id: nil)
-    RetropenBotJobs::RebuildRewardsJob.perform_later(
-      rewards_category_id: rewards_category_id
-    )
+  def self.rebuild_rewards
+    RetropenBotJobs::RebuildRewardsJob.perform_later_if_needed
   end
 
 end
