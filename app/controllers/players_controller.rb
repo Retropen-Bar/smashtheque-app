@@ -36,7 +36,7 @@ class PlayersController < PublicController
   def show
     @player = Player.legit.find(params[:id])
     @rewards_counts = @player.rewards_counts
-    @tournament_events = @player.tournament_events.order(:date).decorate
+    @tournament_events = @player.tournament_events.order(date: :desc).decorate
     main_character = @player.characters.first&.decorate
     if main_character
       @background_color = main_character.background_color

@@ -239,7 +239,7 @@ ActiveAdmin.register Player do
   member_action :results do
     @player = resource.admin_decorate
     @tournament_events = @player.tournament_events
-                                .order(:date)
+                                .order(date: :desc)
                                 .admin_decorate
     @rewards_counts = @player.rewards_counts
     @rewards_count = @rewards_counts.values.sum
