@@ -408,7 +408,7 @@ class Player < ApplicationRecord
 
   def best_rewards
     Hash[
-      rewards.group(:level1).pluck(:level1, "MAX(level2)")
+      rewards.order(:level1).group(:level1).pluck(:level1, "MAX(level2)")
     ].map do |level1, level2|
       Reward.by_level(level1, level2).first
     end.sort_by(&:level2)

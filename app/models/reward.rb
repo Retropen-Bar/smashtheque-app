@@ -56,6 +56,10 @@ class Reward < ApplicationRecord
     end
   end
 
+  def self.grouped_by_level1
+    ordered_by_level.group_by(&:level1).to_a
+  end
+
   def self.grouped_by_level2
     ordered_by_level.group_by(&:level2).to_a
   end

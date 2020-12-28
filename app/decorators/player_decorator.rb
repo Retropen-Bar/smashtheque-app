@@ -79,9 +79,12 @@ class PlayerDecorator < BaseDecorator
     :user
   end
 
-  def points_count
+  def points_count(icon_size = 32)
     [
-      h.image_tag('https://cdn.discordapp.com/emojis/790632367487188993.png', height: 32),
+      h.image_tag(
+        'https://cdn.discordapp.com/emojis/790632367487188993.png',
+        height: icon_size
+      ),
       h.number_with_delimiter(points)
     ].join('&nbsp;').html_safe
   end
@@ -103,6 +106,18 @@ class PlayerDecorator < BaseDecorator
       h.content_tag :div, class: :name do
         name
       end
+    end
+  end
+
+  def best_rewards_badges(options = {})
+    best_rewards.map do |reward|
+      reward.decorate.badge(options.clone)
+    end
+  end
+
+  def unique_rewards_badges(options = {})
+    unique_rewards.ordered_by_level.decorate.map do |reward|
+      reward.badge(options.clone)
     end
   end
 

@@ -76,8 +76,8 @@ class RecurringTournamentDecorator < BaseDecorator
     end
   end
 
-  def link
-    h.link_to name, model
+  def link(options = {})
+    super({label: name_with_logo(64)}.merge(options))
   end
 
   def discord_guild_icon_image_url(size = nil)
