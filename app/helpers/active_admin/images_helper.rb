@@ -18,14 +18,8 @@ module ActiveAdmin::ImagesHelper
     # max size
 
     style = []
-    if max_width
-      max_width = "#{max_width}px" if max_width.is_a?(Integer)
-      style << "max-width: #{max_width};"
-    end
-    if max_height
-      max_height = "#{max_height}px" if max_height.is_a?(Integer)
-      style << "max-height: #{max_height};"
-    end
+    style << "max-width: #{max_width};" if max_width
+    style << "max-height: #{max_height};" if max_height
     style << options.delete(:style)
 
     # tag itself

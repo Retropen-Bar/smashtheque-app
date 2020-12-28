@@ -1,10 +1,10 @@
-class CreateSmashGGUsers < ActiveRecord::Migration[6.0]
+class CreateSmashGgUsers < ActiveRecord::Migration[6.0]
   def change
     create_table :smash_gg_users do |t|
       t.integer :smashgg_id, null: false
 
       # relations
-      t.belongs_to :discord_user
+      t.belongs_to :player
 
       # smash.gg profile
       t.text :bio
@@ -17,7 +17,7 @@ class CreateSmashGGUsers < ActiveRecord::Migration[6.0]
       t.string :country_id
       t.string :state
       t.string :state_id
-      t.string :player_id
+      t.string :smashgg_player_id
       t.string :gamer_tag
       t.string :prefix
       t.string :banner_url
@@ -31,7 +31,6 @@ class CreateSmashGGUsers < ActiveRecord::Migration[6.0]
       t.timestamps
     end
     add_index :smash_gg_users, :smashgg_id, unique: true
-
-    add_belongs_to :players, :smash_gg_user
+    add_foreign_key :smash_gg_users, :players
   end
 end

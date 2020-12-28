@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_27_223407) do
+ActiveRecord::Schema.define(version: 2020_12_28_221518) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -200,7 +200,6 @@ ActiveRecord::Schema.define(version: 2020_12_27_223407) do
     t.datetime "updated_at", null: false
     t.text "character_names", default: [], array: true
     t.bigint "creator_id"
-<<<<<<< HEAD
     t.text "location_names", default: [], array: true
     t.text "team_names", default: [], array: true
     t.string "twitter_username"
@@ -273,25 +272,9 @@ ActiveRecord::Schema.define(version: 2020_12_27_223407) do
     t.index ["level1", "level2"], name: "index_rewards_on_level1_and_level2", unique: true
   end
 
-  create_table "team_admins", force: :cascade do |t|
-    t.bigint "team_id", null: false
-    t.bigint "discord_user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["discord_user_id"], name: "index_team_admins_on_discord_user_id"
-    t.index ["team_id", "discord_user_id"], name: "index_team_admins_on_team_id_and_discord_user_id", unique: true
-    t.index ["team_id"], name: "index_team_admins_on_team_id"
-    t.bigint "smash_gg_user_id"
-    t.index ["city_id"], name: "index_players_on_city_id"
-    t.index ["creator_id"], name: "index_players_on_creator_id"
-    t.index ["discord_user_id"], name: "index_players_on_discord_user_id"
-    t.index ["smash_gg_user_id"], name: "index_players_on_smash_gg_user_id"
-    t.index ["team_id"], name: "index_players_on_team_id"
-  end
-
   create_table "smash_gg_users", force: :cascade do |t|
     t.integer "smashgg_id", null: false
-    t.bigint "discord_user_id"
+    t.bigint "player_id"
     t.text "bio"
     t.string "birthday"
     t.string "gender_pronoun"
@@ -302,7 +285,7 @@ ActiveRecord::Schema.define(version: 2020_12_27_223407) do
     t.string "country_id"
     t.string "state"
     t.string "state_id"
-    t.string "player_id"
+    t.string "smashgg_player_id"
     t.string "gamer_tag"
     t.string "prefix"
     t.string "banner_url"
@@ -312,8 +295,18 @@ ActiveRecord::Schema.define(version: 2020_12_27_223407) do
     t.string "twitter_username"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["discord_user_id"], name: "index_smash_gg_users_on_discord_user_id"
+    t.index ["player_id"], name: "index_smash_gg_users_on_player_id"
     t.index ["smashgg_id"], name: "index_smash_gg_users_on_smashgg_id", unique: true
+  end
+
+  create_table "team_admins", force: :cascade do |t|
+    t.bigint "team_id", null: false
+    t.bigint "discord_user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["discord_user_id"], name: "index_team_admins_on_discord_user_id"
+    t.index ["team_id", "discord_user_id"], name: "index_team_admins_on_team_id_and_discord_user_id", unique: true
+    t.index ["team_id"], name: "index_team_admins_on_team_id"
   end
 
   create_table "teams", force: :cascade do |t|
@@ -397,6 +390,7 @@ ActiveRecord::Schema.define(version: 2020_12_27_223407) do
   add_foreign_key "player_reward_conditions", "reward_conditions"
   add_foreign_key "player_reward_conditions", "tournament_events"
   add_foreign_key "players", "player_reward_conditions", column: "best_player_reward_condition_id"
+  add_foreign_key "smash_gg_users", "players"
   add_foreign_key "tournament_events", "players", column: "top1_player_id"
   add_foreign_key "tournament_events", "players", column: "top2_player_id"
   add_foreign_key "tournament_events", "players", column: "top3_player_id"

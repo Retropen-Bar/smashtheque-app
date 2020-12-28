@@ -51,6 +51,12 @@ class ActiveAdmin::PlayerDecorator < PlayerDecorator
     model.discord_user&.admin_decorate&.admin_link options
   end
 
+  def smash_g_g_users_admin_links(options = {})
+    model.smash_g_g_users.map do |smashgg_user|
+      smashgg_user.admin_decorate.admin_link options.clone
+    end
+  end
+
   def unique_rewards_admin_links(options = {}, badge_options = {})
     unique_rewards.ordered_by_level.admin_decorate.map do |reward|
       reward.admin_link(options, badge_options.clone)

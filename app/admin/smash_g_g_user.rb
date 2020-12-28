@@ -1,9 +1,9 @@
 ActiveAdmin.register SmashGGUser do
 
-  decorate_with SmashGGUserDecorator
+  decorate_with ActiveAdmin::SmashGGUserDecorator
 
-  menu parent: '<i class="fas fa-fw fa-project-diagram"></i>Comptes'.html_safe,
-       label: proc { image_tag('smashgg-48.png', height: 16, class: 'logo')+'smash.gg' }
+  menu parent: '<img src="https://smash.gg/images/gg-app-icon.png" height="16" class="logo"/>smash.gg'.html_safe,
+       label: 'Comptes'
 
   # ---------------------------------------------------------------------------
   # INDEX
@@ -49,11 +49,12 @@ ActiveAdmin.register SmashGGUser do
   form do |f|
     f.inputs do
       f.input :smashgg_id
+      player_input f
     end
     f.actions
   end
 
-  permit_params :smashgg_id
+  permit_params :smashgg_id, :player_id
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -61,7 +62,9 @@ ActiveAdmin.register SmashGGUser do
 
   show do
     attributes_table do
-      row :player
+      row :player do |decorated|
+        decorated.player_admin_link
+      end
       row :smashgg_id
       row :slug do |decorated|
         decorated.smash_gg_link
@@ -89,13 +92,6 @@ ActiveAdmin.register SmashGGUser do
       end
       row :twitter_username do |decorated|
         decorated.twitter_link
-      end
-      row :discord_user do |decorated|
-        if decorated.discord_user
-          decorated.discord_user.decorated.full_name(size: 32)
-        else
-          decorated.discord_discriminated_username
-        end
       end
       row :created_at
       row :updated_at

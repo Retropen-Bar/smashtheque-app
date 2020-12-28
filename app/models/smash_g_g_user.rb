@@ -1,25 +1,69 @@
+# == Schema Information
+#
+# Table name: smash_gg_users
+#
+#  id                             :bigint           not null, primary key
+#  avatar_url                     :string
+#  banner_url                     :string
+#  bio                            :text
+#  birthday                       :string
+#  city                           :string
+#  country                        :string
+#  discord_discriminated_username :string
+#  gamer_tag                      :string
+#  gender_pronoun                 :string
+#  name                           :string
+#  prefix                         :string
+#  slug                           :string
+#  state                          :string
+#  twitch_username                :string
+#  twitter_username               :string
+#  created_at                     :datetime         not null
+#  updated_at                     :datetime         not null
+#  country_id                     :string
+#  player_id                      :bigint
+#  smashgg_id                     :integer          not null
+#  smashgg_player_id              :string
+#  state_id                       :string
+#
+# Indexes
+#
+#  index_smash_gg_users_on_player_id   (player_id)
+#  index_smash_gg_users_on_smashgg_id  (smashgg_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (player_id => players.id)
+#
 class SmashGGUser < ApplicationRecord
 
   # ---------------------------------------------------------------------------
   # RELATIONS
   # ---------------------------------------------------------------------------
 
-  belongs_to :discord_user, optional: true
-  has_one :player
+  belongs_to :player, optional: true
 
   # ---------------------------------------------------------------------------
   # VALIDATIONS
   # ---------------------------------------------------------------------------
 
   validates :smashgg_id, presence: true, uniqueness: true
-  validates :discord_user, uniqueness: { allow_nil: true }
+
+  # ---------------------------------------------------------------------------
+  # CALLBACKS
+  # ---------------------------------------------------------------------------
+
+  after_create_commit :fetch_smashgg_data_later
+  def fetch_smashgg_data_later
+    FetchSmashGGUserDataJob.perform_later(self)
+  end
 
   # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
 
   def self.with_player
-    where(id: Player.select(:smash_gg_user_id))
+    where.not(player_id: nil)
   end
 
   def self.unknown
@@ -45,7 +89,7 @@ class SmashGGUser < ApplicationRecord
     self.country_id = data.user.location.country_id
     self.state = data.user.location.state
     self.state_id = data.user.location.state_id
-    self.player_id = data.user.player.id
+    self.smashgg_player_id = data.user.player.id
     self.gamer_tag = data.user.player.gamer_tag
     self.prefix = data.user.player.prefix
     data.user.images.each do |image|
@@ -64,7 +108,6 @@ class SmashGGUser < ApplicationRecord
         self.twitter_username = authorization.external_username
       when :discord
         self.discord_discriminated_username = authorization.external_username
-        self.discord_user = DiscordUser.by_discriminated_username(authorization.external_username).first
       end
     end
   end
