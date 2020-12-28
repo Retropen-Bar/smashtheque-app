@@ -17,9 +17,11 @@ ActiveAdmin.register AdminUser do
     column :level do |decorated|
       decorated.level_status
     end
-    column :sign_in_count
-    column :current_sign_in_at
-    column :current_sign_in_ip
+    if current_admin_user.is_root?
+      column :sign_in_count
+      column :current_sign_in_at
+      column :current_sign_in_ip
+    end
     column :created_at do |decorated|
       decorated.created_at_date
     end
@@ -66,11 +68,13 @@ ActiveAdmin.register AdminUser do
       row :level do |decorated|
         decorated.level_status
       end
-      row :sign_in_count
-      row :current_sign_in_at
-      row :last_sign_in_at
-      row :current_sign_in_ip
-      row :last_sign_in_ip
+      if current_admin_user.is_root?
+        row :sign_in_count
+        row :current_sign_in_at
+        row :last_sign_in_at
+        row :current_sign_in_ip
+        row :last_sign_in_ip
+      end
       row :created_at
       row :updated_at
     end
