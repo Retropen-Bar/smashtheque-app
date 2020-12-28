@@ -99,4 +99,60 @@ unless DiscordGuild.any?
   end
 end
 
+client = DiscordClient.new
+emojis = client.get_guild_emojis('790562015776866305')
+
+Reward.transaction do
+  (1..6).each do |lvl1|
+    (1..6).each do |lvl2|
+      emoji_name = "lvl#{lvl1}#{lvl2}"
+      emoji = emojis.find { |emoji| emoji['name'] == emoji_name }
+      raise "Emoji #{emoji_name} not found" if emoji.nil?
+      reward = Reward.create!(
+        level1: lvl1,
+        level2: lvl2,
+        name: "Niveau #{lvl1}.#{lvl2}",
+        emoji: emoji['id']
+      )
+    end
+  end
+end
+
+RewardCondition.create!(rank: 7, size_min: 9, size_max: 16, points: 6, reward: Reward.by_level(1, 1).first)
+RewardCondition.create!(rank: 5, size_min: 9, size_max: 16, points: 8, reward: Reward.by_level(1, 2).first)
+RewardCondition.create!(rank: 4, size_min: 9, size_max: 16, points: 12, reward: Reward.by_level(1, 3).first)
+RewardCondition.create!(rank: 3, size_min: 9, size_max: 16, points: 16, reward: Reward.by_level(1, 4).first)
+RewardCondition.create!(rank: 2, size_min: 9, size_max: 16, points: 24, reward: Reward.by_level(1, 5).first)
+RewardCondition.create!(rank: 1, size_min: 9, size_max: 16, points: 48, reward: Reward.by_level(1, 6).first)
+RewardCondition.create!(rank: 7, size_min: 17, size_max: 24, points: 9, reward: Reward.by_level(2, 1).first)
+RewardCondition.create!(rank: 5, size_min: 17, size_max: 24, points: 12, reward: Reward.by_level(2, 2).first)
+RewardCondition.create!(rank: 4, size_min: 17, size_max: 24, points: 18, reward: Reward.by_level(2, 3).first)
+RewardCondition.create!(rank: 3, size_min: 17, size_max: 24, points: 24, reward: Reward.by_level(2, 4).first)
+RewardCondition.create!(rank: 2, size_min: 17, size_max: 24, points: 36, reward: Reward.by_level(2, 5).first)
+RewardCondition.create!(rank: 1, size_min: 17, size_max: 24, points: 72, reward: Reward.by_level(2, 6).first)
+RewardCondition.create!(rank: 7, size_min: 25, size_max: 32, points: 12, reward: Reward.by_level(3, 1).first)
+RewardCondition.create!(rank: 5, size_min: 25, size_max: 32, points: 16, reward: Reward.by_level(3, 2).first)
+RewardCondition.create!(rank: 4, size_min: 25, size_max: 32, points: 24, reward: Reward.by_level(3, 3).first)
+RewardCondition.create!(rank: 3, size_min: 25, size_max: 32, points: 32, reward: Reward.by_level(3, 4).first)
+RewardCondition.create!(rank: 2, size_min: 25, size_max: 32, points: 48, reward: Reward.by_level(3, 5).first)
+RewardCondition.create!(rank: 1, size_min: 25, size_max: 32, points: 96, reward: Reward.by_level(3, 6).first)
+RewardCondition.create!(rank: 7, size_min: 33, size_max: 64, points: 24, reward: Reward.by_level(4, 1).first)
+RewardCondition.create!(rank: 5, size_min: 33, size_max: 64, points: 32, reward: Reward.by_level(4, 2).first)
+RewardCondition.create!(rank: 4, size_min: 33, size_max: 64, points: 48, reward: Reward.by_level(4, 3).first)
+RewardCondition.create!(rank: 3, size_min: 33, size_max: 64, points: 64, reward: Reward.by_level(4, 4).first)
+RewardCondition.create!(rank: 2, size_min: 33, size_max: 64, points: 96, reward: Reward.by_level(4, 5).first)
+RewardCondition.create!(rank: 1, size_min: 33, size_max: 64, points: 192, reward: Reward.by_level(4, 6).first)
+RewardCondition.create!(rank: 7, size_min: 65, size_max: 128, points: 48, reward: Reward.by_level(5, 1).first)
+RewardCondition.create!(rank: 5, size_min: 65, size_max: 128, points: 64, reward: Reward.by_level(5, 2).first)
+RewardCondition.create!(rank: 4, size_min: 65, size_max: 128, points: 96, reward: Reward.by_level(5, 3).first)
+RewardCondition.create!(rank: 3, size_min: 65, size_max: 128, points: 128, reward: Reward.by_level(5, 4).first)
+RewardCondition.create!(rank: 2, size_min: 65, size_max: 128, points: 192, reward: Reward.by_level(5, 5).first)
+RewardCondition.create!(rank: 1, size_min: 65, size_max: 128, points: 384, reward: Reward.by_level(5, 6).first)
+RewardCondition.create!(rank: 7, size_min: 129, size_max: 1024, points: 144, reward: Reward.by_level(6, 1).first)
+RewardCondition.create!(rank: 5, size_min: 129, size_max: 1024, points: 192, reward: Reward.by_level(6, 2).first)
+RewardCondition.create!(rank: 4, size_min: 129, size_max: 1024, points: 288, reward: Reward.by_level(6, 3).first)
+RewardCondition.create!(rank: 3, size_min: 129, size_max: 1024, points: 384, reward: Reward.by_level(6, 4).first)
+RewardCondition.create!(rank: 2, size_min: 129, size_max: 1024, points: 576, reward: Reward.by_level(6, 5).first)
+RewardCondition.create!(rank: 1, size_min: 129, size_max: 1024, points: 1152, reward: Reward.by_level(6, 6).first)
+
 ENV['NO_DISCORD'] = '0'
