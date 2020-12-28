@@ -33,9 +33,9 @@ class TournamentEventDecorator < BaseDecorator
     '🔗'
   end
 
-  def bracket_icon_link
+  def bracket_icon_link(options = {})
     return nil if bracket_url.blank?
-    h.link_to bracket_icon, bracket_url, target: '_blank', class: 'text-decoration-none'
+    h.link_to bracket_icon, bracket_url, {target: '_blank'}.merge(options)
   end
 
   def graph_image_tag(options = {})

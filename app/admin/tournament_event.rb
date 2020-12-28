@@ -18,6 +18,9 @@ ActiveAdmin.register TournamentEvent do
     column :recurring_tournament
     column :name
     column :date
+    column :bracket_url do |decorated|
+      decorated.bracket_icon_link
+    end
     column :participants_count
     TournamentEvent::PLAYER_NAMES.each do |player_name|
       column player_name do |decorated|
@@ -110,7 +113,10 @@ ActiveAdmin.register TournamentEvent do
           row :date
           row :participants_count
           row :bracket_url do |decorated|
-            decorated.bracket_link
+            [
+              decorated.bracket_icon_link(style: 'vertical-align: middle'),
+              decorated.bracket_link
+            ].join('&nbsp;').html_safe
           end
           TournamentEvent::PLAYER_NAMES.each do |player_name|
             row player_name do |decorated|
