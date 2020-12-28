@@ -39,6 +39,7 @@ ActiveAdmin.register TournamentEvent do
   filter :recurring_tournament
   filter :name
   filter :date
+  filter :bracket_url
   filter :participants_count
   filter :is_complete
 

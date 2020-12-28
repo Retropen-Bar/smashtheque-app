@@ -130,22 +130,17 @@ class RetropenBotScheduler
   # TEAMS
   # ---------------------------------------------------------------------------
 
-  def self.rebuild_teams_list(teams_category_id: nil)
-    RetropenBotJobs::RebuildTeamsListJob.perform_later(
-      teams_category_id: teams_category_id
-    )
+  def self.rebuild_teams_list
+    RetropenBotJobs::RebuildTeamsListJob.perform_later_if_needed
   end
 
-  def self.rebuild_teams_lu(teams_category_id: nil)
-    RetropenBotJobs::RebuildTeamsLuJob.perform_later(
-      teams_category_id: teams_category_id
-    )
+  def self.rebuild_teams_lu
+    RetropenBotJobs::RebuildTeamsLuJob.perform_later_if_needed
   end
 
-  def self.rebuild_teams(teams_category_id: nil)
-    _teams_category_id = teams_category_id || RetropenBot.default.teams_category['id']
-    rebuild_teams_list teams_category_id: _teams_category_id
-    rebuild_teams_lu teams_category_id: _teams_category_id
+  def self.rebuild_teams
+    rebuild_teams_list
+    rebuild_teams_lu
   end
 
   # ---------------------------------------------------------------------------
