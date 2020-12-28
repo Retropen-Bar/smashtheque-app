@@ -18,7 +18,7 @@
           <% end %>
         </div>
         <% if !admin_user_signed_in? %>
-          <div class="col">
+          <div class="col d-none d-sm-block">
             <%= image_tag 'smashtheque-256.png', height: 128 %>
           </div>
         <% end %>
@@ -29,7 +29,7 @@
           <% end %>
         </div>
         <% if admin_user_signed_in? %>
-          <div class="col">
+          <div class="col d-none d-lg-block">
             <%= image_tag 'smashtheque-256.png', height: 128 %>
           </div>
           <div class="col">
@@ -48,20 +48,20 @@
       </div>
 
       <div>
-        <%= link_to 'https://discord.gg/2HwUAyw', class: 'btn btn-lg btn-discord mx-2' do %>
+        <%= link_to 'https://discord.gg/2HwUAyw', class: 'btn btn-lg btn-discord m-2' do %>
           <%= fab_icon_tag :discord, %w(mr-2) %>
           Smashthèque FR
         <% end %>
-        <%= link_to players_path(map: 1), class: 'btn btn-lg btn-primary mx-2' do %>
+        <%= link_to players_path(map: 1), class: 'btn btn-lg btn-primary m-2' do %>
           <%= fas_icon_tag :map, %w(mr-2) %>
           Carte des joueurs
         <% end %>
         <% if admin_user_signed_in? %>
-          <%= link_to planning_path, class: 'btn btn-lg btn-primary mx-2' do %>
+          <%= link_to planning_path, class: 'btn btn-lg btn-primary m-2' do %>
             <%= fas_icon_tag 'calendar-alt', %w(mr-2) %>
             Planning hebdo
           <% end %>
-          <%= link_to online_ranking_players_path, class: 'btn btn-lg btn-primary mx-2' do %>
+          <%= link_to online_ranking_players_path, class: 'btn btn-lg btn-primary m-2' do %>
             <%= fas_icon_tag 'star', %w(mr-2) %>
             Observatoire d'Harmonie
           <% end %>

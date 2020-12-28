@@ -79,11 +79,12 @@ class PlayerDecorator < BaseDecorator
     :user
   end
 
-  def points_count(icon_size = 32)
+  def points_count(icon_size = 32, options = {})
+    options[:height] = icon_size
     [
       h.image_tag(
         'https://cdn.discordapp.com/emojis/790632367487188993.png',
-        height: icon_size
+        options
       ),
       h.number_with_delimiter(points)
     ].join('&nbsp;').html_safe
