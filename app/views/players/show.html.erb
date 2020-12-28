@@ -8,19 +8,23 @@
 
   <div class="row">
 
-    <div class="col border bg-semi-transparent shadow p-5 m-3 rounded">
+    <div class="col bg-semi-transparent shadow p-5 m-3 rounded">
       <div class="row">
         <div class="col text-center">
           <h2 class="text-center mb-5">Meilleurs badges</h2>
-          <div class="mb-5">
-            <%== player.best_rewards_badges(class: 'm-0').join(' ') %>
-          </div>
-          <button type="button"
-                  class="btn btn-primary"
-                  data-toggle="modal"
-                  data-target="#rewards-modal">
-            Voir tout
-          </button>
+          <% if @rewards_counts.any? %>
+            <div class="mb-5">
+              <%== player.best_rewards_badges(class: 'm-0').join(' ') %>
+            </div>
+            <button type="button"
+                    class="btn btn-primary"
+                    data-toggle="modal"
+                    data-target="#rewards-modal">
+              Voir tout
+            </button>
+          <% else %>
+            Aucun badge obtenu
+          <% end %>
         </div>
         <div class="col text-center">
           <h2 class="text-center mb-5">Fragments d'étoiles</h2>
@@ -41,36 +45,42 @@
 
   <div class="row">
 
-    <div class="col border bg-semi-transparent shadow p-5 m-3 rounded">
+    <div class="col bg-semi-transparent shadow p-5 m-3 rounded">
       <h2 class="text-center mb-5">Palmarès</h2>
 
-      <table class="table table-borderless table-striped">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">Date</th>
-            <th scope="col">Série</th>
-            <th scope="col">Édition</th>
-            <th scope="col" class="text-center">Participants</th>
-            <th scope="col" class="text-center">Résultat</th>
-            <th scope="col" class="text-center">Points</th>
-            <th scope="col" class="text-center">Badge</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @tournament_events.each do |tournament_event| %>
-            <% player_reward_condition = tournament_event.player_reward_conditions.by_player(@player).first&.decorate %>
+      <% if @tournament_events.count > 0 %>
+        <table class="table table-borderless table-striped bg-light">
+          <thead class="thead-dark">
             <tr>
-              <td class="align-middle"><%= l tournament_event.date, format: :long %></td>
-              <td class="align-middle"><%= tournament_event.recurring_tournament_link %></th>
-              <td class="align-middle"><%= tournament_event.link(label: tournament_event.name) %></th>
-              <td class="align-middle text-center"><%= tournament_event.participants_count %></td>
-              <td class="align-middle text-center"><%= tournament_event.player_rank_name(@player.id) %></td>
-              <td class="align-middle text-center"><%= player_reward_condition&.points %></td>
-              <td class="align-middle text-center"><%= player_reward_condition&.reward_badge %></td>
+              <th scope="col">Date</th>
+              <th scope="col">Série</th>
+              <th scope="col">Édition</th>
+              <th scope="col" class="text-center">Participants</th>
+              <th scope="col" class="text-center">Résultat</th>
+              <th scope="col" class="text-center">Points</th>
+              <th scope="col" class="text-center">Badge</th>
             </tr>
-          <% end %>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            <% @tournament_events.each do |tournament_event| %>
+              <% player_reward_condition = tournament_event.player_reward_conditions.by_player(@player).first&.decorate %>
+              <tr>
+                <td class="align-middle"><%= l tournament_event.date, format: :long %></td>
+                <td class="align-middle"><%= tournament_event.recurring_tournament_link %></th>
+                <td class="align-middle"><%= tournament_event.link(label: tournament_event.name) %></th>
+                <td class="align-middle text-center"><%= tournament_event.participants_count %></td>
+                <td class="align-middle text-center"><%= tournament_event.player_rank_name(@player.id) %></td>
+                <td class="align-middle text-center"><%= player_reward_condition&.points %></td>
+                <td class="align-middle text-center"><%= player_reward_condition&.reward_badge %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <div class="text-center">
+          Aucun résultat connu à ce jour
+        </div>
+      <% end %>
 
     </div>
   </div>
