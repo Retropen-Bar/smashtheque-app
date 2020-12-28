@@ -20,6 +20,24 @@ class TournamentEventDecorator < BaseDecorator
     h.link_to bracket_url, bracket_url, target: '_blank'
   end
 
+  def bracket_icon
+    if bracket_url.starts_with?('https://smash.gg/')
+      return h.image_tag('https://smash.gg/images/gg-app-icon.png', height: 32)
+    end
+    if bracket_url.starts_with?('https://braacket.com/')
+      return h.image_tag('https://braacket.com/favicon.ico', height: 32)
+    end
+    if bracket_url.starts_with?('https://challonge.com/')
+      return h.image_tag('https://assets.challonge.com/assets/challonge_fireball_orange-a973ff3b12c34c780fc21313ec71aada3b9b779cbd3a62769e9199ce08395692.svg', height: 32)
+    end
+    '🔗'
+  end
+
+  def bracket_icon_link
+    return nil if bracket_url.blank?
+    h.link_to bracket_icon, bracket_url, target: '_blank', class: 'text-decoration-none'
+  end
+
   def graph_image_tag(options = {})
     return nil unless model.graph.attached?
     url = model.graph.service_url
