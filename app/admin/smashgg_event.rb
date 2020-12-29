@@ -16,16 +16,19 @@ ActiveAdmin.register SmashggEvent do
   index do
     selectable_column
     id_column
-    column :smashgg_id
     column 'Tournoi', sortable: :tournament_slug do |decorated|
       decorated.tournament_smashgg_link
     end
     column 'Événement', sortable: :slug do |decorated|
       decorated.smashgg_link
     end
-    column :is_online
     column :start_at
     column :num_entrants
+    SmashggEvent::USER_NAMES.each do |user_name|
+      column user_name do |decorated|
+        decorated.send("#{user_name}_admin_link")
+      end
+    end
     column :tournament_event do |decorated|
       decorated.tournament_event_admin_link
     end
@@ -106,6 +109,11 @@ ActiveAdmin.register SmashggEvent do
       row :is_online
       row :start_at
       row :num_entrants
+      SmashggEvent::USER_NAMES.each do |user_name|
+        row user_name do |decorated|
+          decorated.send("#{user_name}_admin_link")
+        end
+      end
       row :tournament_event do |decorated|
         decorated.tournament_event_admin_link
       end

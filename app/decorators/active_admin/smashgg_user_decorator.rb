@@ -5,7 +5,7 @@ class ActiveAdmin::SmashggUserDecorator < SmashggUserDecorator
 
   def admin_link(options = {})
     size = options.delete(:size) || 32
-    super({label: full_name(max_height: size)}.merge(options))
+    super({label: full_name(size: size)}.merge(options))
   end
 
   def player_admin_link(options = {})

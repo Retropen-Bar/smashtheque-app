@@ -49,67 +49,65 @@ class SmashggClient
       }
     GRAPHQL
 
-  TournamentEventsDataBySlugQuery =
-    CLIENT.parse <<-'GRAPHQL'
-      query($tournamentSlug: String) {
-        tournament(slug: $tournamentSlug) {
-          events {
-            id
-            slug
-            name
-            startAt
-            isOnline
-            numEntrants
-            tournament {
-              id
-              slug
-              name
+  EventData =
+    <<-GRAPHQL
+      id
+      slug
+      name
+      startAt
+      isOnline
+      numEntrants
+      tournament {
+        id
+        slug
+        name
+      }
+      standings(query: {perPage: 8, sortBy: "placement"}) {
+        nodes {
+          placement
+          entrant {
+            participants {
+              user {
+                id
+                slug
+              }
             }
           }
         }
       }
     GRAPHQL
 
+  TournamentEventsDataBySlugQuery =
+    CLIENT.parse <<-GRAPHQL
+      query($tournamentSlug: String) {
+        tournament(slug: $tournamentSlug) {
+          events {
+            #{EventData}
+          }
+        }
+      }
+    GRAPHQL
+
   EventDataByIdQuery =
-    CLIENT.parse <<-'GRAPHQL'
+    CLIENT.parse <<-GRAPHQL
       query($eventId: ID) {
         event(id: $eventId) {
-          id
-          slug
-          name
-          startAt
-          isOnline
-          numEntrants
-          tournament {
-            id
-            slug
-            name
-          }
+          #{EventData}
         }
       }
     GRAPHQL
 
   EventDataBySlugQuery =
-    CLIENT.parse <<-'GRAPHQL'
+    CLIENT.parse <<-GRAPHQL
       query($eventSlug: String) {
         event(slug: $eventSlug) {
-          id
-          slug
-          name
-          startAt
-          isOnline
-          numEntrants
-          tournament {
-            id
-            slug
-            name
-          }
+          #{EventData}
         }
       }
     GRAPHQL
 
   TournamentsSearchQuery =
-    CLIENT.parse <<-'GRAPHQL'
+    CLIENT.parse <<-GRAPHQL
       query($name: String, $dateMin: Timestamp, $dateMax: Timestamp) {
         tournaments(query: {
           perPage: 100
@@ -124,17 +122,7 @@ class SmashggClient
         }) {
           nodes {
             events {
-              id
-              slug
-              name
-              startAt
-              isOnline
-              numEntrants
-              tournament {
-                id
-                slug
-                name
-              }
+              #{EventData}
             }
           }
         }

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_28_233812) do
+ActiveRecord::Schema.define(version: 2020_12_29_205622) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -284,8 +284,24 @@ ActiveRecord::Schema.define(version: 2020_12_28_233812) do
     t.string "tournament_name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "top1_smashgg_user_id"
+    t.bigint "top2_smashgg_user_id"
+    t.bigint "top3_smashgg_user_id"
+    t.bigint "top4_smashgg_user_id"
+    t.bigint "top5a_smashgg_user_id"
+    t.bigint "top5b_smashgg_user_id"
+    t.bigint "top7a_smashgg_user_id"
+    t.bigint "top7b_smashgg_user_id"
     t.index ["slug"], name: "index_smashgg_events_on_slug", unique: true
     t.index ["smashgg_id"], name: "index_smashgg_events_on_smashgg_id", unique: true
+    t.index ["top1_smashgg_user_id"], name: "index_smashgg_events_on_top1_smashgg_user_id"
+    t.index ["top2_smashgg_user_id"], name: "index_smashgg_events_on_top2_smashgg_user_id"
+    t.index ["top3_smashgg_user_id"], name: "index_smashgg_events_on_top3_smashgg_user_id"
+    t.index ["top4_smashgg_user_id"], name: "index_smashgg_events_on_top4_smashgg_user_id"
+    t.index ["top5a_smashgg_user_id"], name: "index_smashgg_events_on_top5a_smashgg_user_id"
+    t.index ["top5b_smashgg_user_id"], name: "index_smashgg_events_on_top5b_smashgg_user_id"
+    t.index ["top7a_smashgg_user_id"], name: "index_smashgg_events_on_top7a_smashgg_user_id"
+    t.index ["top7b_smashgg_user_id"], name: "index_smashgg_events_on_top7b_smashgg_user_id"
   end
 
   create_table "smashgg_users", force: :cascade do |t|
@@ -409,6 +425,14 @@ ActiveRecord::Schema.define(version: 2020_12_28_233812) do
   add_foreign_key "player_reward_conditions", "reward_conditions"
   add_foreign_key "player_reward_conditions", "tournament_events"
   add_foreign_key "players", "player_reward_conditions", column: "best_player_reward_condition_id"
+  add_foreign_key "smashgg_events", "smashgg_users", column: "top1_smashgg_user_id"
+  add_foreign_key "smashgg_events", "smashgg_users", column: "top2_smashgg_user_id"
+  add_foreign_key "smashgg_events", "smashgg_users", column: "top3_smashgg_user_id"
+  add_foreign_key "smashgg_events", "smashgg_users", column: "top4_smashgg_user_id"
+  add_foreign_key "smashgg_events", "smashgg_users", column: "top5a_smashgg_user_id"
+  add_foreign_key "smashgg_events", "smashgg_users", column: "top5b_smashgg_user_id"
+  add_foreign_key "smashgg_events", "smashgg_users", column: "top7a_smashgg_user_id"
+  add_foreign_key "smashgg_events", "smashgg_users", column: "top7b_smashgg_user_id"
   add_foreign_key "smashgg_users", "players"
   add_foreign_key "tournament_events", "players", column: "top1_player_id"
   add_foreign_key "tournament_events", "players", column: "top2_player_id"

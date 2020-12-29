@@ -75,6 +75,10 @@ class SmashggUser < ApplicationRecord
   # HELPERS
   # ---------------------------------------------------------------------------
 
+  def smashgg_url
+    slug && "https://smash.gg/#{slug}"
+  end
+
   def fetch_smashgg_data
     raise 'Unknown smashgg_id' if smashgg_id.blank?
 
@@ -101,7 +105,7 @@ class SmashggUser < ApplicationRecord
         self.avatar_url = image.url
       end
     end
-    data.user.authorizations.each do |authorization|
+    data.user.authorizations&.each do |authorization|
       case authorization.type.downcase.to_sym
       when :twitch
         self.twitch_username = authorization.external_username

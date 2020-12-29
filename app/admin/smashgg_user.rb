@@ -14,9 +14,11 @@ ActiveAdmin.register SmashggUser do
   index do
     selectable_column
     id_column
-    column :smashgg_id
+    column :slug do |decorated|
+      decorated.smashgg_link
+    end
     column :gamer_tag do |decorated|
-      decorated.full_name(max_height: '32px')
+      decorated.full_name(size: 32)
     end
     column :player
     column :created_at do |decorated|
@@ -71,7 +73,9 @@ ActiveAdmin.register SmashggUser do
         decorated.smashgg_link
       end
       row :avatar do |decorated|
-        decorated.avatar_tag(max_height: 128)
+        unless decorated.avatar_url.blank?
+          decorated.any_image_tag(size: 128)
+        end
       end
       row :gamer_tag do |decorated|
         decorated.prefixed_gamer_tag

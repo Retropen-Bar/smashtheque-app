@@ -186,6 +186,14 @@ fr:
         smashgg_id: ID
         smashgg_url: URL
         start_at: Date
+        top1_smashgg_user: Top 1
+        top2_smashgg_user: Top 2
+        top3_smashgg_user: Top 3
+        top4_smashgg_user: Top 4
+        top5a_smashgg_user: Top 5a
+        top5b_smashgg_user: Top 5b
+        top7a_smashgg_user: Top 7a
+        top7b_smashgg_user: Top 7b
         tournament_event: Édition
         tournament_id: ID du tournoi
         tournament_name: Nom du tournoi

@@ -9,17 +9,24 @@ class SmashggUserDecorator < BaseDecorator
 
   def full_name(options = {})
     [
-      avatar_tag(options),
-      prefixed_gamer_tag
+      any_image_tag(options),
+      prefixed_gamer_tag || slug
     ].join('&nbsp;').html_safe
   end
 
-  def avatar_tag(max_width: nil, max_height: nil)
-    return nil if avatar_url.blank?
-    h.image_tag_with_max_size avatar_url,
-                              max_width: max_width,
-                              max_height: max_height,
-                              class: 'avatar'
+  def any_image_url
+    avatar_url.presence || 'https://smash.gg/images/gg-app-icon.png'
+  end
+
+  def any_image_tag(size: 64)
+    h.content_tag :span,
+                  '',
+                  class: 'avatar-circle',
+                  style: [
+                    "background-image: url(\"#{any_image_url}\")",
+                    "width: #{size}px",
+                    "height: #{size}px"
+                  ].join(';')
   end
 
   def banner_tag(max_width: nil, max_height: nil)
@@ -32,7 +39,7 @@ class SmashggUserDecorator < BaseDecorator
 
   def smashgg_link
     return nil if model.slug.blank?
-    h.link_to "https://smash.gg/#{model.slug}", target: '_blank' do
+    h.link_to smashgg_url, target: '_blank' do
       (
         h.image_tag 'https://smash.gg/images/gg-app-icon.png', height: 16, class: 'logo'
       ) + ' ' + (
