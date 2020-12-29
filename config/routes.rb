@@ -27,7 +27,7 @@ Rails.application.routes.draw do
       resources :recurring_tournaments, only: [:index, :show]
       resources :players, only: [:index, :show, :create, :update]
       resources :teams, only: [:index, :show, :update]
-      resources :tournament_events, only: :index
+      resources :tournament_events, only: [:index, :show, :create]
       get '/search' => 'search#global'
     end
   end

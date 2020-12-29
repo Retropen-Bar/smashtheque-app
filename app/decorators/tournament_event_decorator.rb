@@ -24,10 +24,10 @@ class TournamentEventDecorator < BaseDecorator
     if is_on_smashgg?
       return h.image_tag('https://smash.gg/images/gg-app-icon.png', height: 32)
     end
-    if bracket_url.starts_with?('https://braacket.com/')
+    if is_on_braacket?
       return h.image_tag('https://braacket.com/favicon.ico', height: 32)
     end
-    if bracket_url.starts_with?('https://challonge.com/')
+    if is_on_challonge?
       return h.image_tag('https://assets.challonge.com/assets/challonge_fireball_orange-a973ff3b12c34c780fc21313ec71aada3b9b779cbd3a62769e9199ce08395692.svg', height: 32)
     end
     '🔗'

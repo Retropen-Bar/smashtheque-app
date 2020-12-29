@@ -88,7 +88,7 @@ class Team < ApplicationRecord
   def logo_url=(url)
     uri = URI.parse(url)
     open(url) do |f|
-      logo.attach(io: f, filename: File.basename(uri.path))
+      logo.attach(io: File.open(f.path), filename: File.basename(uri.path))
     end
   end
 
@@ -100,7 +100,7 @@ class Team < ApplicationRecord
   def roster_url=(url)
     uri = URI.parse(url)
     open(url) do |f|
-      roster.attach(io: f, filename: File.basename(uri.path))
+      roster.attach(io: File.open(f.path), filename: File.basename(uri.path))
     end
   end
 
