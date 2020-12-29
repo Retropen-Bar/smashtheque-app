@@ -49,6 +49,13 @@ class PlayersController < PublicController
     @players = apply_scopes(
       Player.ranked.order(:rank)
     ).includes(:discord_user, :teams, :locations, :characters)
+
+    main_character = @players.first.characters.first&.decorate
+    if main_character
+      @background_color = main_character.background_color
+      @background_image_url = main_character.background_image_data_url
+      @background_size = main_character.background_size || 128
+    end
   end
 
   private
