@@ -184,6 +184,7 @@ fr:
         num_entrants: Participants
         slug: Slug
         smashgg_id: ID
+        smashgg_url: URL
         starts_at: Date
         tournament_id: ID du tournoi
         tournament_name: Nom du tournoi

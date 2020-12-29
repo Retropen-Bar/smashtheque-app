@@ -87,4 +87,8 @@ class SmashggEvent < ApplicationRecord
     "https://smash.gg/#{slug}"
   end
 
+  def smashgg_url=(url)
+    self.slug = self.class.slug_from_url(url)
+  end
+
 end

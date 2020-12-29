@@ -5,7 +5,7 @@ ActiveAdmin.register SmashggEvent do
   menu parent: '<img src="https://smash.gg/images/gg-app-icon.png" height="16" class="logo"/>smash.gg'.html_safe,
        label: 'Tournois'
 
-  actions :index, :show, :delete
+  actions :index, :show, :new, :create, :delete
 
   # ---------------------------------------------------------------------------
   # INDEX
@@ -42,6 +42,23 @@ ActiveAdmin.register SmashggEvent do
   filter :is_online
   filter :num_entrants
   filter :created_at
+
+  # ---------------------------------------------------------------------------
+  # FORM
+  # ---------------------------------------------------------------------------
+
+  form do |f|
+    f.inputs do
+      f.input :smashgg_url
+    end
+    f.actions
+  end
+
+  permit_params :smashgg_url
+
+  before_create do |smashgg_event|
+    smashgg_event.fetch_smashgg_data
+  end
 
   # ---------------------------------------------------------------------------
   # SHOW
