@@ -35,7 +35,7 @@ class RetropenBot
     samedi
   ).freeze
   CATEGORY_REWARDS = "L'observatoire d'Harmonie".freeze
-  CHANNEL_REWARDS_ONLINE_RANKING = 'ranking-online'.freeze
+  CHANNEL_REWARDS_ONLINE_RANKING = 'classement-online'.freeze
   CHANNEL_REWARDS_ONLINE_LEVEL1 = %w(
     9-16-participants
     17-24-participants
