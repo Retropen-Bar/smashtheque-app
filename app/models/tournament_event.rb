@@ -222,6 +222,7 @@ class TournamentEvent < ApplicationRecord
         top5b_player_name
         top7a_player_name
         top7b_player_name
+        graph_url
       )
     ))
   end
