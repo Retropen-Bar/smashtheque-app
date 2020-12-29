@@ -18,7 +18,7 @@ class SmashggUserDecorator < BaseDecorator
     avatar_url.presence || 'https://smash.gg/images/gg-app-icon.png'
   end
 
-  def any_image_tag(size: 64)
+  def any_image_tag(size: 32)
     h.content_tag :span,
                   '',
                   class: 'avatar-circle',
@@ -66,6 +66,17 @@ class SmashggUserDecorator < BaseDecorator
         h.content_tag :i, '', class: 'fab fa-twitter-square'
       ) + ' ' + (
         h.content_tag :span, model.twitter_username
+      )
+    end
+  end
+
+  def discord_link
+    return nil if model.discord_discriminated_username.blank?
+    h.link_to '#' do
+      (
+        h.fab_icon_tag :discord
+      ) + ' ' + (
+        h.content_tag :span, model.discord_discriminated_username
       )
     end
   end

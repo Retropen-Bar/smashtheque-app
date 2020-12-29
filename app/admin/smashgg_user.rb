@@ -20,7 +20,9 @@ ActiveAdmin.register SmashggUser do
     column :gamer_tag do |decorated|
       decorated.full_name(size: 32)
     end
-    column :player
+    column :player do |decorated|
+      decorated.player_admin_link
+    end
     column :created_at do |decorated|
       decorated.created_at_date
     end
@@ -51,13 +53,19 @@ ActiveAdmin.register SmashggUser do
 
   form do |f|
     f.inputs do
-      f.input :smashgg_id
+      unless f.object.persisted?
+        f.input :smashgg_url, placeholder: 'https://smash.gg/...'
+      end
       player_input f
     end
     f.actions
   end
 
-  permit_params :smashgg_id, :player_id
+  permit_params :smashgg_id, :smashgg_url, :player_id
+
+  before_create do |smashgg_event|
+    smashgg_event.fetch_smashgg_data
+  end
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -97,6 +105,9 @@ ActiveAdmin.register SmashggUser do
       end
       row :twitter_username do |decorated|
         decorated.twitter_link
+      end
+      row :discord_discriminated_username do |decorated|
+        decorated.discord_link
       end
       row :created_at
       row :updated_at

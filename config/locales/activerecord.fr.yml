@@ -213,6 +213,7 @@ fr:
         state: État
         state_id: État (ID)
         smashgg_id: ID
+        smashgg_url: URL
         twitch_username: Compte Twitch
         twitter_username: Compte Twitter
       team:

@@ -54,11 +54,6 @@ class SmashggUser < ApplicationRecord
   # CALLBACKS
   # ---------------------------------------------------------------------------
 
-  after_create_commit :fetch_smashgg_data_later
-  def fetch_smashgg_data_later
-    FetchSmashggUserDataJob.perform_later(self)
-  end
-
   # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
@@ -75,29 +70,39 @@ class SmashggUser < ApplicationRecord
   # HELPERS
   # ---------------------------------------------------------------------------
 
+  def self.slug_from_url(url)
+    url.slice(/user\/[^\/]+/)
+  end
+
+  def smashgg_url=(url)
+    self.slug = self.class.slug_from_url(url)
+  end
+
   def smashgg_url
     slug && "https://smash.gg/#{slug}"
   end
 
   def fetch_smashgg_data
-    raise 'Unknown smashgg_id' if smashgg_id.blank?
+    data = SmashggClient.new.get_user(
+      user_id: smashgg_id,
+      user_slug: slug
+    )
 
-    data = SmashggClient.new.get_user(user_id: smashgg_id)
-
-    self.slug = data.user.slug
-    self.name = data.user.name
-    self.bio = data.user.bio
-    self.birthday = data.user.birthday
-    self.gender_pronoun = data.user.gender_pronoun
-    self.city = data.user.location.city
-    self.country = data.user.location.country
-    self.country_id = data.user.location.country_id
-    self.state = data.user.location.state
-    self.state_id = data.user.location.state_id
-    self.smashgg_player_id = data.user.player.id
-    self.gamer_tag = data.user.player.gamer_tag
-    self.prefix = data.user.player.prefix
-    data.user.images.each do |image|
+    self.smashgg_id = data.id
+    self.slug = data.slug
+    self.name = data.name
+    self.bio = data.bio
+    self.birthday = data.birthday
+    self.gender_pronoun = data.gender_pronoun
+    self.city = data.location.city
+    self.country = data.location.country
+    self.country_id = data.location.country_id
+    self.state = data.location.state
+    self.state_id = data.location.state_id
+    self.smashgg_player_id = data.player.id
+    self.gamer_tag = data.player.gamer_tag
+    self.prefix = data.player.prefix
+    data.images.each do |image|
       case image.type.to_sym
       when :banner
         self.banner_url = image.url
@@ -105,7 +110,7 @@ class SmashggUser < ApplicationRecord
         self.avatar_url = image.url
       end
     end
-    data.user.authorizations&.each do |authorization|
+    data.authorizations&.each do |authorization|
       case authorization.type.downcase.to_sym
       when :twitch
         self.twitch_username = authorization.external_username

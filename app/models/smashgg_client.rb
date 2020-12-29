@@ -15,36 +15,50 @@ class SmashggClient
 
   CLIENT = GraphQL::Client.new(schema: SCHEMA, execute: HTTP)
 
-  UserDataQuery =
-    CLIENT.parse <<-'GRAPHQL'
+  UserData =
+    <<-GRAPHQL
+      id
+      slug
+      name
+      bio
+      birthday
+      genderPronoun
+      player {
+        id
+        gamerTag
+        prefix
+      }
+      location {
+        city
+        country
+        countryId
+        state
+        stateId
+      }
+      images {
+        type
+        url
+      }
+      authorizations {
+        type
+        externalUsername
+      }
+    GRAPHQL
+
+  UserDataByIdQuery =
+    CLIENT.parse <<-GRAPHQL
       query($userId: ID) {
         user(id: $userId) {
-          id
-          slug
-          name
-          bio
-          birthday
-          genderPronoun
-          player {
-            id
-            gamerTag
-            prefix
-          }
-          location {
-            city
-            country
-            countryId
-            state
-            stateId
-          }
-          images {
-            type
-            url
-          }
-          authorizations {
-            type
-            externalUsername
-          }
+          #{UserData}
+        }
+      }
+    GRAPHQL
+
+  UserDataBySlugQuery =
+    CLIENT.parse <<-GRAPHQL
+      query($userSlug: String) {
+        user(slug: $userSlug) {
+          #{UserData}
         }
       }
     GRAPHQL
@@ -129,14 +143,24 @@ class SmashggClient
       }
     GRAPHQL
 
-  def get_user(user_id:)
-    response = CLIENT.query(
-      UserDataQuery,
-      variables: {
-        userId: user_id
-      }
-    )
-    response.data
+  def get_user(user_id: nil, user_slug: nil)
+    if user_id
+      CLIENT.query(
+        UserDataByIdQuery,
+        variables: {
+          userId: user_id
+        }
+      )&.data&.user
+    elsif user_slug
+      CLIENT.query(
+        UserDataBySlugQuery,
+        variables: {
+          userSlug: user_slug
+        }
+      )&.data&.user
+    else
+      nil
+    end
   end
 
   def get_tournament_events(tournament_slug:)
