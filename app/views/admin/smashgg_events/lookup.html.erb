@@ -12,9 +12,9 @@
 <table>
   <thead>
     <tr>
-      <th class="text-center">Date</th>
-      <th class="text-center">Tournoi</th>
-      <th class="text-center">Événement</th>
+      <th>Date</th>
+      <th>Tournoi</th>
+      <th>Événement</th>
       <th class="text-center">Online?</th>
       <th class="text-center">Participants</th>
       <th class="text-center">Actions</th>
@@ -22,14 +22,11 @@
   </thead>
   <tbody>
     <% @smashgg_events.each do |smashgg_event| %>
+      <% decorated = smashgg_event.decorate %>
       <tr>
-        <td class="text-center"><%= l smashgg_event.start_at.to_date, format: :long %></td>
-        <td class="text-center">
-          <%= link_to smashgg_event.tournament_name, smashgg_event.decorate.tournament_smashgg_url, target: '_blank' %>
-        </td>
-        <td class="text-center">
-          <%= link_to smashgg_event.name, smashgg_event.decorate.smashgg_url, target: '_blank' %>
-        </td>
+        <td><%= l smashgg_event.start_at.to_date, format: :long %></td>
+        <td><%= decorated.tournament_smashgg_link %></td>
+        <td><%= decorated.smashgg_link %></td>
         <td class="text-center"><%= smashgg_event.is_online? %></td>
         <td class="text-center"><%= smashgg_event.num_entrants %></td>
         <td class="text-center">

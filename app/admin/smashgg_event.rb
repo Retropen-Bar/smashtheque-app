@@ -17,11 +17,11 @@ ActiveAdmin.register SmashggEvent do
     selectable_column
     id_column
     column :smashgg_id
-    column :slug do |decorated|
-      decorated.smashgg_link
+    column 'Tournoi', sortable: :tournament_slug do |decorated|
+      decorated.tournament_smashgg_link
     end
-    column :tournament_name do |decorated|
-      decorated.full_name
+    column 'Événement', sortable: :slug do |decorated|
+      decorated.smashgg_link
     end
     column :is_online
     column :start_at
@@ -96,11 +96,13 @@ ActiveAdmin.register SmashggEvent do
   show do
     attributes_table do
       row :smashgg_id
-      row :slug do |decorated|
+      row :slug
+      row 'Tournoi' do |decorated|
+        decorated.tournament_smashgg_link
+      end
+      row 'Événement' do |decorated|
         decorated.smashgg_link
       end
-      row :tournament_name
-      row :name
       row :is_online
       row :start_at
       row :num_entrants
