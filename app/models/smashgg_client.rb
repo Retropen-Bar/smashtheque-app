@@ -1,4 +1,3 @@
-# require 'graphql/client'
 require 'graphql/client/http'
 
 class SmashggClient

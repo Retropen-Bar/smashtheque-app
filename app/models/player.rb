@@ -125,9 +125,6 @@ class Player < ApplicationRecord
   before_validation :set_location_names
   before_validation :set_team_names
 
-  validates :name, presence: true
-  validates :discord_user, uniqueness: { allow_nil: true }
-
   def set_character_names
     self.character_names = characters.reload.map(&:name)
   end

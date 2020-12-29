@@ -87,7 +87,10 @@ class TournamentEvent < ApplicationRecord
   # validations
   # ---------------------------------------------------------------------------
 
-  validates :smashgg_event, uniqueness: true, allow_nil: true
+  validates :smashgg_event,
+            uniqueness: {
+              allow_nil: true
+            }
   validates :name, presence: true
   validates :date, presence: true
   validates :graph, content_type: /\Aimage\/.*\z/
