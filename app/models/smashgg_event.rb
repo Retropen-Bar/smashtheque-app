@@ -43,6 +43,13 @@ class SmashggEvent < ApplicationRecord
   # SCOPES
   # ---------------------------------------------------------------------------
 
+  def self.with_tournament_event
+    where(id: TournamentEvent.select(:smashgg_event_id))
+  end
+  def self.without_tournament_event
+    where.not(id: TournamentEvent.select(:smashgg_event_id))
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------

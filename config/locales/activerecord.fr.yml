@@ -186,6 +186,7 @@ fr:
         smashgg_id: ID
         smashgg_url: URL
         starts_at: Date
+        tournament_event: Édition
         tournament_id: ID du tournoi
         tournament_name: Nom du tournoi
         tournament_slug: Slug du tournoi

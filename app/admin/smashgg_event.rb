@@ -35,6 +35,11 @@ ActiveAdmin.register SmashggEvent do
     actions
   end
 
+  scope :all, default: true
+
+  scope :with_tournament_event, group: :tournament_event
+  scope :without_tournament_event, group: :tournament_event
+
   filter :smashgg_id
   filter :tournament_name
   filter :slug
@@ -42,6 +47,30 @@ ActiveAdmin.register SmashggEvent do
   filter :is_online
   filter :num_entrants
   filter :created_at
+
+  batch_action :create_tournament_event, form: -> {
+    {
+      I18n.t('activerecord.models.recurring_tournament') => RecurringTournament.order(:name).pluck(:name, :id)
+    }
+  } do |ids, inputs|
+    if batch_action_collection.where(id: ids).with_tournament_event.any?
+      flash[:error] = 'Certains tournois sont déjà reliés à une édition'
+      redirect_to request.referer
+    else
+      recurring_tournament = RecurringTournament.find(inputs[I18n.t('activerecord.models.recurring_tournament')])
+      batch_action_collection.where(id: ids).each do |smashgg_event|
+        smashgg_event.fetch_smashgg_data
+        smashgg_event.save!
+        tournament_event = TournamentEvent.new(
+          recurring_tournament: recurring_tournament,
+          smashgg_event: smashgg_event
+        )
+        tournament_event.use_smashgg_event
+        tournament_event.save!
+      end
+      redirect_to request.referer, notice: 'Éditions créées'
+    end
+  end
 
   # ---------------------------------------------------------------------------
   # FORM

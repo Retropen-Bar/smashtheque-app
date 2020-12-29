@@ -240,6 +240,14 @@ class TournamentEvent < ApplicationRecord
     bracket_url&.starts_with?('https://smash.gg/')
   end
 
+  def use_smashgg_event
+    return false if smashgg_event.nil?
+    self.name = smashgg_event.tournament_name
+    self.date = smashgg_event.starts_at
+    self.participants_count = smashgg_event.num_entrants
+    self.bracket_url = smashgg_event.smashgg_url
+  end
+
   def fetch_smashgg
     return false unless is_on_smashgg?
     if smashgg_event.nil?
@@ -251,11 +259,7 @@ class TournamentEvent < ApplicationRecord
       puts "Unable to save SmashggEvent: #{smashgg_event.errors.full_messages}"
       return false
     end
-
-    self.name = smashgg_event.tournament_name
-    self.date = smashgg_event.starts_at
-    self.participants_count = smashgg_event.num_entrants
-    self.bracket_url = smashgg_event.smashgg_url
+    use_smashgg_event
     save
   end
 
