@@ -206,6 +206,7 @@ fr:
         city: Ville
         country: Pays
         country_id: Pays (ID)
+        discord_discriminated_username: Compte Discord
         gamer_tag: Pseudo
         gender_pronoun: Pronom
         player: Joueur
