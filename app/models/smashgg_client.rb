@@ -76,6 +76,11 @@ class SmashggClient
         slug
         name
       }
+    GRAPHQL
+
+  EventDataWithStandings =
+    <<-GRAPHQL
+      #{EventData}
       standings(query: {perPage: 8, sortBy: "placement"}) {
         nodes {
           placement
@@ -96,7 +101,7 @@ class SmashggClient
       query($tournamentSlug: String) {
         tournament(slug: $tournamentSlug) {
           events {
-            #{EventData}
+            #{EventDataWithStandings}
           }
         }
       }
@@ -106,7 +111,7 @@ class SmashggClient
     CLIENT.parse <<-GRAPHQL
       query($eventId: ID) {
         event(id: $eventId) {
-          #{EventData}
+          #{EventDataWithStandings}
         }
       }
     GRAPHQL
@@ -115,7 +120,7 @@ class SmashggClient
     CLIENT.parse <<-GRAPHQL
       query($eventSlug: String) {
         event(slug: $eventSlug) {
-          #{EventData}
+          #{EventDataWithStandings}
         }
       }
     GRAPHQL
@@ -203,6 +208,10 @@ class SmashggClient
         dateMax: to.to_time.to_i
       }
     )
+    if response.data.nil?
+      puts "Smash.gg error: #{response.inspect}"
+      return nil
+    end
     result = []
     response.data.tournaments.nodes&.each do |node|
       result += node.events

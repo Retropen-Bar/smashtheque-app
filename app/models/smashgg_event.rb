@@ -143,21 +143,25 @@ class SmashggEvent < ApplicationRecord
       tournament_slug: data.tournament.slug,
       tournament_name: data.tournament.name
     }
-    data.standings.nodes.each do |standing|
-      if smashgg_id = standing&.entrant&.participants&.first&.user&.id
-        slug = standing.entrant.participants.first.user.slug
-        smashgg_user = SmashggUser.where(smashgg_id: smashgg_id)
-                                  .first_or_create!(slug: slug)
-        idx = case standing.placement
-        when 5
-          result.has_key?(:top5a_smashgg_user) ? '5b' : '5a'
-        when 7
-          result.has_key?(:top7a_smashgg_user) ? '7b' : '7a'
-        else
-          standing.placement.to_s
+    begin
+      data.standings.nodes.each do |standing|
+        if smashgg_id = standing&.entrant&.participants&.first&.user&.id
+          slug = standing.entrant.participants.first.user.slug
+          smashgg_user = SmashggUser.where(smashgg_id: smashgg_id)
+                                    .first_or_create!(slug: slug)
+          idx = case standing.placement
+          when 5
+            result.has_key?(:top5a_smashgg_user) ? '5b' : '5a'
+          when 7
+            result.has_key?(:top7a_smashgg_user) ? '7b' : '7a'
+          else
+            standing.placement.to_s
+          end
+          result["top#{idx}_smashgg_user".to_sym] = smashgg_user
         end
-        result["top#{idx}_smashgg_user".to_sym] = smashgg_user
       end
+    rescue GraphQL::Client::UnfetchedFieldError
+      puts 'standings not available'
     end
     result
   end
@@ -181,6 +185,7 @@ class SmashggEvent < ApplicationRecord
 
   def self.lookup(name:, from:, to:)
     data = SmashggClient.new.get_events(name: name, from: from, to: to)
+    return nil if data.nil?
     data.map do |event_data|
       attributes = attributes_from_event_data(event_data)
       self.where(smashgg_id: attributes[:smashgg_id]).first_or_initialize(attributes)
