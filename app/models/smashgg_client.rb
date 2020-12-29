@@ -148,15 +148,16 @@ class SmashggClient
     response&.data
   end
 
-  TournamentsByDateQuery =
+  TournamentsSearchQuery =
     CLIENT.parse <<-'GRAPHQL'
-      query($dateMin: Timestamp, $dateMax: Timestamp) {
+      query($name: String, $dateMin: Timestamp, $dateMax: Timestamp) {
         tournaments(query: {
           perPage: 100
           sortBy: "startAt asc"
           filter: {
-            countryCode: "FR"
+            hasOnlineEvents: true
             videogameIds: [1386]
+            name: $name
             afterDate: $dateMin
             beforeDate: $dateMax
           }
@@ -180,16 +181,17 @@ class SmashggClient
       }
     GRAPHQL
 
-  def get_events_data(from:, to:)
+  def get_events_data(name:, from:, to:)
     response = CLIENT.query(
-      TournamentsByDateQuery,
+      TournamentsSearchQuery,
       variables: {
+        name: name,
         dateMin: from.to_time.to_i,
         dateMax: to.to_time.to_i
       }
     )
     result = []
-    response.data.tournaments.nodes.each do |node|
+    response.data.tournaments.nodes&.each do |node|
       result += node.events
     end
     result

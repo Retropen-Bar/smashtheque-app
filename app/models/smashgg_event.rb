@@ -95,6 +95,10 @@ class SmashggEvent < ApplicationRecord
     self.attributes = self.class.attributes_from_event_data(data.event)
   end
 
+  def tournament_smashgg_url
+    "https://smash.gg/#{tournament_slug}/details"
+  end
+
   def smashgg_url
     "https://smash.gg/#{slug}"
   end
@@ -103,8 +107,8 @@ class SmashggEvent < ApplicationRecord
     self.slug = self.class.slug_from_url(url)
   end
 
-  def self.lookup(from:, to:)
-    data = SmashggClient.new.get_events_data(from: from, to: to)
+  def self.lookup(name:, from:, to:)
+    data = SmashggClient.new.get_events_data(name: name, from: from, to: to)
     data.map do |event_data|
       attributes = attributes_from_event_data(event_data)
       self.where(smashgg_id: attributes[:smashgg_id]).first_or_initialize(attributes)

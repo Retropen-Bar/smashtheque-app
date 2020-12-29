@@ -1,7 +1,9 @@
 <div style="padding: 20px">
   <%= form_tag(nil, method: :get) do %>
 
-    <label>Entre le</label> <%= date_field(nil, :from, value: @from, class: 'inline-date-field') %> <label>et le</label> <%= date_field(nil, :to, value: @to, class: 'inline-date-field') %>
+    <label>Nom:</label> <%= text_field_tag(:name, @name, class: 'inline-date-field') %>
+    <label style="margin-left: 50px">Entre le</label> <%= date_field_tag(:from, @from, class: 'inline-date-field') %>
+    <label style="margin-left: 10px">et le</label> <%= date_field_tag(:to, @to, class: 'inline-date-field') %>
 
     <button type="submit" style="margin-left: 20px">Rechercher</button>
   <% end %>
@@ -21,9 +23,13 @@
   <tbody>
     <% @smashgg_events.each do |smashgg_event| %>
       <tr>
-        <td class="text-center"><%= smashgg_event.start_at %></td>
-        <td class="text-center"><%= smashgg_event.tournament_name %></td>
-        <td class="text-center"><%= smashgg_event.name %></td>
+        <td class="text-center"><%= l smashgg_event.start_at.to_date, format: :long %></td>
+        <td class="text-center">
+          <%= link_to smashgg_event.tournament_name, smashgg_event.decorate.tournament_smashgg_url, target: '_blank' %>
+        </td>
+        <td class="text-center">
+          <%= link_to smashgg_event.name, smashgg_event.decorate.smashgg_url, target: '_blank' %>
+        </td>
         <td class="text-center"><%= smashgg_event.is_online? %></td>
         <td class="text-center"><%= smashgg_event.num_entrants %></td>
         <td class="text-center">
