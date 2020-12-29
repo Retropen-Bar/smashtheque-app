@@ -724,7 +724,7 @@ var MarkerClusterGroup = L.MarkerClusterGroup = L.FeatureGroup.extend({
 		delete e.target.__dragStart;
 		if (dragStart) {
 			this._moveChild(e.target, dragStart, e.target._latlng);
-		}		
+		}
 	},
 
 
@@ -1793,10 +1793,10 @@ var MarkerCluster = L.MarkerCluster = L.Marker.extend({
 
 /*
 * Extends L.Marker to include two extra methods: clusterHide and clusterShow.
-* 
+*
 * They work as setOpacity(0) and setOpacity(1) respectively, but
 * don't overwrite the options.opacity
-* 
+*
 */
 
 L.Marker.include({
@@ -1806,7 +1806,7 @@ L.Marker.include({
 		this.options.opacity = backup;
 		return this;
 	},
-	
+
 	clusterShow: function () {
 		return this.setOpacity(this.options.opacity);
 	}
@@ -2065,7 +2065,7 @@ Retrieved from: http://en.literateprograms.org/Quickhull_(Javascript)?oldid=1843
 					minLng = pt.lng;
 				}
 			}
-			
+
 			if (minLat !== maxLat) {
 				minPt = minLatPt;
 				maxPt = maxLatPt;
@@ -2335,7 +2335,7 @@ L.MarkerCluster.include({
 			if (m.clusterHide) {
 				m.clusterHide();
 			}
-			
+
 			// Vectors just get immediately added
 			fg.addLayer(m);
 
@@ -2355,7 +2355,7 @@ L.MarkerCluster.include({
 			//Move marker to new position
 			m._preSpiderfyLatlng = m._latlng;
 			m.setLatLng(newPos);
-			
+
 			if (m.clusterShow) {
 				m.clusterShow();
 			}
@@ -2687,4 +2687,3 @@ exports.MarkerClusterGroup = MarkerClusterGroup;
 exports.MarkerCluster = MarkerCluster;
 
 })));
-//# sourceMappingURL=leaflet.markercluster-src.js.map

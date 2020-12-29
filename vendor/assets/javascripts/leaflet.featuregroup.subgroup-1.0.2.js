@@ -202,5 +202,3 @@ L.featureGroup.subGroup = function (parentGroup, options) {
 
 
 }));
-
-//# sourceMappingURL=leaflet.featuregroup.subgroup-src.js.map
