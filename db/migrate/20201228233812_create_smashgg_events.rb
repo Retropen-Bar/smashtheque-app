@@ -6,7 +6,7 @@ class CreateSmashggEvents < ActiveRecord::Migration[6.0]
 
       # smash.gg data
       t.string :name
-      t.datetime :starts_at
+      t.datetime :start_at
       t.boolean :is_online
       t.integer :num_entrants
       t.integer :tournament_id

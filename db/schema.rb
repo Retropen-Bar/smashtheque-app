@@ -276,7 +276,7 @@ ActiveRecord::Schema.define(version: 2020_12_28_233812) do
     t.integer "smashgg_id", null: false
     t.string "slug", null: false
     t.string "name"
-    t.datetime "starts_at"
+    t.datetime "start_at"
     t.boolean "is_online"
     t.integer "num_entrants"
     t.integer "tournament_id"

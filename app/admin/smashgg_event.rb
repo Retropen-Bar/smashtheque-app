@@ -24,7 +24,7 @@ ActiveAdmin.register SmashggEvent do
       decorated.full_name
     end
     column :is_online
-    column :starts_at
+    column :start_at
     column :num_entrants
     column :tournament_event do |decorated|
       decorated.tournament_event_admin_link
@@ -43,7 +43,7 @@ ActiveAdmin.register SmashggEvent do
   filter :smashgg_id
   filter :tournament_name
   filter :slug
-  filter :starts_at
+  filter :start_at
   filter :is_online
   filter :num_entrants
   filter :created_at
@@ -83,7 +83,7 @@ ActiveAdmin.register SmashggEvent do
     f.actions
   end
 
-  permit_params :smashgg_url
+  permit_params :smashgg_id, :smashgg_url
 
   before_create do |smashgg_event|
     smashgg_event.fetch_smashgg_data
@@ -102,7 +102,7 @@ ActiveAdmin.register SmashggEvent do
       row :tournament_name
       row :name
       row :is_online
-      row :starts_at
+      row :start_at
       row :num_entrants
       row :tournament_event do |decorated|
         decorated.tournament_event_admin_link
@@ -124,6 +124,20 @@ ActiveAdmin.register SmashggEvent do
       flash[:error] = 'Import échoué'
       redirect_to request.referer
     end
+  end
+
+  # ---------------------------------------------------------------------------
+  # SEARCH
+  # ---------------------------------------------------------------------------
+
+  action_item :lookup, only: :index do
+    link_to 'Rechercher sur smash.gg', { action: :lookup }, class: :orange
+  end
+  collection_action :lookup do
+    @from = params[:from] ? Date.parse(params[:from]) : (Date.today - 1.month)
+    @to = params[:to] ? Date.parse(params[:to]) : Date.today
+    # add 1 day because we are using dates and not datetimes
+    @smashgg_events = SmashggEvent.lookup(from: @from, to: @to + 1.day)
   end
 
 end

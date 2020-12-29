@@ -7,7 +7,7 @@
 #  name            :string
 #  num_entrants    :integer
 #  slug            :string           not null
-#  starts_at       :datetime
+#  start_at        :datetime
 #  tournament_name :string
 #  tournament_slug :string
 #  created_at      :datetime         not null
@@ -68,6 +68,22 @@ class SmashggEvent < ApplicationRecord
     from_slug(slug_from_url(url))
   end
 
+  def self.attributes_from_event_data(data)
+    {
+      smashgg_id: data.id,
+      slug: data.slug,
+
+      name: data.name,
+      start_at: Time.at(data.start_at),
+      is_online: data.is_online,
+      num_entrants: data.num_entrants,
+
+      tournament_id: data.tournament.id,
+      tournament_slug: data.tournament.slug,
+      tournament_name: data.tournament.name
+    }
+  end
+
   def fetch_smashgg_data
     if smashgg_id
       data = SmashggClient.new.get_event_data(id: smashgg_id)
@@ -76,18 +92,7 @@ class SmashggEvent < ApplicationRecord
     else
       raise 'No ID or slug provided'
     end
-
-    self.smashgg_id = data.event.id
-    self.slug = data.event.slug
-
-    self.name = data.event.name
-    self.starts_at = Time.at(data.event.start_at)
-    self.is_online = data.event.is_online
-    self.num_entrants = data.event.num_entrants
-
-    self.tournament_id = data.event.tournament.id
-    self.tournament_slug = data.event.tournament.slug
-    self.tournament_name = data.event.tournament.name
+    self.attributes = self.class.attributes_from_event_data(data.event)
   end
 
   def smashgg_url
@@ -96,6 +101,14 @@ class SmashggEvent < ApplicationRecord
 
   def smashgg_url=(url)
     self.slug = self.class.slug_from_url(url)
+  end
+
+  def self.lookup(from:, to:)
+    data = SmashggClient.new.get_events_data(from: from, to: to)
+    data.map do |event_data|
+      attributes = attributes_from_event_data(event_data)
+      self.where(smashgg_id: attributes[:smashgg_id]).first_or_initialize(attributes)
+    end
   end
 
 end

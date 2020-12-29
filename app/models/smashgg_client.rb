@@ -148,29 +148,51 @@ class SmashggClient
     response&.data
   end
 
-  # def tournaments
-  #   SmashGGAPI::Client.query(
-  #     SmashGGAPI::Client.parse <<-'GRAPHQL'
-  #       query($countryCode: String, $perPage: Int!) {
-  #         tournaments(query: {
-  #           perPage: $perPage
-  #           filter: {
-  #             countryCode: $countryCode
-  #           }
-  #         }) {
-  #           nodes {
-  #             id
-  #             name
-  #             countryCode
-  #           }
-  #         }
-  #       }
-  #     GRAPHQL,
-  #     variables: {
-  #       countryCode: 'FR',
-  #       perPage: 5
-  #     }
-  #   )
-  # end
+  TournamentsByDateQuery =
+    CLIENT.parse <<-'GRAPHQL'
+      query($dateMin: Timestamp, $dateMax: Timestamp) {
+        tournaments(query: {
+          perPage: 100
+          sortBy: "startAt asc"
+          filter: {
+            countryCode: "FR"
+            videogameIds: [1386]
+            afterDate: $dateMin
+            beforeDate: $dateMax
+          }
+        }) {
+          nodes {
+            events {
+              id
+              slug
+              name
+              startAt
+              isOnline
+              numEntrants
+              tournament {
+                id
+                slug
+                name
+              }
+            }
+          }
+        }
+      }
+    GRAPHQL
+
+  def get_events_data(from:, to:)
+    response = CLIENT.query(
+      TournamentsByDateQuery,
+      variables: {
+        dateMin: from.to_time.to_i,
+        dateMax: to.to_time.to_i
+      }
+    )
+    result = []
+    response.data.tournaments.nodes.each do |node|
+      result += node.events
+    end
+    result
+  end
 
 end
