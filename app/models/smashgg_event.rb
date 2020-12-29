@@ -54,18 +54,39 @@ class SmashggEvent < ApplicationRecord
   # HELPERS
   # ---------------------------------------------------------------------------
 
+  def self.slug_from_url(url)
+    url.slice(/tournament\/[^\/]+\/event\/[^\/]+/)
+  end
+
+  def self.tournament_slug_from_url(url)
+    url.slice(/tournament\/[^\/]+/)
+  end
+
+  def smashgg_url=(url)
+    self.slug = self.class.slug_from_url(url)
+    self.tournament_slug = self.class.tournament_slug_from_url(url)
+  end
+
   def self.from_slug(slug)
     o = where(slug: slug).first_or_initialize
     o.fetch_smashgg_data
     o
   end
 
-  def self.slug_from_url(url)
-    url.slice(/tournament\/[^\/]+\/event\/[^\/]+/)
+  def self.from_tournament_slug(tournament_slug)
+    o = where(tournament_slug: tournament_slug).first_or_initialize
+    o.fetch_smashgg_data
+    o
   end
 
   def self.from_url(url)
-    from_slug(slug_from_url(url))
+    if slug = self.class.slug_from_url(url)
+      from_slug(slug)
+    elsif tournament_slug = self.class.tournament_slug_from_url(url)
+      from_tournament_slug(tournament_slug)
+    else
+      nil
+    end
   end
 
   def self.attributes_from_event_data(data)
@@ -85,30 +106,24 @@ class SmashggEvent < ApplicationRecord
   end
 
   def fetch_smashgg_data
-    if smashgg_id
-      data = SmashggClient.new.get_event_data(id: smashgg_id)
-    elsif slug
-      data = SmashggClient.new.get_event_data(slug: slug)
-    else
-      raise 'No ID or slug provided'
-    end
-    self.attributes = self.class.attributes_from_event_data(data.event)
+    event_data = SmashggClient.new.get_event(
+      event_id: smashgg_id,
+      event_slug: slug,
+      tournament_slug: tournament_slug
+    )
+    self.attributes = self.class.attributes_from_event_data(event_data)
   end
 
   def tournament_smashgg_url
-    "https://smash.gg/#{tournament_slug}/details"
+    tournament_slug && "https://smash.gg/#{tournament_slug}/details"
   end
 
   def smashgg_url
-    "https://smash.gg/#{slug}"
-  end
-
-  def smashgg_url=(url)
-    self.slug = self.class.slug_from_url(url)
+    slug && "https://smash.gg/#{slug}"
   end
 
   def self.lookup(name:, from:, to:)
-    data = SmashggClient.new.get_events_data(name: name, from: from, to: to)
+    data = SmashggClient.new.get_events(name: name, from: from, to: to)
     data.map do |event_data|
       attributes = attributes_from_event_data(event_data)
       self.where(smashgg_id: attributes[:smashgg_id]).first_or_initialize(attributes)

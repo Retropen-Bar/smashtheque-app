@@ -78,7 +78,7 @@ class SmashggUser < ApplicationRecord
   def fetch_smashgg_data
     raise 'Unknown smashgg_id' if smashgg_id.blank?
 
-    data = SmashggClient.new.get_user_data(smashgg_id)
+    data = SmashggClient.new.get_user(user_id: smashgg_id)
 
     self.slug = data.user.slug
     self.name = data.user.name

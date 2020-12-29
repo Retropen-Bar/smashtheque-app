@@ -78,7 +78,7 @@ ActiveAdmin.register SmashggEvent do
 
   form do |f|
     f.inputs do
-      f.input :smashgg_url
+      f.input :smashgg_url, placeholder: 'https://smash.gg/...'
     end
     f.actions
   end

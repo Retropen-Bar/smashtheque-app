@@ -49,44 +49,26 @@ class SmashggClient
       }
     GRAPHQL
 
-  def get_user_data(user_id)
-    response = CLIENT.query(
-      UserDataQuery,
-      variables: {
-        userId: user_id
-      }
-    )
-    response.data
-  end
-
-  TournamentDataBySlugQuery =
+  TournamentEventsDataBySlugQuery =
     CLIENT.parse <<-'GRAPHQL'
       query($tournamentSlug: String) {
         tournament(slug: $tournamentSlug) {
-          id
-          slug
-          name
-          startAt
           events {
             id
+            slug
             name
             startAt
             isOnline
             numEntrants
+            tournament {
+              id
+              slug
+              name
+            }
           }
         }
       }
     GRAPHQL
-
-  def get_tournament_data(slug:)
-    response = CLIENT.query(
-      TournamentDataBySlugQuery,
-      variables: {
-        tournamentSlug: slug
-      }
-    )
-    response.data
-  end
 
   EventDataByIdQuery =
     CLIENT.parse <<-'GRAPHQL'
@@ -126,28 +108,6 @@ class SmashggClient
       }
     GRAPHQL
 
-  def get_event_data(id: nil, slug: nil)
-    response =
-      if id
-        CLIENT.query(
-          EventDataByIdQuery,
-          variables: {
-            eventId: id
-          }
-        )
-      elsif slug
-        CLIENT.query(
-          EventDataBySlugQuery,
-          variables: {
-            eventSlug: slug
-          }
-        )
-      else
-        nil
-      end
-    response&.data
-  end
-
   TournamentsSearchQuery =
     CLIENT.parse <<-'GRAPHQL'
       query($name: String, $dateMin: Timestamp, $dateMax: Timestamp) {
@@ -181,7 +141,48 @@ class SmashggClient
       }
     GRAPHQL
 
-  def get_events_data(name:, from:, to:)
+  def get_user(user_id:)
+    response = CLIENT.query(
+      UserDataQuery,
+      variables: {
+        userId: user_id
+      }
+    )
+    response.data
+  end
+
+  def get_tournament_events(tournament_slug:)
+    CLIENT.query(
+      TournamentEventsDataBySlugQuery,
+      variables: {
+        tournamentSlug: tournament_slug
+      }
+    ).data.tournament.events
+  end
+
+  def get_event(event_id: nil, event_slug: nil, tournament_slug: nil)
+    if event_id
+      CLIENT.query(
+        EventDataByIdQuery,
+        variables: {
+          eventId: event_id
+        }
+      )&.data&.event
+    elsif event_slug
+      CLIENT.query(
+        EventDataBySlugQuery,
+        variables: {
+          eventSlug: event_slug
+        }
+      )&.data&.event
+    elsif tournament_slug
+      get_tournament_events(tournament_slug: tournament_slug).first
+    else
+      nil
+    end
+  end
+
+  def get_events(name:, from:, to:)
     response = CLIENT.query(
       TournamentsSearchQuery,
       variables: {
