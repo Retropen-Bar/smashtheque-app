@@ -1,7 +1,7 @@
 # require 'graphql/client'
 require 'graphql/client/http'
 
-class SmashGGClient
+class SmashggClient
 
   HTTP = GraphQL::Client::HTTP.new('https://api.smash.gg/gql/alpha') do
     def headers(context)
@@ -57,6 +57,95 @@ class SmashGGClient
       }
     )
     response.data
+  end
+
+  TournamentDataBySlugQuery =
+    CLIENT.parse <<-'GRAPHQL'
+      query($tournamentSlug: String) {
+        tournament(slug: $tournamentSlug) {
+          id
+          slug
+          name
+          startAt
+          events {
+            id
+            name
+            startAt
+            isOnline
+            numEntrants
+          }
+        }
+      }
+    GRAPHQL
+
+  def get_tournament_data(slug:)
+    response = CLIENT.query(
+      TournamentDataBySlugQuery,
+      variables: {
+        tournamentSlug: slug
+      }
+    )
+    response.data
+  end
+
+  EventDataByIdQuery =
+    CLIENT.parse <<-'GRAPHQL'
+      query($eventId: ID) {
+        event(id: $eventId) {
+          id
+          slug
+          name
+          startAt
+          isOnline
+          numEntrants
+          tournament {
+            id
+            slug
+            name
+          }
+        }
+      }
+    GRAPHQL
+
+  EventDataBySlugQuery =
+    CLIENT.parse <<-'GRAPHQL'
+      query($eventSlug: String) {
+        event(slug: $eventSlug) {
+          id
+          slug
+          name
+          startAt
+          isOnline
+          numEntrants
+          tournament {
+            id
+            slug
+            name
+          }
+        }
+      }
+    GRAPHQL
+
+  def get_event_data(id: nil, slug: nil)
+    response =
+      if id
+        CLIENT.query(
+          EventDataByIdQuery,
+          variables: {
+            eventId: id
+          }
+        )
+      elsif slug
+        CLIENT.query(
+          EventDataBySlugQuery,
+          variables: {
+            eventSlug: slug
+          }
+        )
+      else
+        nil
+      end
+    response&.data
   end
 
   # def tournaments

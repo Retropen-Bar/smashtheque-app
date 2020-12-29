@@ -1,7 +1,7 @@
-class ActiveAdmin::SmashGGUserDecorator < SmashGGUserDecorator
+class ActiveAdmin::SmashggUserDecorator < SmashggUserDecorator
   include ActiveAdmin::BaseDecorator
 
-  decorates :smash_g_g_user
+  decorates :smashgg_user
 
   def admin_link(options = {})
     size = options.delete(:size) || 32

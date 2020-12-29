@@ -19,7 +19,8 @@ fr:
       recurring_tournament: Série
       reward: Récompense
       reward_condition: Condition de récompense
-      smash_gg_user: Compte smash.gg
+      smashgg_event: Tournoi smash.gg
+      smashgg_user: Compte smash.gg
       team: Équipe
       tournament_event: Édition
       twitch_channel: Chaîne Twitch
@@ -118,7 +119,7 @@ fr:
         points: Fragments d'étoiles
         rank: Classement
         rewards: Récompenses
-        smash_g_g_users: Comptes smash.gg
+        smashgg_users: Comptes smash.gg
         teams: Équipes
         team_ids: Équipes
         twitter_username: Compte Twitter
@@ -177,7 +178,17 @@ fr:
         size_min: Taille min
         team: Équipe
         team_id: Équipe
-      smash_gg_user:
+      smashgg_event:
+        << : *SHARED
+        is_online: Online?
+        num_entrants: Participants
+        slug: Slug
+        smashgg_id: ID
+        starts_at: Date
+        tournament_id: ID du tournoi
+        tournament_name: Nom du tournoi
+        tournament_slug: Slug du tournoi
+      smashgg_user:
         << : *SHARED
         avatar: Avatar
         banner_url: Bannière
@@ -213,6 +224,7 @@ fr:
         name: Nom
         participants_count: Participants
         recurring_tournament: Série
+        smashgg_event: Tournoi smash.gg
         top1_player: Top 1
         top2_player: Top 2
         top3_player: Top 3

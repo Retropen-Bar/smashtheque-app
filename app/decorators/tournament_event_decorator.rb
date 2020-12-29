@@ -21,7 +21,7 @@ class TournamentEventDecorator < BaseDecorator
   end
 
   def bracket_icon
-    if bracket_url.starts_with?('https://smash.gg/')
+    if is_on_smashgg?
       return h.image_tag('https://smash.gg/images/gg-app-icon.png', height: 32)
     end
     if bracket_url.starts_with?('https://braacket.com/')

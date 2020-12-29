@@ -1,6 +1,6 @@
-ActiveAdmin.register SmashGGUser do
+ActiveAdmin.register SmashggUser do
 
-  decorate_with ActiveAdmin::SmashGGUserDecorator
+  decorate_with ActiveAdmin::SmashggUserDecorator
 
   menu parent: '<img src="https://smash.gg/images/gg-app-icon.png" height="16" class="logo"/>smash.gg'.html_safe,
        label: 'Comptes'
@@ -30,15 +30,16 @@ ActiveAdmin.register SmashGGUser do
   scope :unknown
 
   filter :smashgg_id
+  filter :slug
   filter :created_at
 
   action_item :fetch_unknown,
               only: :index,
-              if: proc { SmashGGUser.unknown.any? } do
-    link_to 'Compléter', fetch_unknown_admin_smash_gg_users_path, class: 'blue'
+              if: proc { SmashggUser.unknown.any? } do
+    link_to 'Compléter', fetch_unknown_admin_smashgg_users_path, class: 'blue'
   end
   collection_action :fetch_unknown do
-    SmashGGUser.fetch_unknown
+    SmashggUser.fetch_unknown
     redirect_to request.referer, notice: 'Données récupérées'
   end
 
@@ -67,7 +68,7 @@ ActiveAdmin.register SmashGGUser do
       end
       row :smashgg_id
       row :slug do |decorated|
-        decorated.smash_gg_link
+        decorated.smashgg_link
       end
       row :avatar do |decorated|
         decorated.avatar_tag(max_height: 128)

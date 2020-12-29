@@ -22,7 +22,7 @@ class DiscordUser < ApplicationRecord
 
   has_one :admin_user, dependent: :nullify
   has_one :player, dependent: :nullify
-  has_one :smash_gg_user, dependent: :nullify
+  has_one :smashgg_user, dependent: :nullify
 
   has_many :discord_guild_admins,
            inverse_of: :discord_user,

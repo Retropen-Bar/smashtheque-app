@@ -11,6 +11,7 @@
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  recurring_tournament_id :bigint
+#  smashgg_event_id        :bigint
 #  top1_player_id          :bigint
 #  top2_player_id          :bigint
 #  top3_player_id          :bigint
@@ -23,6 +24,7 @@
 # Indexes
 #
 #  index_tournament_events_on_recurring_tournament_id  (recurring_tournament_id)
+#  index_tournament_events_on_smashgg_event_id         (smashgg_event_id)
 #  index_tournament_events_on_top1_player_id           (top1_player_id)
 #  index_tournament_events_on_top2_player_id           (top2_player_id)
 #  index_tournament_events_on_top3_player_id           (top3_player_id)
@@ -35,6 +37,7 @@
 # Foreign Keys
 #
 #  fk_rails_...  (recurring_tournament_id => recurring_tournaments.id)
+#  fk_rails_...  (smashgg_event_id => smashgg_events.id)
 #  fk_rails_...  (top1_player_id => players.id)
 #  fk_rails_...  (top2_player_id => players.id)
 #  fk_rails_...  (top3_player_id => players.id)
@@ -74,6 +77,7 @@ class TournamentEvent < ApplicationRecord
   belongs_to :top5b_player, class_name: :Player, optional: true
   belongs_to :top7a_player, class_name: :Player, optional: true
   belongs_to :top7b_player, class_name: :Player, optional: true
+  belongs_to :smashgg_event, optional: true
 
   has_one_attached :graph
 
@@ -230,6 +234,29 @@ class TournamentEvent < ApplicationRecord
              to: player_name,
              prefix: true,
              allow_nil: true
+  end
+
+  def is_on_smashgg?
+    bracket_url&.starts_with?('https://smash.gg/')
+  end
+
+  def fetch_smashgg
+    return false unless is_on_smashgg?
+    if smashgg_event.nil?
+      self.smashgg_event = SmashggEvent.from_url(bracket_url)
+    else
+      smashgg_event.fetch_smashgg_data
+    end
+    unless smashgg_event.save
+      puts "Unable to save SmashggEvent: #{smashgg_event.errors.full_messages}"
+      return false
+    end
+
+    self.name = smashgg_event.tournament_name
+    self.date = smashgg_event.starts_at
+    self.participants_count = smashgg_event.num_entrants
+    self.bracket_url = smashgg_event.smashgg_url
+    save
   end
 
   # ---------------------------------------------------------------------------

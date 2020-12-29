@@ -1,4 +1,4 @@
-class SmashGGUserDecorator < BaseDecorator
+class SmashggUserDecorator < BaseDecorator
 
   def prefixed_gamer_tag
     [
@@ -30,7 +30,7 @@ class SmashGGUserDecorator < BaseDecorator
                               class: 'banner'
   end
 
-  def smash_gg_link
+  def smashgg_link
     return nil if model.slug.blank?
     h.link_to "https://smash.gg/#{model.slug}", target: '_blank' do
       (

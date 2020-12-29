@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: smash_gg_users
+# Table name: smashgg_users
 #
 #  id                             :bigint           not null, primary key
 #  avatar_url                     :string
@@ -14,7 +14,7 @@
 #  gender_pronoun                 :string
 #  name                           :string
 #  prefix                         :string
-#  slug                           :string
+#  slug                           :string           not null
 #  state                          :string
 #  twitch_username                :string
 #  twitter_username               :string
@@ -28,14 +28,15 @@
 #
 # Indexes
 #
-#  index_smash_gg_users_on_player_id   (player_id)
-#  index_smash_gg_users_on_smashgg_id  (smashgg_id) UNIQUE
+#  index_smashgg_users_on_player_id   (player_id)
+#  index_smashgg_users_on_slug        (slug) UNIQUE
+#  index_smashgg_users_on_smashgg_id  (smashgg_id) UNIQUE
 #
 # Foreign Keys
 #
 #  fk_rails_...  (player_id => players.id)
 #
-class SmashGGUser < ApplicationRecord
+class SmashggUser < ApplicationRecord
 
   # ---------------------------------------------------------------------------
   # RELATIONS
@@ -55,7 +56,7 @@ class SmashGGUser < ApplicationRecord
 
   after_create_commit :fetch_smashgg_data_later
   def fetch_smashgg_data_later
-    FetchSmashGGUserDataJob.perform_later(self)
+    FetchSmashggUserDataJob.perform_later(self)
   end
 
   # ---------------------------------------------------------------------------
@@ -77,7 +78,7 @@ class SmashGGUser < ApplicationRecord
   def fetch_smashgg_data
     raise 'Unknown smashgg_id' if smashgg_id.blank?
 
-    data = SmashGGClient.new.get_user_data(smashgg_id)
+    data = SmashggClient.new.get_user_data(smashgg_id)
 
     self.slug = data.user.slug
     self.name = data.user.name
@@ -113,9 +114,9 @@ class SmashGGUser < ApplicationRecord
   end
 
   def self.fetch_unknown
-    unknown.find_each do |smash_gg_user|
-      smash_gg_user.fetch_smashgg_data
-      smash_gg_user.save!
+    unknown.find_each do |smashgg_user|
+      smashgg_user.fetch_smashgg_data
+      smashgg_user.save!
     end
   end
 

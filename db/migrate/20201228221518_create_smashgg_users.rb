@@ -1,7 +1,8 @@
-class CreateSmashGgUsers < ActiveRecord::Migration[6.0]
+class CreateSmashggUsers < ActiveRecord::Migration[6.0]
   def change
-    create_table :smash_gg_users do |t|
+    create_table :smashgg_users do |t|
       t.integer :smashgg_id, null: false
+      t.string :slug, null: false
 
       # relations
       t.belongs_to :player
@@ -11,7 +12,6 @@ class CreateSmashGgUsers < ActiveRecord::Migration[6.0]
       t.string :birthday
       t.string :gender_pronoun
       t.string :name
-      t.string :slug
       t.string :city
       t.string :country
       t.string :country_id
@@ -30,7 +30,8 @@ class CreateSmashGgUsers < ActiveRecord::Migration[6.0]
 
       t.timestamps
     end
-    add_index :smash_gg_users, :smashgg_id, unique: true
-    add_foreign_key :smash_gg_users, :players
+    add_index :smashgg_users, :smashgg_id, unique: true
+    add_index :smashgg_users, :slug, unique: true
+    add_foreign_key :smashgg_users, :players
   end
 end
