@@ -113,6 +113,23 @@ class RecurringTournament < ApplicationRecord
            prefix: true,
            allow_nil: true
 
+  def contact_discord_ids
+    contacts.map(&:discord_id)
+  end
+
+  def as_json(options = {})
+    super(options.merge(
+      include: {
+        contacts: {
+          only: %i(discord_id avatar discriminator username)
+        }
+      },
+      methods: %i(
+        contact_discord_ids
+      )
+    ))
+  end
+
   # ---------------------------------------------------------------------------
   # global search
   # ---------------------------------------------------------------------------

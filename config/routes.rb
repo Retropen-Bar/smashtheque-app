@@ -24,7 +24,7 @@ Rails.application.routes.draw do
       get '/discord_users/:discord_id', to: 'discord_users#show'
       resources :discord_users, only: :show
       resources :locations, only: [:index, :create]
-      resources :recurring_tournaments, only: :index
+      resources :recurring_tournaments, only: [:index, :show]
       resources :players, only: [:index, :show, :create, :update]
       resources :teams, only: [:index, :show, :update]
       resources :tournament_events, only: :index
