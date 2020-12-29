@@ -15,6 +15,14 @@ api:
           attributes:
             name:
               << : *SHARED_ATTRIBUTES
+        tournament_event:
+          attributes:
+            date:
+              << : *SHARED_ATTRIBUTES
+            name:
+              << : *SHARED_ATTRIBUTES
+            smashgg_event:
+              << : *SHARED_ATTRIBUTES
         player:
           attributes:
             creator:

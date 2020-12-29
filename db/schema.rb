@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_27_223407) do
+ActiveRecord::Schema.define(version: 2020_12_29_205622) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -272,6 +272,66 @@ ActiveRecord::Schema.define(version: 2020_12_27_223407) do
     t.index ["level1", "level2"], name: "index_rewards_on_level1_and_level2", unique: true
   end
 
+  create_table "smashgg_events", force: :cascade do |t|
+    t.integer "smashgg_id", null: false
+    t.string "slug", null: false
+    t.string "name"
+    t.datetime "start_at"
+    t.boolean "is_online"
+    t.integer "num_entrants"
+    t.integer "tournament_id"
+    t.string "tournament_slug"
+    t.string "tournament_name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "top1_smashgg_user_id"
+    t.bigint "top2_smashgg_user_id"
+    t.bigint "top3_smashgg_user_id"
+    t.bigint "top4_smashgg_user_id"
+    t.bigint "top5a_smashgg_user_id"
+    t.bigint "top5b_smashgg_user_id"
+    t.bigint "top7a_smashgg_user_id"
+    t.bigint "top7b_smashgg_user_id"
+    t.index ["slug"], name: "index_smashgg_events_on_slug", unique: true
+    t.index ["smashgg_id"], name: "index_smashgg_events_on_smashgg_id", unique: true
+    t.index ["top1_smashgg_user_id"], name: "index_smashgg_events_on_top1_smashgg_user_id"
+    t.index ["top2_smashgg_user_id"], name: "index_smashgg_events_on_top2_smashgg_user_id"
+    t.index ["top3_smashgg_user_id"], name: "index_smashgg_events_on_top3_smashgg_user_id"
+    t.index ["top4_smashgg_user_id"], name: "index_smashgg_events_on_top4_smashgg_user_id"
+    t.index ["top5a_smashgg_user_id"], name: "index_smashgg_events_on_top5a_smashgg_user_id"
+    t.index ["top5b_smashgg_user_id"], name: "index_smashgg_events_on_top5b_smashgg_user_id"
+    t.index ["top7a_smashgg_user_id"], name: "index_smashgg_events_on_top7a_smashgg_user_id"
+    t.index ["top7b_smashgg_user_id"], name: "index_smashgg_events_on_top7b_smashgg_user_id"
+  end
+
+  create_table "smashgg_users", force: :cascade do |t|
+    t.integer "smashgg_id", null: false
+    t.string "slug", null: false
+    t.bigint "player_id"
+    t.text "bio"
+    t.string "birthday"
+    t.string "gender_pronoun"
+    t.string "name"
+    t.string "city"
+    t.string "country"
+    t.string "country_id"
+    t.string "state"
+    t.string "state_id"
+    t.string "smashgg_player_id"
+    t.string "gamer_tag"
+    t.string "prefix"
+    t.string "banner_url"
+    t.string "avatar_url"
+    t.string "discord_discriminated_username"
+    t.string "twitch_username"
+    t.string "twitter_username"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["player_id"], name: "index_smashgg_users_on_player_id"
+    t.index ["slug"], name: "index_smashgg_users_on_slug", unique: true
+    t.index ["smashgg_id"], name: "index_smashgg_users_on_smashgg_id", unique: true
+  end
+
   create_table "team_admins", force: :cascade do |t|
     t.bigint "team_id", null: false
     t.bigint "discord_user_id", null: false
@@ -310,7 +370,9 @@ ActiveRecord::Schema.define(version: 2020_12_27_223407) do
     t.integer "participants_count"
     t.string "bracket_url"
     t.boolean "is_complete", default: false, null: false
+    t.bigint "smashgg_event_id"
     t.index ["recurring_tournament_id"], name: "index_tournament_events_on_recurring_tournament_id"
+    t.index ["smashgg_event_id"], name: "index_tournament_events_on_smashgg_event_id"
     t.index ["top1_player_id"], name: "index_tournament_events_on_top1_player_id"
     t.index ["top2_player_id"], name: "index_tournament_events_on_top2_player_id"
     t.index ["top3_player_id"], name: "index_tournament_events_on_top3_player_id"
@@ -363,6 +425,15 @@ ActiveRecord::Schema.define(version: 2020_12_27_223407) do
   add_foreign_key "player_reward_conditions", "reward_conditions"
   add_foreign_key "player_reward_conditions", "tournament_events"
   add_foreign_key "players", "player_reward_conditions", column: "best_player_reward_condition_id"
+  add_foreign_key "smashgg_events", "smashgg_users", column: "top1_smashgg_user_id"
+  add_foreign_key "smashgg_events", "smashgg_users", column: "top2_smashgg_user_id"
+  add_foreign_key "smashgg_events", "smashgg_users", column: "top3_smashgg_user_id"
+  add_foreign_key "smashgg_events", "smashgg_users", column: "top4_smashgg_user_id"
+  add_foreign_key "smashgg_events", "smashgg_users", column: "top5a_smashgg_user_id"
+  add_foreign_key "smashgg_events", "smashgg_users", column: "top5b_smashgg_user_id"
+  add_foreign_key "smashgg_events", "smashgg_users", column: "top7a_smashgg_user_id"
+  add_foreign_key "smashgg_events", "smashgg_users", column: "top7b_smashgg_user_id"
+  add_foreign_key "smashgg_users", "players"
   add_foreign_key "tournament_events", "players", column: "top1_player_id"
   add_foreign_key "tournament_events", "players", column: "top2_player_id"
   add_foreign_key "tournament_events", "players", column: "top3_player_id"
@@ -372,4 +443,5 @@ ActiveRecord::Schema.define(version: 2020_12_27_223407) do
   add_foreign_key "tournament_events", "players", column: "top7a_player_id"
   add_foreign_key "tournament_events", "players", column: "top7b_player_id"
   add_foreign_key "tournament_events", "recurring_tournaments"
+  add_foreign_key "tournament_events", "smashgg_events"
 end

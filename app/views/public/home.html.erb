@@ -48,10 +48,6 @@
       </div>
 
       <div>
-        <%= link_to 'https://discord.gg/2HwUAyw', class: 'btn btn-lg btn-discord m-2' do %>
-          <%= fab_icon_tag :discord, %w(mr-2) %>
-          Smashthèque FR
-        <% end %>
         <%= link_to players_path(map: 1), class: 'btn btn-lg btn-primary m-2' do %>
           <%= fas_icon_tag :map, %w(mr-2) %>
           Carte des joueurs
@@ -65,6 +61,16 @@
             <%= fas_icon_tag 'star', %w(mr-2) %>
             Observatoire d'Harmonie
           <% end %>
+        <% end %>
+      </div>
+      <div>
+        <%= link_to 'https://discord.gg/2HwUAyw', class: 'btn btn-lg btn-discord m-2' do %>
+          <%= fab_icon_tag :discord, %w(mr-2) %>
+          Smashthèque FR
+        <% end %>
+        <%= link_to 'https://discord.com/oauth2/authorize?client_id=745022618356416572&permissions=314432&scope=bot%20applications.commands', class: 'btn btn-lg btn-discord m-2' do %>
+          <%= fab_icon_tag :discord, %w(mr-2) %>
+          Ajouter le bot à mon serveur
         <% end %>
       </div>
 

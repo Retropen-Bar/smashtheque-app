@@ -98,6 +98,14 @@ class DiscordUser < ApplicationRecord
     result
   end
 
+  def self.by_discriminated_username(discriminated_username)
+    username, discriminator = discriminated_username.split('#')
+    where(
+      username: username,
+      discriminator: discriminator
+    )
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------

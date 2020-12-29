@@ -19,6 +19,8 @@ fr:
       recurring_tournament: Série
       reward: Récompense
       reward_condition: Condition de récompense
+      smashgg_event: Tournoi smash.gg
+      smashgg_user: Compte smash.gg
       team: Équipe
       tournament_event: Édition
       twitch_channel: Chaîne Twitch
@@ -117,6 +119,7 @@ fr:
         points: Fragments d'étoiles
         rank: Classement
         rewards: Récompenses
+        smashgg_users: Comptes smash.gg
         teams: Équipes
         team_ids: Équipes
         twitter_username: Compte Twitter
@@ -173,6 +176,47 @@ fr:
         reward: Récompense
         size_max: Taille max
         size_min: Taille min
+        team: Équipe
+        team_id: Équipe
+      smashgg_event:
+        << : *SHARED
+        is_online: Online?
+        num_entrants: Participants
+        slug: Slug
+        smashgg_id: ID
+        smashgg_url: URL
+        start_at: Date
+        top1_smashgg_user: Top 1
+        top2_smashgg_user: Top 2
+        top3_smashgg_user: Top 3
+        top4_smashgg_user: Top 4
+        top5a_smashgg_user: Top 5a
+        top5b_smashgg_user: Top 5b
+        top7a_smashgg_user: Top 7a
+        top7b_smashgg_user: Top 7b
+        tournament_event: Édition
+        tournament_id: ID du tournoi
+        tournament_name: Nom du tournoi
+        tournament_slug: Slug du tournoi
+      smashgg_user:
+        << : *SHARED
+        avatar: Avatar
+        banner_url: Bannière
+        birthday: Date de naissance
+        city: Ville
+        country: Pays
+        country_id: Pays (ID)
+        discord_discriminated_username: Compte Discord
+        gamer_tag: Pseudo
+        gender_pronoun: Pronom
+        player: Joueur
+        slug: Slug
+        state: État
+        state_id: État (ID)
+        smashgg_id: ID
+        smashgg_url: URL
+        twitch_username: Compte Twitch
+        twitter_username: Compte Twitter
       team:
         << : *SHARED
         admins: Admins
@@ -192,6 +236,7 @@ fr:
         name: Nom
         participants_count: Participants
         recurring_tournament: Série
+        smashgg_event: Tournoi smash.gg
         top1_player: Top 1
         top2_player: Top 2
         top3_player: Top 3

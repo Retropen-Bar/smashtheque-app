@@ -31,4 +31,8 @@ class ActiveAdmin::TournamentEventDecorator < TournamentEventDecorator
     end
   end
 
+  def smashgg_event_admin_link(options = {})
+    smashgg_event&.admin_decorate&.admin_link(options)
+  end
+
 end

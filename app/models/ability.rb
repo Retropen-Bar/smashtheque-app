@@ -59,6 +59,14 @@ class Ability
     can manage_or_read, RewardCondition
     can :read, PlayerRewardCondition
 
+    # SmashggEvent
+    can manage_or_cru, SmashggEvent
+    can :fetch_smashgg_data, SmashggEvent
+
+    # SmashggUser
+    can manage_or_cru, SmashggUser
+    can :fetch_smashgg_data, SmashggUser
+
     # Tournaments
     can manage_or_cru, RecurringTournament
     can manage_or_cru, TournamentEvent

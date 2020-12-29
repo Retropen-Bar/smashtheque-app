@@ -8,4 +8,9 @@ class Api::V1::RecurringTournamentsController < Api::V1::BaseController
     render json: recurring_tournaments
   end
 
+  def show
+    recurring_tournament = RecurringTournament.find(params[:id])
+    render json: recurring_tournament
+  end
+
 end

@@ -1,0 +1,53 @@
+<div style="padding: 20px">
+  <%= form_tag(nil, method: :get) do %>
+
+    <label>Nom:</label> <%= text_field_tag(:name, @name, class: 'inline-date-field') %>
+    <label style="margin-left: 50px">Entre le</label> <%= date_field_tag(:from, @from, class: 'inline-date-field') %>
+    <label style="margin-left: 10px">et le</label> <%= date_field_tag(:to, @to, class: 'inline-date-field') %>
+
+    <button type="submit" style="margin-left: 20px">Rechercher</button>
+  <% end %>
+</div>
+
+<% if @smashgg_events.nil? %>
+
+  <p class="txt-error">Erreur smash.gg : il y a probablement trop de résultats, affinez la recherche</p>
+
+<% else %>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Tournoi</th>
+        <th>Événement</th>
+        <th class="text-center">Online?</th>
+        <th class="text-center">Participants</th>
+        <th class="text-center">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @smashgg_events.each do |smashgg_event| %>
+        <% decorated = smashgg_event.decorate %>
+        <tr>
+          <td><%= l smashgg_event.start_at.to_date, format: :long %></td>
+          <td><%= decorated.tournament_smashgg_link %></td>
+          <td><%= decorated.smashgg_link %></td>
+          <td class="text-center"><%= smashgg_event.is_online? %></td>
+          <td class="text-center"><%= smashgg_event.num_entrants %></td>
+          <td class="text-center">
+            <% if smashgg_event.persisted? %>
+              <%= link_to 'Voir', [:admin, smashgg_event], target: '_blank' %>
+            <% else %>
+              <%= semantic_form_for([:admin, smashgg_event], html: {target: '_blank'}) do |f| %>
+                <%= f.input :smashgg_id, as: :hidden %>
+                <%= f.submit 'Importer' %>
+              <% end %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+<% end %>

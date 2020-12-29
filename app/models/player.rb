@@ -115,6 +115,8 @@ class Player < ApplicationRecord
            foreign_key: :top7b_player_id,
            dependent: :nullify
 
+  has_many :smashgg_users, dependent: :nullify
+
   # ---------------------------------------------------------------------------
   # VALIDATIONS
   # ---------------------------------------------------------------------------

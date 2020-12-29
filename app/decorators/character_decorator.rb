@@ -51,7 +51,7 @@ class CharacterDecorator < BaseDecorator
   end
 
   def icon_class
-    'user-circle'
+    'gamepad'
   end
 
   def as_autocomplete_result

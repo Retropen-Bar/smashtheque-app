@@ -19,7 +19,7 @@ ActiveAdmin.register Player do
   end
 
   includes :characters, :locations, :creator, :discord_user, :teams,
-           :best_reward
+           :best_reward, :smashgg_users
 
   index do
     selectable_column
@@ -29,6 +29,9 @@ ActiveAdmin.register Player do
     end
     column :discord_user do |decorated|
       decorated.discord_user_admin_link(size: 32)
+    end
+    column :smashgg_users do |decorated|
+      decorated.smashgg_users_admin_links(size: 32).join('<br/>').html_safe
     end
     column :characters do |decorated|
       decorated.characters_admin_links.join(' ').html_safe
@@ -154,6 +157,9 @@ ActiveAdmin.register Player do
       row :name
       row :discord_user do |decorated|
         decorated.discord_user_admin_link(size: 32)
+      end
+      row :smashgg_users do |decorated|
+        decorated.smashgg_users_admin_links(size: 32).join('<br/>').html_safe
       end
       row :characters do |decorated|
         decorated.characters_admin_links.join('<br/>').html_safe

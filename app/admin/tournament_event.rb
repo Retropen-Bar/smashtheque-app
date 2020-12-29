@@ -125,6 +125,9 @@ ActiveAdmin.register TournamentEvent do
             end
           end
           row :is_complete
+          row :smashgg_event do |decorated|
+            decorated.smashgg_event_admin_link
+          end
           row :created_at
           row :updated_at
         end
@@ -161,18 +164,35 @@ ActiveAdmin.register TournamentEvent do
     resource.next_tournament_event_admin_link label: '→', class: 'blue'
   end
 
+  action_item :public, only: :show do
+    link_to 'Page publique', resource, class: 'green'
+  end
+
+  action_item :update_with_smashgg,
+              only: :show,
+              if: proc { resource.is_on_smashgg? } do
+    link_to 'Mettre à jour avec smash.gg',
+            { action: :update_with_smashgg },
+            class: 'orange'
+  end
+  member_action :update_with_smashgg do
+    if resource.update_with_smashgg
+      redirect_to request.referer, notice: 'Données mises à jour'
+    else
+      puts "Model errors: #{resource.errors.full_messages}"
+      flash[:error] = 'Mise à jour échouée'
+      redirect_to request.referer
+    end
+  end
+
   action_item :compute_rewards, only: :show do
     link_to 'Recalculer les récompenses',
-            action: :compute_rewards,
+            { action: :compute_rewards },
             class: 'blue'
   end
   member_action :compute_rewards do
     resource.compute_rewards
     redirect_to request.referer, notice: 'Calcul effectué'
-  end
-
-  action_item :public, only: :show do
-    link_to 'Page publique', resource, class: 'green'
   end
 
 end

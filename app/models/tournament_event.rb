@@ -11,6 +11,7 @@
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  recurring_tournament_id :bigint
+#  smashgg_event_id        :bigint
 #  top1_player_id          :bigint
 #  top2_player_id          :bigint
 #  top3_player_id          :bigint
@@ -23,6 +24,7 @@
 # Indexes
 #
 #  index_tournament_events_on_recurring_tournament_id  (recurring_tournament_id)
+#  index_tournament_events_on_smashgg_event_id         (smashgg_event_id)
 #  index_tournament_events_on_top1_player_id           (top1_player_id)
 #  index_tournament_events_on_top2_player_id           (top2_player_id)
 #  index_tournament_events_on_top3_player_id           (top3_player_id)
@@ -35,6 +37,7 @@
 # Foreign Keys
 #
 #  fk_rails_...  (recurring_tournament_id => recurring_tournaments.id)
+#  fk_rails_...  (smashgg_event_id => smashgg_events.id)
 #  fk_rails_...  (top1_player_id => players.id)
 #  fk_rails_...  (top2_player_id => players.id)
 #  fk_rails_...  (top3_player_id => players.id)
@@ -74,6 +77,7 @@ class TournamentEvent < ApplicationRecord
   belongs_to :top5b_player, class_name: :Player, optional: true
   belongs_to :top7a_player, class_name: :Player, optional: true
   belongs_to :top7b_player, class_name: :Player, optional: true
+  belongs_to :smashgg_event, optional: true
 
   has_one_attached :graph
 
@@ -83,6 +87,10 @@ class TournamentEvent < ApplicationRecord
   # validations
   # ---------------------------------------------------------------------------
 
+  validates :smashgg_event,
+            uniqueness: {
+              allow_nil: true
+            }
   validates :name, presence: true
   validates :date, presence: true
   validates :graph, content_type: /\Aimage\/.*\z/
@@ -217,6 +225,7 @@ class TournamentEvent < ApplicationRecord
         top5b_player_name
         top7a_player_name
         top7b_player_name
+        graph_url
       )
     ))
   end
@@ -230,6 +239,97 @@ class TournamentEvent < ApplicationRecord
              to: player_name,
              prefix: true,
              allow_nil: true
+  end
+
+  def is_on_smashgg?
+    bracket_url&.starts_with?('https://smash.gg/')
+  end
+  def is_on_braacket?
+    bracket_url&.starts_with?('https://braacket.com/')
+  end
+  def is_on_challonge?
+    bracket_url&.starts_with?('https://challonge.com/')
+  end
+
+  def use_smashgg_event(replace_existing_values)
+    return false if smashgg_event.nil?
+    if replace_existing_values || name.blank?
+      self.name = smashgg_event.tournament_name
+    end
+    if replace_existing_values || date.nil?
+      self.date = smashgg_event.start_at
+    end
+    if replace_existing_values || participants_count.nil?
+      self.participants_count = smashgg_event.num_entrants
+    end
+    if replace_existing_values || bracket_url.blank?
+      self.bracket_url = smashgg_event.smashgg_url
+    end
+    true
+  end
+
+  def update_smashgg_event
+    return false unless is_on_smashgg?
+    if smashgg_event.nil?
+      self.smashgg_event = SmashggEvent.from_url(bracket_url)
+    else
+      smashgg_event.fetch_smashgg_data
+    end
+    unless smashgg_event.save
+      puts "Unable to save SmashggEvent: #{smashgg_event.errors.full_messages}"
+      return false
+    end
+    true
+  end
+
+  def complete_with_smashgg
+    update_smashgg_event && use_smashgg_event(false)
+  end
+
+  def complete_with_braacket
+    false
+  end
+
+  def complete_with_challonge
+    false
+  end
+
+  def complete_with_bracket
+    return complete_with_smashgg if is_on_smashgg?
+    return complete_with_braacket if is_on_braacket?
+    return complete_with_challonge if is_on_challonge?
+    false
+  end
+
+  def update_with_smashgg
+    update_smashgg_event && use_smashgg_event(true) && save
+  end
+
+  def update_with_braacket
+    false
+  end
+
+  def update_with_challonge
+    false
+  end
+
+  def update_with_bracket
+    return update_with_smashgg if is_on_smashgg?
+    return update_with_braacket if is_on_braacket?
+    return update_with_challonge if is_on_challonge?
+    false
+  end
+
+  def graph_url
+    return nil unless graph.attached?
+    graph.service_url
+  end
+
+  def graph_url=(url)
+    uri = URI.parse(url)
+    open(url) do |f|
+      graph.attach(io: File.open(f.path), filename: File.basename(uri.path))
+    end
   end
 
   # ---------------------------------------------------------------------------
