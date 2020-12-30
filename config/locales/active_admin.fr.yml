@@ -14,6 +14,9 @@ fr:
       not_geocoded: Non géolocalisé
       offline: Offline
       online: Online
+      on_smashgg: smash.gg
+      on_braacket: Braacket
+      on_challonge: Challonge
       roots: Superadmins
       to_be_accepted: À valider
       unknown: Inconnus

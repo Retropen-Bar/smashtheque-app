@@ -159,6 +159,10 @@ class TournamentEvent < ApplicationRecord
     )
   end
 
+  scope :on_smashgg, -> { where("bracket_url LIKE 'https://smash.gg/%'") }
+  scope :on_braacket, -> { where("bracket_url LIKE 'https://braacket.com/%'") }
+  scope :on_challonge, -> { where("bracket_url LIKE 'https://challonge.com/%'") }
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------

@@ -36,6 +36,10 @@ ActiveAdmin.register TournamentEvent do
   scope :with_missing_players
   scope :with_missing_data
 
+  scope :on_smashgg, group: :bracket
+  scope :on_braacket, group: :bracket
+  scope :on_challonge, group: :bracket
+
   filter :recurring_tournament
   filter :name
   filter :date
