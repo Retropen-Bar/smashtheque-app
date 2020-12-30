@@ -68,7 +68,7 @@ ActiveAdmin.register SmashggEvent do
           recurring_tournament: recurring_tournament,
           smashgg_event: smashgg_event
         )
-        tournament_event.use_smashgg_event
+        tournament_event.use_smashgg_event(true)
         tournament_event.save!
       end
       redirect_to request.referer, notice: 'Éditions créées'
