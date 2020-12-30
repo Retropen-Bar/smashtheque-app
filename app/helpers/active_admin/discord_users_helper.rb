@@ -26,7 +26,9 @@ module ActiveAdmin::DiscordUsersHelper
                           delay: 250,
                           url: autocomplete_admin_discord_users_path,
                           dataType: 'json'
-                        }
+                        },
+                        placeholder: 'Nom ou ID du compte',
+                        allowClear: true
                       }
                     }
                   }
