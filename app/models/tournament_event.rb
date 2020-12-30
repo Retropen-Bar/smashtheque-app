@@ -3,6 +3,7 @@
 # Table name: tournament_events
 #
 #  id                      :bigint           not null, primary key
+#  bracket_type            :string
 #  bracket_url             :string
 #  date                    :date             not null
 #  is_complete             :boolean          default(FALSE), not null
@@ -10,9 +11,8 @@
 #  participants_count      :integer
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
-#  challonge_tournament_id :bigint
+#  bracket_id              :bigint
 #  recurring_tournament_id :bigint
-#  smashgg_event_id        :bigint
 #  top1_player_id          :bigint
 #  top2_player_id          :bigint
 #  top3_player_id          :bigint
@@ -24,23 +24,20 @@
 #
 # Indexes
 #
-#  index_tournament_events_on_challonge_tournament_id  (challonge_tournament_id)
-#  index_tournament_events_on_recurring_tournament_id  (recurring_tournament_id)
-#  index_tournament_events_on_smashgg_event_id         (smashgg_event_id)
-#  index_tournament_events_on_top1_player_id           (top1_player_id)
-#  index_tournament_events_on_top2_player_id           (top2_player_id)
-#  index_tournament_events_on_top3_player_id           (top3_player_id)
-#  index_tournament_events_on_top4_player_id           (top4_player_id)
-#  index_tournament_events_on_top5a_player_id          (top5a_player_id)
-#  index_tournament_events_on_top5b_player_id          (top5b_player_id)
-#  index_tournament_events_on_top7a_player_id          (top7a_player_id)
-#  index_tournament_events_on_top7b_player_id          (top7b_player_id)
+#  index_tournament_events_on_bracket_type_and_bracket_id  (bracket_type,bracket_id)
+#  index_tournament_events_on_recurring_tournament_id      (recurring_tournament_id)
+#  index_tournament_events_on_top1_player_id               (top1_player_id)
+#  index_tournament_events_on_top2_player_id               (top2_player_id)
+#  index_tournament_events_on_top3_player_id               (top3_player_id)
+#  index_tournament_events_on_top4_player_id               (top4_player_id)
+#  index_tournament_events_on_top5a_player_id              (top5a_player_id)
+#  index_tournament_events_on_top5b_player_id              (top5b_player_id)
+#  index_tournament_events_on_top7a_player_id              (top7a_player_id)
+#  index_tournament_events_on_top7b_player_id              (top7b_player_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (challonge_tournament_id => challonge_tournaments.id)
 #  fk_rails_...  (recurring_tournament_id => recurring_tournaments.id)
-#  fk_rails_...  (smashgg_event_id => smashgg_events.id)
 #  fk_rails_...  (top1_player_id => players.id)
 #  fk_rails_...  (top2_player_id => players.id)
 #  fk_rails_...  (top3_player_id => players.id)
@@ -80,8 +77,7 @@ class TournamentEvent < ApplicationRecord
   belongs_to :top5b_player, class_name: :Player, optional: true
   belongs_to :top7a_player, class_name: :Player, optional: true
   belongs_to :top7b_player, class_name: :Player, optional: true
-  belongs_to :challonge_tournament, optional: true
-  belongs_to :smashgg_event, optional: true
+  belongs_to :bracket, polymorphic: true, optional: true
 
   has_one_attached :graph
 
@@ -91,19 +87,14 @@ class TournamentEvent < ApplicationRecord
   # validations
   # ---------------------------------------------------------------------------
 
-  validates :challonge_tournament,
+  validates :bracket_id,
             uniqueness: {
-              allow_nil: true
-            }
-  validates :smashgg_event,
-            uniqueness: {
+              scope: :bracket_type,
               allow_nil: true
             }
   validates :name, presence: true
   validates :date, presence: true
   validates :graph, content_type: /\Aimage\/.*\z/
-  # TODO
-  # validate :unique_bracket_provider
   validate :unique_players
 
   def unique_players
@@ -173,9 +164,39 @@ class TournamentEvent < ApplicationRecord
   scope :on_braacket, -> { where("bracket_url LIKE 'https://braacket.com/%'") }
   scope :on_challonge, -> { where("bracket_url LIKE 'https://challonge.com/%'") }
 
+  def self.by_bracket_type(v)
+    where(bracket_type: v)
+  end
+
+  def self.by_bracket_id(v)
+    where(bracket_id: v)
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------
+
+  def bracket_gid
+    self.bracket&.to_global_id&.to_s
+  end
+
+  def bracket_gid=(gid)
+    self.bracket = GlobalID::Locator.locate gid
+  end
+
+  def self.bracket_autocomplete(term)
+    searchable_types = [ChallongeTournament, SmashggEvent].map(&:to_s)
+
+    {
+      results: PgSearch.multisearch(term).where(searchable_type: searchable_types).map do |document|
+        model = document.searchable.decorate
+        {
+          id: model.to_global_id.to_s,
+          text: model.decorate.autocomplete_name
+        }
+      end
+    }
+  end
 
   def player_ids
     PLAYER_NAMES.map do |player_name|
@@ -266,24 +287,24 @@ class TournamentEvent < ApplicationRecord
   end
 
   def use_smashgg_event(replace_existing_values)
-    return false if smashgg_event.nil?
+    return false unless bracket.is_a?(SmashggEvent)
     if replace_existing_values || name.blank?
-      self.name = smashgg_event.tournament_name
+      self.name = bracket.tournament_name
     end
     if replace_existing_values || date.nil?
-      self.date = smashgg_event.start_at
+      self.date = bracket.start_at
     end
     if replace_existing_values || participants_count.nil?
-      self.participants_count = smashgg_event.num_entrants
+      self.participants_count = bracket.num_entrants
     end
     if replace_existing_values || bracket_url.blank?
-      self.bracket_url = smashgg_event.smashgg_url
+      self.bracket_url = bracket.smashgg_url
     end
     PLAYER_RANKS.each do |rank|
       player_name = "top#{rank}_player".to_sym
       user_name = "top#{rank}_smashgg_user".to_sym
       if replace_existing_values || send(player_name).nil?
-        if player = smashgg_event.send(user_name)&.player
+        if player = bracket.send(user_name)&.player
           self.send("#{player_name}=", player)
         end
       end
@@ -292,31 +313,31 @@ class TournamentEvent < ApplicationRecord
   end
 
   def use_challonge_tournament(replace_existing_values)
-    return false if challonge_tournament.nil?
+    return false unless bracket.is_a?(ChallongeTournament)
     if replace_existing_values || name.blank?
-      self.name = challonge_tournament.name
+      self.name = bracket.name
     end
     if replace_existing_values || date.nil?
-      self.date = challonge_tournament.start_at
+      self.date = bracket.start_at
     end
     if replace_existing_values || participants_count.nil?
-      self.participants_count = challonge_tournament.participants_count
+      self.participants_count = bracket.participants_count
     end
     if replace_existing_values || bracket_url.blank?
-      self.bracket_url = challonge_tournament.challonge_url
+      self.bracket_url = bracket.challonge_url
     end
     true
   end
 
   def update_smashgg_event
     return false unless is_on_smashgg?
-    if smashgg_event.nil?
-      self.smashgg_event = SmashggEvent.from_url(bracket_url)
+    if bracket.nil? || !bracket.is_a?(SmashggEvent)
+      self.bracket = SmashggEvent.from_url(bracket_url)
     else
-      smashgg_event.fetch_smashgg_data
+      bracket.fetch_smashgg_data
     end
-    unless smashgg_event.save
-      puts "Unable to save SmashggEvent: #{smashgg_event.errors.full_messages}"
+    unless bracket.save
+      puts "Unable to save SmashggEvent: #{bracket.errors.full_messages}"
       return false
     end
     true
@@ -324,15 +345,16 @@ class TournamentEvent < ApplicationRecord
 
   def update_challonge_tournament
     return false unless is_on_challonge?
-    if challonge_tournament.nil?
-      self.challonge_tournament = ChallongeTournament.from_url(bracket_url)
+    if bracket.nil? || !bracket.is_a?(ChallongeTournament)
+      self.bracket = ChallongeTournament.from_url(bracket_url)
     else
-      challonge_tournament.fetch_challonge_data
+      bracket.fetch_challonge_data
     end
-    unless challonge_tournament.save
-      puts "Unable to save ChallongeTournament: #{challonge_tournament.errors.full_messages}"
+    unless bracket.save
+      puts "Unable to save ChallongeTournament: #{bracket.errors.full_messages}"
       return false
     end
+    puts 'Successfully updated ChallongeTournament'
     true
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_30_101150) do
+ActiveRecord::Schema.define(version: 2020_12_30_114002) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -390,11 +390,10 @@ ActiveRecord::Schema.define(version: 2020_12_30_101150) do
     t.integer "participants_count"
     t.string "bracket_url"
     t.boolean "is_complete", default: false, null: false
-    t.bigint "smashgg_event_id"
-    t.bigint "challonge_tournament_id"
-    t.index ["challonge_tournament_id"], name: "index_tournament_events_on_challonge_tournament_id"
+    t.string "bracket_type"
+    t.bigint "bracket_id"
+    t.index ["bracket_type", "bracket_id"], name: "index_tournament_events_on_bracket_type_and_bracket_id"
     t.index ["recurring_tournament_id"], name: "index_tournament_events_on_recurring_tournament_id"
-    t.index ["smashgg_event_id"], name: "index_tournament_events_on_smashgg_event_id"
     t.index ["top1_player_id"], name: "index_tournament_events_on_top1_player_id"
     t.index ["top2_player_id"], name: "index_tournament_events_on_top2_player_id"
     t.index ["top3_player_id"], name: "index_tournament_events_on_top3_player_id"
@@ -456,7 +455,6 @@ ActiveRecord::Schema.define(version: 2020_12_30_101150) do
   add_foreign_key "smashgg_events", "smashgg_users", column: "top7a_smashgg_user_id"
   add_foreign_key "smashgg_events", "smashgg_users", column: "top7b_smashgg_user_id"
   add_foreign_key "smashgg_users", "players"
-  add_foreign_key "tournament_events", "challonge_tournaments"
   add_foreign_key "tournament_events", "players", column: "top1_player_id"
   add_foreign_key "tournament_events", "players", column: "top2_player_id"
   add_foreign_key "tournament_events", "players", column: "top3_player_id"
@@ -466,5 +464,4 @@ ActiveRecord::Schema.define(version: 2020_12_30_101150) do
   add_foreign_key "tournament_events", "players", column: "top7a_player_id"
   add_foreign_key "tournament_events", "players", column: "top7b_player_id"
   add_foreign_key "tournament_events", "recurring_tournaments"
-  add_foreign_key "tournament_events", "smashgg_events"
 end

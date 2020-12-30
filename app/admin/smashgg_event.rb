@@ -5,7 +5,7 @@ ActiveAdmin.register SmashggEvent do
   menu parent: '<img src="https://smash.gg/images/gg-app-icon.png" height="16" class="logo"/>smash.gg'.html_safe,
        label: 'Tournois'
 
-  actions :index, :show, :new, :create, :delete
+  actions :index, :show, :new, :create, :destroy
 
   # ---------------------------------------------------------------------------
   # INDEX

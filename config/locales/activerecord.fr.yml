@@ -255,15 +255,15 @@ fr:
         twitter_username: Compte Twitter
       tournament_event:
         << : *SHARED
-        bracket_url: Bracket
-        challonge_tournament: Tournoi Challonge
+        bracket: Bracket
+        bracket_gid: Bracket
+        bracket_url: URL du bracket
         date: Date
         graph: Graph
         is_complete: Complet
         name: Nom
         participants_count: Participants
         recurring_tournament: Série
-        smashgg_event: Tournoi smash.gg
         top1_player: Top 1
         top2_player: Top 2
         top3_player: Top 3

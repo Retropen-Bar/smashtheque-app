@@ -7,11 +7,13 @@ namespace :pg_search do
 
       PgSearch::Document.delete_all
       [
+        ChallongeTournament,
         Character,
         Locations::City,
         Locations::Country,
         Player,
         RecurringTournament,
+        SmashggEvent,
         Team,
         TournamentEvent
       ].each do |klass|

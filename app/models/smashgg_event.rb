@@ -78,7 +78,7 @@ class SmashggEvent < ApplicationRecord
   belongs_to :top7a_smashgg_user, class_name: :SmashggUser, optional: true
   belongs_to :top7b_smashgg_user, class_name: :SmashggUser, optional: true
 
-  has_one :tournament_event, dependent: :nullify
+  has_one :tournament_event, as: :bracket, dependent: :nullify
 
   # ---------------------------------------------------------------------------
   # VALIDATIONS
@@ -96,10 +96,14 @@ class SmashggEvent < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   def self.with_tournament_event
-    where(id: TournamentEvent.select(:smashgg_event_id))
+    where(id: (
+      TournamentEvent.by_bracket_type(:SmashggEvent).select(:bracket_id)
+    ))
   end
   def self.without_tournament_event
-    where.not(id: TournamentEvent.select(:smashgg_event_id))
+    where.not(id: (
+      TournamentEvent.by_bracket_type(:SmashggEvent).select(:bracket_id)
+    ))
   end
 
   def self.with_smashgg_user(smashgg_user_id)
@@ -219,5 +223,12 @@ class SmashggEvent < ApplicationRecord
     end
     nil
   end
+
+  # ---------------------------------------------------------------------------
+  # global search
+  # ---------------------------------------------------------------------------
+
+  include PgSearch::Model
+  multisearchable against: %i(name tournament_name)
 
 end

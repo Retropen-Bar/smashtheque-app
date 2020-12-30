@@ -34,7 +34,7 @@ class ChallongeTournament < ApplicationRecord
   # RELATIONS
   # ---------------------------------------------------------------------------
 
-  has_one :tournament_event, dependent: :nullify
+  has_one :tournament_event, as: :bracket, dependent: :nullify
 
   # ---------------------------------------------------------------------------
   # VALIDATIONS
@@ -52,10 +52,14 @@ class ChallongeTournament < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   def self.with_tournament_event
-    where(id: TournamentEvent.select(:challonge_tournament_id))
+    where(id: (
+      TournamentEvent.by_bracket_type(:ChallongeTournament).select(:bracket_id)
+    ))
   end
   def self.without_tournament_event
-    where.not(id: TournamentEvent.select(:challonge_tournament_id))
+    where.not(id: (
+      TournamentEvent.by_bracket_type(:ChallongeTournament).select(:bracket_id)
+    ))
   end
 
   # ---------------------------------------------------------------------------
@@ -129,5 +133,12 @@ class ChallongeTournament < ApplicationRecord
       self.where(challonge_id: attributes[:challonge_id]).first_or_initialize(attributes)
     end
   end
+
+  # ---------------------------------------------------------------------------
+  # global search
+  # ---------------------------------------------------------------------------
+
+  include PgSearch::Model
+  multisearchable against: %i(name)
 
 end

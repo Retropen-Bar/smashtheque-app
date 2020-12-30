@@ -5,7 +5,7 @@ ActiveAdmin.register ChallongeTournament do
   menu parent: '<img src="https://assets.challonge.com/assets/challonge_fireball_orange-a973ff3b12c34c780fc21313ec71aada3b9b779cbd3a62769e9199ce08395692.svg" height="16" class="logo"/>Challonge'.html_safe,
        label: 'Tournois'
 
-  actions :index, :show, :new, :create, :delete
+  actions :index, :show, :new, :create, :destroy
 
   # ---------------------------------------------------------------------------
   # INDEX
