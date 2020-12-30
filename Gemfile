@@ -127,3 +127,6 @@ group :production do
   # for assets compilation
   gem 'activerecord-nulldb-adapter'
 end
+
+# security fixes
+gem 'nokogiri', ">= 1.11.0.rc4"
