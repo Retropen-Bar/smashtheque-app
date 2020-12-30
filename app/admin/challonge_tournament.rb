@@ -124,23 +124,4 @@ ActiveAdmin.register ChallongeTournament do
     end
   end
 
-  # ---------------------------------------------------------------------------
-  # SEARCH
-  # ---------------------------------------------------------------------------
-
-  action_item :lookup, only: :index do
-    link_to 'Rechercher sur Challonge', { action: :lookup }, class: :orange
-  end
-  collection_action :lookup do
-    @name = params[:name]
-    @from = params[:from] ? Date.parse(params[:from]) : (Date.today - 1.month)
-    @to = params[:to] ? Date.parse(params[:to]) : Date.today
-    # add 1 day because we are using dates and not datetimes
-    @challonge_tournaments = ChallongeTournament.lookup(
-      name: @name,
-      from: @from,
-      to: @to + 1.day
-    )
-  end
-
 end

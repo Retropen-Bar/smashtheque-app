@@ -125,15 +125,6 @@ class ChallongeTournament < ApplicationRecord
     slug && "https://challonge.com/#{slug}"
   end
 
-  def self.lookup(name:, from:, to:)
-    data = ChallongeClient.new.get_tournaments(name: name, from: from, to: to)
-    return nil if data.nil?
-    data.map do |api_data|
-      attributes = attributes_from_api_data(api_data)
-      self.where(challonge_id: attributes[:challonge_id]).first_or_initialize(attributes)
-    end
-  end
-
   # ---------------------------------------------------------------------------
   # global search
   # ---------------------------------------------------------------------------
