@@ -62,6 +62,10 @@ class SmashggUser < ApplicationRecord
     where.not(player_id: nil)
   end
 
+  def self.without_player
+    where(player_id: nil)
+  end
+
   def self.unknown
     where(gamer_tag: nil)
   end
@@ -127,6 +131,18 @@ class SmashggUser < ApplicationRecord
       smashgg_user.fetch_smashgg_data
       smashgg_user.save!
     end
+  end
+
+  def suggested_player
+    if discord_discriminated_username
+      discord_user = DiscordUser.by_discriminated_username(
+        discord_discriminated_username
+      ).first
+      if discord_user && discord_user.player
+        return discord_user.player
+      end
+    end
+    nil
   end
 
 end

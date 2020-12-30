@@ -30,8 +30,9 @@ ActiveAdmin.register SmashggUser do
   end
 
   scope :all
-  scope :with_player
   scope :unknown
+  scope :with_player
+  scope :without_player
 
   filter :smashgg_id
   filter :slug
@@ -126,6 +127,17 @@ ActiveAdmin.register SmashggUser do
       flash[:error] = 'Import échoué'
       redirect_to request.referer
     end
+  end
+
+  # ---------------------------------------------------------------------------
+  # SUGGESTIONS
+  # ---------------------------------------------------------------------------
+
+  action_item :suggestions, only: :index do
+    link_to 'Suggestions', { action: :suggestions }, class: :blue
+  end
+  collection_action :suggestions do
+    @smashgg_users = SmashggUser.without_player
   end
 
 end

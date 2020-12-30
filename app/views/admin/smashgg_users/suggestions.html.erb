@@ -1,0 +1,27 @@
+<h2>Suggestions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Compte smash.gg</th>
+      <th>Joueur suggéré</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @smashgg_users.each do |smashgg_user| %>
+      <% suggested_player = smashgg_user.suggested_player %>
+      <% next if suggested_player.nil? %>
+      <tr>
+        <td><%= smashgg_user.admin_decorate.admin_link %></td>
+        <td><%= suggested_player.admin_decorate.admin_link %></td>
+        <td>
+          <%= semantic_form_for([:admin, smashgg_user], html: {target: '_blank'}) do |f| %>
+            <%= f.input :player_id, as: :hidden, input_html: {value: suggested_player.id } %>
+            <%= f.submit 'Valider' %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
