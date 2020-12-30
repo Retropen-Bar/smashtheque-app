@@ -14,8 +14,20 @@ class SmashggEventDecorator < BaseDecorator
     ].join('&nbsp;').html_safe
   end
 
+  def icon_class
+    'smashgg'
+  end
+
   def autocomplete_name
     full_name
+  end
+
+  def as_autocomplete_result
+    h.content_tag :div, class: 'smashgg-event' do
+      h.content_tag :div, class: :name do
+        full_name_with_icon(size: 16)
+      end
+    end
   end
 
   def smashgg_link

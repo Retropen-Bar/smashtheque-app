@@ -18,8 +18,20 @@ class ChallongeTournamentDecorator < BaseDecorator
     end
   end
 
+  def icon_class
+    'challonge'
+  end
+
   def autocomplete_name
     model.name
+  end
+
+  def as_autocomplete_result
+    h.content_tag :div, class: 'challonge-tournament' do
+      h.content_tag :div, class: :name do
+        name_with_icon(size: 16)
+      end
+    end
   end
 
 end
