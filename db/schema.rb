@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_29_205622) do
+ActiveRecord::Schema.define(version: 2020_12_30_101150) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -82,6 +82,26 @@ ActiveRecord::Schema.define(version: 2020_12_29_205622) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["token"], name: "index_api_tokens_on_token", unique: true
+  end
+
+  create_table "challonge_tournaments", force: :cascade do |t|
+    t.integer "challonge_id", null: false
+    t.string "slug", null: false
+    t.string "name"
+    t.datetime "start_at"
+    t.integer "participants_count"
+    t.string "top1_participant_name"
+    t.string "top2_participant_name"
+    t.string "top3_participant_name"
+    t.string "top4_participant_name"
+    t.string "top5a_participant_name"
+    t.string "top5b_participant_name"
+    t.string "top7a_participant_name"
+    t.string "top7b_participant_name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["challonge_id"], name: "index_challonge_tournaments_on_challonge_id", unique: true
+    t.index ["slug"], name: "index_challonge_tournaments_on_slug", unique: true
   end
 
   create_table "characters", force: :cascade do |t|
@@ -371,6 +391,8 @@ ActiveRecord::Schema.define(version: 2020_12_29_205622) do
     t.string "bracket_url"
     t.boolean "is_complete", default: false, null: false
     t.bigint "smashgg_event_id"
+    t.bigint "challonge_tournament_id"
+    t.index ["challonge_tournament_id"], name: "index_tournament_events_on_challonge_tournament_id"
     t.index ["recurring_tournament_id"], name: "index_tournament_events_on_recurring_tournament_id"
     t.index ["smashgg_event_id"], name: "index_tournament_events_on_smashgg_event_id"
     t.index ["top1_player_id"], name: "index_tournament_events_on_top1_player_id"
@@ -434,6 +456,7 @@ ActiveRecord::Schema.define(version: 2020_12_29_205622) do
   add_foreign_key "smashgg_events", "smashgg_users", column: "top7a_smashgg_user_id"
   add_foreign_key "smashgg_events", "smashgg_users", column: "top7b_smashgg_user_id"
   add_foreign_key "smashgg_users", "players"
+  add_foreign_key "tournament_events", "challonge_tournaments"
   add_foreign_key "tournament_events", "players", column: "top1_player_id"
   add_foreign_key "tournament_events", "players", column: "top2_player_id"
   add_foreign_key "tournament_events", "players", column: "top3_player_id"

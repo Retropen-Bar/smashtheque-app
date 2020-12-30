@@ -129,6 +129,9 @@ ActiveAdmin.register TournamentEvent do
             end
           end
           row :is_complete
+          row :challonge_tournament do |decorated|
+            decorated.challonge_tournament_admin_link
+          end
           row :smashgg_event do |decorated|
             decorated.smashgg_event_admin_link
           end

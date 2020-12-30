@@ -10,6 +10,7 @@
 #  participants_count      :integer
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
+#  challonge_tournament_id :bigint
 #  recurring_tournament_id :bigint
 #  smashgg_event_id        :bigint
 #  top1_player_id          :bigint
@@ -23,6 +24,7 @@
 #
 # Indexes
 #
+#  index_tournament_events_on_challonge_tournament_id  (challonge_tournament_id)
 #  index_tournament_events_on_recurring_tournament_id  (recurring_tournament_id)
 #  index_tournament_events_on_smashgg_event_id         (smashgg_event_id)
 #  index_tournament_events_on_top1_player_id           (top1_player_id)
@@ -36,6 +38,7 @@
 #
 # Foreign Keys
 #
+#  fk_rails_...  (challonge_tournament_id => challonge_tournaments.id)
 #  fk_rails_...  (recurring_tournament_id => recurring_tournaments.id)
 #  fk_rails_...  (smashgg_event_id => smashgg_events.id)
 #  fk_rails_...  (top1_player_id => players.id)
@@ -77,6 +80,7 @@ class TournamentEvent < ApplicationRecord
   belongs_to :top5b_player, class_name: :Player, optional: true
   belongs_to :top7a_player, class_name: :Player, optional: true
   belongs_to :top7b_player, class_name: :Player, optional: true
+  belongs_to :challonge_tournament, optional: true
   belongs_to :smashgg_event, optional: true
 
   has_one_attached :graph
@@ -87,6 +91,10 @@ class TournamentEvent < ApplicationRecord
   # validations
   # ---------------------------------------------------------------------------
 
+  validates :challonge_tournament,
+            uniqueness: {
+              allow_nil: true
+            }
   validates :smashgg_event,
             uniqueness: {
               allow_nil: true
@@ -94,6 +102,8 @@ class TournamentEvent < ApplicationRecord
   validates :name, presence: true
   validates :date, presence: true
   validates :graph, content_type: /\Aimage\/.*\z/
+  # TODO
+  # validate :unique_bracket_provider
   validate :unique_players
 
   def unique_players
@@ -281,6 +291,23 @@ class TournamentEvent < ApplicationRecord
     true
   end
 
+  def use_challonge_tournament(replace_existing_values)
+    return false if challonge_tournament.nil?
+    if replace_existing_values || name.blank?
+      self.name = challonge_tournament.name
+    end
+    if replace_existing_values || date.nil?
+      self.date = challonge_tournament.start_at
+    end
+    if replace_existing_values || participants_count.nil?
+      self.participants_count = challonge_tournament.participants_count
+    end
+    if replace_existing_values || bracket_url.blank?
+      self.bracket_url = challonge_tournament.challonge_url
+    end
+    true
+  end
+
   def update_smashgg_event
     return false unless is_on_smashgg?
     if smashgg_event.nil?
@@ -295,6 +322,20 @@ class TournamentEvent < ApplicationRecord
     true
   end
 
+  def update_challonge_tournament
+    return false unless is_on_challonge?
+    if challonge_tournament.nil?
+      self.challonge_tournament = ChallongeTournament.from_url(bracket_url)
+    else
+      challonge_tournament.fetch_challonge_data
+    end
+    unless challonge_tournament.save
+      puts "Unable to save ChallongeTournament: #{challonge_tournament.errors.full_messages}"
+      return false
+    end
+    true
+  end
+
   def complete_with_smashgg
     update_smashgg_event && use_smashgg_event(false)
   end
@@ -304,7 +345,7 @@ class TournamentEvent < ApplicationRecord
   end
 
   def complete_with_challonge
-    false
+    update_challonge_tournament && use_challonge_tournament(false)
   end
 
   def complete_with_bracket
@@ -323,7 +364,7 @@ class TournamentEvent < ApplicationRecord
   end
 
   def update_with_challonge
-    false
+    update_challonge_tournament && use_challonge_tournament(true) && save
   end
 
   def update_with_bracket
