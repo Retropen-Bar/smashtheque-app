@@ -12,6 +12,16 @@ ActiveAdmin.register TournamentEvent do
   # INDEX
   # ---------------------------------------------------------------------------
 
+  order_by(:bracket) do |order_clause|
+    if order_clause.order == 'desc'
+      'bracket_type DESC, bracket_id DESC'
+    else
+      'bracket_type, bracket_id'
+    end
+  end
+
+  includes :recurring_tournament, :bracket, top1_player: :discord_user, top2_player: :discord_user, top3_player: :discord_user, top4_player: :discord_user, top5a_player: :discord_user, top5b_player: :discord_user, top7a_player: :discord_user, top7b_player: :discord_user
+
   index do
     selectable_column
     id_column
@@ -21,7 +31,7 @@ ActiveAdmin.register TournamentEvent do
     column :bracket_url do |decorated|
       decorated.bracket_icon_link
     end
-    column :bracket do |decorated|
+    column :bracket, sortable: :bracket do |decorated|
       decorated.bracket_admin_link
     end
     column :participants_count
