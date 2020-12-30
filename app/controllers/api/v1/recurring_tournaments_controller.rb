@@ -1,5 +1,11 @@
 class Api::V1::RecurringTournamentsController < Api::V1::BaseController
 
+  has_scope :by_recurring_type_in, type: :array
+  has_scope :by_wday_in, type: :array
+  has_scope :by_level_in, type: :array
+  has_scope :by_size_geq
+  has_scope :by_size_leq
+
   has_scope :page, default: 1
   has_scope :per
 

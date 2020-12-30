@@ -84,6 +84,8 @@ class RecurringTournament < ApplicationRecord
   scope :offline, -> { where(is_online: false) }
 
   scope :by_level_in, -> v { where(level: v) }
+  scope :by_recurring_type_in, -> v { where(recurring_type: v) }
+  scope :by_wday_in, -> v { on_wday(v) }
 
   scope :by_size_geq, -> v { where("size >= ?", v) }
   scope :by_size_leq, -> v { where("size <= ?", v) }
