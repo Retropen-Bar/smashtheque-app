@@ -5,7 +5,12 @@ class Api::V1::SearchController < Api::V1::BaseController
   def global
     render json: {
       results: PgSearch.multisearch(params[:term])
-                       .where.not(searchable_type: %i(RecurringTournament TournamentEvent))
+                       .where.not(searchable_type: %i(
+                         ChallongeTournament
+                         RecurringTournament
+                         SmashggEvent
+                         TournamentEvent
+                       ))
                        .map do |document|
         model = if document.searchable_type == 'Location'
           # hack for weird bug

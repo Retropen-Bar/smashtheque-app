@@ -21,6 +21,9 @@ ActiveAdmin.register TournamentEvent do
     column :bracket_url do |decorated|
       decorated.bracket_icon_link
     end
+    column :bracket do |decorated|
+      decorated.bracket_admin_link
+    end
     column :participants_count
     TournamentEvent::PLAYER_NAMES.each do |player_name|
       column player_name do |decorated|
@@ -54,6 +57,33 @@ ActiveAdmin.register TournamentEvent do
   form do |f|
     columns do
       column do
+        panel 'Bracket' do
+          f.inputs do
+            f.input :bracket_url
+            f.input :bracket_gid,
+                    {
+                      as: :select,
+                      collection: [
+                        [
+                          f.object.bracket&.decorate&.autocomplete_name,
+                          f.object.bracket&.to_global_id&.to_s
+                        ]
+                      ],
+                      input_html: {
+                        data: {
+                          select2: {
+                            ajax: {
+                              url: url_for(action: :bracket_autocomplete),
+                              dataType: 'json'
+                            },
+                            placeholder: 'Nom du joueur',
+                            allowClear: true
+                          }
+                        }
+                      }
+                    }
+          end
+        end
         panel 'Graph', id: 'current-graph' do
           f.object.decorate.graph_image_tag
         end
@@ -87,7 +117,6 @@ ActiveAdmin.register TournamentEvent do
             f.input :name
             f.input :date
             f.input :participants_count
-            f.input :bracket_url
             TournamentEvent::PLAYER_NAMES.each do |player_name|
               player_input f, player_name
             end
@@ -103,7 +132,12 @@ ActiveAdmin.register TournamentEvent do
                 :top1_player_id, :top2_player_id, :top3_player_id,
                 :top4_player_id, :top5a_player_id, :top5b_player_id,
                 :top7a_player_id, :top7b_player_id, :is_complete,
-                :bracket_url, :graph
+                :bracket_url, :bracket_gid,
+                :graph
+
+  collection_action :bracket_autocomplete do
+    render json: TournamentEvent.bracket_autocomplete(params[:term])
+  end
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -118,10 +152,7 @@ ActiveAdmin.register TournamentEvent do
           row :date
           row :participants_count
           row :bracket_url do |decorated|
-            [
-              decorated.bracket_icon_link(style: 'vertical-align: middle'),
-              decorated.bracket_link
-            ].join('&nbsp;').html_safe
+            decorated.bracket_link
           end
           TournamentEvent::PLAYER_NAMES.each do |player_name|
             row player_name do |decorated|
@@ -129,8 +160,8 @@ ActiveAdmin.register TournamentEvent do
             end
           end
           row :is_complete
-          row :smashgg_event do |decorated|
-            decorated.smashgg_event_admin_link
+          row :bracket do |decorated|
+            decorated.bracket_admin_link
           end
           row :created_at
           row :updated_at
@@ -184,6 +215,25 @@ ActiveAdmin.register TournamentEvent do
       redirect_to request.referer, notice: 'Données mises à jour'
     else
       puts "Model errors: #{resource.errors.full_messages}"
+      puts "Bracket errors: #{resource.bracket&.errors&.full_messages}"
+      flash[:error] = 'Mise à jour échouée'
+      redirect_to request.referer
+    end
+  end
+
+  action_item :update_with_challonge,
+              only: :show,
+              if: proc { resource.is_on_challonge? } do
+    link_to 'Mettre à jour avec Challonge',
+            { action: :update_with_challonge },
+            class: 'orange'
+  end
+  member_action :update_with_challonge do
+    if resource.update_with_challonge
+      redirect_to request.referer, notice: 'Données mises à jour'
+    else
+      puts "Model errors: #{resource.errors.full_messages}"
+      puts "Bracket errors: #{resource.bracket&.errors&.full_messages}"
       flash[:error] = 'Mise à jour échouée'
       redirect_to request.referer
     end

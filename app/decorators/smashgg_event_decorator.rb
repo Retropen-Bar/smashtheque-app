@@ -7,6 +7,29 @@ class SmashggEventDecorator < BaseDecorator
     ].join(' : ')
   end
 
+  def full_name_with_icon(size: 32)
+    [
+      h.image_tag('https://smash.gg/images/gg-app-icon.png', height: size, style: "vertical-align: middle"),
+      full_name
+    ].join('&nbsp;').html_safe
+  end
+
+  def icon_class
+    'smashgg'
+  end
+
+  def autocomplete_name
+    full_name
+  end
+
+  def as_autocomplete_result
+    h.content_tag :div, class: 'smashgg-event' do
+      h.content_tag :div, class: :name do
+        full_name_with_icon(size: 16)
+      end
+    end
+  end
+
   def smashgg_link
     return nil if model.slug.blank?
     h.link_to smashgg_url, target: '_blank' do

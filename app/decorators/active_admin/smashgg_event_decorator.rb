@@ -4,7 +4,7 @@ class ActiveAdmin::SmashggEventDecorator < SmashggEventDecorator
   decorates :smashgg_event
 
   def admin_link(options = {})
-    super({label: full_name}.merge(options))
+    super({label: full_name_with_icon(size: 16)}.merge(options))
   end
 
   def tournament_event_admin_link(options = {})

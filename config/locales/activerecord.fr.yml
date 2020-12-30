@@ -4,6 +4,7 @@ fr:
       admin_user: Administrateur
       api_request: Requête API
       api_token: Token API
+      challonge_tournament: Tournoi Challonge
       character: Perso
       comment: Commentaire
       discord_guild: Serveur Discord
@@ -54,6 +55,22 @@ fr:
       api_token:
         << : *SHARED
         token: Token
+      challonge_tournament:
+        << : *SHARED
+        challonge_id: ID
+        challonge_url: URL
+        participants_count: Participants
+        slug: Slug
+        start_at: Date
+        top1_participant_name: Top 1
+        top2_participant_name: Top 2
+        top3_participant_name: Top 3
+        top4_participant_name: Top 4
+        top5a_participant_name: Top 5a
+        top5b_participant_name: Top 5b
+        top7a_participant_name: Top 7a
+        top7b_participant_name: Top 7b
+        tournament_event: Édition
       character:
         << : *SHARED
         background_color: Couleur de fond
@@ -238,14 +255,15 @@ fr:
         twitter_username: Compte Twitter
       tournament_event:
         << : *SHARED
-        bracket_url: Bracket
+        bracket: Bracket
+        bracket_gid: Bracket
+        bracket_url: URL du bracket
         date: Date
         graph: Graph
         is_complete: Complet
         name: Nom
         participants_count: Participants
         recurring_tournament: Série
-        smashgg_event: Tournoi smash.gg
         top1_player: Top 1
         top2_player: Top 2
         top3_player: Top 3

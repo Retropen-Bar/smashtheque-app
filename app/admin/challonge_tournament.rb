@@ -1,8 +1,8 @@
-ActiveAdmin.register SmashggEvent do
+ActiveAdmin.register ChallongeTournament do
 
-  decorate_with ActiveAdmin::SmashggEventDecorator
+  decorate_with ActiveAdmin::ChallongeTournamentDecorator
 
-  menu parent: '<img src="https://smash.gg/images/gg-app-icon.png" height="16" class="logo"/>smash.gg'.html_safe,
+  menu parent: '<img src="https://assets.challonge.com/assets/challonge_fireball_orange-a973ff3b12c34c780fc21313ec71aada3b9b779cbd3a62769e9199ce08395692.svg" height="16" class="logo"/>Challonge'.html_safe,
        label: 'Tournois'
 
   actions :index, :show, :new, :create, :destroy
@@ -16,18 +16,13 @@ ActiveAdmin.register SmashggEvent do
   index do
     selectable_column
     id_column
-    column 'Tournoi', sortable: :tournament_slug do |decorated|
-      decorated.tournament_smashgg_link
-    end
-    column 'Événement', sortable: :slug do |decorated|
-      decorated.smashgg_link
+    column 'Tournoi', sortable: :slug do |decorated|
+      decorated.challonge_link
     end
     column :start_at
-    column :num_entrants
-    SmashggEvent::USER_NAMES.each do |user_name|
-      column user_name do |decorated|
-        decorated.send("#{user_name}_admin_link")
-      end
+    column :participants_count
+    ChallongeTournament::PARTICIPANT_NAMES.each do |participant_name|
+      column participant_name
     end
     column :tournament_event do |decorated|
       decorated.tournament_event_admin_link
@@ -43,12 +38,11 @@ ActiveAdmin.register SmashggEvent do
   scope :with_tournament_event, group: :tournament_event
   scope :without_tournament_event, group: :tournament_event
 
-  filter :smashgg_id
-  filter :tournament_name
+  filter :challonge_id
   filter :slug
+  filter :name
   filter :start_at
-  filter :is_online
-  filter :num_entrants
+  filter :participants_count
   filter :created_at
 
   batch_action :create_tournament_event, form: -> {
@@ -61,14 +55,14 @@ ActiveAdmin.register SmashggEvent do
       redirect_to request.referer
     else
       recurring_tournament = RecurringTournament.find(inputs[I18n.t('activerecord.models.recurring_tournament')])
-      batch_action_collection.where(id: ids).each do |smashgg_event|
-        smashgg_event.fetch_smashgg_data
-        smashgg_event.save!
+      batch_action_collection.where(id: ids).each do |challonge_tournament|
+        challonge_tournament.fetch_challonge_data
+        challonge_tournament.save!
         tournament_event = TournamentEvent.new(
           recurring_tournament: recurring_tournament,
-          smashgg_event: smashgg_event
+          challonge_tournament: challonge_tournament
         )
-        tournament_event.use_smashgg_event(true)
+        tournament_event.use_challonge_tournament(true)
         tournament_event.save!
       end
       redirect_to request.referer, notice: 'Éditions créées'
@@ -81,15 +75,15 @@ ActiveAdmin.register SmashggEvent do
 
   form do |f|
     f.inputs do
-      f.input :smashgg_url, placeholder: 'https://smash.gg/...'
+      f.input :challonge_url, placeholder: 'https://challonge.com/...'
     end
     f.actions
   end
 
-  permit_params :smashgg_id, :smashgg_url
+  permit_params :challonge_id, :challonge_url
 
-  before_create do |smashgg_event|
-    smashgg_event.fetch_smashgg_data
+  before_create do |challonge_tournament|
+    challonge_tournament.fetch_challonge_data
   end
 
   # ---------------------------------------------------------------------------
@@ -98,21 +92,15 @@ ActiveAdmin.register SmashggEvent do
 
   show do
     attributes_table do
-      row :smashgg_id
+      row :challonge_id
       row :slug
       row 'Tournoi' do |decorated|
-        decorated.tournament_smashgg_link
+        decorated.challonge_link
       end
-      row 'Événement' do |decorated|
-        decorated.smashgg_link
-      end
-      row :is_online
       row :start_at
-      row :num_entrants
-      SmashggEvent::USER_NAMES.each do |user_name|
-        row user_name do |decorated|
-          decorated.send("#{user_name}_admin_link")
-        end
+      row :participants_count
+      ChallongeTournament::PARTICIPANT_NAMES.each do |participant_name|
+        row participant_name
       end
       row :tournament_event do |decorated|
         decorated.tournament_event_admin_link
@@ -122,33 +110,18 @@ ActiveAdmin.register SmashggEvent do
     end
   end
 
-  action_item :fetch_smashgg_data,
+  action_item :fetch_challonge_data,
               only: :show do
-    link_to 'Importer les données de smash.gg', [:fetch_smashgg_data, :admin, resource]
+    link_to 'Importer les données de Challonge', [:fetch_challonge_data, :admin, resource]
   end
-  member_action :fetch_smashgg_data do
-    resource.fetch_smashgg_data
+  member_action :fetch_challonge_data do
+    resource.fetch_challonge_data
     if resource.save
       redirect_to [:admin, resource], notice: 'Import réussi'
     else
       flash[:error] = 'Import échoué'
       redirect_to request.referer
     end
-  end
-
-  # ---------------------------------------------------------------------------
-  # SEARCH
-  # ---------------------------------------------------------------------------
-
-  action_item :lookup, only: :index do
-    link_to 'Rechercher sur smash.gg', { action: :lookup }, class: :orange
-  end
-  collection_action :lookup do
-    @name = params[:name]
-    @from = params[:from] ? Date.parse(params[:from]) : (Date.today - 1.month)
-    @to = params[:to] ? Date.parse(params[:to]) : Date.today
-    # add 1 day because we are using dates and not datetimes
-    @smashgg_events = SmashggEvent.lookup(name: @name, from: @from, to: @to + 1.day)
   end
 
 end
