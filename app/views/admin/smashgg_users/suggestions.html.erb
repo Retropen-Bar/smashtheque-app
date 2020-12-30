@@ -16,7 +16,7 @@
       <% suggested_player = suggestion.first %>
       <tr>
         <td><%= smashgg_user.admin_decorate.admin_link %></td>
-        <td><%= suggested_player.admin_decorate.admin_link %></td>
+        <td><%= suggested_player.admin_decorate.admin_link(with_teams: true) %></td>
         <td>
           <% case suggestion.second %>
           <% when :discord_discriminated_username %>

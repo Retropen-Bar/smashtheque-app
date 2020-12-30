@@ -16,10 +16,14 @@ class PlayerDecorator < BaseDecorator
     end
   end
 
-  def name_with_avatar(size: nil)
+  def name_with_avatar(size: nil, with_teams: false)
+    txt = [name]
+    if with_teams
+      txt = teams.map(&:short_name) + txt
+    end
     [
       avatar_tag(size),
-      name
+      txt.join('&nbsp;|&nbsp;')
     ].join('&nbsp;').html_safe
   end
 

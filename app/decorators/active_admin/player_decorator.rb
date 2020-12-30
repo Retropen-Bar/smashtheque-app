@@ -20,9 +20,8 @@ class ActiveAdmin::PlayerDecorator < PlayerDecorator
   end
 
   def admin_link(options = {})
-    super(options.merge(
-      label: name_with_avatar(size: 32)
-    ))
+    with_teams = options.delete(:with_teams)
+    super({ label: name_with_avatar(size: 32, with_teams: with_teams) }.merge(options))
   end
 
   def characters_admin_links
