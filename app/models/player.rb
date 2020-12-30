@@ -355,6 +355,14 @@ class Player < ApplicationRecord
            to: :creator,
            prefix: true
 
+  def twitter_username=(v)
+    super (v || '').gsub('https://', '')
+                   .gsub('http://', '')
+                   .gsub('twitter.com/', '')
+                   .gsub('@', '')
+                   .strip
+  end
+
   def as_json(options = {})
     reload unless options.delete(:reload) == false
     result = super((options || {}).merge(

@@ -142,6 +142,10 @@ class SmashggUser < ApplicationRecord
         return discord_user.player
       end
     end
+    if twitter_username
+      player = Player.where(twitter_username: twitter_username).first
+      return player if player
+    end
     nil
   end
 
