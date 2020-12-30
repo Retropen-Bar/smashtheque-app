@@ -117,8 +117,9 @@ class ChallongeTournament < ApplicationRecord
   end
 
   def fetch_challonge_data
-    api_data = ChallongeClient.new.get_tournament(slug: slug)
-    self.attributes = self.class.attributes_from_api_data(api_data)
+    if api_data = ChallongeClient.new.get_tournament(slug: slug)
+      self.attributes = self.class.attributes_from_api_data(api_data)
+    end
   end
 
   def challonge_url

@@ -7,7 +7,7 @@ class ChallongeClient
   end
 
   def get_tournament(slug:)
-    api_get("tournaments/#{slug}", {include_participants: 1})&.fetch('tournament')
+    api_get("tournaments/#{slug}", {include_participants: 1})&.fetch('tournament', nil)
   end
 
   private
