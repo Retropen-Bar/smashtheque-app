@@ -31,10 +31,6 @@ class ApplicationController < ActionController::Base
 
   def set_static_page
     @static = true
-    character = Character.order("RANDOM()").first.decorate
-    @background_color = character.background_color
-    @background_image_url = character.background_image_data_url
-    @background_size = character.background_size || 128
   end
 
 end

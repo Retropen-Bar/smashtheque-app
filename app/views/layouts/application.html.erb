@@ -20,7 +20,7 @@
     "background-image: url(\"#{@background_image_url.gsub('"', "\"")}\");" if @background_image_url
   %><%=
     "background-size: #{@background_size}px;" if @background_image_url
-  %>">
+  %>" <% if @static %>class="static"<% end %>>
     <%= render partial: 'layouts/application/flash', flash: flash %>
     <%= render partial: 'layouts/application/head' %>
 
