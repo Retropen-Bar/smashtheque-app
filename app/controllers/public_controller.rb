@@ -2,7 +2,7 @@ class PublicController < ApplicationController
 
   before_action :check_access! if ENV['HIDE_WEBSITE']
 
-  before_action :set_static_page, only: :credits
+  before_action :set_static_page, only: %i(credits legal)
 
   def home
     @players_count = Rails.env.development? ? 4149 : Player.count
@@ -12,6 +12,9 @@ class PublicController < ApplicationController
   end
 
   def credits
+  end
+
+  def legal
   end
 
   def planning_online

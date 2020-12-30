@@ -2,14 +2,17 @@
   <div class="container-fluid p-3 p-md-5">
     <ul class="bd-footer-links">
       <li><%= link_to 'Crédits', credits_path %></li>
-      <li><a href="https://github.com/Retropen-Bar">GitHub</a></li>
-      <li><a href="https://twitter.com/Retropen_Bar">Twitter</a></li>
+      <li><%= link_to 'Mentions légales', legal_path %></li>
       <li><a href="/admin">Admin</a></li>
       <% if admin_user_signed_in? %>
         <li>
           <%= link_to '+ Ajouter un joueur', new_admin_player_path, class: 'text-primary' %>
         </li>
       <% end %>
+    </ul>
+    <ul class="bd-footer-links">
+      <li><a href="https://github.com/Retropen-Bar">GitHub</a></li>
+      <li><a href="https://twitter.com/Retropen_Bar">Twitter</a></li>
     </ul>
     <p>
       Fondée par le <a href="https://twitter.com/RetropenBar" target="_blank">Rétropen-Bar</a>, également administrée par red, Moon Key, <a href="https://twitter.com/Nixop" target="_blank">Nixop</a> et <a href="https://twitter.com/MidzTml" target="_blank">MIDZ</a>.

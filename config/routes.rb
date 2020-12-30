@@ -73,6 +73,7 @@ Rails.application.routes.draw do
   get 'planning/online' => 'public#planning_online', as: :planning
 
   get 'credits' => 'public#credits', as: :credits
+  get 'mentions-legales' => 'public#legal', as: :legal
 
   root to: 'public#home'
 
