@@ -76,6 +76,7 @@
         }
         params.by_size_geq = $('form#filters select#size-min').val();
         params.by_size_leq = $('form#filters select#size-max').val();
+        params.per = 1000;
         $.ajax({
           dataType: "json",
           url: '<%= recurring_tournaments_path(format: :json) %>',
