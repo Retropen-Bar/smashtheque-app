@@ -152,8 +152,9 @@ class SmashggUser < ApplicationRecord
       return [player, :twitter_username] if player
     end
     if gamer_tag
-      player = Player.by_name_like(gamer_tag).first
-      return [player, :gamer_tag] if player
+      if Player.by_name_like(gamer_tag).count == 1
+        return [Player.by_name_like(gamer_tag).first, :gamer_tag]
+      end
     end
     smashgg_events.each do |smashgg_event|
       if tournament_event = smashgg_event.tournament_event
