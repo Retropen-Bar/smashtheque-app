@@ -2,11 +2,16 @@ class PublicController < ApplicationController
 
   before_action :check_access! if ENV['HIDE_WEBSITE']
 
+  before_action :set_static_page, only: :credits
+
   def home
     @players_count = Rails.env.development? ? 4149 : Player.count
     @teams_count = Rails.env.development? ? 136 : Team.count
     @recurring_tournaments_count = Rails.env.development? ? 73 : RecurringTournament.count
     @tournament_events_count = Rails.env.development? ? 1050 : TournamentEvent.count
+  end
+
+  def credits
   end
 
   def planning_online

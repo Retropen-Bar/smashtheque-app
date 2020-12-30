@@ -25,7 +25,15 @@
     <%= render partial: 'layouts/application/head' %>
 
     <div class="container-fluid" id="main-container">
-      <%= yield %>
+      <% if @static %>
+        <div class="row justify-content-center">
+          <div class="col-auto bg-semi-transparent shadow p-3 p-md-5 m-3 rounded">
+            <% end %>
+            <%= yield %>
+            <% if @static %>
+          </div>
+        </div>
+      <% end %>
     </div>
 
     <%= render partial: 'layouts/application/footer' %>

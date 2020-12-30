@@ -72,6 +72,8 @@ Rails.application.routes.draw do
   resources :tournament_events, only: [:index, :show]
   get 'planning/online' => 'public#planning_online', as: :planning
 
+  get 'credits' => 'public#credits', as: :credits
+
   root to: 'public#home'
 
 end

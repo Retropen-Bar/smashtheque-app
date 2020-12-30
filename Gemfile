@@ -120,6 +120,9 @@ gem 'active_storage_validations'
 # S3
 gem 'aws-sdk-s3', require: false
 
+# Markdown
+gem 'markdown_views'
+
 group :production do
   # for assets compilation
   gem 'activerecord-nulldb-adapter'
