@@ -265,6 +265,15 @@ class TournamentEvent < ApplicationRecord
     if replace_existing_values || bracket_url.blank?
       self.bracket_url = smashgg_event.smashgg_url
     end
+    PLAYER_RANKS.each do |rank|
+      player_name = "top#{rank}_player".to_sym
+      user_name = "top#{rank}_smashgg_user".to_sym
+      if replace_existing_values || send(player_name).nil?
+        if player = smashgg_event.send(user_name)&.player
+          self.send("#{player_name}=", player)
+        end
+      end
+    end
     true
   end
 
