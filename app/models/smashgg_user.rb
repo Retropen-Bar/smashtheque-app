@@ -133,6 +133,10 @@ class SmashggUser < ApplicationRecord
     end
   end
 
+  def smashgg_events
+    SmashggEvent.with_smashgg_user(id)
+  end
+
   def suggested_player
     if discord_discriminated_username
       discord_user = DiscordUser.by_discriminated_username(

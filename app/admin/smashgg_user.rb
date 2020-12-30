@@ -112,6 +112,17 @@ ActiveAdmin.register SmashggUser do
       row :created_at
       row :updated_at
     end
+    panel 'Tournois placés', style: 'margin-top: 50px' do
+      table_for resource.smashgg_events.admin_decorate,
+                i18n: SmashggEvent do
+        column :slug do |decorated|
+          decorated.smashgg_link
+        end
+        column 'Placement' do |decorated|
+          decorated.smashgg_user_rank_name(resource.id)
+        end
+      end
+    end
   end
 
   action_item :fetch_smashgg_data,

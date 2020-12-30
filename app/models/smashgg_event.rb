@@ -90,6 +90,15 @@ class SmashggEvent < ApplicationRecord
     where.not(id: TournamentEvent.select(:smashgg_event_id))
   end
 
+  def self.with_smashgg_user(smashgg_user_id)
+    where(
+      USER_NAMES.map do |user_name|
+        "#{user_name}_id = ?"
+      end.join(" OR "),
+      *USER_NAMES.map { smashgg_user_id }
+    )
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------

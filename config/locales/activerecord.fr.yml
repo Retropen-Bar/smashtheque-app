@@ -198,6 +198,15 @@ fr:
         tournament_id: ID du tournoi
         tournament_name: Nom du tournoi
         tournament_slug: Slug du tournoi
+      smashgg_event/rank:
+        top1_smashgg_user: Top 1
+        top2_smashgg_user: Top 2
+        top3_smashgg_user: Top 3
+        top4_smashgg_user: Top 4
+        top5a_smashgg_user: Top 5
+        top5b_smashgg_user: Top 5
+        top7a_smashgg_user: Top 7
+        top7b_smashgg_user: Top 7
       smashgg_user:
         << : *SHARED
         avatar: Avatar
