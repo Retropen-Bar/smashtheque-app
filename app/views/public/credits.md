@@ -112,7 +112,6 @@ MYD BlackAtrezZ#8840
 Nives#3664
 Haff#9839
 Lopraz#8999
-(je jure c pas Nt* : ) NtC
 Rex#8621
 Oui#2666
 Wooly#3187
@@ -128,7 +127,6 @@ Champi_S#0666
 Caoimhin "Soma" Beardwulf#0388
 DD | Spoubar™#8462
 PeterPunk#5626
-(je jure c pas non plus sa copine : ) Julie_NTC
 Kekwel#8024
 Wing#9670
 CP (SSY) KaosBombix#8768
