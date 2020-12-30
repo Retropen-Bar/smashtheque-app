@@ -1,24 +1,15 @@
-# README
+<p align="center">
+  <a href="https://www.smashtheque.fr" target="_blank">
+    <strong>Smashthèque</strong><br/>
+    <img src="https://s3.eu-west-3.amazonaws.com/static.smashtheque.fr/img/smashtheque-256.png" alt="Logo Smashthèque" height="64" align="center" />
+  </a>
+</p>
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+<p align="center"><em>Docker · Ruby on Rails · HTML · CSS · Javascript</em></p>
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+<p align="center">
+  <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">
+    <img src="https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey.svg"/>
+  </a>
+  <img src="https://github.com/Retropen-Bar/smashtheque-app/workflows/Build/badge.svg?branch=master"/>
+</p>
