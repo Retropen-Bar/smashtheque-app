@@ -171,18 +171,21 @@ class SmashggEvent < ApplicationRecord
     begin
       data.standings.nodes.each do |standing|
         if smashgg_id = standing&.entrant&.participants&.first&.user&.id
-          slug = standing.entrant.participants.first.user.slug
-          smashgg_user = SmashggUser.where(smashgg_id: smashgg_id)
-                                    .first_or_create!(slug: slug)
-          idx = case standing.placement
-          when 5
-            result.has_key?(:top5a_smashgg_user) ? '5b' : '5a'
-          when 7
-            result.has_key?(:top7a_smashgg_user) ? '7b' : '7a'
-          else
-            standing.placement.to_s
+          placement = standing.placement
+          if (placement || 0) > 0 && placement < 8
+            idx = case placement
+            when 5
+              result.has_key?(:top5a_smashgg_user) ? '5b' : '5a'
+            when 7
+              result.has_key?(:top7a_smashgg_user) ? '7b' : '7a'
+            else
+              placement.to_s
+            end
+            slug = standing.entrant.participants.first.user.slug
+            smashgg_user = SmashggUser.where(smashgg_id: smashgg_id)
+                                      .first_or_create!(slug: slug)
+            result["top#{idx}_smashgg_user".to_sym] = smashgg_user
           end
-          result["top#{idx}_smashgg_user".to_sym] = smashgg_user
         end
       end
     rescue GraphQL::Client::UnfetchedFieldError

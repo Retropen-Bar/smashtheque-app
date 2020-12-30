@@ -100,7 +100,7 @@ class ChallongeTournament < ApplicationRecord
     data['participants'].each do |_participant|
       if participant = _participant['participant']
         placement = participant['final_rank']
-        if placement < 8
+        if (placement || 0) > 0 && placement < 8
           idx = case placement
           when 5
             result.has_key?(:top5a_participant_name) ? '5b' : '5a'
