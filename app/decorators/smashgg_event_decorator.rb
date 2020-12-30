@@ -29,13 +29,6 @@ class SmashggEventDecorator < BaseDecorator
     end
   end
 
-  def smashgg_user_rank(smashgg_user_id)
-    SmashggEvent::USER_NAMES.each do |user_name|
-      return user_name if send("#{user_name}_id") == smashgg_user_id
-    end
-    nil
-  end
-
   def smashgg_user_rank_name(smashgg_user_id)
     user_name = smashgg_user_rank(smashgg_user_id)
     if user_name

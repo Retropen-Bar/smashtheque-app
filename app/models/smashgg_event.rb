@@ -52,6 +52,18 @@ class SmashggEvent < ApplicationRecord
   USER_NAMES = TournamentEvent::PLAYER_RANKS.map do |rank|
     "top#{rank}_smashgg_user".to_sym
   end.freeze
+  USER_NAME_RANK = Hash[
+    TournamentEvent::PLAYER_RANKS.map do |rank|
+      [
+        "top#{rank}_smashgg_user".to_sym,
+        case rank
+        when '5a', '5b' then 5
+        when '7a', '7b' then 7
+        else rank.to_i
+        end
+      ]
+    end
+  ].freeze
 
   # ---------------------------------------------------------------------------
   # RELATIONS
@@ -199,6 +211,13 @@ class SmashggEvent < ApplicationRecord
       attributes = attributes_from_event_data(event_data)
       self.where(smashgg_id: attributes[:smashgg_id]).first_or_initialize(attributes)
     end
+  end
+
+  def smashgg_user_rank(smashgg_user_id)
+    USER_NAMES.each do |user_name|
+      return user_name if send("#{user_name}_id") == smashgg_user_id
+    end
+    nil
   end
 
 end

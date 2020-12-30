@@ -137,22 +137,45 @@ class SmashggUser < ApplicationRecord
     SmashggEvent.with_smashgg_user(id)
   end
 
+  # returns [player, reason]
   def suggested_player
     if discord_discriminated_username
       discord_user = DiscordUser.by_discriminated_username(
         discord_discriminated_username
       ).first
       if discord_user && discord_user.player
-        return discord_user.player
+        return [discord_user.player, :discord_discriminated_username]
       end
     end
     if twitter_username
       player = Player.where(twitter_username: twitter_username).first
-      return player if player
+      return [player, :twitter_username] if player
     end
     if gamer_tag
       player = Player.by_name_like(gamer_tag).first
-      return player if player
+      return [player, :gamer_tag] if player
+    end
+    smashgg_events.each do |smashgg_event|
+      if tournament_event = smashgg_event.tournament_event
+        smashgg_event_rank = SmashggEvent::USER_NAME_RANK[
+          smashgg_event.smashgg_user_rank(id)
+        ]
+        player_names =
+          case smashgg_event_rank
+          when 5
+            %i(top5a_player top5b_player)
+          when 7
+            %i(top7a_player top7b_player)
+          else
+            ["top#{smashgg_event_rank}_player".to_sym]
+          end
+        player_names.each do |player_name|
+          player = tournament_event.send(player_name)
+          if player && player.smashgg_users.none?
+            return [player, :smashgg_event, smashgg_event]
+          end
+        end
+      end
     end
     nil
   end
