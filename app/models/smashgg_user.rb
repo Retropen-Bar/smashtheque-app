@@ -98,15 +98,15 @@ class SmashggUser < ApplicationRecord
     self.bio = data.bio
     self.birthday = data.birthday
     self.gender_pronoun = data.gender_pronoun
-    self.city = data.location.city
-    self.country = data.location.country
-    self.country_id = data.location.country_id
-    self.state = data.location.state
-    self.state_id = data.location.state_id
-    self.smashgg_player_id = data.player.id
-    self.gamer_tag = data.player.gamer_tag
-    self.prefix = data.player.prefix
-    data.images.each do |image|
+    self.city = data.location&.city
+    self.country = data.location&.country
+    self.country_id = data.location&.country_id
+    self.state = data.location&.state
+    self.state_id = data.location&.state_id
+    self.smashgg_player_id = data.player&.id
+    self.gamer_tag = data.player&.gamer_tag
+    self.prefix = data.player&.prefix
+    data.images&.each do |image|
       case image.type.to_sym
       when :banner
         self.banner_url = image.url
