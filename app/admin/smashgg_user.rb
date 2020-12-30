@@ -86,9 +86,8 @@ ActiveAdmin.register SmashggUser do
           decorated.any_image_tag(size: 128)
         end
       end
-      row :gamer_tag do |decorated|
-        decorated.prefixed_gamer_tag
-      end
+      row :gamer_tag
+      row :prefix
       row :name
       row :bio
       row :birthday

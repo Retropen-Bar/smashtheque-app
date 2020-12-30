@@ -146,6 +146,10 @@ class SmashggUser < ApplicationRecord
       player = Player.where(twitter_username: twitter_username).first
       return player if player
     end
+    if gamer_tag
+      player = Player.by_name_like(gamer_tag).first
+      return player if player
+    end
     nil
   end
 
