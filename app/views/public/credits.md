@@ -293,9 +293,10 @@ R-B | Patebolo#7066
 ### booster dont le boost est toujours actif :
 🌼Lenalee☁#2730
 Lopiaz
+Îkä le Jambon
+
 
 ### boosters, dont les boosts ne sont plus actif :
-Îkä le Jambon
 IBP | feyuu
 
 # Et bien sûr, tous les membres de la communauté qui nous ont aidés et supportés depuis le début !
