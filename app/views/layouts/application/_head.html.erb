@@ -26,26 +26,22 @@
           <%= link_to 'Équipes', teams_path, class: 'dropdown-item' %>
           <%= link_to 'Personnages', characters_path, class: 'dropdown-item' %>
           <%= link_to 'Localisations', locations_path, class: 'dropdown-item' %>
-          <% if admin_user_signed_in? %>
-            <div class="dropdown-divider"></div>
-            <%= link_to "Observatoire d'Harmonie online", online_ranking_players_path, class: 'dropdown-item' %>
-          <% end %>
+          <div class="dropdown-divider"></div>
+          <%= link_to "Observatoire d'Harmonie online", online_ranking_players_path, class: 'dropdown-item' %>
         </div>
       </li>
 
-      <% if admin_user_signed_in? %>
-        <li class="nav-item dropdown">
-          <%= link_to recurring_tournaments_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
-            <%= fas_icon_tag :chess %>
-            <span>Compétition</span>
-          <% end %>
-          <div class="dropdown-menu">
-            <%= link_to 'Séries de tournois', recurring_tournaments_path, class: 'dropdown-item' %>
-            <%= link_to 'Éditions passées', tournament_events_path, class: 'dropdown-item' %>
-            <%= link_to 'Planning hebdo', planning_path, class: 'dropdown-item' %>
-          </div>
-        </li>
-      <% end %>
+      <li class="nav-item dropdown">
+        <%= link_to recurring_tournaments_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
+          <%= fas_icon_tag :chess %>
+          <span>Compétition</span>
+        <% end %>
+        <div class="dropdown-menu">
+          <%= link_to 'Séries de tournois', recurring_tournaments_path, class: 'dropdown-item' %>
+          <%= link_to 'Éditions passées', tournament_events_path, class: 'dropdown-item' %>
+          <%= link_to 'Planning hebdo', planning_path, class: 'dropdown-item' %>
+        </div>
+      </li>
 
       <li class="nav-item">
         <%= link_to discord_guilds_path, class: 'nav-link' do %>

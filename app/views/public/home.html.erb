@@ -17,34 +17,27 @@
             <small class="text-muted font-weight-lighter">joueurs</small>
           <% end %>
         </div>
-        <% if !admin_user_signed_in? %>
-          <div class="col d-none d-sm-block">
-            <%= image_tag 'smashtheque-256.png', height: 128 %>
-          </div>
-        <% end %>
         <div class="col">
           <%= link_to teams_path, class: 'display-4 d-block text-decoration-none' do %>
             <%= number_with_delimiter(@teams_count) %><br/>
             <small class="text-muted font-weight-lighter">équipes</small>
           <% end %>
         </div>
-        <% if admin_user_signed_in? %>
-          <div class="col d-none d-lg-block">
-            <%= image_tag 'smashtheque-256.png', height: 128 %>
-          </div>
-          <div class="col">
-            <%= link_to recurring_tournaments_path, class: 'display-4 d-block text-decoration-none' do %>
-              <%= number_with_delimiter(@recurring_tournaments_count) %><br/>
-              <small class="text-muted font-weight-lighter">tournois</small>
-            <% end %>
-          </div>
-          <div class="col">
-            <%= link_to tournament_events_path, class: 'display-4 d-block text-decoration-none' do %>
-              <%= number_with_delimiter(@tournament_events_count) %><br/>
-              <small class="text-muted font-weight-lighter">éditions</small>
-            <% end %>
-          </div>
-        <% end %>
+        <div class="col d-none d-lg-block">
+          <%= image_tag 'smashtheque-256.png', height: 128 %>
+        </div>
+        <div class="col">
+          <%= link_to recurring_tournaments_path, class: 'display-4 d-block text-decoration-none' do %>
+            <%= number_with_delimiter(@recurring_tournaments_count) %><br/>
+            <small class="text-muted font-weight-lighter">tournois</small>
+          <% end %>
+        </div>
+        <div class="col">
+          <%= link_to tournament_events_path, class: 'display-4 d-block text-decoration-none' do %>
+            <%= number_with_delimiter(@tournament_events_count) %><br/>
+            <small class="text-muted font-weight-lighter">éditions</small>
+          <% end %>
+        </div>
       </div>
 
       <div>
@@ -52,15 +45,13 @@
           <%= fas_icon_tag :map, %w(mr-2) %>
           Carte des joueurs
         <% end %>
-        <% if admin_user_signed_in? %>
-          <%= link_to planning_path, class: 'btn btn-lg btn-primary m-2' do %>
-            <%= fas_icon_tag 'calendar-alt', %w(mr-2) %>
-            Planning hebdo
-          <% end %>
-          <%= link_to online_ranking_players_path, class: 'btn btn-lg btn-primary m-2' do %>
-            <%= fas_icon_tag 'star', %w(mr-2) %>
-            Observatoire d'Harmonie
-          <% end %>
+        <%= link_to planning_path, class: 'btn btn-lg btn-primary m-2' do %>
+          <%= fas_icon_tag 'calendar-alt', %w(mr-2) %>
+          Planning hebdo
+        <% end %>
+        <%= link_to online_ranking_players_path, class: 'btn btn-lg btn-primary m-2' do %>
+          <%= fas_icon_tag 'star', %w(mr-2) %>
+          Observatoire d'Harmonie
         <% end %>
       </div>
       <div>
