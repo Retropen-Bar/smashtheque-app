@@ -7,9 +7,7 @@ class Api::V1::SearchController < Api::V1::BaseController
       results: PgSearch.multisearch(params[:term])
                        .where.not(searchable_type: %i(
                          ChallongeTournament
-                         RecurringTournament
                          SmashggEvent
-                         TournamentEvent
                        ))
                        .map do |document|
         model = if document.searchable_type == 'Location'
