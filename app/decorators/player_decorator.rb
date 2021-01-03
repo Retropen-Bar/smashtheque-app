@@ -87,7 +87,7 @@ class PlayerDecorator < BaseDecorator
     options[:height] = icon_size
     [
       h.image_tag(
-        'https://cdn.discordapp.com/emojis/790632367487188993.png',
+        "https://cdn.discordapp.com/emojis/#{RetropenBot::EMOJI_POINTS}.png",
         options
       ),
       h.number_with_delimiter(points)

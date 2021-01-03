@@ -21,6 +21,8 @@ class Reward < ApplicationRecord
   has_many :player_reward_conditions, through: :reward_conditions
   has_many :players, through: :player_reward_conditions
 
+  has_one_attached :image
+
   # ---------------------------------------------------------------------------
   # VALIDATIONS
   # ---------------------------------------------------------------------------
@@ -39,6 +41,7 @@ class Reward < ApplicationRecord
             uniqueness: {
               scope: :level1
             }
+  validates :image, content_type: /\Aimage\/.*\z/
 
   # ---------------------------------------------------------------------------
   # SCOPES

@@ -4,6 +4,25 @@ class RewardDecorator < BaseDecorator
     "https://cdn.discordapp.com/emojis/#{model.emoji}.png"
   end
 
+  def emoji_image_tag(options = {})
+    return nil if model.emoji.blank?
+    h.image_tag_with_max_size emoji_image_url, options.merge(class: 'avatar')
+  end
+
+  def image_image_url
+    return nil unless model.image.attached?
+    model.image.service_url
+  end
+
+  def image_image_tag(options = {})
+    return nil unless model.image.attached?
+    h.image_tag_with_max_size image_image_url, options.merge(class: 'avatar')
+  end
+
+  def badge_image_url
+    image_image_url || emoji_image_url
+  end
+
   def badge(options = {})
     return nil if model.emoji.blank?
 
@@ -16,7 +35,7 @@ class RewardDecorator < BaseDecorator
 
     h.content_tag :div, class: classes do
       (
-        h.image_tag emoji_image_url
+        h.image_tag badge_image_url
       ) + (
         if count.nil?
           ''

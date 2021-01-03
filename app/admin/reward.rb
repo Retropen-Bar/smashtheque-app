@@ -27,7 +27,10 @@ ActiveAdmin.register Reward do
     column :name
     column :level, sortable: true
     column :emoji do |decorated|
-      decorated.badge
+      decorated.emoji_image_tag(max_height: 32)
+    end
+    column :image do |decorated|
+      decorated.image_image_tag(max_height: 32)
     end
     column :reward_conditions do |decorated|
       decorated.reward_conditions_admin_link
@@ -50,16 +53,37 @@ ActiveAdmin.register Reward do
   # ---------------------------------------------------------------------------
 
   form do |f|
-    f.inputs do
-      f.input :name
-      f.input :level1
-      f.input :level2
-      f.input :emoji
+    columns do
+      column do
+        f.inputs do
+          f.input :name
+          f.input :level1
+          f.input :level2
+          f.input :emoji
+          f.input :image,
+                  as: :file,
+                  hint: 'Laissez vide pour ne pas changer',
+                  input_html: {
+                    accept: 'image/*',
+                    data: {
+                      previewpanel: 'current-image'
+                    }
+                  }
+        end
+        f.actions
+      end
+      column do
+        panel 'Emoji', id: 'current-emoji' do
+          f.object.decorate.emoji_image_tag
+        end
+        panel 'Image', id: 'current-image' do
+          f.object.decorate.image_image_tag
+        end
+      end
     end
-    f.actions
   end
 
-  permit_params :name, :level1, :level2, :emoji
+  permit_params :name, :level1, :level2, :emoji, :image
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -69,6 +93,13 @@ ActiveAdmin.register Reward do
     attributes_table do
       row :name
       row :level
+      row :emoji
+      row :emoji do |decorated|
+        decorated.emoji_image_tag(max_height: 64)
+      end
+      row :image do |decorated|
+        decorated.image_image_tag(max_height: 64)
+      end
       row :badge do |decorated|
         decorated.all_badge_sizes(count: 99)
       end
