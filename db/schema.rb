@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_30_114002) do
+ActiveRecord::Schema.define(version: 2021_01_03_161301) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -113,6 +113,8 @@ ActiveRecord::Schema.define(version: 2020_12_30_114002) do
     t.string "background_color"
     t.text "background_image"
     t.integer "background_size"
+    t.string "ultimateframedata_url"
+    t.string "smashprotips_url"
   end
 
   create_table "characters_players", force: :cascade do |t|

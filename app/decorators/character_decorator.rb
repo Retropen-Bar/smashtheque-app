@@ -72,4 +72,26 @@ class CharacterDecorator < BaseDecorator
     super({label: emoji_image_tag(max_height: '32px')}.merge(options))
   end
 
+  def ultimateframedata_link(options = {})
+    return nil if ultimateframedata_url.blank?
+    h.link_to ultimateframedata_url, {target: '_blank'}.merge(options) do
+      (
+        h.image_tag 'ultimateframedata-32.png', height: 32, class: :logo
+      ) + ' ' + (
+        ultimateframedata_url
+      )
+    end
+  end
+
+  def smashprotips_link(options = {})
+    return nil if smashprotips_url.blank?
+    h.link_to smashprotips_url, {target: '_blank'}.merge(options) do
+      (
+        h.image_tag 'smashprotips-192.png', height: 32, class: :logo
+      ) + ' ' + (
+        smashprotips_url
+      )
+    end
+  end
+
 end

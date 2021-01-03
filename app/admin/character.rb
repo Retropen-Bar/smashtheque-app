@@ -52,15 +52,21 @@ ActiveAdmin.register Character do
       f.input :name
       f.input :background_color,
               as: :string,
-              input_html: { data: { colorpicker: {} } }
+              input_html: {
+                rows: 5,
+                data: { colorpicker: {} }
+              }
       f.input :background_image
       f.input :background_size
+      f.input :ultimateframedata_url
+      f.input :smashprotips_url
     end
     f.actions
   end
 
   permit_params :icon, :name, :emoji,
-                :background_color, :background_image, :background_size
+                :background_color, :background_image, :background_size,
+                :ultimateframedata_url, :smashprotips_url
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -87,6 +93,12 @@ ActiveAdmin.register Character do
       end
       row :discord_guilds do |decorated|
         decorated.discord_guilds_admin_links
+      end
+      row :ultimateframedata_url do |decorated|
+        decorated.ultimateframedata_link
+      end
+      row :smashprotips_url do |decorated|
+        decorated.smashprotips_link
       end
       row :created_at
       row :updated_at

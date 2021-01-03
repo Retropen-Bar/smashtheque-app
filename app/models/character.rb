@@ -2,15 +2,17 @@
 #
 # Table name: characters
 #
-#  id               :bigint           not null, primary key
-#  background_color :string
-#  background_image :text
-#  background_size  :integer
-#  emoji            :string
-#  icon             :string
-#  name             :string
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
+#  id                    :bigint           not null, primary key
+#  background_color      :string
+#  background_image      :text
+#  background_size       :integer
+#  emoji                 :string
+#  icon                  :string
+#  name                  :string
+#  smashprotips_url      :string
+#  ultimateframedata_url :string
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
 #
 class Character < ApplicationRecord
 
