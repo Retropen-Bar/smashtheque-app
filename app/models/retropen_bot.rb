@@ -51,7 +51,7 @@ class RetropenBot
   EMOJI_YOUTUBE = '743601431499767899'.freeze
   EMOJI_TOURNAMENT = '743286485930868827'.freeze
   EMOJI_NO_REWARD = '790617900012535838'.freeze
-  EMOJI_POINTS = '790632367487188993'.freeze
+  EMOJI_POINTS = '795277209715212298'.freeze
 
   # ---------------------------------------------------------------------------
   # CONSTRUCTOR
