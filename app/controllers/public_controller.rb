@@ -22,8 +22,7 @@ class PublicController < ApplicationController
     @ics_url = recurring_tournaments_url(
       protocol: :webcal,
       format: :ics,
-      per: 1000,
-      t: Time.now.to_i
+      per: 1000
     )
   end
 
