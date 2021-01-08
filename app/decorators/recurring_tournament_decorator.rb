@@ -76,11 +76,9 @@ class RecurringTournamentDecorator < BaseDecorator
   end
 
   def as_ical_event
-    start = if wday < Date.today.wday
-      date_on_week(Date.today + 1.week)
-    else
-      date_on_week(Date.today)
-    end
+    start = date_on_week(Date.today)
+    start += 1.week if start < Date.today
+
     event = Icalendar::Event.new
     event.dtstart = start
     event.dtend = start + duration
