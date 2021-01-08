@@ -49,7 +49,7 @@ class RecurringTournamentsController < PublicController
     ).per(1000).all.decorate.each do |recurring_tournament|
       event = recurring_tournament.as_ical_event
       event.url = polymorphic_url recurring_tournament
-      event.description = "\nPlus d'infos : #{event.url}"
+      event.description += "\nPlus d'infos : #{event.url}"
       cal.add_event event
     end
 
