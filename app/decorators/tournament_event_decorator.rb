@@ -7,6 +7,13 @@ class TournamentEventDecorator < BaseDecorator
     ].join('&nbsp;').html_safe
   end
 
+  def full_name
+    [
+      recurring_tournament&.name,
+      name
+    ].reject(&:blank?).join(' : ')
+  end
+
   def link(options = {})
     super({label: name_with_logo(64)}.merge(options))
   end
@@ -96,6 +103,15 @@ class TournamentEventDecorator < BaseDecorator
       ].reject(&:blank?).join(' ')
       h.link_to options[:label], '#', options
     end
+  end
+
+  def as_ical_event(host:)
+    event = Icalendar::Event.new
+    event.dtstart = Icalendar::Values::Date.new(date)
+    event.summary = name
+    event.description = full_name
+    event.url = h.polymorphic_url model, host: host
+    event
   end
 
 end

@@ -123,6 +123,9 @@ gem 'aws-sdk-s3', require: false
 # Markdown
 gem 'markdown_views'
 
+# Calendar
+gem 'icalendar'
+
 group :production do
   # for assets compilation
   gem 'activerecord-nulldb-adapter'
