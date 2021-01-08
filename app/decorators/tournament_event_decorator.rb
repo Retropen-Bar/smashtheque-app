@@ -105,12 +105,11 @@ class TournamentEventDecorator < BaseDecorator
     end
   end
 
-  def as_ical_event(host:)
+  def as_ical_event
     event = Icalendar::Event.new
     event.dtstart = Icalendar::Values::Date.new(date)
     event.summary = name
     event.description = full_name
-    event.url = h.polymorphic_url model, host: host
     event
   end
 

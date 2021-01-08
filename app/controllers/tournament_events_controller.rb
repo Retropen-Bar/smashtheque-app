@@ -15,9 +15,9 @@ class TournamentEventsController < PublicController
         cal = Icalendar::Calendar.new
         cal.x_wr_calname = 'Smashthèque'
         @tournament_events.each do |tournament_event|
-          cal.add_event(
-            tournament_event.decorate.as_ical_event(host: request.host)
-          )
+          event = tournament_event.decorate.as_ical_event
+          event.url = polymorphic_url tournament_event
+          cal.add_event event
         end
         cal.publish
         render plain: cal.to_ical
