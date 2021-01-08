@@ -45,12 +45,16 @@ class RecurringTournamentDecorator < BaseDecorator
     DateTime.new(d.year, d.month, d.day, t.utc.hour, t.min)
   end
 
+  def duration
+    # TODO: improve this
+    3.hours
+  end
+
   def as_event(week_start:)
     start = date_on_week(week_start)
     classes = [
       "level-#{model.level}"
     ]
-    duration = 3.hours # TODO: improve this
     {
       title: model.name + " (#{model.size})",
       start: start,
@@ -58,6 +62,31 @@ class RecurringTournamentDecorator < BaseDecorator
       classNames: classes,
       modal_url: modal_recurring_tournament_path(model)
     }
+  end
+
+  def text_details
+    [
+      "Récurrence : #{recurring_type_text}",
+      "Difficulté : #{level_text}",
+      "Taille : #{size}",
+      "Localisation : #{is_online? ? 'online' : 'offline'}",
+      "Comment s'inscrire :",
+      registration
+    ].join("\n")
+  end
+
+  def as_ical_event
+    start = if wday < Date.today.wday
+      date_on_week(Date.today + 1.week)
+    else
+      date_on_week(Date.today)
+    end
+    event = Icalendar::Event.new
+    event.dtstart = start
+    event.dtend = start + duration
+    event.summary = name + " (#{model.size})"
+    event.description = text_details
+    event
   end
 
   def tournament_events_count

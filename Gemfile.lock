@@ -198,6 +198,9 @@ GEM
       domain_name (~> 0.5)
     i18n (1.8.5)
       concurrent-ruby (~> 1.0)
+    icalendar (2.7.0)
+      ice_cube (~> 0.16)
+    ice_cube (0.16.3)
     inherited_resources (1.11.0)
       actionpack (>= 5.0, < 6.1)
       has_scope (~> 0.6)
@@ -479,6 +482,7 @@ DEPENDENCIES
   figaro
   graphql-client
   has_scope
+  icalendar
   jbuilder (~> 2.7)
   jquery-minicolors-rails
   leaflet-rails

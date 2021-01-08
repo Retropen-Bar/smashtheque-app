@@ -7,6 +7,23 @@ class TournamentEventsController < PublicController
 
   def index
     @tournament_events = apply_scopes(TournamentEvent.order(date: :desc)).all
+    respond_to do |format|
+      format.html do
+        # nothing special
+      end
+      format.ics do
+        cal = Icalendar::Calendar.new
+        cal.x_wr_calname = 'Smashthèque'
+        @tournament_events.each do |tournament_event|
+          event = tournament_event.decorate.as_ical_event
+          event.url = polymorphic_url tournament_event
+          event.description += "\nPlus d'infos : #{event.url}"
+          cal.add_event event
+        end
+        cal.publish
+        render plain: cal.to_ical
+      end
+    end
   end
 
   def show

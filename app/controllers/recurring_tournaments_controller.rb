@@ -17,15 +17,20 @@ class RecurringTournamentsController < PublicController
       format.json {
         index_json
       }
+      format.ics {
+        index_ical
+      }
     end
   end
 
   def index_html
-    @recurring_tournaments = apply_scopes(RecurringTournament.order("lower(name)")).all
+    @recurring_tournaments = apply_scopes(
+      RecurringTournament.order("lower(name)")
+    ).all
   end
 
   def index_json
-    start = Date.parse(params[:startStr])
+    start = params[:startStr] ? Date.parse(params[:startStr]) : Time.now
     render json: apply_scopes(
       RecurringTournament.recurring.not_archived
     ).all.decorate.map { |rc|
@@ -33,6 +38,23 @@ class RecurringTournamentsController < PublicController
         url: recurring_tournament_path(rc)
       )
     }
+  end
+
+  def index_ical
+    cal = Icalendar::Calendar.new
+    cal.x_wr_calname = 'Planning online à 7 jours'
+
+    apply_scopes(
+      RecurringTournament.recurring.not_archived
+    ).all.decorate.each do |recurring_tournament|
+      event = recurring_tournament.as_ical_event
+      event.url = polymorphic_url recurring_tournament
+      event.description = "\nPlus d'infos : #{event.url}"
+      cal.add_event event
+    end
+
+    cal.publish
+    render plain: cal.to_ical
   end
 
   def show

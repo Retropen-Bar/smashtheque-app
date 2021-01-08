@@ -19,6 +19,11 @@ class PublicController < ApplicationController
 
   def planning_online
     @monday = Date.today.beginning_of_week
+    @ics_url = recurring_tournaments_url(
+      protocol: :webcal,
+      format: :ics,
+      t: Time.now.to_i
+    )
   end
 
   private
