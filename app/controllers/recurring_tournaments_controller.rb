@@ -46,7 +46,7 @@ class RecurringTournamentsController < PublicController
 
     apply_scopes(
       RecurringTournament.recurring.not_archived
-    ).all.decorate.each do |recurring_tournament|
+    ).per(1000).all.decorate.each do |recurring_tournament|
       event = recurring_tournament.as_ical_event
       event.url = polymorphic_url recurring_tournament
       event.description = "\nPlus d'infos : #{event.url}"
