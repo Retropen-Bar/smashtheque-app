@@ -17,6 +17,7 @@ class TournamentEventsController < PublicController
         @tournament_events.each do |tournament_event|
           event = tournament_event.decorate.as_ical_event
           event.url = polymorphic_url tournament_event
+          event.description += "\nPlus d'infos : #{event.url}"
           cal.add_event event
         end
         cal.publish
