@@ -11,7 +11,7 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
     @admin_discord_user = FactoryBot.create(:discord_user)
     @user = User.create!(
       discord_user: @admin_discord_user,
-      level: Ability::LEVEL_HELP
+      admin_level: Ability::ADMIN_LEVEL_HELP
     )
     @players = (1..20).map do |i|
       FactoryBot.create(

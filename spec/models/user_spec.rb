@@ -26,17 +26,22 @@ RSpec.describe User, type: :model do
   before(:each) do
     @existing_user = User.create!(
       discord_user: FactoryBot.create(:discord_user),
-      level: Ability::LEVEL_ADMIN
+      admin_level: Ability::ADMIN_LEVEL_ADMIN
     )
     @other_discord_user = FactoryBot.create(:discord_user)
     @new_user = User.new(
       discord_user: @other_discord_user,
-      level: Ability::LEVEL_ADMIN
+      admin_level: Ability::ADMIN_LEVEL_ADMIN
     )
   end
 
   context 'is valid' do
     it 'creates the admin' do
+      expect(@new_user).to be_valid
+    end
+
+    it 'creates an admin without a level' do
+      @new_user.admin_level = nil
       expect(@new_user).to be_valid
     end
   end
@@ -52,13 +57,8 @@ RSpec.describe User, type: :model do
       expect(@new_user).to_not be_valid
     end
 
-    it 'does not create an admin without a level' do
-      @new_user.level = nil
-      expect(@new_user).to_not be_valid
-    end
-
     it 'does not create an admin with an invalid level' do
-      @new_user.level = 'hello'
+      @new_user.admin_level = 'hello'
       expect(@new_user).to_not be_valid
     end
   end
