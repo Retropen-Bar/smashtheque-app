@@ -21,8 +21,11 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :characters, only: :index
       resources :discord_guilds, only: :index
-      get '/discord_users/:discord_id', to: 'discord_users#show'
-      resources :discord_users, only: :show
+      resources :discord_users, param: :discord_id, only: :show do
+        member do
+          get :refetch
+        end
+      end
       resources :locations, only: [:index, :create]
       resources :recurring_tournaments, only: [:index, :show]
       resources :players, only: [:index, :show, :create, :update]
