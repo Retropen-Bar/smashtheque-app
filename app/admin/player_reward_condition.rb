@@ -42,7 +42,7 @@ ActiveAdmin.register PlayerRewardCondition do
 
   action_item :recompute_all,
               only: :index,
-              if: proc { current_admin_user.is_root? } do
+              if: proc { current_user.is_root? } do
     link_to 'Recalculer tout', action: :recompute_all, class: 'blue'
   end
   collection_action :recompute_all do

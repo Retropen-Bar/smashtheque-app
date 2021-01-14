@@ -16,16 +16,16 @@ class ActiveAdmin::UserDecorator < UserDecorator
     model.discord_user.admin_decorate.full_name(size: size)
   end
 
-  LEVEL_COLORS = {
-    Ability::LEVEL_HELP => :rose,
-    Ability::LEVEL_ADMIN => :blue,
+  ADMIN_LEVEL_COLORS = {
+    Ability::ADMIN_LEVEL_HELP => :rose,
+    Ability::ADMIN_LEVEL_ADMIN => :blue,
     root: :green
   }
 
-  def level_status
-    key = model.is_root? ? :root : model.level
+  def admin_level_status
+    key = model.is_root? ? :root : model.admin_level
     arbre do
-      status_tag User.human_attribute_name("level.#{key}"), class: LEVEL_COLORS[key]
+      status_tag User.human_attribute_name("admin_level.#{key}"), class: ADMIN_LEVEL_COLORS[key]
     end
   end
 

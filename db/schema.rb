@@ -415,8 +415,7 @@ ActiveRecord::Schema.define(version: 2021_01_14_000000) do
     t.inet "current_sign_in_ip"
     t.inet "last_sign_in_ip"
     t.boolean "is_root", default: false, null: false
-    t.string "level", null: false
-    t.boolean "is_admin", default: false, null: false
+    t.string "admin_level"
     t.index ["discord_user_id"], name: "index_users_on_discord_user_id", unique: true
   end
 

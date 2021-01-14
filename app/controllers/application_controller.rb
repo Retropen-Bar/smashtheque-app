@@ -1,5 +1,7 @@
 class ApplicationController < ActionController::Base
 
+  helper_method :admin_user_signed_in?
+
   before_action :set_time_zone
   before_action :set_locale
 
@@ -31,6 +33,18 @@ class ApplicationController < ActionController::Base
 
   def set_static_page
     @static = true
+  end
+
+  def authenticate_admin_user!
+    authenticate_user!
+    unless current_user.is_admin?
+      flash[:error] = 'Accès non autorisé'
+      redirect_to root_path and return
+    end
+  end
+
+  def admin_user_signed_in?
+    user_signed_in? && current_user.is_admin?
   end
 
 end
