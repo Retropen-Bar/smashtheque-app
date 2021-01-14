@@ -1,11 +1,12 @@
 class UserDecorator < BaseDecorator
 
   def avatar_tag(size)
-    if model.discord_user && !model.discord_user.avatar.blank?
-      model.discord_user.decorate.avatar_tag(size)
-    else
-      default_avatar(size)
+    discord_users.each do |discord_user|
+      unless discord_user.avatar.blank?
+        return discord_user.decorate.avatar_tag(size)
+      end
     end
+    default_avatar(size)
   end
 
   def default_avatar(size)

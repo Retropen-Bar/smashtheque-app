@@ -9,7 +9,7 @@ ActiveAdmin.register DiscordUser do
   # INDEX
   # ---------------------------------------------------------------------------
 
-  includes :user, :player, :administrated_teams, :administrated_discord_guilds
+  includes :user, :administrated_discord_guilds
 
   index do
     selectable_column
@@ -18,12 +18,8 @@ ActiveAdmin.register DiscordUser do
     column :username do |decorated|
       decorated.full_name(size: 32)
     end
-    column :player
     column :user do |decorated|
-      decorated.user_status
-    end
-    column :administrated_teams do |decorated|
-      decorated.administrated_teams_admin_links(size: 32).join('<br/>').html_safe
+      decorated.user_admin_link
     end
     column :administrated_discord_guilds do |decorated|
       decorated.administrated_discord_guilds_admin_links(size: 32).join('<br/>').html_safe
@@ -35,7 +31,6 @@ ActiveAdmin.register DiscordUser do
   end
 
   scope :all
-  scope :with_user
   scope :unknown
 
   filter :discord_id
@@ -60,9 +55,7 @@ ActiveAdmin.register DiscordUser do
   form do |f|
     f.inputs do
       f.input :discord_id, input_html: { disabled: f.object.persisted? }
-      f.input :administrated_teams,
-              collection: discord_user_administrated_teams_select_collection,
-              input_html: { multiple: true, data: { select2: {} } }
+      user_input f
       f.input :administrated_discord_guilds,
               collection: discord_user_administrated_discord_guilds_select_collection,
               input_html: { multiple: true, data: { select2: {} } }
@@ -70,7 +63,7 @@ ActiveAdmin.register DiscordUser do
     f.actions
   end
 
-  permit_params :discord_id, administrated_team_ids: [], administrated_discord_guild_ids: []
+  permit_params :discord_id, :user_id, administrated_discord_guild_ids: []
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -85,12 +78,8 @@ ActiveAdmin.register DiscordUser do
       row :username do |decorated|
         decorated.discriminated_username
       end
-      row :player
       row :user do |decorated|
-        decorated.user_status
-      end
-      row :administrated_teams do |decorated|
-        decorated.administrated_teams_admin_links(size: 32).join('<br/>').html_safe
+        decorated.user_admin_link
       end
       row :administrated_discord_guilds do |decorated|
         decorated.administrated_discord_guilds_admin_links(size: 32).join('<br/>').html_safe

@@ -4,10 +4,6 @@ module ActiveAdmin::DiscordUsersHelper
     DiscordGuild.known.order(:name).decorate
   end
 
-  def discord_user_administrated_teams_select_collection
-    Team.order(:name).decorate
-  end
-
   def discord_user_input(form, name = :discord_user, options = {})
     form.input  name,
                 {

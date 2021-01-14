@@ -18,18 +18,20 @@
 #  created_at                      :datetime         not null
 #  updated_at                      :datetime         not null
 #  best_player_reward_condition_id :bigint
-#  creator_id                      :bigint
-#  discord_user_id                 :bigint
+#  creator_user_id                 :integer
+#  user_id                         :integer
 #
 # Indexes
 #
 #  index_players_on_best_player_reward_condition_id  (best_player_reward_condition_id)
-#  index_players_on_creator_id                       (creator_id)
-#  index_players_on_discord_user_id                  (discord_user_id)
+#  index_players_on_creator_user_id                  (creator_user_id)
+#  index_players_on_user_id                          (user_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (best_player_reward_condition_id => player_reward_conditions.id)
+#  fk_rails_...  (creator_user_id => users.id)
+#  fk_rails_...  (user_id => users.id)
 #
 class Player < ApplicationRecord
 
@@ -39,8 +41,8 @@ class Player < ApplicationRecord
   # RELATIONS
   # ---------------------------------------------------------------------------
 
-  belongs_to :creator, class_name: :DiscordUser
-  belongs_to :discord_user, optional: true
+  belongs_to :creator_user, class_name: :User
+  belongs_to :user, optional: true
 
   # cache
   belongs_to :best_player_reward_condition,
@@ -117,6 +119,8 @@ class Player < ApplicationRecord
 
   has_many :smashgg_users, dependent: :nullify
 
+  has_many :discord_users, through: :user
+
   # ---------------------------------------------------------------------------
   # VALIDATIONS
   # ---------------------------------------------------------------------------
@@ -138,7 +142,6 @@ class Player < ApplicationRecord
   end
 
   validates :name, presence: true
-  validates :discord_user, uniqueness: { allow_nil: true }
 
   # ---------------------------------------------------------------------------
   # CALLBACKS
@@ -182,14 +185,18 @@ class Player < ApplicationRecord
 
   def discord_id=(discord_id)
     if discord_id
-      self.discord_user = DiscordUser.where(discord_id: discord_id).first_or_create!
+      self.user = DiscordUser.where(discord_id: discord_id)
+                             .first_or_create!
+                             .return_or_create_user!
     else
-      self.discord_user = nil
+      self.user = nil
     end
   end
 
   def creator_discord_id=(discord_id)
-    self.creator = DiscordUser.where(discord_id: discord_id).first_or_create!
+    self.creator_user = DiscordUser.where(discord_id: discord_id)
+                                   .first_or_create!
+                                   .return_or_create_user!
   end
 
   after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] || !is_legit? }
@@ -277,9 +284,9 @@ class Player < ApplicationRecord
 
   def self.by_discord_id(discord_id)
     if discord_id.blank?
-      where(discord_user: nil)
+      where(user: nil)
     else
-      joins(:discord_user).where(discord_users: { discord_id: discord_id })
+      where(user_id: User.by_discord_id(discord_id).select(:id))
     end
   end
 
@@ -315,12 +322,12 @@ class Player < ApplicationRecord
     result
   end
 
-  def self.with_discord_user
-    where.not(discord_user_id: nil)
+  def self.with_user
+    where.not(user_id: nil)
   end
 
-  def self.without_discord_user
-    where(discord_user_id: nil)
+  def self.without_user
+    where(user_id: nil)
   end
 
   def self.without_location
@@ -347,13 +354,9 @@ class Player < ApplicationRecord
   # HELPERS
   # ---------------------------------------------------------------------------
 
-  delegate :discord_id,
-           to: :discord_user,
+  delegate :discord_ids,
+           to: :user,
            allow_nil: true
-
-  delegate :discord_id,
-           to: :creator,
-           prefix: true
 
   def twitter_username=(v)
     super (v || '').gsub('https://', '')
@@ -373,25 +376,24 @@ class Player < ApplicationRecord
         locations: {
           only: %i(id icon name)
         },
-        creator: {
-          only: %i(id discord_id)
-        },
-        discord_user: {
+        discord_users: {
           only: %i(id discord_id)
         },
         teams: {
           only: %i(id short_name name)
+        },
+        user: {
+          only: %i(id name)
         }
       },
       methods: %i(
         character_ids
-        creator_discord_id
         discord_id
         location_ids
         team_ids
       )
     ))
-    result[:discord_user] = nil unless result.has_key?('discord_user')
+    result[:user] = nil unless result.has_key?('user')
     result
   end
 

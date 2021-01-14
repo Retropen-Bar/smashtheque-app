@@ -48,7 +48,7 @@ class PlayersController < PublicController
   def ranking_online
     @players = apply_scopes(
       Player.ranked.order(:rank)
-    ).includes(:discord_user, :teams, :locations, :characters)
+    ).includes(:user, :discord_users, :teams, :locations, :characters)
 
     main_character = @players.first.characters.first&.decorate
     if main_character
@@ -64,7 +64,7 @@ class PlayersController < PublicController
     @map = params[:map].to_i == 1
     apply_scopes(
       base.legit.order(:name)
-    ).includes(:discord_user, :teams, :locations, :characters)
+    ).includes(:user, :discord_users, :teams, :locations, :characters)
   end
 
   def select_layout

@@ -1,7 +1,7 @@
 module ActiveAdmin::PlayersHelper
 
-  def player_creator_select_collection
-    DiscordUser.order(:username).decorate
+  def player_creator_user_select_collection
+    User.order(:name).decorate
   end
 
   def player_characters_select_collection

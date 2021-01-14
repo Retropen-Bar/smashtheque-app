@@ -18,18 +18,20 @@
 #  created_at                      :datetime         not null
 #  updated_at                      :datetime         not null
 #  best_player_reward_condition_id :bigint
-#  creator_id                      :bigint
-#  discord_user_id                 :bigint
+#  creator_user_id                 :integer
+#  user_id                         :integer
 #
 # Indexes
 #
 #  index_players_on_best_player_reward_condition_id  (best_player_reward_condition_id)
-#  index_players_on_creator_id                       (creator_id)
-#  index_players_on_discord_user_id                  (discord_user_id)
+#  index_players_on_creator_user_id                  (creator_user_id)
+#  index_players_on_user_id                          (user_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (best_player_reward_condition_id => player_reward_conditions.id)
+#  fk_rails_...  (creator_user_id => users.id)
+#  fk_rails_...  (user_id => users.id)
 #
 require 'rails_helper'
 

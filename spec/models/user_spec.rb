@@ -14,11 +14,6 @@
 #  sign_in_count      :integer          default(0), not null
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
-#  discord_user_id    :bigint
-#
-# Indexes
-#
-#  index_users_on_discord_user_id  (discord_user_id) UNIQUE
 #
 require 'rails_helper'
 

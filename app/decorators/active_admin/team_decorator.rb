@@ -28,8 +28,8 @@ class ActiveAdmin::TeamDecorator < TeamDecorator
   end
 
   def admins_admin_links(options = {})
-    model.admins.map do |discord_user|
-      discord_user.admin_decorate.admin_link(options)
+    model.admins.map do |user|
+      user.admin_decorate.admin_link(options)
     end
   end
 

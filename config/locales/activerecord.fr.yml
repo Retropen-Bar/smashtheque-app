@@ -101,7 +101,6 @@ fr:
         << : *SHARED
         user: Utilisateur
         administrated_discord_guilds: Serveurs Discord gérés
-        administrated_teams: Équipes gérées
         avatar: Avatar
         discord_id: ID
         discriminator: Discriminant
@@ -116,9 +115,8 @@ fr:
         characters: Persos
         locations: Localisations
         location_ids: Localisations
-        creator: Ajouté par
-        creator_id: Ajouté par
-        discord_user: Compte Discord
+        creator_user: Ajouté par
+        creator_user_id: Ajouté par
         is_accepted: Validé ?
         is_banned: Banni ?
         points: Fragments d'étoiles
@@ -129,6 +127,7 @@ fr:
         team_ids: Équipes
         twitter_username: Compte Twitter
         unique_rewards: Récompenses uniques
+        user: Utilisateur
       player_reward_condition:
         << : *SHARED
         player: Joueur
@@ -279,13 +278,16 @@ fr:
         username: ID Twitch
       user:
         << : *SHARED
+        admin_level: Rôle
+        administrated_teams: Équipes gérées
+        administrated_recurring_tournaments: Tournois gérées
         current_sign_in_at: Session en cours
         current_sign_in_ip: IP en cours
-        discord_user: Compte Discord
+        discord_users: Comptes Discord
         last_sign_in_at: Session précédente
         last_sign_in_ip: IP précédente
         name: Nom
-        admin_level: Rôle
+        players: Joueurs
         sign_in_count: Connexions
       user/admin_level:
         0_help: Aide

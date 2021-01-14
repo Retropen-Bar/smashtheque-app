@@ -28,7 +28,7 @@ class Team < ApplicationRecord
            dependent: :destroy
   has_many :admins,
            through: :team_admins,
-           source: :discord_user
+           source: :user
 
   has_one_attached :logo
   has_one_attached :roster
@@ -86,6 +86,7 @@ class Team < ApplicationRecord
   end
 
   def logo_url=(url)
+    return false if url.blank?
     uri = URI.parse(url)
     open(url) do |f|
       logo.attach(io: File.open(f.path), filename: File.basename(uri.path))
@@ -98,6 +99,7 @@ class Team < ApplicationRecord
   end
 
   def roster_url=(url)
+    return false if url.blank?
     uri = URI.parse(url)
     open(url) do |f|
       roster.attach(io: File.open(f.path), filename: File.basename(uri.path))

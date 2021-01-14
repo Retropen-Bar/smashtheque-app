@@ -104,7 +104,7 @@ ActiveAdmin.register RecurringTournament do
               collection: recurring_tournament_size_select_collection
       f.input :registration,
               input_html: { rows: 5 }
-      discord_users_input f, :contacts
+      users_input f, :contacts
       f.input :is_archived
     end
     f.actions

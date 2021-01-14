@@ -20,7 +20,7 @@ ActiveAdmin.register TournamentEvent do
     end
   end
 
-  includes :recurring_tournament, :bracket, top1_player: :discord_user, top2_player: :discord_user, top3_player: :discord_user, top4_player: :discord_user, top5a_player: :discord_user, top5b_player: :discord_user, top7a_player: :discord_user, top7b_player: :discord_user
+  includes :recurring_tournament, :bracket, top1_player: :user, top2_player: :user, top3_player: :user, top4_player: :user, top5a_player: :user, top5b_player: :user, top7a_player: :user, top7b_player: :user
 
   index do
     selectable_column

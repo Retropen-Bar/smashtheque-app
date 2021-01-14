@@ -14,11 +14,6 @@
 #  sign_in_count      :integer          default(0), not null
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
-#  discord_user_id    :bigint
-#
-# Indexes
-#
-#  index_users_on_discord_user_id  (discord_user_id) UNIQUE
 #
 class User < ApplicationRecord
 
@@ -34,17 +29,28 @@ class User < ApplicationRecord
   # RELATIONS
   # ---------------------------------------------------------------------------
 
-  belongs_to :discord_user, optional: true
+  has_many :discord_users
+  has_many :players
+
+  has_many :recurring_tournament_contacts,
+           inverse_of: :user,
+           dependent: :destroy
+  has_many :administrated_recurring_tournaments,
+           through: :recurring_tournament_contacts,
+           source: :recurring_tournament
+
+  has_many :team_admins,
+           inverse_of: :user,
+           dependent: :destroy
+  has_many :administrated_teams,
+           through: :team_admins,
+           source: :team
 
   # ---------------------------------------------------------------------------
   # VALIDATIONS
   # ---------------------------------------------------------------------------
 
   validates :name, presence: true
-  validates :discord_user,
-            uniqueness: {
-              allow_nil: true
-            }
   validates :admin_level,
             inclusion: {
               in: Ability::ADMIN_LEVELS,
@@ -54,6 +60,13 @@ class User < ApplicationRecord
   # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
+
+  include PgSearch::Model
+  pg_search_scope :by_keyword,
+                  against: [:name],
+                  using: {
+                    tsearch: { prefix: true }
+                  }
 
   def self.not_root
     where(is_root: false)
@@ -75,6 +88,10 @@ class User < ApplicationRecord
     where(is_root: true)
   end
 
+  def self.by_discord_id(discord_id)
+    joins(:discord_users).where(discord_users: { discord_id: discord_id })
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------
@@ -86,8 +103,7 @@ class User < ApplicationRecord
     return false unless auth.provider.to_sym == :discord
 
     # find & update DiscordUser
-    discord_user = DiscordUser.find_by(discord_id: auth.uid)
-    return false if discord_user.nil?
+    discord_user = DiscordUser.where(discord_id: auth.uid).first_or_initialize
     discord_user.attributes = {
       username: auth.extra.raw_info.username,
       discriminator: auth.extra.raw_info.discriminator,
@@ -96,15 +112,8 @@ class User < ApplicationRecord
     discord_user.save!
 
     # find & return User
-    discord_user.user
+    discord_user.return_or_create_user!
   end
-
-  delegate :discord_id,
-           to: :discord_user
-
-  delegate :username,
-           to: :discord_user,
-           prefix: true
 
   def admin_level=(v)
     super v.presence
