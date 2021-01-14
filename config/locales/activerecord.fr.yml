@@ -1,7 +1,6 @@
 fr:
   activerecord:
     models:
-      user: Administrateur
       api_request: Requête API
       api_token: Token API
       challonge_tournament: Tournoi Challonge
@@ -25,6 +24,7 @@ fr:
       team: Équipe
       tournament_event: Édition
       twitch_channel: Chaîne Twitch
+      user: Utilisateur
       you_tube_channel: Chaîne YouTube
     attributes:
       shared: &SHARED
@@ -33,18 +33,6 @@ fr:
         id: "#"
         name: Nom
         updated_at: Modification
-      user:
-        << : *SHARED
-        current_sign_in_at: Session en cours
-        current_sign_in_ip: IP en cours
-        last_sign_in_at: Session précédente
-        last_sign_in_ip: IP précédente
-        admin_level: Rôle
-        sign_in_count: Connexions
-      user/admin_level:
-        0_help: Aide
-        1_admin: Admin
-        root: Superadmin
       api_request:
         << : *SHARED
         action: Action
@@ -289,6 +277,20 @@ fr:
         related: Sujet principal
         related_gid: Sujet principal
         username: ID Twitch
+      user:
+        << : *SHARED
+        current_sign_in_at: Session en cours
+        current_sign_in_ip: IP en cours
+        discord_user: Compte Discord
+        last_sign_in_at: Session précédente
+        last_sign_in_ip: IP précédente
+        name: Nom
+        admin_level: Rôle
+        sign_in_count: Connexions
+      user/admin_level:
+        0_help: Aide
+        1_admin: Admin
+        root: Superadmin
       you_tube_channel:
         << : *SHARED
         description: Détails

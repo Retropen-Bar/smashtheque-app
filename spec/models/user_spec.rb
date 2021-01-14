@@ -10,6 +10,7 @@
 #  is_root            :boolean          default(FALSE), not null
 #  last_sign_in_at    :datetime
 #  last_sign_in_ip    :inet
+#  name               :string           not null
 #  sign_in_count      :integer          default(0), not null
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null

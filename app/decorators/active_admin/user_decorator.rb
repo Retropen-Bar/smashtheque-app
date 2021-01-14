@@ -8,12 +8,10 @@ class ActiveAdmin::UserDecorator < UserDecorator
   end
 
   # compatibility
-  def admin_link
-    discord_user_admin_link(size: 32)
-  end
-
-  def full_name(size: nil)
-    model.discord_user.admin_decorate.full_name(size: size)
+  def admin_link(options = {})
+    super({
+      label: full_name(size: 32)
+    }.merge(options))
   end
 
   ADMIN_LEVEL_COLORS = {

@@ -2,7 +2,7 @@ ActiveAdmin.register User do
 
   decorate_with ActiveAdmin::UserDecorator
 
-  menu label: '<i class="fas fa-fw fa-shield-alt"></i>Admins'.html_safe
+  menu label: '<i class="fas fa-fw fa-user-secret"></i>Utilisateurs'.html_safe
 
   # ---------------------------------------------------------------------------
   # INDEX
@@ -11,6 +11,9 @@ ActiveAdmin.register User do
   index do
     selectable_column
     id_column
+    column :name do |decorated|
+      decorated.admin_link(size: 32)
+    end
     column :discord_user do |decorated|
       decorated.discord_user_admin_link(size: 32)
     end
@@ -30,10 +33,12 @@ ActiveAdmin.register User do
 
   scope :all, default: true
 
+  scope :lambda, group: :admin_level
   scope :helps, group: :admin_level
   scope :admins, group: :admin_level
   scope :roots, group: :admin_level
 
+  filter :name
   filter :sign_in_count
   filter :current_sign_in_at
   filter :current_sign_in_ip
@@ -46,15 +51,17 @@ ActiveAdmin.register User do
   form do |f|
     f.semantic_errors *f.object.errors.keys
     f.inputs do
+      f.input :name
       discord_user_input f
       f.input :admin_level,
               collection: user_admin_level_select_collection,
+              required: false,
               input_html: { disabled: f.object.is_root? }
     end
     f.actions
   end
 
-  permit_params :discord_user_id, :admin_level
+  permit_params :name, :discord_user_id, :admin_level
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -62,6 +69,7 @@ ActiveAdmin.register User do
 
   show do
     attributes_table do
+      row :name
       row :discord_user do |decorated|
         decorated.discord_user_admin_link(size: 32)
       end

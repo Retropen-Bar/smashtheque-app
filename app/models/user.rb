@@ -10,6 +10,7 @@
 #  is_root            :boolean          default(FALSE), not null
 #  last_sign_in_at    :datetime
 #  last_sign_in_ip    :inet
+#  name               :string           not null
 #  sign_in_count      :integer          default(0), not null
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
@@ -33,13 +34,17 @@ class User < ApplicationRecord
   # RELATIONS
   # ---------------------------------------------------------------------------
 
-  belongs_to :discord_user
+  belongs_to :discord_user, optional: true
 
   # ---------------------------------------------------------------------------
   # VALIDATIONS
   # ---------------------------------------------------------------------------
 
-  validates :discord_user, uniqueness: true
+  validates :name, presence: true
+  validates :discord_user,
+            uniqueness: {
+              allow_nil: true
+            }
   validates :admin_level,
             inclusion: {
               in: Ability::ADMIN_LEVELS,
@@ -52,6 +57,10 @@ class User < ApplicationRecord
 
   def self.not_root
     where(is_root: false)
+  end
+
+  def self.lambda
+    not_root.where(admin_level: nil)
   end
 
   def self.helps

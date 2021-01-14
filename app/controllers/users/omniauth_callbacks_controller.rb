@@ -9,7 +9,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         set_flash_message(:notice, :success, kind: "Discord") if is_navigational_format?
       else
         sign_in user
-        redirect_to root_path, notice: "Bienvenue, #{user.decorate.name}"
+        redirect_to root_path, notice: "Bienvenue, #{user.name}"
       end
     else
       redirect_to root_path
