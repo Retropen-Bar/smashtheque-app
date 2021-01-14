@@ -17,6 +17,8 @@ api:
               << : *SHARED_ATTRIBUTES
         tournament_event:
           attributes:
+            bracket_id:
+              << : *SHARED_ATTRIBUTES
             date:
               << : *SHARED_ATTRIBUTES
             name:

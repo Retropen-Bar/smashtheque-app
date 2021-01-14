@@ -18,6 +18,21 @@ class Api::V1::TournamentEventsController < Api::V1::BaseController
     # auto-complete with data from bracket API
     tournament_event.complete_with_bracket
 
+    if existing = TournamentEvent.where(bracket_id: tournament_event.bracket_id)
+                                 .first
+      # this tournament is already known:
+      # update graph if available, otherwise let the error happen
+      unless tournament_event_params[:graph_url].blank?
+        existing.graph_url = tournament_event_params[:graph_url]
+        if existing.save
+          render json: existing, status: :ok
+        else
+          render_errors existing.errors, :unprocessable_entity
+        end
+        return
+      end
+    end
+
     if tournament_event.save
       render json: tournament_event, status: :created
     else
