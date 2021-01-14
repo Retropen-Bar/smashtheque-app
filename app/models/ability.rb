@@ -1,31 +1,31 @@
 class Ability
   include CanCan::Ability
 
-  LEVEL_HELP = '0_help'.freeze
-  LEVEL_ADMIN = '1_admin'.freeze
-  LEVELS = [LEVEL_HELP, LEVEL_ADMIN]
+  ADMIN_LEVEL_HELP = '0_help'.freeze
+  ADMIN_LEVEL_ADMIN = '1_admin'.freeze
+  ADMIN_LEVELS = [ADMIN_LEVEL_HELP, ADMIN_LEVEL_ADMIN]
 
   def initialize(_user)
     alias_action :create, :read, :update, to: :cru
 
-    @user = _user || AdminUser.new
+    @user = _user || User.new
 
-    level = user.level || LEVEL_HELP
+    admin_level = user.admin_level || ADMIN_LEVEL_HELP
 
-    manage_or_cru = level >= LEVEL_ADMIN ? :manage : :cru
-    manage_or_read = level >= LEVEL_ADMIN ? :manage : :read
+    manage_or_cru = admin_level >= ADMIN_LEVEL_ADMIN ? :manage : :cru
+    manage_or_read = admin_level >= ADMIN_LEVEL_ADMIN ? :manage : :read
 
-    # AdminUser
-    if level >= LEVEL_ADMIN
-      can :manage, AdminUser
-      cannot :manage, AdminUser, is_root: true
-      can :read, AdminUser
+    # User
+    if admin_level >= ADMIN_LEVEL_ADMIN
+      can :manage, User
+      cannot :manage, User, is_root: true
+      can :read, User
     elsif user.persisted?
-      can :read, AdminUser
+      can :read, User
     end
 
     # ApiRequest
-    if level >= LEVEL_ADMIN
+    if admin_level >= ADMIN_LEVEL_ADMIN
       can :read, ApiRequest
     end
 

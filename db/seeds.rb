@@ -7,9 +7,9 @@
 DiscordUser.delete_all
 discord_user = DiscordUser.new(discord_id: '608210202952466464')
 discord_user.save!
-AdminUser.create!(
+User.create!(
   discord_user: discord_user,
-  level: Ability::LEVEL_ADMIN,
+  admin_level: Ability::ADMIN_LEVEL_ADMIN,
   is_root: true
 )
 

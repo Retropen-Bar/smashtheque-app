@@ -65,7 +65,7 @@ ActiveAdmin.register RecurringTournament do
 
   action_item :rebuild,
               only: :index,
-              if: proc { current_admin_user.is_root? } do
+              if: proc { current_user.is_root? } do
     link_to 'Rebuild', [:rebuild, :admin, :recurring_tournaments], class: 'blue'
   end
   collection_action :rebuild do

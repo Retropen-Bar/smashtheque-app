@@ -1,6 +1,6 @@
-ActiveAdmin.register AdminUser do
+ActiveAdmin.register User do
 
-  decorate_with ActiveAdmin::AdminUserDecorator
+  decorate_with ActiveAdmin::UserDecorator
 
   menu label: '<i class="fas fa-fw fa-shield-alt"></i>Admins'.html_safe
 
@@ -14,10 +14,10 @@ ActiveAdmin.register AdminUser do
     column :discord_user do |decorated|
       decorated.discord_user_admin_link(size: 32)
     end
-    column :level do |decorated|
-      decorated.level_status
+    column :admin_level do |decorated|
+      decorated.admin_level_status
     end
-    if current_admin_user.is_root?
+    if current_user.is_root?
       column :sign_in_count
       column :current_sign_in_at
       column :current_sign_in_ip
@@ -30,9 +30,9 @@ ActiveAdmin.register AdminUser do
 
   scope :all, default: true
 
-  scope :helps, group: :level
-  scope :admins, group: :level
-  scope :roots, group: :level
+  scope :helps, group: :admin_level
+  scope :admins, group: :admin_level
+  scope :roots, group: :admin_level
 
   filter :sign_in_count
   filter :current_sign_in_at
@@ -47,14 +47,14 @@ ActiveAdmin.register AdminUser do
     f.semantic_errors *f.object.errors.keys
     f.inputs do
       discord_user_input f
-      f.input :level,
-              collection: admin_user_level_select_collection,
+      f.input :admin_level,
+              collection: user_admin_level_select_collection,
               input_html: { disabled: f.object.is_root? }
     end
     f.actions
   end
 
-  permit_params :discord_user_id, :level
+  permit_params :discord_user_id, :admin_level
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -65,10 +65,10 @@ ActiveAdmin.register AdminUser do
       row :discord_user do |decorated|
         decorated.discord_user_admin_link(size: 32)
       end
-      row :level do |decorated|
-        decorated.level_status
+      row :admin_level do |decorated|
+        decorated.admin_level_status
       end
-      if current_admin_user.is_root?
+      if current_user.is_root?
         row :sign_in_count
         row :current_sign_in_at
         row :last_sign_in_at

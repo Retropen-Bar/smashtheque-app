@@ -9,7 +9,7 @@ ActiveAdmin.register DiscordUser do
   # INDEX
   # ---------------------------------------------------------------------------
 
-  includes :admin_user, :player, :administrated_teams, :administrated_discord_guilds
+  includes :user, :player, :administrated_teams, :administrated_discord_guilds
 
   index do
     selectable_column
@@ -19,8 +19,8 @@ ActiveAdmin.register DiscordUser do
       decorated.full_name(size: 32)
     end
     column :player
-    column :admin_user do |decorated|
-      decorated.admin_user_status
+    column :user do |decorated|
+      decorated.user_status
     end
     column :administrated_teams do |decorated|
       decorated.administrated_teams_admin_links(size: 32).join('<br/>').html_safe
@@ -35,7 +35,7 @@ ActiveAdmin.register DiscordUser do
   end
 
   scope :all
-  scope :with_admin_user
+  scope :with_user
   scope :unknown
 
   filter :discord_id
@@ -86,8 +86,8 @@ ActiveAdmin.register DiscordUser do
         decorated.discriminated_username
       end
       row :player
-      row :admin_user do |decorated|
-        decorated.admin_user_status
+      row :user do |decorated|
+        decorated.user_status
       end
       row :administrated_teams do |decorated|
         decorated.administrated_teams_admin_links(size: 32).join('<br/>').html_safe

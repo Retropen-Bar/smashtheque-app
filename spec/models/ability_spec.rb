@@ -3,18 +3,18 @@ require 'rails_helper'
 RSpec.describe Ability, type: :model do
 
   before(:all) do
-    @root = Ability.new(AdminUser.create!(
+    @root = Ability.new(User.create!(
       discord_user: FactoryBot.create(:discord_user),
-      level: Ability::LEVEL_ADMIN,
+      admin_level: Ability::ADMIN_LEVEL_ADMIN,
       is_root: true
     ))
-    @admin = Ability.new(AdminUser.create!(
+    @admin = Ability.new(User.create!(
       discord_user: FactoryBot.create(:discord_user),
-      level: Ability::LEVEL_ADMIN
+      admin_level: Ability::ADMIN_LEVEL_ADMIN
     ))
-    @help = Ability.new(AdminUser.create!(
+    @help = Ability.new(User.create!(
       discord_user: FactoryBot.create(:discord_user),
-      level: Ability::LEVEL_HELP
+      admin_level: Ability::ADMIN_LEVEL_HELP
     ))
   end
 
@@ -47,16 +47,16 @@ RSpec.describe Ability, type: :model do
       expect(@admin.can?(:read, @root.user)).to be_truthy
     end
     it 'read admins' do
-      expect(@admin.can?(:read, AdminUser)).to be_truthy
+      expect(@admin.can?(:read, User)).to be_truthy
     end
     it 'create admins' do
-      expect(@admin.can?(:create, AdminUser)).to be_truthy
+      expect(@admin.can?(:create, User)).to be_truthy
     end
     it 'update admins' do
-      expect(@admin.can?(:update, AdminUser)).to be_truthy
+      expect(@admin.can?(:update, User)).to be_truthy
     end
     it 'destroy admins' do
-      expect(@admin.can?(:destroy, AdminUser)).to be_truthy
+      expect(@admin.can?(:destroy, User)).to be_truthy
     end
     it 'destroy a player' do
       expect(@admin.can?(:destroy, Player)).to be_truthy
@@ -68,13 +68,13 @@ RSpec.describe Ability, type: :model do
 
   context 'helps cannot' do
     it 'create admins' do
-      expect(@help.can?(:create, AdminUser)).to be_falsy
+      expect(@help.can?(:create, User)).to be_falsy
     end
     it 'update admins' do
-      expect(@help.can?(:update, AdminUser)).to be_falsy
+      expect(@help.can?(:update, User)).to be_falsy
     end
     it 'destroy admins' do
-      expect(@help.can?(:destroy, AdminUser)).to be_falsy
+      expect(@help.can?(:destroy, User)).to be_falsy
     end
     it 'destroy a player' do
       expect(@help.can?(:destroy, Player)).to be_falsy

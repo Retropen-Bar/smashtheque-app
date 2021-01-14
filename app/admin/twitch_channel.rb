@@ -34,7 +34,7 @@ ActiveAdmin.register TwitchChannel do
 
   action_item :rebuild,
               only: :index,
-              if: proc { current_admin_user.is_root? } do
+              if: proc { current_user.is_root? } do
     link_to 'Rebuild', [:rebuild, :admin, :twitch_channels], class: 'blue'
   end
   collection_action :rebuild do

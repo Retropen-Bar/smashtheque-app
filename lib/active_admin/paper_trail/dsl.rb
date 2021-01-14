@@ -48,7 +48,7 @@ module ActiveAdmin
             # try to find author
             if version_author
               version_author_id, version_author_name = version_author.split(':')
-              @version_author = AdminUser.where(id: version_author_id).first || version_author_name
+              @version_author = User.where(id: version_author_id).first || version_author_name
             else
               @version_author = '?'
             end

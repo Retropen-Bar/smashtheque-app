@@ -57,7 +57,7 @@ ActiveAdmin.register DiscordGuild do
 
   action_item :rebuild,
               only: :index,
-              if: proc { current_admin_user.is_root? } do
+              if: proc { current_user.is_root? } do
     link_to 'Rebuild', [:rebuild, :admin, :discord_guilds], class: 'blue'
   end
   collection_action :rebuild do

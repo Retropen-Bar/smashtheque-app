@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_03_161301) do
+ActiveRecord::Schema.define(version: 2021_01_14_000000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -50,21 +50,6 @@ ActiveRecord::Schema.define(version: 2021_01_03_161301) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
-  end
-
-  create_table "admin_users", force: :cascade do |t|
-    t.string "encrypted_password", default: "", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.bigint "discord_user_id"
-    t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
-    t.inet "current_sign_in_ip"
-    t.inet "last_sign_in_ip"
-    t.boolean "is_root", default: false, null: false
-    t.string "level", null: false
-    t.index ["discord_user_id"], name: "index_admin_users_on_discord_user_id", unique: true
   end
 
   create_table "api_requests", force: :cascade do |t|
@@ -417,6 +402,21 @@ ActiveRecord::Schema.define(version: 2021_01_03_161301) do
     t.string "name", null: false
     t.index ["related_type", "related_id"], name: "index_twitch_channels_on_related_type_and_related_id"
     t.index ["username"], name: "index_twitch_channels_on_username", unique: true
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "encrypted_password", default: "", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "discord_user_id"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.inet "current_sign_in_ip"
+    t.inet "last_sign_in_ip"
+    t.boolean "is_root", default: false, null: false
+    t.string "admin_level"
+    t.index ["discord_user_id"], name: "index_users_on_discord_user_id", unique: true
   end
 
   create_table "versions", force: :cascade do |t|

@@ -1,15 +1,15 @@
 # == Schema Information
 #
-# Table name: admin_users
+# Table name: users
 #
 #  id                 :bigint           not null, primary key
+#  admin_level        :string
 #  current_sign_in_at :datetime
 #  current_sign_in_ip :inet
 #  encrypted_password :string           default(""), not null
 #  is_root            :boolean          default(FALSE), not null
 #  last_sign_in_at    :datetime
 #  last_sign_in_ip    :inet
-#  level              :string           not null
 #  sign_in_count      :integer          default(0), not null
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
@@ -17,9 +17,9 @@
 #
 # Indexes
 #
-#  index_admin_users_on_discord_user_id  (discord_user_id) UNIQUE
+#  index_users_on_discord_user_id  (discord_user_id) UNIQUE
 #
-class AdminUser < ApplicationRecord
+class User < ApplicationRecord
 
   # ---------------------------------------------------------------------------
   # MODULES
@@ -40,7 +40,11 @@ class AdminUser < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   validates :discord_user, uniqueness: true
-  validates :level, presence: true, inclusion: { in: Ability::LEVELS }
+  validates :admin_level,
+            inclusion: {
+              in: Ability::ADMIN_LEVELS,
+              allow_nil: true
+            }
 
   # ---------------------------------------------------------------------------
   # SCOPES
@@ -51,11 +55,11 @@ class AdminUser < ApplicationRecord
   end
 
   def self.helps
-    not_root.where(level: Ability::LEVEL_HELP)
+    not_root.where(admin_level: Ability::ADMIN_LEVEL_HELP)
   end
 
   def self.admins
-    not_root.where(level: Ability::LEVEL_ADMIN)
+    not_root.where(admin_level: Ability::ADMIN_LEVEL_ADMIN)
   end
 
   def self.roots
@@ -82,8 +86,8 @@ class AdminUser < ApplicationRecord
     }
     discord_user.save!
 
-    # find & return AdminUser
-    discord_user.admin_user
+    # find & return User
+    discord_user.user
   end
 
   delegate :discord_id,
@@ -92,5 +96,13 @@ class AdminUser < ApplicationRecord
   delegate :username,
            to: :discord_user,
            prefix: true
+
+  def admin_level=(v)
+    super v.presence
+  end
+
+  def is_admin?
+    !admin_level.nil?
+  end
 
 end
