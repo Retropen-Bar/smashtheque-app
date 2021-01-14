@@ -156,16 +156,17 @@ class DiscordUser < ApplicationRecord
     end
   end
 
-  def is_admin?
-    !!user
-  end
-
   def is_known?
     !!username
   end
 
   delegate :id,
            to: :player,
+           prefix: true,
+           allow_nil: true
+
+  delegate :is_admin?,
+           to: :user,
            prefix: true,
            allow_nil: true
 
