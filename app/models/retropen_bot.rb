@@ -22,7 +22,7 @@ class RetropenBot
   CHANNEL_TWITCH_WORLD = 'twitch-channels-world'.freeze
   CHANNEL_YOUTUBE_FR = 'youtube-channels-fr'.freeze
   CHANNEL_YOUTUBE_WORLD = 'youtube-channels-world'.freeze
-  CATEGORY_ONLINE_TOURNAMENTS = 'TOURNOIS ONLINE'.freeze
+  CATEGORY_ONLINE_TOURNAMENTS = 'COMPETITION ONLINE'.freeze
   CHANNEL_ONLINE_TOURNAMENTS_IRREGULAR = 'irrégulier'.freeze
   CHANNEL_ONLINE_TOURNAMENTS_ONESHOT = 'one-shot'.freeze
   CHANNEL_ONLINE_TOURNAMENTS_DAYS = %w(
