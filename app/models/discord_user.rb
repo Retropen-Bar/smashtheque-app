@@ -9,7 +9,7 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  discord_id    :string
-#  user_id       :integer          not null
+#  user_id       :integer
 #
 # Indexes
 #
@@ -26,7 +26,9 @@ class DiscordUser < ApplicationRecord
   # RELATIONS
   # ---------------------------------------------------------------------------
 
-  belongs_to :user
+  belongs_to :user, optional: true
+
+  has_one :player, through: :user
 
   has_many :discord_guild_admins,
            inverse_of: :discord_user,
@@ -35,13 +37,12 @@ class DiscordUser < ApplicationRecord
            through: :discord_guild_admins,
            source: :discord_guild
 
-  has_many :players, through: :user
-
   # ---------------------------------------------------------------------------
   # VALIDATIONS
   # ---------------------------------------------------------------------------
 
   validates :discord_id, presence: true, uniqueness: true
+  validates :user_id, uniqueness: { allow_nil: true }
 
   # ---------------------------------------------------------------------------
   # CALLBACKS
@@ -71,10 +72,6 @@ class DiscordUser < ApplicationRecord
     where(username: nil)
   end
 
-  def self.team_admins
-    where(id: TeamAdmin.select(:discord_user_id))
-  end
-
   def self.on_abc(letter)
     letter == '$' ? on_abc_others : where("unaccent(username) ILIKE '#{letter}%'")
   end
@@ -101,7 +98,7 @@ class DiscordUser < ApplicationRecord
 
   def return_or_create_user!
     if user.nil?
-      self.user = User.create!(name: username)
+      self.user = User.create!(name: username || "##{discord_id}")
       save!
     end
     user
@@ -157,10 +154,13 @@ class DiscordUser < ApplicationRecord
     !!username
   end
 
-  delegate :player_ids,
-           to: :user,
+  # provides: @player_id
+  delegate :id,
+           to: :player,
+           prefix: true,
            allow_nil: true
 
+  # provides: @user_is_admin?
   delegate :is_admin?,
            to: :user,
            prefix: true,
@@ -177,16 +177,13 @@ class DiscordUser < ApplicationRecord
         },
         administrated_teams: {
           only: %i(id short_name name)
-        },
-        players: {
-          only: %i(id name)
         }
       },
       methods: %i(
+        player_id
         administrated_discord_guild_ids
         administrated_recurring_tournament_ids
         administrated_team_ids
-        player_ids
       )
     ))
   end

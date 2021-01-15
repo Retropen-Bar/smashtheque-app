@@ -9,7 +9,7 @@ class Api::V1::PlayersController < Api::V1::BaseController
 
   def index
     players = apply_scopes(Player.order(:name)).includes(
-      :characters, :locations, :creator_user, :user, :discord_users, :teams
+      :characters, :locations, :creator_user, :user, :discord_user, :teams
     )
     render json: players.as_json(reload: params[:reload] != '0')
   end

@@ -117,6 +117,7 @@ fr:
         location_ids: Localisations
         creator_user: Ajouté par
         creator_user_id: Ajouté par
+        discord_user: Compte Discord
         is_accepted: Validé ?
         is_banned: Banni ?
         points: Fragments d'étoiles
@@ -280,14 +281,14 @@ fr:
         << : *SHARED
         admin_level: Rôle
         administrated_teams: Équipes gérées
-        administrated_recurring_tournaments: Tournois gérées
+        administrated_recurring_tournaments: Tournois gérés
         current_sign_in_at: Session en cours
         current_sign_in_ip: IP en cours
-        discord_users: Comptes Discord
+        discord_user: Compte Discord
         last_sign_in_at: Session précédente
         last_sign_in_ip: IP précédente
         name: Nom
-        players: Joueurs
+        player: Joueur
         sign_in_count: Connexions
       user/admin_level:
         0_help: Aide

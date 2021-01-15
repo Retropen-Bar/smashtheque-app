@@ -9,7 +9,6 @@ class RevertUserDiscordUserLink < ActiveRecord::Migration[6.0]
                               )
       discord_user.save!
     end
-    change_column :discord_users, :user_id, :integer, null: false
 
     # add foreign key to prevent corruption
     add_foreign_key :discord_users, :users

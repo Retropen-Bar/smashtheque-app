@@ -29,8 +29,8 @@ class User < ApplicationRecord
   # RELATIONS
   # ---------------------------------------------------------------------------
 
-  has_many :discord_users
-  has_many :players
+  has_one :discord_user, dependent: :nullify
+  has_one :player, dependent: :nullify
 
   has_many :recurring_tournament_contacts,
            inverse_of: :user,
@@ -88,8 +88,12 @@ class User < ApplicationRecord
     where(is_root: true)
   end
 
-  def self.by_discord_id(discord_id)
-    joins(:discord_users).where(discord_users: { discord_id: discord_id })
+  def self.recurring_tournament_contacts
+    where(id: RecurringTournamentContact.select(:user_id))
+  end
+
+  def self.team_admins
+    where(id: TeamAdmin.select(:user_id))
   end
 
   # ---------------------------------------------------------------------------
@@ -122,5 +126,21 @@ class User < ApplicationRecord
   def is_admin?
     !admin_level.nil?
   end
+
+  # provides: @discord_user_id
+  delegate :id,
+           to: :discord_user,
+           prefix: true,
+           allow_nil: true
+
+  # provides: @discord_id
+  delegate :discord_id,
+           to: :discord_user,
+           allow_nil: true
+
+  # provides: @discord_user_username
+  delegate :username,
+           to: :discord_user,
+           prefix: true
 
 end

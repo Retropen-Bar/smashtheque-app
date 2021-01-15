@@ -3,16 +3,12 @@ class ActiveAdmin::UserDecorator < UserDecorator
 
   decorates :user
 
-  def discord_users_admin_links(options = {})
-    model.discord_users.map do |discord_user|
-      discord_user.admin_decorate.admin_link(options.clone)
-    end
+  def discord_user_admin_link(options = {})
+    model.discord_user&.admin_decorate&.admin_link(options)
   end
 
-  def players_admin_links(options = {})
-    model.players.map do |player|
-      player.admin_decorate.admin_link(options.clone)
-    end
+  def player_admin_link(options = {})
+    model.player&.admin_decorate&.admin_link(options)
   end
 
   # compatibility

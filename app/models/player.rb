@@ -44,6 +44,8 @@ class Player < ApplicationRecord
   belongs_to :creator_user, class_name: :User
   belongs_to :user, optional: true
 
+  has_one :discord_user, through: :user
+
   # cache
   belongs_to :best_player_reward_condition,
              class_name: :PlayerRewardCondition,
@@ -119,8 +121,6 @@ class Player < ApplicationRecord
 
   has_many :smashgg_users, dependent: :nullify
 
-  has_many :discord_users, through: :user
-
   # ---------------------------------------------------------------------------
   # VALIDATIONS
   # ---------------------------------------------------------------------------
@@ -142,6 +142,7 @@ class Player < ApplicationRecord
   end
 
   validates :name, presence: true
+  validates :user_id, uniqueness: { allow_nil: true }
 
   # ---------------------------------------------------------------------------
   # CALLBACKS
@@ -191,6 +192,10 @@ class Player < ApplicationRecord
     else
       self.user = nil
     end
+  end
+
+  def creator_discord_id
+    creator_user&.discord_id
   end
 
   def creator_discord_id=(discord_id)
@@ -286,7 +291,10 @@ class Player < ApplicationRecord
     if discord_id.blank?
       where(user: nil)
     else
-      where(user_id: User.by_discord_id(discord_id).select(:id))
+      where.not(user_id: nil).where(
+        user_id: DiscordUser.where(discord_id: discord_id)
+                            .select(:user_id)
+      )
     end
   end
 
@@ -354,7 +362,8 @@ class Player < ApplicationRecord
   # HELPERS
   # ---------------------------------------------------------------------------
 
-  delegate :discord_ids,
+  # provides: @discord_id
+  delegate :discord_id,
            to: :user,
            allow_nil: true
 
@@ -376,7 +385,7 @@ class Player < ApplicationRecord
         locations: {
           only: %i(id icon name)
         },
-        discord_users: {
+        discord_user: {
           only: %i(id discord_id)
         },
         teams: {
@@ -388,6 +397,7 @@ class Player < ApplicationRecord
       },
       methods: %i(
         character_ids
+        creator_discord_id
         discord_id
         location_ids
         team_ids
