@@ -67,8 +67,6 @@ ActiveAdmin.register User do
               collection: user_admin_level_select_collection,
               required: false,
               input_html: { disabled: f.object.is_root? }
-      discord_user_input f
-      player_input f
       f.input :administrated_teams,
               collection: user_administrated_teams_select_collection,
               input_html: { multiple: true, data: { select2: {} } }
@@ -79,7 +77,9 @@ ActiveAdmin.register User do
     f.actions
   end
 
-  permit_params :name, :admin_level, :discord_user_id, :player_id, administrated_team_ids: [], administrated_recurring_tournament_ids: []
+  permit_params :name, :admin_level,
+                administrated_team_ids: [],
+                administrated_recurring_tournament_ids: []
 
   # ---------------------------------------------------------------------------
   # SHOW
