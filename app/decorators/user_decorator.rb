@@ -19,4 +19,12 @@ class UserDecorator < BaseDecorator
     ].join('&nbsp;').html_safe
   end
 
+  def player_link(options = {})
+    model.player.decorate.link(options)
+  end
+
+  def link(options = {})
+    h.content_tag :div, full_name(size: 32), options
+  end
+
 end
