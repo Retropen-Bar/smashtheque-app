@@ -2,6 +2,7 @@
 :queues:
   - abc
   - active_storage_analysis
+  - active_storage_purge
   - actors
   - chars
   - discord
