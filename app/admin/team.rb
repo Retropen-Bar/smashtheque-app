@@ -10,7 +10,9 @@ ActiveAdmin.register Team do
   # INDEX
   # ---------------------------------------------------------------------------
 
-  includes :admins, :discord_guilds
+  includes :discord_guilds,
+           admins: :discord_user,
+           logo_attachment: :blob
 
   index do
     selectable_column

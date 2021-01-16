@@ -12,7 +12,7 @@ ActiveAdmin.register RecurringTournament do
   # INDEX
   # ---------------------------------------------------------------------------
 
-  includes :contacts
+  includes contacts: :discord_user
 
   index do
     selectable_column
