@@ -4,11 +4,13 @@ class LinkTeamsToUsers < ActiveRecord::Migration[6.0]
     add_index :team_admins, :user_id
     add_foreign_key :team_admins, :users, column: :user_id
     TeamAdmin.find_each do |team_admin|
-      next if team_admin.discord_user_id.nil?
-      team_admin.user_id = DiscordUser.find(team_admin.discord_user_id)
-                                      .return_or_create_user!
-                                      .id
-      team_admin.save!
+      next if team_admin['discord_user_id'].nil?
+      TeamAdmin.where(id: team_admin.id)
+               .update_all(
+                 user_id: DiscordUser.find(team_admin['discord_user_id'])
+                                     .return_or_create_user!
+                                     .id
+               )
     end
     remove_column :team_admins, :discord_user_id
   end

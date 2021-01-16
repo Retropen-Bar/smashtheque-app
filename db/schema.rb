@@ -154,7 +154,7 @@ ActiveRecord::Schema.define(version: 2021_01_14_230903) do
     t.string "avatar"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "user_id"
+    t.bigint "user_id"
     t.index ["discord_id"], name: "index_discord_users_on_discord_id", unique: true
     t.index ["user_id"], name: "index_discord_users_on_user_id"
   end
