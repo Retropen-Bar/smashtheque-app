@@ -12,6 +12,7 @@
 #
 #  index_recurring_tournament_contacts_on_recurring_tournament_id  (recurring_tournament_id)
 #  index_recurring_tournament_contacts_on_user_id                  (user_id)
+#  index_rtc_on_both_ids                                           (recurring_tournament_id,user_id) UNIQUE
 #
 # Foreign Keys
 #

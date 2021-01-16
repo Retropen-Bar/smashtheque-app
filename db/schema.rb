@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_14_230903) do
+ActiveRecord::Schema.define(version: 2021_01_16_204111) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -238,6 +238,7 @@ ActiveRecord::Schema.define(version: 2021_01_14_230903) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "user_id"
+    t.index ["recurring_tournament_id", "user_id"], name: "index_rtc_on_both_ids", unique: true
     t.index ["recurring_tournament_id"], name: "index_recurring_tournament_contacts_on_recurring_tournament_id"
     t.index ["user_id"], name: "index_recurring_tournament_contacts_on_user_id"
   end
@@ -345,6 +346,7 @@ ActiveRecord::Schema.define(version: 2021_01_14_230903) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "user_id"
+    t.index ["team_id", "user_id"], name: "index_team_admins_on_team_id_and_user_id", unique: true
     t.index ["team_id"], name: "index_team_admins_on_team_id"
     t.index ["user_id"], name: "index_team_admins_on_user_id"
   end
