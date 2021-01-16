@@ -76,11 +76,11 @@
 
           <p>
             <strong>Contacts</strong><br/>
-            <% recurring_tournament.contacts.each do |discord_user| %>
-              <% if discord_user.player %>
-                <%= discord_user.decorate.player_link(class: 'btn btn-outline-primary') %>
+            <% recurring_tournament.contacts.each do |user| %>
+              <% if user.player %>
+                <%= user.decorate.player_link(class: 'btn btn-outline-primary') %>
               <% else %>
-                <%= discord_user.decorate.link(class: 'btn btn-outline-secondary') %>
+                <%= user.decorate.link(class: 'btn btn-outline-secondary') %>
               <% end %>
             <% end %>
           </p>
