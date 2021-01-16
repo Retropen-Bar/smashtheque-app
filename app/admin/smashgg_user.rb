@@ -9,7 +9,7 @@ ActiveAdmin.register SmashggUser do
   # INDEX
   # ---------------------------------------------------------------------------
 
-  includes :player
+  includes player: { user: :discord_user }
 
   index do
     selectable_column

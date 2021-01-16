@@ -18,8 +18,13 @@ ActiveAdmin.register Player do
     end
   end
 
-  includes :characters, :locations, :creator_user, :user, :teams,
-           :best_reward, :smashgg_users
+  includes :characters, :locations,
+           teams: [
+            :discord_guilds,
+            { logo_attachment: :blob }
+           ],
+           user: :discord_user,
+           best_reward: { image_attachment: :blob }
 
   index do
     selectable_column
@@ -29,9 +34,6 @@ ActiveAdmin.register Player do
     end
     column :user do |decorated|
       decorated.user_admin_link(size: 32)
-    end
-    column :smashgg_users do |decorated|
-      decorated.smashgg_users_admin_links(size: 32).join('<br/>').html_safe
     end
     column :characters do |decorated|
       decorated.characters_admin_links.join(' ').html_safe
@@ -72,10 +74,6 @@ ActiveAdmin.register Player do
 
   scope :banned, group: :is_banned
 
-  filter :creator_user,
-         as: :select,
-         collection: proc { player_creator_user_select_collection },
-         input_html: { multiple: true, data: { select2: {} } }
   filter :name
   filter :characters,
          as: :select,
