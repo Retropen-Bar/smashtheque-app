@@ -282,9 +282,13 @@ fr:
         admin_level: Rôle
         administrated_teams: Équipes gérées
         administrated_recurring_tournaments: Tournois gérés
+        coaching_details: Description du coaching
+        coaching_url: URL de coaching
         current_sign_in_at: Session en cours
         current_sign_in_ip: IP en cours
         discord_user: Compte Discord
+        is_caster: Caster ?
+        is_coach: Coach ?
         last_sign_in_at: Session précédente
         last_sign_in_ip: IP précédente
         name: Nom

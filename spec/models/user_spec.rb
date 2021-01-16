@@ -4,9 +4,13 @@
 #
 #  id                 :bigint           not null, primary key
 #  admin_level        :string
+#  coaching_details   :string
+#  coaching_url       :string
 #  current_sign_in_at :datetime
 #  current_sign_in_ip :inet
 #  encrypted_password :string           default(""), not null
+#  is_caster          :boolean          default(FALSE), not null
+#  is_coach           :boolean          default(FALSE), not null
 #  is_root            :boolean          default(FALSE), not null
 #  last_sign_in_at    :datetime
 #  last_sign_in_ip    :inet

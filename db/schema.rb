@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_16_204111) do
+ActiveRecord::Schema.define(version: 2021_01_16_212220) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -418,6 +418,10 @@ ActiveRecord::Schema.define(version: 2021_01_16_204111) do
     t.boolean "is_root", default: false, null: false
     t.string "admin_level"
     t.string "name", null: false
+    t.boolean "is_caster", default: false, null: false
+    t.boolean "is_coach", default: false, null: false
+    t.string "coaching_url"
+    t.string "coaching_details"
   end
 
   create_table "versions", force: :cascade do |t|

@@ -31,6 +31,8 @@ ActiveAdmin.register User do
     column :administrated_recurring_tournaments do |decorated|
       decorated.administrated_recurring_tournaments_admin_links(size: 32).join('<br/>').html_safe
     end
+    column :is_caster
+    column :is_coach
     if current_user.is_root?
       column :sign_in_count
       column :current_sign_in_at
@@ -73,11 +75,16 @@ ActiveAdmin.register User do
       f.input :administrated_recurring_tournaments,
               collection: user_administrated_recurring_tournaments_select_collection,
               input_html: { multiple: true, data: { select2: {} } }
+      f.input :is_caster
+      f.input :is_coach, input_html: { data: { toggle: '.coaching-fields' } }
+      f.input :coaching_url, wrapper_html: { class: 'coaching-fields' }
+      f.input :coaching_details, wrapper_html: { class: 'coaching-fields' }
     end
     f.actions
   end
 
   permit_params :name, :admin_level,
+                :is_caster, :is_coach, :coaching_url, :coaching_details,
                 administrated_team_ids: [],
                 administrated_recurring_tournament_ids: []
 
@@ -103,6 +110,10 @@ ActiveAdmin.register User do
       row :administrated_recurring_tournaments do |decorated|
         decorated.administrated_recurring_tournaments_admin_links(size: 32).join('<br/>').html_safe
       end
+      row :is_caster
+      row :is_coach
+      row :coaching_url
+      row :coaching_details
       if current_user.is_root?
         row :sign_in_count
         row :current_sign_in_at
