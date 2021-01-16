@@ -27,9 +27,13 @@ api:
               << : *SHARED_ATTRIBUTES
         player:
           attributes:
-            creator:
+            creator_user:
               << : *SHARED_ATTRIBUTES
-            discord_user:
+            creator_user_id:
+              << : *SHARED_ATTRIBUTES
+            user:
+              << : *SHARED_ATTRIBUTES
+            user_id:
               << : *SHARED_ATTRIBUTES
             name:
               << : *SHARED_ATTRIBUTES

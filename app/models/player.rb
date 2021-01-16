@@ -367,6 +367,12 @@ class Player < ApplicationRecord
            to: :user,
            allow_nil: true
 
+  # provides: @discord_user_id
+  delegate :id,
+           to: :discord_user,
+           prefix: true,
+           allow_nil: true
+
   def twitter_username=(v)
     super (v || '').gsub('https://', '')
                    .gsub('http://', '')
@@ -381,6 +387,9 @@ class Player < ApplicationRecord
       include: {
         characters: {
           only: %i(id emoji name)
+        },
+        creator_user: {
+          only: %i(id name)
         },
         locations: {
           only: %i(id icon name)
@@ -399,6 +408,7 @@ class Player < ApplicationRecord
         character_ids
         creator_discord_id
         discord_id
+        discord_user_id
         location_ids
         team_ids
       )

@@ -3,16 +3,19 @@ require 'rails_helper'
 RSpec.describe Ability, type: :model do
 
   before(:all) do
-    @root = Ability.new(User.create!(
+    @root = Ability.new(FactoryBot.create(
+      :user,
       discord_user: FactoryBot.create(:discord_user),
       admin_level: Ability::ADMIN_LEVEL_ADMIN,
       is_root: true
     ))
-    @admin = Ability.new(User.create!(
+    @admin = Ability.new(FactoryBot.create(
+      :user,
       discord_user: FactoryBot.create(:discord_user),
       admin_level: Ability::ADMIN_LEVEL_ADMIN
     ))
-    @help = Ability.new(User.create!(
+    @help = Ability.new(FactoryBot.create(
+      :user,
       discord_user: FactoryBot.create(:discord_user),
       admin_level: Ability::ADMIN_LEVEL_HELP
     ))
