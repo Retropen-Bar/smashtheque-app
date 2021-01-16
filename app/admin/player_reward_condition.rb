@@ -12,6 +12,10 @@ ActiveAdmin.register PlayerRewardCondition do
   # INDEX
   # ---------------------------------------------------------------------------
 
+  includes :tournament_event, :reward_condition,
+           player: { user: :discord_user },
+           reward: { image_attachment: :blob }
+
   index do
     selectable_column
     id_column

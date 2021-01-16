@@ -9,7 +9,7 @@ class Api::V1::PlayersController < Api::V1::BaseController
 
   def index
     players = apply_scopes(Player.order(:name)).includes(
-      :characters, :locations, :creator, :discord_user, :teams
+      :characters, :locations, :creator_user, :user, :discord_user, :teams
     )
     render json: players.as_json(reload: params[:reload] != '0')
   end
@@ -30,7 +30,7 @@ class Api::V1::PlayersController < Api::V1::BaseController
 
     player = Player.new(attributes)
     # auto-accept players created by an admin
-    player.is_accepted = true if player.creator&.user_is_admin?
+    player.is_accepted = true if player.creator_user&.is_admin?
 
     if player.save
       render json: player, status: :created

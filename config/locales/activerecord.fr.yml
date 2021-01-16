@@ -1,7 +1,6 @@
 fr:
   activerecord:
     models:
-      user: Administrateur
       api_request: Requête API
       api_token: Token API
       challonge_tournament: Tournoi Challonge
@@ -25,6 +24,7 @@ fr:
       team: Équipe
       tournament_event: Édition
       twitch_channel: Chaîne Twitch
+      user: Utilisateur
       you_tube_channel: Chaîne YouTube
     attributes:
       shared: &SHARED
@@ -33,18 +33,6 @@ fr:
         id: "#"
         name: Nom
         updated_at: Modification
-      user:
-        << : *SHARED
-        current_sign_in_at: Session en cours
-        current_sign_in_ip: IP en cours
-        last_sign_in_at: Session précédente
-        last_sign_in_ip: IP précédente
-        admin_level: Rôle
-        sign_in_count: Connexions
-      user/admin_level:
-        0_help: Aide
-        1_admin: Admin
-        root: Superadmin
       api_request:
         << : *SHARED
         action: Action
@@ -113,7 +101,6 @@ fr:
         << : *SHARED
         user: Utilisateur
         administrated_discord_guilds: Serveurs Discord gérés
-        administrated_teams: Équipes gérées
         avatar: Avatar
         discord_id: ID
         discriminator: Discriminant
@@ -128,8 +115,8 @@ fr:
         characters: Persos
         locations: Localisations
         location_ids: Localisations
-        creator: Ajouté par
-        creator_id: Ajouté par
+        creator_user: Ajouté par
+        creator_user_id: Ajouté par
         discord_user: Compte Discord
         is_accepted: Validé ?
         is_banned: Banni ?
@@ -141,6 +128,7 @@ fr:
         team_ids: Équipes
         twitter_username: Compte Twitter
         unique_rewards: Récompenses uniques
+        user: Utilisateur
       player_reward_condition:
         << : *SHARED
         player: Joueur
@@ -289,6 +277,23 @@ fr:
         related: Sujet principal
         related_gid: Sujet principal
         username: ID Twitch
+      user:
+        << : *SHARED
+        admin_level: Rôle
+        administrated_teams: Équipes gérées
+        administrated_recurring_tournaments: Tournois gérés
+        current_sign_in_at: Session en cours
+        current_sign_in_ip: IP en cours
+        discord_user: Compte Discord
+        last_sign_in_at: Session précédente
+        last_sign_in_ip: IP précédente
+        name: Nom
+        player: Joueur
+        sign_in_count: Connexions
+      user/admin_level:
+        0_help: Aide
+        1_admin: Admin
+        root: Superadmin
       you_tube_channel:
         << : *SHARED
         description: Détails

@@ -9,7 +9,8 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
     @locations = FactoryBot.create_list(:location, 3)
     @first_creator_discord_id = '777'
     @admin_discord_user = FactoryBot.create(:discord_user)
-    @user = User.create!(
+    @admin_user = FactoryBot.create(
+      :user,
       discord_user: @admin_discord_user,
       admin_level: Ability::ADMIN_LEVEL_HELP
     )
@@ -24,7 +25,8 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
     end
     @fetched_player = Player.last
     @existing_discord_user = DiscordUser.create!(discord_id: '666')
-    @players.first.update_attribute :discord_user, @existing_discord_user
+    @existing_user = @existing_discord_user.return_or_create_user!
+    @players.first.update_attribute :user, @existing_user
     @new_discord_id = '123456789'
     @other_new_discord_id = '123123'
     @valid_player_attributes = FactoryBot.attributes_for(
@@ -140,9 +142,9 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
             expect(created_player_discord_user).to be_instance_of(DiscordUser)
             expect(player.discord_user).to eq(created_player_discord_user)
 
-            created_creator_discord_user = DiscordUser.find_by(discord_id: @other_new_discord_id)
-            expect(created_creator_discord_user).to be_instance_of(DiscordUser)
-            expect(player.creator).to eq(created_creator_discord_user)
+            created_creator_user = DiscordUser.find_by(discord_id: @other_new_discord_id).user
+            expect(created_creator_user).to be_instance_of(User)
+            expect(player.creator_user).to eq(created_creator_user)
 
             expect(player.character_ids).to eq(@valid_player_attributes[:character_ids])
             expect(player.location_ids).to eq(@valid_player_attributes[:location_ids])
@@ -166,7 +168,7 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
             data = JSON.parse(response.body).deep_symbolize_keys
             player = Player.find(data[:id])
             expect(player.is_accepted).to be_truthy
-            expect(player.creator).to eq(@admin_discord_user)
+            expect(player.creator_user).to eq(@admin_user)
           end
         end
 
@@ -217,8 +219,8 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
 
           run_test! do |response|
             data = JSON.parse(response.body).deep_symbolize_keys
-            expect(data[:errors]).to have_key(:discord_user)
-            expect(data[:errors][:discord_user]).to eq(['already_taken'])
+            expect(data[:errors]).to have_key(:user_id)
+            expect(data[:errors][:user_id]).to eq(['already_taken'])
           end
         end
 
@@ -345,7 +347,7 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
         end
 
         context 'Removing Discord ID' do
-          let(:player) { Player.with_discord_user.last }
+          let(:player) { Player.with_user.last }
           let(:id) { player.id }
           let(:player_json) do
             {
@@ -357,7 +359,7 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
 
           run_test! do |response|
             player.reload
-            expect(player.discord_user).to be_nil
+            expect(player.user).to be_nil
           end
         end
       end

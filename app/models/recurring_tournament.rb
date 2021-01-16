@@ -55,7 +55,7 @@ class RecurringTournament < ApplicationRecord
            dependent: :destroy
   has_many :contacts,
            through: :recurring_tournament_contacts,
-           source: :discord_user
+           source: :user
 
   has_many :tournament_events
 

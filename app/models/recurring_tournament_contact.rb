@@ -5,14 +5,18 @@
 #  id                      :bigint           not null, primary key
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
-#  discord_user_id         :bigint
 #  recurring_tournament_id :bigint
+#  user_id                 :integer
 #
 # Indexes
 #
-#  index_recurring_tournament_contacts_on_discord_user_id          (discord_user_id)
 #  index_recurring_tournament_contacts_on_recurring_tournament_id  (recurring_tournament_id)
-#  index_rtc_on_both_ids                                           (recurring_tournament_id,discord_user_id) UNIQUE
+#  index_recurring_tournament_contacts_on_user_id                  (user_id)
+#  index_rtc_on_both_ids                                           (recurring_tournament_id,user_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
 #
 class RecurringTournamentContact < ApplicationRecord
 
@@ -21,6 +25,6 @@ class RecurringTournamentContact < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   belongs_to :recurring_tournament
-  belongs_to :discord_user
+  belongs_to :user
 
 end

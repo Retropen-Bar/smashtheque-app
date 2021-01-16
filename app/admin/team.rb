@@ -10,7 +10,9 @@ ActiveAdmin.register Team do
   # INDEX
   # ---------------------------------------------------------------------------
 
-  includes :admins, :discord_guilds
+  includes :discord_guilds,
+           admins: :discord_user,
+           logo_attachment: :blob
 
   index do
     selectable_column
@@ -89,7 +91,7 @@ ActiveAdmin.register Team do
           f.input :is_offline
           f.input :is_online
           f.input :is_sponsor
-          discord_users_input f, :admins
+          users_input f, :admins
           f.input :twitter_username
         end
         f.actions

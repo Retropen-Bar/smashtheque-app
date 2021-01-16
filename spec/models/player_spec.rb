@@ -18,18 +18,20 @@
 #  created_at                      :datetime         not null
 #  updated_at                      :datetime         not null
 #  best_player_reward_condition_id :bigint
-#  creator_id                      :bigint
-#  discord_user_id                 :bigint
+#  creator_user_id                 :integer
+#  user_id                         :integer
 #
 # Indexes
 #
 #  index_players_on_best_player_reward_condition_id  (best_player_reward_condition_id)
-#  index_players_on_creator_id                       (creator_id)
-#  index_players_on_discord_user_id                  (discord_user_id)
+#  index_players_on_creator_user_id                  (creator_user_id)
+#  index_players_on_user_id                          (user_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (best_player_reward_condition_id => player_reward_conditions.id)
+#  fk_rails_...  (creator_user_id => users.id)
+#  fk_rails_...  (user_id => users.id)
 #
 require 'rails_helper'
 
@@ -37,10 +39,20 @@ RSpec.describe Player, type: :model do
 
   before(:each) do
     @discord_creator = FactoryBot.create(:discord_user)
+    @creator = @discord_creator.return_or_create_user!
     @discord_user1 = FactoryBot.create(:discord_user)
+    @user1 = @discord_user1.return_or_create_user!
     @discord_user2 = FactoryBot.create(:discord_user)
-    @player1 = FactoryBot.create(:player, creator: @discord_creator, discord_user: @discord_user1)
-    @new_player = FactoryBot.build(:player, creator: @discord_creator)
+    @user2 = @discord_user2.return_or_create_user!
+    @player1 = FactoryBot.create(
+      :player,
+      creator_user: @creator,
+      user: @user1
+    )
+    @new_player = FactoryBot.build(
+      :player,
+      creator_user: @creator
+    )
     @characters = FactoryBot.create_list(:character, 5)
     @invalid_player = FactoryBot.build(:player)
   end
@@ -58,7 +70,7 @@ RSpec.describe Player, type: :model do
     end
 
     it 'does not create a player without a creator' do
-      @new_player.creator_id = nil
+      @new_player.creator_user_id = nil
       expect(@new_player).to_not be_valid
     end
 
@@ -90,12 +102,12 @@ RSpec.describe Player, type: :model do
             name: l.name
           }
         end,
-        creator: {
-          id: @player1.creator.id,
-          discord_id: @player1.creator.discord_id
+        creator_user: {
+          id: @player1.creator_user.id,
+          name: @player1.creator_user.name
         },
         creator_discord_id: @player1.creator_discord_id,
-        creator_id: @player1.creator_id,
+        creator_user_id: @player1.creator_user_id,
         discord_id: @player1.discord_id,
         discord_user: @player1.discord_user.presence && {
           id: @player1.discord_user.id,
@@ -122,7 +134,7 @@ RSpec.describe Player, type: :model do
     it 'creates with positions' do
       character_ids = @characters.map(&:id)
       player = FactoryBot.build(:player,
-        creator: @discord_creator,
+        creator_user: @creator,
         character_ids: character_ids
       )
       player.save!
@@ -170,7 +182,7 @@ RSpec.describe Player, type: :model do
       @invalid_player.character_ids = character_ids
 
       # now we fix the invalidity
-      @invalid_player.creator = @discord_creator
+      @invalid_player.creator_user = @creator
       expect(@invalid_player).to be_valid
       @invalid_player.save!
 

@@ -7,22 +7,14 @@ class ActiveAdmin::DiscordUserDecorator < DiscordUserDecorator
     super(
       options.merge(
         label: (
-          options[:label] || full_name_or_id(size: options[:size])
+          options[:label] || full_name_or_id(size: options[:size] || 32)
         )
       )
     )
   end
 
-  def user_status
-    arbre do
-      if user = model.user
-        a href: h.auto_url_for(user) do
-          status_tag :yes
-        end
-      else
-        status_tag :no
-      end
-    end
+  def user_admin_link(options = {})
+    user&.admin_decorate&.admin_link(options)
   end
 
   def administrated_discord_guilds_admin_links(options = {})
@@ -32,12 +24,6 @@ class ActiveAdmin::DiscordUserDecorator < DiscordUserDecorator
       ))
       link += " [#{discord_guild_admin.role}]" unless discord_guild_admin.role.blank?
       link
-    end
-  end
-
-  def administrated_teams_admin_links(options = {})
-    model.administrated_teams.map do |team|
-      team.admin_decorate.admin_link(options)
     end
   end
 

@@ -15,8 +15,8 @@ class ActiveAdmin::RecurringTournamentDecorator < RecurringTournamentDecorator
   end
 
   def contacts_admin_links(options = {})
-    model.contacts.map do |discord_user|
-      discord_user.admin_decorate.admin_link(options)
+    model.contacts.map do |user|
+      user.admin_decorate.admin_link(options)
     end
   end
 

@@ -42,12 +42,12 @@ class ActiveAdmin::PlayerDecorator < PlayerDecorator
     end
   end
 
-  def creator_admin_link(options = {})
-    model.creator&.admin_decorate&.admin_link options
+  def creator_user_admin_link(options = {})
+    model.creator_user&.admin_decorate&.admin_link options
   end
 
-  def discord_user_admin_link(options = {})
-    model.discord_user&.admin_decorate&.admin_link options
+  def user_admin_link(options = {})
+    model.user&.admin_decorate&.admin_link options
   end
 
   def smashgg_users_admin_links(options = {})

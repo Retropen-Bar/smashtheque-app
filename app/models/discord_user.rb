@@ -9,10 +9,16 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  discord_id    :string
+#  user_id       :bigint
 #
 # Indexes
 #
 #  index_discord_users_on_discord_id  (discord_id) UNIQUE
+#  index_discord_users_on_user_id     (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
 #
 class DiscordUser < ApplicationRecord
 
@@ -20,8 +26,9 @@ class DiscordUser < ApplicationRecord
   # RELATIONS
   # ---------------------------------------------------------------------------
 
-  has_one :user, dependent: :nullify
-  has_one :player, dependent: :nullify
+  belongs_to :user, optional: true
+
+  has_one :player, through: :user
 
   has_many :discord_guild_admins,
            inverse_of: :discord_user,
@@ -30,25 +37,12 @@ class DiscordUser < ApplicationRecord
            through: :discord_guild_admins,
            source: :discord_guild
 
-  has_many :team_admins,
-           inverse_of: :discord_user,
-           dependent: :destroy
-  has_many :administrated_teams,
-           through: :team_admins,
-           source: :team
-
-  has_many :recurring_tournament_contacts,
-           inverse_of: :discord_user,
-           dependent: :destroy
-  has_many :administrated_recurring_tournaments,
-           through: :recurring_tournament_contacts,
-           source: :recurring_tournament
-
   # ---------------------------------------------------------------------------
   # VALIDATIONS
   # ---------------------------------------------------------------------------
 
   validates :discord_id, presence: true, uniqueness: true
+  validates :user_id, uniqueness: { allow_nil: true }
 
   # ---------------------------------------------------------------------------
   # CALLBACKS
@@ -70,20 +64,12 @@ class DiscordUser < ApplicationRecord
                     tsearch: { prefix: true }
                   }
 
-  def self.with_user
-    where(id: User.select(:discord_user_id))
-  end
-
   def self.known
     where.not(username: nil)
   end
 
   def self.unknown
     where(username: nil)
-  end
-
-  def self.team_admins
-    where(id: TeamAdmin.select(:discord_user_id))
   end
 
   def self.on_abc(letter)
@@ -109,6 +95,14 @@ class DiscordUser < ApplicationRecord
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------
+
+  def return_or_create_user!
+    if user.nil?
+      self.user = User.create!(name: username || "##{discord_id}")
+      save!
+    end
+    user
+  end
 
   def needs_fetching?
     return true if avatar.blank?
@@ -160,11 +154,13 @@ class DiscordUser < ApplicationRecord
     !!username
   end
 
+  # provides: @player_id
   delegate :id,
            to: :player,
            prefix: true,
            allow_nil: true
 
+  # provides: @user_is_admin?
   delegate :is_admin?,
            to: :user,
            prefix: true,

@@ -18,8 +18,13 @@ ActiveAdmin.register Player do
     end
   end
 
-  includes :characters, :locations, :creator, :discord_user, :teams,
-           :best_reward, :smashgg_users
+  includes :characters, :locations,
+           teams: [
+            :discord_guilds,
+            { logo_attachment: :blob }
+           ],
+           user: :discord_user,
+           best_reward: { image_attachment: :blob }
 
   index do
     selectable_column
@@ -27,11 +32,8 @@ ActiveAdmin.register Player do
     column :name do |decorated|
       link_to decorated.name_or_indicated_name, [:admin, decorated.model]
     end
-    column :discord_user do |decorated|
-      decorated.discord_user_admin_link(size: 32)
-    end
-    column :smashgg_users do |decorated|
-      decorated.smashgg_users_admin_links(size: 32).join('<br/>').html_safe
+    column :user do |decorated|
+      decorated.user_admin_link(size: 32)
     end
     column :characters do |decorated|
       decorated.characters_admin_links.join(' ').html_safe
@@ -66,16 +68,12 @@ ActiveAdmin.register Player do
   scope :accepted, group: :is_accepted
   scope :to_be_accepted, group: :is_accepted
 
-  scope :without_discord_user, group: :incomplete
+  scope :without_user, group: :incomplete
   scope :without_location, group: :incomplete
   scope :without_character, group: :incomplete
 
   scope :banned, group: :is_banned
 
-  filter :creator,
-         as: :select,
-         collection: proc { player_creator_select_collection },
-         input_html: { multiple: true, data: { select2: {} } }
   filter :name
   filter :characters,
          as: :select,
@@ -115,7 +113,7 @@ ActiveAdmin.register Player do
   controller do
     def build_new_resource
       resource = super
-      resource.creator = current_user.discord_user
+      resource.creator_user = current_user
       resource
     end
   end
@@ -123,7 +121,7 @@ ActiveAdmin.register Player do
   form do |f|
     f.inputs do
       f.input :name
-      discord_user_input f
+      user_input f
       f.input :characters,
               collection: player_characters_select_collection,
               input_html: { multiple: true, data: { select2: { sortable: true, sortedValues: f.object.character_ids } } }
@@ -144,7 +142,7 @@ ActiveAdmin.register Player do
     f.actions
   end
 
-  permit_params :name, :is_accepted, :discord_user_id, :twitter_username,
+  permit_params :name, :is_accepted, :user_id, :twitter_username,
                 :is_banned, :ban_details,
                 character_ids: [], location_ids: [], team_ids: []
 
@@ -155,8 +153,8 @@ ActiveAdmin.register Player do
   show do
     attributes_table do
       row :name
-      row :discord_user do |decorated|
-        decorated.discord_user_admin_link(size: 32)
+      row :user do |decorated|
+        decorated.user_admin_link(size: 32)
       end
       row :smashgg_users do |decorated|
         decorated.smashgg_users_admin_links(size: 32).join('<br/>').html_safe
@@ -173,8 +171,8 @@ ActiveAdmin.register Player do
       row :twitter_username do |decorated|
         decorated.twitter_link
       end
-      row :creator do |decorated|
-        decorated.creator_admin_link(size: 32)
+      row :creator_user do |decorated|
+        decorated.creator_user_admin_link(size: 32)
       end
       row :is_accepted
       row :is_banned
@@ -207,8 +205,8 @@ ActiveAdmin.register Player do
         column :teams do |decorated|
           decorated.teams_admin_links.join('<br/>').html_safe
         end
-        column :creator do |decorated|
-          decorated.creator_admin_link(size: 32)
+        column :creator_user do |decorated|
+          decorated.creator_user_admin_link(size: 32)
         end
         column :is_accepted
         column :created_at do |decorated|

@@ -9,8 +9,8 @@ class PlayerDecorator < BaseDecorator
   end
 
   def avatar_tag(size)
-    if model.discord_user && !model.discord_user.avatar.blank?
-      model.discord_user.decorate.avatar_tag(size)
+    if user
+      user.decorate.avatar_tag(size)
     else
       default_avatar(size)
     end

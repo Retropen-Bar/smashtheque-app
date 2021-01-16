@@ -12,7 +12,7 @@ ActiveAdmin.register RecurringTournament do
   # INDEX
   # ---------------------------------------------------------------------------
 
-  includes :contacts
+  includes contacts: :discord_user
 
   index do
     selectable_column
@@ -104,7 +104,7 @@ ActiveAdmin.register RecurringTournament do
               collection: recurring_tournament_size_select_collection
       f.input :registration,
               input_html: { rows: 5 }
-      discord_users_input f, :contacts
+      users_input f, :contacts
       f.input :is_archived
     end
     f.actions

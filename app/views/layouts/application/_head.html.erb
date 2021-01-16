@@ -60,18 +60,24 @@
             data: { global_search: {} } %>
     </form>
 
-    <% if user_signed_in? %>
-      <ul class="navbar-nav ml-2 mr-2 text-center text-lg-right">
+    <ul class="navbar-nav ml-2 mr-2 text-center text-lg-right">
+      <% if user_signed_in? %>
         <li class="nav-item dropdown">
           <%= link_to '#', class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
-            <%= current_user.decorate.avatar_tag(32) %>
+            <%= current_user.decorate.full_name(size: 32) %>
           <% end %>
           <div class="dropdown-menu dropdown-menu-right">
             <%= link_to 'Me déconnecter', destroy_user_session_path, class: 'dropdown-item' %>
           </div>
         </li>
-      </ul>
-    <% end %>
+      <% else %>
+        <li class="nav-item">
+          <%= link_to user_discord_omniauth_authorize_path do %>
+            <%= fas_icon_tag 'sign-in-alt' %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
 
   </div>
 

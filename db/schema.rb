@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_14_000000) do
+ActiveRecord::Schema.define(version: 2021_01_16_204111) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -154,7 +154,9 @@ ActiveRecord::Schema.define(version: 2021_01_14_000000) do
     t.string "avatar"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id"
     t.index ["discord_id"], name: "index_discord_users_on_discord_id", unique: true
+    t.index ["user_id"], name: "index_discord_users_on_user_id"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -202,11 +204,9 @@ ActiveRecord::Schema.define(version: 2021_01_14_000000) do
   create_table "players", force: :cascade do |t|
     t.string "name"
     t.boolean "is_accepted"
-    t.bigint "discord_user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "character_names", default: [], array: true
-    t.bigint "creator_id"
     t.text "location_names", default: [], array: true
     t.text "team_names", default: [], array: true
     t.string "twitter_username"
@@ -217,9 +217,11 @@ ActiveRecord::Schema.define(version: 2021_01_14_000000) do
     t.string "best_reward_level1"
     t.string "best_reward_level2"
     t.integer "rank"
+    t.integer "creator_user_id"
+    t.integer "user_id"
     t.index ["best_player_reward_condition_id"], name: "index_players_on_best_player_reward_condition_id"
-    t.index ["creator_id"], name: "index_players_on_creator_id"
-    t.index ["discord_user_id"], name: "index_players_on_discord_user_id"
+    t.index ["creator_user_id"], name: "index_players_on_creator_user_id"
+    t.index ["user_id"], name: "index_players_on_user_id"
   end
 
   create_table "players_teams", force: :cascade do |t|
@@ -233,12 +235,12 @@ ActiveRecord::Schema.define(version: 2021_01_14_000000) do
 
   create_table "recurring_tournament_contacts", force: :cascade do |t|
     t.bigint "recurring_tournament_id"
-    t.bigint "discord_user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["discord_user_id"], name: "index_recurring_tournament_contacts_on_discord_user_id"
-    t.index ["recurring_tournament_id", "discord_user_id"], name: "index_rtc_on_both_ids", unique: true
+    t.integer "user_id"
+    t.index ["recurring_tournament_id", "user_id"], name: "index_rtc_on_both_ids", unique: true
     t.index ["recurring_tournament_id"], name: "index_recurring_tournament_contacts_on_recurring_tournament_id"
+    t.index ["user_id"], name: "index_recurring_tournament_contacts_on_user_id"
   end
 
   create_table "recurring_tournaments", force: :cascade do |t|
@@ -341,12 +343,12 @@ ActiveRecord::Schema.define(version: 2021_01_14_000000) do
 
   create_table "team_admins", force: :cascade do |t|
     t.bigint "team_id", null: false
-    t.bigint "discord_user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["discord_user_id"], name: "index_team_admins_on_discord_user_id"
-    t.index ["team_id", "discord_user_id"], name: "index_team_admins_on_team_id_and_discord_user_id", unique: true
+    t.integer "user_id"
+    t.index ["team_id", "user_id"], name: "index_team_admins_on_team_id_and_user_id", unique: true
     t.index ["team_id"], name: "index_team_admins_on_team_id"
+    t.index ["user_id"], name: "index_team_admins_on_user_id"
   end
 
   create_table "teams", force: :cascade do |t|
@@ -408,7 +410,6 @@ ActiveRecord::Schema.define(version: 2021_01_14_000000) do
     t.string "encrypted_password", default: "", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "discord_user_id"
     t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
@@ -416,7 +417,7 @@ ActiveRecord::Schema.define(version: 2021_01_14_000000) do
     t.inet "last_sign_in_ip"
     t.boolean "is_root", default: false, null: false
     t.string "admin_level"
-    t.index ["discord_user_id"], name: "index_users_on_discord_user_id", unique: true
+    t.string "name", null: false
   end
 
   create_table "versions", force: :cascade do |t|
@@ -444,10 +445,14 @@ ActiveRecord::Schema.define(version: 2021_01_14_000000) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "discord_users", "users"
   add_foreign_key "player_reward_conditions", "players"
   add_foreign_key "player_reward_conditions", "reward_conditions"
   add_foreign_key "player_reward_conditions", "tournament_events"
   add_foreign_key "players", "player_reward_conditions", column: "best_player_reward_condition_id"
+  add_foreign_key "players", "users"
+  add_foreign_key "players", "users", column: "creator_user_id"
+  add_foreign_key "recurring_tournament_contacts", "users"
   add_foreign_key "smashgg_events", "smashgg_users", column: "top1_smashgg_user_id"
   add_foreign_key "smashgg_events", "smashgg_users", column: "top2_smashgg_user_id"
   add_foreign_key "smashgg_events", "smashgg_users", column: "top3_smashgg_user_id"
@@ -457,6 +462,7 @@ ActiveRecord::Schema.define(version: 2021_01_14_000000) do
   add_foreign_key "smashgg_events", "smashgg_users", column: "top7a_smashgg_user_id"
   add_foreign_key "smashgg_events", "smashgg_users", column: "top7b_smashgg_user_id"
   add_foreign_key "smashgg_users", "players"
+  add_foreign_key "team_admins", "users"
   add_foreign_key "tournament_events", "players", column: "top1_player_id"
   add_foreign_key "tournament_events", "players", column: "top2_player_id"
   add_foreign_key "tournament_events", "players", column: "top3_player_id"

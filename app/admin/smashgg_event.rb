@@ -11,7 +11,15 @@ ActiveAdmin.register SmashggEvent do
   # INDEX
   # ---------------------------------------------------------------------------
 
-  includes :tournament_event
+  includes :tournament_event,
+           { top1_smashgg_user: { player: { user: :discord_user } } },
+           { top2_smashgg_user: { player: { user: :discord_user } } },
+           { top3_smashgg_user: { player: { user: :discord_user } } },
+           { top4_smashgg_user: { player: { user: :discord_user } } },
+           { top5a_smashgg_user: { player: { user: :discord_user } } },
+           { top5b_smashgg_user: { player: { user: :discord_user } } },
+           { top7a_smashgg_user: { player: { user: :discord_user } } },
+           { top7b_smashgg_user: { player: { user: :discord_user } } }
 
   index do
     selectable_column
