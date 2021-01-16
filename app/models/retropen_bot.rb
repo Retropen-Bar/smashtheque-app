@@ -551,7 +551,7 @@ class RetropenBot
 
   def rebuild_rewards(_rewards_category_id = nil)
     rewards_category_id = _rewards_category_id || rewards_category['id']
-    rebuild_rewards_online_ranking_channel rewards_category_id
+    rebuild_rewards_online_ranking_channels rewards_category_id
     (1..CHANNEL_REWARDS_ONLINE_LEVEL1.count).each do |level1|
       rebuild_rewards_level1_channel level1, rewards_category_id
     end
