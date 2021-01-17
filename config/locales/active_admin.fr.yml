@@ -28,12 +28,14 @@ fr:
       with_missing_players: Joueur manquant
       with_player: Lié à un joueur
       with_tournament_event: Avec édition
+      without_any_link: Sans aucun lien
       without_background: Sans fond
       without_character: Sans perso
       without_discord_user: Non relié à Discord
       without_location: Sans localisation
       without_player: Non lié à un joueur
       without_tournament_event: Sans édition
+      without_user: Non lié à un utilisateur
     new_model: Créer
     edit_model: Modifier
     delete_model: Supprimer

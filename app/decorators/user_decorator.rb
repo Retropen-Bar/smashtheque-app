@@ -27,4 +27,8 @@ class UserDecorator < BaseDecorator
     h.content_tag :div, full_name(size: 32), options
   end
 
+  def created_players_count
+    created_players.count
+  end
+
 end

@@ -25,6 +25,9 @@ ActiveAdmin.register User do
     column :player do |decorated|
       decorated.player_admin_link
     end
+    column :created_players do |decorated|
+      decorated.created_players_admin_link
+    end
     column :administrated_teams do |decorated|
       decorated.administrated_teams_admin_links(size: 32).join('<br/>').html_safe
     end
@@ -46,10 +49,13 @@ ActiveAdmin.register User do
 
   scope :all, default: true
 
-  scope :lambda, group: :admin_level
   scope :helps, group: :admin_level
   scope :admins, group: :admin_level
   scope :roots, group: :admin_level
+
+  scope :without_discord_user, group: :without
+  scope :without_player, group: :without
+  scope :without_any_link, group: :without
 
   filter :name
   filter :sign_in_count
@@ -103,6 +109,9 @@ ActiveAdmin.register User do
       end
       row :player do |decorated|
         decorated.player_admin_link
+      end
+      row :created_players do |decorated|
+        decorated.created_players_admin_link
       end
       row :administrated_teams do |decorated|
         decorated.administrated_teams_admin_links(size: 32).join('<br/>').html_safe

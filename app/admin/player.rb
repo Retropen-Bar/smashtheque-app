@@ -24,6 +24,7 @@ ActiveAdmin.register Player do
             { logo_attachment: :blob }
            ],
            user: :discord_user,
+           creator_user: :discord_user,
            best_reward: { image_attachment: :blob }
 
   index do
@@ -48,6 +49,9 @@ ActiveAdmin.register Player do
     end
     column :teams do |decorated|
       decorated.teams_admin_links.join('<br/>').html_safe
+    end
+    column :creator_user do |decorated|
+      decorated.creator_user_admin_link(size: 32)
     end
     column :is_accepted
     column :is_banned do |decorated|
