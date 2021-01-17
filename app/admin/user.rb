@@ -57,6 +57,9 @@ ActiveAdmin.register User do
   scope :without_player, group: :without
   scope :without_any_link, group: :without
 
+  scope :casters, group: :actors
+  scope :coaches, group: :actors
+
   filter :name
   filter :sign_in_count
   filter :current_sign_in_at

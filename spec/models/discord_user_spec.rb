@@ -1,3 +1,25 @@
+# == Schema Information
+#
+# Table name: discord_users
+#
+#  id            :bigint           not null, primary key
+#  avatar        :string
+#  discriminator :string
+#  username      :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  discord_id    :string
+#  user_id       :bigint
+#
+# Indexes
+#
+#  index_discord_users_on_discord_id  (discord_id) UNIQUE
+#  index_discord_users_on_user_id     (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
+#
 require 'rails_helper'
 
 RSpec.describe DiscordUser, type: :model do

@@ -142,6 +142,18 @@ class User < ApplicationRecord
     where(id: TeamAdmin.select(:user_id))
   end
 
+  def self.casters
+    where(is_caster: true)
+  end
+
+  def self.coaches
+    where(is_coach: true)
+  end
+
+  def self.on_abc(letter)
+    where("unaccent(name) ILIKE '#{letter}%'")
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------
