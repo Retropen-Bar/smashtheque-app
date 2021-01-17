@@ -37,11 +37,6 @@ ActiveAdmin.register User do
     column :is_caster
     column :is_coach
     column :is_graphic_designer
-    if current_user.is_root?
-      column :sign_in_count
-      column :current_sign_in_at
-      column :current_sign_in_ip
-    end
     column :created_at do |decorated|
       decorated.created_at_date
     end
