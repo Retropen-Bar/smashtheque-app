@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_16_212220) do
+ActiveRecord::Schema.define(version: 2021_01_17_165321) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -394,16 +394,20 @@ ActiveRecord::Schema.define(version: 2021_01_16_212220) do
   end
 
   create_table "twitch_channels", force: :cascade do |t|
-    t.string "username", null: false
+    t.string "slug", null: false
     t.boolean "is_french", default: false, null: false
     t.string "related_type"
     t.bigint "related_id"
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "name", null: false
+    t.string "twitch_id"
+    t.string "display_name"
+    t.string "twitch_description"
+    t.string "profile_image_url"
+    t.datetime "twitch_created_at"
     t.index ["related_type", "related_id"], name: "index_twitch_channels_on_related_type_and_related_id"
-    t.index ["username"], name: "index_twitch_channels_on_username", unique: true
+    t.index ["slug"], name: "index_twitch_channels_on_slug", unique: true
   end
 
   create_table "users", force: :cascade do |t|

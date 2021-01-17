@@ -1,0 +1,16 @@
+<div class="text-center">
+  <div id="list-toolbar">
+    <h1 class="page-title">Chaînes Twitch</h1>
+    <%= render 'shared/pagination', collection: @twitch_channels %>
+  </div>
+</div>
+
+<div class="cards-list twitch-channels">
+  <% @twitch_channels.each do |twitch_channel| %>
+    <div class="card-container">
+      <%= render 'twitch_channel', twitch_channel: twitch_channel.decorate %>
+    </div>
+  <% end %>
+</div>
+
+<%= render 'shared/pagination', collection: @twitch_channels %>
