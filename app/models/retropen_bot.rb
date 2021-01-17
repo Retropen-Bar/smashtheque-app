@@ -16,6 +16,7 @@ class RetropenBot
   CHANNEL_TEAMS_LU2 = 'roster-équipes-j-r'.freeze
   CHANNEL_TEAMS_LU3 = 'roster-équipes-s-z-autres'.freeze
   CATEGORY_ACTORS = 'ACTEURS DE LA SCÈNE SMASH'.freeze
+  CHANNEL_COACHES = 'coachs'.freeze
   CHANNEL_DISCORD_GUILDS_CHARS = 'commus-fr-par-perso'.freeze
   CHANNEL_GRAPHIC_DESIGNERS = 'graphistes'.freeze
   CHANNEL_TEAM_ADMINS = 'capitaines-d-équipe'.freeze
@@ -62,6 +63,7 @@ class RetropenBot
   EMOJI_GRAPHIC_DESIGNER = '752212651421204560'.freeze
   EMOJI_GRAPHIC_DESIGNER_AVAILABLE = '752212329327755304'.freeze
   EMOJI_GRAPHIC_DESIGNER_UNAVAILABLE = '752212328833089746'.freeze
+  EMOJI_COACH = '743286485930868827'.freeze
 
   # ---------------------------------------------------------------------------
   # CONSTRUCTOR
@@ -276,6 +278,12 @@ class RetropenBot
                                     parent_id: actors_category_id || actors_category['id']
   end
 
+  def coaches_list_channel(actors_category_id = nil)
+    find_or_create_readonly_channel @guild_id,
+                                    name: CHANNEL_COACHES,
+                                    parent_id: actors_category_id || actors_category['id']
+  end
+
   def graphic_designers_list_channel(actors_category_id = nil)
     find_or_create_readonly_channel @guild_id,
                                     name: CHANNEL_GRAPHIC_DESIGNERS,
@@ -339,6 +347,32 @@ class RetropenBot
       discord_guilds_chars_list_channel(actors_category_id)['id'],
       messages
     )
+  end
+
+  def rebuild_coaches_list(_actors_category_id = nil)
+    actors_category_id = _actors_category_id || actors_category['id']
+
+    users = {}
+    User.coaches.order("LOWER(name)").all.each do |user|
+      letter = self.class.name_letter user.name
+      users[letter] ||= []
+      users[letter] << (
+        line = emoji_tag(EMOJI_COACH)
+        line += ' **' + user.name + '**'
+        unless user.coaching_details.blank?
+          line += ' : ' + user.coaching_details
+        end
+        line
+      )
+    end
+
+    lines = []
+    (('a'..'z').to_a + ['$']).each do |letter|
+      lines << letter.upcase
+      lines += users[letter] || []
+    end
+    lines = lines.join(DiscordClient::MESSAGE_LINE_SEPARATOR)
+    client.replace_channel_content coaches_list_channel(actors_category_id)['id'], lines
   end
 
   def rebuild_graphic_designers_list(_actors_category_id = nil)
