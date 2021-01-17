@@ -36,6 +36,7 @@ ActiveAdmin.register User do
     end
     column :is_caster
     column :is_coach
+    column :is_graphic_designer
     if current_user.is_root?
       column :sign_in_count
       column :current_sign_in_at
@@ -59,6 +60,7 @@ ActiveAdmin.register User do
 
   scope :casters, group: :actors
   scope :coaches, group: :actors
+  scope :graphic_designers, group: :actors
 
   filter :name
   filter :sign_in_count
@@ -88,12 +90,18 @@ ActiveAdmin.register User do
       f.input :is_coach, input_html: { data: { toggle: '.coaching-fields' } }
       f.input :coaching_url, wrapper_html: { class: 'coaching-fields' }
       f.input :coaching_details, wrapper_html: { class: 'coaching-fields' }
+      f.input :is_graphic_designer, input_html: { data: { toggle: '.graphic-designer-fields' } }
+      f.input :graphic_designer_details, wrapper_html: { class: 'graphic-designer-fields' }
+      f.input :is_available_graphic_designer, wrapper_html: { class: 'graphic-designer-fields' }
     end
     f.actions
   end
 
   permit_params :name, :admin_level,
-                :is_caster, :is_coach, :coaching_url, :coaching_details,
+                :is_caster,
+                :is_coach, :coaching_url, :coaching_details,
+                :is_graphic_designer, :graphic_designer_details,
+                :is_available_graphic_designer,
                 administrated_team_ids: [],
                 administrated_recurring_tournament_ids: []
 
@@ -126,6 +134,9 @@ ActiveAdmin.register User do
       row :is_coach
       row :coaching_url
       row :coaching_details
+      row :is_graphic_designer
+      row :graphic_designer_details
+      row :is_available_graphic_designer
       if current_user.is_root?
         row :sign_in_count
         row :current_sign_in_at

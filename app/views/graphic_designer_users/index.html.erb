@@ -1,0 +1,21 @@
+<div class="text-center">
+  <div id="list-toolbar">
+    <h1 class="page-title">Graphistes</h1>
+    <%= render 'shared/pagination', collection: @graphic_designer_users %>
+  </div>
+</div>
+
+<div class="cards-list graphic-designer-users">
+  <% @graphic_designer_users.decorate.each do |user| %>
+    <div class="card-container">
+      <div class="card graphic-designer-user shadow-sm">
+        <div class="card-body">
+          <%= user.decorate.link %>
+        </div>
+        <%= admin_edit_link(user) %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<%= render 'shared/pagination', collection: @graphic_designer_users %>

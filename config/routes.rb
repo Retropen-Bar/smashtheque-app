@@ -79,6 +79,7 @@ Rails.application.routes.draw do
   resources :you_tube_channels, only: [:index]
   resources :caster_users, only: [:index]
   resources :coach_users, only: [:index]
+  resources :graphic_designer_users, only: [:index]
 
   get 'credits' => 'public#credits', as: :credits
   get 'mentions-legales' => 'public#legal', as: :legal

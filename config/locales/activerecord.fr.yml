@@ -293,8 +293,11 @@ fr:
         current_sign_in_at: Session en cours
         current_sign_in_ip: IP en cours
         discord_user: Compte Discord
+        graphic_designer_details: Description du graphiste
+        is_available_graphic_designer: Graphiste disponible ?
         is_caster: Caster ?
         is_coach: Coach ?
+        is_graphic_designer: Graphiste ?
         last_sign_in_at: Session précédente
         last_sign_in_ip: IP précédente
         name: Nom
