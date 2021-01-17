@@ -7,7 +7,7 @@
 #  is_french    :boolean          default(FALSE), not null
 #  name         :string           not null
 #  related_type :string
-#  username     :string           not null
+#  url          :string           not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  related_id   :bigint
@@ -15,7 +15,6 @@
 # Indexes
 #
 #  index_you_tube_channels_on_related_type_and_related_id  (related_type,related_id)
-#  index_you_tube_channels_on_username                     (username) UNIQUE
 #
 class YouTubeChannel < ApplicationRecord
 
@@ -37,7 +36,7 @@ class YouTubeChannel < ApplicationRecord
   # VALIDATIONS
   # ---------------------------------------------------------------------------
 
-  validates :username, presence: true, uniqueness: true
+  validates :url, presence: true, uniqueness: true
   validates :name, presence: true, uniqueness: true
 
   # ---------------------------------------------------------------------------
@@ -59,6 +58,10 @@ class YouTubeChannel < ApplicationRecord
 
   def self.not_french
     where(is_french: false)
+  end
+
+  def self.on_abc(letter)
+    where("unaccent(name) ILIKE '#{letter}%'")
   end
 
   # ---------------------------------------------------------------------------
