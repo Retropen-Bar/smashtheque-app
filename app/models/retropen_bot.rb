@@ -223,7 +223,7 @@ class RetropenBot
     lines2 = []
     lines3 = []
     Team.order(:name).each do |team|
-      admins = team.team_admins.map(&:discord_user_id)
+      admins = team.team_admins.map(&:user_id)
       lines = ["**#{team.short_name} : #{team.name}**"]
       lines += team.players
           .legit
@@ -232,7 +232,7 @@ class RetropenBot
           .sort_by { |p| p.name.downcase }
           .map do |player|
         line = player_abc player
-        if admins.include?(player.discord_user_id)
+        if admins.include?(player.user_id)
           line += ' (capitaine)'
         end
         line
@@ -335,21 +335,21 @@ class RetropenBot
     actors_category_id = _actors_category_id || actors_category['id']
 
     admins = {}
-    latest_discord_user_id = 0
-    TeamAdmin.order(:discord_user_id).all.each do |team_admin|
+    latest_user_id = 0
+    TeamAdmin.order(:user_id).all.each do |team_admin|
       # we might have already seen this person
-      next if team_admin.discord_user_id == latest_discord_user_id
-      latest_discord_user_id = team_admin.discord_user_id
+      next if team_admin.user_id == latest_user_id
+      latest_user_id = team_admin.user_id
 
-      discord_user = team_admin.discord_user
-      name = discord_user.player&.name || discord_user.username
+      user = team_admin.user
+      name = user.player&.name || user.name
       letter = self.class.name_letter name
       admins[letter] ||= []
       admins[letter] << (
         [
           emoji_tag(EMOJI_TEAM_ADMIN),
           name
-        ] + discord_user.administrated_teams.order(:short_name).map do |team|
+        ] + user.administrated_teams.order(:short_name).map do |team|
           "[#{team.short_name}]"
         end
       ).join(' ')
@@ -434,8 +434,8 @@ class RetropenBot
         "Disponibilité : Ouvert à tous",
         "Taille : #{RecurringTournamentDecorator.size_name(recurring_tournament.size)}",
         "Comment s'inscrire : #{recurring_tournament.registration.gsub(/\R+/, '; ')}",
-        "Contact : " + recurring_tournament.contacts.map do |discord_user|
-          discord_user.player&.name || discord_user.username
+        "Contact : " + recurring_tournament.contacts.map do |user|
+          user.player&.name || user.name
         end.join(', ')
       ].join("\n")
     end
@@ -625,8 +625,8 @@ class RetropenBot
     ].join(' : ')
     if team.admins.any?
       line += ' ' + emoji_tag(EMOJI_TEAM_ADMIN) + ' '
-      line += team.admins.map do |discord_user|
-        discord_user.player&.name || discord_user.username
+      line += team.admins.map do |user|
+        user.player&.name || user.name
       end.join(', ')
     end
     escape_message_content line
