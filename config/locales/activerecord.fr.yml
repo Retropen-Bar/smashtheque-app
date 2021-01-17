@@ -272,11 +272,16 @@ fr:
       twitch_channel:
         << : *SHARED
         description: Détails
+        display_name: Nom d'affichage
         is_french: Chaîne FR ?
         name: Nom
+        profile_image_url: Image
         related: Sujet principal
         related_gid: Sujet principal
-        username: ID Twitch
+        twitch_created_at: Création Twitch
+        twitch_description: Description Twitch
+        twitch_id: ID Twitch
+        username: Slug
       user:
         << : *SHARED
         admin_level: Rôle

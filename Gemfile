@@ -126,6 +126,9 @@ gem 'markdown_views'
 # Calendar
 gem 'icalendar'
 
+# Twitch
+gem 'twitch-api', github: 'mauricew/ruby-twitch-api'
+
 group :production do
   # for assets compilation
   gem 'activerecord-nulldb-adapter'

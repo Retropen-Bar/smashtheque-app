@@ -1,0 +1,9 @@
+<div class="card twitch-channel shadow-sm">
+  <div class="card-body">
+    <%= link_to twitch_channel.channel_url, target: '_blank' do %>
+      <%= twitch_channel.profile_image_tag max_height: 128, class: 'avatar' %><br/>
+      <%= twitch_channel.display_name %>
+    <% end %>
+  </div>
+  <%= admin_edit_link(twitch_channel) %>
+</div>

@@ -75,10 +75,10 @@ Rails.application.routes.draw do
   resources :tournament_events, only: [:index, :show]
   get 'planning/online' => 'public#planning_online', as: :planning
 
-  resources :twitch_channels, only: [:index, :show]
-  resources :you_tube_channels, only: [:index, :show]
-  resources :caster_users, only: [:index, :show]
-  resources :coach_users, only: [:index, :show]
+  resources :twitch_channels, only: [:index]
+  resources :you_tube_channels, only: [:index]
+  resources :caster_users, only: [:index]
+  resources :coach_users, only: [:index]
 
   get 'credits' => 'public#credits', as: :credits
   get 'mentions-legales' => 'public#legal', as: :legal
