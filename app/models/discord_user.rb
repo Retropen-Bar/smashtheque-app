@@ -166,6 +166,17 @@ class DiscordUser < ApplicationRecord
            prefix: true,
            allow_nil: true
 
+  # provides @administrated_recurring_tournament_ids
+  #          @administrated_recurring_tournaments
+  #          @administrated_team_ids
+  #          @administrated_teams
+  delegate :administrated_recurring_tournament_ids,
+           :administrated_recurring_tournaments,
+           :administrated_team_ids,
+           :administrated_teams,
+           to: :user,
+           allow_nil: true
+
   def as_json(options = {})
     super(options.merge(
       include: {
