@@ -17,6 +17,7 @@ class RetropenBot
   CHANNEL_TEAMS_LU3 = 'roster-équipes-s-z-autres'.freeze
   CATEGORY_ACTORS = 'ACTEURS DE LA SCÈNE SMASH'.freeze
   CHANNEL_DISCORD_GUILDS_CHARS = 'commus-fr-par-perso'.freeze
+  CHANNEL_GRAPHIC_DESIGNERS = 'graphistes'.freeze
   CHANNEL_TEAM_ADMINS = 'capitaines-d-équipe'.freeze
   CHANNEL_TWITCH_FR = 'twitch-channels-fr'.freeze
   CHANNEL_TWITCH_WORLD = 'twitch-channels-world'.freeze
@@ -58,6 +59,9 @@ class RetropenBot
   EMOJI_TOURNAMENT = '743286485930868827'.freeze
   EMOJI_NO_REWARD = '790617900012535838'.freeze
   EMOJI_POINTS = '795277209715212298'.freeze
+  EMOJI_GRAPHIC_DESIGNER = '752212651421204560'.freeze
+  EMOJI_GRAPHIC_DESIGNER_AVAILABLE = '752212329327755304'.freeze
+  EMOJI_GRAPHIC_DESIGNER_UNAVAILABLE = '752212328833089746'.freeze
 
   # ---------------------------------------------------------------------------
   # CONSTRUCTOR
@@ -272,6 +276,12 @@ class RetropenBot
                                     parent_id: actors_category_id || actors_category['id']
   end
 
+  def graphic_designers_list_channel(actors_category_id = nil)
+    find_or_create_readonly_channel @guild_id,
+                                    name: CHANNEL_GRAPHIC_DESIGNERS,
+                                    parent_id: actors_category_id || actors_category['id']
+  end
+
   def team_admins_list_channel(actors_category_id = nil)
     find_or_create_readonly_channel @guild_id,
                                     name: CHANNEL_TEAM_ADMINS,
@@ -329,6 +339,39 @@ class RetropenBot
       discord_guilds_chars_list_channel(actors_category_id)['id'],
       messages
     )
+  end
+
+  def rebuild_graphic_designers_list(_actors_category_id = nil)
+    actors_category_id = _actors_category_id || actors_category['id']
+
+    users = {}
+    User.graphic_designers.order("LOWER(name)").all.each do |user|
+      letter = self.class.name_letter user.name
+      users[letter] ||= []
+      users[letter] << (
+        line = emoji_tag(EMOJI_GRAPHIC_DESIGNER)
+        line += ' **' + user.name + '**'
+        unless user.graphic_designer_details.blank?
+          line += ' : ' + user.graphic_designer_details
+        end
+        line += ' ['
+        if user.is_available_graphic_designer?
+          line += emoji_tag(EMOJI_GRAPHIC_DESIGNER_AVAILABLE)
+        else
+          line += emoji_tag(EMOJI_GRAPHIC_DESIGNER_UNAVAILABLE)
+        end
+        line += ']'
+        line
+      )
+    end
+
+    lines = []
+    (('a'..'z').to_a + ['$']).each do |letter|
+      lines << letter.upcase
+      lines += users[letter] || []
+    end
+    lines = lines.join(DiscordClient::MESSAGE_LINE_SEPARATOR)
+    client.replace_channel_content graphic_designers_list_channel(actors_category_id)['id'], lines
   end
 
   def rebuild_team_admins_list(_actors_category_id = nil)
