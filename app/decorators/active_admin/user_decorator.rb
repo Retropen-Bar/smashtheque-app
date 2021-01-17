@@ -11,6 +11,14 @@ class ActiveAdmin::UserDecorator < UserDecorator
     model.player&.admin_decorate&.admin_link(options)
   end
 
+  def created_players_admin_path
+    admin_players_path(q: {creator_user_id_in: [id]})
+  end
+
+  def created_players_admin_link(options = {})
+    h.link_to created_players_count, created_players_admin_path, options
+  end
+
   # compatibility
   def admin_link(options = {})
     super({

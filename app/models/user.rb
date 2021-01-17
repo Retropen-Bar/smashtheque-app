@@ -32,6 +32,10 @@ class User < ApplicationRecord
   has_one :discord_user, dependent: :nullify
   has_one :player, dependent: :nullify
 
+  has_many :created_players,
+           class_name: :Player,
+           foreign_key: :creator_user_id
+
   has_many :recurring_tournament_contacts,
            inverse_of: :user,
            dependent: :destroy
@@ -86,6 +90,44 @@ class User < ApplicationRecord
 
   def self.roots
     where(is_root: true)
+  end
+
+  def self.without_discord_user
+    where.not(
+      id: DiscordUser.where.not(user_id: nil).select(:user_id)
+    )
+  end
+
+  def self.without_player
+    where.not(
+      id: Player.where.not(user_id: nil).select(:user_id)
+    )
+  end
+
+  def self.without_created_player
+    where.not(
+      id: Player.where.not(creator_user_id: nil).select(:creator_user_id)
+    )
+  end
+
+  def self.without_administrated_recurring_tournament
+    where.not(
+      id: RecurringTournamentContact.where.not(user_id: nil).select(:user_id)
+    )
+  end
+
+  def self.without_administrated_team
+    where.not(
+      id: TeamAdmin.where.not(user_id: nil).select(:user_id)
+    )
+  end
+
+  def self.without_any_link
+    self.without_discord_user
+        .without_player
+        .without_created_player
+        .without_administrated_recurring_tournament
+        .without_administrated_team
   end
 
   def self.recurring_tournament_contacts

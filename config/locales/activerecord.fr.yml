@@ -282,6 +282,7 @@ fr:
         admin_level: Rôle
         administrated_teams: Équipes gérées
         administrated_recurring_tournaments: Tournois gérés
+        created_players: Joueurs créés
         current_sign_in_at: Session en cours
         current_sign_in_ip: IP en cours
         discord_user: Compte Discord
