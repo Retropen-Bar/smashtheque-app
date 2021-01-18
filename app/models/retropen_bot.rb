@@ -737,11 +737,9 @@ class RetropenBot
   end
 
   def video_channel_line(model, emoji_id)
-    name = model.username
-
     line = [
       emoji_tag(emoji_id),
-      name
+      '**' + escape_message_content(model.name) + '**'
     ].join(' ')
     details = []
     unless model.related.nil?
@@ -755,17 +753,21 @@ class RetropenBot
       details << model.description
     end
     if details.any?
-      line += ' -> ' + details.join(', ')
+      line += DiscordClient::MESSAGE_LINE_SEPARATOR + "\t\t" + escape_message_content(details.join(', '))
     end
-
-    escape_message_content line
+    line += DiscordClient::MESSAGE_LINE_SEPARATOR + "\t\t" + model.decorate.channel_url
+    line
   end
 
   def video_channels(models, emoji_id)
     result = {}
-    models.order(:username).all.each do |model|
-      line = video_channel_line model, emoji_id
-      letter = self.class.name_letter model.username
+    models.order("LOWER(name)").all.each_with_index do |model, idx|
+      line = [
+        DiscordClient::EMPTY_LINE,
+        video_channel_line(model, emoji_id),
+        DiscordClient::EMPTY_LINE
+      ].join(DiscordClient::MESSAGE_LINE_SEPARATOR)
+      letter = self.class.name_letter model.name
       result[letter] ||= []
       result[letter] << line
     end
@@ -773,13 +775,12 @@ class RetropenBot
   end
 
   def rebuild_channel_with_named_lines(channel_id, named_lines)
-    lines = []
-    (('a'..'z').to_a + ['$']).each do |letter|
-      lines << letter.upcase
-      lines += named_lines[letter] || []
+    messages = []
+    ('a'..'z').each do |letter|
+      # messages << letter.upcase
+      messages += named_lines[letter] || []
     end
-    lines = lines.join(DiscordClient::MESSAGE_LINE_SEPARATOR)
-    client.replace_channel_content channel_id, lines
+    client.replace_channel_messages channel_id, messages
   end
 
   def rebuild_channel_with_players(channel_id, players)
