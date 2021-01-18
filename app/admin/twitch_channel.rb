@@ -72,6 +72,10 @@ ActiveAdmin.register TwitchChannel do
 
   permit_params :slug, :is_french, :related_gid, :description
 
+  before_create do |twitch_channel|
+    twitch_channel.fetch_twitch_data
+  end
+
   collection_action :related_autocomplete do
     render json: collection.object.related_autocomplete(params[:term])
   end
@@ -101,6 +105,20 @@ ActiveAdmin.register TwitchChannel do
       row :updated_at
     end
     active_admin_comments
+  end
+
+  action_item :fetch_twitch_data,
+              only: :show do
+    link_to 'Importer les données de twitch', [:fetch_twitch_data, :admin, resource]
+  end
+  member_action :fetch_twitch_data do
+    resource.fetch_twitch_data
+    if resource.save
+      redirect_to [:admin, resource], notice: 'Import réussi'
+    else
+      flash[:error] = 'Import échoué'
+      redirect_to request.referer
+    end
   end
 
 end
