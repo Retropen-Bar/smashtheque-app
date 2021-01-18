@@ -57,6 +57,8 @@ class User < ApplicationRecord
            through: :team_admins,
            source: :team
 
+  accepts_nested_attributes_for :player
+
   # ---------------------------------------------------------------------------
   # VALIDATIONS
   # ---------------------------------------------------------------------------

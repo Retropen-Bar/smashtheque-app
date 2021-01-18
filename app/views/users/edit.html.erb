@@ -1,0 +1,86 @@
+<%= admin_edit_link(@user) %>
+
+<h1 class="page-title">
+  <%= user.full_name(size: 64) %>
+</h1>
+
+<div class="container">
+
+  <%= simple_form_for(@user) do |f| %>
+
+    <div class="form-inputs">
+
+      <div class="row">
+        <div class="col-6">
+          <h2>Mon compte utiliseur</h2>
+
+          <%= render 'shared/form_errors', f: f %>
+
+          <div class="p-3 mb-2 bg-light text-dark">
+            <%= f.input :name %>
+          </div>
+
+          <div class="p-3 mb-2 bg-light text-dark">
+            <%= f.input :is_caster, label: 'Je suis commentateur' %>
+          </div>
+
+          <div class="p-3 mb-2 bg-light text-dark">
+            <%= f.input :is_coach,
+                        label: 'Je suis coach',
+                        input_html: { data: { toggle: '.coaching-fields' } } %>
+            <%= f.input :coaching_url,
+                        label: 'Lien vers ma fiche (Snowball, ...)',
+                        wrapper_html: { class: 'coaching-fields' } %>
+            <%= f.input :coaching_details,
+                        wrapper_html: { class: 'coaching-fields' } %>
+          </div>
+
+          <div class="p-3 mb-2 bg-light text-dark">
+            <%= f.input :is_graphic_designer,
+                        label: 'Je suis graphiste',
+                        input_html: { data: { toggle: '.graphic-designer-fields' } } %>
+            <%= f.input :graphic_designer_details,
+                        label: 'Ce que je fait',
+                        wrapper_html: { class: 'graphic-designer-fields' } %>
+            <%= f.input :is_available_graphic_designer,
+                        label: 'Je suis disponible actuellement',
+                        wrapper_html: { class: 'graphic-designer-fields' } %>
+          </div>
+        </div>
+        <div class="col-6">
+          <h2>Ma fiche joueur</h2>
+
+          <%= f.simple_fields_for :player do |pf| %>
+
+            <%= render 'shared/form_errors', f: pf %>
+
+            <div class="p-3 mb-2 bg-light text-dark">
+              <%= pf.input :name, label: 'Pseudo' %>
+              <%= pf.input :character_ids,
+                           collection: player_characters_select_collection,
+                           input_html: { multiple: true, data: { select2: { sortable: true, sortedValues: pf.object.character_ids } } } %>
+              <%= pf.input :location_ids,
+                           collection: player_locations_select_collection,
+                           include_blank: 'Aucune',
+                           input_html: { multiple: true, data: { select2: { sortable: true, sortedValues: pf.object.location_ids } } } %>
+              <%= pf.input :team_ids,
+                           collection: player_teams_select_collection,
+                           include_blank: 'Aucune',
+                           input_html: { multiple: true, data: { select2: { sortable: true, sortedValues: pf.object.team_ids } } } %>
+              <%= pf.input :twitter_username %>
+            </div>
+
+          <% end %>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="form-actions text-center my-5">
+      <%= link_to 'Annuler', @user, class: 'btn btn-secondary mr-3' %>
+      <%= f.button :submit, 'Valider', class: 'btn btn-primary' %>
+    </div>
+
+  <% end %>
+
+</div>

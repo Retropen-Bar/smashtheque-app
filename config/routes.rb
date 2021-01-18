@@ -81,6 +81,8 @@ Rails.application.routes.draw do
   resources :coach_users, only: [:index], path: :coaches
   resources :graphic_designer_users, only: [:index], path: :graphic_designers
 
+  resources :users, only: %i(show edit update)
+
   get 'credits' => 'public#credits', as: :credits
   get 'mentions-legales' => 'public#legal', as: :legal
 

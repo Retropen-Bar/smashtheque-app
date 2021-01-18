@@ -1,0 +1,17 @@
+<%= admin_edit_link(@user) %>
+
+<h1 class="page-title">
+  <%= user.full_name(size: 64) %>
+</h1>
+
+<div class="text-center">
+  <%= link_to 'Modifier mon profil', [:edit, @user], class: 'btn btn-primary' %>
+</div>
+
+<% if user.player %>
+  <div class="cards-list players" style="margin-top: 50px;">
+    <div class="card-container">
+      <%= render 'players/player', player: user.player.decorate %>
+    </div>
+  </div>
+<% end %>
