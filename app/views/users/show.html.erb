@@ -19,39 +19,42 @@
   <%= link_to 'Modifier mon profil', [:edit, @user], class: 'btn btn-primary' %>
 </div>
 
-<div class="row">
-  <div class="col-6">
-    <% if user.is_coach? %>
-      <div class="p-3 mb-2 bg-light text-dark">
-        <h2>Profil de coach</h2>
+<div class="row justify-content-center">
+  <% if user.is_coach? || user.is_graphic_designer? %>
+    <div class="col-6">
+      <% if user.is_coach? %>
+        <div class="p-3 mb-2 bg-light text-dark">
+          <h2>Profil de coach</h2>
 
-        <div class="mb-2">
-          <%= user.coaching_link(label: 'Lien vers ma fiche') %>
+          <div class="mb-2">
+            <%= user.coaching_link(label: 'Lien vers ma fiche') %>
+          </div>
+
+          <% unless user.coaching_details.blank? %>
+            <strong>Détails sur le coaching</strong><br/>
+            <pre><%= user.coaching_details %></pre>
+          <% end %>
         </div>
+      <% end %>
 
-        <% unless user.coaching_details.blank? %>
-          <strong>Détails sur le coaching</strong><br/>
-          <pre><%= user.coaching_details %></pre>
-        <% end %>
-      </div>
-    <% end %>
+      <% if user.is_graphic_designer? %>
+        <div class="p-3 mb-2 bg-light text-dark">
+          <h2>Profil de graphiste</h2>
 
-    <% if user.is_graphic_designer? %>
-      <div class="p-3 mb-2 bg-light text-dark">
-        <h2>Profil de graphiste</h2>
+          <p>
+            <strong>Suis-je disponible actuellement ?</strong><br/>
+            <%= user.is_available_graphic_designer? ? 'Oui' : 'Non' %>
+          </p>
 
-        <p>
-          <strong>Suis-je disponible actuellement ?</strong><br/>
-          <%= user.is_available_graphic_designer? ? 'Oui' : 'Non' %>
-        </p>
+          <% unless user.graphic_designer_details.blank? %>
+            <strong>Ce que je fait</strong><br/>
+            <pre><%= user.graphic_designer_details %></pre>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
 
-        <% unless user.graphic_designer_details.blank? %>
-          <strong>Ce que je fait</strong><br/>
-          <pre><%= user.graphic_designer_details %></pre>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
   <div class="col-6">
     <% if user.player %>
       <div class="cards-list players">
