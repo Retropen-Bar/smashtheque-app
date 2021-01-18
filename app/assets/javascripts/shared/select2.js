@@ -48,7 +48,7 @@
   };
 
   var initSelect2Sortable = function($select, options) {
-    console.log('initSelect2Sortable', $select[0], options);
+    // console.log('initSelect2Sortable', $select[0], options);
 
     if(options.sortedValues) {
       sortSelect2Sortable($select, options.sortedValues);
