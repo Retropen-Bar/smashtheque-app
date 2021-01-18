@@ -31,4 +31,11 @@ class UserDecorator < BaseDecorator
     created_players.count
   end
 
+  def coaching_link(options = {})
+    return nil unless is_coach? || coaching_url.blank?
+    h.link_to (options[:label] || 'Voir la page'), coaching_url, {
+      target: '_blank'
+    }.merge(options)
+  end
+
 end

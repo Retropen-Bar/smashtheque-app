@@ -32,6 +32,9 @@
                         label: 'Lien vers ma fiche (Snowball, ...)',
                         wrapper_html: { class: 'coaching-fields' } %>
             <%= f.input :coaching_details,
+                        label: 'Détails sur le coaching',
+                        as: :text,
+                        input_html: { rows: 3 },
                         wrapper_html: { class: 'coaching-fields' } %>
           </div>
 
@@ -39,11 +42,13 @@
             <%= f.input :is_graphic_designer,
                         label: 'Je suis graphiste',
                         input_html: { data: { toggle: '.graphic-designer-fields' } } %>
-            <%= f.input :graphic_designer_details,
-                        label: 'Ce que je fait',
-                        wrapper_html: { class: 'graphic-designer-fields' } %>
             <%= f.input :is_available_graphic_designer,
                         label: 'Je suis disponible actuellement',
+                        wrapper_html: { class: 'graphic-designer-fields' } %>
+            <%= f.input :graphic_designer_details,
+                        label: 'Ce que je fait',
+                        as: :text,
+                        input_html: { rows: 3 },
                         wrapper_html: { class: 'graphic-designer-fields' } %>
           </div>
         </div>
