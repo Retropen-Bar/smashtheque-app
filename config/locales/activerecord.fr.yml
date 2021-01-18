@@ -272,7 +272,6 @@ fr:
       twitch_channel:
         << : *SHARED
         description: Détails
-        display_name: Nom d'affichage
         is_french: Chaîne FR ?
         name: Nom
         profile_image_url: Image

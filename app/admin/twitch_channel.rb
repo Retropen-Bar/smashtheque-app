@@ -18,7 +18,7 @@ ActiveAdmin.register TwitchChannel do
     column :slug do |decorated|
       decorated.channel_link(with_icon: true)
     end
-    column :display_name
+    column :name
     column :profile_image_url do |decorated|
       decorated.profile_image_tag(height: 32)
     end
@@ -33,9 +33,16 @@ ActiveAdmin.register TwitchChannel do
     actions
   end
 
+  scope :all, default: true
+
+  scope :related_to_location, group: :related
+  scope :related_to_team, group: :related
+  scope :related_to_player, group: :related
+  scope :related_to_character, group: :related
+
   filter :twitch_id
   filter :slug
-  filter :display_name
+  filter :name
   filter :is_french
 
   action_item :rebuild,
@@ -79,7 +86,7 @@ ActiveAdmin.register TwitchChannel do
       row :slug do |decorated|
         decorated.channel_link(with_icon: true)
       end
-      row :display_name
+      row :name
       row :is_french
       row :related do |decorated|
         decorated.related_admin_link

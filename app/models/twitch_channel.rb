@@ -4,8 +4,8 @@
 #
 #  id                 :bigint           not null, primary key
 #  description        :text
-#  display_name       :string
 #  is_french          :boolean          default(FALSE), not null
+#  name               :string
 #  profile_image_url  :string
 #  related_type       :string
 #  slug               :string           not null
@@ -69,6 +69,23 @@ class TwitchChannel < ApplicationRecord
     where("unaccent(name) ILIKE '#{letter}%'")
   end
 
+  def self.related_to_location
+    where(related_type: :Location)
+  end
+
+  def self.related_to_team
+    where(related_type: :Team)
+  end
+
+  def self.related_to_player
+    where(related_type: :Player)
+  end
+
+  def self.related_to_character
+    where(related_type: :Character)
+  end
+
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------
@@ -77,7 +94,7 @@ class TwitchChannel < ApplicationRecord
     if api_data = twitch_client.get_users({login: slug}).data&.first
       #<Twitch::User:0x00007fc22d9316a0 @id="456306239", @login="retropenbar", @display_name="RetropenBar", @type="", @broadcaster_type="", @description="Bienvenue sur le stream du Rétropen-Bar!  A ta santé ! :P", @profile_image_url="https://static-cdn.jtvnw.net/jtv_user_pictures/42c732bd-9e5f-47b8-a5be-ee65d7f3ecdf-profile_image-300x300.png", @offline_image_url="https://static-cdn.jtvnw.net/jtv_user_pictures/cee4d45b-c723-4cd2-892e-5fe219e661c6-channel_offline_image-1920x1080.jpeg", @view_count=1430, @created_at="2019-08-21T23:51:21.427712Z">
       self.twitch_id = api_data.id
-      self.display_name = api_data.display_name
+      self.name = api_data.display_name
       self.twitch_description = api_data.description
       self.profile_image_url = api_data.profile_image_url
       self.twitch_created_at = DateTime.parse(JSON.parse(api_data.to_json)['created_at'])

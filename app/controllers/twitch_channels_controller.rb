@@ -7,7 +7,7 @@ class TwitchChannelsController < PublicController
   has_scope :on_abc
 
   def index
-    @twitch_channels = apply_scopes(TwitchChannel.order("lower(display_name)")).all
+    @twitch_channels = apply_scopes(TwitchChannel.order("lower(name)")).all
   end
 
 end
