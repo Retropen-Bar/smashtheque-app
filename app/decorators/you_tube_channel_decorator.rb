@@ -1,7 +1,7 @@
 class YouTubeChannelDecorator < BaseDecorator
 
   def channel_url
-    "https://www.youtube.com/c/#{model.username}"
+    url
   end
 
   def channel_link(with_icon: false)

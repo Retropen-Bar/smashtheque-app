@@ -14,7 +14,7 @@ ActiveAdmin.register YouTubeChannel do
   index do
     selectable_column
     id_column
-    column :username do |decorated|
+    column :url do |decorated|
       decorated.channel_link(with_icon: true)
     end
     column :is_french
@@ -29,8 +29,9 @@ ActiveAdmin.register YouTubeChannel do
   end
 
   filter :name
-  filter :username
+  filter :url
   filter :is_french
+  filter :description
 
   action_item :rebuild,
               only: :index,
@@ -48,8 +49,8 @@ ActiveAdmin.register YouTubeChannel do
 
   form do |f|
     f.inputs do
-      f.input :username
       f.input :name
+      f.input :url
       f.input :is_french
       related_input(f)
       f.input :description,
@@ -58,7 +59,7 @@ ActiveAdmin.register YouTubeChannel do
     f.actions
   end
 
-  permit_params :username, :name, :is_french, :related_gid, :description
+  permit_params :name, :url, :is_french, :related_gid, :description
 
   collection_action :related_autocomplete do
     render json: collection.object.related_autocomplete(params[:term])
@@ -70,7 +71,8 @@ ActiveAdmin.register YouTubeChannel do
 
   show do
     attributes_table do
-      row :username do |decorated|
+      row :name
+      row :url do |decorated|
         decorated.channel_link(with_icon: true)
       end
       row :is_french

@@ -9,7 +9,10 @@ fr:
       admins: Admins
       all: Tous
       banned: Bannis
+      casters: Caster
+      coahes: Coach
       geocoded: Géolocalisé
+      graphic_designers: Graphistes
       helps: Aides
       lambda: Normaux
       not_geocoded: Non géolocalisé
@@ -18,6 +21,10 @@ fr:
       on_smashgg: smash.gg
       on_braacket: Braacket
       on_challonge: Challonge
+      related_to_location: Lieu
+      related_to_team: Équipe
+      related_to_player: Joueur
+      related_to_character: Perso
       roots: Superadmins
       to_be_accepted: À valider
       unknown: Inconnus

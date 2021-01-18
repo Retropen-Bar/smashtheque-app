@@ -1,0 +1,17 @@
+<div class="text-center">
+  <div id="list-toolbar">
+    <h1 class="page-title">Chaînes YouTube</h1>
+    <%= render 'shared/letters' %>
+    <%= render 'shared/pagination', collection: @you_tube_channels %>
+  </div>
+</div>
+
+<div class="cards-list youtube-channels">
+  <% @you_tube_channels.each do |you_tube_channel| %>
+    <div class="card-container">
+      <%= render 'you_tube_channel', you_tube_channel: you_tube_channel.decorate %>
+    </div>
+  <% end %>
+</div>
+
+<%= render 'shared/pagination', collection: @you_tube_channels %>

@@ -2,18 +2,25 @@
 #
 # Table name: users
 #
-#  id                 :bigint           not null, primary key
-#  admin_level        :string
-#  current_sign_in_at :datetime
-#  current_sign_in_ip :inet
-#  encrypted_password :string           default(""), not null
-#  is_root            :boolean          default(FALSE), not null
-#  last_sign_in_at    :datetime
-#  last_sign_in_ip    :inet
-#  name               :string           not null
-#  sign_in_count      :integer          default(0), not null
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
+#  id                            :bigint           not null, primary key
+#  admin_level                   :string
+#  coaching_details              :string
+#  coaching_url                  :string
+#  current_sign_in_at            :datetime
+#  current_sign_in_ip            :inet
+#  encrypted_password            :string           default(""), not null
+#  graphic_designer_details      :string
+#  is_available_graphic_designer :boolean          default(FALSE), not null
+#  is_caster                     :boolean          default(FALSE), not null
+#  is_coach                      :boolean          default(FALSE), not null
+#  is_graphic_designer           :boolean          default(FALSE), not null
+#  is_root                       :boolean          default(FALSE), not null
+#  last_sign_in_at               :datetime
+#  last_sign_in_ip               :inet
+#  name                          :string           not null
+#  sign_in_count                 :integer          default(0), not null
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
 #
 class User < ApplicationRecord
 
@@ -60,6 +67,33 @@ class User < ApplicationRecord
               in: Ability::ADMIN_LEVELS,
               allow_nil: true
             }
+
+  # ---------------------------------------------------------------------------
+  # CALLBACKS
+  # ---------------------------------------------------------------------------
+
+  after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] }
+  def update_discord
+    # on create: previous_changes = {"id"=>[nil, <id>], "name"=>[nil, <name>], ...}
+    # on update: previous_changes = {"name"=>["old_name", "new_name"], ...}
+    # on delete: destroyed? = true and old attributes are available
+
+    if destroyed?
+      RetropenBotScheduler.rebuild_casters_list if is_caster?
+      RetropenBotScheduler.rebuild_coaches_list if is_coach?
+      RetropenBotScheduler.rebuild_graphic_designers_list if is_graphic_designer?
+    else
+      if is_caster? || previous_changes.has_key?('is_caster')
+        RetropenBotScheduler.rebuild_casters_list
+      end
+      if is_coach? || previous_changes.has_key?('is_coach')
+        RetropenBotScheduler.rebuild_coaches_list
+      end
+      if is_graphic_designer? || previous_changes.has_key?('is_graphic_designer')
+        RetropenBotScheduler.rebuild_graphic_designers_list
+      end
+    end
+  end
 
   # ---------------------------------------------------------------------------
   # SCOPES
@@ -136,6 +170,22 @@ class User < ApplicationRecord
 
   def self.team_admins
     where(id: TeamAdmin.select(:user_id))
+  end
+
+  def self.casters
+    where(is_caster: true)
+  end
+
+  def self.coaches
+    where(is_coach: true)
+  end
+
+  def self.graphic_designers
+    where(is_graphic_designer: true)
+  end
+
+  def self.on_abc(letter)
+    where("unaccent(name) ILIKE '#{letter}%'")
   end
 
   # ---------------------------------------------------------------------------

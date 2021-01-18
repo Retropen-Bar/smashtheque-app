@@ -16,7 +16,10 @@ class RetropenBot
   CHANNEL_TEAMS_LU2 = 'roster-équipes-j-r'.freeze
   CHANNEL_TEAMS_LU3 = 'roster-équipes-s-z-autres'.freeze
   CATEGORY_ACTORS = 'ACTEURS DE LA SCÈNE SMASH'.freeze
+  CHANNEL_CASTERS = 'casters'.freeze
+  CHANNEL_COACHES = 'coachs'.freeze
   CHANNEL_DISCORD_GUILDS_CHARS = 'commus-fr-par-perso'.freeze
+  CHANNEL_GRAPHIC_DESIGNERS = 'graphistes'.freeze
   CHANNEL_TEAM_ADMINS = 'capitaines-d-équipe'.freeze
   CHANNEL_TWITCH_FR = 'twitch-channels-fr'.freeze
   CHANNEL_TWITCH_WORLD = 'twitch-channels-world'.freeze
@@ -58,6 +61,11 @@ class RetropenBot
   EMOJI_TOURNAMENT = '743286485930868827'.freeze
   EMOJI_NO_REWARD = '790617900012535838'.freeze
   EMOJI_POINTS = '795277209715212298'.freeze
+  EMOJI_GRAPHIC_DESIGNER = '752212651421204560'.freeze
+  EMOJI_GRAPHIC_DESIGNER_AVAILABLE = '752212329327755304'.freeze
+  EMOJI_GRAPHIC_DESIGNER_UNAVAILABLE = '752212328833089746'.freeze
+  EMOJI_CASTER = '745255394632269984'.freeze
+  EMOJI_COACH = '743286485930868827'.freeze
 
   # ---------------------------------------------------------------------------
   # CONSTRUCTOR
@@ -272,6 +280,24 @@ class RetropenBot
                                     parent_id: actors_category_id || actors_category['id']
   end
 
+  def casters_list_channel(actors_category_id = nil)
+    find_or_create_readonly_channel @guild_id,
+                                    name: CHANNEL_CASTERS,
+                                    parent_id: actors_category_id || actors_category['id']
+  end
+
+  def coaches_list_channel(actors_category_id = nil)
+    find_or_create_readonly_channel @guild_id,
+                                    name: CHANNEL_COACHES,
+                                    parent_id: actors_category_id || actors_category['id']
+  end
+
+  def graphic_designers_list_channel(actors_category_id = nil)
+    find_or_create_readonly_channel @guild_id,
+                                    name: CHANNEL_GRAPHIC_DESIGNERS,
+                                    parent_id: actors_category_id || actors_category['id']
+  end
+
   def team_admins_list_channel(actors_category_id = nil)
     find_or_create_readonly_channel @guild_id,
                                     name: CHANNEL_TEAM_ADMINS,
@@ -312,23 +338,104 @@ class RetropenBot
 
     messages = characters.map do |character|
       discord_guild = character.discord_guilds.first
-      [
-        "**#{character.name.upcase}**",
-        character_emoji_tag(character),
-        discord_guild.invitation_url,
-        emoji_tag(EMOJI_GUILD_ADMIN),
-        discord_guild.discord_guild_admins.map do |discord_guild_admin|
-          discord_user = discord_guild_admin.discord_user
-          result = discord_user.player&.name || discord_user.username
-          result += " [#{discord_guild_admin.role}]" unless discord_guild_admin.role.blank?
-          result
-        end.join(', ')
-      ].join(' ')
+      message = DiscordClient::EMPTY_LINE + DiscordClient::MESSAGE_LINE_SEPARATOR
+      message += "**#{character.name.upcase}** " + character_emoji_tag(character)
+      message += discord_guild.discord_guild_admins.map do |discord_guild_admin|
+        discord_user = discord_guild_admin.discord_user
+        line = DiscordClient::MESSAGE_LINE_SEPARATOR + "\t\t"
+        line += emoji_tag(EMOJI_GUILD_ADMIN)
+        line += " #{discord_user.player&.name || discord_user.username}"
+        line += " [#{discord_guild_admin.role}]" unless discord_guild_admin.role.blank?
+        line
+      end.join
+      message += DiscordClient::MESSAGE_LINE_SEPARATOR + "\t\t"
+      message += "🔗 " + discord_guild.invitation_url
+      message += DiscordClient::MESSAGE_LINE_SEPARATOR + DiscordClient::EMPTY_LINE
+      message
     end
+
     client.replace_channel_messages(
       discord_guilds_chars_list_channel(actors_category_id)['id'],
       messages
     )
+  end
+
+  def rebuild_casters_list(_actors_category_id = nil)
+    actors_category_id = _actors_category_id || actors_category['id']
+
+    users = {}
+    User.casters.order("LOWER(name)").all.each do |user|
+      letter = self.class.name_letter user.name
+      users[letter] ||= []
+      users[letter] << emoji_tag(EMOJI_CASTER) + ' **' + user.name + '**'
+      users[letter] << DiscordClient::EMPTY_LINE
+    end
+
+    lines = []
+    (('a'..'z').to_a + ['$']).each do |letter|
+      lines << letter_emoji_tag(letter)
+      lines << DiscordClient::EMPTY_LINE
+      lines += users[letter] || []
+      lines << DiscordClient::EMPTY_LINE
+    end
+    lines = lines.join(DiscordClient::MESSAGE_LINE_SEPARATOR)
+    client.replace_channel_content casters_list_channel(actors_category_id)['id'], lines
+  end
+
+  def rebuild_coaches_list(_actors_category_id = nil)
+    actors_category_id = _actors_category_id || actors_category['id']
+
+    messages = User.coaches.order("LOWER(name)").all.map do |user|
+      message = DiscordClient::EMPTY_LINE + DiscordClient::MESSAGE_LINE_SEPARATOR
+      message += emoji_tag(EMOJI_COACH)
+      message += ' **' + user.name + '**'
+      unless user.coaching_details.blank?
+        message += DiscordClient::MESSAGE_LINE_SEPARATOR + "\t\t" + user.coaching_details
+      end
+      unless user.coaching_url.blank?
+        message += DiscordClient::MESSAGE_LINE_SEPARATOR + "\t\t" + user.coaching_url
+      end
+      message += DiscordClient::MESSAGE_LINE_SEPARATOR + DiscordClient::EMPTY_LINE
+      message
+    end
+
+    client.replace_channel_messages coaches_list_channel(actors_category_id)['id'], messages
+  end
+
+  def rebuild_graphic_designers_list(_actors_category_id = nil)
+    actors_category_id = _actors_category_id || actors_category['id']
+
+    users = {}
+    User.graphic_designers.order("LOWER(name)").all.each do |user|
+      letter = self.class.name_letter user.name
+      users[letter] ||= []
+      users[letter] << (
+        line = emoji_tag(EMOJI_GRAPHIC_DESIGNER)
+        line += ' **' + user.name + '**'
+        line += ' ['
+        if user.is_available_graphic_designer?
+          line += emoji_tag(EMOJI_GRAPHIC_DESIGNER_AVAILABLE)
+        else
+          line += emoji_tag(EMOJI_GRAPHIC_DESIGNER_UNAVAILABLE)
+        end
+        line += ']'
+        unless user.graphic_designer_details.blank?
+          line += DiscordClient::MESSAGE_LINE_SEPARATOR + user.graphic_designer_details
+        end
+        line
+      )
+      users[letter] << DiscordClient::EMPTY_LINE
+    end
+
+    lines = []
+    (('a'..'z').to_a + ['$']).each do |letter|
+      lines << letter_emoji_tag(letter)
+      lines << DiscordClient::EMPTY_LINE
+      lines += users[letter] || []
+      lines << DiscordClient::EMPTY_LINE
+    end
+    lines = lines.join(DiscordClient::MESSAGE_LINE_SEPARATOR)
+    client.replace_channel_content graphic_designers_list_channel(actors_category_id)['id'], lines
   end
 
   def rebuild_team_admins_list(_actors_category_id = nil)
@@ -353,12 +460,15 @@ class RetropenBot
           "[#{team.short_name}]"
         end
       ).join(' ')
+      admins[letter] << DiscordClient::EMPTY_LINE
     end
 
     lines = []
     (('a'..'z').to_a + ['$']).each do |letter|
-      lines << letter.upcase
+      lines << letter_emoji_tag(letter)
+      lines << DiscordClient::EMPTY_LINE
       lines += admins[letter] || []
+      lines << DiscordClient::EMPTY_LINE
     end
     lines = lines.join(DiscordClient::MESSAGE_LINE_SEPARATOR)
     client.replace_channel_content team_admins_list_channel(actors_category_id)['id'], lines
@@ -424,20 +534,27 @@ class RetropenBot
                          .order(:starts_at)
                          .decorate
                          .each do |recurring_tournament|
+      messages << DiscordClient::EMPTY_LINE
       messages << emoji_tag(EMOJI_TOURNAMENT) * 3
       messages << [
-        "Tournoi : #{recurring_tournament.name}",
-        "Fréquence : #{recurring_tournament.recurring_type_text}",
-        "Date : #{recurring_tournament.full_date}",
-        "Serveur : #{recurring_tournament.discord_guild_invitation_url}",
-        "Difficulté : #{recurring_tournament.level_text}",
-        "Disponibilité : Ouvert à tous",
-        "Taille : #{RecurringTournamentDecorator.size_name(recurring_tournament.size)}",
-        "Comment s'inscrire : #{recurring_tournament.registration.gsub(/\R+/, '; ')}",
-        "Contact : " + recurring_tournament.contacts.map do |user|
-          user.player&.name || user.name
-        end.join(', ')
-      ].join("\n")
+        "**#{recurring_tournament.name}**",
+        "\tFréquence : #{recurring_tournament.recurring_type_text}",
+        "\tDate : #{recurring_tournament.full_date}",
+        "\tServeur : #{recurring_tournament.discord_guild_invitation_url}",
+        "\tDifficulté : #{recurring_tournament.level_text}",
+        "\tDisponibilité : Ouvert à tous",
+        "\tTaille : #{RecurringTournamentDecorator.size_name(recurring_tournament.size)}",
+        "\tComment s'inscrire :",
+        "\t\t" + recurring_tournament.registration.gsub(
+          /\R+/,
+          DiscordClient::MESSAGE_LINE_SEPARATOR + "\t\t"
+        ),
+        "\tContacts :",
+        recurring_tournament.contacts.map do |user|
+          "\t\t- #{user.player&.name || user.name}"
+        end.join(DiscordClient::MESSAGE_LINE_SEPARATOR),
+        DiscordClient::EMPTY_LINE
+      ].join(DiscordClient::MESSAGE_LINE_SEPARATOR)
     end
     client.replace_channel_messages(
       channel_id,
@@ -538,7 +655,7 @@ class RetropenBot
         messages << [
           "**Joueurs ayant fait au mieux top #{reward_condition.rank} dans un tournoi de #{reward_condition.size_min} à #{reward_condition.size_max} participants :**",
           players_lines(Player.by_best_reward(reward)).presence || "Aucun",
-          '-'*25
+          DiscordClient::EMPTY_LINE
         ].join(DiscordClient::MESSAGE_LINE_SEPARATOR)
       end
     end
@@ -569,6 +686,13 @@ class RetropenBot
 
   def character_emoji_tag(character)
     "<:#{character.name.parameterize.gsub('-','')}:#{character.emoji}>"
+  end
+
+  def letter_emoji_tag(letter)
+    return '🟦' if letter == '$'
+    [
+      127462 + (letter.downcase.ord - "a".ord)
+    ].pack('U')
   end
 
   def escape_message_content(content)
@@ -633,11 +757,9 @@ class RetropenBot
   end
 
   def video_channel_line(model, emoji_id)
-    name = model.username
-
     line = [
       emoji_tag(emoji_id),
-      name
+      '**' + escape_message_content(model.name) + '**'
     ].join(' ')
     details = []
     unless model.related.nil?
@@ -651,17 +773,21 @@ class RetropenBot
       details << model.description
     end
     if details.any?
-      line += ' -> ' + details.join(', ')
+      line += DiscordClient::MESSAGE_LINE_SEPARATOR + "\t\t" + escape_message_content(details.join(', '))
     end
-
-    escape_message_content line
+    line += DiscordClient::MESSAGE_LINE_SEPARATOR + "\t\t" + model.decorate.channel_url
+    line
   end
 
   def video_channels(models, emoji_id)
     result = {}
-    models.order(:username).all.each do |model|
-      line = video_channel_line model, emoji_id
-      letter = self.class.name_letter model.username
+    models.order("LOWER(name)").all.each_with_index do |model, idx|
+      line = [
+        DiscordClient::EMPTY_LINE,
+        video_channel_line(model, emoji_id),
+        DiscordClient::EMPTY_LINE
+      ].join(DiscordClient::MESSAGE_LINE_SEPARATOR)
+      letter = self.class.name_letter model.name
       result[letter] ||= []
       result[letter] << line
     end
@@ -669,13 +795,12 @@ class RetropenBot
   end
 
   def rebuild_channel_with_named_lines(channel_id, named_lines)
-    lines = []
-    (('a'..'z').to_a + ['$']).each do |letter|
-      lines << letter.upcase
-      lines += named_lines[letter] || []
+    messages = []
+    ('a'..'z').each do |letter|
+      # messages << letter.upcase
+      messages += named_lines[letter] || []
     end
-    lines = lines.join(DiscordClient::MESSAGE_LINE_SEPARATOR)
-    client.replace_channel_content channel_id, lines
+    client.replace_channel_messages channel_id, messages
   end
 
   def rebuild_channel_with_players(channel_id, players)

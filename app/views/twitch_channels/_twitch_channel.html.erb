@@ -1,0 +1,29 @@
+<div class="card twitch-channel shadow-sm">
+  <div class="card-body">
+    <%= link_to twitch_channel.channel_url, target: '_blank' do %>
+      <%= twitch_channel.profile_image_tag max_height: 128, class: 'avatar' %><br/>
+      <%= twitch_channel.name %>
+    <% end %>
+    <% if twitch_channel.related %>
+      <%= link_to twitch_channel.related.decorate.path, class: 'twitch-channel-related' do %>
+        <% case twitch_channel.related_type.to_sym %>
+        <% when :Character %>
+          <%= twitch_channel.related.decorate.emoji_image_tag %>
+        <% when :Location %>
+          <span class="icon">
+            <% if twitch_channel.related.icon %>
+              <%= twitch_channel.related.icon %>
+            <% else %>
+              <%= fas_icon_tag 'map-marker-alt' %>
+            <% end %>
+          </span>
+        <% when :Player %>
+          <%= twitch_channel.related.decorate.avatar_tag(32) %>
+        <% when :Team %>
+          <%= twitch_channel.related.decorate.any_image_tag %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+  <%= admin_edit_link(twitch_channel) %>
+</div>

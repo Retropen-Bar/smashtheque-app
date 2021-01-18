@@ -1,5 +1,6 @@
 class DiscordClient
 
+  EMPTY_LINE = "\u200b".freeze
   MESSAGE_LINE_SEPARATOR = "\n".freeze
   SLEEP_TIMER = (ENV['DISCORD_SLEEP'] || 5).to_i
 
@@ -163,12 +164,22 @@ class DiscordClient
   end
 
   def delete_channel_message(channel_id, message_id)
-    api_delete "/channels/#{channel_id}/messages/#{message_id}"
+    response = api_delete "/channels/#{channel_id}/messages/#{message_id}"
+    return nil if response.nil?
+    error = JSON.parse(response)
+    if retry_after = error['retry_after']
+      puts "Retrying in #{retry_after} seconds..."
+      sleep retry_after
+      delete_channel_message(channel_id, message_id)
+    else
+      puts "Unknown error: #{error}"
+    end
   end
 
   def clear_channel(channel_id)
     channel_messages(channel_id).each do |message|
       delete_channel_message channel_id, message['id']
+      sleep 1
     end
   end
 
@@ -203,6 +214,7 @@ class DiscordClient
     # some old messages might still be here and need to be deleted
     while message_idx < existing_messages.count
       delete_channel_message channel_id, existing_messages[message_idx]['id']
+      sleep 1
       message_idx += 1
     end
   end

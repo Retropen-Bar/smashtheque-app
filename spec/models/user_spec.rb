@@ -2,18 +2,25 @@
 #
 # Table name: users
 #
-#  id                 :bigint           not null, primary key
-#  admin_level        :string
-#  current_sign_in_at :datetime
-#  current_sign_in_ip :inet
-#  encrypted_password :string           default(""), not null
-#  is_root            :boolean          default(FALSE), not null
-#  last_sign_in_at    :datetime
-#  last_sign_in_ip    :inet
-#  name               :string           not null
-#  sign_in_count      :integer          default(0), not null
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
+#  id                            :bigint           not null, primary key
+#  admin_level                   :string
+#  coaching_details              :string
+#  coaching_url                  :string
+#  current_sign_in_at            :datetime
+#  current_sign_in_ip            :inet
+#  encrypted_password            :string           default(""), not null
+#  graphic_designer_details      :string
+#  is_available_graphic_designer :boolean          default(FALSE), not null
+#  is_caster                     :boolean          default(FALSE), not null
+#  is_coach                      :boolean          default(FALSE), not null
+#  is_graphic_designer           :boolean          default(FALSE), not null
+#  is_root                       :boolean          default(FALSE), not null
+#  last_sign_in_at               :datetime
+#  last_sign_in_ip               :inet
+#  name                          :string           not null
+#  sign_in_count                 :integer          default(0), not null
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
 #
 require 'rails_helper'
 

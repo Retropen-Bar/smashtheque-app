@@ -274,18 +274,29 @@ fr:
         description: Détails
         is_french: Chaîne FR ?
         name: Nom
+        profile_image_url: Image
         related: Sujet principal
         related_gid: Sujet principal
-        username: ID Twitch
+        twitch_created_at: Création Twitch
+        twitch_description: Description Twitch
+        twitch_id: ID Twitch
+        username: Slug
       user:
         << : *SHARED
         admin_level: Rôle
         administrated_teams: Équipes gérées
         administrated_recurring_tournaments: Tournois gérés
+        coaching_details: Description du coaching
+        coaching_url: URL de coaching
         created_players: Joueurs créés
         current_sign_in_at: Session en cours
         current_sign_in_ip: IP en cours
         discord_user: Compte Discord
+        graphic_designer_details: Description du graphiste
+        is_available_graphic_designer: Graphiste disponible ?
+        is_caster: Caster ?
+        is_coach: Coach ?
+        is_graphic_designer: Graphiste ?
         last_sign_in_at: Session précédente
         last_sign_in_ip: IP précédente
         name: Nom
