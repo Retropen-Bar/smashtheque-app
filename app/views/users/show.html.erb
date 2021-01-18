@@ -56,9 +56,12 @@
     <% if user.player %>
       <div class="cards-list players">
         <div class="card-container">
-          <%= render 'players/player', player: user.player.decorate %>
+          <% player = user.player; player.is_accepted = true %>
+          <%= render 'players/player', player: player.decorate %>
         </div>
       </div>
+    <% else %>
+      <%= link_to 'Créer ma fiche joueur', [:create_player, @user], class: 'btn btn-success' %>
     <% end %>
   </div>
 </div>

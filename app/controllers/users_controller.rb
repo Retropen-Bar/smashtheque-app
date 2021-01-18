@@ -21,6 +21,17 @@ class UsersController < PublicController
     end
   end
 
+  def create_player
+    if @user.player
+      redirect_to request.referrer, notice: 'Fiche joueur déjà existante' and return
+    end
+    @user.create_player!(
+      name: @user.name,
+      creator_user: @user
+    )
+    redirect_to action: :edit
+  end
+
   private
 
   def set_user
