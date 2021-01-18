@@ -29,8 +29,7 @@ class UsersController < PublicController
 
   def verify_user!
     authenticate_user!
-    # unless current_user.is_admin? || current_user == @user
-    unless current_user == @user
+    unless current_user.is_admin? || current_user == @user
       flash[:error] = 'Accès non autorisé'
       redirect_to root_path and return
     end
