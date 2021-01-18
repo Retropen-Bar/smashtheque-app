@@ -655,7 +655,7 @@ class RetropenBot
         messages << [
           "**Joueurs ayant fait au mieux top #{reward_condition.rank} dans un tournoi de #{reward_condition.size_min} à #{reward_condition.size_max} participants :**",
           players_lines(Player.by_best_reward(reward)).presence || "Aucun",
-          '-'*25
+          DiscordClient::EMPTY_LINE
         ].join(DiscordClient::MESSAGE_LINE_SEPARATOR)
       end
     end
