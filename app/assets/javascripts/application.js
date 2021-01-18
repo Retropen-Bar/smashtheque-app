@@ -1,6 +1,7 @@
 //= require rails-ujs
 
 //= require jquery
+//= require jquery-ui/widgets/sortable
 //= require popper
 //= require bootstrap-sprockets
 //= require select2-full

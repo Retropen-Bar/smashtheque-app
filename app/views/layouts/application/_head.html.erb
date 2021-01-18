@@ -81,6 +81,7 @@
             <%= current_user.decorate.full_name(size: 32) %>
           <% end %>
           <div class="dropdown-menu dropdown-menu-right">
+            <%= link_to 'Mon profil', current_user, class: 'dropdown-item' %>
             <%= link_to 'Me déconnecter', destroy_user_session_path, class: 'dropdown-item' %>
           </div>
         </li>

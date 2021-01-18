@@ -1,0 +1,67 @@
+<%= admin_edit_link(@user) %>
+
+<h1 class="page-title">
+  <%= user.full_name(size: 64) %><br/>
+</h1>
+<h5 class="text-center">
+  <% if user.is_caster? %>
+    <span class="badge badge-success">Commentateur</span>
+  <% end %>
+  <% if user.is_coach? %>
+    <span class="badge badge-warning">Coach</span>
+  <% end %>
+  <% if user.is_graphic_designer? %>
+    <span class="badge badge-dark">Graphiste</span>
+  <% end %>
+</h5>
+
+<div class="my-5 text-center">
+  <%= link_to 'Modifier mon profil', [:edit, @user], class: 'btn btn-primary' %>
+</div>
+
+<div class="row">
+  <div class="col-6">
+    <% if user.is_coach? %>
+      <div class="p-3 mb-2 bg-light text-dark">
+        <h2>Profil de coach</h2>
+
+        <div class="mb-2">
+          <%= user.coaching_link(label: 'Lien vers ma fiche') %>
+        </div>
+
+        <% unless user.coaching_details.blank? %>
+          <strong>Détails sur le coaching</strong><br/>
+          <pre><%= user.coaching_details %></pre>
+        <% end %>
+      </div>
+    <% end %>
+
+    <% if user.is_graphic_designer? %>
+      <div class="p-3 mb-2 bg-light text-dark">
+        <h2>Profil de graphiste</h2>
+
+        <p>
+          <strong>Suis-je disponible actuellement ?</strong><br/>
+          <%= user.is_available_graphic_designer? ? 'Oui' : 'Non' %>
+        </p>
+
+        <% unless user.graphic_designer_details.blank? %>
+          <strong>Ce que je fait</strong><br/>
+          <pre><%= user.graphic_designer_details %></pre>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+  <div class="col-6">
+    <% if user.player %>
+      <div class="cards-list players">
+        <div class="card-container">
+          <% player = user.player; player.is_accepted = true %>
+          <%= render 'players/player', player: player.decorate %>
+        </div>
+      </div>
+    <% else %>
+      <%= link_to 'Créer ma fiche joueur', [:create_player, @user], class: 'btn btn-success' %>
+    <% end %>
+  </div>
+</div>
