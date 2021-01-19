@@ -74,7 +74,7 @@ ActiveAdmin.register SmashggEvent do
         smashgg_event.save!
         tournament_event = TournamentEvent.new(
           recurring_tournament: recurring_tournament,
-          smashgg_event: smashgg_event
+          bracket: smashgg_event
         )
         tournament_event.use_smashgg_event(true)
         tournament_event.save!

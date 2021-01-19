@@ -60,7 +60,7 @@ ActiveAdmin.register ChallongeTournament do
         challonge_tournament.save!
         tournament_event = TournamentEvent.new(
           recurring_tournament: recurring_tournament,
-          challonge_tournament: challonge_tournament
+          bracket: challonge_tournament
         )
         tournament_event.use_challonge_tournament(true)
         tournament_event.save!
