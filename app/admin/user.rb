@@ -75,6 +75,7 @@ ActiveAdmin.register User do
               collection: user_admin_level_select_collection,
               required: false,
               input_html: { disabled: f.object.is_root? }
+      f.input :twitter_username
       f.input :administrated_teams,
               collection: user_administrated_teams_select_collection,
               input_html: { multiple: true, data: { select2: {} } }
@@ -92,7 +93,7 @@ ActiveAdmin.register User do
     f.actions
   end
 
-  permit_params :name, :admin_level,
+  permit_params :name, :admin_level, :twitter_username,
                 :is_caster,
                 :is_coach, :coaching_url, :coaching_details,
                 :is_graphic_designer, :graphic_designer_details,
@@ -109,6 +110,9 @@ ActiveAdmin.register User do
       row :name
       row :admin_level do |decorated|
         decorated.admin_level_status
+      end
+      row :twitter_username do |decorated|
+        decorated.twitter_link
       end
       row :discord_user do |decorated|
         decorated.discord_user_admin_link

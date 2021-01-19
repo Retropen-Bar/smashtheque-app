@@ -48,14 +48,14 @@ class UsersController < PublicController
 
   def user_params
     params.require(:user).permit(%i(
-      name
+      name twitter_username
       is_caster
       is_coach coaching_url coaching_details
       is_graphic_designer graphic_designer_details is_available_graphic_designer
     ) + [{
       player_attributes: %i(
         id
-        name twitter_username
+        name
       ) + [{
         character_ids: [],
         location_ids: [],

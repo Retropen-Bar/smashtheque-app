@@ -18,6 +18,7 @@
 
           <div class="p-3 mb-2 bg-light text-dark">
             <%= f.input :name %>
+            <%= f.input :twitter_username %>
           </div>
 
           <div class="p-3 mb-2 bg-light text-dark">
@@ -72,7 +73,6 @@
                            collection: player_teams_select_collection,
                            include_blank: 'Aucune',
                            input_html: { multiple: true, data: { select2: { sortable: true, sortedValues: pf.object.team_ids } } } %>
-              <%= pf.input :twitter_username %>
             </div>
 
           <% end %>

@@ -137,7 +137,6 @@ ActiveAdmin.register Player do
               collection: player_teams_select_collection,
               include_blank: 'Aucune',
               input_html: { multiple: true, data: { select2: { sortable: true, sortedValues: f.object.team_ids } } }
-      f.input :twitter_username
       f.input :is_accepted
       f.input :is_banned
       f.input :ban_details,
@@ -146,7 +145,7 @@ ActiveAdmin.register Player do
     f.actions
   end
 
-  permit_params :name, :is_accepted, :user_id, :twitter_username,
+  permit_params :name, :is_accepted, :user_id,
                 :is_banned, :ban_details,
                 character_ids: [], location_ids: [], team_ids: []
 
@@ -171,9 +170,6 @@ ActiveAdmin.register Player do
       end
       row :teams do |decorated|
         decorated.teams_admin_links.join('<br/>').html_safe
-      end
-      row :twitter_username do |decorated|
-        decorated.twitter_link
       end
       row :creator_user do |decorated|
         decorated.creator_user_admin_link(size: 32)

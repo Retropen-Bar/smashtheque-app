@@ -14,7 +14,6 @@
 #  points                          :integer          default(0), not null
 #  rank                            :integer
 #  team_names                      :text             default([]), is an Array
-#  twitter_username                :string
 #  created_at                      :datetime         not null
 #  updated_at                      :datetime         not null
 #  best_player_reward_condition_id :bigint
@@ -364,6 +363,7 @@ class Player < ApplicationRecord
 
   # provides: @discord_id
   delegate :discord_id,
+           :twitter_username,
            to: :user,
            allow_nil: true
 
@@ -372,14 +372,6 @@ class Player < ApplicationRecord
            to: :discord_user,
            prefix: true,
            allow_nil: true
-
-  def twitter_username=(v)
-    super (v || '').gsub('https://', '')
-                   .gsub('http://', '')
-                   .gsub('twitter.com/', '')
-                   .gsub('@', '')
-                   .strip
-  end
 
   def as_json(options = {})
     reload unless options.delete(:reload) == false

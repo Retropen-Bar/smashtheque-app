@@ -19,6 +19,7 @@
 #  last_sign_in_ip               :inet
 #  name                          :string           not null
 #  sign_in_count                 :integer          default(0), not null
+#  twitter_username              :string
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
 #

@@ -58,6 +58,14 @@ class DiscordGuild < ApplicationRecord
     RetropenBotScheduler.rebuild_discord_guilds_chars_list
   end
 
+  def twitter_username=(v)
+    super (v || '').gsub('https://', '')
+                   .gsub('http://', '')
+                   .gsub('twitter.com/', '')
+                   .gsub('@', '')
+                   .strip
+  end
+
   # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------

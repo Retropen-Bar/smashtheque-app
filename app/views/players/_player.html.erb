@@ -10,8 +10,20 @@
         </div>
       <% end %>
       <div class='player-name'>
-        <%= player.link(avatar_size: 64) %>
-        <%= player.best_reward&.decorate&.badge(class: 'reward-badge-32') %>
+        <% if player.is_legit? %>
+          <%= link_to player.avatar_tag(64), player %>
+          <span class="player-name-text">
+            <%= link_to player.name, player %>
+            <%= player.twitter_link(
+              label: player.twitter_name,
+              class: 'player-twitter-name'
+            ) %>
+          </span>
+          <%= player.best_reward&.decorate&.badge(class: 'reward-badge-32') %>
+        <% else %>
+          <%= player.default_avatar(64) %>
+          -
+        <% end %>
       </div>
     </h5>
     <% if defined?(with_points) && with_points %>

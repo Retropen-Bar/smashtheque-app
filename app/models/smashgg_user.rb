@@ -148,7 +148,8 @@ class SmashggUser < ApplicationRecord
       end
     end
     if twitter_username
-      player = Player.where(twitter_username: twitter_username).first
+      user = User.where(twitter_username: twitter_username).first
+      player = user&.player
       return [player, :twitter_username] if player
     end
     if gamer_tag

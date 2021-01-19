@@ -56,6 +56,14 @@ class Team < ApplicationRecord
     RetropenBotScheduler.rebuild_teams
   end
 
+  def twitter_username=(v)
+    super (v || '').gsub('https://', '')
+                   .gsub('http://', '')
+                   .gsub('twitter.com/', '')
+                   .gsub('@', '')
+                   .strip
+  end
+
   # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------

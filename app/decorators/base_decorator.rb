@@ -16,16 +16,21 @@ class BaseDecorator < Draper::Decorator
     "https://twitter.com/#{model.twitter_username}"
   end
 
-  def twitter_link
+  def twitter_link(options = {})
     return nil if model.twitter_username.blank?
     h.content_tag :i,
 
-    txt = [
-      h.content_tag(:i, '', class: 'fab fa-twitter fa-lg'),
+    txt = options.delete(:label) || [
+      h.content_tag(:i, '', class: 'fab fa-twitter'),
       model.twitter_username
     ].join('&nbsp;').html_safe
 
-    h.link_to txt, twitter_url, target: '_blank'
+    h.link_to txt, twitter_url, { target: '_blank' }.merge(options)
+  end
+
+  def twitter_name
+    return nil if twitter_username.blank?
+    '@' + twitter_username
   end
 
   def path

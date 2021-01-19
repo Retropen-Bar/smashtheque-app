@@ -126,7 +126,6 @@ fr:
         smashgg_users: Comptes smash.gg
         teams: Équipes
         team_ids: Équipes
-        twitter_username: Compte Twitter
         unique_rewards: Récompenses uniques
         user: Utilisateur
       player_reward_condition:
@@ -302,6 +301,7 @@ fr:
         name: Nom
         player: Joueur
         sign_in_count: Connexions
+        twitter_username: Compte Twitter
       user/admin_level:
         0_help: Aide
         1_admin: Admin
