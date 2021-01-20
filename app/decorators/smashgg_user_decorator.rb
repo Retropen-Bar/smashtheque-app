@@ -19,14 +19,14 @@ class SmashggUserDecorator < BaseDecorator
   end
 
   def any_image_tag(size: 32)
-    h.content_tag :span,
-                  '',
-                  class: 'avatar-circle',
-                  style: [
-                    "background-image: url(\"#{any_image_url}\")",
-                    "width: #{size}px",
-                    "height: #{size}px"
-                  ].join(';')
+    h.image_tag 's.gif',
+                class: 'avatar',
+                style: [
+                  "background-image: url(\"#{any_image_url}\")",
+                  "background-size: cover",
+                  "width: #{size}px",
+                  "height: #{size}px"
+                ].join(';')
   end
 
   def banner_tag(max_width: nil, max_height: nil)

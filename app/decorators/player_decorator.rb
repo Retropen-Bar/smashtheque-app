@@ -9,11 +9,19 @@ class PlayerDecorator < BaseDecorator
   end
 
   def avatar_tag(size)
-    if user
-      user.decorate.avatar_tag(size)
-    else
-      default_avatar(size)
+    byebug
+    # option 1: DiscordUser
+    if user && user.discord_user && !user.discord_user.avatar.blank?
+      return user.discord_user.decorate.avatar_tag(size)
     end
+    # option 2: SmashggUser
+    smashgg_users.each do |smashgg_user|
+      unless smashgg_user.avatar_url.blank?
+        return smashgg_user.decorate.any_image_tag(size: size)
+      end
+    end
+    # default
+    default_avatar(size)
   end
 
   def name_with_avatar(size: nil, with_teams: false)
