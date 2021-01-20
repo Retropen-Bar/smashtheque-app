@@ -35,6 +35,7 @@ ActiveAdmin.register SmashggUser do
   scope :without_player
 
   filter :smashgg_id
+  filter :gamer_tag
   filter :slug
   filter :created_at
 

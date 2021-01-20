@@ -345,6 +345,14 @@ class Player < ApplicationRecord
     where.not(id: CharactersPlayer.select(:player_id))
   end
 
+  def self.with_smashgg_user
+    where(id: SmashggUser.with_player.select(:player_id))
+  end
+
+  def self.without_smashgg_user
+    where.not(id: SmashggUser.with_player.select(:player_id))
+  end
+
   scope :with_points, -> { where("points > 0") }
   scope :ranked, -> { where.not(rank: nil) }
 
