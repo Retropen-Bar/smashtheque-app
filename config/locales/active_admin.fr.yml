@@ -39,10 +39,11 @@ fr:
       without_background: Sans fond
       without_character: Sans perso
       without_discord_user: Non relié à Discord
-      without_location: Sans localisation
+      without_location: Non localisé
       without_player: Non lié à un joueur
+      without_smashgg_user: Sans smash.gg
       without_tournament_event: Sans édition
-      without_user: Non lié à un utilisateur
+      without_user: Sans utilisateur
     new_model: Créer
     edit_model: Modifier
     delete_model: Supprimer

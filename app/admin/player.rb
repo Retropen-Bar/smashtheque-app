@@ -75,6 +75,7 @@ ActiveAdmin.register Player do
   scope :without_user, group: :incomplete
   scope :without_location, group: :incomplete
   scope :without_character, group: :incomplete
+  scope :without_smashgg_user, group: :incomplete
 
   scope :banned, group: :is_banned
 
