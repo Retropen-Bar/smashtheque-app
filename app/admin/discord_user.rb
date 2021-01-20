@@ -172,7 +172,7 @@ ActiveAdmin.register DiscordUser do
     link_to 'Suggestions', { action: :suggestions }, class: :blue
   end
   collection_action :suggestions do
-    @discord_users = DiscordUser.without_user
+    @discord_users = DiscordUser.without_user.page(params[:page] || 1).per(50)
   end
 
   # ---------------------------------------------------------------------------
