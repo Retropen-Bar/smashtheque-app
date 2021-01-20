@@ -163,6 +163,8 @@ class TournamentEvent < ApplicationRecord
   scope :on_smashgg, -> { where("bracket_url LIKE 'https://smash.gg/%'") }
   scope :on_braacket, -> { where("bracket_url LIKE 'https://braacket.com/%'") }
   scope :on_challonge, -> { where("bracket_url LIKE 'https://challonge.com/%'") }
+  scope :on_platform, -> { on_smashgg.or(on_braacket).or(on_challonge) }
+  scope :with_available_bracket, -> { on_platform.where(bracket: nil) }
 
   def self.by_bracket_type(v)
     where(bracket_type: v)
@@ -366,6 +368,12 @@ class TournamentEvent < ApplicationRecord
     true
   end
 
+  def update_bracket
+    return update_smashgg_event if is_on_smashgg?
+    return update_challonge_tournament if is_on_challonge?
+    false
+  end
+
   def complete_with_smashgg
     update_smashgg_event && use_smashgg_event(false)
   end
@@ -402,6 +410,12 @@ class TournamentEvent < ApplicationRecord
     return update_with_braacket if is_on_braacket?
     return update_with_challonge if is_on_challonge?
     false
+  end
+
+  def self.update_available_brackets
+    with_available_bracket.order(id: :desc).find_each do |tournament_event|
+      tournament_event.update_bracket && tournament_event.save
+    end
   end
 
   def graph_url

@@ -68,6 +68,19 @@ ActiveAdmin.register TournamentEvent do
   filter :participants_count
   filter :is_complete
 
+  action_item :update_available_brackets,
+              only: :index,
+              if: proc { TournamentEvent.with_available_bracket.any? } do
+    available_brackets_count = TournamentEvent.with_available_bracket.count
+    link_to "Récupérer les #{available_brackets_count} brackets disponibles",
+            update_available_brackets_admin_tournament_events_path,
+            class: 'blue'
+  end
+  collection_action :update_available_brackets do
+    TournamentEvent.update_available_brackets
+    redirect_to request.referer, notice: 'Données récupérées'
+  end
+
   # ---------------------------------------------------------------------------
   # FORM
   # ---------------------------------------------------------------------------
