@@ -254,4 +254,13 @@ class User < ApplicationRecord
            to: :discord_user,
            prefix: true
 
+  def potential_discord_user
+    return nil unless discord_user.nil?
+    DiscordUser.without_user.by_username_like(name).first
+  end
+
+  def _potential_discord_user
+    @potential_discord_user ||= potential_discord_user
+  end
+
 end

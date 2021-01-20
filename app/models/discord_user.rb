@@ -100,6 +100,14 @@ class DiscordUser < ApplicationRecord
     )
   end
 
+  def self.by_username(username)
+    where(username: username)
+  end
+
+  def self.by_username_like(username)
+    where('unaccent(username) ILIKE unaccent(?)', username)
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------

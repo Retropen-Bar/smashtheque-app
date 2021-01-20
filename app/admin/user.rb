@@ -146,6 +146,39 @@ ActiveAdmin.register User do
       row :created_at
       row :updated_at
     end
+
+    if resource._potential_discord_user
+      panel 'Potentiel compte Discord', style: 'margin-top: 50px' do
+        attributes_table_for resource._potential_discord_user.admin_decorate do
+          row 'Action' do |decorated|
+            semantic_form_for([:admin, resource._potential_discord_user]) do |f|
+              (
+                f.input :user_id,
+                        as: :hidden,
+                        input_html: { value: resource.id }
+              ) + (
+                f.submit 'Relier à ce compte', class: 'button-auto green'
+              )
+            end
+          end
+          row :discord_id
+          row :avatar do |decorated|
+            decorated.avatar_tag
+          end
+          row :username do |decorated|
+            decorated.discriminated_username
+          end
+          row :user do |decorated|
+            decorated.user_admin_link
+          end
+          row :administrated_discord_guilds do |decorated|
+            decorated.administrated_discord_guilds_admin_links(size: 32).join('<br/>').html_safe
+          end
+          row :created_at
+          row :updated_at
+        end
+      end
+    end
   end
 
   # ---------------------------------------------------------------------------
