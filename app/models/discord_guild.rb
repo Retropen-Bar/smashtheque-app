@@ -6,17 +6,11 @@
 #  icon             :string
 #  invitation_url   :string
 #  name             :string
-#  old_related_type :string
 #  splash           :string
 #  twitter_username :string
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  discord_id       :string
-#  old_related_id   :bigint
-#
-# Indexes
-#
-#  index_discord_guilds_on_old_related_type_and_old_related_id  (old_related_type,old_related_id)
 #
 class DiscordGuild < ApplicationRecord
 

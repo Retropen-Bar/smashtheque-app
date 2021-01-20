@@ -17,7 +17,7 @@
 #  created_at                      :datetime         not null
 #  updated_at                      :datetime         not null
 #  best_player_reward_condition_id :bigint
-#  creator_user_id                 :integer
+#  creator_user_id                 :integer          not null
 #  user_id                         :integer
 #
 # Indexes

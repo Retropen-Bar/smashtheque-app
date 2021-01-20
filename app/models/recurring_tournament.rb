@@ -21,6 +21,10 @@
 #
 #  index_recurring_tournaments_on_discord_guild_id  (discord_guild_id)
 #
+# Foreign Keys
+#
+#  fk_rails_...  (discord_guild_id => discord_guilds.id)
+#
 class RecurringTournament < ApplicationRecord
 
   LEVELS = %w[

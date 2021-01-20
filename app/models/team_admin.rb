@@ -6,7 +6,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  team_id    :bigint           not null
-#  user_id    :integer
+#  user_id    :integer          not null
 #
 # Indexes
 #
@@ -16,6 +16,7 @@
 #
 # Foreign Keys
 #
+#  fk_rails_...  (team_id => teams.id)
 #  fk_rails_...  (user_id => users.id)
 #
 class TeamAdmin < ApplicationRecord

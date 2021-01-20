@@ -13,6 +13,11 @@
 #  index_characters_players_on_character_id_and_player_id  (character_id,player_id) UNIQUE
 #  index_characters_players_on_player_id                   (player_id)
 #
+# Foreign Keys
+#
+#  fk_rails_...  (character_id => characters.id)
+#  fk_rails_...  (player_id => players.id)
+#
 class CharactersPlayer < ApplicationRecord
 
   # ---------------------------------------------------------------------------

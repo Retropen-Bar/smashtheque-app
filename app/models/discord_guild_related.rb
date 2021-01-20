@@ -3,17 +3,21 @@
 # Table name: discord_guild_relateds
 #
 #  id               :bigint           not null, primary key
-#  related_type     :string
+#  related_type     :string           not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  discord_guild_id :bigint
-#  related_id       :bigint
+#  discord_guild_id :integer          not null
+#  related_id       :integer          not null
 #
 # Indexes
 #
 #  index_dgr_on_all                                             (discord_guild_id,related_type,related_id) UNIQUE
 #  index_discord_guild_relateds_on_discord_guild_id             (discord_guild_id)
 #  index_discord_guild_relateds_on_related_type_and_related_id  (related_type,related_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (discord_guild_id => discord_guilds.id)
 #
 class DiscordGuildRelated < ApplicationRecord
 

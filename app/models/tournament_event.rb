@@ -12,7 +12,7 @@
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  bracket_id              :bigint
-#  recurring_tournament_id :bigint
+#  recurring_tournament_id :integer          not null
 #  top1_player_id          :bigint
 #  top2_player_id          :bigint
 #  top3_player_id          :bigint

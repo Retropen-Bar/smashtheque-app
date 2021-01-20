@@ -13,6 +13,11 @@
 #  index_players_teams_on_player_id_and_team_id  (player_id,team_id) UNIQUE
 #  index_players_teams_on_team_id                (team_id)
 #
+# Foreign Keys
+#
+#  fk_rails_...  (player_id => players.id)
+#  fk_rails_...  (team_id => teams.id)
+#
 class PlayersTeam < ApplicationRecord
 
   # ---------------------------------------------------------------------------

@@ -5,8 +5,8 @@
 #  id                      :bigint           not null, primary key
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
-#  recurring_tournament_id :bigint
-#  user_id                 :integer
+#  recurring_tournament_id :integer          not null
+#  user_id                 :integer          not null
 #
 # Indexes
 #
@@ -16,6 +16,7 @@
 #
 # Foreign Keys
 #
+#  fk_rails_...  (recurring_tournament_id => recurring_tournaments.id)
 #  fk_rails_...  (user_id => users.id)
 #
 class RecurringTournamentContact < ApplicationRecord

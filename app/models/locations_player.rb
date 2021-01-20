@@ -13,6 +13,11 @@
 #  index_locations_players_on_location_id_and_player_id  (location_id,player_id) UNIQUE
 #  index_locations_players_on_player_id                  (player_id)
 #
+# Foreign Keys
+#
+#  fk_rails_...  (location_id => locations.id)
+#  fk_rails_...  (player_id => players.id)
+#
 class LocationsPlayer < ApplicationRecord
 
   # ---------------------------------------------------------------------------

@@ -9,11 +9,15 @@
 #  size_min   :integer          not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  reward_id  :bigint
+#  reward_id  :integer          not null
 #
 # Indexes
 #
 #  index_reward_conditions_on_reward_id  (reward_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (reward_id => rewards.id)
 #
 class RewardCondition < ApplicationRecord
 

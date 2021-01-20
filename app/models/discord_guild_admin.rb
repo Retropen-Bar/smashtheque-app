@@ -15,6 +15,11 @@
 #  index_discord_guild_admins_on_discord_guild_id  (discord_guild_id)
 #  index_discord_guild_admins_on_discord_user_id   (discord_user_id)
 #
+# Foreign Keys
+#
+#  fk_rails_...  (discord_guild_id => discord_guilds.id)
+#  fk_rails_...  (discord_user_id => discord_users.id)
+#
 class DiscordGuildAdmin < ApplicationRecord
 
   # ---------------------------------------------------------------------------
