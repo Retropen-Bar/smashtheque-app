@@ -41,7 +41,7 @@
             <% else %>
               <%= semantic_form_for([:admin, smashgg_event], html: {target: '_blank'}) do |f| %>
                 <%= f.input :smashgg_id, as: :hidden %>
-                <%= f.submit 'Importer' %>
+                <%= f.submit 'Importer', class: 'button-auto green' %>
               <% end %>
             <% end %>
           </td>
