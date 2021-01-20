@@ -24,8 +24,13 @@ class Location < ApplicationRecord
 
   has_many :locations_players, dependent: :destroy
   has_many :players, through: :locations_players
+
   has_many :discord_guild_relateds, as: :related, dependent: :destroy
   has_many :discord_guilds, through: :discord_guild_relateds
+
+  has_many :you_tube_channels, as: :related, dependent: :nullify
+
+  has_many :twitch_channels, as: :related, dependent: :nullify
 
   # ---------------------------------------------------------------------------
   # VALIDATIONS
