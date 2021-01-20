@@ -110,6 +110,14 @@ ActiveAdmin.register ChallongeTournament do
     end
   end
 
+  action_item :create_tournament_event,
+              only: :show,
+              if: proc { resource.tournament_event.nil? } do
+    link_to "Créer l'édition",
+            resource.create_tournament_event_admin_path,
+            class: 'blue'
+  end
+
   action_item :fetch_challonge_data,
               only: :show do
     link_to 'Importer les données de Challonge', [:fetch_challonge_data, :admin, resource]
