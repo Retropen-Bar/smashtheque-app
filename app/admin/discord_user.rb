@@ -88,6 +88,52 @@ ActiveAdmin.register DiscordUser do
       row :created_at
       row :updated_at
     end
+
+    if resource._potential_user
+      panel 'Utilisateur potentiel', style: 'margin-top: 50px' do
+        attributes_table_for resource._potential_user.admin_decorate do
+          row 'Action' do |decorated|
+            semantic_form_for([:admin, resource]) do |f|
+              (
+                f.input :user_id,
+                        as: :hidden,
+                        input_html: { value: decorated.model.id }
+              ) + (
+                f.submit 'Relier à cet utilisateur', class: 'button-auto green'
+              )
+            end
+          end
+          row :name
+          row :admin_level do |decorated|
+            decorated.admin_level_status
+          end
+          row :twitter_username do |decorated|
+            decorated.twitter_link
+          end
+          row :discord_user do |decorated|
+            decorated.discord_user_admin_link
+          end
+          row :player do |decorated|
+            decorated.player_admin_link
+          end
+          row :administrated_teams do |decorated|
+            decorated.administrated_teams_admin_links(size: 32).join('<br/>').html_safe
+          end
+          row :administrated_recurring_tournaments do |decorated|
+            decorated.administrated_recurring_tournaments_admin_links(size: 32).join('<br/>').html_safe
+          end
+          row :is_caster
+          row :is_coach
+          row :coaching_url
+          row :coaching_details
+          row :is_graphic_designer
+          row :graphic_designer_details
+          row :is_available_graphic_designer
+          row :created_at
+          row :updated_at
+        end
+      end
+    end
   end
 
   action_item :fetch_discord_data,
@@ -107,7 +153,7 @@ ActiveAdmin.register DiscordUser do
   action_item :create_user,
               only: :show,
               if: proc {
-                resource.user_id.nil? && resource.potential_user.nil?
+                resource.user_id.nil? && resource._potential_user.nil?
               } do
     link_to "Créer l'utilisateur",
             { action: :create_user },

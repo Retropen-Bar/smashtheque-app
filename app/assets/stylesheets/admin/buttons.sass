@@ -1,6 +1,7 @@
 @import variables
 
 .button,
+input[type="submit"],
 #title_bar #titlebar_right .action_item a,
 body.index .table_actions a.member_link
   &.blue
@@ -19,3 +20,8 @@ body.index .table_actions a.member_link
 
 #title_bar #titlebar_right .action_item a[data-method="delete"][data-confirm]
   background-color: $error
+
+input[type="submit"]
+  &.button-auto
+    width: auto
+    padding: 5px 8px

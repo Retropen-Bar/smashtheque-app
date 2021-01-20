@@ -9,7 +9,6 @@ class PlayerDecorator < BaseDecorator
   end
 
   def avatar_tag(size)
-    byebug
     # option 1: DiscordUser
     if user && user.discord_user && !user.discord_user.avatar.blank?
       return user.discord_user.decorate.avatar_tag(size)

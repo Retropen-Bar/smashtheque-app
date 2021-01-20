@@ -208,7 +208,12 @@ class DiscordUser < ApplicationRecord
   end
 
   def potential_user
+    return nil unless user_id.nil?
     User.without_discord_user.by_name_like(username).first
+  end
+
+  def _potential_user
+    @potential_user ||= potential_user
   end
 
 end
