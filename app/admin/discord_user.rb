@@ -32,6 +32,7 @@ ActiveAdmin.register DiscordUser do
 
   scope :all
   scope :unknown
+  scope :without_user
 
   filter :discord_id
   filter :username
@@ -101,6 +102,20 @@ ActiveAdmin.register DiscordUser do
       flash[:error] = 'Import échoué'
       redirect_to request.referer
     end
+  end
+
+  action_item :create_user,
+              only: :show,
+              if: proc {
+                resource.user_id.nil? && resource.potential_user.nil?
+              } do
+    link_to "Créer l'utilisateur",
+            { action: :create_user },
+            class: 'blue'
+  end
+  member_action :create_user do
+    resource.return_or_create_user!
+    redirect_to request.referer, notice: 'Utilisateur créé'
   end
 
   # ---------------------------------------------------------------------------

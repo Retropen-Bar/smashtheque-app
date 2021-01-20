@@ -64,6 +64,14 @@ class DiscordUser < ApplicationRecord
                     tsearch: { prefix: true }
                   }
 
+  def self.with_user
+    where.not(user_id: nil)
+  end
+
+  def self.without_user
+    where(user_id: nil)
+  end
+
   def self.known
     where.not(username: nil)
   end
@@ -197,6 +205,10 @@ class DiscordUser < ApplicationRecord
         administrated_team_ids
       )
     ))
+  end
+
+  def potential_user
+    User.without_discord_user.by_name_like(username).first
   end
 
 end

@@ -199,6 +199,14 @@ class User < ApplicationRecord
     where("unaccent(name) ILIKE '#{letter}%'")
   end
 
+  def self.by_name(name)
+    where(name: name)
+  end
+
+  def self.by_name_like(name)
+    where('unaccent(name) ILIKE unaccent(?)', name)
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------
