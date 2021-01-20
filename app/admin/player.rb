@@ -192,26 +192,75 @@ ActiveAdmin.register Player do
       row :created_at
       row :updated_at
     end
-    panel 'Doublons potentiels', style: 'margin-top: 50px' do
-      table_for resource.potential_duplicates.admin_decorate, i18n: Player do
-        column :name do |decorated|
-          decorated.admin_link
+
+    if resource.potential_duplicates.any?
+      panel 'Doublons potentiels', style: 'margin-top: 50px' do
+        table_for resource.potential_duplicates.admin_decorate, i18n: Player do
+          column :name do |decorated|
+            decorated.admin_link
+          end
+          column :characters do |decorated|
+            decorated.characters_admin_links.join(' ').html_safe
+          end
+          column :locations do |decorated|
+            decorated.locations_admin_links.join('<br/>').html_safe
+          end
+          column :teams do |decorated|
+            decorated.teams_admin_links.join('<br/>').html_safe
+          end
+          column :creator_user do |decorated|
+            decorated.creator_user_admin_link(size: 32)
+          end
+          column :is_accepted
+          column :created_at do |decorated|
+            decorated.created_at_date
+          end
         end
-        column :characters do |decorated|
-          decorated.characters_admin_links.join(' ').html_safe
-        end
-        column :locations do |decorated|
-          decorated.locations_admin_links.join('<br/>').html_safe
-        end
-        column :teams do |decorated|
-          decorated.teams_admin_links.join('<br/>').html_safe
-        end
-        column :creator_user do |decorated|
-          decorated.creator_user_admin_link(size: 32)
-        end
-        column :is_accepted
-        column :created_at do |decorated|
-          decorated.created_at_date
+      end
+    end
+
+    if resource._potential_user
+      panel 'Utilisateur potentiel', style: 'margin-top: 50px' do
+        attributes_table_for resource._potential_user.admin_decorate do
+          row 'Action' do |decorated|
+            semantic_form_for([:admin, resource]) do |f|
+              (
+                f.input :user_id,
+                        as: :hidden,
+                        input_html: { value: decorated.model.id }
+              ) + (
+                f.submit 'Relier à cet utilisateur', class: 'button-auto green'
+              )
+            end
+          end
+          row :name
+          row :admin_level do |decorated|
+            decorated.admin_level_status
+          end
+          row :twitter_username do |decorated|
+            decorated.twitter_link
+          end
+          row :discord_user do |decorated|
+            decorated.discord_user_admin_link
+          end
+          row :player do |decorated|
+            decorated.player_admin_link
+          end
+          row :administrated_teams do |decorated|
+            decorated.administrated_teams_admin_links(size: 32).join('<br/>').html_safe
+          end
+          row :administrated_recurring_tournaments do |decorated|
+            decorated.administrated_recurring_tournaments_admin_links(size: 32).join('<br/>').html_safe
+          end
+          row :is_caster
+          row :is_coach
+          row :coaching_url
+          row :coaching_details
+          row :is_graphic_designer
+          row :graphic_designer_details
+          row :is_available_graphic_designer
+          row :created_at
+          row :updated_at
         end
       end
     end
@@ -235,6 +284,20 @@ ActiveAdmin.register Player do
 
   action_item :public, only: :show do
     link_to 'Page publique', resource, class: 'green'
+  end
+
+  action_item :create_user,
+              only: :show,
+              if: proc {
+                resource.user_id.nil? && resource._potential_user.nil?
+              } do
+    link_to "Créer l'utilisateur",
+            { action: :create_user },
+            class: 'blue'
+  end
+  member_action :create_user do
+    resource.return_or_create_user!
+    redirect_to request.referer, notice: 'Utilisateur créé'
   end
 
   # ---------------------------------------------------------------------------

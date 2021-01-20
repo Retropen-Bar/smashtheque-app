@@ -369,6 +369,14 @@ class Player < ApplicationRecord
   # HELPERS
   # ---------------------------------------------------------------------------
 
+  def return_or_create_user!
+    if user.nil?
+      self.user = User.create!(name: name)
+      save!
+    end
+    user
+  end
+
   # provides: @discord_id
   delegate :discord_id,
            :twitter_username,
@@ -419,6 +427,15 @@ class Player < ApplicationRecord
 
   def potential_duplicates
     self.class.by_name_like(name).where.not(id: id)
+  end
+
+  def potential_user
+    return nil unless user_id.nil?
+    User.without_player.by_name_like(name).first
+  end
+
+  def _potential_user
+    @potential_user ||= potential_user
   end
 
   def is_legit?
