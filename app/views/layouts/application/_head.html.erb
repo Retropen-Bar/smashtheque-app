@@ -74,7 +74,7 @@
             data: { global_search: {} } %>
     </form>
 
-    <ul class="navbar-nav ml-2 mr-2 text-center text-lg-right">
+    <ul class="navbar-nav ml-4 mr-2 text-center text-lg-right">
       <% if user_signed_in? %>
         <li class="nav-item dropdown">
           <%= link_to '#', class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
@@ -88,7 +88,7 @@
       <% else %>
         <li class="nav-item">
           <%= link_to user_discord_omniauth_authorize_path do %>
-            <%= fas_icon_tag 'sign-in-alt' %>
+            <%= fas_icon_tag 'sign-in-alt', %w(fa-lg) %>
           <% end %>
         </li>
       <% end %>
