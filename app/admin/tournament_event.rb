@@ -136,7 +136,8 @@ ActiveAdmin.register TournamentEvent do
             f.input :date
             f.input :participants_count
             TournamentEvent::PLAYER_NAMES.each do |player_name|
-              player_input f, player_name
+              hint = f.object.admin_decorate.send("#{player_name}_bracket_suggestion")
+              player_input f, player_name, hint: hint
             end
             f.input :is_complete
           end
