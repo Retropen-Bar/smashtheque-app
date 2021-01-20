@@ -54,7 +54,7 @@ class Player < ApplicationRecord
           through: :best_player_reward_condition,
           source: :reward
 
-  has_many :discord_guild_relateds, as: :related, dependent: :nullify
+  has_many :discord_guild_relateds, as: :related, dependent: :destroy
   has_many :discord_guilds, through: :discord_guild_relateds
 
   has_many :characters_players,
