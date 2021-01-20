@@ -17,4 +17,22 @@ class ActiveAdmin::SmashggEventDecorator < SmashggEventDecorator
     end
   end
 
+  def create_tournament_event_admin_path
+    attributes = {
+      name: tournament_name,
+      date: start_at,
+      participants_count: num_entrants,
+      bracket_url: smashgg_url,
+      bracket_gid: model.to_global_id.to_s
+    }
+    TournamentEvent::PLAYER_RANKS.each do |rank|
+      player_name = "top#{rank}_player".to_sym
+      user_name = "top#{rank}_smashgg_user".to_sym
+      if player = send(user_name)&.player
+        attributes["#{player_name}_id"] = player.id
+      end
+    end
+    new_admin_tournament_event_path(tournament_event: attributes)
+  end
+
 end

@@ -144,6 +144,14 @@ ActiveAdmin.register SmashggEvent do
     end
   end
 
+  action_item :create_tournament_event,
+              only: :show,
+              if: proc { resource.tournament_event.nil? } do
+    link_to "Créer l'édition",
+            resource.create_tournament_event_admin_path,
+            class: 'blue'
+  end
+
   # ---------------------------------------------------------------------------
   # SEARCH
   # ---------------------------------------------------------------------------
