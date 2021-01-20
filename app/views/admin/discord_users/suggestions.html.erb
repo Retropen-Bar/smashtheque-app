@@ -1,0 +1,37 @@
+<h2>Suggestions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Compte Discord</th>
+      <th>Utilisateur suggéré</th>
+      <th>Raison de la suggestion</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @discord_users.each do |discord_user| %>
+      <% suggestion = discord_user.suggested_user %>
+      <% next if suggestion.nil? %>
+      <% suggested_user = suggestion.first %>
+      <tr>
+        <td><%= discord_user.admin_decorate.admin_link %></td>
+        <td><%= suggested_user.admin_decorate.admin_link(with_teams: true) %></td>
+        <td>
+          <% case suggestion.second %>
+          <% when :smashgg_user %>
+            Pseudo Discord du compte smash.gg : <%= discord_user.discriminated_username %>
+          <% when :username %>
+            Pseudo : <%= discord_user.username %> &asymp; <%= suggested_user.name %>
+          <% end %>
+        </td>
+        <td>
+          <%= semantic_form_for([:admin, discord_user], html: {target: '_blank'}) do |f| %>
+            <%= f.input :user_id, as: :hidden, input_html: {value: suggested_user.id } %>
+            <%= f.submit 'Valider', class: 'button-auto green' %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

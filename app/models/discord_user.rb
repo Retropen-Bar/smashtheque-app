@@ -112,6 +112,13 @@ class DiscordUser < ApplicationRecord
   # HELPERS
   # ---------------------------------------------------------------------------
 
+  def discriminated_username
+    [
+      username,
+      discriminator
+    ].reject(&:blank?).join('#')
+  end
+
   def return_or_create_user!
     if user.nil?
       self.user = User.create!(name: username || "##{discord_id}")
@@ -216,12 +223,30 @@ class DiscordUser < ApplicationRecord
   end
 
   def potential_user
-    return nil unless user_id.nil?
-    User.without_discord_user.by_name_like(username).first
+    suggested_user&.first
   end
 
   def _potential_user
     @potential_user ||= potential_user
+  end
+
+  # returns nil or [user, reason]
+  def suggested_user
+    return nil unless user_id.nil?
+
+    smashgg_user = SmashggUser.where(
+      discord_discriminated_username: discriminated_username
+    ).first
+    if smashgg_user && smashgg_user.user
+      return [smashgg_user.user, :smashgg_user]
+    end
+
+    user = User.without_discord_user.by_name_like(username).first
+    if user
+      return [user, :username]
+    end
+
+    nil
   end
 
 end

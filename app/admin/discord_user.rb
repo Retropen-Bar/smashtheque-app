@@ -165,6 +165,17 @@ ActiveAdmin.register DiscordUser do
   end
 
   # ---------------------------------------------------------------------------
+  # SUGGESTIONS
+  # ---------------------------------------------------------------------------
+
+  action_item :suggestions, only: :index do
+    link_to 'Suggestions', { action: :suggestions }, class: :blue
+  end
+  collection_action :suggestions do
+    @discord_users = DiscordUser.without_user
+  end
+
+  # ---------------------------------------------------------------------------
   # AUTOCOMPLETE
   # ---------------------------------------------------------------------------
 

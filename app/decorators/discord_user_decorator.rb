@@ -15,13 +15,6 @@ class DiscordUserDecorator < BaseDecorator
     ].join('&nbsp;').html_safe
   end
 
-  def discriminated_username
-    [
-      model.username,
-      discriminator
-    ].reject(&:blank?).join('#')
-  end
-
   def avatar_url(size = nil)
     return nil if avatar.blank?
     extension = model.avatar.start_with?('a_') ? :gif : :png
