@@ -277,13 +277,21 @@ class TournamentEvent < ApplicationRecord
   end
 
   def is_on_smashgg?
-    bracket_url&.starts_with?('https://smash.gg/')
+    if !bracket_type.nil?
+      bracket_type.to_sym == :SmashggEvent
+    else
+      bracket_url&.starts_with?('https://smash.gg/')
+    end
   end
   def is_on_braacket?
-    bracket_url&.starts_with?('https://braacket.com/')
+    bracket_type.nil? && bracket_url&.starts_with?('https://braacket.com/')
   end
   def is_on_challonge?
-    bracket_url&.starts_with?('https://challonge.com/')
+    if !bracket_type.nil?
+      bracket_type.to_sym == :ChallongeTournament
+    else
+      bracket_url&.starts_with?('https://challonge.com/')
+    end
   end
 
   def use_smashgg_event(replace_existing_values)
