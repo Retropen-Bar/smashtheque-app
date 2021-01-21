@@ -102,9 +102,9 @@ class ChallongeTournament < ApplicationRecord
         placement = participant['final_rank']
         if (placement || 0) > 0 && placement < 8
           idx = case placement
-          when 5
+          when 5, 6
             result.has_key?(:top5a_participant_name) ? '5b' : '5a'
-          when 7
+          when 7, 8
             result.has_key?(:top7a_participant_name) ? '7b' : '7a'
           else
             placement.to_s

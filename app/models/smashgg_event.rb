@@ -174,9 +174,9 @@ class SmashggEvent < ApplicationRecord
           placement = standing.placement
           if (placement || 0) > 0 && placement < 8
             idx = case placement
-            when 5
+            when 5, 6
               result.has_key?(:top5a_smashgg_user) ? '5b' : '5a'
-            when 7
+            when 7, 8
               result.has_key?(:top7a_smashgg_user) ? '7b' : '7a'
             else
               placement.to_s
