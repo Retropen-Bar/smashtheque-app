@@ -94,7 +94,7 @@ class ChallongeTournament < ApplicationRecord
       slug: data['url'],
 
       name: data['name'],
-      start_at: DateTime.parse(data['start_at']),
+      start_at: data['start_at'] && DateTime.parse(data['start_at']),
       participants_count: data['participants_count']
     }
     data['participants'].each do |_participant|
