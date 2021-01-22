@@ -9,6 +9,7 @@ fr:
       discord_guild: Serveur Discord
       discord_guild_admin: Admin de serveur Discord
       discord_user: Compte Discord
+      duo: Équipe 2v2
       location: Localisation
       locations/city: Ville
       locations/country: Pays
@@ -67,6 +68,10 @@ fr:
         emoji: Emoji
         icon: Icône
         players: Joueurs
+      duo:
+        << : *SHARED
+        player1: Joueur 1
+        player2: Joueur 2
       location: &LOCATION
         << : *SHARED
         address: Adresse

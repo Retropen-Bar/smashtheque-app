@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_20_173330) do
+ActiveRecord::Schema.define(version: 2021_01_22_222835) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -154,6 +154,17 @@ ActiveRecord::Schema.define(version: 2021_01_20_173330) do
     t.bigint "user_id"
     t.index ["discord_id"], name: "index_discord_users_on_discord_id", unique: true
     t.index ["user_id"], name: "index_discord_users_on_user_id"
+  end
+
+  create_table "duos", force: :cascade do |t|
+    t.string "name", null: false
+    t.bigint "player1_id", null: false
+    t.bigint "player2_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_duos_on_name"
+    t.index ["player1_id"], name: "index_duos_on_player1_id"
+    t.index ["player2_id"], name: "index_duos_on_player2_id"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -458,6 +469,8 @@ ActiveRecord::Schema.define(version: 2021_01_20_173330) do
   add_foreign_key "discord_guild_admins", "discord_users"
   add_foreign_key "discord_guild_relateds", "discord_guilds"
   add_foreign_key "discord_users", "users"
+  add_foreign_key "duos", "players", column: "player1_id"
+  add_foreign_key "duos", "players", column: "player2_id"
   add_foreign_key "locations_players", "locations"
   add_foreign_key "locations_players", "players"
   add_foreign_key "player_reward_conditions", "players"

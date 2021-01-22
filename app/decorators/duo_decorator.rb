@@ -1,0 +1,4 @@
+class DuoDecorator < BaseDecorator
+
+
+end
