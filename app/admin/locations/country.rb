@@ -4,8 +4,8 @@ ActiveAdmin.register Locations::Country do
 
   has_paper_trail
 
-  menu  parent: '<i class="fas fa-fw fa-map-marker-alt"></i>Localisations'.html_safe,
-        label: 'Pays'
+  menu label: '<i class="fas fa-fw fa-flag"></i>Pays'.html_safe,
+       parent: '<i class="fas fa-fw fa-cog"></i>Configuration'.html_safe
 
   # ---------------------------------------------------------------------------
   # INDEX

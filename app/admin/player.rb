@@ -4,7 +4,8 @@ ActiveAdmin.register Player do
 
   has_paper_trail
 
-  menu label: '<i class="fas fa-fw fa-user"></i>Joueurs'.html_safe
+  menu label: '<i class="fas fa-fw fa-user"></i>Joueurs'.html_safe,
+       parent: '<i class="far fa-fw fa-user"></i>Fiches'.html_safe
 
   # ---------------------------------------------------------------------------
   # INDEX

@@ -4,7 +4,8 @@ ActiveAdmin.register Character do
 
   has_paper_trail
 
-  menu label: '<i class="fas fa-fw fa-gamepad"></i>Persos'.html_safe
+  menu label: '<i class="fas fa-fw fa-gamepad"></i>Persos'.html_safe,
+       parent: '<i class="fas fa-fw fa-cog"></i>Configuration'.html_safe
 
   # ---------------------------------------------------------------------------
   # INDEX

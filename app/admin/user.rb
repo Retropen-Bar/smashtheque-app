@@ -2,7 +2,8 @@ ActiveAdmin.register User do
 
   decorate_with ActiveAdmin::UserDecorator
 
-  menu label: '<i class="fas fa-fw fa-user-secret"></i>Utilisateurs'.html_safe
+  menu label: '<i class="fas fa-fw fa-user-secret"></i>Utilisateurs'.html_safe,
+       parent: '<i class="far fa-fw fa-user"></i>Fiches'.html_safe
 
   # ---------------------------------------------------------------------------
   # INDEX

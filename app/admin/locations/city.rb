@@ -4,8 +4,8 @@ ActiveAdmin.register Locations::City do
 
   has_paper_trail
 
-  menu  parent: '<i class="fas fa-fw fa-map-marker-alt"></i>Localisations'.html_safe,
-        label: 'Villes'
+  menu label: '<i class="fas fa-fw fa-city"></i>Villes'.html_safe,
+       parent: '<i class="fas fa-fw fa-cog"></i>Configuration'.html_safe
 
   # ---------------------------------------------------------------------------
   # INDEX
