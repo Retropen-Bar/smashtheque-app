@@ -46,6 +46,10 @@ class Ability
     can manage_or_read, DiscordUser
     can :fetch_discord_data, DiscordUser
 
+    # Duo
+    can manage_or_cru, Duo
+    can :results, Duo
+
     # Location and subclasses
     can manage_or_cru, Location
 
@@ -57,6 +61,8 @@ class Ability
     # Reward, RewardCondition & PlayerRewardCondition
     can manage_or_read, Reward
     can manage_or_read, RewardCondition
+    can manage_or_read, RewardDuoCondition
+    can :read, DuoRewardDuoCondition
     can :read, PlayerRewardCondition
 
     # SmashggEvent
@@ -70,6 +76,7 @@ class Ability
     # Tournaments
     can manage_or_cru, RecurringTournament
     can manage_or_cru, TournamentEvent
+    can manage_or_cru, DuoTournamentEvent
 
     # Team
     can manage_or_cru, Team
