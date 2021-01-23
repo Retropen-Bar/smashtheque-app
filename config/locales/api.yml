@@ -10,7 +10,14 @@ api:
             required: required
             taken: already_taken
             unique: not_unique
-
+        duo:
+          attributes:
+            name:
+              << : *SHARED_ATTRIBUTES
+            player1:
+              << : *SHARED_ATTRIBUTES
+            player2:
+              << : *SHARED_ATTRIBUTES
         location:
           attributes:
             name:
