@@ -3,7 +3,7 @@ ActiveAdmin.register DiscordGuild do
   decorate_with ActiveAdmin::DiscordGuildDecorator
 
   menu parent: '<i class="fab fa-fw fa-discord"></i>Discord'.html_safe,
-       label: 'Serveurs'
+       label: '<i class="fas fa-fw fa-cocktail"></i>Serveurs'.html_safe
 
   # ---------------------------------------------------------------------------
   # INDEX

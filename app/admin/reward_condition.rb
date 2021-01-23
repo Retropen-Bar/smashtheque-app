@@ -4,8 +4,8 @@ ActiveAdmin.register RewardCondition do
 
   has_paper_trail
 
-  menu parent: '<i class="fas fa-fw fa-chess-knight"></i>Tournois'.html_safe,
-       label: 'Conditions de récompense',
+  menu parent: '<i class="fas fa-fw fa-chess-rook"></i>Compétition 1v1'.html_safe,
+       label: '<i class="fas fa-fw fa-fire"></i>Conditions de récompense'.html_safe,
        priority: 3
 
   # ---------------------------------------------------------------------------

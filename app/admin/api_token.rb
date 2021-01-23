@@ -2,7 +2,7 @@ ActiveAdmin.register ApiToken do
 
   decorate_with ActiveAdmin::ApiTokenDecorator
 
-  menu label: 'Tokens',
+  menu label: '<i class="fas fa-fw fa-key"></i>Tokens'.html_safe,
        parent: '<i class="fas fa-fw fa-terminal"></i>API'.html_safe
 
   # actions :index, :show, :new, :create, :delete
