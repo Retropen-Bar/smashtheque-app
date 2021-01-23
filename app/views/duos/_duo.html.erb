@@ -1,0 +1,22 @@
+<div class="card duo <%= 'with-rank' if defined?(with_rank) && with_rank %>">
+  <div class="card-body">
+    <% if defined?(with_rank) && with_rank %>
+      <div class="rank">#<%= duo.rank %></div>
+    <% end %>
+    <h5 class="card-title">
+      <div class='duo-name'>
+        <%= link_to duo.avatar_tag(64), duo %>
+        <span class="duo-name-text">
+          <%= link_to duo.name, duo %>
+        </span>
+        <%= duo.best_reward&.decorate&.badge(class: 'reward-badge-32') %>
+      </div>
+    </h5>
+    <% if defined?(with_points) && with_points %>
+      <div class="duo-points">
+        <%= duo.points_count %>
+      </div>
+    <% end %>
+  </div>
+  <%= admin_edit_link(duo) %>
+</div>

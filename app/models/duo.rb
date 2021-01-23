@@ -2,28 +2,28 @@
 #
 # Table name: duos
 #
-#  id                                  :bigint           not null, primary key
-#  best_reward_level1                  :string
-#  best_reward_level2                  :string
-#  name                                :string           not null
-#  points                              :integer          default(0), not null
-#  rank                                :integer
-#  created_at                          :datetime         not null
-#  updated_at                          :datetime         not null
-#  best_duo_reward_duo_condition_id_id :bigint
-#  player1_id                          :bigint           not null
-#  player2_id                          :bigint           not null
+#  id                               :bigint           not null, primary key
+#  best_reward_level1               :string
+#  best_reward_level2               :string
+#  name                             :string           not null
+#  points                           :integer          default(0), not null
+#  rank                             :integer
+#  created_at                       :datetime         not null
+#  updated_at                       :datetime         not null
+#  best_duo_reward_duo_condition_id :bigint
+#  player1_id                       :bigint           not null
+#  player2_id                       :bigint           not null
 #
 # Indexes
 #
-#  index_duos_on_best_duo_reward_duo_condition_id_id  (best_duo_reward_duo_condition_id_id)
-#  index_duos_on_name                                 (name)
-#  index_duos_on_player1_id                           (player1_id)
-#  index_duos_on_player2_id                           (player2_id)
+#  index_duos_on_best_duo_reward_duo_condition_id  (best_duo_reward_duo_condition_id)
+#  index_duos_on_name                              (name)
+#  index_duos_on_player1_id                        (player1_id)
+#  index_duos_on_player2_id                        (player2_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (best_duo_reward_duo_condition_id_id => duo_reward_duo_conditions.id)
+#  fk_rails_...  (best_duo_reward_duo_condition_id => duo_reward_duo_conditions.id)
 #  fk_rails_...  (player1_id => players.id)
 #  fk_rails_...  (player2_id => players.id)
 #
@@ -77,6 +77,18 @@ class Duo < ApplicationRecord
 
   def self.by_name_like(name)
     where('name ILIKE ?', name)
+  end
+
+  scope :with_points, -> { where("points > 0") }
+  scope :ranked, -> { where.not(rank: nil) }
+
+  scope :by_best_reward_level1, -> v { where(best_reward_level1: v) }
+  scope :by_best_reward_level2, -> v { where(best_reward_level2: v) }
+  def self.by_best_reward_level(a, b)
+    by_best_reward_level1(a).by_best_reward_level2(b)
+  end
+  def self.by_best_reward(reward)
+    by_best_reward_level(reward.level1, reward.level2)
   end
 
   # ---------------------------------------------------------------------------

@@ -206,11 +206,11 @@ ActiveRecord::Schema.define(version: 2021_01_23_163404) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "points", default: 0, null: false
-    t.bigint "best_duo_reward_duo_condition_id_id"
+    t.bigint "best_duo_reward_duo_condition_id"
     t.string "best_reward_level1"
     t.string "best_reward_level2"
     t.integer "rank"
-    t.index ["best_duo_reward_duo_condition_id_id"], name: "index_duos_on_best_duo_reward_duo_condition_id_id"
+    t.index ["best_duo_reward_duo_condition_id"], name: "index_duos_on_best_duo_reward_duo_condition_id"
     t.index ["name"], name: "index_duos_on_name"
     t.index ["player1_id"], name: "index_duos_on_player1_id"
     t.index ["player2_id"], name: "index_duos_on_player2_id"
@@ -541,7 +541,7 @@ ActiveRecord::Schema.define(version: 2021_01_23_163404) do
   add_foreign_key "duo_tournament_events", "duos", column: "top7a_duo_id"
   add_foreign_key "duo_tournament_events", "duos", column: "top7b_duo_id"
   add_foreign_key "duo_tournament_events", "recurring_tournaments"
-  add_foreign_key "duos", "duo_reward_duo_conditions", column: "best_duo_reward_duo_condition_id_id"
+  add_foreign_key "duos", "duo_reward_duo_conditions", column: "best_duo_reward_duo_condition_id"
   add_foreign_key "duos", "players", column: "player1_id"
   add_foreign_key "duos", "players", column: "player2_id"
   add_foreign_key "locations_players", "locations"

@@ -1,0 +1,133 @@
+<div class="cards-list duos" style="margin-top: 50px;">
+  <div class="card-container">
+    <%= render 'duo', duo: duo %>
+  </div>
+</div>
+
+<div class="row">
+
+  <div class="col bg-semi-transparent shadow p-3 p-md-5 m-3 rounded">
+    <div class="row">
+      <div class="col-12 col-md text-center">
+        <div class="row">
+          <div class="col-6 col-md-12 d-flex align-items-center justify-content-start justify-content-md-center">
+            <h2 class="text-left text-md-center mb-md-5">Meilleurs badges</h2>
+          </div>
+          <div class="col-6 col-md-12 text-left text-md-center">
+            <% if @rewards_counts.any? %>
+              <div class="mb-md-5">
+                <%== duo.best_rewards_badges(class: 'm-0').join(' ') %>
+              </div>
+              <button type="button"
+                      class="btn btn-primary d-none d-md-inline"
+                      data-toggle="modal"
+                      data-target="#rewards-modal">
+                Voir tout
+              </button>
+            <% else %>
+              Aucun badge obtenu
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md text-center my-5 my-md-0">
+        <div class="row">
+          <div class="col-6 col-md-12 d-flex align-items-center justify-content-start justify-content-md-center">
+            <h2 class="text-left text-md-center mb-md-5">Fragments d'étoiles</h2>
+          </div>
+          <div class="col-6 col-md-12 d-flex align-items-center justify-content-start justify-content-md-center">
+            <div class="display-2"><%= duo.points_count(64, class: 'd-none d-md-inline-block') %></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md text-center">
+        <div class="row">
+          <div class="col-6 col-md-12 d-flex align-items-center justify-content-start justify-content-md-center">
+            <h2 class="text-left text-md-center mb-md-5">Classement</h2>
+          </div>
+          <div class="col-6 col-md-12 d-flex align-items-center justify-content-start justify-content-md-center">
+            <% if duo.rank %>
+              <div class="display-2">#<%= duo.rank %></div>
+            <% else %>
+              Non classé
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="row">
+
+  <div class="col bg-semi-transparent shadow p-5 m-3 rounded">
+    <h2 class="text-center mb-5">Palmarès</h2>
+
+    <% if @duo_tournament_events.count > 0 %>
+      <table class="table table-borderless table-striped table-responsive-md bg-light">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Série</th>
+            <th scope="col">Édition</th>
+            <th scope="col" class="text-center">Bracket</th>
+            <th scope="col" class="text-center">Participants</th>
+            <th scope="col" class="text-center">Résultat</th>
+            <th scope="col" class="text-center">Points</th>
+            <th scope="col" class="text-center">Badge</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @duo_tournament_events.each do |duo_tournament_event| %>
+            <% duo_reward_duo_condition = duo_tournament_event.duo_reward_duo_conditions.by_duo(@duo).first&.decorate %>
+            <tr>
+              <td class="align-middle"><%= l duo_tournament_event.date, format: :long %></td>
+              <td class="align-middle"><%= duo_tournament_event.recurring_tournament_link %></th>
+              <td class="align-middle"><%= duo_tournament_event.link(label: duo_tournament_event.name) %></th>
+              <td class="align-middle text-center"><%= duo_tournament_event.bracket_icon_link(class: 'text-decoration-none') %></td>
+              <td class="align-middle text-center"><%= duo_tournament_event.participants_count %></td>
+              <td class="align-middle text-center"><%= duo_tournament_event.duo_rank_name(@duo.id) %></td>
+              <td class="align-middle text-center"><%= duo_reward_duo_condition&.points %></td>
+              <td class="align-middle text-center"><%= duo_reward_duo_condition&.reward_badge %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <div class="text-center">
+        Aucun résultat connu à ce jour
+      </div>
+    <% end %>
+
+  </div>
+</div>
+
+<div id="rewards-modal" class="modal fade" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Tous les badges de <%= duo.name %></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <% Reward.grouped_by_level1.each do |(level1, level1_rewards)| %>
+            <div class="col">
+              <% level1_rewards.each do |reward| %>
+                <% count = @rewards_counts[reward.id] %>
+                <% if count %>
+                  <%= reward.decorate.badge(count: count) %>
+                <% else %>
+                  <%= reward.decorate.badge(class: 'disabled') %>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

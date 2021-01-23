@@ -1,0 +1,36 @@
+<% if @map %>
+
+  <%= duos_map(duos.limit(nil).offset(0)) do %>
+    <div id="map-list-link">
+      <div class="btn-group" role="group">
+        <%= link_to 'Liste', url_for(map: 0), class: 'btn btn-outline-primary' %>
+        <button type="button" class="btn btn-primary">Carte</button>
+      </div>
+    </div>
+  <% end %>
+
+<% else %>
+
+  <div class="text-center">
+    <div id="list-toolbar">
+      <h1 class="page-title"><%= title %></h1>
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-primary">Liste</button>
+        <%= link_to 'Carte', url_for(map: 1), class: 'btn btn-outline-primary' %>
+      </div>
+      <%= render 'shared/letters' %>
+      <%= render 'shared/pagination', collection: duos %>
+    </div>
+  </div>
+
+  <div class="cards-list duos">
+    <% duos.each do |duo| %>
+      <div class="card-container">
+        <%= render 'duos/duo', duo: duo.decorate %>
+      </div>
+    <% end %>
+  </div>
+
+  <%= render 'shared/pagination', collection: duos %>
+
+<% end %>
