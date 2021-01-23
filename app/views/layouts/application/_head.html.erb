@@ -18,7 +18,7 @@
 
       <li class="nav-item dropdown">
         <%= link_to players_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
-          <%= fas_icon_tag :users %>
+          <%= fas_icon_tag :user %>
           <span>Joueurs</span>
         <% end %>
         <div class="dropdown-menu">
@@ -33,7 +33,7 @@
 
       <li class="nav-item dropdown">
         <%= link_to duos_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
-          <%= fas_icon_tag :users %>
+          <%= fas_icon_tag 'user-friends' %>
           <span>2v2</span>
         <% end %>
         <div class="dropdown-menu">

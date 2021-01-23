@@ -4,7 +4,7 @@ ActiveAdmin.register Duo do
 
   has_paper_trail
 
-  menu label: '<i class="fas fa-fw fa-users"></i>Équipes 2v2'.html_safe
+  menu label: '<i class="fas fa-fw fa-user-friends"></i>Équipes 2v2'.html_safe
 
   # ---------------------------------------------------------------------------
   # INDEX
