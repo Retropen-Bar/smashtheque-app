@@ -5,8 +5,13 @@ class DuoDecorator < BaseDecorator
   end
 
   def avatar_tag(size)
-    # TODO: use both avatars
-    player1&.decorate&.avatar_tag(size)
+    h.content_tag :div, class: 'avatars' do
+      (
+        player1&.decorate&.avatar_tag(size)
+      ) + (
+        player2&.decorate&.avatar_tag(size)
+      )
+    end
   end
 
   def points_count(icon_size = 32, options = {})

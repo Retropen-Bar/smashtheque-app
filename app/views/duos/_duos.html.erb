@@ -14,10 +14,6 @@
   <div class="text-center">
     <div id="list-toolbar">
       <h1 class="page-title"><%= title %></h1>
-      <div class="btn-group" role="group">
-        <button type="button" class="btn btn-primary">Liste</button>
-        <%= link_to 'Carte', url_for(map: 1), class: 'btn btn-outline-primary' %>
-      </div>
       <%= render 'shared/letters' %>
       <%= render 'shared/pagination', collection: duos %>
     </div>

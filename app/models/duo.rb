@@ -91,6 +91,18 @@ class Duo < ApplicationRecord
     by_best_reward_level(reward.level1, reward.level2)
   end
 
+  def self.on_abc(letter)
+    letter == '$' ? on_abc_others : where("unaccent(name) ILIKE '#{letter}%'")
+  end
+
+  def self.on_abc_others
+    result = self
+    ('a'..'z').each do |letter|
+      result = result.where.not("unaccent(name) ILIKE '#{letter}%'")
+    end
+    result
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------
