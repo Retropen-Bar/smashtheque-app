@@ -18,7 +18,7 @@
 
       <li class="nav-item dropdown">
         <%= link_to players_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
-          <%= fas_icon_tag :users %>
+          <%= fas_icon_tag :user %>
           <span>Joueurs</span>
         <% end %>
         <div class="dropdown-menu">
@@ -32,13 +32,26 @@
       </li>
 
       <li class="nav-item dropdown">
+        <%= link_to duos_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
+          <%= fas_icon_tag 'user-friends' %>
+          <span>2v2</span>
+        <% end %>
+        <div class="dropdown-menu">
+          <%= link_to 'Duos', duos_path, class: 'dropdown-item' %>
+          <div class="dropdown-divider"></div>
+          <%= link_to "Observatoire d'Harmonie 2v2 online", online_ranking_duos_path, class: 'dropdown-item' %>
+        </div>
+      </li>
+
+      <li class="nav-item dropdown">
         <%= link_to recurring_tournaments_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
           <%= fas_icon_tag :chess %>
           <span>Compétition</span>
         <% end %>
         <div class="dropdown-menu">
           <%= link_to 'Séries de tournois', recurring_tournaments_path, class: 'dropdown-item' %>
-          <%= link_to 'Éditions passées', tournament_events_path, class: 'dropdown-item' %>
+          <%= link_to 'Éditions 1v1', tournament_events_path, class: 'dropdown-item' %>
+          <%= link_to 'Éditions 2v2', duo_tournament_events_path, class: 'dropdown-item' %>
           <%= link_to 'Planning hebdo', planning_path, class: 'dropdown-item' %>
         </div>
       </li>

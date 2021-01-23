@@ -139,6 +139,21 @@
         float: right
         margin-left: 10px
 
+    &.duo-tournament-event
+      width: 400px
+
+      .avatar
+        margin-right: 10px
+
+      .duo-tournament-event-participants-count
+        float: right
+        margin-left: 10px
+        margin-top: 18px
+
+      .duo-tournament-event-date
+        float: right
+        margin-left: 10px
+
     &.player
       width: 600px
       backdrop-filter: blur(5px)
@@ -187,6 +202,43 @@
             &, &:hover
               color: #999
               font-size: 80%
+
+
+
+    &.duo
+      width: 600px
+      backdrop-filter: blur(5px)
+      -webkit-backdrop-filter: blur(5px)
+      background-color: rgba(255, 255, 255, 0.3)
+      box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075)
+
+      a:not(.btn)
+        &, &:hover
+          text-decoration: none
+          color: $body-color
+
+      .duo-points
+        float: right
+        margin-left: 10px
+        position: relative
+        z-index: 2
+
+      .avatars
+        margin-right: 10px
+
+      .duo-name
+        position: relative
+
+        .reward-badge
+          position: absolute
+          position: absolute
+          top: -8px
+          left: 100px
+          margin: 0
+
+        .duo-name-text
+          display: inline-block
+          vertical-align: middle
 
     &.team
       width: 400px

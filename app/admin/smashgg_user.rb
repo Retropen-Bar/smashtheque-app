@@ -3,7 +3,7 @@ ActiveAdmin.register SmashggUser do
   decorate_with ActiveAdmin::SmashggUserDecorator
 
   menu parent: '<img src="https://smash.gg/images/gg-app-icon.png" height="16" class="logo"/>smash.gg'.html_safe,
-       label: 'Comptes'
+       label: '<i class="fas fa-fw fa-user"></i>Comptes'.html_safe
 
   # ---------------------------------------------------------------------------
   # INDEX

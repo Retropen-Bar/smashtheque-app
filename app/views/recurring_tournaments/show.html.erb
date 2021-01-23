@@ -94,12 +94,26 @@
 
   <div class="col border bg-light shadow p-5 m-3 rounded">
 
-    <h2 class="text-center mb-5">Éditions</h2>
+    <h2 class="text-center mb-5">Éditions 1v1</h2>
 
     <div class="cards-list tournament-events">
       <% @tournament_events.each do |tournament_event| %>
         <div class="card-container">
           <%= render 'tournament_events/tournament_event', tournament_event: tournament_event.decorate %>
+        </div>
+      <% end %>
+    </div>
+
+  </div>
+
+  <div class="col border bg-light shadow p-5 m-3 rounded">
+
+    <h2 class="text-center mb-5">Éditions 2v2</h2>
+
+    <div class="cards-list duo-tournament-events">
+      <% @duo_tournament_events.each do |duo_tournament_event| %>
+        <div class="card-container">
+          <%= render 'duo_tournament_events/duo_tournament_event', duo_tournament_event: duo_tournament_event.decorate %>
         </div>
       <% end %>
     </div>

@@ -3,7 +3,7 @@ ActiveAdmin.register SmashggEvent do
   decorate_with ActiveAdmin::SmashggEventDecorator
 
   menu parent: '<img src="https://smash.gg/images/gg-app-icon.png" height="16" class="logo"/>smash.gg'.html_safe,
-       label: 'Tournois'
+       label: '<i class="fas fa-fw fa-chess"></i>Tournois'.html_safe
 
   actions :index, :show, :new, :create, :destroy
 

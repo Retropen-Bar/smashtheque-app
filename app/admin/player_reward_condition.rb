@@ -2,8 +2,8 @@ ActiveAdmin.register PlayerRewardCondition do
 
   decorate_with ActiveAdmin::PlayerRewardConditionDecorator
 
-  menu parent: '<i class="fas fa-fw fa-chess-knight"></i>Tournois'.html_safe,
-       label: 'Récompenses obtenues',
+  menu parent: '<i class="fas fa-fw fa-chess-rook"></i>Compétition 1v1'.html_safe,
+       label: '<i class="fas fa-fw fa-trophy"></i>Récompenses obtenues'.html_safe,
        priority: 4
 
   actions :index, :show
@@ -35,10 +35,6 @@ ActiveAdmin.register PlayerRewardCondition do
     actions
   end
 
-  filter :player,
-         input_html: { multiple: true, data: { select2: {} } }
-  filter :tournament_event,
-         input_html: { multiple: true, data: { select2: {} } }
   filter :reward_condition,
          input_html: { multiple: true, data: { select2: {} } }
   filter :reward,

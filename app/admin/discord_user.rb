@@ -3,7 +3,7 @@ ActiveAdmin.register DiscordUser do
   decorate_with ActiveAdmin::DiscordUserDecorator
 
   menu parent: '<i class="fab fa-fw fa-discord"></i>Discord'.html_safe,
-       label: 'Comptes'
+       label: '<i class="fas fa-fw fa-user"></i>Comptes'.html_safe
 
   # ---------------------------------------------------------------------------
   # INDEX

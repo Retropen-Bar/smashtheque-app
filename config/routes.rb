@@ -55,6 +55,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :duos, only: [:index, :show] do
+    collection do
+      get 'ranking/online' => 'duos#ranking_online', as: :online_ranking
+    end
+  end
+
   resources :locations, only: :index
   get 'locations/:id' => 'players#location_index', as: :location
 
@@ -73,6 +79,7 @@ Rails.application.routes.draw do
     end
   end
   resources :tournament_events, only: [:index, :show]
+  resources :duo_tournament_events, only: [:index, :show]
   get 'planning/online' => 'public#planning_online', as: :planning
 
   resources :twitch_channels, only: [:index]

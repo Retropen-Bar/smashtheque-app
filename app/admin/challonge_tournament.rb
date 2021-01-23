@@ -3,7 +3,7 @@ ActiveAdmin.register ChallongeTournament do
   decorate_with ActiveAdmin::ChallongeTournamentDecorator
 
   menu parent: '<img src="https://assets.challonge.com/assets/challonge_fireball_orange-a973ff3b12c34c780fc21313ec71aada3b9b779cbd3a62769e9199ce08395692.svg" height="16" class="logo"/>Challonge'.html_safe,
-       label: 'Tournois'
+       label: '<i class="fas fa-fw fa-chess"></i>Tournois'.html_safe
 
   actions :index, :show, :new, :create, :destroy
 
