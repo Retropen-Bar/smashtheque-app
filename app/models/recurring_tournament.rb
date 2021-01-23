@@ -62,6 +62,7 @@ class RecurringTournament < ApplicationRecord
            source: :user
 
   has_many :tournament_events
+  has_many :duo_tournament_events
 
   # ---------------------------------------------------------------------------
   # validations

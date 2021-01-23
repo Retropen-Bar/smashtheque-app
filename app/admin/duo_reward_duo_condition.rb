@@ -1,9 +1,9 @@
-ActiveAdmin.register PlayerRewardCondition do
+ActiveAdmin.register DuoRewardDuoCondition do
 
-  decorate_with ActiveAdmin::PlayerRewardConditionDecorator
+  decorate_with ActiveAdmin::DuoRewardDuoConditionDecorator
 
   menu parent: '<i class="fas fa-fw fa-chess-knight"></i>Tournois'.html_safe,
-       label: 'Récompenses obtenues',
+       label: 'Récompenses 2v2 obtenues',
        priority: 4
 
   actions :index, :show
@@ -12,30 +12,33 @@ ActiveAdmin.register PlayerRewardCondition do
   # INDEX
   # ---------------------------------------------------------------------------
 
-  includes :tournament_event, :reward_condition,
-           player: { user: :discord_user },
+  includes :duo_tournament_event, :reward_duo_condition,
+           duo: {
+             player1: { user: :discord_user },
+             player2: { user: :discord_user }
+           },
            reward: { image_attachment: :blob }
 
   index do
     selectable_column
     id_column
-    column :player do |decorated|
-      decorated.player_admin_link
+    column :duo do |decorated|
+      decorated.duo_admin_link
     end
     column :reward do |decorated|
       decorated.reward_admin_link
     end
     column :points
-    column :tournament_event do |decorated|
-      decorated.tournament_event_admin_link
+    column :duo_tournament_event do |decorated|
+      decorated.duo_tournament_event_admin_link
     end
-    column :reward_condition do |decorated|
-      decorated.reward_condition_admin_link
+    column :reward_duo_condition do |decorated|
+      decorated.reward_duo_condition_admin_link
     end
     actions
   end
 
-  filter :reward_condition,
+  filter :reward_duo_condition,
          input_html: { multiple: true, data: { select2: {} } }
   filter :reward,
          input_html: { multiple: true, data: { select2: {} } }
@@ -46,7 +49,7 @@ ActiveAdmin.register PlayerRewardCondition do
     link_to 'Recalculer tout', action: :recompute_all, class: 'blue'
   end
   collection_action :recompute_all do
-    TournamentEvent.compute_all_rewards
+    DuoTournamentEvent.compute_all_rewards
     redirect_to request.referer, notice: 'Recalcul terminé'
   end
 
@@ -57,18 +60,18 @@ ActiveAdmin.register PlayerRewardCondition do
   show do
     attributes_table do
       row :id
-      row :player do |decorated|
-        decorated.player_admin_link
+      row :duo do |decorated|
+        decorated.duo_admin_link
       end
       row :reward do |decorated|
         decorated.reward_admin_link
       end
       row :points
-      row :tournament_event do |decorated|
-        decorated.tournament_event_admin_link
+      row :duo_tournament_event do |decorated|
+        decorated.duo_tournament_event_admin_link
       end
-      row :reward_condition do |decorated|
-        decorated.reward_condition_admin_link
+      row :reward_duo_condition do |decorated|
+        decorated.reward_duo_condition_admin_link
       end
       row :created_at
       row :updated_at

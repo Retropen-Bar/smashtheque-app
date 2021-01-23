@@ -9,15 +9,6 @@ module ActiveAdmin::RewardConditionsHelper
     end
   end
 
-  def reward_condition_level_select_collection
-    RewardCondition::LEVELS.map do |v|
-      [
-        RewardConditionDecorator.level_value_text(v),
-        v
-      ]
-    end
-  end
-
   def reward_condition_rank_select_collection
     RewardCondition::RANKS.map do |v|
       [

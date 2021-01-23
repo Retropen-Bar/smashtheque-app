@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_22_222835) do
+ActiveRecord::Schema.define(version: 2021_01_23_163404) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -156,12 +156,61 @@ ActiveRecord::Schema.define(version: 2021_01_22_222835) do
     t.index ["user_id"], name: "index_discord_users_on_user_id"
   end
 
+  create_table "duo_reward_duo_conditions", force: :cascade do |t|
+    t.bigint "duo_id", null: false
+    t.bigint "reward_duo_condition_id", null: false
+    t.bigint "duo_tournament_event_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["duo_id", "reward_duo_condition_id", "duo_tournament_event_id"], name: "index_drdc_on_all", unique: true
+    t.index ["duo_id"], name: "index_duo_reward_duo_conditions_on_duo_id"
+    t.index ["duo_tournament_event_id"], name: "index_duo_reward_duo_conditions_on_duo_tournament_event_id"
+    t.index ["reward_duo_condition_id"], name: "index_duo_reward_duo_conditions_on_reward_duo_condition_id"
+  end
+
+  create_table "duo_tournament_events", force: :cascade do |t|
+    t.bigint "recurring_tournament_id", null: false
+    t.string "name", null: false
+    t.date "date", null: false
+    t.integer "participants_count"
+    t.string "bracket_url"
+    t.string "bracket_type"
+    t.bigint "bracket_id"
+    t.bigint "top1_duo_id"
+    t.bigint "top2_duo_id"
+    t.bigint "top3_duo_id"
+    t.bigint "top4_duo_id"
+    t.bigint "top5a_duo_id"
+    t.bigint "top5b_duo_id"
+    t.bigint "top7a_duo_id"
+    t.bigint "top7b_duo_id"
+    t.boolean "is_complete", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["bracket_type", "bracket_id"], name: "index_duo_tournament_events_on_bracket_type_and_bracket_id"
+    t.index ["recurring_tournament_id"], name: "index_duo_tournament_events_on_recurring_tournament_id"
+    t.index ["top1_duo_id"], name: "index_duo_tournament_events_on_top1_duo_id"
+    t.index ["top2_duo_id"], name: "index_duo_tournament_events_on_top2_duo_id"
+    t.index ["top3_duo_id"], name: "index_duo_tournament_events_on_top3_duo_id"
+    t.index ["top4_duo_id"], name: "index_duo_tournament_events_on_top4_duo_id"
+    t.index ["top5a_duo_id"], name: "index_duo_tournament_events_on_top5a_duo_id"
+    t.index ["top5b_duo_id"], name: "index_duo_tournament_events_on_top5b_duo_id"
+    t.index ["top7a_duo_id"], name: "index_duo_tournament_events_on_top7a_duo_id"
+    t.index ["top7b_duo_id"], name: "index_duo_tournament_events_on_top7b_duo_id"
+  end
+
   create_table "duos", force: :cascade do |t|
     t.string "name", null: false
     t.bigint "player1_id", null: false
     t.bigint "player2_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "points", default: 0, null: false
+    t.bigint "best_duo_reward_duo_condition_id_id"
+    t.string "best_reward_level1"
+    t.string "best_reward_level2"
+    t.integer "rank"
+    t.index ["best_duo_reward_duo_condition_id_id"], name: "index_duos_on_best_duo_reward_duo_condition_id_id"
     t.index ["name"], name: "index_duos_on_name"
     t.index ["player1_id"], name: "index_duos_on_player1_id"
     t.index ["player2_id"], name: "index_duos_on_player2_id"
@@ -276,6 +325,17 @@ ActiveRecord::Schema.define(version: 2021_01_22_222835) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["reward_id"], name: "index_reward_conditions_on_reward_id"
+  end
+
+  create_table "reward_duo_conditions", force: :cascade do |t|
+    t.bigint "reward_id", null: false
+    t.integer "size_min", null: false
+    t.integer "size_max", null: false
+    t.integer "rank", null: false
+    t.integer "points", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["reward_id"], name: "index_reward_duo_conditions_on_reward_id"
   end
 
   create_table "rewards", force: :cascade do |t|
@@ -469,6 +529,19 @@ ActiveRecord::Schema.define(version: 2021_01_22_222835) do
   add_foreign_key "discord_guild_admins", "discord_users"
   add_foreign_key "discord_guild_relateds", "discord_guilds"
   add_foreign_key "discord_users", "users"
+  add_foreign_key "duo_reward_duo_conditions", "duo_tournament_events"
+  add_foreign_key "duo_reward_duo_conditions", "duos"
+  add_foreign_key "duo_reward_duo_conditions", "reward_duo_conditions"
+  add_foreign_key "duo_tournament_events", "duos", column: "top1_duo_id"
+  add_foreign_key "duo_tournament_events", "duos", column: "top2_duo_id"
+  add_foreign_key "duo_tournament_events", "duos", column: "top3_duo_id"
+  add_foreign_key "duo_tournament_events", "duos", column: "top4_duo_id"
+  add_foreign_key "duo_tournament_events", "duos", column: "top5a_duo_id"
+  add_foreign_key "duo_tournament_events", "duos", column: "top5b_duo_id"
+  add_foreign_key "duo_tournament_events", "duos", column: "top7a_duo_id"
+  add_foreign_key "duo_tournament_events", "duos", column: "top7b_duo_id"
+  add_foreign_key "duo_tournament_events", "recurring_tournaments"
+  add_foreign_key "duos", "duo_reward_duo_conditions", column: "best_duo_reward_duo_condition_id_id"
   add_foreign_key "duos", "players", column: "player1_id"
   add_foreign_key "duos", "players", column: "player2_id"
   add_foreign_key "locations_players", "locations"
@@ -485,6 +558,7 @@ ActiveRecord::Schema.define(version: 2021_01_22_222835) do
   add_foreign_key "recurring_tournament_contacts", "users"
   add_foreign_key "recurring_tournaments", "discord_guilds"
   add_foreign_key "reward_conditions", "rewards"
+  add_foreign_key "reward_duo_conditions", "rewards"
   add_foreign_key "smashgg_events", "smashgg_users", column: "top1_smashgg_user_id"
   add_foreign_key "smashgg_events", "smashgg_users", column: "top2_smashgg_user_id"
   add_foreign_key "smashgg_events", "smashgg_users", column: "top3_smashgg_user_id"

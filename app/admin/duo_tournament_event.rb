@@ -1,11 +1,11 @@
-ActiveAdmin.register TournamentEvent do
+ActiveAdmin.register DuoTournamentEvent do
 
-  decorate_with ActiveAdmin::TournamentEventDecorator
+  decorate_with ActiveAdmin::DuoTournamentEventDecorator
 
   has_paper_trail
 
   menu parent: '<i class="fas fa-fw fa-chess-knight"></i>Tournois'.html_safe,
-       label: 'Éditions',
+       label: 'Éditions 2v2',
        priority: 1
 
   # ---------------------------------------------------------------------------
@@ -21,14 +21,38 @@ ActiveAdmin.register TournamentEvent do
   end
 
   includes :recurring_tournament, :bracket,
-           top1_player: { user: :discord_user },
-           top2_player: { user: :discord_user },
-           top3_player: { user: :discord_user },
-           top4_player: { user: :discord_user },
-           top5a_player: { user: :discord_user },
-           top5b_player: { user: :discord_user },
-           top7a_player: { user: :discord_user },
-           top7b_player: { user: :discord_user }
+           top1_duo: {
+             player1: { user: :discord_user },
+             player2: { user: :discord_user }
+           },
+           top2_duo: {
+             player1: { user: :discord_user },
+             player2: { user: :discord_user }
+           },
+           top3_duo: {
+             player1: { user: :discord_user },
+             player2: { user: :discord_user }
+           },
+           top4_duo: {
+             player1: { user: :discord_user },
+             player2: { user: :discord_user }
+           },
+           top5a_duo: {
+             player1: { user: :discord_user },
+             player2: { user: :discord_user }
+           },
+           top5b_duo: {
+             player1: { user: :discord_user },
+             player2: { user: :discord_user }
+           },
+           top7a_duo: {
+             player1: { user: :discord_user },
+             player2: { user: :discord_user }
+           },
+           top7b_duo: {
+             player1: { user: :discord_user },
+             player2: { user: :discord_user }
+           }
 
   index do
     selectable_column
@@ -43,9 +67,9 @@ ActiveAdmin.register TournamentEvent do
       decorated.bracket_admin_link
     end
     column :participants_count
-    TournamentEvent::PLAYER_NAMES.each do |player_name|
-      column player_name do |decorated|
-        decorated.send("#{player_name}_admin_link")
+    DuoTournamentEvent::DUO_NAMES.each do |duo_name|
+      column duo_name do |decorated|
+        decorated.send("#{duo_name}_admin_link")
       end
     end
     column :is_complete
@@ -54,7 +78,7 @@ ActiveAdmin.register TournamentEvent do
 
   scope :all, default: true
   scope :with_missing_graph
-  scope :with_missing_players
+  scope :with_missing_duos
   scope :with_missing_data
 
   scope :on_smashgg, group: :bracket
@@ -70,14 +94,14 @@ ActiveAdmin.register TournamentEvent do
 
   action_item :update_available_brackets,
               only: :index,
-              if: proc { TournamentEvent.with_available_bracket.any? } do
-    available_brackets_count = TournamentEvent.with_available_bracket.count
+              if: proc { DuoTournamentEvent.with_available_bracket.any? } do
+    available_brackets_count = DuoTournamentEvent.with_available_bracket.count
     link_to "Récupérer les #{available_brackets_count} brackets disponibles",
-            update_available_brackets_admin_tournament_events_path,
+            update_available_brackets_admin_duo_tournament_events_path,
             class: 'blue'
   end
   collection_action :update_available_brackets do
-    TournamentEvent.update_available_brackets
+    DuoTournamentEvent.update_available_brackets
     redirect_to request.referer, notice: 'Données récupérées'
   end
 
@@ -148,9 +172,9 @@ ActiveAdmin.register TournamentEvent do
             f.input :name
             f.input :date
             f.input :participants_count
-            TournamentEvent::PLAYER_NAMES.each do |player_name|
-              hint = f.object.admin_decorate.send("#{player_name}_bracket_suggestion")
-              player_input f, player_name, hint: hint
+            DuoTournamentEvent::DUO_NAMES.each do |duo_name|
+              hint = f.object.admin_decorate.send("#{duo_name}_bracket_suggestion")
+              duo_input f, duo_name, hint: hint
             end
             f.input :is_complete
           end
@@ -161,14 +185,14 @@ ActiveAdmin.register TournamentEvent do
   end
 
   permit_params :name, :date, :recurring_tournament_id, :participants_count,
-                :top1_player_id, :top2_player_id, :top3_player_id,
-                :top4_player_id, :top5a_player_id, :top5b_player_id,
-                :top7a_player_id, :top7b_player_id, :is_complete,
+                :top1_duo_id, :top2_duo_id, :top3_duo_id,
+                :top4_duo_id, :top5a_duo_id, :top5b_duo_id,
+                :top7a_duo_id, :top7b_duo_id, :is_complete,
                 :bracket_url, :bracket_gid,
                 :graph
 
   collection_action :bracket_autocomplete do
-    render json: TournamentEvent.bracket_autocomplete(params[:term])
+    render json: DuoTournamentEvent.bracket_autocomplete(params[:term])
   end
 
   # ---------------------------------------------------------------------------
@@ -186,9 +210,9 @@ ActiveAdmin.register TournamentEvent do
           row :bracket_url do |decorated|
             decorated.bracket_link
           end
-          TournamentEvent::PLAYER_NAMES.each do |player_name|
-            row player_name do |decorated|
-              decorated.send("#{player_name}_admin_link")
+          DuoTournamentEvent::DUO_NAMES.each do |duo_name|
+            row duo_name do |decorated|
+              decorated.send("#{duo_name}_admin_link")
             end
           end
           row :is_complete
@@ -199,13 +223,13 @@ ActiveAdmin.register TournamentEvent do
           row :updated_at
         end
         panel 'Récompenses obtenues', style: 'margin-top: 50px' do
-          table_for resource.player_reward_conditions.admin_decorate,
-                    i18n: PlayerRewardCondition do
-            column :reward_condition do |decorated|
-              decorated.reward_condition_admin_link
+          table_for resource.duo_reward_duo_conditions.admin_decorate,
+                    i18n: DuoRewardDuoCondition do
+            column :reward_duo_condition do |decorated|
+              decorated.reward_duo_condition_admin_link
             end
-            column :player do |decorated|
-              decorated.player_admin_link
+            column :duo do |decorated|
+              decorated.duo_admin_link
             end
             column :reward do |decorated|
               decorated.reward_admin_link
@@ -224,11 +248,11 @@ ActiveAdmin.register TournamentEvent do
   end
 
   action_item :previous, only: :show do
-    resource.previous_tournament_event_admin_link label: '←', class: 'blue'
+    resource.previous_duo_tournament_event_admin_link label: '←', class: 'blue'
   end
 
   action_item :next, only: :show do
-    resource.next_tournament_event_admin_link label: '→', class: 'blue'
+    resource.next_duo_tournament_event_admin_link label: '→', class: 'blue'
   end
 
   action_item :public, only: :show do

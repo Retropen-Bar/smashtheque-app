@@ -1,5 +1,5 @@
 class ActiveAdmin::TournamentEventDecorator < TournamentEventDecorator
-  include ActiveAdmin::BaseDecorator
+  include ActiveAdmin::TournamentEventBaseDecorator
 
   decorates :tournament_event
 
@@ -32,10 +32,6 @@ class ActiveAdmin::TournamentEventDecorator < TournamentEventDecorator
     end
   end
 
-  def recurring_tournament_admin_link(options = {})
-    recurring_tournament&.admin_decorate&.admin_link(options)
-  end
-
   def previous_tournament_event_admin_link(options = {})
     tournament_event = previous_tournament_event
     if tournament_event
@@ -52,10 +48,6 @@ class ActiveAdmin::TournamentEventDecorator < TournamentEventDecorator
     else
       h.link_to options[:label], '#', class: 'disabled'
     end
-  end
-
-  def bracket_admin_link(options = {})
-    bracket&.admin_decorate&.admin_link(options)
   end
 
 end

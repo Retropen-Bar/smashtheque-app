@@ -10,6 +10,8 @@ fr:
       discord_guild_admin: Admin de serveur Discord
       discord_user: Compte Discord
       duo: Équipe 2v2
+      duo_reward_duo_condition: Récompense obtenue
+      duo_tournament_event: Édition 2v2
       location: Localisation
       locations/city: Ville
       locations/country: Pays
@@ -20,6 +22,7 @@ fr:
       recurring_tournament: Série
       reward: Récompense
       reward_condition: Condition de récompense
+      reward_duo_condition: Condition de récompense 2v2
       smashgg_event: Tournoi smash.gg
       smashgg_user: Compte smash.gg
       team: Équipe
@@ -72,6 +75,41 @@ fr:
         << : *SHARED
         player1: Joueur 1
         player2: Joueur 2
+      duo_reward_duo_condition:
+        << : *SHARED
+        duo: Équipe
+        points: Fragments d'étoiles
+        reward: Récompense
+        reward_duo_condition: Condition
+        duo_tournament_event: Édition
+      duo_tournament_event:
+        << : *SHARED
+        bracket: Bracket
+        bracket_gid: Bracket
+        bracket_url: URL du bracket
+        date: Date
+        graph: Graph
+        is_complete: Complet
+        name: Nom
+        participants_count: Participants
+        recurring_tournament: Série
+        top1_duo: Top 1
+        top2_duo: Top 2
+        top3_duo: Top 3
+        top4_duo: Top 4
+        top5a_duo: Top 5a
+        top5b_duo: Top 5b
+        top7a_duo: Top 7a
+        top7b_duo: Top 7b
+      duo_tournament_event/rank:
+        top1_duo: Top 1
+        top2_duo: Top 2
+        top3_duo: Top 3
+        top4_duo: Top 4
+        top5a_duo: Top 5
+        top5b_duo: Top 5
+        top7a_duo: Top 7
+        top7b_duo: Top 7
       location: &LOCATION
         << : *SHARED
         address: Adresse
@@ -185,8 +223,15 @@ fr:
         reward: Récompense
         size_max: Taille max
         size_min: Taille min
-        team: Équipe
-        team_id: Équipe
+      reward_duo_condition:
+        << : *SHARED
+        level: Difficulté
+        duo_reward_duo_conditions: Obtensions
+        points: Fragments d'étoiles
+        rank: Rang
+        reward: Récompense
+        size_max: Taille max
+        size_min: Taille min
       smashgg_event:
         << : *SHARED
         is_online: Online?
