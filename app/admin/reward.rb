@@ -24,7 +24,9 @@ ActiveAdmin.register Reward do
   index do
     selectable_column
     id_column
-    column :name
+    column :name do |decorated|
+      link_to decorated.name, [:admin, decorated.model]
+    end
     column :level, sortable: true
     column :emoji do |decorated|
       decorated.emoji_image_tag(max_height: 32)

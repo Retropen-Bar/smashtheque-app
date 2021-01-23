@@ -14,11 +14,19 @@ ActiveAdmin.register TwitchChannel do
   index do
     selectable_column
     id_column
-    column :twitch_id
+    column :name do |decorated|
+      if decorated.name
+        link_to decorated.name, [:admin, decorated.model]
+      end
+    end
+    column :twitch_id do |decorated|
+      if decorated.twitch_id
+        link_to decorated.twitch_id, [:admin, decorated.model]
+      end
+    end
     column :slug do |decorated|
       decorated.channel_link(with_icon: true)
     end
-    column :name
     column :profile_image_url do |decorated|
       decorated.profile_image_tag(height: 32)
     end

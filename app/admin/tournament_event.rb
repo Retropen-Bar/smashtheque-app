@@ -34,7 +34,9 @@ ActiveAdmin.register TournamentEvent do
     selectable_column
     id_column
     column :recurring_tournament
-    column :name
+    column :name do |decorated|
+      link_to decorated.name, [:admin, decorated.model]
+    end
     column :date
     column :bracket_url do |decorated|
       decorated.bracket_icon_link

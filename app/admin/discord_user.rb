@@ -14,7 +14,9 @@ ActiveAdmin.register DiscordUser do
   index do
     selectable_column
     id_column
-    column :discord_id
+    column :discord_id do |decorated|
+      link_to decorated.discord_id, [:admin, decorated.model]
+    end
     column :username do |decorated|
       decorated.full_name(size: 32)
     end

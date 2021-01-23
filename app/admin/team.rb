@@ -21,8 +21,12 @@ ActiveAdmin.register Team do
     column :logo do |decorated|
       decorated.logo_image_tag(max_height: 32)
     end
-    column :short_name
-    column :name
+    column :short_name do |decorated|
+      link_to decorated.short_name, [:admin, decorated.model]
+    end
+    column :name do |decorated|
+      link_to decorated.name, [:admin, decorated.model]
+    end
     column :is_offline
     column :is_online
     column :is_sponsor

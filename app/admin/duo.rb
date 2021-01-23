@@ -17,7 +17,9 @@ ActiveAdmin.register Duo do
   index do
     selectable_column
     id_column
-    column :name
+    column :name do |decorated|
+      decorated.admin_link
+    end
     column :player1 do |decorated|
       decorated.player1_admin_link
     end

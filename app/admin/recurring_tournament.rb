@@ -17,7 +17,9 @@ ActiveAdmin.register RecurringTournament do
   index do
     selectable_column
     id_column
-    column :name
+    column :name do |decorated|
+      link_to decorated.name, [:admin, decorated.model]
+    end
     column :tournament_events do |decorated|
       decorated.tournament_events_admin_link
     end

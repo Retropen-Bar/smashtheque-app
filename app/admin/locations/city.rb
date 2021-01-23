@@ -17,7 +17,7 @@ ActiveAdmin.register Locations::City do
     selectable_column
     id_column
     column :name do |decorated|
-      decorated.full_name
+      link_to decorated.full_name, [:admin, decorated.model]
     end
     column :latitude
     column :longitude

@@ -14,7 +14,9 @@ ActiveAdmin.register ApiToken do
   index do
     selectable_column
     id_column
-    column :name
+    column :name do |decorated|
+      link_to decorated.name, [:admin, decorated.model]
+    end
     column :token
     column :api_requests do |decorated|
       decorated.api_requests_admin_link

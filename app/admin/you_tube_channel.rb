@@ -14,6 +14,9 @@ ActiveAdmin.register YouTubeChannel do
   index do
     selectable_column
     id_column
+    column :name do |decorated|
+      link_to decorated.name, [:admin, decorated.model]
+    end
     column :url do |decorated|
       decorated.channel_link(with_icon: true)
     end
