@@ -79,6 +79,7 @@ class SmashggEvent < ApplicationRecord
   belongs_to :top7b_smashgg_user, class_name: :SmashggUser, optional: true
 
   has_one :tournament_event, as: :bracket, dependent: :nullify
+  has_one :duo_tournament_event, as: :bracket, dependent: :nullify
 
   # ---------------------------------------------------------------------------
   # VALIDATIONS

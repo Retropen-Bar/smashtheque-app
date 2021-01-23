@@ -125,6 +125,9 @@ ActiveAdmin.register SmashggEvent do
       row :tournament_event do |decorated|
         decorated.tournament_event_admin_link
       end
+      row :duo_tournament_event do |decorated|
+        decorated.duo_tournament_event_admin_link
+      end
       row :created_at
       row :updated_at
     end
@@ -146,10 +149,11 @@ ActiveAdmin.register SmashggEvent do
 
   action_item :create_tournament_event,
               only: :show,
-              if: proc { resource.tournament_event.nil? } do
-    link_to "Créer l'édition",
-            resource.create_tournament_event_admin_path,
-            class: 'blue'
+              if: proc { resource.tournament_event.nil? && resource.duo_tournament_event.nil? } do
+    dropdown_menu "Créer l'édition", button: { class: 'blue' } do
+      item 'Édition 1v1', resource.create_tournament_event_admin_path
+      item 'Édition 2v2', resource.create_duo_tournament_event_admin_path
+    end
   end
 
   # ---------------------------------------------------------------------------

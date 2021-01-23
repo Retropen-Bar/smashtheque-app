@@ -35,6 +35,7 @@ class ChallongeTournament < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   has_one :tournament_event, as: :bracket, dependent: :nullify
+  has_one :duo_tournament_event, as: :bracket, dependent: :nullify
 
   # ---------------------------------------------------------------------------
   # VALIDATIONS

@@ -51,6 +51,7 @@ fr:
         << : *SHARED
         challonge_id: ID
         challonge_url: URL
+        duo_tournament_event: Édition 2v2
         participants_count: Participants
         slug: Slug
         start_at: Date
@@ -62,7 +63,7 @@ fr:
         top5b_participant_name: Top 5b
         top7a_participant_name: Top 7a
         top7b_participant_name: Top 7b
-        tournament_event: Édition
+        tournament_event: Édition 1v1
       character:
         << : *SHARED
         background_color: Couleur de fond
@@ -234,6 +235,7 @@ fr:
         size_min: Taille min
       smashgg_event:
         << : *SHARED
+        duo_tournament_event: Édition 2v2
         is_online: Online?
         num_entrants: Participants
         slug: Slug
@@ -248,7 +250,7 @@ fr:
         top5b_smashgg_user: Top 5b
         top7a_smashgg_user: Top 7a
         top7b_smashgg_user: Top 7b
-        tournament_event: Édition
+        tournament_event: Édition 1v1
         tournament_id: ID du tournoi
         tournament_name: Nom du tournoi
         tournament_slug: Slug du tournoi

@@ -1,0 +1,59 @@
+#title_bar #titlebar_right .action_item
+  @import active_admin/components/dropdown_menu
+
+  .dropdown_menu
+    .dropdown_menu_button
+      font-weight: inherit
+      font-family: inherit
+      background-image: none
+      text-shadow: none
+      line-height: normal
+      box-shadow: none
+      border: 0
+      border-radius: 3px
+      background: #5E6469
+      padding: 5px 8px
+      color: white
+
+      &:not(.disabled):hover
+        background: #767e84
+
+      &:before
+        border-width: 5px 5px 0
+        right: 8px
+
+      &:after
+        border-top-color: white
+        border-bottom-color: white
+
+    .dropdown_menu_list_wrapper
+      .dropdown_menu_list
+        li
+          a
+            display: block
+            border-radius: 0
+            font-weight: normal
+            text-align: left
+            background-color: white
+            color: #323537
+
+table.index_table .col-actions
+  @import active_admin/components/dropdown_menu
+
+  .dropdown_menu
+    .dropdown_menu_list_wrapper
+      .dropdown_menu_list
+        li
+          a
+            &.blue
+              background-color: $blue
+              color: $black
+            &.green
+              background-color: $green
+              color: white
+            &.red
+              background-color: $error
+              color: white
+            &.yellow
+              background-color: $yellow
+              color: $black
