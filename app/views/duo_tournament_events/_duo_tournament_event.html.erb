@@ -1,0 +1,17 @@
+<div class="card duo-tournament-event shadow-sm">
+  <div class="card-body">
+    <% if (duo_tournament_event.participants_count || 0) > 0 %>
+      <div class="duo-tournament-event-participants-count">
+        <i class="fas fa-users"></i>
+        <%= duo_tournament_event.participants_count %>
+      </div>
+    <% end %>
+    <%= duo_tournament_event.link %>
+    <div class="clearfix">
+      <div class="duo-tournament-event-date">
+        <%= l duo_tournament_event.date, format: :long %>
+      </div>
+    </div>
+  </div>
+  <%= admin_edit_link(duo_tournament_event) %>
+</div>

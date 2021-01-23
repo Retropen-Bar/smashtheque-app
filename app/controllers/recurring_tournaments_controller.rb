@@ -59,6 +59,7 @@ class RecurringTournamentsController < PublicController
 
   def show
     @tournament_events = @recurring_tournament.tournament_events.order(date: :desc)
+    @duo_tournament_events = @recurring_tournament.duo_tournament_events.order(date: :desc)
   end
 
   def modal

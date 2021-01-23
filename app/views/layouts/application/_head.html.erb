@@ -50,7 +50,8 @@
         <% end %>
         <div class="dropdown-menu">
           <%= link_to 'Séries de tournois', recurring_tournaments_path, class: 'dropdown-item' %>
-          <%= link_to 'Éditions passées', tournament_events_path, class: 'dropdown-item' %>
+          <%= link_to 'Éditions 1v1', tournament_events_path, class: 'dropdown-item' %>
+          <%= link_to 'Éditions 2v2', duo_tournament_events_path, class: 'dropdown-item' %>
           <%= link_to 'Planning hebdo', planning_path, class: 'dropdown-item' %>
         </div>
       </li>
