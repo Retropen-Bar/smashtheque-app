@@ -36,7 +36,22 @@ class PlayersController < PublicController
   def show
     @player = Player.legit.find(params[:id])
     @rewards_counts = @player.rewards_counts
-    @tournament_events = @player.tournament_events.order(date: :desc).decorate
+    @tournament_events = @player.tournament_events
+                                .order(date: :desc)
+                                .includes(
+                                  recurring_tournament: :discord_guild
+                                ).decorate
+    @player_reward_conditions_by_tournament_event_id = Hash[
+      @player.player_reward_conditions
+             .includes(
+               reward: {
+                 image_attachment: :blob
+               }
+             ).map do |player_reward_condition|
+        [player_reward_condition.tournament_event_id, player_reward_condition]
+      end
+    ]
+    @all_rewards = Reward.includes(image_attachment: :blob)
     main_character = @player.characters.first&.decorate
     if main_character
       @background_color = main_character.background_color
