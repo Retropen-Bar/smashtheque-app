@@ -236,7 +236,74 @@ ActiveAdmin.setup do |config|
   config.namespace :admin do |admin|
     admin.build_menu :default do |menu|
       menu.add label: '<i class="fas fa-fw fa-globe-europe"></i>Site public'.html_safe, url: '/', priority: 0
-      menu.add label: '<i class="fas fa-fw fa-plus"></i>Ajouter un joueur'.html_safe, url: '/admin/players/new', priority: 1
+
+      menu.add label: '<i class="fas fa-fw fa-plus"></i>Ajouter'.html_safe,
+               priority: 1
+
+      menu.add parent: '<i class="fas fa-fw fa-plus"></i>Ajouter'.html_safe,
+               label: '<i class="fas fa-fw fa-user-secret"></i>Un utilisateur'.html_safe,
+               url: '/admin/users/new',
+               priority: 0
+
+      menu.add parent: '<i class="fas fa-fw fa-plus"></i>Ajouter'.html_safe,
+               label: '<i class="fas fa-fw fa-user"></i>Un joueur'.html_safe,
+               url: '/admin/players/new',
+               priority: 1
+
+      menu.add parent: '<i class="fas fa-fw fa-plus"></i>Ajouter'.html_safe,
+               label: '<i class="fas fa-fw fa-user-friends"></i>Un duo'.html_safe,
+               url: '/admin/duos/new',
+               priority: 2
+
+      menu.add parent: '<i class="fas fa-fw fa-plus"></i>Ajouter'.html_safe,
+               label: '<i class="fas fa-fw fa-users"></i>Une équipe'.html_safe,
+               url: '/admin/teams/new',
+               priority: 3
+
+      menu.add parent: '<i class="fas fa-fw fa-plus"></i>Ajouter'.html_safe,
+               label: '<i class="fas fa-fw fa-chess"></i>Une série'.html_safe,
+               url: '/admin/recurring_tournaments/new',
+               priority: 10
+
+      menu.add parent: '<i class="fas fa-fw fa-plus"></i>Ajouter'.html_safe,
+               label: '<i class="fas fa-fw fa-chess-rook"></i>Une édition 1v1'.html_safe,
+               url: '/admin/tournament_events/new',
+               priority: 11
+
+      menu.add parent: '<i class="fas fa-fw fa-plus"></i>Ajouter'.html_safe,
+               label: '<i class="fas fa-fw fa-chess-knight"></i>Une édition 2v2'.html_safe,
+               url: '/admin/duo_tournament_events/new',
+               priority: 12
+
+      menu.add parent: '<i class="fas fa-fw fa-plus"></i>Ajouter'.html_safe,
+               label: '<img src="https://assets.challonge.com/assets/challonge_fireball_orange-a973ff3b12c34c780fc21313ec71aada3b9b779cbd3a62769e9199ce08395692.svg" height="16" class="logo"/>Un bracket Challonge'.html_safe,
+               url: '/admin/challonge_tournaments/new',
+               priority: 20
+
+      menu.add parent: '<i class="fas fa-fw fa-plus"></i>Ajouter'.html_safe,
+               label: '<img src="https://smash.gg/images/gg-app-icon.png" height="16" class="logo"/>Un bracket smash.gg'.html_safe,
+               url: '/admin/smashgg_events/new',
+               priority: 21
+
+      menu.add parent: '<i class="fas fa-fw fa-plus"></i>Ajouter'.html_safe,
+               label: '<i class="fab fa-fw fa-discord"></i>Un compte Discord'.html_safe,
+               url: '/admin/discord_users/new',
+               priority: 30
+
+      menu.add parent: '<i class="fas fa-fw fa-plus"></i>Ajouter'.html_safe,
+               label: '<i class="fas fa-fw fa-cocktail"></i>Un serveur Discord'.html_safe,
+               url: '/admin/discord_guilds/new',
+               priority: 31
+
+      menu.add parent: '<i class="fas fa-fw fa-plus"></i>Ajouter'.html_safe,
+               label: '<i class="fab fa-fw fa-twitch"></i>Une chaîne Twitch'.html_safe,
+               url: '/admin/twitch_channels/new',
+               priority: 40
+
+      menu.add parent: '<i class="fas fa-fw fa-plus"></i>Ajouter'.html_safe,
+               label: '<i class="fab fa-fw fa-youtube"></i>Une chaîne YouTube'.html_safe,
+               url: '/admin/you_tube_channels/new',
+               priority: 41
     end
   end
 
