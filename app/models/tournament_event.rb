@@ -226,7 +226,7 @@ class TournamentEvent < ApplicationRecord
   def compute_rewards
     ids = []
 
-    if (participants_count || 0) > 0
+    if !is_out_of_ranking? && (participants_count || 0) > 0
       reward_conditions = RewardCondition.for_size(participants_count)
       PLAYER_NAMES.each do |player_name|
         if player = send(player_name)

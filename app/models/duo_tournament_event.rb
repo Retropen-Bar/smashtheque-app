@@ -225,7 +225,7 @@ class DuoTournamentEvent < ApplicationRecord
   def compute_rewards
     ids = []
 
-    if (participants_count || 0) > 0
+    if !is_out_of_ranking? && (participants_count || 0) > 0
       reward_duo_conditions = RewardDuoCondition.for_size(participants_count)
       DUO_NAMES.each do |duo_name|
         if duo = send(duo_name)
