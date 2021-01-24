@@ -76,7 +76,75 @@
           <span>Serveurs</span>
         <% end %>
       </li>
+
     </ul>
+
+    <% if admin_user_signed_in? %>
+      <ul class="navbar-nav ml-auto text-center text-lg-left">
+        <li class="nav-item dropdown">
+          <%= link_to '#', class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
+            <%= fas_icon_tag 'plus-square', %w(fa-lg) %>
+          <% end %>
+          <div class="dropdown-menu dropdown-menu-right">
+            <%= link_to new_admin_user_path, class: 'dropdown-item' do %>
+              <%= fas_icon_tag 'user-secret', %w(fa-fw mr-2) %>
+              Un utilisateur
+            <% end %>
+            <%= link_to new_admin_player_path, class: 'dropdown-item' do %>
+              <%= fas_icon_tag 'user', %w(fa-fw mr-2) %>
+              Un joueur
+            <% end %>
+            <%= link_to new_admin_duo_path, class: 'dropdown-item' do %>
+              <%= fas_icon_tag 'user-friends', %w(fa-fw mr-2) %>
+              Un duo
+            <% end %>
+            <%= link_to new_admin_team_path, class: 'dropdown-item' do %>
+              <%= fas_icon_tag 'users', %w(fa-fw mr-2) %>
+              Une équipe
+            <% end %>
+            <div class="dropdown-divider"></div>
+            <%= link_to new_admin_recurring_tournament_path, class: 'dropdown-item' do %>
+              <%= fas_icon_tag 'chess', %w(fa-fw mr-2) %>
+              Une série
+            <% end %>
+            <%= link_to new_admin_tournament_event_path, class: 'dropdown-item' do %>
+              <%= fas_icon_tag 'chess-rook', %w(fa-fw mr-2) %>
+              Une édition 1v1
+            <% end %>
+            <%= link_to new_admin_duo_tournament_event_path, class: 'dropdown-item' do %>
+              <%= fas_icon_tag 'chess-knight', %w(fa-fw mr-2) %>
+              Une édition 2v2
+            <% end %>
+            <%= link_to new_admin_challonge_tournament_path, class: 'dropdown-item' do %>
+              <img src="https://assets.challonge.com/assets/challonge_fireball_orange-a973ff3b12c34c780fc21313ec71aada3b9b779cbd3a62769e9199ce08395692.svg" height="16" class="fa-fw mr-2"/>
+              Un bracket Challonge
+            <% end %>
+            <%= link_to new_admin_smashgg_event_path, class: 'dropdown-item' do %>
+              <img src="https://smash.gg/images/gg-app-icon.png" height="16" class="fa-fw mr-2"/>
+              Un bracket smash.gg
+            <% end %>
+            <div class="dropdown-divider"></div>
+            <%= link_to new_admin_discord_user_path, class: 'dropdown-item' do %>
+              <%= fab_icon_tag 'discord', %w(fa-fw mr-2) %>
+              Un compte Discord
+            <% end %>
+            <%= link_to new_admin_discord_guild_path, class: 'dropdown-item' do %>
+              <%= fas_icon_tag 'cocktail', %w(fa-fw mr-2) %>
+              Un compte Discord
+            <% end %>
+            <div class="dropdown-divider"></div>
+            <%= link_to new_admin_twitch_channel_path, class: 'dropdown-item' do %>
+              <%= fab_icon_tag 'twitch', %w(fa-fw mr-2) %>
+              Une chaîne Twitch
+            <% end %>
+            <%= link_to new_admin_you_tube_channel_path, class: 'dropdown-item' do %>
+              <%= fab_icon_tag 'youtube', %w(fa-fw mr-2) %>
+              Une chaîne YouTube
+            <% end %>
+          </div>
+        </li>
+      </ul>
+    <% end %>
 
     <form class="form-inline my-2 my-lg-0 d-inline-flex" id="main-global-search-form">
       <%= select_tag :search, [],

@@ -4,11 +4,6 @@
       <li><%= link_to 'Crédits', credits_path %></li>
       <li><%= link_to 'Mentions légales', legal_path %></li>
       <li><a href="/admin">Admin</a></li>
-      <% if admin_user_signed_in? %>
-        <li>
-          <%= link_to '+ Ajouter un joueur', new_admin_player_path, class: 'text-primary' %>
-        </li>
-      <% end %>
     </ul>
     <ul class="bd-footer-links">
       <li><a href="https://github.com/Retropen-Bar" target="_blank">GitHub</a></li>
