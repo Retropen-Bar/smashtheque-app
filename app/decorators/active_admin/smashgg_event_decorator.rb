@@ -4,6 +4,7 @@ class ActiveAdmin::SmashggEventDecorator < SmashggEventDecorator
   decorates :smashgg_event
 
   def start_at_date
+    return nil if model.start_at.nil?
     h.l model.start_at.to_date, format: :default
   end
 

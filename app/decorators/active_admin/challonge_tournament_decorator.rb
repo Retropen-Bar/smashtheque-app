@@ -4,6 +4,7 @@ class ActiveAdmin::ChallongeTournamentDecorator < ChallongeTournamentDecorator
   decorates :challonge_tournament
 
   def start_at_date
+    return nil if model.start_at.nil?
     h.l model.start_at.to_date, format: :default
   end
 
