@@ -28,21 +28,24 @@ fr:
       roots: Superadmins
       to_be_accepted: À valider
       unknown: Inconnus
+      with_any_tournament_event: Avec édition
       with_user: Admin
       with_discord_user: Relié à Discord
       with_missing_data: Info manquante
+      with_missing_duos: Équipe manquante
       with_missing_graph: Graph manquant
       with_missing_players: Joueur manquant
       with_player: Lié à un joueur
-      with_tournament_event: Avec édition
+      with_tournament_event: Avec édition 1v1
       without_any_link: Sans aucun lien
+      without_any_tournament_event: Sans édition
       without_background: Sans fond
       without_character: Sans perso
       without_discord_user: Non relié à Discord
       without_location: Non localisé
       without_player: Non lié à un joueur
       without_smashgg_user: Sans smash.gg
-      without_tournament_event: Sans édition
+      without_tournament_event: Sans édition 1v1
       without_user: Sans utilisateur
     new_model: Créer
     edit_model: Modifier

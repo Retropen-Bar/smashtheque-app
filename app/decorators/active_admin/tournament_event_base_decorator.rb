@@ -9,4 +9,8 @@ module ActiveAdmin::TournamentEventBaseDecorator
     bracket&.admin_decorate&.admin_link(options)
   end
 
+  def admin_link(options = {})
+    super({ label: name_with_logo(32) }.merge(options))
+  end
+
 end

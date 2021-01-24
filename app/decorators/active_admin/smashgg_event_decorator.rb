@@ -3,6 +3,10 @@ class ActiveAdmin::SmashggEventDecorator < SmashggEventDecorator
 
   decorates :smashgg_event
 
+  def start_at_date
+    h.l model.start_at.to_date, format: :default
+  end
+
   def admin_link(options = {})
     super({label: full_name_with_icon(size: 16)}.merge(options))
   end
@@ -13,6 +17,10 @@ class ActiveAdmin::SmashggEventDecorator < SmashggEventDecorator
 
   def duo_tournament_event_admin_link(options = {})
     duo_tournament_event&.admin_decorate&.admin_link(options)
+  end
+
+  def any_tournament_event_admin_link(options = {})
+   any_tournament_event&.admin_decorate&.admin_link(options)
   end
 
   SmashggEvent::USER_NAMES.each do |user_name|

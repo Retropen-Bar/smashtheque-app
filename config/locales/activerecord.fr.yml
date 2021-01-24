@@ -26,7 +26,7 @@ fr:
       smashgg_event: Tournoi smash.gg
       smashgg_user: Compte smash.gg
       team: Équipe
-      tournament_event: Édition
+      tournament_event: Édition 1v1
       twitch_channel: Chaîne Twitch
       user: Utilisateur
       you_tube_channel: Chaîne YouTube
@@ -49,6 +49,7 @@ fr:
         token: Token
       challonge_tournament:
         << : *SHARED
+        any_tournament_event: Édition
         challonge_id: ID
         challonge_url: URL
         duo_tournament_event: Édition 2v2
@@ -183,6 +184,7 @@ fr:
         << : *SHARED
         contacts: Contacts
         discord_guild: Serveur Discord
+        duo_tournament_events: Éditions 2v2
         is_archived: Stoppé ?
         is_online: Online ?
         level: Difficulté
@@ -191,7 +193,7 @@ fr:
         registration: Comment s'inscrire
         size: Taille
         starts_at: Heure
-        tournament_events: Éditions
+        tournament_events: Éditions 1v1
         wday: Jour de la semaine
       recurring_tournament/level:
         l1_playground: 1 - Cour de récréation
@@ -235,6 +237,7 @@ fr:
         size_min: Taille min
       smashgg_event:
         << : *SHARED
+        any_tournament_event: Édition
         duo_tournament_event: Édition 2v2
         is_online: Online?
         num_entrants: Participants

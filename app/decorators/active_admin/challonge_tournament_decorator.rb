@@ -3,6 +3,10 @@ class ActiveAdmin::ChallongeTournamentDecorator < ChallongeTournamentDecorator
 
   decorates :challonge_tournament
 
+  def start_at_date
+    h.l model.start_at.to_date, format: :default
+  end
+
   def admin_link(options = {})
     super({label: name_with_icon(size: 16)}.merge(options))
   end
@@ -13,6 +17,10 @@ class ActiveAdmin::ChallongeTournamentDecorator < ChallongeTournamentDecorator
 
   def duo_tournament_event_admin_link(options = {})
     duo_tournament_event&.admin_decorate&.admin_link(options)
+  end
+
+  def any_tournament_event_admin_link(options = {})
+   any_tournament_event&.admin_decorate&.admin_link(options)
   end
 
   def create_tournament_event_admin_path

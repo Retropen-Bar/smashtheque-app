@@ -23,6 +23,9 @@ ActiveAdmin.register RecurringTournament do
     column :tournament_events do |decorated|
       decorated.tournament_events_admin_link
     end
+    column :duo_tournament_events do |decorated|
+      decorated.duo_tournament_events_admin_link
+    end
     column :recurring_type do |decorated|
       decorated.recurring_type_text
     end
@@ -31,7 +34,7 @@ ActiveAdmin.register RecurringTournament do
     end
     column :is_online
     column :level do |decorated|
-      decorated.level_status
+      decorated.short_level_status
     end
     column :size
     column :contacts do |decorated|
@@ -126,6 +129,9 @@ ActiveAdmin.register RecurringTournament do
       row :tournament_events do |decorated|
         decorated.tournament_events_admin_link
       end
+      row :duo_tournament_events do |decorated|
+        decorated.duo_tournament_events_admin_link
+      end
       row :recurring_type do |decorated|
         decorated.recurring_type_text
       end
@@ -151,6 +157,10 @@ ActiveAdmin.register RecurringTournament do
       row :updated_at
     end
     active_admin_comments
+  end
+
+  action_item :public, only: :show do
+    link_to 'Page publique', resource, class: 'green'
   end
 
 end

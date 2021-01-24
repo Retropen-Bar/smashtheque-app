@@ -11,7 +11,7 @@ ActiveAdmin.register SmashggEvent do
   # INDEX
   # ---------------------------------------------------------------------------
 
-  includes :tournament_event,
+  includes :tournament_event, :duo_tournament_event,
            { top1_smashgg_user: { player: { user: :discord_user } } },
            { top2_smashgg_user: { player: { user: :discord_user } } },
            { top3_smashgg_user: { player: { user: :discord_user } } },
@@ -24,21 +24,23 @@ ActiveAdmin.register SmashggEvent do
   index do
     selectable_column
     id_column
+    column :any_tournament_event do |decorated|
+      decorated.any_tournament_event_admin_link
+    end
     column 'Tournoi', sortable: :tournament_slug do |decorated|
       decorated.tournament_smashgg_link
     end
     column 'Événement', sortable: :slug do |decorated|
       decorated.smashgg_link
     end
-    column :start_at
+    column :start_at do |decorated|
+      decorated.start_at_date
+    end
     column :num_entrants
     SmashggEvent::USER_NAMES.each do |user_name|
       column user_name do |decorated|
         decorated.send("#{user_name}_admin_link")
       end
-    end
-    column :tournament_event do |decorated|
-      decorated.tournament_event_admin_link
     end
     column :created_at do |decorated|
       decorated.created_at_date
@@ -48,8 +50,8 @@ ActiveAdmin.register SmashggEvent do
 
   scope :all, default: true
 
-  scope :with_tournament_event, group: :tournament_event
-  scope :without_tournament_event, group: :tournament_event
+  scope :with_any_tournament_event, group: :tournament_event
+  scope :without_any_tournament_event, group: :tournament_event
 
   filter :smashgg_id
   filter :tournament_name

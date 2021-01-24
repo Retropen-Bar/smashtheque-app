@@ -107,6 +107,24 @@ class SmashggEvent < ApplicationRecord
     ))
   end
 
+  def self.with_duo_tournament_event
+    where(id: (
+      DuoTournamentEvent.by_bracket_type(:SmashggEvent).select(:bracket_id)
+    ))
+  end
+  def self.without_duo_tournament_event
+    where.not(id: (
+      DuoTournamentEvent.by_bracket_type(:SmashggEvent).select(:bracket_id)
+    ))
+  end
+
+  def self.with_any_tournament_event
+    with_tournament_event.or(with_duo_tournament_event)
+  end
+  def self.without_any_tournament_event
+    without_tournament_event.without_duo_tournament_event
+  end
+
   def self.with_smashgg_user(smashgg_user_id)
     where(
       USER_NAMES.map do |user_name|
@@ -226,6 +244,10 @@ class SmashggEvent < ApplicationRecord
       return user_name if send("#{user_name}_id") == smashgg_user_id
     end
     nil
+  end
+
+  def any_tournament_event
+    tournament_event || duo_tournament_event
   end
 
   # ---------------------------------------------------------------------------

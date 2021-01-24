@@ -15,6 +15,10 @@ class RecurringTournamentDecorator < BaseDecorator
     RecurringTournament.human_attribute_name("level.#{model.level}")
   end
 
+  def short_level_text
+    RecurringTournament.human_attribute_name("level.#{model.level}").first
+  end
+
   def self.size_name(size)
     size && (size > 128 ? '128+' : size)
   end
@@ -89,6 +93,10 @@ class RecurringTournamentDecorator < BaseDecorator
 
   def tournament_events_count
     model.tournament_events.count
+  end
+
+  def duo_tournament_events_count
+    model.duo_tournament_events.count
   end
 
   def icon_class

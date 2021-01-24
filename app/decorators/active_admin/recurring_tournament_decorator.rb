@@ -14,6 +14,17 @@ class ActiveAdmin::RecurringTournamentDecorator < RecurringTournamentDecorator
     )
   end
 
+  def duo_tournament_events_admin_link
+    h.link_to(
+      duo_tournament_events_count,
+      admin_duo_tournament_events_path(
+        q: {
+          recurring_tournament_id_eq: model.id
+        }
+      )
+    )
+  end
+
   def contacts_admin_links(options = {})
     model.contacts.map do |user|
       user.admin_decorate.admin_link(options)
@@ -23,6 +34,12 @@ class ActiveAdmin::RecurringTournamentDecorator < RecurringTournamentDecorator
   def level_status
     arbre do
       status_tag level_text, class: LEVEL_COLORS[model.level.to_sym]
+    end
+  end
+
+  def short_level_status
+    arbre do
+      status_tag short_level_text, class: LEVEL_COLORS[model.level.to_sym]
     end
   end
 
