@@ -53,6 +53,17 @@ class DiscordUser < ApplicationRecord
     FetchDiscordUserDataJob.perform_later(self)
   end
 
+  after_commit :update_user
+  def update_user
+    if !destroyed? && previous_changes.has_key?('username')
+      old_username = previous_changes['username'].first
+      new_username = previous_changes['username'].last
+      if old_username.blank? && !new_username.blank? && user&.name&.starts_with?('#')
+        user.update_attribute :name, new_username
+      end
+    end
+  end
+
   # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
