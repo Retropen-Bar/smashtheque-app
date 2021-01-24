@@ -276,10 +276,12 @@ class Player < ApplicationRecord
   # SCOPES
   # ---------------------------------------------------------------------------
 
-  pg_search_scope :by_keyword,
+  pg_search_scope :by_pg_search,
                   against: [:name],
                   using: {
-                    tsearch: { prefix: true }
+                    tsearch: {
+                      prefix: true
+                    }
                   }
 
   def self.by_name(name)
@@ -288,6 +290,16 @@ class Player < ApplicationRecord
 
   def self.by_name_like(name)
     where('unaccent(name) ILIKE unaccent(?)', name)
+  end
+
+  def self.by_name_contains_like(term)
+    where("unaccent(name) ILIKE unaccent(?)", "%#{term}%")
+  end
+
+  def self.by_keyword(term)
+    by_name_contains_like(term).or(
+      where(id: by_pg_search(term).select(:id))
+    )
   end
 
   def self.by_discord_id(discord_id)

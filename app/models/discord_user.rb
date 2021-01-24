@@ -69,7 +69,7 @@ class DiscordUser < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   include PgSearch::Model
-  pg_search_scope :by_keyword,
+  pg_search_scope :by_pg_search,
                   against: [:discord_id, :username],
                   using: {
                     tsearch: { prefix: true }
@@ -117,6 +117,16 @@ class DiscordUser < ApplicationRecord
 
   def self.by_username_like(username)
     where('unaccent(username) ILIKE unaccent(?)', username)
+  end
+
+  def self.by_username_contains_like(term)
+    where("unaccent(username) ILIKE unaccent(?)", "%#{term}%")
+  end
+
+  def self.by_keyword(term)
+    by_username_contains_like(term).or(
+      where(id: by_pg_search(term).select(:id))
+    )
   end
 
   # ---------------------------------------------------------------------------
