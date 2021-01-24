@@ -102,7 +102,8 @@ class Duo < ApplicationRecord
                   },
                   using: {
                     tsearch: { prefix: true }
-                  }
+                  },
+                  ignoring: :accents
 
   def self.by_name(name)
     where(name: name)

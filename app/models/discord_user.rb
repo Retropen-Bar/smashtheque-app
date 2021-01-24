@@ -73,7 +73,8 @@ class DiscordUser < ApplicationRecord
                   against: [:discord_id, :username],
                   using: {
                     tsearch: { prefix: true }
-                  }
+                  },
+                  ignoring: :accents
 
   def self.with_user
     where.not(user_id: nil)

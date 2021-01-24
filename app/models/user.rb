@@ -115,7 +115,8 @@ class User < ApplicationRecord
                   against: [:name],
                   using: {
                     tsearch: { prefix: true }
-                  }
+                  },
+                  ignoring: :accents
 
   def self.not_root
     where(is_root: false)
