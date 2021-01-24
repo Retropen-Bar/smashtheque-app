@@ -51,6 +51,7 @@ ActiveAdmin.register TournamentEvent do
       end
     end
     column :is_complete
+    column :is_out_of_ranking
     actions
   end
 
@@ -69,6 +70,7 @@ ActiveAdmin.register TournamentEvent do
   filter :bracket_url
   filter :participants_count
   filter :is_complete
+  filter :is_out_of_ranking
 
   action_item :update_available_brackets,
               only: :index,
@@ -155,6 +157,7 @@ ActiveAdmin.register TournamentEvent do
               player_input f, player_name, hint: hint
             end
             f.input :is_complete
+            f.input :is_out_of_ranking
           end
           f.actions
         end
@@ -165,7 +168,8 @@ ActiveAdmin.register TournamentEvent do
   permit_params :name, :date, :recurring_tournament_id, :participants_count,
                 :top1_player_id, :top2_player_id, :top3_player_id,
                 :top4_player_id, :top5a_player_id, :top5b_player_id,
-                :top7a_player_id, :top7b_player_id, :is_complete,
+                :top7a_player_id, :top7b_player_id,
+                :is_complete, :is_out_of_ranking,
                 :bracket_url, :bracket_gid,
                 :graph
 
@@ -194,6 +198,7 @@ ActiveAdmin.register TournamentEvent do
             end
           end
           row :is_complete
+          row :is_out_of_ranking
           row :bracket do |decorated|
             decorated.bracket_admin_link
           end

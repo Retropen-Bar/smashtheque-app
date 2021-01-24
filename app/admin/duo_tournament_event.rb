@@ -75,6 +75,7 @@ ActiveAdmin.register DuoTournamentEvent do
       end
     end
     column :is_complete
+    column :is_out_of_ranking
     actions
   end
 
@@ -93,6 +94,7 @@ ActiveAdmin.register DuoTournamentEvent do
   filter :bracket_url
   filter :participants_count
   filter :is_complete
+  filter :is_out_of_ranking
 
   action_item :update_available_brackets,
               only: :index,
@@ -179,6 +181,7 @@ ActiveAdmin.register DuoTournamentEvent do
               duo_input f, duo_name, hint: hint
             end
             f.input :is_complete
+            f.input :is_out_of_ranking
           end
           f.actions
         end
@@ -189,7 +192,8 @@ ActiveAdmin.register DuoTournamentEvent do
   permit_params :name, :date, :recurring_tournament_id, :participants_count,
                 :top1_duo_id, :top2_duo_id, :top3_duo_id,
                 :top4_duo_id, :top5a_duo_id, :top5b_duo_id,
-                :top7a_duo_id, :top7b_duo_id, :is_complete,
+                :top7a_duo_id, :top7b_duo_id,
+                :is_complete, :is_out_of_ranking,
                 :bracket_url, :bracket_gid,
                 :graph
 
@@ -218,6 +222,7 @@ ActiveAdmin.register DuoTournamentEvent do
             end
           end
           row :is_complete
+          row :is_out_of_ranking
           row :bracket do |decorated|
             decorated.bracket_admin_link
           end

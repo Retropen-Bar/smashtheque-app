@@ -7,6 +7,7 @@
 #  bracket_url             :string
 #  date                    :date             not null
 #  is_complete             :boolean          default(FALSE), not null
+#  is_out_of_ranking       :boolean          default(FALSE), not null
 #  name                    :string           not null
 #  participants_count      :integer
 #  created_at              :datetime         not null

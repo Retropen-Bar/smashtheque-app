@@ -92,6 +92,7 @@ fr:
         date: Date
         graph: Graph
         is_complete: Complet
+        is_out_of_ranking: Non récompensé ?
         name: Nom
         participants_count: Participants
         recurring_tournament: Série
@@ -303,6 +304,7 @@ fr:
         date: Date
         graph: Graph
         is_complete: Complet
+        is_out_of_ranking: Non récompensé ?
         name: Nom
         participants_count: Participants
         recurring_tournament: Série
