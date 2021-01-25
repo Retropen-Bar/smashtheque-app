@@ -1,13 +1,11 @@
 class ApplicationController < ActionController::Base
 
+  # Warning : this file is used by ActiveAdmin
+
   helper_method :admin_user_signed_in?
 
   before_action :set_time_zone
   before_action :set_locale
-
-  def status
-    render plain: 'OK', status: 200
-  end
 
   protected
 
@@ -29,10 +27,6 @@ class ApplicationController < ActionController::Base
 
   def set_locale
     I18n.locale = :fr
-  end
-
-  def set_static_page
-    @static = true
   end
 
   def authenticate_admin_user!

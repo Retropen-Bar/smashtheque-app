@@ -81,7 +81,7 @@ Rails.application.routes.draw do
   end
   resources :tournament_events, only: [:index, :show]
   resources :duo_tournament_events, only: [:index, :show]
-  get 'planning/online' => 'public#planning_online', as: :planning
+  get 'planning/online' => 'pages#planning_online', as: :planning
 
   resources :twitch_channels, only: [:index]
   resources :you_tube_channels, only: [:index]
@@ -95,9 +95,9 @@ Rails.application.routes.draw do
     end
   end
 
-  get 'credits' => 'public#credits', as: :credits
-  get 'mentions-legales' => 'public#legal', as: :legal
+  get 'credits' => 'pages#credits', as: :credits
+  get 'mentions-legales' => 'pages#legal', as: :legal
 
-  root to: 'public#home'
+  root to: 'pages#home'
 
 end
