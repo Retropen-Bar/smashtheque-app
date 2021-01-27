@@ -1,6 +1,11 @@
 class ActiveAdmin::RewardDecorator < RewardDecorator
   include ActiveAdmin::BaseDecorator
 
+  CATEGORY_COLORS = {
+    Reward::CATEGORY_ONLINE_1V1.to_sym => :green,
+    Reward::CATEGORY_ONLINE_2V2.to_sym => :blue
+  }.freeze
+
   decorates :reward
 
   def admin_link(options = {}, badge_options = {})
@@ -37,6 +42,13 @@ class ActiveAdmin::RewardDecorator < RewardDecorator
 
   def players_admin_link
     h.link_to players_count, players_admin_path
+  end
+
+  def category_status
+    return nil if category.blank?
+    arbre do
+      status_tag category_name, class: CATEGORY_COLORS[category.to_sym]
+    end
   end
 
 end

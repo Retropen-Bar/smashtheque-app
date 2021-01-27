@@ -12,6 +12,13 @@ ActiveAdmin.register Reward do
   # INDEX
   # ---------------------------------------------------------------------------
 
+  order_by(:name) do |order_clause|
+    if order_clause.order == 'desc'
+      'category DESC, level1 DESC, level2 DESC'
+    else
+      'category, level1, level2'
+    end
+  end
   order_by(:level) do |order_clause|
     if order_clause.order == 'desc'
       'level1 DESC, level2 DESC'
@@ -19,13 +26,16 @@ ActiveAdmin.register Reward do
       'level1, level2'
     end
   end
-  config.sort_order = 'level_asc'
+  config.sort_order = 'name_asc'
 
   index do
     selectable_column
     id_column
-    column :name do |decorated|
+    column :name, sortable: true do |decorated|
       link_to decorated.name, [:admin, decorated.model]
+    end
+    column :category do |decorated|
+      decorated.category_status
     end
     column :level, sortable: true
     column :emoji do |decorated|
@@ -46,7 +56,14 @@ ActiveAdmin.register Reward do
     actions
   end
 
-  filter :name
+  scope :all, default: true
+  scope :online_1v1
+  scope :online_2v2
+
+  filter :category,
+         as: :select,
+         collection: proc { reward_category_select_collection },
+         input_html: { multiple: true, data: { select2: {} } }
   filter :level1
   filter :level2
 
@@ -58,7 +75,8 @@ ActiveAdmin.register Reward do
     columns do
       column do
         f.inputs do
-          f.input :name
+          f.input :category,
+                  collection: reward_category_select_collection
           f.input :level1
           f.input :level2
           f.input :emoji
@@ -85,7 +103,7 @@ ActiveAdmin.register Reward do
     end
   end
 
-  permit_params :name, :level1, :level2, :emoji, :image
+  permit_params :category, :level1, :level2, :emoji, :image
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -94,7 +112,11 @@ ActiveAdmin.register Reward do
   show do
     attributes_table do
       row :name
-      row :level
+      row :category do |decorated|
+        decorated.category_status
+      end
+      row :level1
+      row :level2
       row :emoji
       row :emoji do |decorated|
         decorated.emoji_image_tag(max_height: 64)

@@ -209,6 +209,7 @@ fr:
         weekly: Toutes les semaines
       reward:
         << : *SHARED
+        category: Catégorie
         image: Image
         level: Niveau
         level1: Niveau 1
@@ -218,6 +219,9 @@ fr:
         player_reward_conditions: Obtensions
         players: Joueurs
         style: Style
+      reward/category:
+        online_1v1: Online 1v1
+        online_2v2: Online 2v2
       reward_condition:
         << : *SHARED
         level: Difficulté

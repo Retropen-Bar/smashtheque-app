@@ -1,9 +1,9 @@
 module ActiveAdmin::RewardConditionsHelper
 
   def reward_condition_reward_select_collection
-    Reward.order(:name).map do |reward|
+    Reward.online_1v1.ordered_by_level.map do |reward|
       [
-        reward.name,
+        reward.decorate.name,
         reward.id
       ]
     end

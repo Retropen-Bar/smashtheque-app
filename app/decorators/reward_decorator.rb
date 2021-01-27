@@ -70,4 +70,13 @@ class RewardDecorator < BaseDecorator
     [level1, level2].join('.')
   end
 
+  def category_name
+    return nil if category.blank?
+    Reward.human_attribute_name("category.#{category}")
+  end
+
+  def name
+    [category_name, level].join(' ')
+  end
+
 end
