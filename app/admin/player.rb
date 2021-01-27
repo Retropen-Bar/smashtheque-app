@@ -99,7 +99,7 @@ ActiveAdmin.register Player do
   filter :points
   filter :best_reward,
          as: :select,
-         collection: proc { Reward.all.admin_decorate },
+         collection: proc { Reward.online_1v1.admin_decorate },
          input_html: { multiple: true, data: { select2: {} } }
 
   action_item :rebuild_all,

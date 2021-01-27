@@ -26,6 +26,11 @@ ActiveAdmin.register Duo do
     column :player2 do |decorated|
       decorated.player2_admin_link
     end
+    column :rank
+    column :points
+    column :best_reward, sortable: :best_reward_level do |decorated|
+      decorated.best_reward_admin_link({}, class: 'reward-badge-32')
+    end
     column :created_at do |decorated|
       decorated.created_at_date
     end
@@ -33,6 +38,12 @@ ActiveAdmin.register Duo do
   end
 
   filter :name
+  filter :rank
+  filter :points
+  filter :best_reward,
+         as: :select,
+         collection: proc { Reward.online_2v2.admin_decorate },
+         input_html: { multiple: true, data: { select2: {} } }
 
   # ---------------------------------------------------------------------------
   # FORM

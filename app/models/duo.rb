@@ -207,7 +207,7 @@ class Duo < ApplicationRecord
     Hash[
       rewards.order(:level1).group(:level1).pluck(:level1, "MAX(level2)")
     ].map do |level1, level2|
-      Reward.by_level(level1, level2).first
+      Reward.online_2v2.by_level(level1, level2).first
     end.sort_by(&:level2)
   end
 
