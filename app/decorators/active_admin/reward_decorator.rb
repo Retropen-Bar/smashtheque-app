@@ -20,6 +20,25 @@ class ActiveAdmin::RewardDecorator < RewardDecorator
     h.link_to reward_conditions_count, reward_conditions_admin_path
   end
 
+  def reward_duo_conditions_admin_path
+    admin_reward_duo_conditions_path(q: { reward_id_in: [model.id] })
+  end
+
+  def reward_duo_conditions_admin_link
+    h.link_to reward_duo_conditions_count, reward_duo_conditions_admin_path
+  end
+
+  def conditions_admin_path
+    h.polymorphic_path(
+      [:admin, conditions_name],
+      q: { reward_id_in: [model.id] }
+    )
+  end
+
+  def conditions_admin_link
+    h.link_to conditions_count, conditions_admin_path
+  end
+
   def player_reward_conditions_admin_path
     admin_player_reward_conditions_path(
       q: {
@@ -32,6 +51,31 @@ class ActiveAdmin::RewardDecorator < RewardDecorator
     h.link_to player_reward_conditions_count, player_reward_conditions_admin_path
   end
 
+  def duo_reward_duo_conditions_admin_path
+    admin_duo_reward_duo_conditions_path(
+      q: {
+        reward_duo_condition_reward_id_in: [model.id]
+      }
+    )
+  end
+
+  def duo_reward_duo_conditions_admin_link
+    h.link_to duo_reward_duo_conditions_count, duo_reward_duo_conditions_admin_path
+  end
+
+  def met_conditions_admin_path
+    h.polymorphic_path(
+      [:admin, met_conditions_name],
+      q: {
+        "#{condition_name}_reward_id_in" => [model.id]
+      }
+    )
+  end
+
+  def met_conditions_admin_link
+    h.link_to met_conditions_count, met_conditions_admin_path
+  end
+
   def players_admin_path
     admin_players_path(
       q: {
@@ -42,6 +86,31 @@ class ActiveAdmin::RewardDecorator < RewardDecorator
 
   def players_admin_link
     h.link_to players_count, players_admin_path
+  end
+
+  def duos_admin_path
+    admin_duos_path(
+      q: {
+        rewards_id_in: [model.id]
+      }
+    )
+  end
+
+  def duos_admin_link
+    h.link_to duos_count, duos_admin_path
+  end
+
+  def awardeds_admin_path
+    h.polymorphic_path(
+      [:admin, awardeds_name],
+      q: {
+        rewards_id_in: [model.id]
+      }
+    )
+  end
+
+  def awardeds_admin_link
+    h.link_to awardeds_count, awardeds_admin_path
   end
 
   def category_status

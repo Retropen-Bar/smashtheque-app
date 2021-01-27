@@ -209,14 +209,20 @@ fr:
         weekly: Toutes les semaines
       reward:
         << : *SHARED
+        awardeds: Récompensés
         category: Catégorie
+        conditions: Conditions
+        duo_reward_duo_conditions: Obtensions 2v2
+        duos: Duos
         image: Image
         level: Niveau
         level1: Niveau 1
         level2: Niveau 2
+        met_conditions: Récompenses obtenues
         name: Nom
-        reward_conditions: Conditions
-        player_reward_conditions: Obtensions
+        reward_conditions: Conditions 1v1
+        reward_duo_conditions: Conditions 2v2
+        player_reward_conditions: Obtensions 1v1
         players: Joueurs
         style: Style
       reward/category:

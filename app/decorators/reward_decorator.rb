@@ -58,12 +58,36 @@ class RewardDecorator < BaseDecorator
     reward_conditions.count
   end
 
+  def reward_duo_conditions_count
+    reward_duo_conditions.count
+  end
+
+  def conditions_count
+    conditions.count
+  end
+
   def player_reward_conditions_count
     player_reward_conditions.count
   end
 
+  def duo_reward_duo_conditions_count
+    duo_reward_duo_conditions.count
+  end
+
+  def met_conditions_count
+    met_conditions.count
+  end
+
   def players_count
     players.count
+  end
+
+  def duos_count
+    duos.count
+  end
+
+  def awardeds_count
+    awardeds.count
   end
 
   def level

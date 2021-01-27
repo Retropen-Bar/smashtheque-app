@@ -44,11 +44,11 @@ ActiveAdmin.register Reward do
     column :image do |decorated|
       decorated.image_image_tag(max_height: 32)
     end
-    column :reward_conditions do |decorated|
-      decorated.reward_conditions_admin_link
+    column :conditions do |decorated|
+      decorated.conditions_admin_link
     end
-    column :player_reward_conditions do |decorated|
-      decorated.player_reward_conditions_admin_link
+    column :met_conditions do |decorated|
+      decorated.met_conditions_admin_link
     end
     column :created_at do |decorated|
       decorated.created_at_date
@@ -127,14 +127,27 @@ ActiveAdmin.register Reward do
       row :badge do |decorated|
         decorated.all_badge_sizes(count: 99)
       end
-      row :reward_conditions do |decorated|
-        decorated.reward_conditions_admin_link
+      if resource.is_1v1?
+        row :reward_conditions do |decorated|
+          decorated.reward_conditions_admin_link
+        end
+        row :player_reward_conditions do |decorated|
+          decorated.player_reward_conditions_admin_link
+        end
+        row :players do |decorated|
+          decorated.players_admin_link
+        end
       end
-      row :player_reward_conditions do |decorated|
-        decorated.player_reward_conditions_admin_link
-      end
-      row :players do |decorated|
-        decorated.players_admin_link
+      if resource.is_2v2?
+        row :reward_duo_conditions do |decorated|
+          decorated.reward_duo_conditions_admin_link
+        end
+        row :duo_reward_duo_conditions do |decorated|
+          decorated.duo_reward_duo_conditions_admin_link
+        end
+        row :duos do |decorated|
+          decorated.duos_admin_link
+        end
       end
       row :created_at
       row :updated_at

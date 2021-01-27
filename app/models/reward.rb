@@ -32,6 +32,11 @@ class Reward < ApplicationRecord
   has_many :player_reward_conditions, through: :reward_conditions
   has_many :players, through: :player_reward_conditions
 
+  has_many :reward_duo_conditions, dependent: :destroy
+
+  has_many :duo_reward_duo_conditions, through: :reward_duo_conditions
+  has_many :duos, through: :duo_reward_duo_conditions
+
   has_one_attached :image
 
   # ---------------------------------------------------------------------------
@@ -84,6 +89,61 @@ class Reward < ApplicationRecord
 
   def self.grouped_by_level2
     ordered_by_level.group_by(&:level2).to_a
+  end
+
+  # ---------------------------------------------------------------------------
+  # HELPERS
+  # ---------------------------------------------------------------------------
+
+  def is_1v1?
+    category.to_s == CATEGORY_ONLINE_1V1
+  end
+  def is_2v2?
+    category.to_s == CATEGORY_ONLINE_2V2
+  end
+
+  def condition_name
+    case category
+    when CATEGORY_ONLINE_1V1
+      :reward_condition
+    when CATEGORY_ONLINE_2V2
+      :reward_duo_condition
+    end
+  end
+  def conditions_name
+    condition_name.to_s.pluralize.to_sym
+  end
+  def conditions
+    send(conditions_name)
+  end
+
+  def met_condition_name
+    case category
+    when CATEGORY_ONLINE_1V1
+      :player_reward_condition
+    when CATEGORY_ONLINE_2V2
+      :duo_reward_duo_condition
+    end
+  end
+  def met_conditions_name
+    met_condition_name.to_s.pluralize.to_sym
+  end
+  def met_conditions
+    send(met_conditions_name)
+  end
+
+  def awarded_name
+    if is_1v1?
+      :player
+    else
+      :duo
+    end
+  end
+  def awardeds_name
+    awarded_name.to_s.pluralize.to_sym
+  end
+  def awardeds
+    send(awardeds_name)
   end
 
   # ---------------------------------------------------------------------------
