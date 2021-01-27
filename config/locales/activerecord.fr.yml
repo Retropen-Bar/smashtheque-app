@@ -75,8 +75,14 @@ fr:
         players: Joueurs
       duo:
         << : *SHARED
+        best_reward: Meilleure récompense
+        best_rewards: Meilleures récompenses
         player1: Joueur 1
         player2: Joueur 2
+        points: Fragments d'étoiles
+        rank: Classement
+        rewards: Récompenses
+        unique_rewards: Récompenses uniques
       duo_reward_duo_condition:
         << : *SHARED
         duo: Équipe
@@ -156,6 +162,7 @@ fr:
         << : *SHARED
         ban_details: Détails du ban
         best_reward: Meilleure récompense
+        best_rewards: Meilleures récompenses
         character_ids: Persos
         character_names: Persos
         characters: Persos

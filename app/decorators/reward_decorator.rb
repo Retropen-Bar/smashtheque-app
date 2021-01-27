@@ -24,7 +24,7 @@ class RewardDecorator < BaseDecorator
   end
 
   def badge(options = {})
-    return nil if model.emoji.blank?
+    return nil if !model.image.attached? && model.emoji.blank?
 
     classes = [
       'reward-badge',

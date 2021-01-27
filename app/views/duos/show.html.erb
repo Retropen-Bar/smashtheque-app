@@ -80,7 +80,7 @@
         </thead>
         <tbody>
           <% @duo_tournament_events.each do |duo_tournament_event| %>
-            <% duo_reward_duo_condition = duo_tournament_event.duo_reward_duo_conditions.by_duo(@duo).first&.decorate %>
+            <% duo_reward_duo_condition = @duo_reward_duo_conditions_by_duo_tournament_event_id[duo_tournament_event.id]&.decorate %>
             <tr>
               <td class="align-middle"><%= l duo_tournament_event.date, format: :long %></td>
               <td class="align-middle"><%= duo_tournament_event.recurring_tournament_link %></th>
@@ -114,7 +114,7 @@
       </div>
       <div class="modal-body">
         <div class="row">
-          <% Reward.grouped_by_level1.each do |(level1, level1_rewards)| %>
+          <% @all_rewards.grouped_by_level1.each do |(level1, level1_rewards)| %>
             <div class="col">
               <% level1_rewards.each do |reward| %>
                 <% count = @rewards_counts[reward.id] %>
