@@ -7,7 +7,8 @@ class ChallongeClient
   end
 
   def get_tournament(slug:)
-    api_get("tournaments/#{slug}", {include_participants: 1})&.fetch('tournament', nil)
+    # Débutdelasaison1 -> D%C3%A9butdelasaison1
+    api_get("tournaments/#{CGI.escape(slug)}", {include_participants: 1})&.fetch('tournament', nil)
   end
 
   private
