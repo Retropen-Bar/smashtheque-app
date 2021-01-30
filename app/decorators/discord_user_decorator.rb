@@ -23,13 +23,20 @@ class DiscordUserDecorator < BaseDecorator
     url
   end
 
+  def default_avatar_url
+    @@default_avatar_url ||= h.image_url('default-avatar.jpg')
+  end
+
   def avatar_tag(size = nil)
     return nil if avatar.blank?
-    # h.image_tag avatar_url(size), class: 'avatar'
-    h.image_tag_with_max_size avatar_url,
-                              max_width: size,
-                              max_height: size,
-                              class: 'avatar'
+    h.image_tag 's.gif',
+                class: 'avatar',
+                style: [
+                  "background-image: url(\"#{avatar_url}\"), url(\"#{default_avatar_url}\")",
+                  "background-size: cover",
+                  "width: #{size}px",
+                  "height: #{size}px"
+                ].join(';')
   end
 
   def player_link(options = {})
