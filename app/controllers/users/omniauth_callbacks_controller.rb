@@ -11,6 +11,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         sign_in user
         redirect_to root_path, notice: "Bienvenue, #{user.name}"
       end
+      user.remember_me!
     else
       redirect_to root_path
     end

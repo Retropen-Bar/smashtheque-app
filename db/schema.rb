@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_27_102754) do
+ActiveRecord::Schema.define(version: 2021_01_30_135446) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -499,6 +499,7 @@ ActiveRecord::Schema.define(version: 2021_01_27_102754) do
     t.string "graphic_designer_details"
     t.boolean "is_available_graphic_designer", default: false, null: false
     t.string "twitter_username"
+    t.datetime "remember_created_at"
   end
 
   create_table "versions", force: :cascade do |t|
