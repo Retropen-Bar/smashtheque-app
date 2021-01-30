@@ -15,7 +15,25 @@ class DuosController < PublicController
   def show
     @duo = Duo.find(params[:id])
     @rewards_counts = @duo.rewards_counts
-    @duo_tournament_events = @duo.duo_tournament_events.order(date: :desc).decorate
+    @duo_tournament_events = @duo.duo_tournament_events
+                                 .order(date: :desc)
+                                 .includes(
+                                   recurring_tournament: :discord_guild
+                                 ).decorate
+    @duo_reward_duo_conditions_by_duo_tournament_event_id = Hash[
+      @duo.duo_reward_duo_conditions
+          .includes(
+            reward: {
+              image_attachment: :blob
+            }
+          ).map do |duo_reward_duo_condition|
+        [
+          duo_reward_duo_condition.duo_tournament_event_id,
+          duo_reward_duo_condition
+        ]
+      end
+    ]
+    @all_rewards = Reward.online_2v2.includes(image_attachment: :blob)
     # main_character = @duo.characters.first&.decorate
     # if main_character
     #   @background_color = main_character.background_color

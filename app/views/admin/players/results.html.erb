@@ -30,7 +30,7 @@
 </div>
 
 <div class="text-center" style="margin-bottom: 30px">
-  <% Reward.grouped_by_level2.each do |(level2, level2_rewards)| %>
+  <% Reward.online_1v1.grouped_by_level2.each do |(level2, level2_rewards)| %>
     <div>
       <% level2_rewards.each do |reward| %>
         <%= link_to @player.reward_player_reward_conditions_admin_path(reward) do %>

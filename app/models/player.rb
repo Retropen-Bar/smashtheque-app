@@ -476,7 +476,7 @@ class Player < ApplicationRecord
     Hash[
       rewards.order(:level1).group(:level1).pluck(:level1, "MAX(level2)")
     ].map do |level1, level2|
-      Reward.by_level(level1, level2).first
+      Reward.online_1v1.by_level(level1, level2).first
     end.sort_by(&:level2)
   end
 

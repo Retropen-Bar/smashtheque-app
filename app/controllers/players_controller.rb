@@ -51,7 +51,7 @@ class PlayersController < PublicController
         [player_reward_condition.tournament_event_id, player_reward_condition]
       end
     ]
-    @all_rewards = Reward.includes(image_attachment: :blob)
+    @all_rewards = Reward.online_1v1.includes(image_attachment: :blob)
     main_character = @player.characters.first&.decorate
     if main_character
       @background_color = main_character.background_color
