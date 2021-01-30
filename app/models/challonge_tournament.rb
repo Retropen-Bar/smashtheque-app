@@ -128,7 +128,12 @@ class ChallongeTournament < ApplicationRecord
           else
             placement.to_s
           end
-          result["top#{idx}_participant_name".to_sym] = participant['name']
+          result["top#{idx}_participant_name".to_sym] = [
+            participant['display_name'],
+            participant['name'],
+            participant['username'],
+            participant['challonge_username']
+          ].reject(&:blank?).first
         end
       end
     end
