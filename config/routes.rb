@@ -26,6 +26,7 @@ Rails.application.routes.draw do
           get :refetch
         end
       end
+      resources :duo_tournament_events, only: [:index, :show, :create]
       resources :duos, only: [:index, :show, :create, :update]
       resources :locations, only: [:index, :create]
       resources :recurring_tournaments, only: [:index, :show]
