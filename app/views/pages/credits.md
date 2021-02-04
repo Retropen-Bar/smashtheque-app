@@ -10,7 +10,7 @@
 - Pixel
 - red
 
-## Apports et aides conséquentes 
+## Apports et aides conséquentes
 - Moon Key : soutien apports de contenu et lien communautaire, support d'aide H24 pour l'édition des joueurs, là partout, même dans ta chambre la nuit
 - MIDZ : soutien apports de contenu et lien communautaire, représentant administrateurs online, rival d'Askel en terme d'apport de joie
 - Nixop : direction artistique, génie créatif incroyable, fou de boulot, créé sans cesse l'impensable, l'indescriptible, Nixop créé, et nous on est comme des gosses
@@ -19,7 +19,6 @@
 - Alw (assistance en tout genre)
 - FCF Kyrow (boite à idées)
 - Lenalee (plein de trucs)
-- Nixop (ajouts conséquents)
 - SewLink (plein d’ajouts, assistance, etc)
 - Shikamaru (plein de trucs)
 - Takakuna (beaucoup de corrections)
@@ -32,13 +31,13 @@
 - Sirove (de nombreuses corrections et apports pour Meaux)
 - DineAuZor (commu Caen)
 - Caoimhin “Soma” Beardwulf (commu Colmar)
-- Kekwel (commu Nancy Metz) 
+- Kekwel (commu Nancy Metz)
 - Suake (commu Rouen, Caen, Vannes bref la Normandie toussa)
 - ETH | Y0SHY (Contribution promotionnelle)
 
 
-## TOs 
-### TOs online : 
+## TOs
+### TOs online :
 Tebane_#8022
 LoXi#0038
 Miden 💫#1191
@@ -140,7 +139,7 @@ Seragalier#7431
 Master#9999
 SSY-blasterh#6438
 
-## Vidéastes / Streamers : 
+## Vidéastes / Streamers :
 
 wS | MG | NeoSkyBlue#0606
 SSY | Hirok#3623
@@ -218,7 +217,7 @@ Adam 🐵#2010
 Suake#3505
 Hokà#3528
 
-## Capitaines d'équipes : 
+## Capitaines d'équipes :
 Tebane_#8022
 ALB | Mik0ïa#3686
 Samafs#4058
@@ -264,7 +263,8 @@ TSA | Hiso 凶#2680
 Payne#4008
 SF | Neorel#3044
 
-## Rétropen-barmen 
+## Rétropen-barmen
+FBX | R-B | Nixoup 🖌#0063
 Pixel#3291
 Askel#7426
 R-B | Captain Damiendo#8698
