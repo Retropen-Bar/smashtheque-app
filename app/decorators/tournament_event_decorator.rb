@@ -24,6 +24,19 @@ class TournamentEventDecorator < TournamentEventBaseDecorator
     end
   end
 
+  def first_tournament_event_link(options = {})
+    tournament_event = first_tournament_event
+    if tournament_event
+      tournament_event.decorate.link(options)
+    else
+      options[:class] = [
+        options[:class],
+        :disabled
+      ].reject(&:blank?).join(' ')
+      h.link_to options[:label], '#', options
+    end
+  end
+
   def previous_tournament_event_link(options = {})
     tournament_event = previous_tournament_event
     if tournament_event
@@ -39,6 +52,19 @@ class TournamentEventDecorator < TournamentEventBaseDecorator
 
   def next_tournament_event_link(options = {})
     tournament_event = next_tournament_event
+    if tournament_event
+      tournament_event.decorate.link(options)
+    else
+      options[:class] = [
+        options[:class],
+        :disabled
+      ].reject(&:blank?).join(' ')
+      h.link_to options[:label], '#', options
+    end
+  end
+
+  def last_tournament_event_link(options = {})
+    tournament_event = last_tournament_event
     if tournament_event
       tournament_event.decorate.link(options)
     else
