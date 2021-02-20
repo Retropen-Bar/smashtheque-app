@@ -26,7 +26,7 @@
         delay: 250
       },
       templateResult: formatResult,
-      minimumInputLength: 3
+      minimumInputLength: 2
     });
 
     $input.on('select2:select', function (e) {
