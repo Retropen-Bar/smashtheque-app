@@ -254,12 +254,20 @@ ActiveAdmin.register DuoTournamentEvent do
     active_admin_comments
   end
 
+  action_item :first, only: :show do
+    resource.first_duo_tournament_event_admin_link label: '⇤', class: 'blue'
+  end
+
   action_item :previous, only: :show do
     resource.previous_duo_tournament_event_admin_link label: '←', class: 'blue'
   end
 
   action_item :next, only: :show do
     resource.next_duo_tournament_event_admin_link label: '→', class: 'blue'
+  end
+
+  action_item :last, only: :show do
+    resource.last_duo_tournament_event_admin_link label: '⇥', class: 'blue'
   end
 
   action_item :public, only: :show do

@@ -206,6 +206,13 @@ class DuoTournamentEvent < ApplicationRecord
     end.compact
   end
 
+  def first_duo_tournament_event
+    return nil if recurring_tournament.nil?
+    result = recurring_tournament.duo_tournament_events.order(:date).first
+    return nil if result.id == id
+    result
+  end
+
   def previous_duo_tournament_event
     return nil if recurring_tournament.nil?
     recurring_tournament.duo_tournament_events
@@ -220,6 +227,13 @@ class DuoTournamentEvent < ApplicationRecord
                         .where("date > ? OR (date = ? AND name > ?)", date, date, name)
                         .order(:date)
                         .first
+  end
+
+  def last_duo_tournament_event
+    return nil if recurring_tournament.nil?
+    result = recurring_tournament.duo_tournament_events.order(:date).last
+    return nil if result.id == id
+    result
   end
 
   def compute_rewards

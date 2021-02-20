@@ -24,6 +24,19 @@ class DuoTournamentEventDecorator < TournamentEventBaseDecorator
     end
   end
 
+  def first_duo_tournament_event_link(options = {})
+    duo_tournament_event = first_duo_tournament_event
+    if duo_tournament_event
+      duo_tournament_event.decorate.link(options)
+    else
+      options[:class] = [
+        options[:class],
+        :disabled
+      ].reject(&:blank?).join(' ')
+      h.link_to options[:label], '#', options
+    end
+  end
+
   def previous_duo_tournament_event_link(options = {})
     duo_tournament_event = previous_duo_tournament_event
     if duo_tournament_event
@@ -39,6 +52,19 @@ class DuoTournamentEventDecorator < TournamentEventBaseDecorator
 
   def next_duo_tournament_event_link(options = {})
     duo_tournament_event = next_duo_tournament_event
+    if duo_tournament_event
+      duo_tournament_event.decorate.link(options)
+    else
+      options[:class] = [
+        options[:class],
+        :disabled
+      ].reject(&:blank?).join(' ')
+      h.link_to options[:label], '#', options
+    end
+  end
+
+  def last_duo_tournament_event_link(options = {})
+    duo_tournament_event = last_duo_tournament_event
     if duo_tournament_event
       duo_tournament_event.decorate.link(options)
     else
