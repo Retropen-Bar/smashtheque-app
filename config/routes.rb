@@ -99,6 +99,8 @@ Rails.application.routes.draw do
   get 'credits' => 'pages#credits', as: :credits
   get 'mentions-legales' => 'pages#legal', as: :legal
 
+  get 'bot' => 'redirections#bot'
+
   root to: 'pages#home'
 
 end
