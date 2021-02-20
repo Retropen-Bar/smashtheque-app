@@ -18,17 +18,19 @@ class Api::V1::DuoTournamentEventsController < Api::V1::BaseController
     # auto-complete with data from bracket API
     duo_tournament_event.complete_with_bracket
 
-    if existing = DuoTournamentEvent.where(bracket_id: duo_tournament_event.bracket_id).first
-      # this tournament is already known:
-      # update graph if available, otherwise let the error happen
-      unless duo_tournament_event_params[:graph_url].blank?
-        existing.graph_url = duo_tournament_event_params[:graph_url]
-        if existing.save
-          render json: existing, status: :ok
-        else
-          render_errors existing.errors, :unprocessable_entity
+    if bracket = duo_tournament_event.bracket
+      if existing = DuoTournamentEvent.where(bracket: bracket).first
+        # this tournament is already known:
+        # update graph if available, otherwise let the error happen
+        unless duo_tournament_event_params[:graph_url].blank?
+          existing.graph_url = duo_tournament_event_params[:graph_url]
+          if existing.save
+            render json: existing, status: :ok
+          else
+            render_errors existing.errors, :unprocessable_entity
+          end
+          return
         end
-        return
       end
     end
 
