@@ -228,10 +228,8 @@ class RetropenBotScheduler
   # TOURNAMENTS
   # ---------------------------------------------------------------------------
 
-  def self.rebuild_online_tournaments(online_tournaments_category_id: nil)
-    RetropenBotJobs::RebuildOnlineTournamentsJob.perform_later(
-      online_tournaments_category_id: online_tournaments_category_id
-    )
+  def self.rebuild_online_tournaments
+    RetropenBotJobs::RebuildOnlineTournamentsJob.perform_later_if_needed
   end
 
   # ---------------------------------------------------------------------------
