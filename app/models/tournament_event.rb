@@ -358,6 +358,10 @@ class TournamentEvent < ApplicationRecord
     return false unless is_on_smashgg?
     if bracket.nil? || !bracket.is_a?(SmashggEvent)
       self.bracket = SmashggEvent.from_url(bracket_url)
+      unless bracket
+        puts "Unable to find SmashggEvent: #{bracket_url}"
+        return false
+      end
     else
       bracket.fetch_smashgg_data
     end
