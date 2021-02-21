@@ -282,7 +282,7 @@ class Player < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   pg_search_scope :by_pg_search,
-                  against: [:name],
+                  against: [:name, :old_names],
                   using: {
                     tsearch: {
                       prefix: true

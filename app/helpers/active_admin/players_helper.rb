@@ -37,14 +37,14 @@ module ActiveAdmin::PlayersHelper
                   as: :select,
                   collection: [
                     [
-                      form.object.send(name)&.name,
+                      form.object.send(name)&.decorate&.name_and_old_names,
                       form.object.send(name)&.id
                     ]
                   ],
                   input_html: {
                     data: {
                       select2: {
-                        minimumInputLength: 3,
+                        minimumInputLength: 2,
                         ajax: {
                           delay: 250,
                           url: autocomplete_admin_players_path,

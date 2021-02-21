@@ -17,7 +17,7 @@ module ActiveAdmin::DiscordUsersHelper
                   input_html: {
                     data: {
                       select2: {
-                        minimumInputLength: 3,
+                        minimumInputLength: 2,
                         ajax: {
                           delay: 250,
                           url: autocomplete_admin_discord_users_path,
@@ -45,7 +45,7 @@ module ActiveAdmin::DiscordUsersHelper
                     multiple: true,
                     data: {
                       select2: {
-                        minimumInputLength: 3,
+                        minimumInputLength: 2,
                         ajax: {
                           delay: 250,
                           url: autocomplete_admin_discord_users_path,

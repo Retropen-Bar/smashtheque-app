@@ -339,7 +339,7 @@ ActiveAdmin.register Player do
       results: Player.by_keyword(params[:term]).map do |player|
         {
           id: player.id,
-          text: player.name
+          text: player.decorate.name_and_old_names
         }
       end
     }

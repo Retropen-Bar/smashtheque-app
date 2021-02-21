@@ -30,7 +30,7 @@ module ActiveAdmin::UsersHelper
                   input_html: {
                     data: {
                       select2: {
-                        minimumInputLength: 3,
+                        minimumInputLength: 2,
                         ajax: {
                           delay: 250,
                           url: autocomplete_admin_users_path,
@@ -58,7 +58,7 @@ module ActiveAdmin::UsersHelper
                     multiple: true,
                     data: {
                       select2: {
-                        minimumInputLength: 3,
+                        minimumInputLength: 2,
                         ajax: {
                           delay: 250,
                           url: autocomplete_admin_users_path,

@@ -13,7 +13,7 @@ module ActiveAdmin::DuosHelper
                   input_html: {
                     data: {
                       select2: {
-                        minimumInputLength: 3,
+                        minimumInputLength: 2,
                         ajax: {
                           delay: 250,
                           url: autocomplete_admin_duos_path,
