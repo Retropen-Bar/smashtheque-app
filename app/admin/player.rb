@@ -128,6 +128,17 @@ ActiveAdmin.register Player do
     f.inputs do
       f.input :name
       user_input f
+      f.input :old_names,
+              multiple: true,
+              collection: f.object.old_names,
+              input_html: {
+                data: {
+                  select2: {
+                    tags: true,
+                    tokenSeparators: [',']
+                  }
+                }
+              }
       f.input :characters,
               collection: player_characters_select_collection,
               input_html: { multiple: true, data: { select2: { sortable: true, sortedValues: f.object.character_ids } } }
@@ -149,6 +160,7 @@ ActiveAdmin.register Player do
 
   permit_params :name, :is_accepted, :user_id,
                 :is_banned, :ban_details,
+                old_names: [],
                 character_ids: [], location_ids: [], team_ids: []
 
   # ---------------------------------------------------------------------------
@@ -158,6 +170,9 @@ ActiveAdmin.register Player do
   show do
     attributes_table do
       row :name
+      row :old_names do |decorated|
+        decorated.old_names_list
+      end
       row :user do |decorated|
         decorated.user_admin_link(size: 32)
       end

@@ -11,6 +11,7 @@
 #  is_banned                       :boolean          default(FALSE), not null
 #  location_names                  :text             default([]), is an Array
 #  name                            :string
+#  old_names                       :string           default([]), is an Array
 #  points                          :integer          default(0), not null
 #  rank                            :integer
 #  team_names                      :text             default([]), is an Array

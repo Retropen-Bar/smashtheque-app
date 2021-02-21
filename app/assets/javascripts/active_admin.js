@@ -4,7 +4,7 @@
 //= require arctic_admin/base
 
 //= require html5sortable.min
-//= require select2
+//= require select2-full
 //= require tippy-2.5.2
 //= require jquery.minicolors
 
