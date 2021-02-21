@@ -1,0 +1,69 @@
+<%= admin_edit_link(@recurring_tournament) %>
+
+<h1 class="page-title">
+  <%= recurring_tournament.name %>
+</h1>
+
+<div class="container">
+
+  <%= simple_form_for(@recurring_tournament) do |f| %>
+
+    <div class="form-inputs">
+
+      <%= render 'shared/form_errors', f: f %>
+
+      <div class="row">
+        <div class="col-6">
+          <h2>Le tournoi</h2>
+
+          <div class="p-3 mb-2 bg-light text-dark">
+            <%= f.input :name,
+                        required: true %>
+            <%= f.input :recurring_type,
+                        collection: recurring_tournament_recurring_type_select_collection,
+                        input_html: { data: { select2: {} } },
+                        include_blank: false %>
+            <%= f.input :date_description,
+                        hint: 'À remplir pour les tournois non réguliers' %>
+            <%= f.input :wday,
+                        as: :select,
+                        collection: recurring_tournament_wday_select_collection,
+                        input_html: { data: { select2: {} } },
+                        include_blank: false %>
+            <%= f.input :starts_at %>
+            <%= f.input :is_online %>
+            <%= f.input :level,
+                        collection: recurring_tournament_level_select_collection,
+                        input_html: { data: { select2: {} } },
+                        include_blank: false %>
+            <%= f.input :size,
+                        as: :select,
+                        collection: recurring_tournament_size_select_collection,
+                        required: true %>
+            <%= f.input :is_archived %>
+          </div>
+        </div>
+        <div class="col-6">
+          <h2>Autres infos</h2>
+
+          <div class="p-3 mb-2 bg-light text-dark">
+            <%= f.input :discord_guild_id,
+                        label: 'Serveur Discord',
+                        collection: recurring_tournament_discord_guild_select_collection,
+                        input_html: { data: { select2: {} } } %>
+            <%= f.input :registration,
+                        input_html: { rows: 5 } %>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="form-actions text-center my-5">
+      <%= link_to 'Annuler', @recurring_tournament, class: 'btn btn-secondary mr-3' %>
+      <%= f.button :submit, 'Valider', class: 'btn btn-primary' %>
+    </div>
+
+  <% end %>
+
+</div>

@@ -192,6 +192,7 @@ fr:
       recurring_tournament:
         << : *SHARED
         contacts: Contacts
+        date_description: Description de la date
         discord_guild: Serveur Discord
         duo_tournament_events: Éditions 2v2
         is_archived: Stoppé ?
