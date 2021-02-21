@@ -107,6 +107,10 @@ class RecurringTournament < ApplicationRecord
   scope :archived, -> { where(is_archived: true) }
   scope :not_archived, -> { where(is_archived: false) }
 
+  def self.administrated_by(user_id)
+    where(id: RecurringTournamentContact.where(user_id: user_id).select(:recurring_tournament_id))
+  end
+
   def is_recurring?
     %i(weekly bimonthly monthly).include?(recurring_type.to_sym)
   end

@@ -9,6 +9,7 @@ class RecurringTournamentsController < PublicController
   has_scope :by_level_in, type: :array
   has_scope :by_size_geq
   has_scope :by_size_leq
+  has_scope :administrated_by
   has_scope :page, default: 1
   has_scope :per
 
@@ -108,7 +109,7 @@ class RecurringTournamentsController < PublicController
     params.require(:recurring_tournament).permit(
       :name, :recurring_type, :date_description, :wday, :starts_at,
       :discord_guild_id, :is_online, :level, :size, :registration,
-      :is_archived, contact_ids: []
+      :is_archived
     )
   end
 
