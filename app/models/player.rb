@@ -523,7 +523,7 @@ class Player < ApplicationRecord
   # GLOBAL SEARCH
   # ---------------------------------------------------------------------------
 
-  multisearchable against: %i(name)
+  multisearchable against: %i(name old_names)
 
   # ---------------------------------------------------------------------------
   # VERSIONS

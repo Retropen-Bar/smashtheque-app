@@ -113,10 +113,18 @@ class PlayerDecorator < BaseDecorator
     end
   end
 
+  def name_and_old_names
+    result = name
+    if old_names.any?
+      result += " (aka #{old_names.reverse.join(', ')})"
+    end
+    result
+  end
+
   def as_autocomplete_result
     h.content_tag :div, class: :player do
       h.content_tag :div, class: :name do
-        name
+        name_and_old_names
       end
     end
   end
