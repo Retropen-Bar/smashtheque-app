@@ -52,8 +52,8 @@ ActiveAdmin.register Duo do
   form do |f|
     f.inputs do
       f.input :name
-      player_input f, :player1
-      player_input f, :player2
+      player_input f, name: :player1
+      player_input f, name: :player2
     end
     f.actions
   end

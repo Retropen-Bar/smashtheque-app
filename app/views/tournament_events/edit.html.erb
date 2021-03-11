@@ -1,0 +1,66 @@
+<%= admin_edit_link(@tournament_event) %>
+
+<h1 class="page-title">
+  <%= tournament_event.name %>
+</h1>
+
+<div class="container">
+
+  <%= simple_form_for(@tournament_event) do |f| %>
+
+    <div class="form-inputs">
+
+      <%= render 'shared/form_errors', f: f %>
+
+      <div class="row">
+        <div class="col-6">
+          <h2>Le tournoi</h2>
+
+          <div class="p-3 mb-2 bg-light text-dark">
+            <%= f.input :bracket_url %>
+          </div>
+
+          <div class="p-3 mb-2 bg-light text-dark">
+            <div id="current-graph">
+              <%= f.object.decorate.graph_image_tag %>
+            </div>
+            <%= f.input :graph,
+                        as: :file,
+                        label: 'Nouveau graph',
+                        hint: 'Laissez vide pour ne pas changer',
+                        input_html: {
+                          accept: 'image/*',
+                          data: {
+                            previewpanel: 'current-graph'
+                          }
+                        } %>
+          </div>
+        </div>
+        <div class="col-6">
+          <h2>Autres infos</h2>
+
+          <div class="p-3 mb-2 bg-light text-dark">
+            <%= f.input :name %>
+            <%= f.input :date %>
+            <%= f.input :participants_count %>
+            <% TournamentEvent::PLAYER_NAMES.each do |player_name| %>
+              <% hint = f.object.decorate.send("#{player_name}_bracket_suggestion") %>
+              <%= player_input f,
+                               name: "#{player_name}_id",
+                               value: f.object.send(player_name),
+                               hint: hint %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="form-actions text-center my-5">
+      <%= link_to 'Annuler', @tournament_event, class: 'btn btn-secondary mr-3' %>
+      <%= f.button :submit, 'Valider', class: 'btn btn-primary' %>
+    </div>
+
+  <% end %>
+
+</div>

@@ -330,19 +330,4 @@ ActiveAdmin.register Player do
     @tournament_events_count = @tournament_events.count
   end
 
-  # ---------------------------------------------------------------------------
-  # AUTOCOMPLETE
-  # ---------------------------------------------------------------------------
-
-  collection_action :autocomplete do
-    render json: {
-      results: Player.by_keyword(params[:term]).map do |player|
-        {
-          id: player.id,
-          text: player.decorate.name_and_old_names
-        }
-      end
-    }
-  end
-
 end

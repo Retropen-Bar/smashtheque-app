@@ -68,6 +68,7 @@ Rails.application.routes.draw do
 
   resources :players, only: [:index, :show] do
     collection do
+      get :autocomplete
       get 'ranking/online' => 'players#ranking_online', as: :online_ranking
     end
   end
@@ -80,7 +81,7 @@ Rails.application.routes.draw do
       get :modal
     end
   end
-  resources :tournament_events, only: [:index, :show]
+  resources :tournament_events, only: [:index, :show, :edit, :update]
   resources :duo_tournament_events, only: [:index, :show]
   get 'planning/online' => 'pages#planning_online', as: :planning
 
