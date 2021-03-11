@@ -95,6 +95,7 @@ ActiveAdmin.register Player do
          input_html: { multiple: true, data: { select2: {} } }
   filter :is_accepted
   filter :is_banned
+  filter :has_good_network
   filter :rank
   filter :points
   filter :best_reward,
@@ -154,12 +155,13 @@ ActiveAdmin.register Player do
       f.input :is_banned
       f.input :ban_details,
               input_html: { rows: 5 }
+      f.input :has_good_network
     end
     f.actions
   end
 
   permit_params :name, :is_accepted, :user_id,
-                :is_banned, :ban_details,
+                :is_banned, :ban_details, :has_good_network,
                 old_names: [],
                 character_ids: [], location_ids: [], team_ids: []
 
@@ -194,6 +196,7 @@ ActiveAdmin.register Player do
       row :is_accepted
       row :is_banned
       row :ban_details
+      row :has_good_network
       row :rank
       row :points
       row :best_reward do |decorated|

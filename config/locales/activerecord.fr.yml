@@ -179,6 +179,7 @@ fr:
         creator_user: Ajouté par
         creator_user_id: Ajouté par
         discord_user: Compte Discord
+        has_good_network: Connexion certifiée
         is_accepted: Validé ?
         is_banned: Banni ?
         old_names: Anciens pseudos

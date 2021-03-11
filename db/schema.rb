@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_21_201456) do
+ActiveRecord::Schema.define(version: 2021_03_11_224756) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -277,6 +277,7 @@ ActiveRecord::Schema.define(version: 2021_02_21_201456) do
     t.integer "creator_user_id", null: false
     t.integer "user_id"
     t.string "old_names", default: [], array: true
+    t.boolean "has_good_network", default: false, null: false
     t.index ["best_player_reward_condition_id"], name: "index_players_on_best_player_reward_condition_id"
     t.index ["creator_user_id"], name: "index_players_on_creator_user_id"
     t.index ["user_id"], name: "index_players_on_user_id"
