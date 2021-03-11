@@ -15,7 +15,7 @@
 
       <div class="row">
         <div class="col-6">
-          <h2>Le tournoi</h2>
+          <h2>Bracket et graph</h2>
 
           <div class="p-3 mb-2 bg-light text-dark">
             <%= f.input :bracket_url %>
@@ -27,6 +27,9 @@
                 <%= f.object.decorate.graph_image_tag %>
               </div>
             </div>
+          </div>
+
+          <div class="p-3 mb-2 bg-light text-dark">
             <%= f.input :graph,
                         as: :file,
                         label: 'Nouveau graph',
