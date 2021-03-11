@@ -59,6 +59,7 @@ Rails.application.routes.draw do
 
   resources :duos, only: [:index, :show] do
     collection do
+      get :autocomplete
       get 'ranking/online' => 'duos#ranking_online', as: :online_ranking
     end
   end
@@ -78,12 +79,13 @@ Rails.application.routes.draw do
 
   resources :recurring_tournaments, only: [:index, :show, :edit, :update] do
     resources :tournament_events, only: [:new, :create]
+    resources :duo_tournament_events, only: [:new, :create]
     member do
       get :modal
     end
   end
   resources :tournament_events, only: [:index, :show, :edit, :update]
-  resources :duo_tournament_events, only: [:index, :show]
+  resources :duo_tournament_events, only: [:index, :show, :edit, :update]
   get 'planning/online' => 'pages#planning_online', as: :planning
 
   resources :twitch_channels, only: [:index]

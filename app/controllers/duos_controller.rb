@@ -57,6 +57,17 @@ class DuosController < PublicController
     # end
   end
 
+  def autocomplete
+    render json: {
+      results: Duo.by_keyword(params[:term]).map do |duo|
+        {
+          id: duo.id,
+          text: duo.decorate.name_with_player_names
+        }
+      end
+    }
+  end
+
   private
 
   def duos(base)

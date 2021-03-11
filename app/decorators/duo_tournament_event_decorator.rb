@@ -24,6 +24,29 @@ class DuoTournamentEventDecorator < TournamentEventBaseDecorator
     end
   end
 
+  TournamentEvent::PLAYER_RANKS.each do |rank|
+    duo_name = "top#{rank}_duo".to_sym
+    define_method "#{duo_name}_bracket_suggestion" do
+      return nil if bracket.nil?
+      case bracket_type.to_sym
+      # when :SmashggEvent
+      #   user_name = "top#{rank}_smashgg_duo".to_sym
+      #   [
+      #     'Bracket smash.gg',
+      #     bracket.send(user_name)&.gamer_tag
+      #   ].join(' : ')
+      when :ChallongeTournament
+        participant_name = "top#{rank}_participant_name".to_sym
+        [
+          'Bracket Challonge',
+          bracket.send(participant_name)
+        ].join(' : ')
+      else
+        nil
+      end
+    end
+  end
+
   def first_duo_tournament_event_link(options = {})
     duo_tournament_event = first_duo_tournament_event
     if duo_tournament_event

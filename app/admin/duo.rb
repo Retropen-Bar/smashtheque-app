@@ -112,19 +112,4 @@ ActiveAdmin.register Duo do
     @duo_tournament_events_count = @duo_tournament_events.count
   end
 
-  # ---------------------------------------------------------------------------
-  # AUTOCOMPLETE
-  # ---------------------------------------------------------------------------
-
-  collection_action :autocomplete do
-    render json: {
-      results: Duo.by_keyword(params[:term]).map do |duo|
-        {
-          id: duo.id,
-          text: duo.decorate.name_with_player_names
-        }
-      end
-    }
-  end
-
 end
