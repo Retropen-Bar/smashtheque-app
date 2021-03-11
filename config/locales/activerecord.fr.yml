@@ -103,13 +103,21 @@ fr:
         participants_count: Participants
         recurring_tournament: Série
         top1_duo: Top 1
+        top1_duo_id: Top 1
         top2_duo: Top 2
+        top2_duo_id: Top 2
         top3_duo: Top 3
+        top3_duo_id: Top 3
         top4_duo: Top 4
+        top4_duo_id: Top 4
         top5a_duo: Top 5a
+        top5a_duo_id: Top 5a
         top5b_duo: Top 5b
+        top5b_duo_id: Top 5b
         top7a_duo: Top 7a
+        top7a_duo_id: Top 7a
         top7b_duo: Top 7b
+        top7b_duo_id: Top 7b
       duo_tournament_event/rank:
         top1_duo: Top 1
         top2_duo: Top 2
@@ -328,13 +336,21 @@ fr:
         participants_count: Participants
         recurring_tournament: Série
         top1_player: Top 1
+        top1_player_id: Top 1
         top2_player: Top 2
+        top2_player_id: Top 2
         top3_player: Top 3
+        top3_player_id: Top 3
         top4_player: Top 4
+        top4_player_id: Top 4
         top5a_player: Top 5a
+        top5a_player_id: Top 5a
         top5b_player: Top 5b
+        top5b_player_id: Top 5b
         top7a_player: Top 7a
+        top7a_player_id: Top 7a
         top7b_player: Top 7b
+        top7b_player_id: Top 7b
       tournament_event/rank:
         top1_player: Top 1
         top2_player: Top 2
@@ -390,3 +406,49 @@ fr:
         related: Sujet principal
         related_gid: Sujet principal
         username: ID YouTube
+    errors:
+      messages:
+        record_invalid: invalide
+      models:
+        shared:
+          attributes: &SHARED_ERROR_ATTRIBUTES
+            blank: vide
+            required: obligatoire
+            taken: déjà utilisé
+            unique: déjà utilisé
+        duo:
+          attributes:
+            name:
+              << : *SHARED_ERROR_ATTRIBUTES
+            player1:
+              << : *SHARED_ERROR_ATTRIBUTES
+            player2:
+              << : *SHARED_ERROR_ATTRIBUTES
+        location:
+          attributes:
+            name:
+              << : *SHARED_ERROR_ATTRIBUTES
+        tournament_event:
+          attributes:
+            bracket_id:
+              << : *SHARED_ERROR_ATTRIBUTES
+            bracket_url:
+              << : *SHARED_ERROR_ATTRIBUTES
+            date:
+              << : *SHARED_ERROR_ATTRIBUTES
+            name:
+              << : *SHARED_ERROR_ATTRIBUTES
+            smashgg_event:
+              << : *SHARED_ERROR_ATTRIBUTES
+        player:
+          attributes:
+            creator_user:
+              << : *SHARED_ERROR_ATTRIBUTES
+            creator_user_id:
+              << : *SHARED_ERROR_ATTRIBUTES
+            user:
+              << : *SHARED_ERROR_ATTRIBUTES
+            user_id:
+              << : *SHARED_ERROR_ATTRIBUTES
+            name:
+              << : *SHARED_ERROR_ATTRIBUTES

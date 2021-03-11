@@ -177,8 +177,8 @@ ActiveAdmin.register DuoTournamentEvent do
             f.input :date
             f.input :participants_count
             DuoTournamentEvent::DUO_NAMES.each do |duo_name|
-              hint = f.object.admin_decorate.send("#{duo_name}_bracket_suggestion")
-              duo_input f, duo_name, hint: hint
+              hint = f.object.decorate.send("#{duo_name}_bracket_suggestion")
+              duo_input f, name: duo_name, hint: hint
             end
             f.input :is_complete
             f.input :is_out_of_ranking

@@ -52,8 +52,8 @@ ActiveAdmin.register Duo do
   form do |f|
     f.inputs do
       f.input :name
-      player_input f, :player1
-      player_input f, :player2
+      player_input f, name: :player1
+      player_input f, name: :player2
     end
     f.actions
   end
@@ -110,21 +110,6 @@ ActiveAdmin.register Duo do
     @rewards_counts = @duo.rewards_counts
     @rewards_count = @rewards_counts.values.sum
     @duo_tournament_events_count = @duo_tournament_events.count
-  end
-
-  # ---------------------------------------------------------------------------
-  # AUTOCOMPLETE
-  # ---------------------------------------------------------------------------
-
-  collection_action :autocomplete do
-    render json: {
-      results: Duo.by_keyword(params[:term]).map do |duo|
-        {
-          id: duo.id,
-          text: duo.decorate.name_with_player_names
-        }
-      end
-    }
   end
 
 end

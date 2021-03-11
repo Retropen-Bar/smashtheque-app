@@ -73,6 +73,17 @@ class PlayersController < PublicController
     end
   end
 
+  def autocomplete
+    render json: {
+      results: Player.by_keyword(params[:term]).map do |player|
+        {
+          id: player.id,
+          text: player.decorate.name_and_old_names
+        }
+      end
+    }
+  end
+
   private
 
   def players(base)
