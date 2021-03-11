@@ -77,6 +77,7 @@ Rails.application.routes.draw do
   get 'teams/:id' => 'players#team_index', as: :team
 
   resources :recurring_tournaments, only: [:index, :show, :edit, :update] do
+    resources :tournament_events, only: [:new, :create]
     member do
       get :modal
     end

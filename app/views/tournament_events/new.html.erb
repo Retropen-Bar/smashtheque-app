@@ -1,0 +1,43 @@
+<h1 class="page-title">
+  <small class="text-muted"><%= tournament_event.recurring_tournament_name %></small><br/>
+  Nouvelle édition
+</h1>
+
+<div class="container">
+
+  <%= simple_form_for([tournament_event.recurring_tournament, @tournament_event]) do |f| %>
+
+    <div class="form-inputs">
+
+      <%= render 'shared/form_errors', f: f %>
+
+      <div class="row">
+        <div class="col-6">
+          <h2>Le tournoi</h2>
+
+          <div class="p-3 mb-2 bg-light text-dark">
+            <%= f.input :bracket_url %>
+          </div>
+
+        </div>
+        <div class="col-6">
+          <h2>Autres infos</h2>
+
+          <div class="p-3 mb-2 bg-light text-dark">
+            <%= f.input :name, required: false, hint: "Laissez vide si smash.gg ou Challonge" %>
+            <%= f.input :date, required: false, hint: "Laissez vide si smash.gg ou Challonge" %>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="form-actions text-center my-5">
+      <%= link_to 'Annuler', @tournament_event, class: 'btn btn-secondary mr-3' %>
+      <%= f.button :submit, 'Valider', class: 'btn btn-primary' %>
+    </div>
+
+  <% end %>
+
+</div>
+

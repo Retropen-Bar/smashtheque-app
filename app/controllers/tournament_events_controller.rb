@@ -2,8 +2,9 @@ class TournamentEventsController < PublicController
 
   helper_method :user_recurring_tournament_admin?
 
+  before_action :set_recurring_tournament, only: %w(new create)
   before_action :set_tournament_event, only: %w(show edit update)
-  before_action :verify_tournament_event!, only: %w(edit update)
+  before_action :verify_tournament_event!, only: %w(new create edit update)
   decorates_assigned :tournament_event
 
   has_scope :page, default: 1
@@ -30,6 +31,30 @@ class TournamentEventsController < PublicController
     end
   end
 
+  def new
+    @tournament_event = @recurring_tournament.tournament_events.new
+  end
+
+  def create
+    @tournament_event = @recurring_tournament.tournament_events.new(tournament_event_params)
+    # auto-complete with data from bracket API
+    @tournament_event.complete_with_bracket
+
+    if bracket = @tournament_event.bracket
+      if existing = TournamentEvent.where(bracket: bracket).first
+        # this tournament is already known: display an error
+        @tournament_event.errors.add(:bracket_url, :unique)
+        render :new and return
+      end
+    end
+
+    if @tournament_event.save
+      redirect_to [:edit, @tournament_event]
+    else
+      render :new
+    end
+  end
+
   def show
   end
 
@@ -46,6 +71,10 @@ class TournamentEventsController < PublicController
   end
 
   private
+
+  def set_recurring_tournament
+    @recurring_tournament = RecurringTournament.find(params[:recurring_tournament_id])
+  end
 
   def set_tournament_event
     @tournament_event = TournamentEvent.find(params[:id])
