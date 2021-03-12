@@ -1,0 +1,82 @@
+<%= admin_edit_link(@team) %>
+
+<h1 class="page-title"><%= team.name %></h1>
+
+<div class="container">
+
+  <%= simple_form_for(@team) do |f| %>
+
+    <div class="form-inputs">
+
+      <%= render 'shared/form_errors', f: f %>
+
+      <div class="row">
+        <div class="col-6">
+          <h2>Infos clé</h2>
+
+          <div class="p-3 mb-2 bg-light text-dark">
+            <%= f.input :short_name %>
+            <%= f.input :name %>
+            <%= f.input :is_offline %>
+            <%= f.input :is_online %>
+            <%= f.input :is_sponsor %>
+            <%= f.input :twitter_username %>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <h2>Images</h2>
+
+          <div class="p-3 mb-2 bg-light text-dark">
+            <div class="panel current-image" id="current-logo">
+              <div class="panel_contents">
+                <%= f.object.decorate.logo_image_tag %>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-3 mb-2 bg-light text-dark">
+            <%= f.input :logo,
+                        as: :file,
+                        hint: 'Laissez vide pour ne pas changer',
+                        input_html: {
+                          accept: 'image/*',
+                          data: {
+                            previewpanel: 'current-logo'
+                          }
+                        } %>
+          </div>
+
+          <div class="p-3 mb-2 bg-light text-dark">
+            <div class="panel current-image" id="current-roster">
+              <div class="panel_contents">
+                <%= f.object.decorate.roster_image_tag %>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-3 mb-2 bg-light text-dark">
+            <%= f.input :roster,
+                        as: :file,
+                        hint: 'Laissez vide pour ne pas changer',
+                        input_html: {
+                          accept: 'image/*',
+                          data: {
+                            previewpanel: 'current-roster'
+                          }
+                        } %>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="form-actions text-center my-5">
+      <%= link_to 'Annuler', @team, class: 'btn btn-secondary mr-3' %>
+      <%= f.button :submit, 'Valider', class: 'btn btn-primary' %>
+    </div>
+
+  <% end %>
+
+</div>
+

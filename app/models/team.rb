@@ -81,6 +81,10 @@ class Team < ApplicationRecord
     where('short_name ILIKE ?', short_name)
   end
 
+  def self.administrated_by(user_id)
+    where(id: TeamAdmin.where(user_id: user_id).select(:team_id))
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------

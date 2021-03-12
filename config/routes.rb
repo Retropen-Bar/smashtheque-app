@@ -74,8 +74,8 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :teams, only: :index
-  get 'teams/:id' => 'players#team_index', as: :team
+  resources :teams, only: [:index, :edit, :update]
+  get 'teams/:id' => 'players#team_index'
 
   resources :recurring_tournaments, only: [:index, :show, :edit, :update] do
     resources :tournament_events, only: [:new, :create]

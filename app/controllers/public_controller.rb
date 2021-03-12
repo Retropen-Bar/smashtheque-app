@@ -1,8 +1,19 @@
 class PublicController < ApplicationController
 
+  helper_method :user_team_admin?
+
   before_action :check_access! if ENV['HIDE_WEBSITE']
 
   private
+
+  def user_team_admin?
+    return false unless user_signed_in?
+    return false unless @team
+    @team.admins.each do |user|
+      return true if user == current_user
+    end
+    false
+  end
 
   def check_access!
     # for the first time
