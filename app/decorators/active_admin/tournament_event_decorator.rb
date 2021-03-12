@@ -45,4 +45,13 @@ class ActiveAdmin::TournamentEventDecorator < TournamentEventDecorator
     end
   end
 
+  def tournament_events_nav_links(options = {})
+    [
+      first_tournament_event_admin_link(label: '⇤'),
+      previous_tournament_event_admin_link(label: '←'),
+      next_tournament_event_admin_link(label: '→'),
+      last_tournament_event_admin_link(label: '⇥')
+    ].join(' ').html_safe
+  end
+
 end

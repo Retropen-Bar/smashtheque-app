@@ -45,4 +45,13 @@ class ActiveAdmin::DuoTournamentEventDecorator < DuoTournamentEventDecorator
     end
   end
 
+  def duo_tournament_events_nav_links(options = {})
+    [
+      first_duo_tournament_event_admin_link(label: '⇤'),
+      previous_duo_tournament_event_admin_link(label: '←'),
+      next_duo_tournament_event_admin_link(label: '→'),
+      last_duo_tournament_event_admin_link(label: '⇥')
+    ].join(' ').html_safe
+  end
+
 end

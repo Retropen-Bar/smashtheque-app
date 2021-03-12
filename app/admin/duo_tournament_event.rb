@@ -2,6 +2,12 @@ ActiveAdmin.register DuoTournamentEvent do
 
   decorate_with ActiveAdmin::DuoTournamentEventDecorator
 
+  sidebar 'Autres éditions', only: :show do
+    div class: 'tournament-events-nav-links' do
+      resource.duo_tournament_events_nav_links
+    end
+  end
+
   has_paper_trail
 
   menu parent: '<i class="fas fa-fw fa-chess-knight"></i>Compétition 2v2'.html_safe,
@@ -254,33 +260,30 @@ ActiveAdmin.register DuoTournamentEvent do
     active_admin_comments
   end
 
-  action_item :first, only: :show do
-    resource.first_duo_tournament_event_admin_link label: '⇤', class: 'blue'
+  action_item :other_actions, only: :show do
+    dropdown_menu 'Autres actions' do
+      if resource.is_on_smashgg?
+        item 'Mettre à jour avec smash.gg', action: :update_with_smashgg
+      end
+      if resource.is_on_challonge?
+        item 'Mettre à jour avec Challonge', action: :update_with_challonge
+      end
+      item 'Recalculer les récompenses', action: :compute_rewards
+      if resource.graph.attached?
+        item 'Supprimer le graph', action: :purge_graph
+      end
+    end
   end
 
-  action_item :previous, only: :show do
-    resource.previous_duo_tournament_event_admin_link label: '←', class: 'blue'
-  end
-
-  action_item :next, only: :show do
-    resource.next_duo_tournament_event_admin_link label: '→', class: 'blue'
-  end
-
-  action_item :last, only: :show do
-    resource.last_duo_tournament_event_admin_link label: '⇥', class: 'blue'
+  member_action :purge_graph do
+    resource.graph.purge
+    redirect_to request.referer, notice: 'Graph supprimé'
   end
 
   action_item :public, only: :show do
     link_to 'Page publique', resource, class: 'green'
   end
 
-  action_item :update_with_smashgg,
-              only: :show,
-              if: proc { resource.is_on_smashgg? } do
-    link_to 'Mettre à jour avec smash.gg',
-            { action: :update_with_smashgg },
-            class: 'orange'
-  end
   member_action :update_with_smashgg do
     if resource.update_with_smashgg
       redirect_to request.referer, notice: 'Données mises à jour'
@@ -292,13 +295,6 @@ ActiveAdmin.register DuoTournamentEvent do
     end
   end
 
-  action_item :update_with_challonge,
-              only: :show,
-              if: proc { resource.is_on_challonge? } do
-    link_to 'Mettre à jour avec Challonge',
-            { action: :update_with_challonge },
-            class: 'orange'
-  end
   member_action :update_with_challonge do
     if resource.update_with_challonge
       redirect_to request.referer, notice: 'Données mises à jour'
@@ -310,11 +306,6 @@ ActiveAdmin.register DuoTournamentEvent do
     end
   end
 
-  action_item :compute_rewards, only: :show do
-    link_to 'Recalculer les récompenses',
-            { action: :compute_rewards },
-            class: 'blue'
-  end
   member_action :compute_rewards do
     resource.compute_rewards
     redirect_to request.referer, notice: 'Calcul effectué'
