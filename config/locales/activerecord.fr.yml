@@ -321,6 +321,7 @@ fr:
         is_online: Team online ?
         is_sponsor: Sponso ?
         logo: Logo
+        player_ids: Joueurs
         players: Joueurs
         short_name: Nom court
         twitter_username: Compte Twitter

@@ -21,6 +21,7 @@
             <%= f.input :is_online %>
             <%= f.input :is_sponsor %>
             <%= f.input :twitter_username %>
+            <%= players_input f, name: :player_ids, value: f.object.players %>
           </div>
         </div>
 
