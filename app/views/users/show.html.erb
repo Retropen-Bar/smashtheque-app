@@ -16,7 +16,16 @@
 </h5>
 
 <div class="my-5 text-center">
-  <%= link_to 'Modifier mon profil', [:edit, @user], class: 'btn btn-primary' %>
+  <%= link_to [:edit, @user], class: 'btn btn-primary' do %>
+      <%= fas_icon_tag 'pencil-alt', %w(mr-2) %>
+    Modifier mon profil
+  <% end %>
+  <% if user.discord_user %>
+    <%= link_to [:refetch, user.discord_user], class: 'btn btn-success ml-3' do %>
+      <%= fas_icon_tag :sync, %w(mr-2) %>
+      Mettre à jour mes données Discord
+    <% end %>
+  <% end %>
 </div>
 
 <div class="row justify-content-center">

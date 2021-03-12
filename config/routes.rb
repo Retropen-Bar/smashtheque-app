@@ -57,6 +57,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :discord_users, only: [] do
+    member do
+      get :refetch
+    end
+  end
+
   resources :duos, only: [:index, :show] do
     collection do
       get :autocomplete
