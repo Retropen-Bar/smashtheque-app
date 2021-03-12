@@ -2,6 +2,7 @@ class UsersController < PublicController
 
   before_action :set_user
   before_action :verify_user!
+  before_action :verify_user_ban!, only: %i(edit update)
   decorates_assigned :user
 
   def show
@@ -42,6 +43,13 @@ class UsersController < PublicController
     authenticate_user!
     unless current_user.is_admin? || current_user == @user
       flash[:error] = 'Accès non autorisé'
+      redirect_to root_path and return
+    end
+  end
+
+  def verify_user_ban!
+    if @user.player&.is_banned?
+      flash[:error] = 'Modification non autorisée'
       redirect_to root_path and return
     end
   end
