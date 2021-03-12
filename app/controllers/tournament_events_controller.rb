@@ -4,8 +4,9 @@ class TournamentEventsController < PublicController
 
   before_action :set_recurring_tournament, only: %w(new create)
   before_action :set_tournament_event, only: %w(show edit update)
-  before_action :verify_tournament_event!, only: %w(new create edit update)
   decorates_assigned :tournament_event
+
+  before_action :verify_tournament_event!, only: %w(new create edit update)
 
   has_scope :page, default: 1
   has_scope :per
@@ -78,6 +79,7 @@ class TournamentEventsController < PublicController
 
   def set_tournament_event
     @tournament_event = TournamentEvent.find(params[:id])
+    @recurring_tournament = @tournament_event.recurring_tournament
   end
 
   def verify_tournament_event!
@@ -90,7 +92,7 @@ class TournamentEventsController < PublicController
 
   def user_recurring_tournament_admin?
     return false unless user_signed_in?
-    @tournament_event.recurring_tournament.contacts.each do |user|
+    @recurring_tournament.contacts.each do |user|
       return true if user == current_user
     end
     false
