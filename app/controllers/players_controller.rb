@@ -33,6 +33,11 @@ class PlayersController < PublicController
     render 'characters/show'
   end
 
+  def recurring_tournament_contacts_index
+    @players = players Player.recurring_tournament_contacts
+    render 'recurring_tournaments/contacts'
+  end
+
   def show
     @player = Player.legit.find(params[:id])
     @rewards_counts = @player.rewards_counts

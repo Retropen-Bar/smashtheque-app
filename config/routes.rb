@@ -86,6 +86,9 @@ Rails.application.routes.draw do
   resources :recurring_tournaments, only: [:index, :show, :edit, :update] do
     resources :tournament_events, only: [:new, :create]
     resources :duo_tournament_events, only: [:new, :create]
+    collection do
+      get 'contacts' => 'players#recurring_tournament_contacts_index'
+    end
     member do
       get :modal
     end

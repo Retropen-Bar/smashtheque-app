@@ -388,6 +388,14 @@ class Player < ApplicationRecord
     by_best_reward_level(reward.level1, reward.level2)
   end
 
+  def self.recurring_tournament_contacts
+    where(user_id: RecurringTournamentContact.select(:user_id))
+  end
+
+  def self.team_admins
+    where(user_id: TeamAdmin.select(:user_id))
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------

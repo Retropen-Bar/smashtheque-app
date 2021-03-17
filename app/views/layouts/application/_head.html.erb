@@ -62,6 +62,7 @@
           <span>Acteurs</span>
         <% end %>
         <div class="dropdown-menu">
+          <%= link_to 'TOs', contacts_recurring_tournaments_path, class: 'dropdown-item' %>
           <%= link_to 'Commentateurs', caster_users_path, class: 'dropdown-item' %>
           <%= link_to 'Coachs', coach_users_path, class: 'dropdown-item' %>
           <%= link_to 'Graphistes', graphic_designer_users_path, class: 'dropdown-item' %>
