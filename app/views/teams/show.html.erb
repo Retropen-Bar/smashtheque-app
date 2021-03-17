@@ -5,7 +5,7 @@
 
 <%= render 'players/players', players: @players, title: @title %>
 
-<% if @team.roster.attached? %>
+<% if !@map && @team.roster.attached? %>
   <div class="text-center">
     <%= @team.roster_image_tag(max_width: '100%') %>
   </div>
