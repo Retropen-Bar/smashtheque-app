@@ -10,6 +10,21 @@
         <span>Affichage</span>
       </div>
       <div class='layer-top-buttons clearfix'>
+        Seconds&nbsp;:
+        <div class="btn-group" role="group">
+          <% if @map_seconds %>
+            <%= link_to 'Sans', url_for(map: 1, seconds: 0), class: 'btn btn-outline-primary' %>
+          <% else %>
+            <button type="button" class="btn btn-primary">Sans</button>
+          <% end %>
+          <% if @map_seconds %>
+            <button type="button" class="btn btn-primary">Avec</button>
+          <% else %>
+            <%= link_to 'Avec', url_for(map: 1, seconds: 1), class: 'btn btn-outline-primary' %>
+          <% end %>
+        </div>
+      </div>
+      <div class='layer-top-buttons clearfix'>
         <a href='#' class='layer-show-all btn btn-primary btn-sm'
                     data-map='<%= container_id %>'>Tous</a>
         <a href='#' class='layer-hide-all btn btn-secondary btn-sm float-right'

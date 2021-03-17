@@ -1,6 +1,6 @@
 module MapsHelper
 
-  def players_map(players, map_options: {}, &block)
+  def players_map(players, with_seconds, map_options: {}, &block)
     icons = {}
     markers = {}
     layers = {}
@@ -8,7 +8,8 @@ module MapsHelper
       # player.locations already exists, so don't use the .geocoded scope
       player.locations.each do |location|
         next unless location.is_geocoded?
-        player.characters.each do |character|
+        player.characters.each_with_index do |character, idx|
+          next if idx > 0 && !with_seconds
           icons[character.id.to_s] ||= {
             icon_url: character.decorate.emoji_image_url,
             icon_size: 32,

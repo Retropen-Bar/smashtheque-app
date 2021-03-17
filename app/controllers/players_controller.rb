@@ -93,6 +93,7 @@ class PlayersController < PublicController
 
   def players(base)
     @map = params[:map].to_i == 1
+    @map_seconds = params[:seconds].to_i == 1 if @map
     apply_scopes(
       base.legit.order(:name)
     ).includes(:user, :discord_user, :teams, :locations, :characters, :smashgg_users)
