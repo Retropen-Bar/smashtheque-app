@@ -90,7 +90,7 @@ class PlayersController < PublicController
     @map = params[:map].to_i == 1
     apply_scopes(
       base.legit.order(:name)
-    ).includes(:user, :discord_user, :teams, :locations, :characters)
+    ).includes(:user, :discord_user, :teams, :locations, :characters, :smashgg_users)
   end
 
   def select_layout
