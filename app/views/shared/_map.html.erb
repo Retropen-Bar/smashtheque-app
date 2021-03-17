@@ -1,0 +1,77 @@
+<div class='map-container'>
+  <div class='map' id='<%= container_id %>'></div>
+
+  <% if layers.any? %>
+    <div class='layers'>
+      <div class='layers-title noselect clearfix'>
+        <div class='float-right'>
+          <button type='button' class='navbar-toggler'><i class='fas fa-layer-group'></i></button>
+        </div>
+        <span>Affichage</span>
+      </div>
+      <div class='layer-top-buttons clearfix'>
+        <a href='#' class='layer-show-all btn btn-primary btn-sm'
+                    data-map='<%= container_id %>'>Tous</a>
+        <a href='#' class='layer-hide-all btn btn-secondary btn-sm float-right'
+                    data-map='<%= container_id %>'>Aucun</a>
+      </div>
+      <% Hash[ layers.sort_by { |k, v| v[:position] } ].each do |layer_id, layer| %>
+        <div class='layer layer-visible noselect'
+             data-map='<%= container_id %>'
+             data-layer='<%= layer_id %>'>
+          <span class='name'><%= layer[:name] %> (<%= markers[layer_id].count %>)</span>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <%= html_content.presence %>
+
+</div>
+
+<script>
+
+  var map = L.map('<%= container_id %>', {<%= options.map{|k,v| "#{k}: #{v}"}.join(', ') %>});
+  window.maps['<%= container_id %>'] = {map: map};
+  map.setView([<%= center[:latlng][0] %>, <%= center[:latlng][1] %>], <%= center[:zoom] %>);
+
+  var icons = {};
+  <% icons.each do |key, icon| %>
+    <% icon_settings = prep_icon_settings(icon) %>
+    icons['<%= key %>'] = L.icon({
+      iconUrl: '<%= icon_settings[:icon_url] %>',
+      iconSize: <%= icon_settings[:icon_size] %>,
+      iconAnchor: <%= icon_settings[:icon_anchor] %>
+    });
+  <% end %>
+
+  var markers = L.markerClusterGroup({
+    showCoverageOnHover: false,
+    zoomToBoundsOnClick: true,
+    removeOutsideVisibleBounds: true
+  });
+  var layers = {};
+  var marker;
+  <% markers.each do |layer_id, layer_markers| %>
+    layers['<%= layer_id %>'] = L.featureGroup.subGroup(markers, []).addTo(map);
+    <% layer_markers.each_with_index do |marker, index| %>
+      <% icon_param = marker[:icon].blank? ? '' : ", {icon: icons['#{marker[:icon]}']}" %>
+      marker = L.marker([<%= marker[:latlng][0] %>, <%= marker[:latlng][1] %>]<%== icon_param %>).addTo(layers['<%= layer_id %>']);
+      <% if marker[:popup] %>
+        marker.bindPopup('<%= escape_javascript marker[:popup] %>');
+      <% end %>
+    <% end %>
+  <% end %>
+  window.maps['<%= container_id %>'].layers = layers;
+
+  L.tileLayer('<%= tile_layer %>', {
+    attribution: '<%= attribution %>',
+    maxZoom: <%= max_zoom %>,
+    <% options.each do |key, value| %>
+      <%= key.to_s.camelize(:lower) %>: '<%= value %>',
+    <% end %>
+  }).addTo(map);
+
+  markers.addTo(map);
+
+</script>

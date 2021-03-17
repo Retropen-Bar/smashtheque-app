@@ -78,79 +78,18 @@ module MapsHelper
     container_id = options.delete(:container_id) || 'map'
     center = options.delete(:center)
 
-    output = []
+    html_content = block_given? && capture(&block)
 
-    output << "<div class='map-container'>"
-    output << "  <div class='map' id='#{container_id}'></div>"
-
-    if layers.any?
-      output << "  <div class='layers'>"
-      output << "    <div class='layers-title noselect clearfix'>"
-      output << "      <div class='float-right'>"
-      output << "        <button type='button' class='navbar-toggler'><i class='fas fa-layer-group'></i></button>"
-      output << "      </div>"
-      output << "      <span>Affichage</span>"
-      output << "    </div>"
-      output << "    <div class='layer-top-buttons clearfix'>"
-      output << "      <a href='#' class='layer-show-all btn btn-primary btn-sm' data-map='#{container_id}'>Tous</a>"
-      output << "      <a href='#' class='layer-hide-all btn btn-secondary btn-sm float-right' data-map='#{container_id}'>Aucun</a>"
-      output << "    </div>"
-      Hash[
-        layers.sort_by do |k, v|
-          v[:position]
-        end
-      ].each do |layer_id, layer|
-        output << "    <div class='layer layer-visible noselect' data-map='#{container_id}' data-layer='#{layer_id}'>"
-        output << "      <span class='name'>#{layer[:name]} (#{markers[layer_id].count})</span>"
-        output << "    </div>"
-      end
-      output << "  </div>"
-    end
-
-    if block_given?
-      output << capture(&block)
-    end
-
-    output << "</div>"
-
-    output << "<script>"
-    output << "var map = L.map('#{container_id}', {#{options.map{|k,v| "#{k}: #{v}"}.join(', ')}});"
-    output << "window.maps['#{container_id}'] = {map: map};"
-    output << "map.setView([#{center[:latlng][0]}, #{center[:latlng][1]}], #{center[:zoom]});"
-
-    output << "var icons = {};"
-    icons.each do |key, icon|
-      icon_settings = prep_icon_settings(icon)
-      output << "icons['#{key}'] = L.icon({iconUrl: '#{icon_settings[:icon_url]}', iconSize: #{icon_settings[:icon_size]}, iconAnchor: #{icon_settings[:icon_anchor]}});"
-    end
-
-    output << "var markers = L.markerClusterGroup({showCoverageOnHover: false, zoomToBoundsOnClick: true, removeOutsideVisibleBounds: true});"
-    output << "var layers = {};"
-    output << "var marker;"
-    markers.each do |layer_id, layer_markers|
-      output << "layers['#{layer_id}'] = L.featureGroup.subGroup(markers, []).addTo(map);"
-      layer_markers.each_with_index do |marker, index|
-        icon_param = marker[:icon].blank? ? '' : ", {icon: icons['#{marker[:icon]}']}"
-        output << "marker = L.marker([#{marker[:latlng][0]}, #{marker[:latlng][1]}]#{icon_param}).addTo(layers['#{layer_id}']);"
-        if marker[:popup]
-          output << "marker.bindPopup('#{escape_javascript marker[:popup]}');"
-        end
-      end
-    end
-    output << "window.maps['#{container_id}'].layers = layers;"
-
-    output << "L.tileLayer('#{tile_layer}', {
-          attribution: '#{attribution}',
-          maxZoom: #{max_zoom},"
-    options.each do |key, value|
-      output << "#{key.to_s.camelize(:lower)}: '#{value}',"
-    end
-    output << "}).addTo(map);"
-
-    output << "markers.addTo(map);"
-
-    output << "</script>"
-    output.join("\n").html_safe
+    render_map  markers: markers,
+                layers: layers,
+                icons: icons,
+                options: options,
+                tile_layer: tile_layer,
+                attribution: attribution,
+                max_zoom: max_zoom,
+                container_id: container_id,
+                center: center,
+                html_content: html_content
   end
 
   def prep_icon_settings(settings)
