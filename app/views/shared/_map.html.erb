@@ -7,11 +7,12 @@
         <div class='float-right'>
           <button type='button' class='navbar-toggler'><i class='fas fa-layer-group'></i></button>
         </div>
-        <span>Affichage</span>
+        <h2>Affichage</h2>
       </div>
-      <div class='layer-top-buttons clearfix'>
-        Seconds&nbsp;:
-        <div class="btn-group" role="group">
+      <div class='layer-hsep'></div>
+      <div class='layer-top-buttons'>
+        <h3>Seconds</h3>
+        <div class="btn-group btn-group-sm" role="group">
           <% if @map_seconds %>
             <%= link_to 'Sans', url_for(map: 1, seconds: 0), class: 'btn btn-outline-primary' %>
           <% else %>
@@ -24,10 +25,12 @@
           <% end %>
         </div>
       </div>
-      <div class='layer-top-buttons clearfix'>
+      <div class='layer-hsep'></div>
+      <div class='layer-top-buttons'>
+        <h3>Personnages</h3>
         <a href='#' class='layer-show-all btn btn-primary btn-sm'
                     data-map='<%= container_id %>'>Tous</a>
-        <a href='#' class='layer-hide-all btn btn-secondary btn-sm float-right'
+        <a href='#' class='layer-hide-all btn btn-secondary btn-sm'
                     data-map='<%= container_id %>'>Aucun</a>
       </div>
       <% Hash[ layers.sort_by { |k, v| v[:position] } ].each do |layer_id, layer| %>

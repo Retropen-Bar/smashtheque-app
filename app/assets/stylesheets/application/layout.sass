@@ -75,11 +75,28 @@ body.map-layout
   #main-nav
     // no flex rules, it will grow
 
-  #map-list-link
+  #map-title, #map-list-link
     position: absolute
-    top: 10px
     left: 50%
+    transform: translateX(-50%)
     z-index: 2
+
+  #map-title
+    bottom: 10px
+    background: white
+    border: 2px solid rgba(0, 0, 0, 0.2)
+    border-radius: 4px
+    background-clip: padding-box
+    padding: 6px 12px
+    white-space: nowrap
+    font-size: 1.5rem
+
+    .avatar, .emoji
+      max-height: 32px !important
+      vertical-align: -0.45rem
+
+  #map-list-link
+    top: 10px
 
     .btn-outline-primary
       &:not(:hover)
@@ -92,11 +109,4 @@ body.map-layout
       height: 100%
 
   #footer
-    position: fixed
-    bottom: 0
-    left: 0
-    z-index: 1000
-    margin: 0
-    padding: 0 5px
-    font-size: 11px
-    background: rgba(255, 255, 255, 0.7)
+    display: none

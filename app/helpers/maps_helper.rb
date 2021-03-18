@@ -86,7 +86,7 @@ module MapsHelper
                 icons: icons,
                 options: options,
                 tile_layer: tile_layer,
-                attribution: attribution,
+                attribution: nil,#attribution,
                 max_zoom: max_zoom,
                 container_id: container_id,
                 center: center,

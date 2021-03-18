@@ -41,19 +41,20 @@
       .layers-title
         margin-bottom: 10px
 
-        span
-          display: none
-
-      .layer-top-buttons, .layer
+      .layers-title h2, .layer-top-buttons, .layer-hsep, .layer
         display: none
 
     .layers-title
       padding: 10px
       padding-bottom: 0
-      line-height: 28px
-      font-weight: bold
-      font-size: 14px
       cursor: pointer
+
+      h2
+        font-weight: bold
+        font-size: 18px
+        line-height: 30px
+        margin-bottom: 0
+        margin-right: 60px
 
       button
         font-size: 20px
@@ -65,9 +66,16 @@
     .layer-top-buttons
       padding: 10px
 
+      h3
+        font-size: 14px
+        font-weight: bold
+
       a
         display: inline-block
-        width: 45%
+
+    .layer-hsep
+      margin: 5px 10px
+      border-top: 1px solid #ccc
 
     .layer
       padding: 5px 10px
