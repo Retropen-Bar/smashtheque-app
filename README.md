@@ -12,6 +12,10 @@
     <img src="https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey.svg"/>
   </a>
   <img src="https://github.com/Retropen-Bar/smashtheque-app/workflows/Build/badge.svg?branch=master"/>
-  <a href="https://codeclimate.com/github/Retropen-Bar/smashtheque-app/test_coverage"><img src="https://api.codeclimate.com/v1/badges/d61b1562d137ad93aedd/test_coverage" /></a>
-  <a href="https://codeclimate.com/github/Retropen-Bar/smashtheque-app/maintainability"><img src="https://api.codeclimate.com/v1/badges/d61b1562d137ad93aedd/maintainability" /></a>
+  <a href="https://codeclimate.com/github/Retropen-Bar/smashtheque-app/test_coverage">
+    <img src="https://api.codeclimate.com/v1/badges/d61b1562d137ad93aedd/test_coverage" />
+  </a>
+  <a href="https://codeclimate.com/github/Retropen-Bar/smashtheque-app/maintainability">
+    <img src="https://api.codeclimate.com/v1/badges/d61b1562d137ad93aedd/maintainability" />
+  </a>
 </p>
