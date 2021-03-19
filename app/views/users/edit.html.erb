@@ -19,7 +19,8 @@
           <div class="p-3 mb-2 bg-light text-dark">
             <%= f.input :name %>
             <%= f.input :twitter_username %>
-            <%= address_input f %>
+            <%= address_input f, prefix: 'main_' %>
+            <%= address_input f, prefix: 'secondary_' %>
           </div>
 
           <div class="p-3 mb-2 bg-light text-dark">
@@ -66,10 +67,6 @@
               <%= pf.input :character_ids,
                            collection: player_characters_select_collection,
                            input_html: { multiple: true, data: { select2: { sortable: true, sortedValues: pf.object.character_ids } } } %>
-              <%= pf.input :location_ids,
-                           collection: player_locations_select_collection,
-                           include_blank: 'Aucune',
-                           input_html: { multiple: true, data: { select2: { sortable: true, sortedValues: pf.object.location_ids } } } %>
               <%= pf.input :team_ids,
                            collection: player_teams_select_collection,
                            include_blank: 'Aucune',

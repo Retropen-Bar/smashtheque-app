@@ -403,8 +403,10 @@ fr:
         is_graphic_designer: Graphiste ?
         last_sign_in_at: Session précédente
         last_sign_in_ip: IP précédente
+        main_address: Localisation principale
         name: Nom
         player: Joueur
+        secondary_address: Localisation secondaire
         sign_in_count: Connexions
         twitter_username: Compte Twitter
       user/admin_level:

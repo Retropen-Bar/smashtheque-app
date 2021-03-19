@@ -5,6 +5,7 @@
   var onPlaceChanged = function(input, target, place) {
     // console.log('[Maps Autocomplete] onPlaceChanged', input, target, place);
 
+    $(input).val(place.name);
     $(target.latitude).val(place.geometry.location.lat());
     $(target.longitude).val(place.geometry.location.lng());
   };

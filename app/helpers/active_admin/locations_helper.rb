@@ -1,30 +1,31 @@
 module ActiveAdmin::LocationsHelper
 
   def address_input(form, options = {})
+    prefix = options.delete(:prefix) || ''
     (
-      form.input  :address,
+      form.input  "#{prefix}address".to_sym,
                   as: :string,
                   input_html: {
                     data: {
                       maps_autocomplete: {
                         target: {
-                          latitude: '#location-latitude',
-                          longitude: '#location-longitude'
+                          latitude: "#location-#{prefix}latitude",
+                          longitude: "#location-#{prefix}longitude"
                         }
                       }.merge(options)
                     }
                   }
     ) + (
-      form.input  :latitude,
+      form.input  "#{prefix}latitude".to_sym,
                   as: :hidden,
                   input_html: {
-                    id: 'location-latitude'
+                    id: "location-#{prefix}latitude"
                   }
     ) + (
-      form.input  :longitude,
+      form.input  "#{prefix}longitude".to_sym,
                   as: :hidden,
                   input_html: {
-                    id: 'location-longitude'
+                    id: "location-#{prefix}longitude"
                   }
     )
   end
