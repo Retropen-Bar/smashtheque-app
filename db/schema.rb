@@ -525,6 +525,9 @@ ActiveRecord::Schema.define(version: 2021_03_24_213113) do
     t.boolean "is_available_graphic_designer", default: false, null: false
     t.string "twitter_username"
     t.datetime "remember_created_at"
+    t.string "address"
+    t.float "latitude"
+    t.float "longitude"
   end
 
   create_table "versions", force: :cascade do |t|

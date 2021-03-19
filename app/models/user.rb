@@ -3,6 +3,7 @@
 # Table name: users
 #
 #  id                            :bigint           not null, primary key
+#  address                       :string
 #  admin_level                   :string
 #  coaching_details              :string
 #  coaching_url                  :string
@@ -17,6 +18,8 @@
 #  is_root                       :boolean          default(FALSE), not null
 #  last_sign_in_at               :datetime
 #  last_sign_in_ip               :inet
+#  latitude                      :float
+#  longitude                     :float
 #  name                          :string           not null
 #  remember_created_at           :datetime
 #  sign_in_count                 :integer          default(0), not null
