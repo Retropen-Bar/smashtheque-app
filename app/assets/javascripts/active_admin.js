@@ -8,6 +8,9 @@
 //= require tippy-2.5.2
 //= require jquery.minicolors
 
+//= require trix/dist/trix
+//  require @rails/actiontext
+
 //= require shared
 
 //= require_tree ./admin

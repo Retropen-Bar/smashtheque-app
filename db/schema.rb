@@ -10,12 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_11_224756) do
+ActiveRecord::Schema.define(version: 2021_03_24_203031) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
   enable_extension "unaccent"
+
+  create_table "action_text_rich_texts", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "body"
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
+  end
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
@@ -236,6 +246,16 @@ ActiveRecord::Schema.define(version: 2021_03_11_224756) do
     t.index ["location_id", "player_id"], name: "index_locations_players_on_location_id_and_player_id", unique: true
     t.index ["location_id"], name: "index_locations_players_on_location_id"
     t.index ["player_id"], name: "index_locations_players_on_player_id"
+  end
+
+  create_table "pages", force: :cascade do |t|
+    t.string "slug", null: false
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "parent_id"
+    t.index ["parent_id"], name: "index_pages_on_parent_id"
+    t.index ["slug"], name: "index_pages_on_slug", unique: true
   end
 
   create_table "pg_search_documents", force: :cascade do |t|
@@ -551,6 +571,7 @@ ActiveRecord::Schema.define(version: 2021_03_11_224756) do
   add_foreign_key "duos", "players", column: "player2_id"
   add_foreign_key "locations_players", "locations"
   add_foreign_key "locations_players", "players"
+  add_foreign_key "pages", "pages", column: "parent_id"
   add_foreign_key "player_reward_conditions", "players"
   add_foreign_key "player_reward_conditions", "reward_conditions"
   add_foreign_key "player_reward_conditions", "tournament_events"

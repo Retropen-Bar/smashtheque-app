@@ -109,6 +109,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :pages, param: :slug, only: :show
+
   get 'credits' => 'pages#credits', as: :credits
   get 'mentions-legales' => 'pages#legal', as: :legal
 

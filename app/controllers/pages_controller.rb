@@ -1,6 +1,8 @@
 class PagesController < PublicController
 
-  before_action :set_static_page, only: %i(credits legal)
+  before_action :set_static_page, only: %i(credits legal show)
+
+  decorates_assigned :page
 
   def home
     @players_count = Rails.env.development? ? 4149 : Player.count
@@ -18,6 +20,10 @@ class PagesController < PublicController
   def planning_online
     @monday = Date.today.beginning_of_week
     @ics_url = recurring_tournaments_url(protocol: :webcal, format: :ics)
+  end
+
+  def show
+    @page = Page.find_by!(slug: params[:slug])
   end
 
   private
