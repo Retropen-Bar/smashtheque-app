@@ -27,14 +27,14 @@ ActiveAdmin.register TournamentEvent do
   end
 
   includes :recurring_tournament, :bracket,
-           top1_player: { user: :discord_user },
-           top2_player: { user: :discord_user },
-           top3_player: { user: :discord_user },
-           top4_player: { user: :discord_user },
-           top5a_player: { user: :discord_user },
-           top5b_player: { user: :discord_user },
-           top7a_player: { user: :discord_user },
-           top7b_player: { user: :discord_user }
+           top1_player: [:smashgg_users, { user: :discord_user }],
+           top2_player: [:smashgg_users, { user: :discord_user }],
+           top3_player: [:smashgg_users, { user: :discord_user }],
+           top4_player: [:smashgg_users, { user: :discord_user }],
+           top5a_player: [:smashgg_users, { user: :discord_user }],
+           top5b_player: [:smashgg_users, { user: :discord_user }],
+           top7a_player: [:smashgg_users, { user: :discord_user }],
+           top7b_player: [:smashgg_users, { user: :discord_user }]
 
   index do
     selectable_column
@@ -78,17 +78,19 @@ ActiveAdmin.register TournamentEvent do
   filter :is_complete
   filter :is_out_of_ranking
 
-  action_item :update_available_brackets,
-              only: :index,
-              if: proc { TournamentEvent.with_available_bracket.any? } do
-    available_brackets_count = TournamentEvent.with_available_bracket.count
-    link_to "Récupérer les #{available_brackets_count} brackets disponibles",
-            update_available_brackets_admin_tournament_events_path,
-            class: 'blue'
-  end
   collection_action :update_available_brackets do
-    TournamentEvent.update_available_brackets
-    redirect_to request.referer, notice: 'Données récupérées'
+    UpdateAvailableBracketsJob.perform_later
+    redirect_to request.referer, notice: 'Données en cours de récupération'
+  end
+
+  action_item :other_actions, only: :index do
+    dropdown_menu 'Autres actions' do
+      if TournamentEvent.with_available_bracket.any?
+        available_brackets_count = TournamentEvent.with_available_bracket.count
+        item "Récupérer les #{available_brackets_count} brackets disponibles",
+                action: :update_available_brackets
+      end
+    end
   end
 
   # ---------------------------------------------------------------------------
