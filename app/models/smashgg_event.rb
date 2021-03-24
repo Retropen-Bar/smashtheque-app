@@ -134,6 +134,37 @@ class SmashggEvent < ApplicationRecord
     )
   end
 
+  def self.with_available_player_ranked(rank)
+    user_name = "top#{rank}_smashgg_user".to_sym
+    player_id = "top#{rank}_player_id".to_sym
+
+    where(
+      id: self.joins(user_name)
+              .joins(:tournament_event)
+              .where.not(smashgg_users: { player_id: nil })
+              .where(tournament_events: { player_id => nil })
+              .select(:id)
+    )
+  end
+
+  def self.with_available_players
+    with_available_player_ranked(1).or(
+      with_available_player_ranked(2)
+    ).or(
+      with_available_player_ranked(3)
+    ).or(
+      with_available_player_ranked(4)
+    ).or(
+      with_available_player_ranked('5a')
+    ).or(
+      with_available_player_ranked('5b')
+    ).or(
+      with_available_player_ranked('7a')
+    ).or(
+      with_available_player_ranked('7b')
+    )
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------

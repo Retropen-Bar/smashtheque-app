@@ -83,12 +83,19 @@ ActiveAdmin.register TournamentEvent do
     redirect_to request.referer, notice: 'Données en cours de récupération'
   end
 
+  collection_action :use_available_players do
+    TournamentEvent.use_available_players
+    redirect_to request.referer, notice: 'Joueurs ajoutés'
+  end
+
   action_item :other_actions, only: :index do
     dropdown_menu 'Autres actions' do
-      if TournamentEvent.with_available_bracket.any?
-        available_brackets_count = TournamentEvent.with_available_bracket.count
+      if available_brackets_count = TournamentEvent.with_available_bracket.count
         item "Récupérer les #{available_brackets_count} brackets disponibles",
                 action: :update_available_brackets
+      end
+      if with_available_players_count = TournamentEvent.with_available_players.count
+        item "Ajouter les #{with_available_players_count} joueurs disponibles", action: :use_available_players
       end
     end
   end

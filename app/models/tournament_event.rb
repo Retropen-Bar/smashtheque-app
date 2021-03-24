@@ -167,6 +167,13 @@ class TournamentEvent < ApplicationRecord
   scope :on_platform, -> { on_smashgg.or(on_braacket).or(on_challonge) }
   scope :with_available_bracket, -> { on_platform.where(bracket: nil) }
 
+  def self.with_available_players
+    # don't return events that have been explicitly marked as complete
+    self.where(is_complete: false)
+        .by_bracket_type(:SmashggEvent)
+        .by_bracket_id(SmashggEvent.with_available_players.select(:id))
+  end
+
   def self.by_bracket_type(v)
     where(bracket_type: v)
   end
@@ -434,6 +441,30 @@ class TournamentEvent < ApplicationRecord
   def self.update_available_brackets
     with_available_bracket.order(id: :desc).find_each do |tournament_event|
       tournament_event.update_bracket && tournament_event.save
+    end
+  end
+
+  def use_available_bracket_players
+    return false if bracket.nil?
+    PLAYER_RANKS.each do |rank|
+      player_name = "top#{rank}_player".to_sym
+      user_name = "top#{rank}_smashgg_user".to_sym
+      if send(player_name).nil?
+        if player = bracket.send(user_name)&.player
+          self.send("#{player_name}=", player)
+        end
+      end
+    end
+    true
+  end
+
+  def self.use_available_players
+    with_available_players.order(id: :desc).find_each do |tournament_event|
+      if tournament_event.use_available_bracket_players
+        unless tournament_event.save
+          Rails.logger.debug "Unable to save TournamentEvent ##{tournament_event.id}: #{tournament_event.errors.full_messages}"
+        end
+      end
     end
   end
 
