@@ -85,7 +85,20 @@
         <% end %>
         <div class="dropdown-menu">
           <% Page.orphan.published.order("LOWER(name)").each do |page| %>
-            <%= link_to page.name, page_path(slug: page.slug), class: 'dropdown-item' %>
+            <% if page.children.published.any? %>
+              <div class="dropdown-divider"></div>
+              <h6 class="dropdown-header"><%= page.name %></h6>
+              <% page.children.published.each do |subpage| %>
+                <%= link_to subpage.name,
+                            page_path(slug: subpage.slug),
+                            class: 'dropdown-item' %>
+              <% end %>
+              <div class="dropdown-divider"></div>
+            <% else %>
+              <%= link_to page.name,
+                          page_path(slug: page.slug),
+                          class: 'dropdown-item' %>
+            <% end %>
           <% end %>
         </div>
       </li>
