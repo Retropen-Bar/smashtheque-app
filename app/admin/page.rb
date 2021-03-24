@@ -18,11 +18,16 @@ ActiveAdmin.register Page do
     column :parent do |decorated|
       decorated.parent_admin_link
     end
+    column :is_draft
     column :created_at do |decorated|
       decorated.created_at_date
     end
     actions
   end
+
+  scope :all, default: true
+  scope :draft
+  scope :published
 
   filter :slug
   filter :name
@@ -36,6 +41,7 @@ ActiveAdmin.register Page do
     f.inputs do
       f.input :slug
       f.input :name
+      f.input :is_draft
       f.input :parent,
               collection: page_parent_select_collection,
               input_html: {
@@ -52,7 +58,7 @@ ActiveAdmin.register Page do
     f.actions
   end
 
-  permit_params :slug, :name, :parent_id, :content
+  permit_params :slug, :name, :is_draft, :parent_id, :content
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -62,6 +68,7 @@ ActiveAdmin.register Page do
     attributes_table do
       row :slug
       row :name
+      row :is_draft
       row :parent do |decorated|
         decorated.parent_admin_link
       end

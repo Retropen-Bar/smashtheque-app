@@ -84,7 +84,7 @@
           <span>Informations</span>
         <% end %>
         <div class="dropdown-menu">
-          <% Page.orphan.order("LOWER(name)").each do |page| %>
+          <% Page.orphan.published.order("LOWER(name)").each do |page| %>
             <%= link_to page.name, page_path(slug: page.slug), class: 'dropdown-item' %>
           <% end %>
         </div>

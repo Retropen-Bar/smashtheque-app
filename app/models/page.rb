@@ -3,6 +3,7 @@
 # Table name: pages
 #
 #  id         :bigint           not null, primary key
+#  is_draft   :boolean          default(FALSE), not null
 #  name       :string           not null
 #  slug       :string           not null
 #  created_at :datetime         not null
@@ -48,6 +49,8 @@ class Page < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   scope :orphan, -> { where(parent_id: nil) }
+  scope :draft, -> { where(is_draft: true) }
+  scope :published, -> { where(is_draft: false) }
 
   # ---------------------------------------------------------------------------
   # HELPERS
