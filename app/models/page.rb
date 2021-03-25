@@ -3,6 +3,8 @@
 # Table name: pages
 #
 #  id         :bigint           not null, primary key
+#  in_footer  :boolean          default(FALSE), not null
+#  in_header  :boolean          default(FALSE), not null
 #  is_draft   :boolean          default(FALSE), not null
 #  name       :string           not null
 #  slug       :string           not null
@@ -50,6 +52,8 @@ class Page < ApplicationRecord
 
   scope :orphan, -> { where(parent_id: nil) }
   scope :draft, -> { where(is_draft: true) }
+  scope :header, -> { where(in_header: true) }
+  scope :footer, -> { where(in_footer: true) }
   scope :published, -> { where(is_draft: false) }
 
   # ---------------------------------------------------------------------------

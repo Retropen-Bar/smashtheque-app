@@ -255,6 +255,8 @@ ActiveRecord::Schema.define(version: 2021_03_24_213113) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "parent_id"
     t.boolean "is_draft", default: false, null: false
+    t.boolean "in_header", default: false, null: false
+    t.boolean "in_footer", default: false, null: false
     t.index ["parent_id"], name: "index_pages_on_parent_id"
     t.index ["slug"], name: "index_pages_on_slug", unique: true
   end

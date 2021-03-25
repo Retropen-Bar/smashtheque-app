@@ -84,7 +84,7 @@
           <span>Informations</span>
         <% end %>
         <div class="dropdown-menu">
-          <% Page.orphan.published.order("LOWER(name)").each do |page| %>
+          <% Page.published.header.order("LOWER(name)").each do |page| %>
             <% if page.children.published.any? %>
               <div class="dropdown-divider"></div>
               <h6 class="dropdown-header"><%= page.name %></h6>

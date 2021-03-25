@@ -32,6 +32,9 @@ ActiveAdmin.register Page do
   filter :slug
   filter :name
   filter :parent
+  filter :is_draft
+  filter :in_header
+  filter :in_footer
 
   # ---------------------------------------------------------------------------
   # FORM
@@ -42,6 +45,8 @@ ActiveAdmin.register Page do
       f.input :slug
       f.input :name
       f.input :is_draft
+      f.input :in_header
+      f.input :in_footer
       f.input :parent,
               collection: page_parent_select_collection,
               input_html: {
@@ -58,7 +63,9 @@ ActiveAdmin.register Page do
     f.actions
   end
 
-  permit_params :slug, :name, :is_draft, :parent_id, :content
+  permit_params :slug, :name,
+                :is_draft, :in_header, :in_footer, :parent_id,
+                :content
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -69,6 +76,8 @@ ActiveAdmin.register Page do
       row :slug
       row :name
       row :is_draft
+      row :in_header
+      row :in_footer
       row :parent do |decorated|
         decorated.parent_admin_link
       end

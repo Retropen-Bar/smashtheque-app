@@ -171,6 +171,8 @@ fr:
         << : *SHARED
         children: Sous-pages
         content: Contenu
+        in_footer: Dans le pied de page
+        in_header: Dans le menu principal
         is_draft: Brouillon
         name: Nom
         parent: Page parente
