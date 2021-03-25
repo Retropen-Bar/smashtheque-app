@@ -2,6 +2,8 @@ ActiveAdmin.register Page do
 
   decorate_with ActiveAdmin::PageDecorator
 
+  menu label: '<i class="fas fa-fw fa-paragraph"></i>Pages'.html_safe
+
   # ---------------------------------------------------------------------------
   # INDEX
   # ---------------------------------------------------------------------------

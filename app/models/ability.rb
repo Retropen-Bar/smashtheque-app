@@ -53,6 +53,9 @@ class Ability
     # Location and subclasses
     can manage_or_cru, Location
 
+    # Page
+    can manage_or_cru, Page
+
     # Player
     can manage_or_cru, Player
     can :accept, Player
