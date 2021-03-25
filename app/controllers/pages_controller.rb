@@ -1,6 +1,6 @@
 class PagesController < PublicController
 
-  before_action :set_static_page, only: %i(credits legal show)
+  before_action :set_static_page, only: %i(show)
 
   decorates_assigned :page
 
@@ -9,12 +9,6 @@ class PagesController < PublicController
     @teams_count = Rails.env.development? ? 136 : Team.count
     @recurring_tournaments_count = Rails.env.development? ? 73 : RecurringTournament.count
     @tournament_events_count = Rails.env.development? ? 1050 : TournamentEvent.count
-  end
-
-  def credits
-  end
-
-  def legal
   end
 
   def planning_online
