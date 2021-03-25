@@ -12,6 +12,7 @@ fr:
       banned: Bannis
       casters: Caster
       coahes: Coach
+      draft: Brouillon
       geocoded: Géolocalisé
       graphic_designers: Graphistes
       helps: Aides
@@ -24,6 +25,7 @@ fr:
       on_smashgg: smash.gg
       on_braacket: Braacket
       on_challonge: Challonge
+      published: Publié
       related_to_location: Lieu
       related_to_team: Équipe
       related_to_player: Joueur

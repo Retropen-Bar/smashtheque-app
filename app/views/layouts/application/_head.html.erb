@@ -78,6 +78,31 @@
         <% end %>
       </li>
 
+      <li class="nav-item dropdown">
+        <%= link_to '#', class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
+          <%= fas_icon_tag 'info-circle' %>
+          <span>Informations</span>
+        <% end %>
+        <div class="dropdown-menu">
+          <% Page.published.header.order("LOWER(name)").each do |page| %>
+            <% if page.children.published.any? %>
+              <div class="dropdown-divider"></div>
+              <h6 class="dropdown-header"><%= page.name %></h6>
+              <% page.children.published.each do |subpage| %>
+                <%= link_to subpage.name,
+                            page_path(slug: subpage.slug),
+                            class: 'dropdown-item' %>
+              <% end %>
+              <div class="dropdown-divider"></div>
+            <% else %>
+              <%= link_to page.name,
+                          page_path(slug: page.slug),
+                          class: 'dropdown-item' %>
+            <% end %>
+          <% end %>
+        </div>
+      </li>
+
     </ul>
 
     <% if admin_user_signed_in? %>

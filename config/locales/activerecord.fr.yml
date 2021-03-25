@@ -17,6 +17,7 @@ fr:
       locations/country: Pays
       locations_city: Ville
       locations_country: Pays
+      page: Page
       player: Joueur
       player_reward_condition: Récompense obtenue
       recurring_tournament: Série
@@ -166,6 +167,16 @@ fr:
         discriminator: Discriminant
         player: Joueur
         username: Pseudo
+      page:
+        << : *SHARED
+        children: Sous-pages
+        content: Contenu
+        in_footer: Dans le pied de page
+        in_header: Dans le menu principal
+        is_draft: Brouillon
+        name: Nom
+        parent: Page parente
+        slug: Slug
       player:
         << : *SHARED
         ban_details: Détails du ban

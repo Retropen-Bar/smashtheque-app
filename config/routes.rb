@@ -109,8 +109,7 @@ Rails.application.routes.draw do
     end
   end
 
-  get 'credits' => 'pages#credits', as: :credits
-  get 'mentions-legales' => 'pages#legal', as: :legal
+  resources :pages, param: :slug, only: :show
 
   get 'bot' => 'redirections#bot'
 

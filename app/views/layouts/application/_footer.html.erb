@@ -1,8 +1,9 @@
 <footer class="bd-footer text-muted text-center text-md-left" id="footer">
   <div class="container-fluid p-3 p-md-5">
     <ul class="bd-footer-links">
-      <li><%= link_to 'Crédits', credits_path %></li>
-      <li><%= link_to 'Mentions légales', legal_path %></li>
+      <% Page.published.footer.order("LOWER(name)").each do |page| %>
+        <li><%= link_to page.name, page_path(slug: page.slug) %></li>
+      <% end %>
       <li><a href="/admin">Admin</a></li>
     </ul>
     <ul class="bd-footer-links">
