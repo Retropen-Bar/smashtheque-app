@@ -37,9 +37,21 @@ class SmashggUserDecorator < BaseDecorator
                               class: 'banner'
   end
 
+  def smashgg_badge(options = {})
+    return nil if model.slug.blank?
+    h.link_to smashgg_url, class: 'account-badge', target: '_blank' do
+      (
+        h.image_tag 'https://smash.gg/images/gg-app-icon.png', height: 24, class: 'logo'
+      ) + ' ' + (
+        full_name(options)
+      )
+    end
+  end
+
   def smashgg_link
     return nil if model.slug.blank?
     h.link_to smashgg_url, target: '_blank' do
+
       (
         h.image_tag 'https://smash.gg/images/gg-app-icon.png', height: 16, class: 'logo'
       ) + ' ' + (

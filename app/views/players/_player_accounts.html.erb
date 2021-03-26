@@ -1,0 +1,11 @@
+<% if player.discord_user %>
+  <div>
+    <%= player.discord_badge %>
+  </div>
+<% end %>
+
+<% player.smashgg_users.each do |smashgg_user| %>
+  <div>
+    <%= smashgg_user.decorate.smashgg_badge %>
+  </div>
+<% end %>

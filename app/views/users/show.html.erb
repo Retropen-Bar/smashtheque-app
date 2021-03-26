@@ -74,6 +74,7 @@
           <%= render 'players/player', player: player.decorate %>
         </div>
       </div>
+      <%= render 'players/player_accounts', player: player.decorate %>
     <% else %>
       <%= link_to 'Créer ma fiche joueur', [:create_player, @user], class: 'btn btn-success' %>
     <% end %>

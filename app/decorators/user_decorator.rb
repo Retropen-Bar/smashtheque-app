@@ -38,4 +38,8 @@ class UserDecorator < BaseDecorator
     }.merge(options)
   end
 
+  def discord_badge(options = {})
+    discord_user&.decorate&.discord_badge(options)
+  end
+
 end

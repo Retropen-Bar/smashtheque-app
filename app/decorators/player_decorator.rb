@@ -141,4 +141,8 @@ class PlayerDecorator < BaseDecorator
     end
   end
 
+  def discord_badge(options = {})
+    discord_user&.decorate&.discord_badge(options)
+  end
+
 end

@@ -1,6 +1,17 @@
-<div class="cards-list players" style="margin-top: 50px;">
-  <div class="card-container">
-    <%= render 'player', player: player %>
+<div class="row">
+
+  <div class="col-8">
+    <div class="cards-list players" style="margin-top: 50px;">
+      <div class="card-container">
+        <%= render 'player', player: player %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-4">
+    <div class="p-3 p-md-5 m-3">
+      <%= render 'player_accounts', player: player %>
+    </div>
   </div>
 </div>
 

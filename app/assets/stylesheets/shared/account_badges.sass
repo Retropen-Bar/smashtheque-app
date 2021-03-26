@@ -1,0 +1,33 @@
+.account-badge
+  display: inline-block
+  background: rgba(255, 255, 255, 0.8)
+  padding: 5px 10px
+  border-radius: 0.25rem
+  margin: 0.25rem
+  position: relative
+
+  &:before
+    content: ''
+    position: absolute
+    top: 0
+    left: 0
+    background: black
+    width: 44px
+    height: 100%
+    border-radius: 0.25rem 0 0 0.25rem
+
+  *
+    position: relative
+
+  i, .logo
+    vertical-align: middle
+    margin-right: 13px
+
+  i.fa-discord
+    font-size: 27px
+
+  .logo
+
+  &, &:hover
+    text-decoration: none
+    color: black

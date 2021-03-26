@@ -47,4 +47,15 @@ class DiscordUserDecorator < BaseDecorator
     h.content_tag :div, full_name_or_id(size: 32), options
   end
 
+  def discord_badge(options = {})
+    h.link_to '#', class: 'account-badge' do
+      (
+        h.fab_icon_tag :discord
+      ) + ' ' + (
+        full_name(size: options.delete(:size) || 32)
+      )
+    end
+  end
+
+
 end
