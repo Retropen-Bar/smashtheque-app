@@ -1,0 +1,35 @@
+<h2>Utilisateurs potentiels</h2>
+
+<div style="margin: 50px 0; text-align: center"><%= paginate @players %></div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Joueur</th>
+      <th>Utilisateur suggéré</th>
+      <th>Raison de la suggestion</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @players.each do |player| %>
+      <% suggested_user = player._potential_user %>
+      <% next if suggested_user.nil? %>
+      <tr>
+        <td><%= player.admin_decorate.admin_link %></td>
+        <td><%= suggested_user.admin_decorate.admin_link %></td>
+        <td>
+          Pseudo : <%= player.name %> &asymp; <%= suggested_user.name %>
+        </td>
+        <td>
+          <%= semantic_form_for([:admin, player], html: {target: '_blank'}) do |f| %>
+            <%= f.input :user_id, as: :hidden, input_html: {value: suggested_user.id } %>
+            <%= f.submit 'Valider', class: 'button-auto green' %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div style="margin: 50px 0; text-align: center"><%= paginate @players %></div>

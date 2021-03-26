@@ -360,6 +360,15 @@ class Player < ApplicationRecord
     where(user_id: nil)
   end
 
+  def self.with_potential_user
+    self.without_user
+        .joins(
+          "INNER JOIN (#{User.without_player.to_sql}) potential_users
+                   ON unaccent(potential_users.name)
+                ILIKE unaccent(players.name)"
+        )
+  end
+
   def self.without_location
     where.not(id: LocationsPlayer.select(:player_id))
   end

@@ -333,4 +333,15 @@ ActiveAdmin.register Player do
     @tournament_events_count = @tournament_events.count
   end
 
+  # ---------------------------------------------------------------------------
+  # SUGGESTIONS
+  # ---------------------------------------------------------------------------
+
+  action_item :potential_users, only: :index do
+    link_to 'Utilisateurs potentiels', { action: :potential_users }, class: :blue
+  end
+  collection_action :potential_users do
+    @players = Player.with_potential_user.page(params[:page] || 1).per(50)
+  end
+
 end
