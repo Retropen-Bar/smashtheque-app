@@ -32,7 +32,7 @@
 
 <div class="row justify-content-center">
   <% if user.is_coach? || user.is_graphic_designer? %>
-    <div class="col-6">
+    <div class="col">
       <% if user.is_coach? %>
         <div class="p-3 mb-2 bg-light text-dark">
           <h2>Profil de coach</h2>
@@ -66,7 +66,7 @@
     </div>
   <% end %>
 
-  <div class="col-6 text-center">
+  <div class="col text-center">
     <% if user.player %>
       <div class="cards-list players">
         <div class="card-container">
@@ -79,4 +79,10 @@
       <%= link_to 'Créer ma fiche joueur', [:create_player, @user], class: 'btn btn-success' %>
     <% end %>
   </div>
+
+  <% if user.main_address || user.secondary_address %>
+    <div class="col">
+      <%= user_locations_map(user) %>
+    </div>
+  <% end %>
 </div>

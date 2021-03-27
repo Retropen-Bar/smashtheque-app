@@ -59,6 +59,31 @@ module MapsHelper
                 options: map_options || {}
   end
 
+  def user_locations_map(user, map_options: {})
+    markers = {all: []}
+    if user.main_address
+      markers[:all] << {
+        latlng: [
+          user.main_latitude,
+          user.main_longitude
+        ],
+        popup: user.main_address
+      }
+    end
+    if user.secondary_address
+      markers[:all] << {
+        latlng: [
+          user.secondary_latitude,
+          user.secondary_longitude
+        ],
+        popup: user.secondary_address
+      }
+    end
+
+    france_map  markers: markers,
+                options: map_options || {}
+  end
+
   private
 
   def france_map(markers:, layers: {}, icons: {}, options: {}, &block)
