@@ -369,6 +369,10 @@ class Player < ApplicationRecord
         )
   end
 
+  def self.with_address
+    where(user_id: User.with_address.select(:id))
+  end
+
   def self.without_location
     where.not(id: LocationsPlayer.select(:player_id))
   end

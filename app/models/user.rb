@@ -226,6 +226,18 @@ class User < ApplicationRecord
     )
   end
 
+  def self.with_main_address
+    where.not(main_latitude: nil)
+  end
+
+  def self.with_secondary_address
+    where.not(secondary_latitude: nil)
+  end
+
+  def self.with_address
+    with_main_address.or(with_secondary_address)
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------
@@ -280,6 +292,25 @@ class User < ApplicationRecord
 
   def _potential_discord_user
     @potential_discord_user ||= potential_discord_user
+  end
+
+  def addresses
+    result = []
+    if main_latitude
+      result << {
+        name: main_address,
+        latitude: main_latitude,
+        longitude: main_longitude
+      }
+    end
+    if secondary_latitude
+      result << {
+        name: secondary_address,
+        latitude: secondary_latitude,
+        longitude: secondary_longitude
+      }
+    end
+    result
   end
 
 end
