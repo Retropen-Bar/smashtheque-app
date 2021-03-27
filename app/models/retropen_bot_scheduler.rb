@@ -3,7 +3,6 @@ class RetropenBotScheduler
   def self.rebuild_all
     rebuild_abc
     rebuild_chars
-    rebuild_locations
     rebuild_teams
   end
 
@@ -54,41 +53,6 @@ class RetropenBotScheduler
       '$',
       abc_category_id: _abc_category_id
     )
-  end
-
-  # ---------------------------------------------------------------------------
-  # LOCATIONS
-  # ---------------------------------------------------------------------------
-
-  def self.rebuild_locations_for_location(location,
-                                          cities_category_id: nil,
-                                          countries_category_id: nil)
-    return false if location.nil?
-    return false unless location.is_main?
-    RetropenBotJobs::RebuildLocationsForLocationJob.perform_later(
-      location,
-      cities_category_id: cities_category_id,
-      countries_category_id: countries_category_id
-    )
-  end
-
-  def self.rebuild_locations_for_locations(locations,
-                                           cities_category_id: nil,
-                                           countries_category_id: nil)
-    _cities_category_id = cities_category_id || RetropenBot.default.cities_category['id']
-    _countries_category_id = countries_category_id || RetropenBot.default.countries_category['id']
-    locations.to_a.compact.uniq.each do |location|
-      rebuild_locations_for_location location,
-                                     cities_category_id: _cities_category_id,
-                                     countries_category_id: _countries_category_id
-    end
-  end
-
-  def self.rebuild_locations(cities_category_id: nil,
-                             countries_category_id: nil)
-    rebuild_locations_for_locations Location.order(:name),
-                                    cities_category_id: cities_category_id,
-                                    countries_category_id: countries_category_id
   end
 
   # ---------------------------------------------------------------------------

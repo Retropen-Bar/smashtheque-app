@@ -10,11 +10,6 @@ namespace :retropen do
     RetropenBotScheduler.rebuild_chars
   end
 
-  desc 'Rebuild cities'
-  task :rebuild_locations => :environment do
-    RetropenBotScheduler.rebuild_locations
-  end
-
   desc 'Rebuild teams'
   task :rebuild_teams => :environment do
     RetropenBotScheduler.rebuild_teams

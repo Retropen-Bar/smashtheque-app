@@ -20,7 +20,9 @@ class ActiveAdmin::LocationDecorator < LocationDecorator
   end
 
   def players_admin_path
-    admin_players_path(q: {locations_players_location_id_in: [model.id]})
+    # TODO: fix this
+    # admin_players_path(q: {locations_players_location_id_in: [model.id]})
+    '#'
   end
 
   def players_admin_link

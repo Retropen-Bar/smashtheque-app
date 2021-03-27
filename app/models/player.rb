@@ -10,7 +10,6 @@
 #  has_good_network                :boolean          default(FALSE), not null
 #  is_accepted                     :boolean
 #  is_banned                       :boolean          default(FALSE), not null
-#  location_names                  :text             default([]), is an Array
 #  name                            :string
 #  old_names                       :string           default([]), is an Array
 #  points                          :integer          default(0), not null
@@ -71,14 +70,6 @@ class Player < ApplicationRecord
            through: :characters_players,
            after_remove: :after_remove_character
 
-  has_many :locations_players,
-           -> { positioned },
-           inverse_of: :player,
-           dependent: :destroy
-  has_many :locations,
-           through: :locations_players,
-           after_remove: :after_remove_location
-
   has_many :players_teams,
            -> { positioned },
            inverse_of: :player,
@@ -131,15 +122,10 @@ class Player < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   before_validation :set_character_names
-  before_validation :set_location_names
   before_validation :set_team_names
 
   def set_character_names
     self.character_names = characters.reload.map(&:name)
-  end
-
-  def set_location_names
-    self.location_names = locations.reload.map(&:name)
   end
 
   def set_team_names
@@ -166,18 +152,6 @@ class Player < ApplicationRecord
       idx = ids.index(characters_player.character_id)
       characters_player.position = idx
       characters_player.save if characters_player.persisted?
-    end
-  end
-
-  # trick to add position
-  def location_ids=(_ids)
-    # ids may come as strings here
-    ids = (_ids.map(&:to_i) - [0]).uniq
-    super(ids)
-    locations_players.each do |locations_player|
-      idx = ids.index(locations_player.location_id)
-      locations_player.position = idx
-      locations_player.save if locations_player.persisted?
     end
   end
 
@@ -252,9 +226,6 @@ class Player < ApplicationRecord
 
     # this handles both existing and new characters
     RetropenBotScheduler.rebuild_chars_for_characters characters
-
-    # this handles both existing and new locations
-    RetropenBotScheduler.rebuild_locations_for_locations locations
   end
 
   # this is required because removing a has_many relation
@@ -262,13 +233,6 @@ class Player < ApplicationRecord
   def after_remove_character(character)
     return true if ENV['NO_DISCORD'] || !is_legit?
     RetropenBotScheduler.rebuild_chars_for_character character
-  end
-
-  # this is required because removing a has_many relation
-  # is not visible inside an after_commit callback
-  def after_remove_location(location)
-    return true if ENV['NO_DISCORD'] || !is_legit?
-    RetropenBotScheduler.rebuild_locations_for_location location
   end
 
   # this is required because removing a has_many relation
@@ -373,10 +337,6 @@ class Player < ApplicationRecord
     where(user_id: User.with_address.select(:id))
   end
 
-  def self.without_location
-    where.not(id: LocationsPlayer.select(:player_id))
-  end
-
   def self.without_character
     where.not(id: CharactersPlayer.select(:player_id))
   end
@@ -443,9 +403,6 @@ class Player < ApplicationRecord
         creator_user: {
           only: %i(id name)
         },
-        locations: {
-          only: %i(id icon name)
-        },
         discord_user: {
           only: %i(id discord_id)
         },
@@ -461,7 +418,6 @@ class Player < ApplicationRecord
         creator_discord_id
         discord_id
         discord_user_id
-        location_ids
         team_ids
       )
     ))

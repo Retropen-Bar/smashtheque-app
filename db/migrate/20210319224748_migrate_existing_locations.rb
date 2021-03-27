@@ -1,4 +1,9 @@
 class MigrateExistingLocations < ActiveRecord::Migration[6.0]
+  class LocationsPlayer < ApplicationRecord
+    belongs_to :location
+    belongs_to :player
+  end
+
   def change
     previous_player_id = nil
     LocationsPlayer.order(:player_id, :position).find_each do |lp|

@@ -19,7 +19,7 @@ ActiveAdmin.register Player do
     end
   end
 
-  includes :characters, :locations,
+  includes :characters,
            teams: [
             :discord_guilds,
             { logo_attachment: :blob }
@@ -39,9 +39,6 @@ ActiveAdmin.register Player do
     end
     column :characters do |decorated|
       decorated.characters_admin_links.join(' ').html_safe
-    end
-    column :locations do |decorated|
-      decorated.locations_admin_links.join('<br/>').html_safe
     end
     column :rank
     column :points
@@ -74,7 +71,6 @@ ActiveAdmin.register Player do
   scope :to_be_accepted, group: :is_accepted
 
   scope :without_user, group: :incomplete
-  scope :without_location, group: :incomplete
   scope :without_character, group: :incomplete
   scope :without_smashgg_user, group: :incomplete
 
@@ -84,10 +80,6 @@ ActiveAdmin.register Player do
   filter :characters,
          as: :select,
          collection: proc { player_characters_select_collection },
-         input_html: { multiple: true, data: { select2: {} } }
-  filter :locations,
-         as: :select,
-         collection: proc { player_locations_select_collection },
          input_html: { multiple: true, data: { select2: {} } }
   filter :teams,
          as: :select,
@@ -143,10 +135,6 @@ ActiveAdmin.register Player do
       f.input :characters,
               collection: player_characters_select_collection,
               input_html: { multiple: true, data: { select2: { sortable: true, sortedValues: f.object.character_ids } } }
-      f.input :locations,
-              collection: player_locations_select_collection,
-              include_blank: 'Aucune',
-              input_html: { multiple: true, data: { select2: { sortable: true, sortedValues: f.object.location_ids } } }
       f.input :teams,
               collection: player_teams_select_collection,
               include_blank: 'Aucune',
@@ -163,7 +151,7 @@ ActiveAdmin.register Player do
   permit_params :name, :is_accepted, :user_id,
                 :is_banned, :ban_details, :has_good_network,
                 old_names: [],
-                character_ids: [], location_ids: [], team_ids: []
+                character_ids: [], team_ids: []
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -183,9 +171,6 @@ ActiveAdmin.register Player do
       end
       row :characters do |decorated|
         decorated.characters_admin_links.join('<br/>').html_safe
-      end
-      row :locations do |decorated|
-        decorated.locations_admin_links.join('<br/>').html_safe
       end
       row :teams do |decorated|
         decorated.teams_admin_links.join('<br/>').html_safe
@@ -220,9 +205,6 @@ ActiveAdmin.register Player do
           end
           column :characters do |decorated|
             decorated.characters_admin_links.join(' ').html_safe
-          end
-          column :locations do |decorated|
-            decorated.locations_admin_links.join('<br/>').html_safe
           end
           column :teams do |decorated|
             decorated.teams_admin_links.join('<br/>').html_safe

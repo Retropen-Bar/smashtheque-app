@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_24_213113) do
+ActiveRecord::Schema.define(version: 2021_03_27_221141) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -239,15 +239,6 @@ ActiveRecord::Schema.define(version: 2021_03_24_213113) do
     t.index ["type"], name: "index_locations_on_type"
   end
 
-  create_table "locations_players", force: :cascade do |t|
-    t.bigint "player_id", null: false
-    t.bigint "location_id", null: false
-    t.integer "position"
-    t.index ["location_id", "player_id"], name: "index_locations_players_on_location_id_and_player_id", unique: true
-    t.index ["location_id"], name: "index_locations_players_on_location_id"
-    t.index ["player_id"], name: "index_locations_players_on_player_id"
-  end
-
   create_table "pages", force: :cascade do |t|
     t.string "slug", null: false
     t.string "name", null: false
@@ -288,7 +279,6 @@ ActiveRecord::Schema.define(version: 2021_03_24_213113) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "character_names", default: [], array: true
-    t.text "location_names", default: [], array: true
     t.text "team_names", default: [], array: true
     t.boolean "is_banned", default: false, null: false
     t.text "ban_details"
@@ -578,8 +568,6 @@ ActiveRecord::Schema.define(version: 2021_03_24_213113) do
   add_foreign_key "duos", "duo_reward_duo_conditions", column: "best_duo_reward_duo_condition_id"
   add_foreign_key "duos", "players", column: "player1_id"
   add_foreign_key "duos", "players", column: "player2_id"
-  add_foreign_key "locations_players", "locations"
-  add_foreign_key "locations_players", "players"
   add_foreign_key "pages", "pages", column: "parent_id"
   add_foreign_key "player_reward_conditions", "players"
   add_foreign_key "player_reward_conditions", "reward_conditions"

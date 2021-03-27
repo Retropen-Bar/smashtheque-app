@@ -41,6 +41,10 @@ class User < ApplicationRecord
   devise :omniauthable, omniauth_providers: %i[discord]
   devise :rememberable
 
+  geocoded_by :main_address,
+              latitude: :main_latitude,
+              longitude: :main_longitude
+
   # ---------------------------------------------------------------------------
   # RELATIONS
   # ---------------------------------------------------------------------------
@@ -311,6 +315,10 @@ class User < ApplicationRecord
       }
     end
     result
+  end
+
+  def closest_location
+    Locations::City.near([user.main_latitude, user.main_longitude]).first
   end
 
 end

@@ -19,11 +19,14 @@
 class Location < ApplicationRecord
 
   # ---------------------------------------------------------------------------
-  # RELATIONS
+  # MODULES
   # ---------------------------------------------------------------------------
 
-  has_many :locations_players, dependent: :destroy
-  has_many :players, through: :locations_players
+  geocoded_by :name
+
+  # ---------------------------------------------------------------------------
+  # RELATIONS
+  # ---------------------------------------------------------------------------
 
   has_many :discord_guild_relateds, as: :related, dependent: :destroy
   has_many :discord_guilds, through: :discord_guild_relateds
@@ -72,6 +75,14 @@ class Location < ApplicationRecord
 
   def is_geocoded?
     !latitude.nil?
+  end
+
+  def users
+    User.near([latitude, longitude], 50, units: :km)
+  end
+
+  def players
+    users.map(&:player).compact
   end
 
   # ---------------------------------------------------------------------------

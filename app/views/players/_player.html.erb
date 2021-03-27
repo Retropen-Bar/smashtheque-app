@@ -32,10 +32,10 @@
       </div>
     <% end %>
     <% unless defined?(with_locations) && with_locations == false %>
-      <% player.locations.each do |location| %>
+      <% player.user&.addresses&.each do |address| %>
         <div class="player-location">
           <i class="fas fa-map-marker-alt"></i>
-          <%= location.decorate.link %>
+          <%= address[:name] %>
         </div>
       <% end %>
     <% end %>
