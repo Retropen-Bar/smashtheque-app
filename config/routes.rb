@@ -28,7 +28,7 @@ Rails.application.routes.draw do
       end
       resources :duo_tournament_events, only: [:index, :show, :create]
       resources :duos, only: [:index, :show, :create, :update]
-      resources :locations, only: [:index, :create]
+      resources :communities, only: [:index]
       resources :recurring_tournaments, only: [:index, :show]
       resources :players, only: [:index, :show, :create, :update]
       resources :teams, only: [:index, :show, :update]
@@ -52,7 +52,7 @@ Rails.application.routes.draw do
       get :characters
       get :players
       get :teams
-      get :locations
+      get :communities
       get :others
     end
   end
@@ -70,8 +70,8 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :locations, only: :index
-  get 'locations/:id' => 'players#location_index', as: :location
+  resources :communities, only: :index
+  get 'communities/:id' => 'players#community_index', as: :community
 
   resources :players, only: [:index, :show] do
     collection do

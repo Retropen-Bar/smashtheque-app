@@ -26,7 +26,7 @@ fr:
       on_braacket: Braacket
       on_challonge: Challonge
       published: Publié
-      related_to_location: Lieu
+      related_to_community: Communauté
       related_to_team: Équipe
       related_to_player: Joueur
       related_to_character: Perso
@@ -47,7 +47,6 @@ fr:
       without_background: Sans fond
       without_character: Sans perso
       without_discord_user: Non relié à Discord
-      without_location: Non localisé
       without_player: Non lié à un joueur
       without_smashgg_user: Sans smash.gg
       without_tournament_event: Sans édition 1v1

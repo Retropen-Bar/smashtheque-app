@@ -31,7 +31,7 @@ class TwitchChannel < ApplicationRecord
   def self.related_types
     [
       Character,
-      Location,
+      Community,
       Player,
       Team
     ]
@@ -69,8 +69,8 @@ class TwitchChannel < ApplicationRecord
     where("unaccent(name) ILIKE '#{letter}%'")
   end
 
-  def self.related_to_location
-    where(related_type: :Location)
+  def self.related_to_community
+    where(related_type: :Community)
   end
 
   def self.related_to_team

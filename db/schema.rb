@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_27_221141) do
+ActiveRecord::Schema.define(version: 2021_03_28_101458) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -121,6 +121,15 @@ ActiveRecord::Schema.define(version: 2021_03_27_221141) do
     t.index ["player_id"], name: "index_characters_players_on_player_id"
   end
 
+  create_table "communities", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.float "latitude", null: false
+    t.float "longitude", null: false
+    t.string "address", null: false
+  end
+
   create_table "discord_guild_admins", force: :cascade do |t|
     t.bigint "discord_guild_id", null: false
     t.bigint "discord_user_id", null: false
@@ -225,18 +234,6 @@ ActiveRecord::Schema.define(version: 2021_03_27_221141) do
     t.index ["name"], name: "index_duos_on_name"
     t.index ["player1_id"], name: "index_duos_on_player1_id"
     t.index ["player2_id"], name: "index_duos_on_player2_id"
-  end
-
-  create_table "locations", force: :cascade do |t|
-    t.string "icon"
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "type", null: false
-    t.boolean "is_main"
-    t.float "latitude"
-    t.float "longitude"
-    t.index ["type"], name: "index_locations_on_type"
   end
 
   create_table "pages", force: :cascade do |t|

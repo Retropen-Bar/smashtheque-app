@@ -40,15 +40,15 @@ module MapsHelper
                 &block
   end
 
-  def locations_map(locations, map_options: {})
+  def communities_map(communities, map_options: {})
     markers = {all: []}
-    locations.geocoded.each do |location|
+    communities.geocoded.each do |community|
       marker = {
         latlng: [
-          location.latitude,
-          location.longitude
+          community.latitude,
+          community.longitude
         ],
-        popup: link_to(location.decorate.pretty_name, [:admin, location])
+        popup: link_to(community.name, [:admin, community])
       }
       markers[:all] << marker
     end
@@ -57,7 +57,7 @@ module MapsHelper
                 options: map_options || {}
   end
 
-  def user_locations_map(user, map_options: {})
+  def user_addresses_map(user, map_options: {})
     markers = {
       all: user.addresses.map do |address|
         {

@@ -19,8 +19,8 @@ class DiscordGuildsController < PublicController
     render :index
   end
 
-  def locations
-    @discord_guilds = location_discord_guilds
+  def communities
+    @discord_guilds = community_discord_guilds
     render :index
   end
 
@@ -28,7 +28,7 @@ class DiscordGuildsController < PublicController
     ids = character_discord_guilds.map(&:id) +
           player_discord_guilds.map(&:id) +
           team_discord_guilds.map(&:id) +
-          location_discord_guilds.map(&:id)
+          community_discord_guilds.map(&:id)
     @discord_guilds = base_scope.where.not(id: ids).to_a
     render :index
   end
@@ -53,8 +53,8 @@ class DiscordGuildsController < PublicController
     base_scope.by_related_type(Team.to_s).to_a
   end
 
-  def location_discord_guilds
-    base_scope.by_related_type(Location.to_s).to_a
+  def community_discord_guilds
+    base_scope.by_related_type(Community.to_s).to_a
   end
 
 end

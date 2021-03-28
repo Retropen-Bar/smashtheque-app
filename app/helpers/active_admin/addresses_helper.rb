@@ -1,4 +1,4 @@
-module ActiveAdmin::LocationsHelper
+module ActiveAdmin::AddressesHelper
 
   def address_input(form, options = {})
     prefix = options.delete(:prefix) || ''
@@ -9,8 +9,8 @@ module ActiveAdmin::LocationsHelper
                     data: {
                       maps_autocomplete: {
                         target: {
-                          latitude: "#location-#{prefix}latitude",
-                          longitude: "#location-#{prefix}longitude"
+                          latitude: "#address-#{prefix}latitude",
+                          longitude: "#address-#{prefix}longitude"
                         }
                       }.merge(options)
                     }
@@ -19,13 +19,13 @@ module ActiveAdmin::LocationsHelper
       form.input  "#{prefix}latitude".to_sym,
                   as: :hidden,
                   input_html: {
-                    id: "location-#{prefix}latitude"
+                    id: "address-#{prefix}latitude"
                   }
     ) + (
       form.input  "#{prefix}longitude".to_sym,
                   as: :hidden,
                   input_html: {
-                    id: "location-#{prefix}longitude"
+                    id: "address-#{prefix}longitude"
                   }
     )
   end

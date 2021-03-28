@@ -12,11 +12,7 @@ fr:
       duo: Duo
       duo_reward_duo_condition: Récompense obtenue
       duo_tournament_event: Édition 2v2
-      location: Localisation
-      locations/city: Ville
-      locations/country: Pays
-      locations_city: Ville
-      locations_country: Pays
+      community: Communauté
       page: Page
       player: Joueur
       player_reward_condition: Récompense obtenue
@@ -128,18 +124,12 @@ fr:
         top5b_duo: Top 5
         top7a_duo: Top 7
         top7b_duo: Top 7
-      location: &LOCATION
+      community:
         << : *SHARED
         address: Adresse
-        icon: Icône
+        name: Nom
         players: Joueurs
-        type: Type
-      locations/city:
-        << : *LOCATION
-        is_main: Ville majeure ?
-      locations/country:
-        << : *LOCATION
-        is_main: Pays majeur ?
+        users: Utilisateurs
       comment:
         << : *SHARED
       discord_guild:
@@ -185,8 +175,6 @@ fr:
         character_ids: Persos
         character_names: Persos
         characters: Persos
-        locations: Localisations
-        location_ids: Localisations
         creator_user: Ajouté par
         creator_user_id: Ajouté par
         discord_user: Compte Discord
@@ -439,7 +427,7 @@ fr:
               << : *SHARED_ERROR_ATTRIBUTES
             player2:
               << : *SHARED_ERROR_ATTRIBUTES
-        location:
+        community:
           attributes:
             name:
               << : *SHARED_ERROR_ATTRIBUTES

@@ -1,28 +1,22 @@
 # == Schema Information
 #
-# Table name: locations
+# Table name: communities
 #
 #  id         :bigint           not null, primary key
-#  icon       :string
-#  is_main    :boolean
-#  latitude   :float
-#  longitude  :float
-#  name       :string
-#  type       :string           not null
+#  address    :string           not null
+#  latitude   :float            not null
+#  longitude  :float            not null
+#  name       :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-# Indexes
-#
-#  index_locations_on_type  (type)
-#
-class Location < ApplicationRecord
+class Community < ApplicationRecord
 
   # ---------------------------------------------------------------------------
   # MODULES
   # ---------------------------------------------------------------------------
 
-  geocoded_by :name
+  geocoded_by :address
 
   # ---------------------------------------------------------------------------
   # RELATIONS
@@ -35,19 +29,13 @@ class Location < ApplicationRecord
 
   has_many :twitch_channels, as: :related, dependent: :nullify
 
+  has_one_attached :logo
+
   # ---------------------------------------------------------------------------
   # VALIDATIONS
   # ---------------------------------------------------------------------------
 
-  # validates :icon, presence: true
-  validates :name, presence: true#, uniqueness: true
-  validate :name_should_be_unique
-
-  def name_should_be_unique
-    if Location.default_scoped.where.not(id: id).by_name_like(name).any?
-      errors.add(:name, :unique)
-    end
-  end
+  validates :name, presence: true
 
   # ---------------------------------------------------------------------------
   # SCOPES
@@ -61,20 +49,12 @@ class Location < ApplicationRecord
     where('unaccent(name) ILIKE unaccent(?)', name)
   end
 
-  def self.geocoded
-    where.not(latitude: nil)
-  end
-
-  def self.not_geocoded
-    where(latitude: nil)
-  end
-
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------
 
-  def is_geocoded?
-    !latitude.nil?
+  def first_discord_guild
+    discord_guilds.first
   end
 
   def users

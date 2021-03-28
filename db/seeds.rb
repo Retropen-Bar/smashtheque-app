@@ -1,5 +1,4 @@
 # if needed
-# Locations::City.destroy_all
 # Character.destroy_all
 # Team.destroy_all
 # Player.destroy_all
@@ -14,18 +13,6 @@ User.create!(
 )
 
 ENV['NO_DISCORD'] = '1'
-
-# Locations::City
-unless Locations::City.any?
-  uri = "#{ENV['SEED_DATA_SOURCE_URL']}cities.json"
-  puts "seed #{uri}"
-  open(uri) do |file|
-    cities = JSON.parse(file.read)
-    cities.each do |city|
-      Locations::City.create!(city)
-    end
-  end
-end
 
 # Character
 unless Character.any?

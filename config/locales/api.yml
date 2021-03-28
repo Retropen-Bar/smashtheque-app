@@ -18,7 +18,7 @@ api:
               << : *SHARED_ATTRIBUTES
             player2:
               << : *SHARED_ATTRIBUTES
-        location:
+        community:
           attributes:
             name:
               << : *SHARED_ATTRIBUTES

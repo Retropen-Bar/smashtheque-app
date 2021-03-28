@@ -9,8 +9,7 @@ namespace :pg_search do
       [
         ChallongeTournament,
         Character,
-        Locations::City,
-        Locations::Country,
+        Community,
         Player,
         RecurringTournament,
         SmashggEvent,

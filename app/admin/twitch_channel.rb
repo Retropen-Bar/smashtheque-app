@@ -43,7 +43,7 @@ ActiveAdmin.register TwitchChannel do
 
   scope :all, default: true
 
-  scope :related_to_location, group: :related
+  scope :related_to_community, group: :related
   scope :related_to_team, group: :related
   scope :related_to_player, group: :related
   scope :related_to_character, group: :related

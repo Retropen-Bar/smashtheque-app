@@ -5,12 +5,7 @@ ActiveAdmin.register_page 'Search' do
     def index
       render json: {
         results: PgSearch.multisearch(params[:term]).map do |document|
-          model = if document.searchable_type == 'Location'
-            # hack for weird bug
-            Location.find(document.searchable_id).decorate
-          else
-            document.searchable.decorate
-          end
+          model = document.searchable.decorate
           {
             id: document.id,
             type: document.searchable_type,

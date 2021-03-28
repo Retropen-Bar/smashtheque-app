@@ -12,10 +12,10 @@ class PlayersController < PublicController
     @players = players Player
   end
 
-  def location_index
-    @location = Location.find(params[:id]).decorate
-    @players = players @location.model.players
-    render 'locations/show'
+  def community_index
+    @community = Community.find(params[:id]).decorate
+    @players = players @community.model.players
+    render 'communities/show'
   end
 
   def team_index

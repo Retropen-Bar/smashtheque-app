@@ -1,30 +1,29 @@
-ActiveAdmin.register Locations::City do
+ActiveAdmin.register Community do
 
-  decorate_with ActiveAdmin::Locations::CityDecorator
+  decorate_with ActiveAdmin::CommunityDecorator
 
   has_paper_trail
 
-  menu label: '<i class="fas fa-fw fa-city"></i>Villes'.html_safe,
+  menu label: '<i class="fas fa-fw fa-map-marker-alt"></i>Communautés'.html_safe,
        parent: '<i class="fas fa-fw fa-cog"></i>Configuration'.html_safe
 
   # ---------------------------------------------------------------------------
   # INDEX
   # ---------------------------------------------------------------------------
 
-  includes :discord_guilds
+  includes :discord_guilds,
+           logo_attachment: :blob
 
   index do
     selectable_column
     id_column
-    column :name do |decorated|
-      link_to decorated.full_name, [:admin, decorated.model]
+    column :logo do |decorated|
+      decorated.logo_image_tag(max_height: 32)
     end
+    column :name
+    column :address
     column :latitude
     column :longitude
-    column :players do |decorated|
-      decorated.players_admin_link
-    end
-    column :is_main
     column :discord_guilds do |decorated|
       decorated.discord_guilds_admin_links
     end
@@ -35,7 +34,6 @@ ActiveAdmin.register Locations::City do
   end
 
   filter :name
-  filter :is_main
 
   scope :all, default: true
 
@@ -43,12 +41,12 @@ ActiveAdmin.register Locations::City do
   scope :geocoded, group: :geocoded
 
   action_item :map, only: :index do
-    link_to 'Carte', map_admin_locations_cities_path
+    link_to 'Carte', action: :map
   end
 
   collection_action :map do
-    @locations = Locations::City.all
-    render 'admin/locations/map'
+    @communities = Community.all
+    render 'admin/communities/map'
   end
 
   # ---------------------------------------------------------------------------
@@ -56,21 +54,32 @@ ActiveAdmin.register Locations::City do
   # ---------------------------------------------------------------------------
 
   form do |f|
-    f.inputs do
-      f.input :icon
-      f.input :name
-      f.input :is_main
-      address_input f,
-                    {
-                      componentRestrictions: {
-                        country: :fr
-                      }
+    columns do
+      column do
+        f.inputs do
+          f.input :name
+          f.input :logo,
+                  as: :file,
+                  hint: 'Laissez vide pour ne pas changer',
+                  input_html: {
+                    accept: 'image/*',
+                    data: {
+                      previewpanel: 'current-logo'
                     }
+                  }
+          address_input f
+        end
+        f.actions
+      end
+      column do
+        panel 'Logo', id: 'current-logo' do
+          f.object.decorate.logo_image_tag
+        end
+      end
     end
-    f.actions
   end
 
-  permit_params :icon, :name, :is_main, :latitude, :longitude
+  permit_params :logo, :name, :address, :latitude, :longitude
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -78,30 +87,19 @@ ActiveAdmin.register Locations::City do
 
   show do
     attributes_table do
-      row :icon
       row :name
+      row :logo do |decorated|
+        decorated.logo_image_tag(max_height: 64)
+      end
+      row :address
       row :latitude
       row :longitude
-      row :players do |decorated|
-        decorated.players_admin_link
-      end
-      row :is_main
       row :discord_guilds do |decorated|
         decorated.discord_guilds_admin_links
       end
       row :created_at
       row :updated_at
     end
-    active_admin_comments
-  end
-
-  action_item :make_country,
-              only: :show do
-    link_to 'Transformer en pays', [:make_country, :admin, resource], class: 'green'
-  end
-  member_action :make_country do
-    resource.update_attribute :type, 'Locations::Country'
-    redirect_to admin_locations_country_path(resource)
   end
 
 end

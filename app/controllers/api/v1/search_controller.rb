@@ -10,25 +10,15 @@ class Api::V1::SearchController < Api::V1::BaseController
                          SmashggEvent
                        ))
                        .map do |document|
-        model = if document.searchable_type == 'Location'
-          # hack for weird bug
-          Location.find(document.searchable_id).decorate
-        else
-          document.searchable.decorate
-        end
+        model = document.searchable.decorate
         if document.searchable_type == 'Player' && !document.searchable.is_accepted?
           nil
         else
-          url = if model.model.is_a?(Location)
-            location_url(model.model)
-          else
-            url_for(model.model)
-          end
           {
             id: document.id,
             type: document.searchable_type,
             icon: model.icon_class,
-            url: url,
+            url: url_for(model.model),
             html: model.as_autocomplete_result
           }
         end

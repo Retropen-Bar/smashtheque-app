@@ -31,11 +31,11 @@
         <%= player.points_count %>
       </div>
     <% end %>
-    <% unless defined?(with_locations) && with_locations == false %>
-      <% player.user&.addresses&.each do |address| %>
-        <div class="player-location">
+    <% unless defined?(with_communities) && with_communities == false %>
+      <% player.user&.closest_communities&.each do |community| %>
+        <div class="player-community">
           <i class="fas fa-map-marker-alt"></i>
-          <%= address[:name] %>
+          <%= link_to community.name, community %>
         </div>
       <% end %>
     <% end %>

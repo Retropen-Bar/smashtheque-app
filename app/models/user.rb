@@ -317,8 +317,15 @@ class User < ApplicationRecord
     result
   end
 
-  def closest_location
-    Locations::City.near([user.main_latitude, user.main_longitude]).first
+  def closest_communities
+    result = []
+    if main_latitude
+      result << Community.near([main_latitude, main_longitude]).first
+    end
+    if secondary_latitude
+      result << Community.near([secondary_latitude, secondary_longitude]).first
+    end
+    result.uniq
   end
 
 end
