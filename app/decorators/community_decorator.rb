@@ -47,4 +47,11 @@ class CommunityDecorator < BaseDecorator
     'default-community-logo.png'
   end
 
+  def name_with_logo(options = {})
+    [
+      any_image_tag(options),
+      name
+    ].join('&nbsp;').html_safe
+  end
+
 end

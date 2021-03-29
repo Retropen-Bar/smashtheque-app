@@ -242,6 +242,19 @@ class User < ApplicationRecord
     with_main_address.or(with_secondary_address)
   end
 
+  def self.near_community(community, radius: 50)
+    near(
+      [community.latitude, community.longitude],
+      radius,
+      units: :km,
+      select: 'id',
+      select_distance: false,
+      select_bearing: false
+    ).except(
+      :select
+    )
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------
@@ -320,10 +333,14 @@ class User < ApplicationRecord
   def closest_communities
     result = []
     if main_latitude
-      result << Community.near([main_latitude, main_longitude]).first
+      if community = Community.near([main_latitude, main_longitude]).first
+        result << community
+      end
     end
     if secondary_latitude
-      result << Community.near([secondary_latitude, secondary_longitude]).first
+      if community = Community.near([secondary_latitude, secondary_longitude]).first
+        result << community
+      end
     end
     result.uniq
   end

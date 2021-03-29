@@ -369,6 +369,10 @@ class Player < ApplicationRecord
     where(user_id: TeamAdmin.select(:user_id))
   end
 
+  def self.near_community(community, radius: 50)
+    where(user_id: User.near_community(community, radius: radius))
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------

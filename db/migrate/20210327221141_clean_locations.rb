@@ -1,4 +1,7 @@
 class CleanLocations < ActiveRecord::Migration[6.0]
+  # old classes
+  class Location < ApplicationRecord; end
+
   def change
     drop_table :locations_players
     remove_column :players, :location_names

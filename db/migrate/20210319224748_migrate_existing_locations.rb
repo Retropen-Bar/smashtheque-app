@@ -1,4 +1,6 @@
 class MigrateExistingLocations < ActiveRecord::Migration[6.0]
+  # old classes
+  class Location < ApplicationRecord; end
   class LocationsPlayer < ApplicationRecord
     belongs_to :location
     belongs_to :player

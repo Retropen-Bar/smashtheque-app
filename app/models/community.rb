@@ -57,12 +57,25 @@ class Community < ApplicationRecord
     discord_guilds.first
   end
 
-  def users
-    User.near([latitude, longitude], 50, units: :km)
+  def users(radius: 50)
+    User.near_community(self, radius: radius)
   end
 
-  def players
-    users.map(&:player).compact
+  def players(radius: 50)
+    Player.near_community(self, radius: radius)
+  end
+
+  def logo_url
+    return nil unless logo.attached?
+    logo.service_url
+  end
+
+  def logo_url=(url)
+    return false if url.blank?
+    uri = URI.parse(url)
+    open(url) do |f|
+      logo.attach(io: File.open(f.path), filename: File.basename(uri.path))
+    end
   end
 
   # ---------------------------------------------------------------------------

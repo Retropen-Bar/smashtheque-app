@@ -27,7 +27,10 @@
   <div class="cards-list players">
     <% players.each do |player| %>
       <div class="card-container">
-        <%= render 'players/player', player: player.decorate %>
+        <%= render 'players/player',
+                   player: player.decorate,
+                   with_addresses: defined?(with_addresses) && with_addresses,
+                   with_communities: defined?(with_communities) && with_communities %>
       </div>
     <% end %>
   </div>

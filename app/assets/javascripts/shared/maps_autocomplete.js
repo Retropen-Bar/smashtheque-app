@@ -10,6 +10,13 @@
     $(target.longitude).val(place.geometry.location.lng());
   };
 
+  var onPlaceRemoved = function(input, target) {
+    // console.log('[Maps Autocomplete] onPlaceRemoved', input, target);
+
+    $(target.latitude).val('');
+    $(target.longitude).val('');
+  }
+
   var initInput = function(input) {
     // console.log('[Maps Autocomplete] initInput', input);
     var $input = $(input);
@@ -33,6 +40,11 @@
         onPlaceChanged(input, target, this.getPlace());
       }
     );
+    $input.on('change', function() {
+      if($input.val() == '') {
+        onPlaceRemoved(input, target);
+      }
+    });
   };
 
   var init = function() {

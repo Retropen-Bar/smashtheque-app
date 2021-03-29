@@ -71,7 +71,9 @@
       <div class="cards-list players">
         <div class="card-container">
           <% player = user.player; player.is_accepted = true %>
-          <%= render 'players/player', player: player.decorate %>
+          <%= render 'players/player',
+                     player: player.decorate,
+                     with_communities: true %>
         </div>
       </div>
       <%= render 'players/player_accounts', player: player.decorate %>
