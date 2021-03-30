@@ -3,7 +3,9 @@
   <div class="col-8">
     <div class="cards-list players" style="margin-top: 50px;">
       <div class="card-container">
-        <%= render 'player', player: player %>
+        <%= render 'player',
+                   player: player,
+                   with_communities: true %>
       </div>
     </div>
   </div>
