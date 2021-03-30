@@ -49,25 +49,17 @@ RSpec.configure do |config|
               '$ref' => '#/components/schemas/character'
             }
           },
-          location_payload: {
-            type: :object,
-            properties: {
-              name: { type: :string, example: 'Paris' },
-              icon: { type: :string, nullable: true, example: '🌳' }
-            }
-          },
-          location: {
+          community: {
             type: :object,
             properties: {
               id: { type: :integer, example: 13 },
-              name: { type: :string, example: 'Paris' },
-              icon: { type: :string, nullable: true, example: '🌳' }
+              name: { type: :string, example: 'Paris' }
             }
           },
-          locations_array: {
+          communities_array: {
             type: :array,
             items: {
-              '$ref' => '#/components/schemas/location'
+              '$ref' => '#/components/schemas/community'
             }
           },
           player_payload: {
@@ -75,7 +67,6 @@ RSpec.configure do |config|
             properties: {
               creator_discord_id: { type: :string, nullable: true, example: '608210202952466464' },
               name: { type: :string, example: 'Pixel' },
-              location_id: { type: :integer, nullable: true, example: 42 },
               team_id: { type: :integer, nullable: true, example: 13 },
               discord_id: { type: :string, nullable: true, example: '608210202952466464' },
               character_ids: {
@@ -132,17 +123,6 @@ RSpec.configure do |config|
                     emoji: '737480497332224100'
                   }
                 ]
-              },
-
-              location_id: { type: :integer, nullable: true, example: 42 },
-              location: {
-                type: :object,
-                nullable: true,
-                properties: {
-                  id: { type: :integer, example: 42 },
-                  icon: { type: :string, nullable: true, example: '🗼' },
-                  name: { type: :string, example: 'paris' }
-                }
               },
 
               creator_discord_id: { type: :string, example: '608210202952466464' },

@@ -93,15 +93,6 @@ RSpec.describe Player, type: :model do
             name: c.name
           }
         end,
-        location_ids: @player1.locations_players.order(:position).map(&:location_id),
-        location_names: @player1.location_names,
-        locations: @player1.locations_players.order(:position).map(&:location).map do |l|
-          {
-            id: l.id,
-            icon: l.icon,
-            name: l.name
-          }
-        end,
         creator_user: {
           id: @player1.creator_user.id,
           name: @player1.creator_user.name

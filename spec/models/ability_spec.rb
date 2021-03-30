@@ -64,8 +64,8 @@ RSpec.describe Ability, type: :model do
     it 'destroy a player' do
       expect(@admin.can?(:destroy, Player)).to be_truthy
     end
-    it 'destroy a City' do
-      expect(@admin.can?(:destroy, Locations::City)).to be_truthy
+    it 'destroy a Community' do
+      expect(@admin.can?(:destroy, Community)).to be_truthy
     end
   end
 
@@ -82,14 +82,14 @@ RSpec.describe Ability, type: :model do
     it 'destroy a player' do
       expect(@help.can?(:destroy, Player)).to be_falsy
     end
-    it 'destroy a City' do
-      expect(@help.can?(:destroy, Locations::City)).to be_falsy
+    it 'destroy a Community' do
+      expect(@help.can?(:destroy, Community)).to be_falsy
     end
   end
 
   context 'helps can' do
-    it 'create a City' do
-      expect(@help.can?(:create, Locations::City)).to be_truthy
+    it 'create a Community' do
+      expect(@help.can?(:create, Community)).to be_truthy
     end
     it 'read a Player' do
       expect(@help.can?(:read, Player)).to be_truthy

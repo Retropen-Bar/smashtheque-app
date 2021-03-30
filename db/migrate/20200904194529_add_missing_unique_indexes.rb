@@ -6,9 +6,7 @@ class AddMissingUniqueIndexes < ActiveRecord::Migration[6.0]
     change_column :characters_players, :player_id, :bigint, null: false
     add_index :characters_players, [:character_id, :player_id], unique: true
 
-    LocationsPlayer.where(location_id: nil).delete_all
     change_column :locations_players, :location_id, :bigint, null: false
-    LocationsPlayer.where(player_id: nil).delete_all
     change_column :locations_players, :player_id, :bigint, null: false
     add_index :locations_players, [:location_id, :player_id], unique: true
 
