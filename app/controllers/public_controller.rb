@@ -4,8 +4,6 @@ class PublicController < ApplicationController
 
   before_action :check_access! if ENV['HIDE_WEBSITE']
 
-  helper_method :render_map
-
   private
 
   def user_team_admin?
@@ -23,10 +21,6 @@ class PublicController < ApplicationController
 
     # check
     authenticate_admin_user! unless session[:token] == ENV['PUBLIC_ACCESS_TOKEN']
-  end
-
-  def render_map(locals)
-    render_to_string partial: 'shared/map', layout: false, locals: locals
   end
 
 end
