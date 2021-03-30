@@ -7,6 +7,26 @@ class MigrateExistingLocations < ActiveRecord::Migration[6.0]
   end
 
   def change
+    # remove STI column because we don't care about it right now
+    # and it prevents us from migrating data properly
+    remove_column :locations, :type
+
+    # make sure all locations are geocoded
+    Location.where(latitude: nil).find_each do |location|
+      result = Geocoder.search(
+        location.name,
+        result_type: 'locality'
+      ).first
+      if result.nil?
+        result = Geocoder.search(
+          location.name
+        ).first
+      end
+      location.latitude = result.latitude
+      location.longitude = result.longitude
+      location.save!
+    end
+
     previous_player_id = nil
     LocationsPlayer.order(:player_id, :position).find_each do |lp|
       location = lp.location

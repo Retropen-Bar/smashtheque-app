@@ -6,7 +6,6 @@ class CleanLocations < ActiveRecord::Migration[6.0]
     drop_table :locations_players
     remove_column :players, :location_names
     remove_column :locations, :is_main
-    remove_column :locations, :type
     remove_column :locations, :icon
     add_column :locations, :address, :string
     Location.update_all("address = name")
