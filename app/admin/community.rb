@@ -34,11 +34,9 @@ ActiveAdmin.register Community do
   end
 
   filter :name
-
-  scope :all, default: true
-
-  scope :not_geocoded, group: :geocoded
-  scope :geocoded, group: :geocoded
+  filter :address
+  filter :latitude
+  filter :longitude
 
   action_item :map, only: :index do
     link_to 'Carte', action: :map
