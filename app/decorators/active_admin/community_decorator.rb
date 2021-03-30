@@ -3,6 +3,10 @@ class ActiveAdmin::CommunityDecorator < CommunityDecorator
 
   decorates :community
 
+  def admin_link(options = {})
+    super(options.merge(label: name_with_logo(size: 32)))
+  end
+
   def discord_guilds_admin_links(options = {})
     arbre do
       ul do

@@ -69,23 +69,6 @@ class TwitchChannel < ApplicationRecord
     where("unaccent(name) ILIKE '#{letter}%'")
   end
 
-  def self.related_to_community
-    where(related_type: :Community)
-  end
-
-  def self.related_to_team
-    where(related_type: :Team)
-  end
-
-  def self.related_to_player
-    where(related_type: :Player)
-  end
-
-  def self.related_to_character
-    where(related_type: :Character)
-  end
-
-
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------

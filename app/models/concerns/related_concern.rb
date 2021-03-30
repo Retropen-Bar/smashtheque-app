@@ -21,6 +21,22 @@ module RelatedConcern
       where(related_id: v)
     end
 
+    def self.related_to_community
+      by_related_type(:Community)
+    end
+
+    def self.related_to_team
+      by_related_type(:Team)
+    end
+
+    def self.related_to_player
+      by_related_type(:Player)
+    end
+
+    def self.related_to_character
+      by_related_type(:Character)
+    end
+
     # ---------------------------------------------------------------------------
     # HELPERS
     # ---------------------------------------------------------------------------
