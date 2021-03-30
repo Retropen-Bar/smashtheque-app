@@ -28,7 +28,7 @@ class MigrateExistingLocations < ActiveRecord::Migration[6.0]
     end
 
     previous_player_id = nil
-    LocationsPlayer.order(:player_id, :position).find_each do |lp|
+    LocationsPlayer.order(:player_id, :position).each do |lp|
       location = lp.location
       raise "Location ##{location.id}: #{location.name} not geocoded" if location.latitude.nil?
       player = lp.player
