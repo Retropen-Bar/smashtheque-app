@@ -100,4 +100,8 @@ ActiveAdmin.register Community do
     end
   end
 
+  action_item :public, only: :show do
+    link_to 'Page publique', resource, class: 'green'
+  end
+
 end
