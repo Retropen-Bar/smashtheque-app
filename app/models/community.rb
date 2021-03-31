@@ -19,6 +19,12 @@ class Community < ApplicationRecord
   geocoded_by :address
 
   # ---------------------------------------------------------------------------
+  # CONCERNS
+  # ---------------------------------------------------------------------------
+
+  include HasLogo
+
+  # ---------------------------------------------------------------------------
   # RELATIONS
   # ---------------------------------------------------------------------------
 
@@ -28,8 +34,6 @@ class Community < ApplicationRecord
   has_many :you_tube_channels, as: :related, dependent: :nullify
 
   has_many :twitch_channels, as: :related, dependent: :nullify
-
-  has_one_attached :logo
 
   # ---------------------------------------------------------------------------
   # VALIDATIONS
@@ -66,19 +70,6 @@ class Community < ApplicationRecord
 
   def players(radius: 50)
     Player.near_community(self, radius: radius)
-  end
-
-  def logo_url
-    return nil unless logo.attached?
-    logo.service_url
-  end
-
-  def logo_url=(url)
-    return false if url.blank?
-    uri = URI.parse(url)
-    open(url) do |f|
-      logo.attach(io: File.open(f.path), filename: File.basename(uri.path))
-    end
   end
 
   # ---------------------------------------------------------------------------
