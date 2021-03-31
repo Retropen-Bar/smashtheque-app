@@ -40,12 +40,6 @@ class ActiveAdmin::PlayerDecorator < PlayerDecorator
     end
   end
 
-  def locations_admin_links
-    model.locations.map do |location|
-      location.admin_decorate.admin_link
-    end
-  end
-
   def teams_admin_links
     model.teams.map do |team|
       team.admin_decorate.admin_link

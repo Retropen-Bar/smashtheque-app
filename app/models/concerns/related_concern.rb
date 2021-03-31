@@ -21,6 +21,22 @@ module RelatedConcern
       where(related_id: v)
     end
 
+    def self.related_to_community
+      by_related_type(:Community)
+    end
+
+    def self.related_to_team
+      by_related_type(:Team)
+    end
+
+    def self.related_to_player
+      by_related_type(:Player)
+    end
+
+    def self.related_to_character
+      by_related_type(:Character)
+    end
+
     # ---------------------------------------------------------------------------
     # HELPERS
     # ---------------------------------------------------------------------------
@@ -38,12 +54,7 @@ module RelatedConcern
 
       {
         results: PgSearch.multisearch(term).where(searchable_type: searchable_types).map do |document|
-          model = if document.searchable_type == 'Location'
-            # hack for weird bug
-            Location.find(document.searchable_id).decorate
-          else
-            document.searchable.decorate
-          end
+          model = document.searchable.decorate
           {
             id: model.to_global_id.to_s,
             text: model.decorate.autocomplete_name

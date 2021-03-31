@@ -1,10 +1,10 @@
-class ActiveAdmin::LocationDecorator < LocationDecorator
+class ActiveAdmin::CommunityDecorator < CommunityDecorator
   include ActiveAdmin::BaseDecorator
 
-  decorates :location
+  decorates :community
 
   def admin_link(options = {})
-    super(options.merge(label: full_name))
+    super(options.merge(label: name_with_logo(size: 32)))
   end
 
   def discord_guilds_admin_links(options = {})
@@ -17,14 +17,6 @@ class ActiveAdmin::LocationDecorator < LocationDecorator
         end
       end
     end
-  end
-
-  def players_admin_path
-    admin_players_path(q: {locations_players_location_id_in: [model.id]})
-  end
-
-  def players_admin_link
-    h.link_to players_count, players_admin_path
   end
 
 end

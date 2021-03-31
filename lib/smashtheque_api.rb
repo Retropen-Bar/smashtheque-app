@@ -18,8 +18,8 @@ class SmashthequeApi
     api_get 'discord_guilds?per=1000'
   end
 
-  def self.locations
-    api_get 'locations?per=1000'
+  def self.communities
+    api_get 'communities?per=1000'
   end
 
   def self.teams

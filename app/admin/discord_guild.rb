@@ -32,8 +32,14 @@ ActiveAdmin.register DiscordGuild do
     actions
   end
 
-  scope :all
+  scope :all, default: true
+
   scope :unknown
+
+  scope :related_to_character, group: :related
+  scope :related_to_community, group: :related
+  scope :related_to_player, group: :related
+  scope :related_to_team, group: :related
 
   filter :discord_id
   filter :name

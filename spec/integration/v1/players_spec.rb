@@ -6,7 +6,6 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
     @token = ApiToken.create!(name: 'Player tests')
     @teams = FactoryBot.create_list(:team, 5)
     @characters = FactoryBot.create_list(:character, 5)
-    @locations = FactoryBot.create_list(:location, 3)
     @first_creator_discord_id = '777'
     @admin_discord_user = FactoryBot.create(:discord_user)
     @admin_user = FactoryBot.create(
@@ -18,7 +17,6 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
       FactoryBot.create(
         :player,
         characters: @characters.sample((1..3).to_a.sample),
-        locations: @locations.sample((0..3).to_a.sample),
         teams: @teams.sample((0..3).to_a.sample),
         creator_discord_id: @first_creator_discord_id
       )
@@ -32,7 +30,6 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
     @valid_player_attributes = FactoryBot.attributes_for(
       :player,
       character_ids: @characters.sample((1..3).to_a.sample).map(&:id),
-      location_ids: @locations.sample((0..3).to_a.sample).map(&:id),
       team_ids: @teams.sample((0..3).to_a.sample).map(&:id),
       discord_id: @new_discord_id,
       creator_discord_id: @other_new_discord_id
@@ -147,7 +144,6 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
             expect(player.creator_user).to eq(created_creator_user)
 
             expect(player.character_ids).to eq(@valid_player_attributes[:character_ids])
-            expect(player.location_ids).to eq(@valid_player_attributes[:location_ids])
             expect(player.team_ids).to eq(@valid_player_attributes[:team_ids])
 
             target = JSON.parse(player.to_json).deep_symbolize_keys

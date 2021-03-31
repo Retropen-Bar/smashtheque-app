@@ -15,6 +15,12 @@
 class Team < ApplicationRecord
 
   # ---------------------------------------------------------------------------
+  # CONCERNS
+  # ---------------------------------------------------------------------------
+
+  include HasLogo
+
+  # ---------------------------------------------------------------------------
   # RELATIONS
   # ---------------------------------------------------------------------------
 
@@ -35,7 +41,6 @@ class Team < ApplicationRecord
            through: :team_admins,
            source: :user
 
-  has_one_attached :logo
   has_one_attached :roster
 
   # ---------------------------------------------------------------------------
@@ -44,7 +49,6 @@ class Team < ApplicationRecord
 
   validates :short_name, presence: true
   validates :name, presence: true
-  validates :logo, content_type: /\Aimage\/.*\z/
   validates :roster, content_type: /\Aimage\/.*\z/
 
   # ---------------------------------------------------------------------------
@@ -95,19 +99,6 @@ class Team < ApplicationRecord
 
   def admin_discord_ids
     admins.map(&:discord_id)
-  end
-
-  def logo_url
-    return nil unless logo.attached?
-    logo.service_url
-  end
-
-  def logo_url=(url)
-    return false if url.blank?
-    uri = URI.parse(url)
-    open(url) do |f|
-      logo.attach(io: File.open(f.path), filename: File.basename(uri.path))
-    end
   end
 
   def roster_url

@@ -26,14 +26,14 @@ namespace :dev do
     ENV['NO_DISCORD'] = '0'
   end
 
-  desc 'Import locations'
-  task :import_locations => :environment do
+  desc 'Import communities'
+  task :import_communities => :environment do
     raise "not in development" unless Rails.env.development?
-    raise "some locations exist" if Location.any?
+    raise "some communities exist" if Community.any?
     ENV['NO_DISCORD'] = '1'
-    SmashthequeApi.locations.each do |data|
+    SmashthequeApi.communities.each do |data|
       data.delete('id')
-      Locations::City.new(data).save!
+      Community.new(data).save!
     end
     ENV['NO_DISCORD'] = '0'
   end
@@ -49,10 +49,6 @@ namespace :dev do
         Character.find_by!(name: character_name).id
       end
       data.delete('characters')
-      data['location_ids'] = data['location_names'].map do |location_name|
-        Location.find_by!(name: location_name).id
-      end
-      data.delete('locations')
       data['team_ids'] = data['teams'].map do |team|
         Team.find_by!(name: team['name']).id
       end
@@ -83,8 +79,8 @@ namespace :dev do
             Character.where(name: related_data['name']).first
           when 'Player'
             Player.where(name: related_data['name']).first
-          when 'Location'
-            Location.where(name: related_data['name']).first
+          when 'Community'
+            Community.where(name: related_data['name']).first
           when 'Team'
             Team.where(name: related_data['name']).first
           else
@@ -136,7 +132,7 @@ namespace :dev do
     puts 'delete data'
     Character.destroy_all
     Team.destroy_all
-    Location.destroy_all
+    Community.destroy_all
     Player.destroy_all
     DiscordGuild.destroy_all
     RecurringTournament.destroy_all
@@ -144,8 +140,8 @@ namespace :dev do
     Rake::Task['dev:import_characters'].invoke
     puts 'import teams'
     Rake::Task['dev:import_teams'].invoke
-    puts 'import locations'
-    Rake::Task['dev:import_locations'].invoke
+    puts 'import communities'
+    Rake::Task['dev:import_communities'].invoke
     puts 'import players'
     Rake::Task['dev:import_players'].invoke
     puts 'import discord guilds'

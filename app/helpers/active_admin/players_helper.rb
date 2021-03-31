@@ -13,15 +13,6 @@ module ActiveAdmin::PlayersHelper
     end
   end
 
-  def player_locations_select_collection
-    Location.order(:name).map do |location|
-      [
-        location.decorate.full_name,
-        location.id
-      ]
-    end
-  end
-
   def player_teams_select_collection
     Team.order(:name).map do |team|
       [

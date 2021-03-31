@@ -1,0 +1,10 @@
+<div class="card community shadow-sm">
+  <div class="card-body">
+    <div class="float-right">
+      <i class="fas fa-users"></i>
+      <%= community.players_count %>
+    </div>
+    <%= link_to community.name_with_logo(max_width: 64, max_height: 64), community %>
+  </div>
+  <%= admin_edit_link(community) %>
+</div>

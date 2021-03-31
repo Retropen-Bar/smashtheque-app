@@ -50,8 +50,8 @@ ActiveAdmin.register RecurringTournament do
   scope :all, default: true
   scope :archived
 
-  scope :online, group: :location
-  scope :offline, group: :location
+  scope :online, group: :loctype
+  scope :offline, group: :loctype
 
   filter :name
   filter :recurring_type,

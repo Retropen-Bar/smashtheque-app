@@ -9,7 +9,7 @@ class Api::V1::PlayersController < Api::V1::BaseController
 
   def index
     players = apply_scopes(Player.order(:name)).includes(
-      :characters, :locations, :creator_user, :user, :discord_user, :teams
+      :characters, :creator_user, :user, :discord_user, :teams
     )
     render json: players.as_json(reload: params[:reload] != '0')
   end
@@ -64,12 +64,12 @@ class Api::V1::PlayersController < Api::V1::BaseController
 
   def player_create_params
     # TODO: remove :city_name when bot has been updated
-    params.require(:player).permit(:name, :name_confirmation, :discord_id, :creator_discord_id, character_ids: [], location_ids: [], team_ids: [])
+    params.require(:player).permit(:name, :name_confirmation, :discord_id, :creator_discord_id, character_ids: [], team_ids: [])
   end
 
   def player_update_params
     # TODO: remove :city_name when bot has been updated
-    params.require(:player).permit(:name, :name_confirmation, :discord_id, character_ids: [], location_ids: [], team_ids: [])
+    params.require(:player).permit(:name, :name_confirmation, :discord_id, character_ids: [], team_ids: [])
   end
 
 end

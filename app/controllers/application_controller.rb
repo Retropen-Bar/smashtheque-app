@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
 
   helper_method :admin_user_signed_in?
 
+  helper_method :render_map
+
   before_action :set_time_zone
   before_action :set_locale
 
@@ -39,6 +41,10 @@ class ApplicationController < ActionController::Base
 
   def admin_user_signed_in?
     user_signed_in? && current_user.is_admin?
+  end
+
+  def render_map(locals)
+    render_to_string partial: 'shared/map', layout: false, locals: locals
   end
 
 end

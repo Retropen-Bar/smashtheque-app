@@ -60,13 +60,14 @@ class UsersController < PublicController
       is_caster
       is_coach coaching_url coaching_details
       is_graphic_designer graphic_designer_details is_available_graphic_designer
+      main_address main_latitude main_longitude
+      secondary_address secondary_latitude secondary_longitude
     ) + [{
       player_attributes: %i(
         id
         name
       ) + [{
         character_ids: [],
-        location_ids: [],
         team_ids: []
       }]
     }])

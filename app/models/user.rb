@@ -17,8 +17,14 @@
 #  is_root                       :boolean          default(FALSE), not null
 #  last_sign_in_at               :datetime
 #  last_sign_in_ip               :inet
+#  main_address                  :string
+#  main_latitude                 :float
+#  main_longitude                :float
 #  name                          :string           not null
 #  remember_created_at           :datetime
+#  secondary_address             :string
+#  secondary_latitude            :float
+#  secondary_longitude           :float
 #  sign_in_count                 :integer          default(0), not null
 #  twitter_username              :string
 #  created_at                    :datetime         not null
@@ -34,6 +40,10 @@ class User < ApplicationRecord
   devise :trackable
   devise :omniauthable, omniauth_providers: %i[discord]
   devise :rememberable
+
+  geocoded_by :main_address,
+              latitude: :main_latitude,
+              longitude: :main_longitude
 
   # ---------------------------------------------------------------------------
   # RELATIONS
@@ -220,6 +230,31 @@ class User < ApplicationRecord
     )
   end
 
+  def self.with_main_address
+    where.not(main_latitude: nil)
+  end
+
+  def self.with_secondary_address
+    where.not(secondary_latitude: nil)
+  end
+
+  def self.with_address
+    with_main_address.or(with_secondary_address)
+  end
+
+  def self.near_community(community, radius: 50)
+    near(
+      [community.latitude, community.longitude],
+      radius,
+      units: :km,
+      select: 'id',
+      select_distance: false,
+      select_bearing: false
+    ).except(
+      :select
+    )
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------
@@ -274,6 +309,40 @@ class User < ApplicationRecord
 
   def _potential_discord_user
     @potential_discord_user ||= potential_discord_user
+  end
+
+  def addresses
+    result = []
+    if main_latitude
+      result << {
+        name: main_address,
+        latitude: main_latitude,
+        longitude: main_longitude
+      }
+    end
+    if secondary_latitude
+      result << {
+        name: secondary_address,
+        latitude: secondary_latitude,
+        longitude: secondary_longitude
+      }
+    end
+    result
+  end
+
+  def closest_main_community
+    main_latitude && Community.near([main_latitude, main_longitude]).first
+  end
+
+  def closest_secondary_community
+    secondary_latitude && Community.near([secondary_latitude, secondary_longitude]).first
+  end
+
+  def closest_communities
+    [
+      closest_main_community,
+      closest_secondary_community
+    ].compact.uniq
   end
 
 end

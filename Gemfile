@@ -136,6 +136,9 @@ gem 'icalendar'
 # Twitch
 gem 'twitch-api', github: 'mauricew/ruby-twitch-api'
 
+# Geocoding
+gem 'geocoder'
+
 group :production do
   # for assets compilation
   gem 'activerecord-nulldb-adapter'

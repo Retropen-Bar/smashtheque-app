@@ -1,0 +1,17 @@
+<div class="text-center">
+  <div id="list-toolbar">
+    <h1 class="page-title">Communautés</h1>
+    <%= render 'shared/letters' %>
+    <%= render 'shared/pagination', collection: @communities %>
+  </div>
+</div>
+
+<div class="cards-list communities">
+  <% @communities.each do |community| %>
+    <div class="card-container">
+      <%= render 'community', community: community.decorate %>
+    </div>
+  <% end %>
+</div>
+
+<%= render 'shared/pagination', collection: @communities %>

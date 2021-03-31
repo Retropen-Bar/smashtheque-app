@@ -5,9 +5,17 @@
   var onPlaceChanged = function(input, target, place) {
     // console.log('[Maps Autocomplete] onPlaceChanged', input, target, place);
 
+    $(input).val(place.name);
     $(target.latitude).val(place.geometry.location.lat());
     $(target.longitude).val(place.geometry.location.lng());
   };
+
+  var onPlaceRemoved = function(input, target) {
+    // console.log('[Maps Autocomplete] onPlaceRemoved', input, target);
+
+    $(target.latitude).val('');
+    $(target.longitude).val('');
+  }
 
   var initInput = function(input) {
     // console.log('[Maps Autocomplete] initInput', input);
@@ -32,6 +40,11 @@
         onPlaceChanged(input, target, this.getPlace());
       }
     );
+    $input.on('change', function() {
+      if($input.val() == '') {
+        onPlaceRemoved(input, target);
+      }
+    });
   };
 
   var init = function() {

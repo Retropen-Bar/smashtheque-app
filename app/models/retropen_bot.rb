@@ -154,34 +154,6 @@ class RetropenBot
   end
 
   # ---------------------------------------------------------------------------
-  # LOCATIONS
-  # ---------------------------------------------------------------------------
-
-  def cities_category
-    client.find_or_create_guild_category @guild_id, name: CATEGORY_CITIES
-  end
-
-  def countries_category
-    client.find_or_create_guild_category @guild_id, name: CATEGORY_COUNTRIES
-  end
-
-  def rebuild_locations_for_location(location, cities_category_id: nil, countries_category_id: nil)
-    return false if location.nil?
-    return false unless location.is_main?
-    parent_category_id = if location.is_a?(Locations::Country)
-      countries_category_id || countries_category['id']
-    else
-      cities_category_id || cities_category['id']
-    end
-    channel_name = location.name.parameterize
-    channel = find_or_create_readonly_channel @guild_id,
-                                              name: channel_name,
-                                              parent_id: parent_category_id
-    rebuild_channel_with_players channel['id'],
-                                 location.players
-  end
-
-  # ---------------------------------------------------------------------------
   # TEAMS
   # ---------------------------------------------------------------------------
 
@@ -235,7 +207,7 @@ class RetropenBot
       lines = ["**#{team.short_name} : #{team.name}**"]
       lines += team.players
           .legit
-          .includes(:best_reward, :teams, :locations, :characters)
+          .includes(:best_reward, :teams, :characters)
           .to_a
           .sort_by { |p| p.name.downcase }
           .map do |player|
@@ -618,7 +590,7 @@ class RetropenBot
   def rebuild_rewards_online_ranking_channel(players, channel_id)
     nb_digits = players.first&.points&.to_s&.size || 0
 
-    lines = players.includes(:best_reward, :teams, :locations, :characters)
+    lines = players.includes(:best_reward, :teams, :characters)
                    .map do |player|
       "`##{player.rank.to_s.rjust(3)} : #{player.points.to_s.rjust(nb_digits)}`#{emoji_tag(EMOJI_POINTS)}\t" + (
         player_abc(player)
@@ -716,11 +688,6 @@ class RetropenBot
         line += " [#{team.short_name}]"
       end
     end
-    unless options[:with_locations] == false
-      player.locations.each do |location|
-        line += " [#{location.name.titleize}]"
-      end
-    end
     unless options[:with_characters] == false
       if player.characters.any?
         line += " :"
@@ -734,7 +701,7 @@ class RetropenBot
 
   def players_lines(players, options = {})
     players.legit.includes(
-      :best_reward, :teams, :locations, :characters, :best_reward
+      :best_reward, :teams, :characters, :best_reward
     ).to_a.sort_by do |player|
       I18n.transliterate(player.name).downcase
     end.map do |player|

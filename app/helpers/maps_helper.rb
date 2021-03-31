@@ -4,10 +4,8 @@ module MapsHelper
     icons = {}
     markers = {}
     layers = {}
-    players.each do |player|
-      # player.locations already exists, so don't use the .geocoded scope
-      player.locations.each do |location|
-        next unless location.is_geocoded?
+    players.with_address.each do |player|
+      player.user.addresses.each do |address|
         player.characters.each_with_index do |character, idx|
           next if idx > 0 && !with_seconds
           icons[character.id.to_s] ||= {
@@ -26,8 +24,8 @@ module MapsHelper
           markers[character.id.to_s] << {
             icon: character.id.to_s,
             latlng: [
-              location.latitude,
-              location.longitude
+              address[:latitude],
+              address[:longitude]
             ],
             popup: player.decorate.map_popup
           }
@@ -42,18 +40,35 @@ module MapsHelper
                 &block
   end
 
-  def locations_map(locations, map_options: {})
+  def communities_map(communities, map_options: {})
     markers = {all: []}
-    locations.geocoded.each do |location|
+    communities.geocoded.each do |community|
       marker = {
         latlng: [
-          location.latitude,
-          location.longitude
+          community.latitude,
+          community.longitude
         ],
-        popup: link_to(location.decorate.pretty_name, [:admin, location])
+        popup: link_to(community.name, [:admin, community])
       }
       markers[:all] << marker
     end
+
+    france_map  markers: markers,
+                options: map_options || {}
+  end
+
+  def user_addresses_map(user, map_options: {})
+    markers = {
+      all: user.addresses.map do |address|
+        {
+          latlng: [
+            address[:latitude],
+            address[:longitude]
+          ],
+          popup: address[:name]
+        }
+      end
+    }
 
     france_map  markers: markers,
                 options: map_options || {}

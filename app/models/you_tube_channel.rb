@@ -26,7 +26,7 @@ class YouTubeChannel < ApplicationRecord
   def self.related_types
     [
       Character,
-      Location,
+      Community,
       Player,
       Team
     ]

@@ -35,6 +35,9 @@ class Ability
     # Character
     can manage_or_cru, Character
 
+    # Community
+    can manage_or_cru, Community
+
     # DiscordGuild
     can manage_or_cru, DiscordGuild
     can :fetch_discord_data, DiscordGuild
@@ -49,9 +52,6 @@ class Ability
     # Duo
     can manage_or_cru, Duo
     can :results, Duo
-
-    # Location and subclasses
-    can manage_or_cru, Location
 
     # Page
     can manage_or_cru, Page

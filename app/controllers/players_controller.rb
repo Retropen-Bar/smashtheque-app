@@ -12,10 +12,10 @@ class PlayersController < PublicController
     @players = players Player
   end
 
-  def location_index
-    @location = Location.find(params[:id]).decorate
-    @players = players @location.model.players
-    render 'locations/show'
+  def community_index
+    @community = Community.find(params[:id]).decorate
+    @players = players @community.model.players
+    render 'communities/show'
   end
 
   def team_index
@@ -68,7 +68,7 @@ class PlayersController < PublicController
   def ranking_online
     @players = apply_scopes(
       Player.ranked.order(:rank)
-    ).includes(:user, :discord_user, :teams, :locations, :characters)
+    ).includes(:user, :discord_user, :teams, :characters)
 
     main_character = @players.first.characters.first&.decorate
     if main_character
@@ -96,7 +96,7 @@ class PlayersController < PublicController
     @map_seconds = params[:seconds].to_i == 1 if @map
     apply_scopes(
       base.legit.order(:name)
-    ).includes(:user, :discord_user, :teams, :locations, :characters, :smashgg_users)
+    ).includes(:user, :discord_user, :teams, :characters, :smashgg_users)
   end
 
   def select_layout

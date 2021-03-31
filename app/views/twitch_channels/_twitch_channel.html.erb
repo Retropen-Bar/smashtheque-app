@@ -9,14 +9,8 @@
         <% case twitch_channel.related_type.to_sym %>
         <% when :Character %>
           <%= twitch_channel.related.decorate.emoji_image_tag %>
-        <% when :Location %>
-          <span class="icon">
-            <% if twitch_channel.related.icon %>
-              <%= twitch_channel.related.icon %>
-            <% else %>
-              <%= fas_icon_tag 'map-marker-alt' %>
-            <% end %>
-          </span>
+        <% when :Community %>
+          <%= twitch_channel.related.decorate.any_image_tag %>
         <% when :Player %>
           <%= twitch_channel.related.decorate.avatar_tag(32) %>
         <% when :Team %>

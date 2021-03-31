@@ -10,7 +10,6 @@
 #  has_good_network                :boolean          default(FALSE), not null
 #  is_accepted                     :boolean
 #  is_banned                       :boolean          default(FALSE), not null
-#  location_names                  :text             default([]), is an Array
 #  name                            :string
 #  old_names                       :string           default([]), is an Array
 #  points                          :integer          default(0), not null
@@ -92,15 +91,6 @@ RSpec.describe Player, type: :model do
             id: c.id,
             emoji: c.emoji,
             name: c.name
-          }
-        end,
-        location_ids: @player1.locations_players.order(:position).map(&:location_id),
-        location_names: @player1.location_names,
-        locations: @player1.locations_players.order(:position).map(&:location).map do |l|
-          {
-            id: l.id,
-            icon: l.icon,
-            name: l.name
           }
         end,
         creator_user: {
