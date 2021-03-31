@@ -330,19 +330,19 @@ class User < ApplicationRecord
     result
   end
 
+  def closest_main_community
+    main_latitude && Community.near([main_latitude, main_longitude]).first
+  end
+
+  def closest_secondary_community
+    secondary_latitude && Community.near([secondary_latitude, secondary_longitude]).first
+  end
+
   def closest_communities
-    result = []
-    if main_latitude
-      if community = Community.near([main_latitude, main_longitude]).first
-        result << community
-      end
-    end
-    if secondary_latitude
-      if community = Community.near([secondary_latitude, secondary_longitude]).first
-        result << community
-      end
-    end
-    result.uniq
+    [
+      closest_main_community,
+      closest_secondary_community
+    ].compact.uniq
   end
 
 end
