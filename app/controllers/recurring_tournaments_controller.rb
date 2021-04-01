@@ -12,6 +12,7 @@ class RecurringTournamentsController < PublicController
   has_scope :administrated_by
   has_scope :page, default: 1
   has_scope :per
+  has_scope :on_abc
 
   def index
     respond_to do |format|

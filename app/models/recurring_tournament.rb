@@ -115,6 +115,10 @@ class RecurringTournament < ApplicationRecord
     %i(weekly bimonthly monthly).include?(recurring_type.to_sym)
   end
 
+  def self.on_abc(letter)
+    where("unaccent(name) ILIKE '#{letter}%'")
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------
