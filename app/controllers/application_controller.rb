@@ -9,6 +9,11 @@ class ApplicationController < ActionController::Base
   before_action :set_time_zone
   before_action :set_locale
 
+  unless Rails.application.config.consider_all_requests_local
+    rescue_from ActionController::RoutingError,       with: :render_404
+    rescue_from ActiveRecord::RecordNotFound,         with: :render_404
+  end
+
   protected
 
   def user_for_paper_trail
@@ -17,6 +22,17 @@ class ApplicationController < ActionController::Base
 
   def access_denied(error)
     render plain: 'Unauthorized', status: :unauthorized
+  end
+
+  def render_404
+    # render plain: "404 Not Found", status: 404
+    respond_to do |format|
+      format.html do
+        @static = true
+        render template: 'errors/not_found', status: 404
+      end
+      format.all { render nothing: true, status: 404 }
+    end
   end
 
   private
