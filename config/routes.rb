@@ -74,6 +74,7 @@ Rails.application.routes.draw do
   get 'communities/:id' => 'players#community_index', as: :community
 
   resources :players, only: [:index, :show] do
+    resources :smashgg_users, only: [:new, :create]
     collection do
       get :autocomplete
       get 'ranking/online' => 'players#ranking_online', as: :online_ranking

@@ -65,8 +65,8 @@ ActiveAdmin.register SmashggUser do
 
   permit_params :smashgg_id, :smashgg_url, :player_id
 
-  before_create do |smashgg_event|
-    smashgg_event.fetch_smashgg_data
+  before_create do |smashgg_user|
+    smashgg_user.fetch_smashgg_data
   end
 
   # ---------------------------------------------------------------------------

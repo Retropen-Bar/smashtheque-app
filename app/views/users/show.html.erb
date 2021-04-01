@@ -77,6 +77,11 @@
         </div>
       </div>
       <%= render 'players/player_accounts', player: player.decorate %>
+      <br/>
+      <%= link_to [:new, user.player, :smashgg_user], class: 'btn btn-primary' do %>
+        <%= fas_icon_tag 'plus', %w(mr-2) %>
+        Ajouter un compte smash.gg
+      <% end %>
     <% else %>
       <%= link_to 'Créer ma fiche joueur', [:create_player, @user], class: 'btn btn-success' %>
     <% end %>

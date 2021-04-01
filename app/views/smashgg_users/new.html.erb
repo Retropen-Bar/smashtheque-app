@@ -1,0 +1,30 @@
+<h1 class="page-title">
+  Ajouter un compte smash.gg
+</h1>
+
+<div class="container">
+
+  <%= simple_form_for([@player, @smashgg_user]) do |f| %>
+
+    <div class="form-inputs">
+
+      <div class="row justify-content-center">
+        <div class="col-6">
+          <%= render 'shared/form_errors', f: f %>
+
+          <div class="p-3 mb-2 bg-light text-dark">
+            <%= f.input :smashgg_url, placeholder: 'https://smash.gg/...' %>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="form-actions text-center my-5">
+      <%= link_to 'Annuler', @player, class: 'btn btn-secondary mr-3' %>
+      <%= f.button :submit, 'Valider', class: 'btn btn-primary' %>
+    </div>
+
+  <% end %>
+
+</div>
