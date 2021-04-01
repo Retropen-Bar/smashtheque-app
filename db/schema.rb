@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_30_173645) do
+ActiveRecord::Schema.define(version: 2021_04_01_201407) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -293,6 +293,19 @@ ActiveRecord::Schema.define(version: 2021_03_30_173645) do
     t.index ["user_id"], name: "index_players_on_user_id"
   end
 
+  create_table "players_recurring_tournaments", force: :cascade do |t|
+    t.bigint "player_id"
+    t.bigint "recurring_tournament_id"
+    t.boolean "has_good_network", default: false, null: false
+    t.bigint "certifier_user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["certifier_user_id"], name: "index_players_recurring_tournaments_on_certifier_user_id"
+    t.index ["player_id", "recurring_tournament_id"], name: "index_prt_on_both_ids", unique: true
+    t.index ["player_id"], name: "index_players_recurring_tournaments_on_player_id"
+    t.index ["recurring_tournament_id"], name: "index_players_recurring_tournaments_on_recurring_tournament_id"
+  end
+
   create_table "players_teams", force: :cascade do |t|
     t.bigint "player_id", null: false
     t.bigint "team_id", null: false
@@ -572,6 +585,9 @@ ActiveRecord::Schema.define(version: 2021_03_30_173645) do
   add_foreign_key "players", "player_reward_conditions", column: "best_player_reward_condition_id"
   add_foreign_key "players", "users"
   add_foreign_key "players", "users", column: "creator_user_id"
+  add_foreign_key "players_recurring_tournaments", "players"
+  add_foreign_key "players_recurring_tournaments", "recurring_tournaments"
+  add_foreign_key "players_recurring_tournaments", "users", column: "certifier_user_id"
   add_foreign_key "players_teams", "players"
   add_foreign_key "players_teams", "teams"
   add_foreign_key "recurring_tournament_contacts", "recurring_tournaments"

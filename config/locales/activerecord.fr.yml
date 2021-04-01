@@ -16,6 +16,7 @@ fr:
       page: Page
       player: Joueur
       player_reward_condition: Récompense obtenue
+      players_recurring_tournament: Certification
       recurring_tournament: Série
       reward: Récompense
       reward_condition: Condition de récompense
@@ -197,6 +198,10 @@ fr:
         reward: Récompense
         reward_condition: Condition
         tournament_event: Édition
+      players_recurring_tournament:
+        << : *SHARED
+        certifier_user: Certifié par
+        has_good_network: Connexion certifiée
       recurring_tournament:
         << : *SHARED
         contacts: Contacts

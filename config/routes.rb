@@ -29,7 +29,12 @@ Rails.application.routes.draw do
       resources :duo_tournament_events, only: [:index, :show, :create]
       resources :duos, only: [:index, :show, :create, :update]
       resources :communities, only: [:index]
-      resources :recurring_tournaments, only: [:index, :show]
+      resources :recurring_tournaments, only: [:index, :show] do
+        resources :players,
+                  only: [:update, :delete],
+                  controller: :players_recurring_tournaments,
+                  param: :player_id
+      end
       resources :players, only: [:index, :show, :create, :update]
       resources :teams, only: [:index, :show, :update]
       resources :tournament_events, only: [:index, :show, :create]

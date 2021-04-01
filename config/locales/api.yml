@@ -44,3 +44,7 @@ api:
               << : *SHARED_ATTRIBUTES
             name:
               << : *SHARED_ATTRIBUTES
+        players_recurring_tournament:
+          attributes:
+            player:
+              << : *SHARED_ATTRIBUTES
