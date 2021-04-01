@@ -113,6 +113,10 @@ Rails.application.routes.draw do
 
   get 'bot' => 'redirections#bot'
 
+  unless Rails.application.config.consider_all_requests_local
+    get '*path', to: 'application#render_404', via: :all
+  end
+
   root to: 'pages#home'
 
 end
