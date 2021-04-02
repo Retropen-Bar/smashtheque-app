@@ -41,11 +41,11 @@
         }
       }
     },
-    "/api/v1/locations": {
+    "/api/v1/communities": {
       "get": {
-        "summary": "Fetches locations",
+        "summary": "Fetches communities",
         "tags": [
-          "Locations"
+          "Communities"
         ],
         "parameters": [
           {
@@ -60,11 +60,11 @@
         ],
         "responses": {
           "200": {
-            "description": "locations found",
+            "description": "communities found",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/locations_array"
+                  "$ref": "#/components/schemas/communities_array"
                 }
               }
             }
@@ -75,24 +75,49 @@
             }
           }
         }
-      },
-      "post": {
-        "summary": "Creates a location",
+      }
+    },
+    "/api/v1/recurring_tournaments/{recurring_tournament_id}/players/{player_id}": {
+      "parameters": [
+        {
+          "name": "recurring_tournament_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        },
+        {
+          "name": "player_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "put": {
+        "summary": "Updates a PlayersRecurringTournament",
         "tags": [
-          "Locations"
+          "PlayersRecurringTournament"
         ],
         "parameters": [
 
         ],
         "responses": {
-          "201": {
-            "description": "Location created",
+          "200": {
+            "description": "PlayersRecurringTournament updated",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/location"
+                  "$ref": "#/components/schemas/players_recurring_tournament"
                 }
               }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials",
+            "content": {
             }
           },
           "422": {
@@ -112,9 +137,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "location": {
-                    "$ref": "#/components/schemas/location_payload"
-                  }
+                  "$ref": "#/components/schemas/players_recurring_tournament_payload"
                 }
               }
             }
@@ -436,21 +459,7 @@
           "$ref": "#/components/schemas/character"
         }
       },
-      "location_payload": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "example": "Paris"
-          },
-          "icon": {
-            "type": "string",
-            "nullable": true,
-            "example": "🌳"
-          }
-        }
-      },
-      "location": {
+      "community": {
         "type": "object",
         "properties": {
           "id": {
@@ -460,18 +469,13 @@
           "name": {
             "type": "string",
             "example": "Paris"
-          },
-          "icon": {
-            "type": "string",
-            "nullable": true,
-            "example": "🌳"
           }
         }
       },
-      "locations_array": {
+      "communities_array": {
         "type": "array",
         "items": {
-          "$ref": "#/components/schemas/location"
+          "$ref": "#/components/schemas/community"
         }
       },
       "player_payload": {
@@ -485,11 +489,6 @@
           "name": {
             "type": "string",
             "example": "Pixel"
-          },
-          "location_id": {
-            "type": "integer",
-            "nullable": true,
-            "example": 42
           },
           "team_id": {
             "type": "integer",
@@ -589,30 +588,6 @@
               }
             ]
           },
-          "location_id": {
-            "type": "integer",
-            "nullable": true,
-            "example": 42
-          },
-          "location": {
-            "type": "object",
-            "nullable": true,
-            "properties": {
-              "id": {
-                "type": "integer",
-                "example": 42
-              },
-              "icon": {
-                "type": "string",
-                "nullable": true,
-                "example": "🗼"
-              },
-              "name": {
-                "type": "string",
-                "example": "paris"
-              }
-            }
-          },
           "creator_discord_id": {
             "type": "string",
             "example": "608210202952466464"
@@ -683,6 +658,42 @@
         "type": "array",
         "items": {
           "$ref": "#/components/schemas/player"
+        }
+      },
+      "players_recurring_tournament": {
+        "type": "object",
+        "properties": {
+          "recurring_tournamen_id": {
+            "type": "integer",
+            "example": 7
+          },
+          "player_id": {
+            "type": "integer",
+            "example": 42
+          },
+          "has_good_network": {
+            "type": "boolean",
+            "example": true
+          },
+          "certifier_user_id": {
+            "type": "integer",
+            "nullable": true,
+            "example": 13
+          }
+        }
+      },
+      "players_recurring_tournament_payload": {
+        "type": "object",
+        "properties": {
+          "has_good_network": {
+            "type": "boolean",
+            "example": true
+          },
+          "certifier_user_id": {
+            "type": "integer",
+            "nullable": true,
+            "example": 13
+          }
         }
       },
       "error": {
