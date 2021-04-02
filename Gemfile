@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.6.6'
 
 # Framework
-gem 'rails', '~> 6.0.3', '>= 6.0.3.3'
+gem 'rails', '~> 6.0.3', '>= 6.0.3.5'
 
 # Database
 gem 'pg'
@@ -106,9 +106,6 @@ gem 'has_scope'
 # Discord
 gem 'discordrb'
 gem 'rbnacl-libsodium'
-
-# global search
-gem 'pg_search'
 
 # GraphQL
 gem 'graphql-client'
