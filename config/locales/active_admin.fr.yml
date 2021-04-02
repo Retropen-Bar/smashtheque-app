@@ -36,6 +36,8 @@ fr:
       with_any_tournament_event: Avec édition
       with_user: Admin
       with_discord_user: Relié à Discord
+      with_bad_network: Connexion insuffisante
+      with_good_network: Connexion OK
       with_missing_data: Info manquante
       with_missing_duos: Équipe manquante
       with_missing_graph: Graph manquant
