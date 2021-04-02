@@ -6,6 +6,7 @@ class Api::V1::BaseController < ApiController
   before_action :log_request!
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+  rescue_from ActionController::ParameterMissing, with: :param_not_found
 
   protected
 
@@ -39,6 +40,15 @@ class Api::V1::BaseController < ApiController
 
   def record_not_found
     head :not_found and return
+  end
+
+  def param_not_found(exception)
+    render_errors(
+      {
+        exception.param => [:required]
+      },
+      :unprocessable_entity
+    )
   end
 
 end

@@ -27,6 +27,7 @@ class Api::V1::PlayersRecurringTournamentsController < Api::V1::BaseController
   end
 
   def players_recurring_tournament_params
+    params.require(:has_good_network)
     params.permit(
       :has_good_network, :certifier_user_id
     )

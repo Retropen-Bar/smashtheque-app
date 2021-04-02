@@ -163,6 +163,22 @@ RSpec.configure do |config|
               '$ref' => '#/components/schemas/player'
             }
           },
+          players_recurring_tournament: {
+            type: :object,
+            properties: {
+              recurring_tournamen_id: { type: :integer, example: 7 },
+              player_id: { type: :integer, example: 42 },
+              has_good_network: { type: :boolean, example: true },
+              certifier_user_id: { type: :integer, nullable: true, example: 13 }
+            }
+          },
+          players_recurring_tournament_payload: {
+            type: :object,
+            properties: {
+              has_good_network: { type: :boolean, example: true },
+              certifier_user_id: { type: :integer, nullable: true, example: 13 }
+            }
+          },
           error: {
             type: :object
           },
