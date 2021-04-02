@@ -61,6 +61,9 @@ class Ability
     can :accept, Player
     can :results, Player
 
+    # PlayersRecurringTournament
+    can manage_or_cru, PlayersRecurringTournament
+
     # Reward, RewardCondition & PlayerRewardCondition
     can manage_or_read, Reward
     can manage_or_read, RewardCondition

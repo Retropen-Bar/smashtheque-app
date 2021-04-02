@@ -6,8 +6,6 @@ ActiveAdmin.register PlayersRecurringTournament do
        label: '<i class="fas fa-fw fa-stamp"></i>Certifications'.html_safe,
        priority: 4
 
-  actions :index, :show
-
   # ---------------------------------------------------------------------------
   # INDEX
   # ---------------------------------------------------------------------------
@@ -39,6 +37,33 @@ ActiveAdmin.register PlayersRecurringTournament do
 
   filter :recurring_tournament,
          input_html: { multiple: true, data: { select2: {} } }
+
+  # ---------------------------------------------------------------------------
+  # FORM
+  # ---------------------------------------------------------------------------
+
+  form do |f|
+    f.inputs do
+      f.input :recurring_tournament,
+              collection: tournament_event_recurring_tournament_select_collection,
+              input_html: {
+                data: {
+                  select2: {
+                    placeholder: 'Nom de la série',
+                    allowClear: true
+                  }
+                }
+              },
+              include_blank: "Aucun"
+      player_input f
+      f.input :has_good_network
+      user_input f, :certifier_user
+    end
+    f.actions
+  end
+
+  permit_params :recurring_tournament_id, :player_id, :certifier_user_id,
+                :has_good_network
 
   # ---------------------------------------------------------------------------
   # SHOW
