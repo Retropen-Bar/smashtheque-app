@@ -3,8 +3,7 @@ ActiveAdmin.register PlayersRecurringTournament do
   decorate_with ActiveAdmin::PlayersRecurringTournamentDecorator
 
   menu parent: '<i class="fas fa-fw fa-chess"></i>Compétition'.html_safe,
-       label: '<i class="fas fa-fw fa-stamp"></i>Certifications'.html_safe,
-       priority: 4
+       label: '<i class="fas fa-fw fa-stamp"></i>Certifications'.html_safe
 
   # ---------------------------------------------------------------------------
   # INDEX
