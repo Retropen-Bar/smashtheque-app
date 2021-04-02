@@ -3,6 +3,10 @@ class ActiveAdmin::RecurringTournamentDecorator < RecurringTournamentDecorator
 
   decorates :recurring_tournament
 
+  def admin_link(options = {})
+    super({label: name_with_logo(32)}.merge(options))
+  end
+
   def tournament_events_admin_link
     h.link_to(
       tournament_events_count,

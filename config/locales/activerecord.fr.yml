@@ -202,6 +202,8 @@ fr:
         << : *SHARED
         certifier_user: Certifié par
         has_good_network: Connexion certifiée
+        player: Joueur
+        recurring_tournament: Série
       recurring_tournament:
         << : *SHARED
         contacts: Contacts

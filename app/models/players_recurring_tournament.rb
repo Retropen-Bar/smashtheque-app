@@ -39,4 +39,11 @@ class PlayersRecurringTournament < ApplicationRecord
 
   validates :recurring_tournament_id, uniqueness: { scope: :player_id }
 
+  # ---------------------------------------------------------------------------
+  # SCOPES
+  # ---------------------------------------------------------------------------
+
+  scope :with_good_network, -> { where(has_good_network: true) }
+  scope :with_bad_network, -> { where(has_good_network: false) }
+
 end

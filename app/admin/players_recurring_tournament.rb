@@ -32,6 +32,14 @@ ActiveAdmin.register PlayersRecurringTournament do
     actions
   end
 
+  scope :all, default: true
+
+  scope :with_good_network, group: :has_good_network
+  scope :with_bad_network, group: :has_good_network
+
+  filter :recurring_tournament,
+         input_html: { multiple: true, data: { select2: {} } }
+
   # ---------------------------------------------------------------------------
   # SHOW
   # ---------------------------------------------------------------------------
