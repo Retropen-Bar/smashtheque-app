@@ -9,7 +9,7 @@ ActiveAdmin.register PlayersRecurringTournament do
   # INDEX
   # ---------------------------------------------------------------------------
 
-  includes :recurring_tournament,
+  includes recurring_tournament: :discord_guild,
            player: { user: :discord_user },
            certifier_user: :discord_user
 
