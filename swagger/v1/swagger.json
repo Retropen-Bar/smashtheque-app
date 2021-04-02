@@ -145,6 +145,59 @@
         }
       }
     },
+    "/api/v1/recurring_tournaments/{recurring_tournament_id}/discord_users/{discord_id}": {
+      "parameters": [
+        {
+          "name": "recurring_tournament_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        },
+        {
+          "name": "discord_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "put": {
+        "summary": "Updates a PlayersRecurringTournament",
+        "tags": [
+          "PlayersRecurringTournament"
+        ],
+        "parameters": [
+
+        ],
+        "responses": {
+          "200": {
+            "description": "PlayersRecurringTournament updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/players_recurring_tournament"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "$ref": "#/components/schemas/players_recurring_tournament_payload"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/players": {
       "get": {
         "summary": "Fetches players",
@@ -688,6 +741,11 @@
           "has_good_network": {
             "type": "boolean",
             "example": true
+          },
+          "certifier_discord_id": {
+            "type": "integer",
+            "nullable": true,
+            "example": 13
           },
           "certifier_user_id": {
             "type": "integer",

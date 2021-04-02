@@ -176,6 +176,7 @@ RSpec.configure do |config|
             type: :object,
             properties: {
               has_good_network: { type: :boolean, example: true },
+              certifier_discord_id: { type: :integer, nullable: true, example: 13 },
               certifier_user_id: { type: :integer, nullable: true, example: 13 }
             }
           },

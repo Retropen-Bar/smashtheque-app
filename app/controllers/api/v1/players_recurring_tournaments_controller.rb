@@ -1,6 +1,7 @@
 class Api::V1::PlayersRecurringTournamentsController < Api::V1::BaseController
 
-  before_action :set_player
+  before_action :set_player, only: :update
+  before_action :set_player_by_discord_id, only: :update_by_discord_id
   before_action :set_recurring_tournament
 
   def update
@@ -16,10 +17,18 @@ class Api::V1::PlayersRecurringTournamentsController < Api::V1::BaseController
     end
   end
 
+  def update_by_discord_id
+    update
+  end
+
   private
 
   def set_player
     @player = Player.find(params[:player_id])
+  end
+
+  def set_player_by_discord_id
+    @player = Player.by_discord_id(params[:discord_id]).first!
   end
 
   def set_recurring_tournament
@@ -29,7 +38,7 @@ class Api::V1::PlayersRecurringTournamentsController < Api::V1::BaseController
   def players_recurring_tournament_params
     params.require(:has_good_network)
     params.permit(
-      :has_good_network, :certifier_user_id
+      :has_good_network, :certifier_user_id, :certifier_discord_id
     )
   end
 

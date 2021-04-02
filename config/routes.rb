@@ -31,9 +31,10 @@ Rails.application.routes.draw do
       resources :communities, only: [:index]
       resources :recurring_tournaments, only: [:index, :show] do
         resources :players,
-                  only: [:update, :delete],
+                  only: [:update],
                   controller: :players_recurring_tournaments,
                   param: :player_id
+        put 'discord_users/:discord_id' => 'players_recurring_tournaments#update_by_discord_id'
       end
       resources :players, only: [:index, :show, :create, :update]
       resources :teams, only: [:index, :show, :update]

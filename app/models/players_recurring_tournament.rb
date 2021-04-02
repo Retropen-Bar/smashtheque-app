@@ -46,4 +46,18 @@ class PlayersRecurringTournament < ApplicationRecord
   scope :with_good_network, -> { where(has_good_network: true) }
   scope :with_bad_network, -> { where(has_good_network: false) }
 
+  # ---------------------------------------------------------------------------
+  # HELPERS
+  # ---------------------------------------------------------------------------
+
+  def certifier_discord_id
+    certifier_user&.discord_id
+  end
+
+  def certifier_discord_id=(discord_id)
+    self.certifier_user = DiscordUser.where(discord_id: discord_id)
+                                     .first_or_create!
+                                     .return_or_create_user!
+  end
+
 end
