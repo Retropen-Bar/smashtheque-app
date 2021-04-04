@@ -1,4 +1,4 @@
-<% @title = @team.full_name_with_logo(max_width: 64, max_height: 64) %>
+<% @title = @team.full_name_with_logo(max_width: 64, max_height: 64) + ('<div><small>' + @team.badges + '</small></div>').html_safe %>
 <% if user_team_admin? %>
   <% @title += ('<div class="float-right">' + link_to('Modifier', [:edit, @team], class: 'btn btn-primary') + '</div>').html_safe %>
 <% end %>

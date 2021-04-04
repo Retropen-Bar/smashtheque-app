@@ -157,4 +157,25 @@ ActiveAdmin.register Team do
     active_admin_comments
   end
 
+  action_item :other_actions, only: :show do
+    dropdown_menu 'Autres actions' do
+      if resource.logo.attached?
+        item 'Supprimer le logo', action: :purge_logo
+      end
+      if resource.roster.attached?
+        item 'Supprimer le roster', action: :purge_roster
+      end
+    end
+  end
+
+  member_action :purge_logo do
+    resource.logo.purge
+    redirect_to request.referer, notice: 'Logo supprimé'
+  end
+
+  member_action :purge_roster do
+    resource.roster.purge
+    redirect_to request.referer, notice: 'Roster supprimé'
+  end
+
 end

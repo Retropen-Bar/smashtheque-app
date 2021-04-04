@@ -4,7 +4,17 @@
       <i class="fas fa-users"></i>
       <%= team.players.count %>
     </div>
-    <%= link_to team.full_name_with_logo(max_width: 64, max_height: 64), team %>
+    <%= link_to(team, class: 'team-link') do %>
+      <%= team.any_image_tag(max_width: 64, max_height: 64) %>
+      <div class="team-name-and-tags">
+        <div>
+          <%= team.full_name %>
+        </div>
+        <div>
+          <%= team.badges %>
+        </div>
+      </div>
+    <% end %>
   </div>
   <%= admin_edit_link(team) %>
 </div>

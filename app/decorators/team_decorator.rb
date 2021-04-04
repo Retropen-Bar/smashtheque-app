@@ -75,4 +75,16 @@ class TeamDecorator < BaseDecorator
     super({label: short_name_with_logo(max_width: 32, max_height: 32)}.merge(options))
   end
 
+  def badges
+    (
+      '' + (
+        is_offline? ? h.content_tag(:span, 'Offline', class: 'badge badge-success') : ''
+      ) + ' ' + (
+        is_online? ? h.content_tag(:span, 'Online', class: 'badge badge-warning') : ''
+      ) + ' ' + (
+        is_sponsor? ? h.content_tag(:span, 'Sponsor', class: 'badge badge-dark') : ''
+      )
+    ).html_safe
+  end
+
 end
