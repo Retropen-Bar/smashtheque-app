@@ -19,7 +19,9 @@ class ApplicationController < ActionController::Base
         @static = true
         render template: 'errors/not_found', status: 404
       end
-      format.all { render nothing: true, status: 404 }
+      format.all do
+        head :not_found and return
+      end
     end
   end
 
