@@ -44,6 +44,7 @@ module ActiveAdmin::PlayersHelper
                           url: autocomplete_players_path,
                           dataType: 'json'
                         },
+                        formatResults: true,
                         placeholder: 'Nom du joueur',
                         allowClear: true
                       }
@@ -75,6 +76,7 @@ module ActiveAdmin::PlayersHelper
                           url: autocomplete_players_path,
                           dataType: 'json'
                         },
+                        formatResults: true,
                         placeholder: 'Nom des joueurs'
                       }
                     }

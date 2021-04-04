@@ -71,6 +71,11 @@
 
     $input.removeAttr(DATA_KEY);
 
+    // add default options
+    if( options.formatResults ) {
+      options.templateResult = formatResult;
+    }
+
     if( options.sortable ) {
       if(!$input.prop('multiple')) {
         return;
@@ -80,6 +85,25 @@
       $input.select2(options);
     }
   };
+
+  var formatResult = function(result) {
+    // console.log('[SELECT2] formatResult', result)
+
+    var $a = $('<div class="search-result search-result-'+(result.type || '').toLowerCase()+'">');
+
+    if( result.avatar ) {
+      $a.append(
+        $('<div class="search-result-avatar">').append(
+          result.avatar
+        )
+      );
+    } else {
+      $a.append('<i class="search-result-icon fas fa-'+result.icon+' fa-fw">');
+    }
+    $a.append(result.html);
+
+    return $a;
+  }
 
   var init = function() {
     $('['+DATA_KEY+']').each(function() {

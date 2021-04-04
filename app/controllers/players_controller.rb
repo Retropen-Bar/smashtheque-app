@@ -80,10 +80,20 @@ class PlayersController < PublicController
 
   def autocomplete
     render json: {
-      results: Player.by_keyword(params[:term]).map do |player|
+      results: Player.by_keyword(params[:term])
+                     .includes(
+                       :smashgg_users, :teams, :characters,
+                       user: :discord_user
+                     )
+                     .limit(10)
+                     .decorate
+                     .map do |player|
         {
           id: player.id,
-          text: player.decorate.name_and_old_names
+          type: :player,
+          avatar: player.avatar_tag(32),
+          html: player.as_autocomplete_result,
+          text: player.name_and_old_names
         }
       end
     }

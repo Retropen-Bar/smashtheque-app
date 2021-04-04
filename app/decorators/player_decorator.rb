@@ -8,6 +8,10 @@ class PlayerDecorator < BaseDecorator
     model.name
   end
 
+  def name_with_teams
+    (teams.map(&:short_name) + [name]).join('&nbsp;|&nbsp;')
+  end
+
   def avatar_tag(size)
     # option 1: DiscordUser
     if user && user.discord_user && !user.discord_user.avatar.blank?
@@ -96,18 +100,26 @@ class PlayerDecorator < BaseDecorator
     end
   end
 
-  def name_and_old_names
-    result = name
+  def name_and_old_names(with_teams: false)
+    result = with_teams ? name_with_teams : name
     if old_names.any?
       result += " (aka #{old_names.reverse.join(', ')})"
     end
     result
   end
 
+  def name_and_old_names_and_main(with_teams: false)
+    result = name_and_old_names(with_teams: with_teams)
+    characters.first(5).each do |character|
+      result += ' ' + character.decorate.emoji_image_tag(max_height: 20)
+    end
+    result.html_safe
+  end
+
   def as_autocomplete_result
     h.content_tag :div, class: :player do
       h.content_tag :div, class: :name do
-        name_and_old_names
+        name_and_old_names_and_main(with_teams: true)
       end
     end
   end
