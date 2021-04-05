@@ -141,6 +141,17 @@ ActiveAdmin.register SmashggUser do
   end
 
   # ---------------------------------------------------------------------------
+  # EVENTS
+  # ---------------------------------------------------------------------------
+
+  action_item :smashgg_events, only: :show do
+    link_to 'Voir les tournois', { action: :smashgg_events }, class: :orange
+  end
+  member_action :smashgg_events do
+    @smashgg_events = resource.fetch_smashgg_events
+  end
+
+  # ---------------------------------------------------------------------------
   # SUGGESTIONS
   # ---------------------------------------------------------------------------
 

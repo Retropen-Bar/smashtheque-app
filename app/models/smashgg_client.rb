@@ -147,6 +147,26 @@ class SmashggClient
       }
     GRAPHQL
 
+  UserTournamentsSearchQuery =
+    CLIENT.parse <<-GRAPHQL
+      query($userId: ID) {
+        user(id: $userId) {
+          id
+          events(query: {
+            perPage: 100
+            sortBy: "startAt asc"
+            filter: {
+              videogameId: 1386
+            }
+          }) {
+            nodes {
+              #{EventData}
+            }
+          }
+        }
+      }
+    GRAPHQL
+
   def get_user(user_id: nil, user_slug: nil)
     if user_id
       CLIENT.query(
@@ -216,6 +236,15 @@ class SmashggClient
       result += node.events
     end
     result
+  end
+
+  def get_user_events(user_id:)
+    CLIENT.query(
+      UserTournamentsSearchQuery,
+      variables: {
+        userId: user_id
+      }
+    ).data.user.events.nodes
   end
 
 end

@@ -139,6 +139,15 @@ class SmashggUser < ApplicationRecord
     SmashggEvent.with_smashgg_user(id)
   end
 
+  def fetch_smashgg_events
+    data = SmashggClient.new.get_user_events(user_id: smashgg_id)
+    return nil if data.nil?
+    data.map do |event_data|
+      attributes = SmashggEvent.attributes_from_event_data(event_data)
+      SmashggEvent.where(smashgg_id: attributes[:smashgg_id]).first_or_initialize(attributes)
+    end
+  end
+
   # returns [player, reason]
   def suggested_player
     if discord_discriminated_username
