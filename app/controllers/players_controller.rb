@@ -81,7 +81,7 @@ class PlayersController < PublicController
   def ranking_online_year
     @year = params[:year].to_i
     @players = apply_scopes(
-      Player.ranked_in(@year).order(:rank)
+      Player.ranked_in(@year).order("rank_in_#{@year}")
     ).includes(:user, :discord_user, :teams, :characters)
 
     main_character = @players.first.characters.first&.decorate

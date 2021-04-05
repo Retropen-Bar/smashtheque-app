@@ -130,7 +130,9 @@ class Duo < ApplicationRecord
   end
 
   scope :with_points, -> { where("points > 0") }
+  scope :with_points_in, -> year { where("points_in_#{year} > 0") }
   scope :ranked, -> { where.not(rank: nil) }
+  scope :ranked_in, -> year { where.not("rank_in_#{year}" => nil) }
 
   scope :by_best_reward_level1, -> v { where(best_reward_level1: v) }
   scope :by_best_reward_level2, -> v { where(best_reward_level2: v) }
@@ -217,7 +219,22 @@ class Duo < ApplicationRecord
     end.sort_by(&:level2)
   end
 
+  def points_in(year)
+    send("points_in_#{year}")
+  end
+
+  def rank_in(year)
+    send("rank_in_#{year}")
+  end
+
   def update_points
+    Player::POINTS_YEARS.each do |year|
+      self.attributes = {
+        "points_in_#{year}" => (
+          duo_reward_duo_conditions.on_year(year).points_total
+        )
+      }
+    end
     self.points = duo_reward_duo_conditions.points_total
   end
 
@@ -238,6 +255,25 @@ class Duo < ApplicationRecord
   end
 
   def self.update_ranks!
+    Player::POINTS_YEARS.each do |year|
+      subquery =
+        Duo.with_points_in(year)
+           .select(
+             :id,
+             "ROW_NUMBER() OVER(ORDER BY points_in_#{year} DESC) AS newrank"
+           )
+
+      Duo.update_all("
+        rank_in_#{year} = pointed.newrank
+        FROM (#{subquery.to_sql}) pointed
+        WHERE duos.id = pointed.id
+      ")
+      Duo.where.not(id: Duo.with_points_in(year).select(:id))
+         .update_all("rank_in_#{year}" => nil)
+    end
+
+
+
     subquery =
       Duo.with_points
          .select(:id, "ROW_NUMBER() OVER(ORDER BY points DESC) AS newrank")
@@ -247,7 +283,8 @@ class Duo < ApplicationRecord
       FROM (#{subquery.to_sql}) pointed
       WHERE duos.id = pointed.id
     ")
-    Duo.where.not(id: Duo.with_points.select(:id)).update_all(rank: nil)
+    Duo.where.not(id: Duo.with_points.select(:id))
+       .update_all(rank: nil)
   end
 
   # ---------------------------------------------------------------------------

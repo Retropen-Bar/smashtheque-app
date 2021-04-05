@@ -57,6 +57,17 @@ class DuosController < PublicController
     # end
   end
 
+  def ranking_online_year
+    @year = params[:year].to_i
+    @duos = apply_scopes(
+      Duo.ranked_in(@year).order("rank_in_#{@year}")
+    ).includes(
+      player1: { user: :discord_user },
+      player2: { user: :discord_user }
+    )
+    render 'ranking_online'
+  end
+
   def autocomplete
     render json: {
       results: Duo.by_keyword(params[:term]).map do |duo|

@@ -481,6 +481,10 @@ class Player < ApplicationRecord
     send("points_in_#{year}")
   end
 
+  def rank_in(year)
+    send("rank_in_#{year}")
+  end
+
   def update_points
     POINTS_YEARS.each do |year|
       self.attributes = {
