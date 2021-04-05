@@ -174,6 +174,12 @@ class DuoTournamentEvent < ApplicationRecord
     where(bracket_id: v)
   end
 
+  def self.on_year(year)
+    date_min = Date.new(year, 1, 1)
+    date_max = Date.new(year, 12, 31)
+    where("date BETWEEN ? AND ?", date_min, date_max)
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------

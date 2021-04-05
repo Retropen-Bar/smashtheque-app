@@ -1,6 +1,8 @@
 <div class="text-center">
   <div id="list-toolbar">
-    <h1 class="page-title">Observatoire d'Harmonie 2v2 online</h1>
+    <h1 class="page-title">
+      Observatoire d'Harmonie 2v2 online <%= @year if defined?(@year) %>
+    </h1>
     <%= render 'shared/pagination', collection: @duos %>
   </div>
 </div>
@@ -12,6 +14,7 @@
                  duo: duo.decorate,
                  with_rank: true,
                  with_points: true,
+                 year: defined?(@year) && @year,
                  with_communities: false %>
     </div>
   <% end %>

@@ -23,12 +23,13 @@ class DuoDecorator < BaseDecorator
 
   def points_count(icon_size = 32, options = {})
     options[:height] = icon_size
+    value = options.delete(:value) || points
     [
       h.image_tag(
         "https://cdn.discordapp.com/emojis/#{RetropenBot::EMOJI_POINTS}.png",
         options
       ),
-      h.number_with_delimiter(points)
+      h.number_with_delimiter(value)
     ].join('&nbsp;').html_safe
   end
 

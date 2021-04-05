@@ -66,4 +66,8 @@ class DuoRewardDuoCondition < ApplicationRecord
 
   scope :by_duo, -> v { where(duo_id: v) }
 
+  def self.on_year(year)
+    where(duo_tournament_event_id: DuoTournamentEvent.on_year(year).select(:id))
+  end
+
 end

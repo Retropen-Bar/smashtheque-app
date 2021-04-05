@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_01_201407) do
+ActiveRecord::Schema.define(version: 2021_04_04_234657) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -230,6 +230,12 @@ ActiveRecord::Schema.define(version: 2021_04_01_201407) do
     t.string "best_reward_level1"
     t.string "best_reward_level2"
     t.integer "rank"
+    t.integer "points_in_2019", default: 0, null: false
+    t.integer "rank_in_2019"
+    t.integer "points_in_2020", default: 0, null: false
+    t.integer "rank_in_2020"
+    t.integer "points_in_2021", default: 0, null: false
+    t.integer "rank_in_2021"
     t.index ["best_duo_reward_duo_condition_id"], name: "index_duos_on_best_duo_reward_duo_condition_id"
     t.index ["name"], name: "index_duos_on_name"
     t.index ["player1_id"], name: "index_duos_on_player1_id"
@@ -288,6 +294,12 @@ ActiveRecord::Schema.define(version: 2021_04_01_201407) do
     t.integer "user_id"
     t.string "old_names", default: [], array: true
     t.boolean "has_good_network", default: false, null: false
+    t.integer "points_in_2019", default: 0, null: false
+    t.integer "rank_in_2019"
+    t.integer "points_in_2020", default: 0, null: false
+    t.integer "rank_in_2020"
+    t.integer "points_in_2021", default: 0, null: false
+    t.integer "rank_in_2021"
     t.index ["best_player_reward_condition_id"], name: "index_players_on_best_player_reward_condition_id"
     t.index ["creator_user_id"], name: "index_players_on_creator_user_id"
     t.index ["user_id"], name: "index_players_on_user_id"

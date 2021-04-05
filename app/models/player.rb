@@ -13,7 +13,13 @@
 #  name                            :string
 #  old_names                       :string           default([]), is an Array
 #  points                          :integer          default(0), not null
+#  points_in_2019                  :integer          default(0), not null
+#  points_in_2020                  :integer          default(0), not null
+#  points_in_2021                  :integer          default(0), not null
 #  rank                            :integer
+#  rank_in_2019                    :integer
+#  rank_in_2020                    :integer
+#  rank_in_2021                    :integer
 #  team_names                      :text             default([]), is an Array
 #  created_at                      :datetime         not null
 #  updated_at                      :datetime         not null
@@ -36,6 +42,8 @@
 class Player < ApplicationRecord
 
   include PgSearch::Model
+
+  POINTS_YEARS = (2019..2021).to_a.freeze
 
   # ---------------------------------------------------------------------------
   # RELATIONS
@@ -350,7 +358,9 @@ class Player < ApplicationRecord
   end
 
   scope :with_points, -> { where("points > 0") }
+  scope :with_points_in, -> year { where("points_in_#{year} > 0") }
   scope :ranked, -> { where.not(rank: nil) }
+  scope :ranked_in, -> year { where.not("rank_in_#{year}" => nil) }
 
   scope :by_best_reward_level1, -> v { where(best_reward_level1: v) }
   scope :by_best_reward_level2, -> v { where(best_reward_level2: v) }
@@ -467,7 +477,22 @@ class Player < ApplicationRecord
     end.sort_by(&:level2)
   end
 
+  def points_in(year)
+    send("points_in_#{year}")
+  end
+
+  def rank_in(year)
+    send("rank_in_#{year}")
+  end
+
   def update_points
+    POINTS_YEARS.each do |year|
+      self.attributes = {
+        "points_in_#{year}" => (
+          player_reward_conditions.on_year(year).points_total
+        )
+      }
+    end
     self.points = player_reward_conditions.points_total
   end
 
@@ -488,17 +513,39 @@ class Player < ApplicationRecord
   end
 
   def self.update_ranks!
+    POINTS_YEARS.each do |year|
+      subquery =
+        Player.with_points_in(year)
+              .legit
+              .select(
+                :id,
+                "ROW_NUMBER() OVER(ORDER BY points_in_#{year} DESC) AS newrank"
+              )
+
+      Player.update_all("
+        rank_in_#{year} = pointed.newrank
+        FROM (#{subquery.to_sql}) pointed
+        WHERE players.id = pointed.id
+      ")
+      Player.where.not(id: Player.with_points_in(year).legit.select(:id))
+            .update_all("rank_in_#{year}" => nil)
+    end
+
     subquery =
       Player.with_points
             .legit
-            .select(:id, "ROW_NUMBER() OVER(ORDER BY points DESC) AS newrank")
+            .select(
+              :id,
+              "ROW_NUMBER() OVER(ORDER BY points DESC) AS newrank"
+            )
 
     Player.update_all("
       rank = pointed.newrank
       FROM (#{subquery.to_sql}) pointed
       WHERE players.id = pointed.id
     ")
-    Player.where.not(id: Player.with_points.legit.select(:id)).update_all(rank: nil)
+    Player.where.not(id: Player.with_points.legit.select(:id))
+          .update_all(rank: nil)
   end
 
   # ---------------------------------------------------------------------------
