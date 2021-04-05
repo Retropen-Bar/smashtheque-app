@@ -66,4 +66,8 @@ class PlayerRewardCondition < ApplicationRecord
 
   scope :by_player, -> v { where(player_id: v) }
 
+  def self.on_year(year)
+    where(tournament_event_id: TournamentEvent.on_year(year).select(:id))
+  end
+
 end

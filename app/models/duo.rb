@@ -7,7 +7,13 @@
 #  best_reward_level2               :string
 #  name                             :string           not null
 #  points                           :integer          default(0), not null
+#  points_in_2019                   :integer          default(0), not null
+#  points_in_2020                   :integer          default(0), not null
+#  points_in_2021                   :integer          default(0), not null
 #  rank                             :integer
+#  rank_in_2019                     :integer
+#  rank_in_2020                     :integer
+#  rank_in_2021                     :integer
 #  created_at                       :datetime         not null
 #  updated_at                       :datetime         not null
 #  best_duo_reward_duo_condition_id :bigint

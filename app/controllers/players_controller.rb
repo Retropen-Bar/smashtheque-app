@@ -78,6 +78,21 @@ class PlayersController < PublicController
     end
   end
 
+  def ranking_online_year
+    @year = params[:year].to_i
+    @players = apply_scopes(
+      Player.ranked_in(@year).order(:rank)
+    ).includes(:user, :discord_user, :teams, :characters)
+
+    main_character = @players.first.characters.first&.decorate
+    if main_character
+      @background_color = main_character.background_color
+      @background_image_url = main_character.background_image_data_url
+      @background_size = main_character.background_size || 128
+    end
+    render 'ranking_online'
+  end
+
   def autocomplete
     render json: {
       results: Player.by_keyword(params[:term])

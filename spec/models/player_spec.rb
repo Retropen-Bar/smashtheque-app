@@ -13,7 +13,13 @@
 #  name                            :string
 #  old_names                       :string           default([]), is an Array
 #  points                          :integer          default(0), not null
+#  points_in_2019                  :integer          default(0), not null
+#  points_in_2020                  :integer          default(0), not null
+#  points_in_2021                  :integer          default(0), not null
 #  rank                            :integer
+#  rank_in_2019                    :integer
+#  rank_in_2020                    :integer
+#  rank_in_2021                    :integer
 #  team_names                      :text             default([]), is an Array
 #  created_at                      :datetime         not null
 #  updated_at                      :datetime         not null

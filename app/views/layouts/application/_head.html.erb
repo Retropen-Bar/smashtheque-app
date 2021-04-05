@@ -27,7 +27,11 @@
           <%= link_to 'Personnages', characters_path, class: 'dropdown-item' %>
           <%= link_to 'Communautés', communities_path, class: 'dropdown-item' %>
           <div class="dropdown-divider"></div>
-          <%= link_to "Observatoire d'Harmonie online", online_ranking_players_path, class: 'dropdown-item' %>
+          <h6 class="dropdown-header">Observatoire d'Harmonie online</h6>
+          <% Player::POINTS_YEARS.reverse.each do |year| %>
+            <%= link_to year, online_ranking_year_players_path(year), class: 'dropdown-item' %>
+          <% end %>
+          <%= link_to 'Toutes années confondues', online_ranking_players_path, class: 'dropdown-item' %>
         </div>
       </li>
 

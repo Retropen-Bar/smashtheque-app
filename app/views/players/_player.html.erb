@@ -28,7 +28,11 @@
     </h5>
     <% if defined?(with_points) && with_points %>
       <div class="player-points">
-        <%= player.points_count %>
+        <% if defined?(year) && year %>
+          <%= player.points_count(32, value: player.points_in(year)) %>
+        <% else %>
+          <%= player.points_count %>
+        <% end %>
       </div>
     <% end %>
     <% if defined?(with_addresses) && with_addresses %>
