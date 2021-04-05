@@ -26,11 +26,6 @@ ActiveAdmin.register Duo do
     column :player2 do |decorated|
       decorated.player2_admin_link
     end
-    column :rank
-    column :points
-    column :best_reward, sortable: :best_reward_level do |decorated|
-      decorated.best_reward_admin_link({}, class: 'reward-badge-32')
-    end
     column :created_at do |decorated|
       decorated.created_at_date
     end
@@ -75,6 +70,10 @@ ActiveAdmin.register Duo do
       end
       row :rank
       row :points
+      Player::POINTS_YEARS.each do |year|
+        row "rank_in_#{year}"
+        row "points_in_#{year}"
+      end
       row :best_reward do |decorated|
         decorated.best_reward_admin_link
       end

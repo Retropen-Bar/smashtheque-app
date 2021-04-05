@@ -25,8 +25,7 @@ ActiveAdmin.register Player do
             { logo_attachment: :blob }
            ],
            user: :discord_user,
-           creator_user: :discord_user,
-           best_reward: { image_attachment: :blob }
+           creator_user: :discord_user
 
   index do
     selectable_column
@@ -39,11 +38,6 @@ ActiveAdmin.register Player do
     end
     column :characters do |decorated|
       decorated.characters_admin_links.join(' ').html_safe
-    end
-    column :rank
-    column :points
-    column :best_reward, sortable: :best_reward_level do |decorated|
-      decorated.best_reward_admin_link({}, class: 'reward-badge-32')
     end
     column :teams do |decorated|
       decorated.teams_admin_links.join('<br/>').html_safe
@@ -184,6 +178,10 @@ ActiveAdmin.register Player do
       row :has_good_network
       row :rank
       row :points
+      Player::POINTS_YEARS.each do |year|
+        row "rank_in_#{year}"
+        row "points_in_#{year}"
+      end
       row :best_reward do |decorated|
         decorated.best_reward_admin_link
       end

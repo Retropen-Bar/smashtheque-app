@@ -78,7 +78,13 @@ fr:
         player1: Joueur 1
         player2: Joueur 2
         points: Fragments d'étoiles
+        points_in_2019: Fragments d'étoiles 2019
+        points_in_2020: Fragments d'étoiles 2020
+        points_in_2021: Fragments d'étoiles 2021
         rank: Classement
+        rank_in_2019: Classement 2019
+        rank_in_2020: Classement 2020
+        rank_in_2021: Classement 2021
         rewards: Récompenses
         unique_rewards: Récompenses uniques
       duo_reward_duo_condition:
@@ -184,7 +190,13 @@ fr:
         is_banned: Banni ?
         old_names: Anciens pseudos
         points: Fragments d'étoiles
+        points_in_2019: Fragments d'étoiles 2019
+        points_in_2020: Fragments d'étoiles 2020
+        points_in_2021: Fragments d'étoiles 2021
         rank: Classement
+        rank_in_2019: Classement 2019
+        rank_in_2020: Classement 2020
+        rank_in_2021: Classement 2021
         rewards: Récompenses
         smashgg_users: Comptes smash.gg
         teams: Équipes
