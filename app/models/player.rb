@@ -7,7 +7,6 @@
 #  best_reward_level1              :string
 #  best_reward_level2              :string
 #  character_names                 :text             default([]), is an Array
-#  has_good_network                :boolean          default(FALSE), not null
 #  is_accepted                     :boolean
 #  is_banned                       :boolean          default(FALSE), not null
 #  name                            :string

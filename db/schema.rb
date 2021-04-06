@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_04_234657) do
+ActiveRecord::Schema.define(version: 2021_04_06_205416) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -293,7 +293,6 @@ ActiveRecord::Schema.define(version: 2021_04_04_234657) do
     t.integer "creator_user_id", null: false
     t.integer "user_id"
     t.string "old_names", default: [], array: true
-    t.boolean "has_good_network", default: false, null: false
     t.integer "points_in_2019", default: 0, null: false
     t.integer "rank_in_2019"
     t.integer "points_in_2020", default: 0, null: false
