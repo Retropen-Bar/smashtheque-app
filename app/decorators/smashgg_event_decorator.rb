@@ -7,7 +7,7 @@ class SmashggEventDecorator < BaseDecorator
     ].join(' : ')
   end
 
-  def full_name_with_icon(size: 32)
+  def icon_and_full_name(size: 32)
     [
       h.image_tag('https://smash.gg/images/gg-app-icon.png', height: size, style: "vertical-align: middle"),
       full_name
@@ -25,7 +25,7 @@ class SmashggEventDecorator < BaseDecorator
   def as_autocomplete_result
     h.content_tag :div, class: 'smashgg-event' do
       h.content_tag :div, class: :name do
-        full_name_with_icon(size: 16)
+        icon_and_full_name(size: 16)
       end
     end
   end

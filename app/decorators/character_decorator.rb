@@ -4,7 +4,7 @@ class CharacterDecorator < BaseDecorator
     model.name.titleize
   end
 
-  def full_name(max_width: nil, max_height: nil)
+  def emoji_and_name(max_width: nil, max_height: nil)
     [emoji_image_tag(max_width: max_width, max_height: max_height), pretty_name].join.html_safe
   end
 

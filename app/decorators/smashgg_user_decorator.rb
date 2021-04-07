@@ -7,7 +7,7 @@ class SmashggUserDecorator < BaseDecorator
     ].compact.join(' | ')
   end
 
-  def full_name(options = {})
+  def avatar_and_name(options = {})
     [
       any_image_tag(options),
       prefixed_gamer_tag || slug
@@ -43,7 +43,7 @@ class SmashggUserDecorator < BaseDecorator
       (
         h.image_tag 'https://smash.gg/images/gg-app-icon.png', height: 24, class: 'logo'
       ) + ' ' + (
-        full_name(options)
+        avatar_and_name(options)
       )
     end
   end

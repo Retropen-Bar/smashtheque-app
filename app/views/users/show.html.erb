@@ -1,7 +1,7 @@
 <%= admin_edit_link(@user) %>
 
 <h1 class="page-title">
-  <%= user.full_name(size: 64) %><br/>
+  <%= user.avatar_and_name(size: 64) %><br/>
 </h1>
 <h5 class="text-center">
   <% if user.is_caster? %>

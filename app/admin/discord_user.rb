@@ -18,7 +18,7 @@ ActiveAdmin.register DiscordUser do
       link_to decorated.discord_id, [:admin, decorated.model]
     end
     column :username do |decorated|
-      decorated.full_name(size: 32)
+      decorated.avatar_and_name(size: 32)
     end
     column :user do |decorated|
       decorated.user_admin_link

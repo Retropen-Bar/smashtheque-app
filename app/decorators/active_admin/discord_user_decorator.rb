@@ -7,7 +7,7 @@ class ActiveAdmin::DiscordUserDecorator < DiscordUserDecorator
     super(
       options.merge(
         label: (
-          options[:label] || full_name_or_id(size: options[:size] || 32)
+          options[:label] || avatar_and_name_or_id(size: options[:size] || 32)
         )
       )
     )

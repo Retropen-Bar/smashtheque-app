@@ -1,14 +1,14 @@
 class DiscordGuildDecorator < BaseDecorator
 
-  def full_name_or_id(size: nil)
+  def icon_and_name_or_id(size: nil)
     if model.is_known?
-      full_name(size: size)
+      icon_and_name(size: size)
     else
       "##{model.discord_id}"
     end
   end
 
-  def full_name(size: nil)
+  def icon_and_name(size: nil)
     [
       icon_image_tag(size),
       model.name
@@ -52,7 +52,7 @@ class DiscordGuildDecorator < BaseDecorator
   end
 
   def link
-    h.link_to full_name(size: 32), model.invitation_url, target: '_blank', class: 'btn btn-outline-primary'
+    h.link_to icon_and_name(size: 32), model.invitation_url, target: '_blank', class: 'btn btn-outline-primary'
   end
 
   def related_characters

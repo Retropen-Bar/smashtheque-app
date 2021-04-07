@@ -12,7 +12,7 @@ class UserDecorator < BaseDecorator
     h.image_tag 'default-avatar.jpg', width: size, class: :avatar
   end
 
-  def full_name(size: nil)
+  def avatar_and_name(size: nil)
     [
       avatar_tag(size),
       name
@@ -24,7 +24,7 @@ class UserDecorator < BaseDecorator
   end
 
   def link(options = {})
-    h.content_tag :div, full_name(size: 32), options
+    h.content_tag :div, avatar_and_name(size: 32), options
   end
 
   def created_players_count

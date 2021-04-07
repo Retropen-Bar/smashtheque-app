@@ -14,7 +14,7 @@ module MapsHelper
             icon_anchor: [16, 16]
           }
           layers[character.id.to_s] ||= {
-            name: character.decorate.full_name(
+            name: character.decorate.emoji_and_name(
               max_width: 32,
               max_height: 32
             ),

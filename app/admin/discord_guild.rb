@@ -18,7 +18,7 @@ ActiveAdmin.register DiscordGuild do
       link_to decorated.discord_id, [:admin, decorated.model]
     end
     column :name do |decorated|
-      decorated.full_name(size: 32)
+      decorated.icon_and_name(size: 32)
     end
     column :relateds do |decorated|
       decorated.relateds_admin_links

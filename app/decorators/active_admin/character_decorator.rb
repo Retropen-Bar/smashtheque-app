@@ -4,7 +4,7 @@ class ActiveAdmin::CharacterDecorator < CharacterDecorator
   decorates :character
 
   def admin_link(options = {})
-    super(options.merge(label: options[:label] || full_name(max_height: '32px')))
+    super(options.merge(label: options[:label] || emoji_and_name(max_height: '32px')))
   end
 
   def discord_guilds_admin_links(options = {})

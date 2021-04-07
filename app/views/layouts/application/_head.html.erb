@@ -193,7 +193,7 @@
       <% if user_signed_in? %>
         <li class="nav-item dropdown">
           <%= link_to '#', class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
-            <%= current_user.decorate.full_name(size: 32) %>
+            <%= current_user.decorate.avatar_and_name(size: 32) %>
           <% end %>
           <div class="dropdown-menu dropdown-menu-right">
             <%= link_to 'Mon profil', current_user, class: 'dropdown-item' %>

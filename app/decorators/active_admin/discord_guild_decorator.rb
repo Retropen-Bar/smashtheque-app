@@ -7,7 +7,7 @@ class ActiveAdmin::DiscordGuildDecorator < DiscordGuildDecorator
     super(
       options.merge(
         label: (
-          options[:label] || full_name_or_id(size: options[:size] || 32)
+          options[:label] || icon_and_name_or_id(size: options[:size] || 32)
         )
       )
     )

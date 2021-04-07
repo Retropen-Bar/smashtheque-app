@@ -22,7 +22,7 @@ class ActiveAdmin::UserDecorator < UserDecorator
   # compatibility
   def admin_link(options = {})
     super({
-      label: full_name(size: 32)
+      label: avatar_and_name(size: 32)
     }.merge(options))
   end
 
