@@ -5,6 +5,8 @@ class Api::V1::RecurringTournamentsController < Api::V1::BaseController
   has_scope :by_level_in, type: :array
   has_scope :by_size_geq
   has_scope :by_size_leq
+  has_scope :by_discord_guild_id
+  has_scope :by_discord_guild_discord_id
 
   has_scope :page, default: 1
   has_scope :per

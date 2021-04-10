@@ -107,6 +107,12 @@ class RecurringTournament < ApplicationRecord
   scope :archived, -> { where(is_archived: true) }
   scope :not_archived, -> { where(is_archived: false) }
 
+  scope :by_discord_guild_id, -> v { where(discord_guild_id: v) }
+
+  def self.by_discord_guild_discord_id(discord_id)
+    by_discord_guild_id(DiscordGuild.by_discord_id(discord_id).select(:id))
+  end
+
   def self.administrated_by(user_id)
     where(id: RecurringTournamentContact.where(user_id: user_id).select(:recurring_tournament_id))
   end

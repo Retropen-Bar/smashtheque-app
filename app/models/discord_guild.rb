@@ -64,6 +64,8 @@ class DiscordGuild < ApplicationRecord
   # SCOPES
   # ---------------------------------------------------------------------------
 
+  scope :by_discord_id, -> v { where(discord_id: v) }
+
   def self.known
     where.not(icon: nil)
   end
