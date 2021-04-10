@@ -228,7 +228,8 @@ fr:
         recurring_type: Récurrence
         registration: Comment s'inscrire
         size: Taille
-        starts_at: Heure
+        starts_at_hour: Heure
+        starts_at_min: Minutes
         tournament_events: Éditions 1v1
         wday: Jour de la semaine
       recurring_tournament/level:

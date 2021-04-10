@@ -11,7 +11,8 @@
 #  recurring_type   :string           not null
 #  registration     :text
 #  size             :integer
-#  starts_at        :time
+#  starts_at_hour   :integer          not null
+#  starts_at_min    :integer          not null
 #  wday             :integer
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null

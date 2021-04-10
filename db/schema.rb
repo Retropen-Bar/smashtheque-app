@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_06_205416) do
+ActiveRecord::Schema.define(version: 2021_04_10_200201) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -340,7 +340,6 @@ ActiveRecord::Schema.define(version: 2021_04_06_205416) do
     t.string "name", null: false
     t.string "recurring_type", null: false
     t.integer "wday"
-    t.time "starts_at"
     t.bigint "discord_guild_id"
     t.boolean "is_online", default: false, null: false
     t.string "level"
@@ -350,6 +349,8 @@ ActiveRecord::Schema.define(version: 2021_04_06_205416) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "date_description"
     t.boolean "is_archived", default: false, null: false
+    t.integer "starts_at_hour", null: false
+    t.integer "starts_at_min", null: false
     t.index ["discord_guild_id"], name: "index_recurring_tournaments_on_discord_guild_id"
   end
 

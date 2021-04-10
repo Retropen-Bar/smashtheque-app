@@ -30,7 +30,8 @@
                         collection: recurring_tournament_wday_select_collection,
                         input_html: { data: { select2: {} } },
                         include_blank: false %>
-            <%= f.input :starts_at %>
+            <%= f.input :starts_at_hour %>
+            <%= f.input :starts_at_min %>
             <%= f.input :is_online %>
             <%= f.input :level,
                         collection: recurring_tournament_level_select_collection,

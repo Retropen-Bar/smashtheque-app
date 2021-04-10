@@ -95,7 +95,8 @@ ActiveAdmin.register RecurringTournament do
               collection: recurring_tournament_wday_select_collection,
               input_html: { data: { select2: {} } },
               include_blank: false
-      f.input :starts_at
+      f.input :starts_at_hour
+      f.input :starts_at_min
       f.input :discord_guild,
               collection: recurring_tournament_discord_guild_select_collection,
               input_html: { data: { select2: {} } }
@@ -115,7 +116,8 @@ ActiveAdmin.register RecurringTournament do
     f.actions
   end
 
-  permit_params :name, :recurring_type, :date_description, :wday, :starts_at,
+  permit_params :name, :recurring_type,
+                :date_description, :wday, :starts_at_hour, :starts_at_min,
                 :discord_guild_id, :is_online, :level, :size, :registration,
                 :is_archived, contact_ids: []
 
