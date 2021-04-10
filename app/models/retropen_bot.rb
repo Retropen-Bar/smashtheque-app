@@ -503,7 +503,7 @@ class RetropenBot
     messages = []
     recurring_tournaments.online
                          .not_archived
-                         .order(:starts_at)
+                         .order(:starts_at_hour, :starts_at_min)
                          .decorate
                          .each do |recurring_tournament|
       messages << DiscordClient::EMPTY_LINE

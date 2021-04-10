@@ -31,6 +31,10 @@ class RecurringTournamentDecorator < BaseDecorator
     I18n.t('date.day_names')[model.wday].titlecase
   end
 
+  def starts_at
+    "#{starts_at_hour}h#{(starts_at_min || '').to_s.rjust(2, '0')}"
+  end
+
   def full_date
     if model.is_recurring?
       "#{wday_text} à #{starts_at}"
@@ -39,14 +43,13 @@ class RecurringTournamentDecorator < BaseDecorator
     end
   end
 
-  def starts_at
-    I18n.l(model.starts_at, format: '%Hh%M')
-  end
-
   def date_on_week(monday)
+    # in the future, we might need to allow different timezones
     d = monday.beginning_of_week + ((model.wday + 6) % 7)
-    t = model.starts_at
-    DateTime.new(d.year, d.month, d.day, t.utc.hour, t.min)
+    DateTime.new(
+      d.year, d.month, d.day,
+      starts_at_hour, starts_at_min
+    ) - d.in_time_zone('Paris').utc_offset.seconds
   end
 
   def duration
