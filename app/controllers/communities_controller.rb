@@ -7,6 +7,7 @@ class CommunitiesController < PublicController
 
   def index
     @communities = apply_scopes(Community.order("lower(name)")).all
+    @meta_title = 'Communautés'
   end
 
 end

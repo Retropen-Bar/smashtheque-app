@@ -8,6 +8,7 @@ class TwitchChannelsController < PublicController
 
   def index
     @twitch_channels = apply_scopes(TwitchChannel.order("lower(name)")).all
+    @meta_title = 'Chaînes Twitch'
   end
 
 end

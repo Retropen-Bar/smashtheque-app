@@ -8,6 +8,7 @@ class CoachUsersController < PublicController
 
   def index
     @coach_users = apply_scopes(User.coaches.order("lower(name)")).all
+    @meta_title = 'Coachs'
   end
 
 end

@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
 
   before_action :set_time_zone
   before_action :set_locale
+  before_action :set_meta
 
   unless Rails.application.config.consider_all_requests_local
     rescue_from ActiveRecord::RecordNotFound, with: :render_404
@@ -45,6 +46,22 @@ class ApplicationController < ActionController::Base
 
   def set_locale
     I18n.locale = :fr
+  end
+
+  def set_meta
+    @meta_title = nil
+    @meta_description = 'La base de données de la communauté Super Smash Bros. Ultimate de France, fondée par le Rétropen-Bar et également administrée par red, Moon Key, Nixop et MIDZ.'
+
+    @meta_properties = {
+      # Shared
+      'og:url' => request.url,
+      'og:type' => 'website',
+      'og:image' => ActionController::Base.helpers.image_url('smashtheque-800x420.png'),
+
+      # Twitter
+      'twitter:site' => 'Smashthèque',
+      'twitter:domain' => 'smashtheque.fr'
+    }
   end
 
   def authenticate_admin_user!

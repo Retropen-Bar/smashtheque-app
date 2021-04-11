@@ -6,21 +6,25 @@ class DiscordGuildsController < PublicController
 
   def characters
     @discord_guilds = character_discord_guilds
+    @meta_title = 'Serveurs Discord de personnages'
     render :index
   end
 
   def players
     @discord_guilds = player_discord_guilds
+    @meta_title = 'Serveurs Discord de joueurs'
     render :index
   end
 
   def teams
     @discord_guilds = team_discord_guilds
+    @meta_title = "Serveurs Discord d'équipes"
     render :index
   end
 
   def communities
     @discord_guilds = community_discord_guilds
+    @meta_title = 'Serveurs Discord de communautés'
     render :index
   end
 
@@ -30,6 +34,7 @@ class DiscordGuildsController < PublicController
           team_discord_guilds.map(&:id) +
           community_discord_guilds.map(&:id)
     @discord_guilds = base_scope.where.not(id: ids).to_a
+    @meta_title = 'Autres serveurs Discord'
     render :index
   end
 

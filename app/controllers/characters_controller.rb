@@ -4,6 +4,7 @@ class CharactersController < PublicController
 
   def index
     @characters = apply_scopes(Character.order("lower(name)")).all
+    @meta_title = 'Personnages'
   end
 
 end

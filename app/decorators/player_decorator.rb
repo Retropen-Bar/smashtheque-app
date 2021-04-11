@@ -27,6 +27,21 @@ class PlayerDecorator < BaseDecorator
     default_avatar(size)
   end
 
+  def any_image_url
+    # option 1: DiscordUser
+    if user && user.discord_user && !user.discord_user.avatar.blank?
+      return user.discord_user.decorate.avatar_url
+    end
+    # option 2: SmashggUser
+    smashgg_users.each do |smashgg_user|
+      unless smashgg_user.avatar_url.blank?
+        return smashgg_user.decorate.any_image_url
+      end
+    end
+    # default
+    h.image_url 'default-avatar.jpg'
+  end
+
   def name_with_avatar(size: nil, with_teams: false)
     txt = [name]
     if with_teams

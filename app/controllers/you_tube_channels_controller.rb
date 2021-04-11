@@ -8,6 +8,7 @@ class YouTubeChannelsController < PublicController
 
   def index
     @you_tube_channels = apply_scopes(YouTubeChannel.order("lower(name)")).all
+    @meta_title = 'Chaînes YouTube'
   end
 
 end

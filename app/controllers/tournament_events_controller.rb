@@ -15,7 +15,7 @@ class TournamentEventsController < PublicController
     @tournament_events = apply_scopes(TournamentEvent.order(date: :desc)).all
     respond_to do |format|
       format.html do
-        # nothing special
+        @meta_title = 'Éditions passées'
       end
       format.ics do
         cal = Icalendar::Calendar.new
@@ -57,6 +57,9 @@ class TournamentEventsController < PublicController
   end
 
   def show
+    @meta_title = @tournament_event.name
+    @meta_properties['og:type'] = 'profile'
+    @meta_properties['og:image'] = @recurring_tournament.decorate.discord_guild_icon_image_url
   end
 
   def edit

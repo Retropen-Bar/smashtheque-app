@@ -8,6 +8,7 @@ class GraphicDesignerUsersController < PublicController
 
   def index
     @graphic_designer_users = apply_scopes(User.graphic_designers.order("lower(name)")).all
+    @meta_title = 'Graphistes'
   end
 
 end

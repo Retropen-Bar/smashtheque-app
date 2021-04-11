@@ -15,7 +15,7 @@ class DuoTournamentEventsController < PublicController
     @duo_tournament_events = apply_scopes(DuoTournamentEvent.order(date: :desc)).all
     respond_to do |format|
       format.html do
-        # nothing special
+        @meta_title = 'Éditions 2v2 passées'
       end
       format.ics do
         cal = Icalendar::Calendar.new
@@ -57,6 +57,9 @@ class DuoTournamentEventsController < PublicController
   end
 
   def show
+    @meta_title = @duo_tournament_event.name
+    @meta_properties['og:type'] = 'profile'
+    @meta_properties['og:image'] = @recurring_tournament.decorate.discord_guild_icon_image_url
   end
 
   def edit

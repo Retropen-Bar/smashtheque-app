@@ -11,6 +11,7 @@ class TeamsController < PublicController
 
   def index
     @teams = apply_scopes(Team.order("lower(name)")).all
+    @meta_title = 'Équipes'
   end
 
   def edit

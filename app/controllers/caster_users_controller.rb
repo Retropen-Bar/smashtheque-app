@@ -8,6 +8,7 @@ class CasterUsersController < PublicController
 
   def index
     @caster_users = apply_scopes(User.casters.order("lower(name)")).all
+    @meta_title = 'Commentateurs'
   end
 
 end

@@ -10,17 +10,24 @@ class PlayersController < PublicController
 
   def index
     @players = players Player
+    @meta_title = 'Joueurs'
   end
 
   def community_index
     @community = Community.find(params[:id]).decorate
     @players = players @community.model.players
+    @meta_title = @community.name
+    @meta_properties['og:type'] = 'profile'
+    @meta_properties['og:image'] = @community.decorate.any_image_url
     render 'communities/show'
   end
 
   def team_index
     @team = Team.find(params[:id]).decorate
     @players = players @team.model.players
+    @meta_title = @team.name
+    @meta_properties['og:type'] = 'profile'
+    @meta_properties['og:image'] = @team.any_image_url
     render 'teams/show'
   end
 
@@ -30,11 +37,15 @@ class PlayersController < PublicController
     @background_color = @character.background_color
     @background_image_url = @character.background_image_data_url
     @background_size = @character.background_size || 128
+    @meta_title = @character.pretty_name
+    @meta_properties['og:type'] = 'profile'
+    @meta_properties['og:image'] = @character.emoji_image_url
     render 'characters/show'
   end
 
   def recurring_tournament_contacts_index
     @players = players Player.recurring_tournament_contacts
+    @meta_title = 'TOs'
     render 'recurring_tournaments/contacts'
   end
 
@@ -63,6 +74,9 @@ class PlayersController < PublicController
       @background_image_url = main_character.background_image_data_url
       @background_size = main_character.background_size || 128
     end
+    @meta_title = @player.name
+    @meta_properties['og:type'] = 'profile'
+    @meta_properties['og:image'] = @player.decorate.any_image_url
   end
 
   def ranking_online
@@ -76,6 +90,7 @@ class PlayersController < PublicController
       @background_image_url = main_character.background_image_data_url
       @background_size = main_character.background_size || 128
     end
+    @meta_title = "Observatoire d'Harmonie Online"
   end
 
   def ranking_online_year
@@ -90,6 +105,7 @@ class PlayersController < PublicController
       @background_image_url = main_character.background_image_data_url
       @background_size = main_character.background_size || 128
     end
+    @meta_title = "Observatoire d'Harmonie Online #{@year}"
     render 'ranking_online'
   end
 

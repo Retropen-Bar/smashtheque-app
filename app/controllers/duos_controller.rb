@@ -10,6 +10,7 @@ class DuosController < PublicController
 
   def index
     @duos = duos Duo
+    @meta_title = 'Duos'
   end
 
   def show
@@ -40,6 +41,8 @@ class DuosController < PublicController
     #   @background_image_url = main_character.background_image_data_url
     #   @background_size = main_character.background_size || 128
     # end
+    @meta_title = @duo.name
+    @meta_properties['og:type'] = 'profile'
   end
 
   def ranking_online
@@ -55,6 +58,7 @@ class DuosController < PublicController
     #   @background_image_url = main_character.background_image_data_url
     #   @background_size = main_character.background_size || 128
     # end
+    @meta_title = "Observatoire d'Harmonie Online 2v2"
   end
 
   def ranking_online_year
@@ -65,6 +69,7 @@ class DuosController < PublicController
       player1: { user: :discord_user },
       player2: { user: :discord_user }
     )
+    @meta_title = "Observatoire d'Harmonie Online 2v2 #{@year}"
     render 'ranking_online'
   end
 

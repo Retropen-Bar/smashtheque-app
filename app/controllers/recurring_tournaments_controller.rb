@@ -32,6 +32,7 @@ class RecurringTournamentsController < PublicController
     @recurring_tournaments = apply_scopes(
       RecurringTournament.order("lower(name)")
     ).all
+    @meta_title = 'Tournois'
   end
 
   def index_json
@@ -65,6 +66,9 @@ class RecurringTournamentsController < PublicController
   def show
     @tournament_events = @recurring_tournament.tournament_events.order(date: :desc)
     @duo_tournament_events = @recurring_tournament.duo_tournament_events.order(date: :desc)
+    @meta_title = @recurring_tournament.name
+    @meta_properties['og:type'] = 'profile'
+    @meta_properties['og:image'] = @recurring_tournament.decorate.discord_guild_icon_image_url
   end
 
   def modal
