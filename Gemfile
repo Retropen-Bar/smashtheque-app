@@ -141,6 +141,8 @@ gem 'geocoder'
 group :production do
   # for assets compilation
   gem 'activerecord-nulldb-adapter'
+  # Datadog APM
+  gem 'ddtrace'
 end
 
 # security fixes
