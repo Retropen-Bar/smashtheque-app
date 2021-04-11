@@ -255,6 +255,11 @@ GEM
     listen (3.2.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
+    lograge (0.11.2)
+      actionpack (>= 4)
+      activesupport (>= 4)
+      railties (>= 4)
+      request_store (~> 1.0)
     loofah (2.9.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -514,6 +519,7 @@ DEPENDENCIES
   jquery-minicolors-rails
   leaflet-rails
   listen (~> 3.2)
+  lograge
   markdown_views
   memory_profiler
   nokogiri (>= 1.11.0.rc4)
