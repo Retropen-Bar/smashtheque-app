@@ -62,22 +62,22 @@ jobs:
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-      # - name: Build & Push Caddy to Docker Hub
-      #   uses: docker/build-push-action@v2
-      #   with:
-      #     file: ./Dockerfile.caddy
-      #     build-args: |
-      #       RAILS_IMAGE=retropenbar/smashtheque-app:${{ github.sha }}
-      #     push: true
-      #     tags: |
-      #       retropenbar/smashtheque-caddy:${{ github.sha }}
-      #       retropenbar/smashtheque-caddy:${{ steps.extract_branch.outputs.branch }}
-      #     cache-from: type=local,src=/tmp/.buildx-cache
-      #     cache-to: type=local,dest=/tmp/.buildx-cache-new
+      - name: Build & Push Caddy to Docker Hub
+        uses: docker/build-push-action@v2
+        with:
+          file: ./Dockerfile.caddy
+          build-args: |
+            RAILS_IMAGE=retropenbar/smashtheque-app:${{ github.sha }}
+          push: true
+          tags: |
+            retropenbar/smashtheque-caddy:${{ github.sha }}
+            retropenbar/smashtheque-caddy:${{ steps.extract_branch.outputs.branch }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new
 
-      # -
-      #   # Temp fix again
-      #   name: Move cache again
-      #   run: |
-      #     rm -rf /tmp/.buildx-cache
-      #     mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+      -
+        # Temp fix again
+        name: Move cache again
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
