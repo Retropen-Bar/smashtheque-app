@@ -19,6 +19,9 @@ docker-compose.override.yml
 .byebug_history
 .circleci
 .codeclimate.yml
+.github
+latest.dump
+node_modules
 tmp
 
 # Other
@@ -26,3 +29,4 @@ tmp
 **/.editorconfig
 **/.idea
 **/README.md
+**/LICENSE.md
