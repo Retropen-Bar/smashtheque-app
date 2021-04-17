@@ -50,58 +50,9 @@
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById("planning");
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-      themeSystem: 'bootstrap',
-      initialView: 'customTimeGrid',
-      initialDate: '<%= @monday %>',
-      locale: 'fr',
-      firstDay: 1,
-      height: 'auto',
-      headerToolbar: false,
-      views: {
-        customTimeGrid: {
-          type: 'timeGrid',
-          duration: { days: 7 },
-          allDaySlot: false,
-          slotMinTime: '08:00:00',
-          slotDuration: '01:00:00',
-          dayHeaderContent: function(arg) {
-            return calendar.formatDate(arg.date, { weekday: 'long' });
-          }
-        }
-      },
-      events: function(fetchInfo, successCallback, failureCallback) {
-        var params = fetchInfo;
-        params.by_level_in = [];
-        for (var level of <%= RecurringTournament::LEVELS.to_json.html_safe %>) {
-          if ($('form#filters input#level-' + level).is(':checked')) {
-            params.by_level_in.push(level);
-          }
-        }
-        if (params.by_level_in.length < 1) {
-          delete params['by_level_in'];
-        }
-        params.by_size_geq = $('form#filters select#size-min').val();
-        params.by_size_leq = $('form#filters select#size-max').val();
-        params.per = 1000;
-        $.ajax({
-          dataType: "json",
-          url: '<%= recurring_tournaments_path(format: :json) %>',
-          data: params,
-          success: successCallback,
-          error: failureCallback
-        });
-      },
-      eventClick: function(arg) {
-        arg.jsEvent.preventDefault(); // don't let the browser navigate
-        $.get(arg.event.extendedProps.modal_url, function(html) {
-          $('#planning-modal').html(html).modal();
-        });
-      }
-    });
-    calendar.render();
-    $('form#filters').on('change', 'input, select', function() {
-      calendar.refetchEvents();
-    });
+    var initialDate = '<%= @monday %>';
+    var levels = <%= RecurringTournament::LEVELS.to_json.html_safe %>;
+    var eventsDataUrl = '<%= recurring_tournaments_path(format: :json) %>';
+    window.newPlanningCalendar(calendarEl, initialDate, levels, eventsDataUrl);
   });
 </script>

@@ -1,0 +1,23 @@
+h1#site_title
+  padding-left: 54px
+  background-size: 32px
+  background-repeat: no-repeat
+  background-position: 10px 50%
+  text-align: left
+
+#header
+  ul#tabs
+    li.menu_item
+      a
+        i, img
+          margin-right: 10px
+
+      &.current
+        & > a
+          background-color: $dark-gray
+          color: white
+
+    & > li.menu_item:nth-child(2)
+      border-bottom: 1px solid #323537
+      padding-bottom: 5px
+      margin-bottom: 5px

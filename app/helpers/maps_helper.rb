@@ -78,20 +78,20 @@ module MapsHelper
 
   def france_map(markers:, layers: {}, icons: {}, options: {}, &block)
     options = {
-      attribution: Leaflet.attribution,
+      # attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       center: {
         latlng: [46.71109, 1.7191036],
         zoom: 6
       },
       container_id: 'map',
-      max_zoom: Leaflet.max_zoom,
-      tile_layer: Leaflet.tile_layer
+      max_zoom: 18,
+      tile_layer: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
     }.deep_merge(options)
 
-    tile_layer = options.delete(:tile_layer) || Leaflet.tile_layer
-    attribution = options.delete(:attribution) || Leaflet.attribution
-    max_zoom = options.delete(:max_zoom) || Leaflet.max_zoom
-    container_id = options.delete(:container_id) || 'map'
+    tile_layer = options.delete(:tile_layer)
+    # attribution = options.delete(:attribution)
+    max_zoom = options.delete(:max_zoom)
+    container_id = options.delete(:container_id)
     center = options.delete(:center)
 
     html_content = block_given? && capture(&block)

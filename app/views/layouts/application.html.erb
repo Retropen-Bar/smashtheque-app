@@ -11,10 +11,10 @@
 
     <%= favicon_link_tag '/favicon-32.png' %>
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_pack_tag 'application', media: 'all' %>
 
     <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?libraries=places&key=#{ENV['GOOGLE_MAPS_API_KEY']}" %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application' %>
   </head>
   <body style="<%=
     "background-color: #{@background_color};" if @background_color
@@ -22,6 +22,8 @@
     "background-image: url(\"#{@background_image_url.gsub('"', "\"")}\");" if @background_image_url
   %><%=
     "background-size: #{@background_size}px;" if @background_image_url
+  %><%=
+    "background-image: url(\"#{image_url('static-bg.png').gsub('"', "\"")}\");" if @static
   %>" <% if @static %>class="static"<% end %>>
     <%= render partial: 'layouts/application/flash', flash: flash %>
     <%= render partial: 'layouts/application/head' %>

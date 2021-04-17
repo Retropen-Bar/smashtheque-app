@@ -1,0 +1,111 @@
+@import variables
+
+body
+  background-color: #efefef
+
+  &.static
+    background-color: #f2ddc5
+    background-size: 32px
+    background-repeat: repeat
+
+#main-container
+  min-height: calc(100vh - 284px)
+
+  & > a.admin-edit-link
+    position: fixed
+    bottom: 0
+    right: 0
+    background: black
+    color: white !important
+    padding: 7px 4px 1px 12px
+    border-radius: 100% 0 0 0
+    z-index: 1000
+
+#main-nav
+
+  a.navbar-brand
+    &, &:hover
+      text-decoration: none
+      color: $dark-gray
+
+    img
+      margin-right: 6px
+
+    span
+      display: inline-block
+      vertical-align: middle
+
+  ul.navbar-nav
+    li.nav-item
+      a
+        &:not(.btn)
+          color: $dark-gray
+
+          &, &:hover
+            text-decoration: none
+
+          &:hover
+            color: $primary
+
+        &.btn
+          margin-left: 10px
+
+        img, i, span
+          display: inline-block
+
+        img
+
+        i
+
+        span
+
+  form#main-global-search-form
+    select
+      width: 285px
+
+body.map-layout
+  height: 100vh
+  display: flex
+  flex-flow: column
+
+  .page-title
+    display: none
+
+  #main-nav
+    // no flex rules, it will grow
+
+  #map-title, #map-list-link
+    position: absolute
+    left: 50%
+    transform: translateX(-50%)
+    z-index: 2
+
+  #map-title
+    bottom: 10px
+    background: white
+    border: 2px solid rgba(0, 0, 0, 0.2)
+    border-radius: 4px
+    background-clip: padding-box
+    padding: 6px 12px
+    white-space: nowrap
+    font-size: 1.5rem
+
+    .avatar, .emoji
+      max-height: 32px !important
+      vertical-align: -0.45rem
+
+  #map-list-link
+    top: 10px
+
+    .btn-outline-primary
+      &:not(:hover)
+        background: white
+
+  & > .map-container
+    flex: 1 // 1 and it will fill whole space left if no flex value are set to other children
+
+    .map
+      height: 100%
+
+  #footer
+    display: none

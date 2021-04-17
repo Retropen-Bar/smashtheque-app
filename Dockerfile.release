@@ -1,4 +1,4 @@
-FROM leikir/ruby-bundler-node-yarn-and-extras:ruby-2.6.6-node-10.16.0-slim
+FROM leikir/ruby-bundler-node-yarn-and-extras:ruby-2.6.6-node-14.16.1-slim
 
 MAINTAINER Yann Hourdel "yann@hourdel.fr"
 
@@ -29,10 +29,16 @@ RUN rm -rf  \
   .rubocop.yml \
   .ruby-version \
   coverage \
-  docker-entrypoint.sh \
   docker-entrypoint.release.sh \
+  docker-entrypoint.sh \
+  docker-entrypoint.sidekiq.sh \
   log \
-  spec
+  Procfile \
+  public/assets \
+  public/packs \
+  spec \
+  storage \
+  yarn-error.log
 
 # Precompile Rails assets
 RUN bundle exec rake SECRET_KEY_BASE=secret DATABASE_URL=nulldb://null ASSETS_PRECOMPILE=1 assets:precompile

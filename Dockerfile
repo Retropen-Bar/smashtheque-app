@@ -1,4 +1,4 @@
-FROM leikir/ruby-bundler-node-yarn-and-extras:ruby-2.6.6-node-10.16.0-slim
+FROM leikir/ruby-bundler-node-yarn-and-extras:ruby-2.6.6-node-14.16.1-slim
 
 MAINTAINER Yann Hourdel "yann@hourdel.fr"
 

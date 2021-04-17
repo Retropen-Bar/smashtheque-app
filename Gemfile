@@ -13,14 +13,10 @@ gem 'pg'
 gem 'puma', '~> 4.1'
 
 # Use SCSS for stylesheets
-gem 'sass-rails', '>= 6'
 gem 'sprockets', '3.7.2' # to fix issue
 
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem 'webpacker', '~> 4.0'
-
-# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
-gem 'turbolinks', '~> 5'
+gem 'webpacker'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.7'
@@ -62,13 +58,9 @@ group :test do
   gem 'database_cleaner-active_record'
 end
 
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-
 # ADMIN
 gem 'activeadmin'
 gem 'draper'
-gem 'arctic_admin'
 
 # authentication & permissions
 gem 'devise', '~> 4.7.1'
@@ -79,15 +71,8 @@ gem 'cancancan'
 gem 'rails-i18n'
 gem 'devise-i18n'
 
-# JS
-gem 'select2-rails'
-gem 'toastr-rails'
-gem 'leaflet-rails'
-gem 'jquery-minicolors-rails'
-
 # Theming
 gem 'simple_form'
-gem 'bootstrap', '~> 4.5.2'
 gem 'bootstrap4-kaminari-views'
 
 # errors tracking

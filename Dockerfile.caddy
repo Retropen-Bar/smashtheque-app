@@ -1,0 +1,6 @@
+ARG RAILS_IMAGE
+
+FROM $RAILS_IMAGE AS rails
+FROM abiosoft/caddy
+
+COPY --from=rails /rails/public /rails/public
