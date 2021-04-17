@@ -1,11 +1,7 @@
-// make images available
-const images = require.context('../images', true)
-
 import "../stylesheets/active_admin"
 
 require("@rails/activestorage").start()
 
-// to be removed?
 import "@activeadmin/activeadmin"
 import "arctic_admin"
 
@@ -30,6 +26,7 @@ import "../src/shared/toggles"
 
 import "../src/active_admin/colors"
 import "../src/active_admin/global_search"
+import "../src/active_admin/layout"
 import "../src/active_admin/time_zone"
 import "../src/active_admin/tooltips"
 
