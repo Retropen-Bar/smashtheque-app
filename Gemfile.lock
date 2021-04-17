@@ -262,7 +262,7 @@ GEM
       activesupport (>= 4)
       railties (>= 4)
       request_store (~> 1.0)
-    loofah (2.9.0)
+    loofah (2.9.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -286,7 +286,7 @@ GEM
     multipart-post (2.1.1)
     netrc (0.11.0)
     nio4r (2.5.7)
-    nokogiri (1.11.2)
+    nokogiri (1.11.3)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     oauth2 (1.4.4)
@@ -429,6 +429,7 @@ GEM
     selenium-webdriver (3.142.7)
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
+    semantic_range (3.0.0)
     sidekiq (6.1.1)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
@@ -474,10 +475,11 @@ GEM
       nokogiri (~> 1.6)
       rubyzip (>= 1.3.0)
       selenium-webdriver (>= 3.0, < 4.0)
-    webpacker (4.3.0)
-      activesupport (>= 4.2)
+    webpacker (5.2.1)
+      activesupport (>= 5.2)
       rack-proxy (>= 0.6.1)
-      railties (>= 4.2)
+      railties (>= 5.2)
+      semantic_range (>= 2.3.0)
     websocket (1.2.8)
     websocket-client-simple (0.3.0)
       event_emitter
@@ -554,7 +556,7 @@ DEPENDENCIES
   tzinfo-data
   web-console (>= 3.3.0)
   webdrivers
-  webpacker (~> 4.0)
+  webpacker
 
 RUBY VERSION
    ruby 2.6.6p146
