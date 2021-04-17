@@ -1,16 +1,19 @@
+// make images available
+const images = require.context('../images', true)
+
 import "../stylesheets/active_admin"
 
-require("@rails/ujs").start()
 require("@rails/activestorage").start()
 
 // to be removed?
 import "@activeadmin/activeadmin"
 import "arctic_admin"
 
+import "@fortawesome/fontawesome-free/css/all"
 import "jquery"
-import "jquery.minicolors"
+import "jquery-minicolors"
 import "html5sortable"
-import "leaflet"
+import L from "leaflet"
 import "leaflet.markercluster"
 import "leaflet.featuregroup.subgroup"
 import "select2"
@@ -32,3 +35,11 @@ import "../src/active_admin/tooltips"
 
 require("trix")
 require("@rails/actiontext")
+
+// fix leaflet images
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+});
