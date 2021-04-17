@@ -1,17 +1,21 @@
+import "../stylesheets/active_admin"
+
 require("@rails/ujs").start()
 require("@rails/activestorage").start()
-// require("channels")
 
-import "bootstrap"
-import "@fortawesome/fontawesome-free/css/all"
+// to be removed?
+import "@activeadmin/activeadmin"
+import "arctic_admin"
+
 import "jquery"
-import "jquery-ui/ui/widgets/sortable"
+import "jquery.minicolors"
+import "html5sortable"
 import "leaflet"
 import "leaflet.markercluster"
 import "leaflet.featuregroup.subgroup"
-import "popper.js"
 import "select2"
 import "select2/dist/js/i18n/fr"
+import "tippy.js"
 import "toastr"
 
 import "../src/shared/global_search"
@@ -21,12 +25,10 @@ import "../src/shared/maps_autocomplete"
 import "../src/shared/select2"
 import "../src/shared/toggles"
 
-import "../src/application/fullcalendar"
-import "../src/application/global_search"
+import "../src/active_admin/colors"
+import "../src/active_admin/global_search"
+import "../src/active_admin/time_zone"
+import "../src/active_admin/tooltips"
 
-// make images available
-// const images = require.context('../images', true)
-// const imagePath = (name) => images(name, true)
-
-// require("trix")
-// require("@rails/actiontext")
+require("trix")
+require("@rails/actiontext")
