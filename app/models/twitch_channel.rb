@@ -22,7 +22,6 @@
 #  index_twitch_channels_on_slug                         (slug) UNIQUE
 #
 class TwitchChannel < ApplicationRecord
-
   # ---------------------------------------------------------------------------
   # CONCERNS
   # ---------------------------------------------------------------------------
@@ -35,6 +34,11 @@ class TwitchChannel < ApplicationRecord
       Player,
       Team
     ]
+  end
+
+  include HasName
+  def self.on_abc_name
+    :name
   end
 
   # ---------------------------------------------------------------------------
@@ -63,10 +67,6 @@ class TwitchChannel < ApplicationRecord
 
   def self.not_french
     where(is_french: false)
-  end
-
-  def self.on_abc(letter)
-    where("unaccent(name) ILIKE '#{letter}%'")
   end
 
   # ---------------------------------------------------------------------------

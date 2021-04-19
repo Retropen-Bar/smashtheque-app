@@ -39,8 +39,22 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Player < ApplicationRecord
+  # ---------------------------------------------------------------------------
+  # CONCERNS
+  # ---------------------------------------------------------------------------
+
+  include HasName
+  def self.on_abc_name
+    :name
+  end
+
+  include HasPoints
 
   include PgSearch::Model
+
+  # ---------------------------------------------------------------------------
+  # CONSTANTS
+  # ---------------------------------------------------------------------------
 
   POINTS_YEARS = (2019..2021).to_a.freeze
 
@@ -311,18 +325,6 @@ class Player < ApplicationRecord
     accepted.not_banned
   end
 
-  def self.on_abc(letter)
-    letter == '$' ? on_abc_others : where("unaccent(name) ILIKE '#{letter}%'")
-  end
-
-  def self.on_abc_others
-    result = self
-    ('a'..'z').each do |letter|
-      result = result.where.not("unaccent(name) ILIKE '#{letter}%'")
-    end
-    result
-  end
-
   def self.with_user
     where.not(user_id: nil)
   end
@@ -354,20 +356,6 @@ class Player < ApplicationRecord
 
   def self.without_smashgg_user
     where.not(id: SmashggUser.with_player.select(:player_id))
-  end
-
-  scope :with_points, -> { where("points > 0") }
-  scope :with_points_in, -> year { where("points_in_#{year} > 0") }
-  scope :ranked, -> { where.not(rank: nil) }
-  scope :ranked_in, -> year { where.not("rank_in_#{year}" => nil) }
-
-  scope :by_best_reward_level1, -> v { where(best_reward_level1: v) }
-  scope :by_best_reward_level2, -> v { where(best_reward_level2: v) }
-  def self.by_best_reward_level(a, b)
-    by_best_reward_level1(a).by_best_reward_level2(b)
-  end
-  def self.by_best_reward(reward)
-    by_best_reward_level(reward.level1, reward.level2)
   end
 
   def self.recurring_tournament_contacts
@@ -476,14 +464,6 @@ class Player < ApplicationRecord
     end.sort_by(&:level2)
   end
 
-  def points_in(year)
-    send("points_in_#{year}")
-  end
-
-  def rank_in(year)
-    send("rank_in_#{year}")
-  end
-
   def update_points
     POINTS_YEARS.each do |year|
       self.attributes = {
@@ -503,48 +483,6 @@ class Player < ApplicationRecord
     self.best_player_reward_condition = player_reward_condition
     self.best_reward_level1 = player_reward_condition&.reward&.level1
     self.best_reward_level2 = player_reward_condition&.reward&.level2
-  end
-
-  def update_cache!
-    update_points
-    update_best_reward
-    save!
-  end
-
-  def self.update_ranks!
-    POINTS_YEARS.each do |year|
-      subquery =
-        Player.with_points_in(year)
-              .legit
-              .select(
-                :id,
-                "ROW_NUMBER() OVER(ORDER BY points_in_#{year} DESC) AS newrank"
-              )
-
-      Player.update_all("
-        rank_in_#{year} = pointed.newrank
-        FROM (#{subquery.to_sql}) pointed
-        WHERE players.id = pointed.id
-      ")
-      Player.where.not(id: Player.with_points_in(year).legit.select(:id))
-            .update_all("rank_in_#{year}" => nil)
-    end
-
-    subquery =
-      Player.with_points
-            .legit
-            .select(
-              :id,
-              "ROW_NUMBER() OVER(ORDER BY points DESC) AS newrank"
-            )
-
-    Player.update_all("
-      rank = pointed.newrank
-      FROM (#{subquery.to_sql}) pointed
-      WHERE players.id = pointed.id
-    ")
-    Player.where.not(id: Player.with_points.legit.select(:id))
-          .update_all(rank: nil)
   end
 
   # ---------------------------------------------------------------------------

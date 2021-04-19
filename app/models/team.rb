@@ -13,12 +13,16 @@
 #  updated_at       :datetime         not null
 #
 class Team < ApplicationRecord
-
   # ---------------------------------------------------------------------------
   # CONCERNS
   # ---------------------------------------------------------------------------
 
   include HasLogo
+
+  include HasName
+  def self.on_abc_name
+    :name
+  end
 
   # ---------------------------------------------------------------------------
   # RELATIONS
@@ -76,10 +80,6 @@ class Team < ApplicationRecord
   # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
-
-  def self.on_abc(letter)
-    where("unaccent(name) ILIKE '#{letter}%'")
-  end
 
   def self.by_short_name_like(short_name)
     where('short_name ILIKE ?', short_name)

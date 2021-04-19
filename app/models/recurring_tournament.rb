@@ -27,6 +27,18 @@
 #  fk_rails_...  (discord_guild_id => discord_guilds.id)
 #
 class RecurringTournament < ApplicationRecord
+  # ---------------------------------------------------------------------------
+  # CONCERNS
+  # ---------------------------------------------------------------------------
+
+  include HasName
+  def self.on_abc_name
+    :name
+  end
+
+  # ---------------------------------------------------------------------------
+  # CONSTANTS
+  # ---------------------------------------------------------------------------
 
   LEVELS = %w[
     l1_playground
@@ -52,6 +64,10 @@ class RecurringTournament < ApplicationRecord
     128,
     1024
   ]
+
+  # ---------------------------------------------------------------------------
+  # RELATIONS
+  # ---------------------------------------------------------------------------
 
   belongs_to :discord_guild, optional: true
 
@@ -120,10 +136,6 @@ class RecurringTournament < ApplicationRecord
 
   def is_recurring?
     %i(weekly bimonthly monthly).include?(recurring_type.to_sym)
-  end
-
-  def self.on_abc(letter)
-    where("unaccent(name) ILIKE '#{letter}%'")
   end
 
   # ---------------------------------------------------------------------------

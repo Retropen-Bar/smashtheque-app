@@ -15,6 +15,18 @@
 #  updated_at            :datetime         not null
 #
 class Character < ApplicationRecord
+  # ---------------------------------------------------------------------------
+  # CONCERNS
+  # ---------------------------------------------------------------------------
+
+  include HasName
+  def self.on_abc_name
+    :name
+  end
+
+  # ---------------------------------------------------------------------------
+  # RELATIONS
+  # ---------------------------------------------------------------------------
 
   has_many :characters_players, dependent: :destroy
   has_many :players, through: :characters_players
@@ -37,10 +49,6 @@ class Character < ApplicationRecord
   # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
-
-  def self.on_abc(letter)
-    where("unaccent(name) ILIKE '#{letter}%'")
-  end
 
   def self.by_emoji(emoji)
     where(emoji: emoji)

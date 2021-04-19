@@ -21,6 +21,14 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class DiscordUser < ApplicationRecord
+  # ---------------------------------------------------------------------------
+  # CONCERNS
+  # ---------------------------------------------------------------------------
+
+  include HasName
+  def self.on_abc_name
+    :username
+  end
 
   # ---------------------------------------------------------------------------
   # RELATIONS
@@ -90,18 +98,6 @@ class DiscordUser < ApplicationRecord
 
   def self.unknown
     where(username: nil)
-  end
-
-  def self.on_abc(letter)
-    letter == '$' ? on_abc_others : where("unaccent(username) ILIKE '#{letter}%'")
-  end
-
-  def self.on_abc_others
-    result = self
-    ('a'..'z').each do |letter|
-      result = result.where.not("unaccent(username) ILIKE '#{letter}%'")
-    end
-    result
   end
 
   def self.by_discriminated_username(discriminated_username)

@@ -34,6 +34,16 @@
 #  fk_rails_...  (player2_id => players.id)
 #
 class Duo < ApplicationRecord
+  # ---------------------------------------------------------------------------
+  # CONCERNS
+  # ---------------------------------------------------------------------------
+
+  include HasName
+  def self.on_abc_name
+    :name
+  end
+
+  include HasPoints
 
   include PgSearch::Model
 
@@ -129,32 +139,6 @@ class Duo < ApplicationRecord
     )
   end
 
-  scope :with_points, -> { where("points > 0") }
-  scope :with_points_in, -> year { where("points_in_#{year} > 0") }
-  scope :ranked, -> { where.not(rank: nil) }
-  scope :ranked_in, -> year { where.not("rank_in_#{year}" => nil) }
-
-  scope :by_best_reward_level1, -> v { where(best_reward_level1: v) }
-  scope :by_best_reward_level2, -> v { where(best_reward_level2: v) }
-  def self.by_best_reward_level(a, b)
-    by_best_reward_level1(a).by_best_reward_level2(b)
-  end
-  def self.by_best_reward(reward)
-    by_best_reward_level(reward.level1, reward.level2)
-  end
-
-  def self.on_abc(letter)
-    letter == '$' ? on_abc_others : where("unaccent(name) ILIKE '#{letter}%'")
-  end
-
-  def self.on_abc_others
-    result = self
-    ('a'..'z').each do |letter|
-      result = result.where.not("unaccent(name) ILIKE '#{letter}%'")
-    end
-    result
-  end
-
   def self.by_player1(player_id)
     where(player1_id: player_id)
   end
@@ -219,14 +203,6 @@ class Duo < ApplicationRecord
     end.sort_by(&:level2)
   end
 
-  def points_in(year)
-    send("points_in_#{year}")
-  end
-
-  def rank_in(year)
-    send("rank_in_#{year}")
-  end
-
   def update_points
     Player::POINTS_YEARS.each do |year|
       self.attributes = {
@@ -246,45 +222,6 @@ class Duo < ApplicationRecord
     self.best_duo_reward_duo_condition = duo_reward_duo_condition
     self.best_reward_level1 = duo_reward_duo_condition&.reward&.level1
     self.best_reward_level2 = duo_reward_duo_condition&.reward&.level2
-  end
-
-  def update_cache!
-    update_points
-    update_best_reward
-    save!
-  end
-
-  def self.update_ranks!
-    Player::POINTS_YEARS.each do |year|
-      subquery =
-        Duo.with_points_in(year)
-           .select(
-             :id,
-             "ROW_NUMBER() OVER(ORDER BY points_in_#{year} DESC) AS newrank"
-           )
-
-      Duo.update_all("
-        rank_in_#{year} = pointed.newrank
-        FROM (#{subquery.to_sql}) pointed
-        WHERE duos.id = pointed.id
-      ")
-      Duo.where.not(id: Duo.with_points_in(year).select(:id))
-         .update_all("rank_in_#{year}" => nil)
-    end
-
-
-
-    subquery =
-      Duo.with_points
-         .select(:id, "ROW_NUMBER() OVER(ORDER BY points DESC) AS newrank")
-
-    Duo.update_all("
-      rank = pointed.newrank
-      FROM (#{subquery.to_sql}) pointed
-      WHERE duos.id = pointed.id
-    ")
-    Duo.where.not(id: Duo.with_points.select(:id))
-       .update_all(rank: nil)
   end
 
   # ---------------------------------------------------------------------------

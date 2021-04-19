@@ -11,7 +11,6 @@
 #  updated_at :datetime         not null
 #
 class Community < ApplicationRecord
-
   # ---------------------------------------------------------------------------
   # MODULES
   # ---------------------------------------------------------------------------
@@ -23,6 +22,11 @@ class Community < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   include HasLogo
+
+  include HasName
+  def self.on_abc_name
+    :name
+  end
 
   # ---------------------------------------------------------------------------
   # RELATIONS
@@ -47,10 +51,6 @@ class Community < ApplicationRecord
   # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
-
-  def self.on_abc(letter)
-    where("unaccent(name) ILIKE '#{letter}%'")
-  end
 
   def self.by_name_like(name)
     where('unaccent(name) ILIKE unaccent(?)', name)

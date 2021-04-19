@@ -17,7 +17,6 @@
 #  index_you_tube_channels_on_related_type_and_related_id  (related_type,related_id)
 #
 class YouTubeChannel < ApplicationRecord
-
   # ---------------------------------------------------------------------------
   # CONCERNS
   # ---------------------------------------------------------------------------
@@ -30,6 +29,11 @@ class YouTubeChannel < ApplicationRecord
       Player,
       Team
     ]
+  end
+
+  include HasName
+  def self.on_abc_name
+    :name
   end
 
   # ---------------------------------------------------------------------------
@@ -58,10 +62,6 @@ class YouTubeChannel < ApplicationRecord
 
   def self.not_french
     where(is_french: false)
-  end
-
-  def self.on_abc(letter)
-    where("unaccent(name) ILIKE '#{letter}%'")
   end
 
   # ---------------------------------------------------------------------------

@@ -31,7 +31,6 @@
 #  updated_at                    :datetime         not null
 #
 class User < ApplicationRecord
-
   # ---------------------------------------------------------------------------
   # MODULES
   # ---------------------------------------------------------------------------
@@ -44,6 +43,15 @@ class User < ApplicationRecord
   geocoded_by :main_address,
               latitude: :main_latitude,
               longitude: :main_longitude
+
+  # ---------------------------------------------------------------------------
+  # CONCERNS
+  # ---------------------------------------------------------------------------
+
+  include HasName
+  def self.on_abc_name
+    :name
+  end
 
   # ---------------------------------------------------------------------------
   # RELATIONS
@@ -206,10 +214,6 @@ class User < ApplicationRecord
 
   def self.graphic_designers
     where(is_graphic_designer: true)
-  end
-
-  def self.on_abc(letter)
-    where("unaccent(name) ILIKE '#{letter}%'")
   end
 
   def self.by_name(name)
