@@ -1,3 +1,6 @@
+import "select2"
+import "select2/dist/js/i18n/fr"
+
 const DATA_KEY = 'data-select2';
 
 let getSortableUl = function($select) {
