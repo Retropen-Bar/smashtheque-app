@@ -46,6 +46,8 @@ group :development do
   gem 'memory_profiler'
   # For call-stack profiling flamegraphs
   gem 'stackprof'
+  # For tracking N+1 queries
+  gem 'bullet'
 end
 
 group :test do

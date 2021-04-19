@@ -1,5 +1,4 @@
 class PlayersController < PublicController
-
   decorates_assigned :player
 
   has_scope :page, default: 1
@@ -137,11 +136,14 @@ class PlayersController < PublicController
     @map_seconds = params[:seconds].to_i == 1 if @map
     apply_scopes(
       base.legit.order(:name)
-    ).includes(:user, :discord_user, :teams, :characters, :smashgg_users)
+    ).includes(
+      :user, :discord_user,
+      :teams, :characters, :smashgg_users,
+      best_reward: { image_attachment: :blob }
+    )
   end
 
   def select_layout
     @map ? 'map' : 'application'
   end
-
 end
