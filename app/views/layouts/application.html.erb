@@ -13,7 +13,7 @@
 
     <%= stylesheet_pack_tag 'application', media: 'all' %>
 
-    <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?libraries=places&key=#{ENV['GOOGLE_MAPS_API_KEY']}" %>
+    <%= google_places_api_tag %>
     <%= javascript_pack_tag 'application' %>
   </head>
   <body style="<%=

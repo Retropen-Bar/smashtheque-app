@@ -1,5 +1,9 @@
 module ActiveAdmin::AddressesHelper
 
+  def google_places_api_tag
+    javascript_include_tag "https://maps.googleapis.com/maps/api/js?libraries=places&key=#{ENV['GOOGLE_MAPS_API_KEY']}"
+  end
+
   def address_input(form, options = {})
     prefix = options.delete(:prefix) || ''
     (

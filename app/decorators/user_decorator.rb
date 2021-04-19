@@ -42,4 +42,14 @@ class UserDecorator < BaseDecorator
     discord_user&.decorate&.discord_badge(options)
   end
 
+  def main_address_with_coordinates
+    return nil if main_address.blank?
+    "#{main_address} (#{main_latitude}, #{main_longitude})"
+  end
+
+  def secondary_address_with_coordinates
+    return nil if secondary_address.blank?
+    "#{secondary_address} (#{secondary_latitude}, #{secondary_longitude})"
+  end
+
 end

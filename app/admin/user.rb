@@ -69,6 +69,7 @@ ActiveAdmin.register User do
   # ---------------------------------------------------------------------------
 
   form do |f|
+    render 'admin/shared/google_places_api'
     f.semantic_errors *f.object.errors.keys
     f.inputs do
       f.input :name
@@ -83,6 +84,9 @@ ActiveAdmin.register User do
       f.input :administrated_recurring_tournaments,
               collection: user_administrated_recurring_tournaments_select_collection,
               input_html: { multiple: true, data: { select2: {} } }
+      address_input f, prefix: 'main_'
+      address_input f, prefix: 'secondary_'
+
       f.input :is_caster
       f.input :is_coach, input_html: { data: { toggle: '.coaching-fields' } }
       f.input :coaching_url, wrapper_html: { class: 'coaching-fields' }
@@ -99,6 +103,8 @@ ActiveAdmin.register User do
                 :is_coach, :coaching_url, :coaching_details,
                 :is_graphic_designer, :graphic_designer_details,
                 :is_available_graphic_designer,
+                :main_address, :main_latitude, :main_longitude,
+                :secondary_address, :secondary_latitude, :secondary_longitude,
                 administrated_team_ids: [],
                 administrated_recurring_tournament_ids: []
 
@@ -107,45 +113,60 @@ ActiveAdmin.register User do
   # ---------------------------------------------------------------------------
 
   show do
-    attributes_table do
-      row :name
-      row :admin_level do |decorated|
-        decorated.admin_level_status
+    columns do
+      column do
+        attributes_table do
+          row :name
+          row :admin_level do |decorated|
+            decorated.admin_level_status
+          end
+          row :twitter_username do |decorated|
+            decorated.twitter_link
+          end
+          row :discord_user do |decorated|
+            decorated.discord_user_admin_link
+          end
+          row :player do |decorated|
+            decorated.player_admin_link
+          end
+          row :created_players do |decorated|
+            decorated.created_players_admin_link
+          end
+          row :administrated_teams do |decorated|
+            decorated.administrated_teams_admin_links(size: 32).join('<br/>').html_safe
+          end
+          row :administrated_recurring_tournaments do |decorated|
+            decorated.administrated_recurring_tournaments_admin_links(size: 32).join('<br/>').html_safe
+          end
+          row :main_address do |decorated|
+            decorated.main_address_with_coordinates
+          end
+          row :secondary_address do |decorated|
+            decorated.secondary_address_with_coordinates
+          end
+          row :is_caster
+          row :is_coach
+          row :coaching_url
+          row :coaching_details
+          row :is_graphic_designer
+          row :graphic_designer_details
+          row :is_available_graphic_designer
+          if current_user.is_root?
+            row :sign_in_count
+            row :current_sign_in_at
+            row :last_sign_in_at
+            row :current_sign_in_ip
+            row :last_sign_in_ip
+          end
+          row :created_at
+          row :updated_at
+        end
       end
-      row :twitter_username do |decorated|
-        decorated.twitter_link
+      column do
+        if resource.main_address || resource.secondary_address
+          user_addresses_map(resource)
+        end
       end
-      row :discord_user do |decorated|
-        decorated.discord_user_admin_link
-      end
-      row :player do |decorated|
-        decorated.player_admin_link
-      end
-      row :created_players do |decorated|
-        decorated.created_players_admin_link
-      end
-      row :administrated_teams do |decorated|
-        decorated.administrated_teams_admin_links(size: 32).join('<br/>').html_safe
-      end
-      row :administrated_recurring_tournaments do |decorated|
-        decorated.administrated_recurring_tournaments_admin_links(size: 32).join('<br/>').html_safe
-      end
-      row :is_caster
-      row :is_coach
-      row :coaching_url
-      row :coaching_details
-      row :is_graphic_designer
-      row :graphic_designer_details
-      row :is_available_graphic_designer
-      if current_user.is_root?
-        row :sign_in_count
-        row :current_sign_in_at
-        row :last_sign_in_at
-        row :current_sign_in_ip
-        row :last_sign_in_ip
-      end
-      row :created_at
-      row :updated_at
     end
 
     if resource._potential_discord_user
