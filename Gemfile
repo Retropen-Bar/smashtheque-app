@@ -48,6 +48,8 @@ group :development do
   gem 'stackprof'
   # For tracking N+1 queries
   gem 'bullet'
+  # Check security
+  gem 'brakeman'
 end
 
 group :test do

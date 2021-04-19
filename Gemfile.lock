@@ -114,6 +114,7 @@ GEM
     bootstrap4-kaminari-views (1.0.1)
       kaminari (>= 0.13)
       rails (>= 3.1)
+    brakeman (5.0.0)
     builder (3.2.4)
     bullet (6.1.4)
       activesupport (>= 3.0.0)
@@ -479,6 +480,7 @@ DEPENDENCIES
   aws-sdk-s3
   bootsnap (>= 1.4.2)
   bootstrap4-kaminari-views
+  brakeman
   bullet
   byebug
   cancancan

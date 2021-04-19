@@ -45,3 +45,6 @@ jobs:
 
       - name: Run tests
         run: bundle exec rspec
+
+      - name: Run brakeman
+        run: bundle exec brakeman
