@@ -9,8 +9,10 @@ import "select2/dist/js/i18n/fr"
  * TODO: Recheck with the select2 GH issue and remove once this is fixed on their side
  */
 
-$(document).on('select2:open', () => {
-  $('.select2-search__field').last()[0].focus();
+$(document).on('select2:open', (e) => {
+  if(!e.target.multiple) {
+    $('.select2-search__field').last()[0].focus();
+  }
 });
 
 // GO
