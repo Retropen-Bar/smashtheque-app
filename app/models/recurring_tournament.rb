@@ -93,6 +93,12 @@ class RecurringTournament < ApplicationRecord
   # CALLBACKS
   # ---------------------------------------------------------------------------
 
+  before_validation :set_starts_at
+  def set_starts_at
+    self.starts_at_hour ||= 0
+    self.starts_at_min ||= 0
+  end
+
   after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] }
   def update_discord
     RetropenBotScheduler.rebuild_online_tournaments
