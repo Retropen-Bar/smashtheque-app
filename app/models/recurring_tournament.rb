@@ -61,6 +61,7 @@ class RecurringTournament < ApplicationRecord
     24,
     32,
     64,
+    96,
     128,
     1024
   ]
