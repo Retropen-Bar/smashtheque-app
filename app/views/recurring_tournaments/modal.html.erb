@@ -74,7 +74,7 @@
           <% if recurring_tournament.contacts.any? %>
 
             <p>
-              <strong>Contacts</strong><br/>
+              <strong>TOs</strong><br/>
               <% recurring_tournament.contacts.each do |user| %>
                 <% if user.player %>
                   <%= user.decorate.player_link(class: 'btn btn-outline-primary') %>

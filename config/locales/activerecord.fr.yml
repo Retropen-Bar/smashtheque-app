@@ -217,7 +217,7 @@ fr:
         recurring_tournament: Série
       recurring_tournament:
         << : *SHARED
-        contacts: Contacts
+        contacts: TOs
         date_description: Description de la date
         discord_guild: Serveur Discord
         duo_tournament_events: Éditions 2v2
