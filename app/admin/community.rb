@@ -52,6 +52,7 @@ ActiveAdmin.register Community do
   # ---------------------------------------------------------------------------
 
   form do |f|
+    render 'admin/shared/google_places_api'
     columns do
       column do
         f.inputs do
