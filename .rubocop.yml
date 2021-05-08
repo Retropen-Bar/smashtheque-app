@@ -101,6 +101,9 @@ Metrics/ParameterLists:
 
 # ===================================== Department Style ===========================================
 
+Style/Documentation:
+  Enabled: false
+
 Style/FrozenStringLiteralComment:
   Enabled: false
 
