@@ -85,8 +85,12 @@ class ChallongeTournament < ApplicationRecord
   # HELPERS
   # ---------------------------------------------------------------------------
 
-  def self.slug_from_url(url)
-    url&.gsub(/https:\/\/challonge.com\//, '')&.gsub(/(fr|en)\//, '')&.gsub(/\/.*/, '')
+  def self.slug_from_url(input_url)
+    url = input_url || ''
+    return nil if url.starts_with?('http') && !url.starts_with?('https://challonge.com')
+
+    url += '/' unless url.ends_with?('/')
+    url.gsub(%r{https://challonge.com/}, '').gsub(%r{(fr|en)/}, '').gsub(%r{/.*}, '').presence
   end
 
   def challonge_url=(url)
