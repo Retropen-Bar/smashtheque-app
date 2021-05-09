@@ -1,3 +1,27 @@
+# == Schema Information
+#
+# Table name: braacket_tournaments
+#
+#  id                     :bigint           not null, primary key
+#  name                   :string
+#  participants_count     :integer
+#  slug                   :string           not null
+#  start_at               :datetime
+#  top1_participant_name  :string
+#  top2_participant_name  :string
+#  top3_participant_name  :string
+#  top4_participant_name  :string
+#  top5a_participant_name :string
+#  top5b_participant_name :string
+#  top7a_participant_name :string
+#  top7b_participant_name :string
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#
+# Indexes
+#
+#  index_braacket_tournaments_on_slug  (slug) UNIQUE
+#
 require 'rails_helper'
 
 RSpec.describe BraacketTournament, type: :model do
