@@ -9,6 +9,7 @@ class PagesController < PublicController
     @teams_count = Rails.env.development? ? 136 : Team.count
     @recurring_tournaments_count = Rails.env.development? ? 73 : RecurringTournament.count
     @tournament_events_count = Rails.env.development? ? 1050 : TournamentEvent.count
+    render layout: 'application_v2'
   end
 
   def planning_online
