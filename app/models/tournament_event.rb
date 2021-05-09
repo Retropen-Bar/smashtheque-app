@@ -364,6 +364,15 @@ class TournamentEvent < ApplicationRecord
     if replace_existing_values || bracket_url.blank?
       self.bracket_url = bracket.challonge_url
     end
+    PLAYER_RANKS.each do |rank|
+      player_name = "top#{rank}_player".to_sym
+      participant_player = "top#{rank}_participant_player".to_sym
+      if replace_existing_values || send(player_name).nil?
+        if player = bracket.send(participant_player)
+          self.send("#{player_name}=", player)
+        end
+      end
+    end
     true
   end
 

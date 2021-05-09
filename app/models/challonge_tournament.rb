@@ -154,6 +154,21 @@ class ChallongeTournament < ApplicationRecord
     tournament_event || duo_tournament_event
   end
 
+  TournamentEvent::PLAYER_RANKS.each do |rank|
+    define_method "top#{rank}_participant_player" do
+      participant_name = send("top#{rank}_participant_name")
+      player_id = "top#{rank}_player_id"
+      return nil if participant_name.blank?
+
+      player_ids = self.class.joins(:tournament_event).where(
+        top1_participant_name: participant_name
+      ).pluck("tournament_events.#{player_id}").uniq.compact
+      return Player.find(player_ids.first) if player_ids.count == 1
+
+      nil
+    end
+  end
+
   # ---------------------------------------------------------------------------
   # global search
   # ---------------------------------------------------------------------------
