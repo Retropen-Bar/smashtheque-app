@@ -3,6 +3,7 @@ fr:
     models:
       api_request: Requête API
       api_token: Token API
+      braacket_tournament: Tournoi Braacket
       challonge_tournament: Tournoi Challonge
       character: Perso
       comment: Commentaire
@@ -45,6 +46,23 @@ fr:
       api_token:
         << : *SHARED
         token: Token
+      braacket_tournament:
+        << : *SHARED
+        any_tournament_event: Édition
+        braacket_url: URL
+        duo_tournament_event: Édition 2v2
+        participants_count: Participants
+        slug: Slug
+        start_at: Date
+        top1_participant_name: Top 1
+        top2_participant_name: Top 2
+        top3_participant_name: Top 3
+        top4_participant_name: Top 4
+        top5a_participant_name: Top 5a
+        top5b_participant_name: Top 5b
+        top7a_participant_name: Top 7a
+        top7b_participant_name: Top 7b
+        tournament_event: Édition 1v1
       challonge_tournament:
         << : *SHARED
         any_tournament_event: Édition

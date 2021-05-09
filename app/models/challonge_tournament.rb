@@ -25,7 +25,6 @@
 #  index_challonge_tournaments_on_slug          (slug) UNIQUE
 #
 class ChallongeTournament < ApplicationRecord
-
   PARTICIPANT_NAMES = TournamentEvent::PLAYER_RANKS.map do |rank|
     "top#{rank}_participant_name".to_sym
   end.freeze
@@ -158,18 +157,24 @@ class ChallongeTournament < ApplicationRecord
     tournament_event || duo_tournament_event
   end
 
+  def self.participant_player(participant_name)
+    return nil if participant_name.blank?
+
+    player_ids = TournamentEvent::PLAYER_RANKS.map do |rank|
+      joins(:tournament_event).where(
+        "top#{rank}_participant_name" => participant_name
+      ).pluck(
+        "tournament_events.#{sanitize_sql("top#{rank}_player_id")}"
+      )
+    end.flatten.uniq.compact
+    return Player.find(player_ids.first) if player_ids.count == 1
+
+    nil
+  end
+
   TournamentEvent::PLAYER_RANKS.each do |rank|
     define_method "top#{rank}_participant_player" do
-      participant_name = send("top#{rank}_participant_name")
-      player_id = "top#{rank}_player_id"
-      return nil if participant_name.blank?
-
-      player_ids = self.class.joins(:tournament_event).where(
-        top1_participant_name: participant_name
-      ).pluck("tournament_events.#{self.class.sanitize_sql(player_id)}").uniq.compact
-      return Player.find(player_ids.first) if player_ids.count == 1
-
-      nil
+      self.class.participant_player(send("top#{rank}_participant_name"))
     end
   end
 
@@ -178,6 +183,5 @@ class ChallongeTournament < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   include PgSearch::Model
-  multisearchable against: %i(name)
-
+  multisearchable against: %i[name]
 end

@@ -201,7 +201,7 @@ class TournamentEvent < ApplicationRecord
   end
 
   def self.bracket_autocomplete(term)
-    searchable_types = [ChallongeTournament, SmashggEvent].map(&:to_s)
+    searchable_types = [BraacketTournament, ChallongeTournament, SmashggEvent].map(&:to_s)
 
     {
       results: PgSearch.multisearch(term).where(searchable_type: searchable_types).map do |document|
@@ -314,7 +314,11 @@ class TournamentEvent < ApplicationRecord
     end
   end
   def is_on_braacket?
-    bracket_type.nil? && bracket_url&.starts_with?('https://braacket.com/')
+    if !bracket_type.nil?
+      bracket_type.to_sym == :BraacketTournament
+    else
+      bracket_url&.starts_with?('https://braacket.com/')
+    end
   end
   def is_on_challonge?
     if !bracket_type.nil?
@@ -343,6 +347,32 @@ class TournamentEvent < ApplicationRecord
       user_name = "top#{rank}_smashgg_user".to_sym
       if replace_existing_values || send(player_name).nil?
         if player = bracket.send(user_name)&.player
+          self.send("#{player_name}=", player)
+        end
+      end
+    end
+    true
+  end
+
+  def use_braacket_tournament(replace_existing_values)
+    return false unless bracket.is_a?(BraacketTournament)
+    if replace_existing_values || name.blank?
+      self.name = bracket.name
+    end
+    if replace_existing_values || date.nil?
+      self.date = bracket.start_at
+    end
+    if replace_existing_values || participants_count.nil?
+      self.participants_count = bracket.participants_count
+    end
+    if replace_existing_values || bracket_url.blank?
+      self.bracket_url = bracket.braacket_url
+    end
+    PLAYER_RANKS.each do |rank|
+      player_name = "top#{rank}_player".to_sym
+      participant_player = "top#{rank}_participant_player".to_sym
+      if replace_existing_values || send(player_name).nil?
+        if player = bracket.send(participant_player)
           self.send("#{player_name}=", player)
         end
       end
@@ -394,6 +424,21 @@ class TournamentEvent < ApplicationRecord
     true
   end
 
+  def update_braacket_tournament
+    return false unless is_on_braacket?
+    if bracket.nil? || !bracket.is_a?(BraacketTournament)
+      self.bracket = BraacketTournament.from_url(bracket_url)
+    else
+      bracket.fetch_braacket_data
+    end
+    unless bracket.save
+      puts "Unable to save BraacketTournament: #{bracket.errors.full_messages}"
+      return false
+    end
+    puts 'Successfully updated BraacketTournament'
+    true
+  end
+
   def update_challonge_tournament
     return false unless is_on_challonge?
     if bracket.nil? || !bracket.is_a?(ChallongeTournament)
@@ -411,6 +456,7 @@ class TournamentEvent < ApplicationRecord
 
   def update_bracket
     return update_smashgg_event if is_on_smashgg?
+    return update_braacket_tournament if is_on_braacket?
     return update_challonge_tournament if is_on_challonge?
     false
   end
@@ -420,7 +466,7 @@ class TournamentEvent < ApplicationRecord
   end
 
   def complete_with_braacket
-    false
+    update_braacket_tournament && use_braacket_tournament(false)
   end
 
   def complete_with_challonge
@@ -439,7 +485,7 @@ class TournamentEvent < ApplicationRecord
   end
 
   def update_with_braacket
-    false
+    update_braacket_tournament && use_braacket_tournament(true) && save
   end
 
   def update_with_challonge

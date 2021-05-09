@@ -35,6 +35,12 @@ class TournamentEventDecorator < TournamentEventBaseDecorator
           'Bracket smash.gg',
           bracket.send(user_name)&.gamer_tag
         ].join(' : ')
+      when :BraacketTournament
+        participant_name = "top#{rank}_participant_name".to_sym
+        [
+          'Bracket Braacket',
+          bracket.send(participant_name)
+        ].join(' : ')
       when :ChallongeTournament
         participant_name = "top#{rank}_participant_name".to_sym
         [

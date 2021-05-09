@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_10_200201) do
+ActiveRecord::Schema.define(version: 2021_05_09_195839) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -77,6 +77,24 @@ ActiveRecord::Schema.define(version: 2021_04_10_200201) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["token"], name: "index_api_tokens_on_token", unique: true
+  end
+
+  create_table "braacket_tournaments", force: :cascade do |t|
+    t.string "slug", null: false
+    t.string "name"
+    t.datetime "start_at"
+    t.integer "participants_count"
+    t.string "top1_participant_name"
+    t.string "top2_participant_name"
+    t.string "top3_participant_name"
+    t.string "top4_participant_name"
+    t.string "top5a_participant_name"
+    t.string "top5b_participant_name"
+    t.string "top7a_participant_name"
+    t.string "top7b_participant_name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["slug"], name: "index_braacket_tournaments_on_slug", unique: true
   end
 
   create_table "challonge_tournaments", force: :cascade do |t|
@@ -349,8 +367,8 @@ ActiveRecord::Schema.define(version: 2021_04_10_200201) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "date_description"
     t.boolean "is_archived", default: false, null: false
-    t.integer "starts_at_hour", null: false
-    t.integer "starts_at_min", null: false
+    t.integer "starts_at_hour", default: 0, null: false
+    t.integer "starts_at_min", default: 0, null: false
     t.index ["discord_guild_id"], name: "index_recurring_tournaments_on_discord_guild_id"
   end
 
