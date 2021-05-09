@@ -162,7 +162,7 @@ class ChallongeTournament < ApplicationRecord
 
       player_ids = self.class.joins(:tournament_event).where(
         top1_participant_name: participant_name
-      ).pluck("tournament_events.#{player_id}").uniq.compact
+      ).pluck("tournament_events.#{self.class.sanitize_sql(player_id)}").uniq.compact
       return Player.find(player_ids.first) if player_ids.count == 1
 
       nil
