@@ -43,10 +43,10 @@ class ChallongeClient
     {
       id: data_tag['data-tournament-id'],
       name: data_tag['data-tournament-name'],
-      start_at: doc.css('div.tournament-banner div.start-time')[0].text,
+      start_at: doc.css('div.tournament-banner div.start-time').first&.text,
       participants_count: doc.css(
         'div.tournament-banner ul.inline-meta-list li.item'
-      )[0].css('div.text')[0].text.to_i
+      ).first&.css('div.text')&.first&.text&.to_i
     }
   end
 
