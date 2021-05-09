@@ -86,7 +86,7 @@ class ChallongeTournament < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   def self.slug_from_url(url)
-    url.gsub(/https:\/\/challonge.com\//, '').gsub(/(fr|en)\//, '')
+    url&.gsub(/https:\/\/challonge.com\//, '')&.gsub(/(fr|en)\//, '')&.gsub(/\/.*/, '')
   end
 
   def challonge_url=(url)
