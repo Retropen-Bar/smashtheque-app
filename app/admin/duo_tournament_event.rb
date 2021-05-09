@@ -265,6 +265,9 @@ ActiveAdmin.register DuoTournamentEvent do
       if resource.is_on_smashgg?
         item 'Mettre à jour avec smash.gg', action: :update_with_smashgg
       end
+      if resource.is_on_braacket?
+        item 'Mettre à jour avec Braacket', action: :update_with_braacket
+      end
       if resource.is_on_challonge?
         item 'Mettre à jour avec Challonge', action: :update_with_challonge
       end
@@ -286,6 +289,17 @@ ActiveAdmin.register DuoTournamentEvent do
 
   member_action :update_with_smashgg do
     if resource.update_with_smashgg
+      redirect_to request.referer, notice: 'Données mises à jour'
+    else
+      puts "Model errors: #{resource.errors.full_messages}"
+      puts "Bracket errors: #{resource.bracket&.errors&.full_messages}"
+      flash[:error] = 'Mise à jour échouée'
+      redirect_to request.referer
+    end
+  end
+
+  member_action :update_with_braacket do
+    if resource.update_with_braacket
       redirect_to request.referer, notice: 'Données mises à jour'
     else
       puts "Model errors: #{resource.errors.full_messages}"
