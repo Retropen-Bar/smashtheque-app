@@ -1,0 +1,3 @@
+<% flash.each do |type, msg| %>
+  <script>toastr.<%= toastr_method_for_flash(type) %>(<%== msg.to_json %>);</script>
+<% end %>

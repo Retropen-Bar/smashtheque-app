@@ -4,14 +4,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <%= render partial: 'layouts/application/meta' %>
+    <%= render partial: 'layouts/application_v2/meta' %>
 
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= favicon_link_tag '/favicon-32.png' %>
 
-    <!-- hey you -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <%= stylesheet_pack_tag 'application_v2', media: 'all' %>
 
@@ -27,22 +28,20 @@
   %><%=
     "background-image: url(\"#{image_url('static-bg.png').gsub('"', "\"")}\");" if @static
   %>" class="<%= controller.controller_name %> <%= controller.action_name %><% if @static %> static<% end %>">
-    <%= render partial: 'layouts/application/flash', flash: flash %>
-    <%= render partial: 'layouts/application/head' %>
+    <%= render partial: 'layouts/application_v2/flash', flash: flash %>
+    <%= render partial: 'layouts/application_v2/head' %>
 
-    <div class="container-fluid" id="main-container">
-      <% if @static %>
-        <div class="d-flex justify-content-center my-5 mx-3">
-          <div class="bg-semi-transparent shadow p-3 p-md-5 rounded"
-               style="width: 100%; max-width: 1024px;">
-            <% end %>
-            <%= yield %>
-            <% if @static %>
-          </div>
+    <% if @static %>
+      <div class="d-flex justify-content-center my-5 mx-3">
+        <div class="bg-semi-transparent shadow p-3 p-md-5 rounded"
+              style="width: 100%; max-width: 1024px;">
+          <% end %>
+          <%= yield %>
+          <% if @static %>
         </div>
-      <% end %>
-    </div>
+      </div>
+    <% end %>
 
-    <%= render partial: 'layouts/application/footer' %>
+    <%= render partial: 'layouts/application_v2/footer' %>
   </body>
 </html>
