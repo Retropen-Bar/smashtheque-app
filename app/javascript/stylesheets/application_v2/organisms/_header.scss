@@ -1,0 +1,49 @@
+.navbar {
+  background-color: $bg-dark;
+
+  &-brand {
+    img {
+      width: 162px;
+
+      @include media-breakpoint-up(md) {
+        width: 250px;
+      }
+
+      @include media-breakpoint-up(xl) {
+        width: auto;
+      }
+    }
+  }
+
+  .dropdown-menu {
+    position: absolute;
+
+    .current-user-name {
+      @include media-breakpoint-up(sm) {
+        &,
+        & + .dropdown-divider {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .current-user {
+    border-radius: 50%;
+    overflow: hidden;
+
+    &::after {
+      content: none;
+    }
+
+    .avatar {
+      border-radius: 50%;
+    }
+
+    .current-user-name {
+      @include media-breakpoint-down(xs) {
+        display: none;
+      }
+    }
+  }
+}

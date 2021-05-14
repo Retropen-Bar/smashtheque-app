@@ -8,6 +8,10 @@
     --gap: #{"min(15px, 1.6vmax)"};
   }
 
+  .navbar {
+    background-color: transparent;
+  }
+
   main {
     flex-grow: 1;
     display: grid;
@@ -85,6 +89,8 @@
     width: 100%;
     height: 100%;
     color: $white;
+    position: relative;
+    z-index: 1;
 
     > * {
       position: relative;
@@ -133,9 +139,6 @@
       height: 20.5vmax;
       width: 20.5vmax;
       font-size: calc(0.75rem + 0.55vmax);
-    }
-
-    @include media-breakpoint-up(md-lg) {
     }
 
     @include media-breakpoint-up(xxl) {

@@ -1,0 +1,16 @@
+.dropdown-toggle {
+  &[aria-expanded="true"] {
+    background-color: $dropdown-bg;
+  }
+}
+
+.dropdown-menu {
+  backdrop-filter: blur(15px);
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.41);
+}
+
+.dropdown-divider {
+  margin-left: $dropdown-item-padding-x;
+  margin-right: $dropdown-item-padding-x;
+  opacity: 0.1;
+}

@@ -1,0 +1,18 @@
+.btn {
+  &-icon {
+    color: $body-color;
+    padding-left: $btn-padding-y;
+    padding-right: $btn-padding-y;
+
+    svg {
+      width: 1.5em;
+      height: 1.5em;
+    }
+
+    &:hover,
+    &:focus {
+      text-decoration: none;
+      color: $white;
+    }
+  }
+}

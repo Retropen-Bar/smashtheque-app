@@ -1,11 +1,11 @@
 $enable-responsive-font-sizes: true;
 $font-family-base: "Sora", Arial, sans-serif;
+
+$gray-light: #cbcbcb;
+
 $body-bg: #121314;
 $body-color: #aeb9c9;
-$text-muted: #aeb9c9;
 
-$additional-grid-breakpoints: (
-  md-lg: 1024px,
-  xxl: 1400px,
-);
-$grid-breakpoints: map-merge($grid-breakpoints, $additional-grid-breakpoints);
+$bg-dark: #1b1d20;
+
+$border-radius: .5rem;

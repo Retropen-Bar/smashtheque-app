@@ -1,7 +1,11 @@
 @import "~bootstrap/scss/functions";
+
+
+@import "./application_v2/variables";
+
 @import "~bootstrap/scss/variables";
 
-@import "../stylesheets/application_v2/variables";
+@import "./application_v2/variables_components";
 
 @import "~bootstrap/scss/mixins";
 
@@ -46,4 +50,7 @@
 @import "leaflet.markercluster/dist/MarkerCluster";
 @import "leaflet.markercluster/dist/MarkerCluster.Default";
 
+@import "application_v2/atoms/index";
+@import "application_v2/molecules/index";
+@import "application_v2/organisms/index";
 @import "application_v2/pages/index";

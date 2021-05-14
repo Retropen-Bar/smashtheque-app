@@ -1,17 +1,9 @@
-<nav class="navbar navbar-expand-lg
-            bg-white border-bottom shadow-sm"
+<nav class="navbar navbar-expand-md-lg shadow-sm"
      id="main-nav">
 
   <%= link_to root_path, class: 'navbar-brand' do %>
-    <%= image_pack_tag 'smashtheque-64.png', width: 32 %>
-    <span>Smashthèque FR</span>
+    <%= image_tag 'logo.png', srcset: { "logo@2x.png" => "2x", "logo@3x.png" => "3x" } %>
   <% end %>
-
-  <button class="navbar-toggler border" type="button"
-    data-toggle="collapse" data-target="#navbarSupportedContent"
-    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <i class="fas fa-bars"></i>
-  </button>
 
   <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto text-center text-lg-left">
@@ -180,23 +172,26 @@
       </ul>
     <% end %>
 
-    <form class="form-inline my-2 my-lg-0 d-inline-flex" id="main-global-search-form">
-      <%= select_tag :search, [],
-            class: 'form-control',
-            type: :search,
-            placeholder: 'Recherche globale',
-            'aria-label' => 'Recherche globale',
-            data: { global_search: {} } %>
-    </form>
+    
 
-    <ul class="navbar-nav ml-4 mr-2 text-center text-lg-right">
+  </div>
+
+  <div class="navbar-actions d-flex align-items-center">
+    <button type="button" class="btn btn-link btn-icon">
+      <%= render partial: 'shared/icons/loupe' %>
+      <span class="sr-only">Recherche</span>
+    </button>
+
+    <ul class="navbar-nav mx-2 text-center text-lg-right">
       <% if user_signed_in? %>
         <li class="nav-item dropdown">
-          <%= link_to '#', class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
-            <%= current_user.decorate.avatar_and_name(size: 32) %>
+          <%= link_to '#', class: 'current-user btn btn-link btn-icon dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
+            <%= current_user.decorate.avatar_and_name(size: 24) %>
           <% end %>
           <div class="dropdown-menu dropdown-menu-right">
-            <%= link_to 'Mon profil', current_user, class: 'dropdown-item' %>
+            <p class="dropdown-item-text mb-0 current-user-name"><%= current_user.decorate.name_and_tag %></p>
+            <div class="dropdown-divider"></div>
+            <%= link_to 'Profil', current_user, class: 'dropdown-item' %>
             <% if current_user.administrated_teams.any? %>
               <div class="dropdown-divider"></div>
               <% current_user.administrated_teams.decorate.each do |team| %>
@@ -215,19 +210,20 @@
                             class: 'dropdown-item' %>
               <% end %>
             <% end %>
-            <div class="dropdown-divider"></div>
-            <%= link_to 'Me déconnecter', destroy_user_session_path, class: 'dropdown-item' %>
+            <%= link_to 'Déconnexion', destroy_user_session_path, class: 'dropdown-item' %>
           </div>
         </li>
       <% else %>
         <li class="nav-item">
-          <%= link_to user_discord_omniauth_authorize_path do %>
-            <%= fas_icon_tag 'sign-in-alt', %w(fa-lg) %>
+          <%= link_to user_discord_omniauth_authorize_path, class: 'btn btn-link btn-icon' do %>
+            <%= render partial: 'shared/icons/avatar' %>
           <% end %>
         </li>
       <% end %>
     </ul>
 
+    <button type="button" class='btn btn-link btn-icon'>
+      <%= render partial: 'shared/icons/menu' %>
+    </button>
   </div>
-
 </nav>

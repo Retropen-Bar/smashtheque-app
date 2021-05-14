@@ -1,0 +1,15 @@
+$additional-grid-breakpoints: (
+  md-lg: 1024px,
+  xxl: 1400px,
+);
+$grid-breakpoints: map-merge($grid-breakpoints, $additional-grid-breakpoints);
+
+// DROPDOWNS
+
+$dropdown-bg: rgba(#393c42, 0.85);
+$dropdown-spacer: 0.5rem;
+$dropdown-border-width: 0;
+$dropdown-link-color: $body-color;
+$dropdown-link-hover-color: $white;
+$dropdown-link-hover-bg: $bg-dark;
+$dropdown-divider-bg: $white;
