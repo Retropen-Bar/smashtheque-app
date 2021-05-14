@@ -2,6 +2,9 @@
   background-color: $bg-dark;
 
   &-brand {
+    position: relative;
+    z-index: 2000;
+
     img {
       width: 162px;
 
@@ -15,8 +18,120 @@
     }
   }
 
+  .nav-link:focus {
+    box-shadow: none;
+  }
+
+  .vue-slideout {
+    backdrop-filter: blur(10px);
+  }
+
+  .vue-slideout-mask {
+    background: rgba(0, 0, 0, 0.85);
+  }
+
+  .vue-slideout-layout {
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  .vue-slideout-content {
+    background-color: $bg-deep;
+    border-top-left-radius: $border-radius;
+    padding-top: 1rem;
+  }
+
+  .vue-slideout-show-header > .vue-slideout-layout > .vue-slideout-content {
+    top: 58px;
+  }
+
+  .vue-slideout-header {
+    border: 0;
+    left: auto;
+    height: 58px;
+  }
+
+  .vue-slideout-title-buttons {
+    background-color: $bg-deep;
+    border-top-left-radius: $border-radius;
+    bottom: 0;
+    top: auto;
+
+    button {
+      padding: 0 0.25rem;
+    }
+
+    svg {
+      fill: $body-color;
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
+
+  .vue-slideout-title-text {
+    @include sr-only;
+  }
+
+  @include media-breakpoint-up(md) {
+    .vue-slideout-show-header > .vue-slideout-layout > .vue-slideout-content {
+      top: 75px;
+    }
+
+    .vue-slideout-header {
+      height: 75px;
+    }
+
+    .vue-slideout-title-buttons {
+      height: 60px;
+    }
+  }
+
+  @include media-breakpoint-up(xl) {
+    .vue-slideout {
+      backdrop-filter: none;
+      position: static;
+      display: block !important;
+      opacity: 1;
+      will-change: auto;
+      overflow: visible;
+    }
+
+    .vue-slideout-mask {
+      display: none;
+    }
+
+    .vue-slideout-enable-animation > .vue-slideout-layout {
+      will-change: auto;
+      transform: none;
+    }
+
+    .vue-slideout-layout {
+      position: static;
+      width: auto !important;
+      background-color: transparent;
+    }
+
+    .vue-slideout-content {
+      background-color: transparent;
+      position: static;
+      overflow: visible;
+      padding-top: 0;
+    }
+
+    .vue-slideout-header {
+      display: none;
+    }
+  }
+
   .dropdown-menu {
-    position: absolute;
+
+    @include media-breakpoint-down(lg) {
+      box-shadow: none;
+      margin-left: 0.5rem;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+      border: 1px solid $gray-700;
+    }
 
     .current-user-name {
       @include media-breakpoint-up(sm) {
@@ -28,9 +143,27 @@
     }
   }
 
+  &-actions {
+    &-search {
+      position: relative;
+      z-index: 2000;
+    }
+
+    @include media-breakpoint-up(xl) {
+      &-menu {
+        display: none;
+      }
+    }
+  }
+
   .current-user {
-    border-radius: 50%;
     overflow: hidden;
+    position: relative;
+    z-index: 2000;
+    
+    @include media-breakpoint-down(md) {
+      border-radius: 50%;
+    }
 
     &::after {
       content: none;

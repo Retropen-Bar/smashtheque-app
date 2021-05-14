@@ -9,3 +9,5 @@ import "@fortawesome/fontawesome-free/css/all";
 import "jquery";
 import "jquery-ui/ui/widgets/sortable";
 import "popper.js";
+
+import "../src/application_v2/slideout"

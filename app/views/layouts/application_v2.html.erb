@@ -17,7 +17,6 @@
     <%= stylesheet_pack_tag 'application_v2', media: 'all' %>
 
     <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?libraries=places&key=#{ENV['GOOGLE_MAPS_API_KEY']}" %>
-    <%= javascript_pack_tag 'application_v2' %>
   </head>
   <body style="<%=
     "background-color: #{@background_color};" if @background_color
@@ -43,5 +42,6 @@
     <% end %>
 
     <%= render partial: 'layouts/application_v2/footer' %>
+    <%= javascript_pack_tag 'application_v2' %>
   </body>
 </html>

@@ -1,15 +1,15 @@
-<nav class="navbar navbar-expand-md-lg shadow-sm"
+<nav class="navbar navbar-expand-xl shadow-sm"
      id="main-nav">
 
   <%= link_to root_path, class: 'navbar-brand' do %>
     <%= image_tag 'logo.png', srcset: { "logo@2x.png" => "2x", "logo@3x.png" => "3x" } %>
   <% end %>
 
-  <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
+  <slide-out dock="right" :visible.sync="visible" :arrow-button="false" size="273px" title="Menu" class="collapse navbar-collapse text-center" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto text-center text-lg-left">
 
       <li class="nav-item dropdown">
-        <%= link_to players_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
+        <%= link_to players_path, class: 'nav-link btn btn btn-link btn-icon dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
           <%= fas_icon_tag :user %>
           <span>Joueurs</span>
         <% end %>
@@ -28,7 +28,7 @@
       </li>
 
       <li class="nav-item dropdown">
-        <%= link_to duos_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
+        <%= link_to duos_path, class: 'nav-link btn btn-link btn-icon dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
           <%= fas_icon_tag 'user-friends' %>
           <span>2v2</span>
         <% end %>
@@ -44,7 +44,7 @@
       </li>
 
       <li class="nav-item dropdown">
-        <%= link_to recurring_tournaments_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
+        <%= link_to recurring_tournaments_path, class: 'nav-link btn btn-link btn-icon dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
           <%= fas_icon_tag :chess %>
           <span>Compétition</span>
         <% end %>
@@ -57,7 +57,7 @@
       </li>
 
       <li class="nav-item dropdown">
-        <%= link_to '#', class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
+        <%= link_to '#', class: 'nav-link btn btn-link btn-icon dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
           <%= fas_icon_tag 'user-tie' %>
           <span>Acteurs</span>
         <% end %>
@@ -72,14 +72,14 @@
       </li>
 
       <li class="nav-item">
-        <%= link_to discord_guilds_path, class: 'nav-link' do %>
+        <%= link_to discord_guilds_path, class: 'nav-link btn btn-link btn-icon' do %>
           <i class="fab fa-discord"></i>
           <span>Serveurs</span>
         <% end %>
       </li>
 
       <li class="nav-item dropdown">
-        <%= link_to '#', class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
+        <%= link_to '#', class: 'nav-link btn btn-link btn-icon dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
           <%= fas_icon_tag 'info-circle' %>
           <span>Informations</span>
         <% end %>
@@ -111,7 +111,7 @@
           <%= link_to '#', class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
             <%= fas_icon_tag 'plus-square', %w(fa-lg) %>
           <% end %>
-          <div class="dropdown-menu dropdown-menu-right">
+          <slide-out class="dropdown-menu dropdown-menu-right">
             <%= link_to new_admin_user_path, class: 'dropdown-item' do %>
               <%= fas_icon_tag 'user-secret', %w(fa-fw mr-2) %>
               Un utilisateur
@@ -174,18 +174,18 @@
 
     
 
-  </div>
+  </slide-out>
 
-  <div class="navbar-actions d-flex align-items-center">
-    <button type="button" class="btn btn-link btn-icon">
+  <div class="navbar-actions d-flex align-items-center ml-auto">
+    <button type="button" class="navbar-actions-search btn btn-link btn-icon" @click="visible = false">
       <%= render partial: 'shared/icons/loupe' %>
       <span class="sr-only">Recherche</span>
     </button>
 
-    <ul class="navbar-nav mx-2 text-center text-lg-right">
+    <ul class="navbar-actions-login navbar-nav mx-2 text-center text-lg-right">
       <% if user_signed_in? %>
         <li class="nav-item dropdown">
-          <%= link_to '#', class: 'current-user btn btn-link btn-icon dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
+          <%= link_to '#', class: 'current-user btn btn-link btn-icon dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false}, '@click': "visible = false" do %>
             <%= current_user.decorate.avatar_and_name(size: 24) %>
           <% end %>
           <div class="dropdown-menu dropdown-menu-right">
@@ -222,7 +222,7 @@
       <% end %>
     </ul>
 
-    <button type="button" class='btn btn-link btn-icon'>
+    <button @click="visible = true" type="button" class='navbar-actions-menu btn btn-link btn-icon'>
       <%= render partial: 'shared/icons/menu' %>
     </button>
   </div>
