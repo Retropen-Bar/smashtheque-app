@@ -1,12 +1,12 @@
 $enable-responsive-font-sizes: true;
 $font-family-base: "Sora", Arial, sans-serif;
 
-$gray-light: #cbcbcb;
+$gray-light: #aeb9c9;
+$gray-deep: #26282c;
+$gray-dark: #1b1d20;
+$gray-darker: #121314;
 
-$body-bg: #121314;
-$body-color: #aeb9c9;
-
-$bg-deep: #26282c;
-$bg-dark: #1b1d20;
+$body-bg: $gray-darker;
+$body-color: $gray-light;
 
 $border-radius: .5rem;

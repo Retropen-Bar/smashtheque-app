@@ -1,7 +1,12 @@
 .dropdown-toggle {
   &[aria-expanded="true"] {
     background-color: $dropdown-bg;
+    border-radius: $border-radius;
   }
+}
+
+.dropdown-header {
+  white-space: normal;
 }
 
 .dropdown-menu {
