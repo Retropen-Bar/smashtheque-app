@@ -263,13 +263,13 @@ ActiveAdmin.register DuoTournamentEvent do
   action_item :other_actions, only: :show do
     dropdown_menu 'Autres actions' do
       if resource.is_on_smashgg?
-        item 'Mettre à jour avec smash.gg', action: :update_with_smashgg
+        item 'Compléter avec smash.gg', action: :complete_with_bracket
       end
       if resource.is_on_braacket?
-        item 'Mettre à jour avec Braacket', action: :update_with_braacket
+        item 'Compléter avec Braacket', action: :complete_with_bracket
       end
       if resource.is_on_challonge?
-        item 'Mettre à jour avec Challonge', action: :update_with_challonge
+        item 'Compléter avec Challonge', action: :complete_with_bracket
       end
       item 'Recalculer les récompenses', action: :compute_rewards
       if resource.graph.attached?
@@ -287,30 +287,8 @@ ActiveAdmin.register DuoTournamentEvent do
     link_to 'Page publique', resource, class: 'green'
   end
 
-  member_action :update_with_smashgg do
-    if resource.update_with_smashgg
-      redirect_to request.referer, notice: 'Données mises à jour'
-    else
-      puts "Model errors: #{resource.errors.full_messages}"
-      puts "Bracket errors: #{resource.bracket&.errors&.full_messages}"
-      flash[:error] = 'Mise à jour échouée'
-      redirect_to request.referer
-    end
-  end
-
-  member_action :update_with_braacket do
-    if resource.update_with_braacket
-      redirect_to request.referer, notice: 'Données mises à jour'
-    else
-      puts "Model errors: #{resource.errors.full_messages}"
-      puts "Bracket errors: #{resource.bracket&.errors&.full_messages}"
-      flash[:error] = 'Mise à jour échouée'
-      redirect_to request.referer
-    end
-  end
-
-  member_action :update_with_challonge do
-    if resource.update_with_challonge
+  member_action :complete_with_bracket do
+    if resource.complete_with_bracket && resource.save
       redirect_to request.referer, notice: 'Données mises à jour'
     else
       puts "Model errors: #{resource.errors.full_messages}"
