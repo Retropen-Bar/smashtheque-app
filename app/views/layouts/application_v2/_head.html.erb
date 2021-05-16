@@ -6,6 +6,10 @@
   <% end %>
 
   <slide-out dock="right" :visible.sync="visible" :arrow-button="false" size="273px" title="Menu" class="collapse navbar-collapse" id="navbarSupportedContent">
+    <%= link_to players_path, class: 'btn btn-gradient-pink rounded w-100 d-flex d-xl-none align-items-center mb-4' do %>
+      <%= render partial: 'shared/icons/panneau' %>
+      <span class="pl-2">Besoin d'aide ?</span>
+    <% end %>
     
     <ul class="navbar-nav">
 
