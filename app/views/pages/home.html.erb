@@ -7,25 +7,25 @@
     <% end %>
   </section>
   <section class="home-nav-item home-nav-item--championship">
-    <%= link_to players_path, class: 'home-nav-item-link' do %>
+    <%= link_to tournament_events_path, class: 'home-nav-item-link' do %>
       <%= image_tag 'icons/trophée.svg' %>
       <h2>Tournois</h2>
     <% end %>
   </section>
   <section class="home-nav-item home-nav-item--smashtheque-tv">
-    <%= link_to players_path, class: 'home-nav-item-link' do %>
+    <%= link_to planning_path, class: 'home-nav-item-link' do %>
       <%= image_tag 'icons/tv.svg' %>
       <h2>Smashthèque <sup>TV</sup></h2>
     <% end %>
   </section>
   <section class="home-nav-item home-nav-item--harmonie">
-    <%= link_to players_path, class: 'home-nav-item-link' do %>
+    <%= link_to online_ranking_players_path, class: 'home-nav-item-link' do %>
       <%= image_tag 'icons/telescope.svg' %>
       <h2>Observatoire <br/> d'Harmonie</h2>
     <% end %>
   </section>
   <section class="home-nav-item home-nav-item--center home-nav-item--community">
-    <%= link_to players_path, class: 'home-nav-item-link' do %>
+    <%= link_to communities_path, class: 'home-nav-item-link' do %>
       <%= image_tag 'icons/liens.svg' %>
       <h2>Communauté</h2>
     <% end %>
@@ -34,7 +34,7 @@
 
 <div class="guides">
   <h2 class='guides-link'>
-    <%= link_to players_path do %>
+    <%= link_to page_path(slug: 'guides') do %>
       <%= image_tag 'icons/panneau.svg' %>
       <span>Guides</span>
     <% end %>

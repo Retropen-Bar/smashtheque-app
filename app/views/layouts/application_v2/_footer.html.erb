@@ -1,5 +1,5 @@
 <footer class="bd-footer text-muted text-center text-md-left" id="footer">
-  <div class="container-fluid p-2 p-md-3 d-flex align-items-center flex-wrap">
+  <div class="container-fluid p-2 p-md-3 d-flex align-items-center">
     <ul class="nav">
       <% Page.published.footer.order("LOWER(name)").each do |page| %>
         <li><%= link_to page.name, page_path(slug: page.slug), class: 'nav-link' %></li>
@@ -8,13 +8,13 @@
     </ul>
     <ul class="nav ml-auto">
       <li>
-        <a class="nav-link" href="https://github.com/Retropen-Bar" target="_blank">
+        <a class="nav-link px-2" href="https://github.com/Retropen-Bar" target="_blank">
           <%= render partial: 'shared/icons/github' %>
           <span class="sr-only">GitHub</span>
         </a>
       </li>
       <li>
-        <a class="nav-link" href="https://twitter.com/Smashtheque" target="_blank">
+        <a class="nav-link px-2" href="https://twitter.com/Smashtheque" target="_blank">
           <%= render partial: 'shared/icons/twitter' %>
           <span class="sr-only">Twitter</span>
         </a>

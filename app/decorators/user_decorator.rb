@@ -15,16 +15,15 @@ class UserDecorator < BaseDecorator
   def avatar_and_name(size: nil)
     [
       avatar_tag(size),
-      h.content_tag(:span, '&nbsp;'.html_safe + name, class: 'current-user-name')
-    ].join.html_safe
+      name
+    ].join('&nbsp;').html_safe
   end
 
   def name_and_tag
     name_and_tag_string = h.content_tag(:span, name)
-    
-    name_and_tag_string += "'&nbsp;|&nbsp;#{h.content_tag(:span, player.teams.first&.name)}" if player&.teams&.first
+    name_and_tag_string += "&nbsp;|&nbsp;#{h.content_tag(:span, player.team_names.first)}".html_safe if player&.team_names&.first&.present?
 
-    name_and_tag_string.html_safe
+    name_and_tag_string
   end
 
   def player_link(options = {})

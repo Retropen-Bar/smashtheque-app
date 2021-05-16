@@ -43,9 +43,11 @@
     background-color: $gray-deep;
     border-top-left-radius: $border-radius;
     padding: 1rem;
-    @include media-breakpoint-down(sm) {
+
+    @include  media-breakpoint-down(lg) {
       display: flex;
       flex-direction: column;
+      overflow-x: hidden;
     }
   }
 
@@ -162,14 +164,17 @@
     }
   }
 
-  &-nav {
+  &-collapse {
+    
     .btn-back {
       display: none;
     }
 
     @include media-breakpoint-down(lg) {
-      position: relative;
-      flex-grow: 1;
+      .navbar-nav {
+        position: relative;
+        flex-grow: 1;
+      }
 
       > :not(:last-child) {
         margin-bottom: map-get($spacers, 1);
@@ -282,28 +287,35 @@
       z-index: 2000;
     }
 
-    @include media-breakpoint-up(xl) {
-      &-menu {
-        display: none;
+    &-login {
+      .avatar,
+      .nav-link:not(.dropdown-toggle) {
+        border-radius: 50%;
+      }
+
+      .dropdown-toggle {
+        @include media-breakpoint-down(xs) {
+          border-radius: 50%;
+        }
+
+        &::after {
+          content: none;
+        }
+
+        .current-user-name {
+          @include media-breakpoint-down(xs) {
+            display: none;
+          }
+        }
+      }
+
+      .dropdown-menu {
+        position: absolute;
       }
     }
-  }
 
-  .current-user {
-    @include media-breakpoint-down(md) {
-      border-radius: 50%;
-    }
-
-    &::after {
-      content: none;
-    }
-
-    .avatar {
-      border-radius: 50%;
-    }
-
-    .current-user-name {
-      @include media-breakpoint-down(xs) {
+    @include media-breakpoint-up(xl) {
+      &-menu {
         display: none;
       }
     }
