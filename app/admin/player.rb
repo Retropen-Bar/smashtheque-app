@@ -21,8 +21,8 @@ ActiveAdmin.register Player do
 
   includes :characters,
            teams: [
-            :discord_guilds,
-            { logo_attachment: :blob }
+             :discord_guilds,
+             { logo_attachment: :blob }
            ],
            user: :discord_user,
            creator_user: :discord_user
@@ -40,8 +40,10 @@ ActiveAdmin.register Player do
       decorated.characters_admin_links.join(' ').html_safe
     end
     column :teams do |decorated|
-      decorated.teams_admin_links.join('<br/>').html_safe
+      decorated.teams_admin_short_links.join('<br/>').html_safe
     end
+    column "<img src=\"https://cdn.discordapp.com/emojis/#{RetropenBot::EMOJI_POINTS}.png?size=16\"/>".html_safe,
+           :points
     column :creator_user do |decorated|
       decorated.creator_user_admin_link(size: 32)
     end
@@ -52,9 +54,9 @@ ActiveAdmin.register Player do
     column :created_at do |decorated|
       decorated.created_at_date
     end
-    actions do |decorated|
+    actions dropdown: true do |decorated|
       if !decorated.is_accepted? && !decorated.model.potential_duplicates.any?
-        link_to 'Valider', [:accept, :admin, decorated.model], class: 'member_link green'
+        item 'Valider', accept_admin_player_path(decorated.model), class: 'green'
       end
     end
   end
