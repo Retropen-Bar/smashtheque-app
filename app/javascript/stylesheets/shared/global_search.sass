@@ -1,4 +1,20 @@
 .select2-results
+
+  .select2-results__group
+    cursor: pointer
+
+    span:before
+      content: '▶'
+      margin-right: 5px
+      vertical-align: 1px
+      font-family: monospace
+
+    &.unfold span:before
+      content: '▼'
+
+    &:not(.unfold) + .select2-results__options--nested
+      display: none
+
   .select2-results__option
     .search-result
       position: relative
@@ -45,7 +61,9 @@
         .name
           margin-left: 6px
 
-      &.search-result-challongetournament, &.search-result-smashggevent
+      &.search-result-braackettournament,
+      &.search-result-challongetournament,
+      &.search-result-smashggevent
         padding-left: 0
 
         .search-result-icon
