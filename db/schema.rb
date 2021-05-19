@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_09_195839) do
+ActiveRecord::Schema.define(version: 2021_05_19_223541) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -369,6 +369,12 @@ ActiveRecord::Schema.define(version: 2021_05_09_195839) do
     t.boolean "is_archived", default: false, null: false
     t.integer "starts_at_hour", default: 0, null: false
     t.integer "starts_at_min", default: 0, null: false
+    t.string "address_name"
+    t.string "address"
+    t.float "latitude"
+    t.float "longitude"
+    t.string "twitter_username"
+    t.text "misc"
     t.index ["discord_guild_id"], name: "index_recurring_tournaments_on_discord_guild_id"
   end
 
@@ -561,6 +567,8 @@ ActiveRecord::Schema.define(version: 2021_05_09_195839) do
     t.string "secondary_address"
     t.float "secondary_latitude"
     t.float "secondary_longitude"
+    t.string "main_locality"
+    t.string "secondary_locality"
   end
 
   create_table "versions", force: :cascade do |t|

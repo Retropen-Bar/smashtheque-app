@@ -19,11 +19,13 @@
 #  last_sign_in_ip               :inet
 #  main_address                  :string
 #  main_latitude                 :float
+#  main_locality                 :string
 #  main_longitude                :float
 #  name                          :string           not null
 #  remember_created_at           :datetime
 #  secondary_address             :string
 #  secondary_latitude            :float
+#  secondary_locality            :string
 #  secondary_longitude           :float
 #  sign_in_count                 :integer          default(0), not null
 #  twitter_username              :string

@@ -83,6 +83,8 @@ ActiveAdmin.register RecurringTournament do
   # ---------------------------------------------------------------------------
 
   form do |f|
+    render 'admin/shared/google_places_api'
+    f.semantic_errors *f.object.errors.keys
     f.inputs do
       f.input :name
       f.input :date_description
@@ -111,6 +113,14 @@ ActiveAdmin.register RecurringTournament do
       f.input :registration,
               input_html: { rows: 5 }
       users_input f, :contacts
+
+      f.input :address_name
+      address_input f
+
+      f.input :twitter_username
+      f.input :misc,
+              input_html: { rows: 5 }
+
       f.input :is_archived
     end
     f.actions
@@ -119,6 +129,8 @@ ActiveAdmin.register RecurringTournament do
   permit_params :name, :recurring_type,
                 :date_description, :wday, :starts_at_hour, :starts_at_min,
                 :discord_guild_id, :is_online, :level, :size, :registration,
+                :address_name, :address, :latitude, :longitude,
+                :twitter_username, :misc,
                 :is_archived, contact_ids: []
 
   # ---------------------------------------------------------------------------
@@ -126,37 +138,43 @@ ActiveAdmin.register RecurringTournament do
   # ---------------------------------------------------------------------------
 
   show do
-    attributes_table do
-      row :name
-      row :tournament_events do |decorated|
-        decorated.tournament_events_admin_link
+    columns do
+      column do
+        attributes_table do
+          row :name
+          row :tournament_events, &:tournament_events_admin_link
+          row :duo_tournament_events, &:duo_tournament_events_admin_link
+          row :recurring_type, &:recurring_type_text
+          row 'Date', &:full_date
+          row :discord_guild, &:discord_guild_admin_link
+          row :is_online
+          row :level, &:level_status
+          row :size
+          row :registration, &:formatted_registration
+          row :contacts do |decorated|
+            decorated.contacts_admin_links(size: 32).join('<br/>').html_safe
+          end
+          row :address_name
+          row :address, &:address_with_coordinates
+          row :twitter_username
+          row :misc, &:formatted_misc
+          row :is_archived
+          row :created_at
+          row :updated_at
+        end
       end
-      row :duo_tournament_events do |decorated|
-        decorated.duo_tournament_events_admin_link
+      column do
+        if resource.geocoded?
+          single_address_map({
+            name: [
+              resource.address_name,
+              resource.address
+            ].join('<br/>').html_safe,
+            latitude: resource.latitude,
+            longitude: resource.longitude
+          })
+        end
       end
-      row :recurring_type do |decorated|
-        decorated.recurring_type_text
-      end
-      row 'Date' do |decorated|
-        decorated.full_date
-      end
-      row :discord_guild do |decorated|
-        decorated.discord_guild_admin_link
-      end
-      row :is_online
-      row :level do |decorated|
-        decorated.level_status
-      end
-      row :size
-      row :registration do |decorated|
-        decorated.formatted_registration
-      end
-      row :contacts do |decorated|
-        decorated.contacts_admin_links(size: 32).join('<br/>').html_safe
-      end
-      row :is_archived
-      row :created_at
-      row :updated_at
     end
     active_admin_comments
   end

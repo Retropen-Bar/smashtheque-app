@@ -74,6 +74,23 @@ module MapsHelper
                 options: map_options || {}
   end
 
+  def single_address_map(address, map_options: {})
+    markers = {
+      all: [
+        {
+          latlng: [
+            address[:latitude],
+            address[:longitude]
+          ],
+          popup: address[:name]
+        }
+      ]
+    }
+
+    france_map  markers: markers,
+                options: map_options || {}
+  end
+
   private
 
   def france_map(markers:, layers: {}, icons: {}, options: {}, &block)

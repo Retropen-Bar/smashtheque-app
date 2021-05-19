@@ -3,9 +3,33 @@ const DATA_KEY = 'data-maps-autocomplete';
 let onPlaceChanged = function(input, target, place) {
   // console.log('[Maps Autocomplete] onPlaceChanged', input, target, place);
 
-  $(input).val(place.name);
-  $(target.latitude).val(place.geometry.location.lat());
-  $(target.longitude).val(place.geometry.location.lng());
+  $(input).val(place.formatted_address);
+
+  if(target.formatted) {
+    $(target.formatted).val(place.formatted_address);
+  }
+  if(target.name) {
+    $(target.name).val(place.name);
+  }
+  if(target.latitude) {
+    $(target.latitude).val(place.geometry.location.lat());
+  }
+  if(target.longitude) {
+    $(target.longitude).val(place.geometry.location.lng());
+  }
+  for (const component of place.address_components) {
+    const componentType = component.types[0];
+    switch (componentType) {
+      case "locality":
+        if(target.locality) {
+          $(target.locality).val(component.long_name);
+        }
+      case "country":
+        if(target.country) {
+          $(target.country).val(component.long_name);
+        }
+    }
+  }
 };
 
 let onPlaceRemoved = function(input, target) {

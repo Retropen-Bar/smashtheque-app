@@ -235,13 +235,18 @@ fr:
         recurring_tournament: Série
       recurring_tournament:
         << : *SHARED
+        address: Adresse du lieu
+        address_name: Nom du lieu
         contacts: TOs
         date_description: Description de la date
         discord_guild: Serveur Discord
         duo_tournament_events: Éditions 2v2
         is_archived: Stoppé ?
         is_online: Online ?
+        latitude: Latitude
         level: Difficulté
+        longitude: Longitude
+        misc: Autres infos
         name: Tournoi
         recurring_type: Récurrence
         registration: Comment s'inscrire
@@ -249,6 +254,7 @@ fr:
         starts_at_hour: Heure
         starts_at_min: Minutes
         tournament_events: Éditions 1v1
+        twitter_username: Compte Twitter
         wday: Jour de la semaine
       recurring_tournament/level:
         l1_playground: 1 - Cour de récréation
@@ -429,9 +435,11 @@ fr:
         last_sign_in_at: Session précédente
         last_sign_in_ip: IP précédente
         main_address: Localisation principale
+        main_locality: Ville principale
         name: Nom
         player: Joueur
         secondary_address: Localisation secondaire
+        secondary_locality: Ville secondaire
         sign_in_count: Connexions
         twitter_username: Compte Twitter
       user/admin_level:

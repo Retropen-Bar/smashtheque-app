@@ -3,16 +3,22 @@
 # Table name: recurring_tournaments
 #
 #  id               :bigint           not null, primary key
+#  address          :string
+#  address_name     :string
 #  date_description :string
 #  is_archived      :boolean          default(FALSE), not null
 #  is_online        :boolean          default(FALSE), not null
+#  latitude         :float
 #  level            :string
+#  longitude        :float
+#  misc             :text
 #  name             :string           not null
 #  recurring_type   :string           not null
 #  registration     :text
 #  size             :integer
 #  starts_at_hour   :integer          default(0), not null
 #  starts_at_min    :integer          default(0), not null
+#  twitter_username :string
 #  wday             :integer
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
@@ -28,6 +34,12 @@
 #
 class RecurringTournament < ApplicationRecord
   # ---------------------------------------------------------------------------
+  # MODULES
+  # ---------------------------------------------------------------------------
+
+  geocoded_by :address
+
+  # ---------------------------------------------------------------------------
   # CONCERNS
   # ---------------------------------------------------------------------------
 
@@ -35,6 +47,8 @@ class RecurringTournament < ApplicationRecord
   def self.on_abc_name
     :name
   end
+
+  include HasTwitter
 
   # ---------------------------------------------------------------------------
   # CONSTANTS

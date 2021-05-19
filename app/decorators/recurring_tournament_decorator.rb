@@ -1,5 +1,4 @@
 class RecurringTournamentDecorator < BaseDecorator
-
   LEVEL_COLORS = {
     l1_playground: :green,
     l2_anything: :blue,
@@ -136,4 +135,8 @@ class RecurringTournamentDecorator < BaseDecorator
     ].join('&nbsp;').html_safe
   end
 
+  def address_with_coordinates
+    return nil if address.blank?
+    "#{address} (#{latitude}, #{longitude})"
+  end
 end

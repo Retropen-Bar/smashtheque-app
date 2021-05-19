@@ -55,4 +55,7 @@ class ActiveAdmin::RecurringTournamentDecorator < RecurringTournamentDecorator
     h.content_tag :div, model.registration, class: 'free-text'
   end
 
+  def formatted_misc
+    h.tag.div misc, class: 'free-text'
+  end
 end
