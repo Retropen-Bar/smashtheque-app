@@ -13,7 +13,7 @@
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  bracket_id              :bigint
-#  recurring_tournament_id :integer          not null
+#  recurring_tournament_id :integer
 #  top1_player_id          :bigint
 #  top2_player_id          :bigint
 #  top3_player_id          :bigint
@@ -49,7 +49,6 @@
 #  fk_rails_...  (top7b_player_id => players.id)
 #
 class TournamentEvent < ApplicationRecord
-
   PLAYER_RANKS = %w(1 2 3 4 5a 5b 7a 7b).freeze
   PLAYER_NAMES = PLAYER_RANKS.map{|rank| "top#{rank}_player".to_sym}.freeze
   PLAYER_NAME_RANK = Hash[
@@ -69,7 +68,7 @@ class TournamentEvent < ApplicationRecord
   # relations
   # ---------------------------------------------------------------------------
 
-  belongs_to :recurring_tournament
+  belongs_to :recurring_tournament, optional: true
   belongs_to :top1_player, class_name: :Player, optional: true
   belongs_to :top2_player, class_name: :Player, optional: true
   belongs_to :top3_player, class_name: :Player, optional: true
@@ -297,7 +296,8 @@ class TournamentEvent < ApplicationRecord
 
   delegate :name,
            to: :recurring_tournament,
-           prefix: true
+           prefix: true,
+           allow_nil: true
 
   PLAYER_NAMES.each do |player_name|
     delegate :name,
@@ -382,25 +382,20 @@ class TournamentEvent < ApplicationRecord
 
   def use_challonge_tournament(replace_existing_values)
     return false unless bracket.is_a?(ChallongeTournament)
-    if replace_existing_values || name.blank?
-      self.name = bracket.name
-    end
-    if replace_existing_values || date.nil?
-      self.date = bracket.start_at
-    end
+
+    self.name = bracket.name if replace_existing_values || name.blank?
+    self.date = bracket.start_at if replace_existing_values || date.nil?
     if replace_existing_values || participants_count.nil?
       self.participants_count = bracket.participants_count
     end
-    if replace_existing_values || bracket_url.blank?
-      self.bracket_url = bracket.challonge_url
-    end
+    self.bracket_url = bracket.challonge_url if replace_existing_values || bracket_url.blank?
     PLAYER_RANKS.each do |rank|
       player_name = "top#{rank}_player".to_sym
       participant_player = "top#{rank}_participant_player".to_sym
-      if replace_existing_values || send(player_name).nil?
-        if player = bracket.send(participant_player)
-          self.send("#{player_name}=", player)
-        end
+      next unless replace_existing_values || send(player_name).nil?
+
+      if (player = bracket.send(participant_player))
+        send("#{player_name}=", player)
       end
     end
     true
@@ -408,17 +403,18 @@ class TournamentEvent < ApplicationRecord
 
   def update_smashgg_event
     return false unless is_on_smashgg?
+
     if bracket.nil? || !bracket.is_a?(SmashggEvent)
       self.bracket = SmashggEvent.from_url(bracket_url)
       unless bracket
-        puts "Unable to find SmashggEvent: #{bracket_url}"
+        Rails.logger.debug "Unable to find SmashggEvent: #{bracket_url}"
         return false
       end
     else
       bracket.fetch_smashgg_data
     end
     unless bracket.save
-      puts "Unable to save SmashggEvent: #{bracket.errors.full_messages}"
+      Rails.logger.debug "Unable to save SmashggEvent: #{bracket.errors.full_messages}"
       return false
     end
     true
@@ -426,31 +422,33 @@ class TournamentEvent < ApplicationRecord
 
   def update_braacket_tournament
     return false unless is_on_braacket?
+
     if bracket.nil? || !bracket.is_a?(BraacketTournament)
       self.bracket = BraacketTournament.from_url(bracket_url)
     else
       bracket.fetch_braacket_data
     end
     unless bracket.save
-      puts "Unable to save BraacketTournament: #{bracket.errors.full_messages}"
+      Rails.logger.debug "Unable to save BraacketTournament: #{bracket.errors.full_messages}"
       return false
     end
-    puts 'Successfully updated BraacketTournament'
+    Rails.logger.debug 'Successfully updated BraacketTournament'
     true
   end
 
   def update_challonge_tournament
     return false unless is_on_challonge?
+
     if bracket.nil? || !bracket.is_a?(ChallongeTournament)
       self.bracket = ChallongeTournament.from_url(bracket_url)
     else
       bracket.fetch_challonge_data
     end
     unless bracket.save
-      puts "Unable to save ChallongeTournament: #{bracket.errors.full_messages}"
+      Rails.logger.debug "Unable to save ChallongeTournament: #{bracket.errors.full_messages}"
       return false
     end
-    puts 'Successfully updated ChallongeTournament'
+    Rails.logger.debug 'Successfully updated ChallongeTournament'
     true
   end
 
@@ -458,6 +456,7 @@ class TournamentEvent < ApplicationRecord
     return update_smashgg_event if is_on_smashgg?
     return update_braacket_tournament if is_on_braacket?
     return update_challonge_tournament if is_on_challonge?
+
     false
   end
 
@@ -477,6 +476,7 @@ class TournamentEvent < ApplicationRecord
     return complete_with_smashgg if is_on_smashgg?
     return complete_with_braacket if is_on_braacket?
     return complete_with_challonge if is_on_challonge?
+
     false
   end
 
@@ -496,6 +496,7 @@ class TournamentEvent < ApplicationRecord
     return update_with_smashgg if is_on_smashgg?
     return update_with_braacket if is_on_braacket?
     return update_with_challonge if is_on_challonge?
+
     false
   end
 
@@ -507,13 +508,14 @@ class TournamentEvent < ApplicationRecord
 
   def use_available_bracket_players
     return false if bracket.nil?
+
     PLAYER_RANKS.each do |rank|
       player_name = "top#{rank}_player".to_sym
       user_name = "top#{rank}_smashgg_user".to_sym
-      if send(player_name).nil?
-        if player = bracket.send(user_name)&.player
-          self.send("#{player_name}=", player)
-        end
+      next unless send(player_name).nil?
+
+      if player = bracket.send(user_name)&.player
+        send("#{player_name}=", player)
       end
     end
     true
@@ -521,16 +523,16 @@ class TournamentEvent < ApplicationRecord
 
   def self.use_available_players
     with_available_players.order(id: :desc).find_each do |tournament_event|
-      if tournament_event.use_available_bracket_players
-        unless tournament_event.save
-          Rails.logger.debug "Unable to save TournamentEvent ##{tournament_event.id}: #{tournament_event.errors.full_messages}"
-        end
+      if tournament_event.use_available_bracket_players && !tournament_event.save
+        Rails.logger.debug "Unable to save TournamentEvent ##{tournament_event.id}:"
+        Rails.logger.debug tournament_event.errors.full_messages
       end
     end
   end
 
   def graph_url
     return nil unless graph.attached?
+
     graph.service_url
   end
 
@@ -546,12 +548,11 @@ class TournamentEvent < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   include PgSearch::Model
-  multisearchable against: %i(name)
+  multisearchable against: %i[name]
 
   # ---------------------------------------------------------------------------
   # VERSIONS
   # ---------------------------------------------------------------------------
 
-  has_paper_trail unless: Proc.new { ENV['NO_PAPERTRAIL'] }
-
+  has_paper_trail unless: proc { ENV['NO_PAPERTRAIL'] }
 end

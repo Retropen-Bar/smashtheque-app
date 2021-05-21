@@ -93,8 +93,8 @@ class RecurringTournament < ApplicationRecord
            through: :recurring_tournament_contacts,
            source: :user
 
-  has_many :tournament_events
-  has_many :duo_tournament_events
+  has_many :tournament_events, dependent: :nullify
+  has_many :duo_tournament_events, dependent: :nullify
 
   # ---------------------------------------------------------------------------
   # validations

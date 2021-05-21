@@ -13,7 +13,7 @@
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  bracket_id              :bigint
-#  recurring_tournament_id :bigint           not null
+#  recurring_tournament_id :integer
 #  top1_duo_id             :bigint
 #  top2_duo_id             :bigint
 #  top3_duo_id             :bigint
@@ -49,26 +49,23 @@
 #  fk_rails_...  (top7b_duo_id => duos.id)
 #
 class DuoTournamentEvent < ApplicationRecord
-
-  DUO_NAMES = TournamentEvent::PLAYER_RANKS.map{|rank| "top#{rank}_duo".to_sym}.freeze
-  DUO_NAME_RANK = Hash[
-    TournamentEvent::PLAYER_RANKS.map do |rank|
-      [
-        "top#{rank}_duo".to_sym,
-        case rank
-        when '5a', '5b' then 5
-        when '7a', '7b' then 7
-        else rank.to_i
-        end
-      ]
-    end
-  ].freeze
+  DUO_NAMES = TournamentEvent::PLAYER_RANKS.map { |rank| "top#{rank}_duo".to_sym }.freeze
+  DUO_NAME_RANK = TournamentEvent::PLAYER_RANKS.map do |rank|
+    [
+      "top#{rank}_duo".to_sym,
+      case rank
+      when '5a', '5b' then 5
+      when '7a', '7b' then 7
+      else rank.to_i
+      end
+    ]
+  end.to_h.freeze
 
   # ---------------------------------------------------------------------------
   # relations
   # ---------------------------------------------------------------------------
 
-  belongs_to :recurring_tournament
+  belongs_to :recurring_tournament, optional: true
   belongs_to :top1_duo, class_name: :Duo, optional: true
   belongs_to :top2_duo, class_name: :Duo, optional: true
   belongs_to :top3_duo, class_name: :Duo, optional: true
@@ -214,13 +211,16 @@ class DuoTournamentEvent < ApplicationRecord
 
   def first_duo_tournament_event
     return nil if recurring_tournament.nil?
+
     result = recurring_tournament.duo_tournament_events.order(:date).first
     return nil if result.id == id
+
     result
   end
 
   def previous_duo_tournament_event
     return nil if recurring_tournament.nil?
+
     recurring_tournament.duo_tournament_events
                         .where("date < ? OR (date = ? AND name < ?)", date, date, name)
                         .order(date: :desc)
@@ -229,6 +229,7 @@ class DuoTournamentEvent < ApplicationRecord
 
   def next_duo_tournament_event
     return nil if recurring_tournament.nil?
+
     recurring_tournament.duo_tournament_events
                         .where("date > ? OR (date = ? AND name > ?)", date, date, name)
                         .order(:date)
@@ -237,8 +238,10 @@ class DuoTournamentEvent < ApplicationRecord
 
   def last_duo_tournament_event
     return nil if recurring_tournament.nil?
+
     result = recurring_tournament.duo_tournament_events.order(:date).last
     return nil if result.id == id
+
     result
   end
 
@@ -289,7 +292,8 @@ class DuoTournamentEvent < ApplicationRecord
 
   delegate :name,
            to: :recurring_tournament,
-           prefix: true
+           prefix: true,
+           allow_nil: true
 
   DUO_NAMES.each do |duo_name|
     delegate :name,

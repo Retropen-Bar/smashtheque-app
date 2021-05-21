@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_19_223541) do
+ActiveRecord::Schema.define(version: 2021_05_21_205102) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -206,7 +206,7 @@ ActiveRecord::Schema.define(version: 2021_05_19_223541) do
   end
 
   create_table "duo_tournament_events", force: :cascade do |t|
-    t.bigint "recurring_tournament_id", null: false
+    t.integer "recurring_tournament_id"
     t.string "name", null: false
     t.date "date", null: false
     t.integer "participants_count"
@@ -492,7 +492,7 @@ ActiveRecord::Schema.define(version: 2021_05_19_223541) do
   end
 
   create_table "tournament_events", force: :cascade do |t|
-    t.integer "recurring_tournament_id", null: false
+    t.integer "recurring_tournament_id"
     t.string "name", null: false
     t.date "date", null: false
     t.bigint "top1_player_id"
