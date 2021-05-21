@@ -1,9 +1,8 @@
 class RecurringTournamentsController < PublicController
-
   helper_method :user_recurring_tournament_admin?
 
-  before_action :set_recurring_tournament, only: %w(show modal edit update)
-  before_action :verify_recurring_tournament!, only: %w(edit update)
+  before_action :set_recurring_tournament, only: %w[show modal edit update]
+  before_action :verify_recurring_tournament!, only: %w[edit update]
   decorates_assigned :recurring_tournament
 
   has_scope :by_level_in, type: :array
@@ -16,21 +15,21 @@ class RecurringTournamentsController < PublicController
 
   def index
     respond_to do |format|
-      format.html {
+      format.html do
         index_html
-      }
-      format.json {
+      end
+      format.json do
         index_json
-      }
-      format.ics {
+      end
+      format.ics do
         index_ical
-      }
+      end
     end
   end
 
   def index_html
     @recurring_tournaments = apply_scopes(
-      RecurringTournament.order("lower(name)")
+      RecurringTournament.order('lower(name)')
     ).all
     @meta_title = 'Tournois'
   end
@@ -75,9 +74,7 @@ class RecurringTournamentsController < PublicController
     render :modal, layout: false
   end
 
-  def edit
-
-  end
+  def edit; end
 
   def update
     @recurring_tournament.attributes = recurring_tournament_params
@@ -96,14 +93,15 @@ class RecurringTournamentsController < PublicController
 
   def verify_recurring_tournament!
     authenticate_user!
-    unless current_user.is_admin? || user_recurring_tournament_admin?
-      flash[:error] = 'Accès non autorisé'
-      redirect_to @recurring_tournament and return
-    end
+    return if current_user.is_admin? || user_recurring_tournament_admin?
+
+    flash[:error] = 'Accès non autorisé'
+    redirect_to @recurring_tournament
   end
 
   def user_recurring_tournament_admin?
     return false unless user_signed_in?
+
     @recurring_tournament.contacts.each do |user|
       return true if user == current_user
     end
@@ -115,8 +113,9 @@ class RecurringTournamentsController < PublicController
       :name, :recurring_type,
       :date_description, :wday, :starts_at_hour, :starts_at_min,
       :discord_guild_id, :is_online, :level, :size, :registration,
+      :address_name, :address, :latitude, :longitude,
+      :twitter_username, :misc,
       :is_archived
     )
   end
-
 end

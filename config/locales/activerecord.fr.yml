@@ -247,7 +247,7 @@ fr:
         level: Difficulté
         longitude: Longitude
         misc: Autres infos
-        name: Tournoi
+        name: Nom
         recurring_type: Récurrence
         registration: Comment s'inscrire
         size: Taille

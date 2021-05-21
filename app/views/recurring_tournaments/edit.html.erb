@@ -14,25 +14,11 @@
 
       <div class="row">
         <div class="col-6">
-          <h2>Le tournoi</h2>
+          <h2>La série</h2>
 
           <div class="p-3 mb-2 bg-light text-dark">
             <%= f.input :name,
                         required: true %>
-            <%= f.input :recurring_type,
-                        collection: recurring_tournament_recurring_type_select_collection,
-                        input_html: { data: { select2: {} } },
-                        include_blank: false %>
-            <%= f.input :date_description,
-                        hint: 'À remplir pour les tournois non réguliers' %>
-            <%= f.input :wday,
-                        as: :select,
-                        collection: recurring_tournament_wday_select_collection,
-                        input_html: { data: { select2: {} } },
-                        include_blank: false %>
-            <%= f.input :starts_at_hour %>
-            <%= f.input :starts_at_min %>
-            <%= f.input :is_online %>
             <%= f.input :level,
                         collection: recurring_tournament_level_select_collection,
                         input_html: { data: { select2: {} } },
@@ -43,17 +29,53 @@
                         required: true %>
             <%= f.input :is_archived %>
           </div>
-        </div>
-        <div class="col-6">
-          <h2>Autres infos</h2>
+
+          <h2>Contacts</h2>
 
           <div class="p-3 mb-2 bg-light text-dark">
+            <%= f.input :twitter_username %>
             <%= f.input :discord_guild_id,
                         label: 'Serveur Discord',
                         collection: recurring_tournament_discord_guild_select_collection,
                         input_html: { data: { select2: {} } } %>
             <%= f.input :registration,
                         input_html: { rows: 5 } %>
+          </div>
+        </div>
+        <div class="col-6">
+          <h2>Localisation</h2>
+
+          <div class="p-3 mb-2 bg-light text-dark">
+            <%= f.input :is_online,
+                        input_html: {
+                          data: {
+                            toggle: '.online-fields',
+                            untoggle: '.offline-fields'
+                          }
+                        } %>
+            <%= f.input :address_name, wrapper_html: { class: 'offline-fields' } %>
+            <div class="offline-fields">
+              <%= address_input f %>
+            </div>
+            <%= f.input :misc, input_html: { rows: 5 } %>
+          </div>
+
+          <h2>Temporalité</h2>
+
+          <div class="p-3 mb-2 bg-light text-dark">
+            <%= f.input :date_description,
+                        hint: 'À remplir pour les tournois non réguliers' %>
+            <%= f.input :recurring_type,
+                        collection: recurring_tournament_recurring_type_select_collection,
+                        input_html: { data: { select2: {} } },
+                        include_blank: false %>
+            <%= f.input :wday,
+                        as: :select,
+                        collection: recurring_tournament_wday_select_collection,
+                        input_html: { data: { select2: {} } },
+                        include_blank: false %>
+            <%= f.input :starts_at_hour %>
+            <%= f.input :starts_at_min %>
           </div>
         </div>
       </div>
