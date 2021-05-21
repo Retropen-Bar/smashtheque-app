@@ -85,38 +85,52 @@ ActiveAdmin.register RecurringTournament do
   form do |f|
     render 'admin/shared/google_places_api'
     f.semantic_errors *f.object.errors.keys
+    columns do
+      column do
+        f.inputs do
+          f.input :name
+          f.input :date_description
+          f.input :recurring_type,
+                  collection: recurring_tournament_recurring_type_select_collection,
+                  input_html: { data: { select2: {} } },
+                  include_blank: false
+          f.input :wday,
+                  as: :select,
+                  collection: recurring_tournament_wday_select_collection,
+                  input_html: { data: { select2: {} } },
+                  include_blank: false
+          f.input :starts_at_hour
+          f.input :starts_at_min
+          f.input :discord_guild,
+                  collection: recurring_tournament_discord_guild_select_collection,
+                  input_html: { data: { select2: {} } }
+          f.input :level,
+                  collection: recurring_tournament_level_select_collection,
+                  input_html: { data: { select2: {} } },
+                  include_blank: false
+          f.input :size,
+                  as: :select,
+                  collection: recurring_tournament_size_select_collection
+          f.input :registration,
+                  input_html: { rows: 5 }
+          users_input f, :contacts
+        end
+      end
+      column class: 'bordered' do
+        f.input :is_online,
+                input_html: {
+                  data: {
+                    toggle: '.online-fields',
+                    untoggle: '.offline-fields'
+                  }
+                }
+        f.input :address_name, wrapper_html: { class: 'offline-fields' }
+        div class: 'offline-fields' do
+          address_input f
+        end
+      end
+    end
     f.inputs do
-      f.input :name
-      f.input :date_description
-      f.input :recurring_type,
-              collection: recurring_tournament_recurring_type_select_collection,
-              input_html: { data: { select2: {} } },
-              include_blank: false
-      f.input :wday,
-              as: :select,
-              collection: recurring_tournament_wday_select_collection,
-              input_html: { data: { select2: {} } },
-              include_blank: false
-      f.input :starts_at_hour
-      f.input :starts_at_min
-      f.input :discord_guild,
-              collection: recurring_tournament_discord_guild_select_collection,
-              input_html: { data: { select2: {} } }
-      f.input :is_online
-      f.input :level,
-              collection: recurring_tournament_level_select_collection,
-              input_html: { data: { select2: {} } },
-              include_blank: false
-      f.input :size,
-              as: :select,
-              collection: recurring_tournament_size_select_collection
-      f.input :registration,
-              input_html: { rows: 5 }
-      users_input f, :contacts
-
-      f.input :address_name
-      address_input f
-
       f.input :twitter_username
       f.input :misc,
               input_html: { rows: 5 }

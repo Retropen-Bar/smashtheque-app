@@ -1,10 +1,12 @@
 const DATA_KEY = 'data-toggle';
+const DATA_KEY_INVERSE = 'data-untoggle';
 
 let onCheckboxClick = function(input) {
   // console.log('[Toggle] onCheckboxClick', input);
   let $input = $(input);
-  let targetSelector = $input.attr(DATA_KEY);
-  $(targetSelector).toggle($input.is(':checked'));
+  let isChecked = $input.is(':checked');
+  $($input.attr(DATA_KEY)).toggle(isChecked);
+  $($input.attr(DATA_KEY_INVERSE)).toggle(!isChecked);
 };
 
 let init = function() {
