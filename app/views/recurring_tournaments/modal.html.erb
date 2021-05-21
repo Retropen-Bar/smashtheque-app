@@ -1,7 +1,9 @@
 <div class="modal-dialog modal-lg">
   <div class="modal-content">
     <div class="modal-header">
-      <h5 class="modal-title"><%= recurring_tournament.name %></h5>
+      <h5 class="modal-title">
+        <%= link_to recurring_tournament.name, recurring_tournament %>
+      </h5>
       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -26,12 +28,19 @@
             <% if recurring_tournament.is_online? %>
               Online
             <% else %>
-              Offline
+              <%== recurring_tournament.full_address.presence || 'Offline' %>
             <% end %>
           </p>
 
-          <strong>Comment s'inscrire</strong><br/>
-          <pre><%= recurring_tournament.registration %></pre>
+          <% unless recurring_tournament.registration.blank? %>
+            <strong>Comment s'inscrire</strong><br/>
+            <pre><%= recurring_tournament.registration %></pre>
+          <% end %>
+
+          <% unless recurring_tournament.misc.blank? %>
+            <strong>Autres infos</strong>
+            <pre><%= recurring_tournament.misc %></pre>
+          <% end %>
 
         </div>
         <div class="col-6">
@@ -59,20 +68,26 @@
       </div>
 
       <div class="row">
-        <div class="col-6">
+        <% if recurring_tournament.twitter_username %>
+          <div class="col">
+            <p>
+              <strong>Twitter</strong><br/>
+              <%= recurring_tournament.twitter_link %>
+            </p>
+          </div>
+        <% end %>
 
-          <% if recurring_tournament.discord_guild %>
+        <% if recurring_tournament.discord_guild %>
+          <div class="col">
             <p>
               <strong>Discord</strong><br/>
               <%= recurring_tournament.discord_guild.decorate.link %>
             </p>
-          <% end %>
+          </div>
+        <% end %>
 
-        </div>
-        <div class="col-6">
-
-          <% if recurring_tournament.contacts.any? %>
-
+        <% if recurring_tournament.contacts.any? %>
+          <div class="col">
             <p>
               <strong>TOs</strong><br/>
               <% recurring_tournament.contacts.each do |user| %>
@@ -83,10 +98,8 @@
                 <% end %>
               <% end %>
             </p>
-
-          <% end %>
-
-        </div>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>

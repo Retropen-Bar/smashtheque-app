@@ -139,4 +139,11 @@ class RecurringTournamentDecorator < BaseDecorator
     return nil if address.blank?
     "#{address} (#{latitude}, #{longitude})"
   end
+
+  def full_address
+    [
+      address_name,
+      address
+    ].reject(&:blank?).join('<br/>')
+  end
 end
