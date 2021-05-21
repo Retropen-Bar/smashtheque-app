@@ -6,6 +6,7 @@ class Api::V1::SearchController < Api::V1::BaseController
     render json: {
       results: PgSearch.multisearch(params[:term])
                        .where.not(searchable_type: %i(
+                         BraacketTournament
                          ChallongeTournament
                          SmashggEvent
                        ))

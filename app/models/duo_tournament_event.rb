@@ -193,7 +193,7 @@ class DuoTournamentEvent < ApplicationRecord
   end
 
   def self.bracket_autocomplete(term)
-    searchable_types = [ChallongeTournament, SmashggEvent].map(&:to_s)
+    searchable_types = [BraacketTournament, ChallongeTournament, SmashggEvent].map(&:to_s)
 
     {
       results: PgSearch.multisearch(term).where(searchable_type: searchable_types).map do |document|

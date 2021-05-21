@@ -3,15 +3,25 @@ ActiveAdmin.register_page 'Search' do
 
   controller do
     def index
+      results = {}
+      PgSearch.multisearch(params[:term]).each do |document|
+        model = document.searchable.decorate
+        key = model.model_name.human.pluralize
+        results[key] ||= []
+        results[key] << {
+          id: document.id,
+          type: document.searchable_type,
+          icon: model.icon_class,
+          url: url_for([:admin, model.model]),
+          html: model.as_autocomplete_result
+        }
+      end
+
       render json: {
-        results: PgSearch.multisearch(params[:term]).map do |document|
-          model = document.searchable.decorate
+        results: results.map do |klass, items|
           {
-            id: document.id,
-            type: document.searchable_type,
-            icon: model.icon_class,
-            url: url_for([:admin, model.model]),
-            html: model.as_autocomplete_result
+            text: "#{klass} (#{items.count})",
+            children: items
           }
         end
       }

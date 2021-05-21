@@ -10,7 +10,7 @@ gem 'rails', '~> 6.0.3', '>= 6.0.3.5'
 gem 'pg'
 
 # Use Puma as the app server
-gem 'puma', '~> 4.1'
+gem 'puma', '~> 4.3'
 
 # Use SCSS for stylesheets
 gem 'sprockets', '3.7.2' # to fix issue
