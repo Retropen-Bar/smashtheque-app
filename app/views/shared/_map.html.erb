@@ -59,7 +59,8 @@
     icons['<%= key %>'] = L.icon({
       iconUrl: '<%= icon_settings[:icon_url] %>',
       iconSize: <%= icon_settings[:icon_size] %>,
-      iconAnchor: <%= icon_settings[:icon_anchor] %>
+      iconAnchor: <%= icon_settings[:icon_anchor] %>,
+      className: '<%= icon_settings[:class_name] %>'
     });
   <% end %>
 
@@ -77,6 +78,10 @@
       marker = L.marker([<%= marker[:latlng][0] %>, <%= marker[:latlng][1] %>]<%== icon_param %>).addTo(layers['<%= layer_id %>']);
       <% if marker[:popup] %>
         marker.bindPopup('<%= escape_javascript marker[:popup] %>');
+      <% elsif marker[:modal_url] %>
+        marker.on('click', function(ev) {
+          openMapModal('<%= marker[:modal_url] %>');
+        });
       <% end %>
     <% end %>
   <% end %>

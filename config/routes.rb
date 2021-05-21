@@ -92,9 +92,9 @@ Rails.application.routes.draw do
   resources :teams, only: [:index, :edit, :update]
   get 'teams/:id' => 'players#team_index'
 
-  resources :recurring_tournaments, only: [:index, :show, :edit, :update] do
-    resources :tournament_events, only: [:new, :create]
-    resources :duo_tournament_events, only: [:new, :create]
+  resources :recurring_tournaments, only: %i[index show edit update] do
+    resources :tournament_events, only: %i[new create]
+    resources :duo_tournament_events, only: %i[new create]
     collection do
       get 'contacts' => 'players#recurring_tournament_contacts_index'
     end

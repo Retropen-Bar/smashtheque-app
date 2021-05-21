@@ -13,6 +13,8 @@ class RecurringTournamentsController < PublicController
   has_scope :per
   has_scope :on_abc
 
+  layout :select_layout
+
   def index
     respond_to do |format|
       format.html do
@@ -28,6 +30,7 @@ class RecurringTournamentsController < PublicController
   end
 
   def index_html
+    @map = params[:map].to_i == 1
     @recurring_tournaments = apply_scopes(
       RecurringTournament.order('lower(name)')
     ).all
@@ -117,5 +120,9 @@ class RecurringTournamentsController < PublicController
       :twitter_username, :misc,
       :is_archived
     )
+  end
+
+  def select_layout
+    @map ? 'map' : 'application'
   end
 end

@@ -1,17 +1,27 @@
-<div class="text-center">
-  <div id="list-toolbar">
-    <h1 class="page-title">Tournois</h1>
-    <%= render 'shared/letters' %>
-    <%= render 'shared/pagination', collection: @recurring_tournaments %>
-  </div>
-</div>
+<% if @map %>
 
-<div class="cards-list recurring-tournaments">
-  <% @recurring_tournaments.each do |recurring_tournament| %>
-    <div class="card-container">
-      <%= render 'recurring_tournament', recurring_tournament: recurring_tournament.decorate %>
-    </div>
+  <%= recurring_tournaments_map(@recurring_tournaments.limit(nil).offset(0)) do %>
+    <h1 id="map-title">Tournois offline</h1>
   <% end %>
-</div>
 
-<%= render 'shared/pagination', collection: @recurring_tournaments %>
+<% else %>
+
+  <div class="text-center">
+    <div id="list-toolbar">
+      <h1 class="page-title">Tournois</h1>
+      <%= render 'shared/letters' %>
+      <%= render 'shared/pagination', collection: @recurring_tournaments %>
+    </div>
+  </div>
+
+  <div class="cards-list recurring-tournaments">
+    <% @recurring_tournaments.each do |recurring_tournament| %>
+      <div class="card-container">
+        <%= render 'recurring_tournament', recurring_tournament: recurring_tournament.decorate %>
+      </div>
+    <% end %>
+  </div>
+
+  <%= render 'shared/pagination', collection: @recurring_tournaments %>
+
+<% end %>
