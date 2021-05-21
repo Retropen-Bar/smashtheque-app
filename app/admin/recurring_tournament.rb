@@ -183,10 +183,7 @@ ActiveAdmin.register RecurringTournament do
       column do
         if resource.geocoded?
           single_address_map({
-            name: [
-              resource.address_name,
-              resource.address
-            ].join('<br/>').html_safe,
+            name: resource.full_address.html_safe,
             latitude: resource.latitude,
             longitude: resource.longitude
           })
