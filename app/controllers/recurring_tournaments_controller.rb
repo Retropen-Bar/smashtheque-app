@@ -8,6 +8,7 @@ class RecurringTournamentsController < PublicController
   has_scope :by_level_in, type: :array
   has_scope :by_size_geq
   has_scope :by_size_leq
+  has_scope :by_is_online
   has_scope :administrated_by
   has_scope :page, default: 1
   has_scope :per
@@ -33,7 +34,7 @@ class RecurringTournamentsController < PublicController
     @map = params[:map].to_i == 1
     @recurring_tournaments = apply_scopes(
       RecurringTournament.order('lower(name)')
-    ).all
+    ).includes(:discord_guild).all
     @meta_title = 'Tournois'
   end
 
@@ -86,6 +87,17 @@ class RecurringTournamentsController < PublicController
     else
       render :edit
     end
+  end
+
+  protected
+
+  helper_method :current_page_params
+  def current_page_params
+    params.permit(
+      :by_size_geq, :by_size_leq, :by_is_online,
+      :page, :per, :on_abc,
+      by_level_in: []
+    )
   end
 
   private

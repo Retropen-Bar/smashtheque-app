@@ -4,7 +4,17 @@
       <%= fas_icon_tag :chess %>
       <%= recurring_tournament.tournament_events_count %>
     </div>
-    <%= link_to recurring_tournament.name_with_logo(64), recurring_tournament_path(recurring_tournament) %>
+    <%= link_to(recurring_tournament, class: 'recurring-tournament-link') do %>
+      <%= recurring_tournament.discord_guild_icon_image_tag(64) %>
+      <div class="recurring-tournament-name-and-tags">
+        <div>
+          <%= recurring_tournament.name %>
+        </div>
+        <div>
+          <%= recurring_tournament.badges %>
+        </div>
+      </div>
+    <% end %>
   </div>
   <%= admin_edit_link(recurring_tournament) %>
 </div>

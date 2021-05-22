@@ -146,4 +146,20 @@ class RecurringTournamentDecorator < BaseDecorator
       address
     ].reject(&:blank?).join('<br/>')
   end
+
+  def badges
+    (
+      '' + (
+        if is_online?
+          h.tag.span 'Online', class: 'badge badge-info'
+        else
+          h.tag.span 'Offline', class: 'badge badge-success'
+        end
+      ) + ' ' + (
+        h.tag.span  level_text,
+                    class: 'badge',
+                    style: "background-color: #{self.class.level_color(level)}; color: white"
+      )
+    ).html_safe
+  end
 end
