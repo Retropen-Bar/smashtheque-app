@@ -1,6 +1,5 @@
 class PagesController < PublicController
-
-  before_action :set_static_page, only: %i(show)
+  before_action :set_static_page, only: %i[show]
 
   decorates_assigned :page
 
@@ -27,5 +26,4 @@ class PagesController < PublicController
   def set_static_page
     @static = true
   end
-
 end
