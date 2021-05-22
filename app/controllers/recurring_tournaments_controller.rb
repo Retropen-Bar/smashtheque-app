@@ -91,7 +91,6 @@ class RecurringTournamentsController < PublicController
 
   protected
 
-  helper_method :current_page_params
   def current_page_params
     params.permit(
       :by_size_geq, :by_size_leq, :by_is_online,
