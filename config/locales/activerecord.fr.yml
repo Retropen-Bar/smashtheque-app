@@ -112,18 +112,21 @@ fr:
         reward: Récompense
         reward_duo_condition: Condition
         duo_tournament_event: Édition
-      duo_tournament_event:
-        << : *SHARED
+      base_tournament_event: &TOURNAMENT_EVENT
         bracket: Bracket
         bracket_gid: Bracket
         bracket_url: URL du bracket
         date: Date
         graph: Graph
         is_complete: Complet
+        is_online: Online ?
         is_out_of_ranking: Non noté ?
         name: Nom
         participants_count: Participants
         recurring_tournament: Série
+      duo_tournament_event:
+        << : *SHARED
+        << : *TOURNAMENT_EVENT
         top1_duo: Top 1
         top1_duo_id: Top 1
         top2_duo: Top 2
@@ -290,6 +293,7 @@ fr:
         online_2v2: Online 2v2
       reward_condition:
         << : *SHARED
+        is_online: Online ?
         level: Difficulté
         player_reward_conditions: Obtensions
         points: Fragments d'étoiles
@@ -369,16 +373,7 @@ fr:
         twitter_username: Compte Twitter
       tournament_event:
         << : *SHARED
-        bracket: Bracket
-        bracket_gid: Bracket
-        bracket_url: URL du bracket
-        date: Date
-        graph: Graph
-        is_complete: Complet
-        is_out_of_ranking: Non noté ?
-        name: Nom
-        participants_count: Participants
-        recurring_tournament: Série
+        << : *TOURNAMENT_EVENT
         top1_player: Top 1
         top1_player_id: Top 1
         top2_player: Top 2

@@ -29,8 +29,8 @@ ActiveAdmin.register RewardCondition do
 
   scope :all, default: true
 
-  scope :online
-  scope :offline
+  scope :online, group: :location
+  scope :offline, group: :location
 
   filter :rank,
          as: :select,
