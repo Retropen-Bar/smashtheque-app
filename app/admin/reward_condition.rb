@@ -17,18 +17,13 @@ ActiveAdmin.register RewardCondition do
   index do
     selectable_column
     id_column
-    column :rank do |decorated|
-      decorated.rank_name
-    end
+    column :rank, &:rank_name
+    column :is_online
     column :size_min
     column :size_max
-    column :reward do |decorated|
-      decorated.reward_admin_link
-    end
+    column :reward, &:reward_admin_link
     column :points
-    column :player_reward_conditions do |decorated|
-      decorated.player_reward_conditions_admin_link
-    end
+    column :player_reward_conditions, &:player_reward_conditions_admin_link
     actions
   end
 
@@ -60,6 +55,7 @@ ActiveAdmin.register RewardCondition do
               collection: reward_condition_rank_select_collection,
               input_html: { data: { select2: {} } },
               include_blank: false
+      f.input :is_online
       f.input :size_min
       f.input :size_max
       f.input :reward,
@@ -70,7 +66,7 @@ ActiveAdmin.register RewardCondition do
     f.actions
   end
 
-  permit_params :rank, :size_min, :size_max, :reward_id, :points
+  permit_params :rank, :is_online, :size_min, :size_max, :reward_id, :points
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -78,18 +74,13 @@ ActiveAdmin.register RewardCondition do
 
   show do
     attributes_table do
-      row :rank do |decorated|
-        decorated.rank_name
-      end
+      row :rank, &:rank_name
+      row :is_online
       row :size_min
       row :size_max
-      row :reward do |decorated|
-        decorated.reward_admin_link
-      end
+      row :reward, &:reward_admin_link
       row :points
-      row :player_reward_conditions do |decorated|
-        decorated.player_reward_conditions_admin_link
-      end
+      row :player_reward_conditions, &:player_reward_conditions_admin_link
       row :created_at
       row :updated_at
     end
