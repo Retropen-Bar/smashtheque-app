@@ -1,5 +1,4 @@
 ActiveAdmin.register RecurringTournament do
-
   decorate_with ActiveAdmin::RecurringTournamentDecorator
 
   has_paper_trail
@@ -20,30 +19,18 @@ ActiveAdmin.register RecurringTournament do
     column :name do |decorated|
       link_to decorated.name, [:admin, decorated.model]
     end
-    column :tournament_events do |decorated|
-      decorated.tournament_events_admin_link
-    end
-    column :duo_tournament_events do |decorated|
-      decorated.duo_tournament_events_admin_link
-    end
-    column :recurring_type do |decorated|
-      decorated.recurring_type_text
-    end
-    column 'Date' do |decorated|
-      decorated.full_date
-    end
+    column :tournament_events, &:tournament_events_admin_link
+    column :duo_tournament_events, &:duo_tournament_events_admin_link
+    column :recurring_type, &:recurring_type_text
+    column 'Date', &:full_date
     column :is_online
-    column :level do |decorated|
-      decorated.short_level_status
-    end
+    column :level, &:short_level_status
     column :size
     column :contacts do |decorated|
       decorated.contacts_admin_links(size: 32).join('<br/>').html_safe
     end
     column :is_archived
-    column :created_at do |decorated|
-      decorated.created_at_date
-    end
+    column :created_at, &:created_at_date
     actions
   end
 
@@ -71,7 +58,7 @@ ActiveAdmin.register RecurringTournament do
   action_item :rebuild,
               only: :index,
               if: proc { current_user.is_root? } do
-    link_to 'Rebuild', [:rebuild, :admin, :recurring_tournaments], class: 'blue'
+    link_to 'Rebuild', %i[rebuild admin recurring_tournaments], class: 'blue'
   end
   collection_action :rebuild do
     RetropenBotScheduler.rebuild_online_tournaments
@@ -84,7 +71,7 @@ ActiveAdmin.register RecurringTournament do
 
   form do |f|
     render 'admin/shared/google_places_api'
-    f.semantic_errors *f.object.errors.keys
+    f.semantic_errors(*f.object.errors.keys)
     columns do
       column do
         f.inputs 'La série' do
@@ -196,5 +183,4 @@ ActiveAdmin.register RecurringTournament do
   action_item :public, only: :show do
     link_to 'Page publique', resource, class: 'green'
   end
-
 end

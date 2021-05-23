@@ -1,10 +1,9 @@
 ActiveAdmin.register TournamentEvent do
-
   decorate_with ActiveAdmin::TournamentEventDecorator
 
   sidebar 'Autres éditions', only: :show do
     div class: 'tournament-events-nav-links' do
-      resource.tournament_events_nav_links
+      resource.events_nav_links
     end
   end
 
@@ -44,12 +43,9 @@ ActiveAdmin.register TournamentEvent do
       link_to decorated.name, [:admin, decorated.model]
     end
     column :date
-    column :bracket_url do |decorated|
-      decorated.bracket_icon_link
-    end
-    column :bracket, sortable: :bracket do |decorated|
-      decorated.bracket_admin_link
-    end
+    column :bracket_url, &:bracket_icon_link
+    column :bracket, sortable: :bracket, &:bracket_admin_link
+    column :is_online, &:online?
     column :participants_count
     TournamentEvent::PLAYER_NAMES.each do |player_name|
       column player_name do |decorated|
@@ -62,13 +58,17 @@ ActiveAdmin.register TournamentEvent do
   end
 
   scope :all, default: true
-  scope :with_missing_graph
-  scope :with_missing_players
-  scope :with_missing_data
+
+  scope :with_missing_graph, group: :missing
+  scope :with_missing_players, group: :missing
+  scope :with_missing_data, group: :missing
 
   scope :on_smashgg, group: :bracket
   scope :on_braacket, group: :bracket
   scope :on_challonge, group: :bracket
+
+  scope :online, group: :location
+  scope :offline, group: :location
 
   filter :recurring_tournament
   filter :name
@@ -90,12 +90,13 @@ ActiveAdmin.register TournamentEvent do
 
   action_item :other_actions, only: :index do
     dropdown_menu 'Autres actions' do
-      if available_brackets_count = TournamentEvent.with_available_bracket.count
+      if (available_brackets_count = TournamentEvent.with_available_bracket.count)
         item "Récupérer les #{available_brackets_count} brackets disponibles",
-                action: :update_available_brackets
+             action: :update_available_brackets
       end
-      if with_available_players_count = TournamentEvent.with_available_players.count
-        item "Ajouter les #{with_available_players_count} joueurs disponibles", action: :use_available_players
+      if (with_available_players_count = TournamentEvent.with_available_players.count)
+        item "Ajouter les #{with_available_players_count} joueurs disponibles",
+             action: :use_available_players
       end
     end
   end
@@ -163,7 +164,7 @@ ActiveAdmin.register TournamentEvent do
                         }
                       }
                     },
-                    include_blank: "Aucun"
+                    include_blank: 'Aucun'
             f.input :name
             f.input :date
             f.input :participants_count
@@ -171,6 +172,7 @@ ActiveAdmin.register TournamentEvent do
               hint = f.object.decorate.send("#{player_name}_bracket_suggestion")
               player_input f, name: player_name, hint: hint
             end
+            f.input :is_online, hint: "Seulement si le tournoi n'appartient pas à une série"
             f.input :is_complete
             f.input :is_out_of_ranking
           end
@@ -184,7 +186,7 @@ ActiveAdmin.register TournamentEvent do
                 :top1_player_id, :top2_player_id, :top3_player_id,
                 :top4_player_id, :top5a_player_id, :top5b_player_id,
                 :top7a_player_id, :top7b_player_id,
-                :is_complete, :is_out_of_ranking,
+                :is_online, :is_complete, :is_out_of_ranking,
                 :bracket_url, :bracket_gid,
                 :graph
 
@@ -204,34 +206,25 @@ ActiveAdmin.register TournamentEvent do
           row :name
           row :date
           row :participants_count
-          row :bracket_url do |decorated|
-            decorated.bracket_link
-          end
+          row :bracket_url, &:bracket_link
           TournamentEvent::PLAYER_NAMES.each do |player_name|
             row player_name do |decorated|
               decorated.send("#{player_name}_admin_link")
             end
           end
+          row :is_online, &:online?
           row :is_complete
           row :is_out_of_ranking
-          row :bracket do |decorated|
-            decorated.bracket_admin_link
-          end
+          row :bracket, &:bracket_admin_link
           row :created_at
           row :updated_at
         end
         panel 'Récompenses obtenues', style: 'margin-top: 50px' do
           table_for resource.player_reward_conditions.admin_decorate,
                     i18n: PlayerRewardCondition do
-            column :reward_condition do |decorated|
-              decorated.reward_condition_admin_link
-            end
-            column :player do |decorated|
-              decorated.player_admin_link
-            end
-            column :reward do |decorated|
-              decorated.reward_admin_link
-            end
+            column :reward_condition, &:reward_condition_admin_link
+            column :player, &:player_admin_link
+            column :reward, &:reward_admin_link
             column :points
           end
         end
@@ -247,19 +240,11 @@ ActiveAdmin.register TournamentEvent do
 
   action_item :other_actions, only: :show do
     dropdown_menu 'Autres actions' do
-      if resource.is_on_smashgg?
-        item 'Compléter avec smash.gg', action: :complete_with_bracket
-      end
-      if resource.is_on_braacket?
-        item 'Compléter avec Braacket', action: :complete_with_bracket
-      end
-      if resource.is_on_challonge?
-        item 'Compléter avec Challonge', action: :complete_with_bracket
-      end
+      item 'Compléter avec smash.gg', action: :complete_with_bracket if resource.is_on_smashgg?
+      item 'Compléter avec Braacket', action: :complete_with_bracket if resource.is_on_braacket?
+      item 'Compléter avec Challonge', action: :complete_with_bracket if resource.is_on_challonge?
       item 'Recalculer les récompenses', action: :compute_rewards
-      if resource.graph.attached?
-        item 'Supprimer le graph', action: :purge_graph
-      end
+      item 'Supprimer le graph', action: :purge_graph if resource.graph.attached?
     end
   end
 
@@ -276,8 +261,8 @@ ActiveAdmin.register TournamentEvent do
     if resource.complete_with_bracket && resource.save
       redirect_to request.referer, notice: 'Données mises à jour'
     else
-      puts "Model errors: #{resource.errors.full_messages}"
-      puts "Bracket errors: #{resource.bracket&.errors&.full_messages}"
+      Rails.logger.debug "Model errors: #{resource.errors.full_messages}"
+      Rails.logger.debug "Bracket errors: #{resource.bracket&.errors&.full_messages}"
       flash[:error] = 'Mise à jour échouée'
       redirect_to request.referer
     end
@@ -287,5 +272,4 @@ ActiveAdmin.register TournamentEvent do
     resource.compute_rewards
     redirect_to request.referer, notice: 'Calcul effectué'
   end
-
 end

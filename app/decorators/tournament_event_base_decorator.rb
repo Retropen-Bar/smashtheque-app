@@ -24,7 +24,7 @@ class TournamentEventBaseDecorator < BaseDecorator
   def bracket_link
     return nil if bracket_url.blank?
 
-    h.link_to bracket_url, bracket_url, target: '_blank'
+    h.link_to bracket_url, bracket_url, target: '_blank', rel: :noopener
   end
 
   def bracket_icon
@@ -64,5 +64,57 @@ class TournamentEventBaseDecorator < BaseDecorator
     event.summary = name
     event.description = full_name
     event
+  end
+
+  def first_event_link(options = {})
+    event = first_event
+    if event
+      event.decorate.link(options)
+    else
+      options[:class] = [
+        options[:class],
+        :disabled
+      ].reject(&:blank?).join(' ')
+      h.link_to options[:label], '#', options
+    end
+  end
+
+  def previous_event_link(options = {})
+    event = previous_event
+    if event
+      event.decorate.link(options)
+    else
+      options[:class] = [
+        options[:class],
+        :disabled
+      ].reject(&:blank?).join(' ')
+      h.link_to options[:label], '#', options
+    end
+  end
+
+  def next_event_link(options = {})
+    event = next_event
+    if event
+      event.decorate.link(options)
+    else
+      options[:class] = [
+        options[:class],
+        :disabled
+      ].reject(&:blank?).join(' ')
+      h.link_to options[:label], '#', options
+    end
+  end
+
+  def last_event_link(options = {})
+    event = last_event
+    if event
+      event.decorate.link(options)
+    else
+      options[:class] = [
+        options[:class],
+        :disabled
+      ].reject(&:blank?).join(' ')
+      h.link_to options[:label], '#', options
+    end
   end
 end

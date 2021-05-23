@@ -57,8 +57,12 @@ ActiveAdmin.register Reward do
   end
 
   scope :all, default: true
-  scope :online_1v1
-  scope :online_2v2
+
+  scope :online_1v1, group: :online
+  scope :online_2v2, group: :online
+
+  scope :online_1v1, group: :offline
+  scope :online_2v2, group: :offline
 
   filter :category,
          as: :select,

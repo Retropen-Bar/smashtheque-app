@@ -3,6 +3,7 @@
 # Table name: reward_conditions
 #
 #  id         :bigint           not null, primary key
+#  is_online  :boolean          default(FALSE), not null
 #  points     :integer          not null
 #  rank       :integer          not null
 #  size_max   :integer          not null
@@ -20,7 +21,6 @@
 #  fk_rails_...  (reward_id => rewards.id)
 #
 class RewardCondition < ApplicationRecord
-
   RANKS = [1, 2, 3, 4, 5, 7].freeze
 
   # ---------------------------------------------------------------------------
@@ -46,16 +46,31 @@ class RewardCondition < ApplicationRecord
   # SCOPES
   # ---------------------------------------------------------------------------
 
-  scope :by_rank, -> v { where(rank: v) }
+  scope :by_is_online, ->(v) { where(is_online: v) }
+  scope :online, -> { where(is_online: true) }
+  scope :offline, -> { where(is_online: false) }
+
+  scope :by_rank, ->(v) { where(rank: v) }
 
   def self.for_size(size)
-    where("size_min <= ?", size).where("size_max >= ?", size)
+    where('size_min <= ?', size).where('size_max >= ?', size)
+  end
+
+  # ---------------------------------------------------------------------------
+  # HELPERS
+  # ---------------------------------------------------------------------------
+
+  def online?
+    is_online?
+  end
+
+  def offline?
+    !online?
   end
 
   # ---------------------------------------------------------------------------
   # VERSIONS
   # ---------------------------------------------------------------------------
 
-  has_paper_trail unless: Proc.new { ENV['NO_PAPERTRAIL'] }
-
+  has_paper_trail unless: proc { ENV['NO_PAPERTRAIL'] }
 end

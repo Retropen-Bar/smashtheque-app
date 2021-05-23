@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_21_205102) do
+ActiveRecord::Schema.define(version: 2021_05_23_134822) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -225,6 +225,7 @@ ActiveRecord::Schema.define(version: 2021_05_21_205102) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "is_out_of_ranking", default: false, null: false
+    t.boolean "is_online", default: false, null: false
     t.index ["bracket_type", "bracket_id"], name: "index_duo_tournament_events_on_bracket_type_and_bracket_id"
     t.index ["recurring_tournament_id"], name: "index_duo_tournament_events_on_recurring_tournament_id"
     t.index ["top1_duo_id"], name: "index_duo_tournament_events_on_top1_duo_id"
@@ -386,6 +387,7 @@ ActiveRecord::Schema.define(version: 2021_05_21_205102) do
     t.integer "points", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "is_online", default: false, null: false
     t.index ["reward_id"], name: "index_reward_conditions_on_reward_id"
   end
 
@@ -511,6 +513,7 @@ ActiveRecord::Schema.define(version: 2021_05_21_205102) do
     t.string "bracket_type"
     t.bigint "bracket_id"
     t.boolean "is_out_of_ranking", default: false, null: false
+    t.boolean "is_online", default: false, null: false
     t.index ["bracket_type", "bracket_id"], name: "index_tournament_events_on_bracket_type_and_bracket_id"
     t.index ["recurring_tournament_id"], name: "index_tournament_events_on_recurring_tournament_id"
     t.index ["top1_player_id"], name: "index_tournament_events_on_top1_player_id"

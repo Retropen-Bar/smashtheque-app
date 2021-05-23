@@ -32,6 +32,11 @@ ActiveAdmin.register RewardCondition do
     actions
   end
 
+  scope :all, default: true
+
+  scope :online
+  scope :offline
+
   filter :rank,
          as: :select,
          collection: proc { reward_condition_rank_select_collection },
