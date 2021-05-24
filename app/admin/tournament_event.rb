@@ -47,7 +47,7 @@ ActiveAdmin.register TournamentEvent do
     column :bracket, sortable: :bracket, &:bracket_admin_link
     column :is_online, &:online?
     column :participants_count
-    TournamentEvent::PLAYER_NAMES.each do |player_name|
+    TournamentEvent::TOP_NAMES.each do |player_name|
       column player_name do |decorated|
         decorated.send("#{player_name}_admin_link")
       end
@@ -168,7 +168,7 @@ ActiveAdmin.register TournamentEvent do
             f.input :name
             f.input :date
             f.input :participants_count
-            TournamentEvent::PLAYER_NAMES.each do |player_name|
+            TournamentEvent::TOP_NAMES.each do |player_name|
               hint = f.object.decorate.send("#{player_name}_bracket_suggestion")
               player_input f, name: player_name, hint: hint
             end
@@ -207,7 +207,7 @@ ActiveAdmin.register TournamentEvent do
           row :date
           row :participants_count
           row :bracket_url, &:bracket_link
-          TournamentEvent::PLAYER_NAMES.each do |player_name|
+          TournamentEvent::TOP_NAMES.each do |player_name|
             row player_name do |decorated|
               decorated.send("#{player_name}_admin_link")
             end

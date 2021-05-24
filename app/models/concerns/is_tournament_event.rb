@@ -9,6 +9,8 @@ module IsTournamentEvent
     belongs_to :recurring_tournament, optional: true
     belongs_to :bracket, polymorphic: true, optional: true
 
+    has_many :met_reward_conditions, dependent: :destroy
+
     has_one_attached :graph
 
     # ---------------------------------------------------------------------------
@@ -159,6 +161,38 @@ module IsTournamentEvent
       return nil if result.id == id
 
       result
+    end
+
+    def compute_rewards
+      ids = []
+
+      if !is_out_of_ranking? && (participants_count || 0) > 0
+        reward_conditions = RewardCondition.by_is_online(
+          online?
+        ).by_is_duo(
+          duo?
+        ).for_size(
+          participants_count
+        )
+
+        TOP_NAMES.each do |top_name|
+          top = send(top_name)
+          next if top.nil?
+
+          reward_condition = reward_conditions.by_rank(
+            TOP_NAME_RANK[top_name]
+          ).first
+          next if reward_condition.nil?
+
+          ids << MetRewardCondition.where(
+            awarded: top,
+            event: self,
+            reward_condition: reward_condition
+          ).first_or_create!.id
+        end
+      end
+
+      met_reward_conditions.where.not(id: ids).destroy_all
     end
 
     def self.compute_all_rewards

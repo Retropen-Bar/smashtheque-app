@@ -49,7 +49,7 @@
             <%= f.input :name %>
             <%= f.input :date %>
             <%= f.input :participants_count %>
-            <% TournamentEvent::PLAYER_NAMES.each do |player_name| %>
+            <% TournamentEvent::TOP_NAMES.each do |player_name| %>
               <% hint = f.object.decorate.send("#{player_name}_bracket_suggestion") %>
               <%= player_input f,
                                name: "#{player_name}_id",

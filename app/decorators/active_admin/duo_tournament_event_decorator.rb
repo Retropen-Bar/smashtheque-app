@@ -4,7 +4,7 @@ module ActiveAdmin
 
     decorates :duo_tournament_event
 
-    DuoTournamentEvent::DUO_NAMES.each do |duo_name|
+    DuoTournamentEvent::TOP_NAMES.each do |duo_name|
       define_method "#{duo_name}_admin_link" do
         send(duo_name)&.admin_decorate&.admin_link
       end

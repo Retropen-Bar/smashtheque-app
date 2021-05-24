@@ -1,6 +1,6 @@
 class DuoTournamentEventDecorator < TournamentEventBaseDecorator
   def duo_rank(duo_id)
-    DuoTournamentEvent::DUO_NAMES.each do |duo_name|
+    DuoTournamentEvent::TOP_NAMES.each do |duo_name|
       return duo_name if send("#{duo_name}_id") == duo_id
     end
     nil
@@ -19,7 +19,7 @@ class DuoTournamentEventDecorator < TournamentEventBaseDecorator
     end
   end
 
-  TournamentEvent::PLAYER_RANKS.each do |rank|
+  TournamentEvent::TOP_RANKS.each do |rank|
     duo_name = "top#{rank}_duo".to_sym
     define_method "#{duo_name}_bracket_suggestion" do
       return nil if bracket.nil?

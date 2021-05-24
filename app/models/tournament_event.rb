@@ -55,17 +55,22 @@ class TournamentEvent < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   include IsTournamentEvent
+
   def recurring_tournament_events
     recurring_tournament.tournament_events
+  end
+
+  def duo?
+    false
   end
 
   # ---------------------------------------------------------------------------
   # CONSTANTS
   # ---------------------------------------------------------------------------
 
-  PLAYER_RANKS = %w[1 2 3 4 5a 5b 7a 7b].freeze
-  PLAYER_NAMES = PLAYER_RANKS.map { |rank| "top#{rank}_player".to_sym }.freeze
-  PLAYER_NAME_RANK = PLAYER_RANKS.map do |rank|
+  TOP_RANKS = %w[1 2 3 4 5a 5b 7a 7b].freeze
+  TOP_NAMES = TOP_RANKS.map { |rank| "top#{rank}_player".to_sym }.freeze
+  TOP_NAME_RANK = TOP_RANKS.map do |rank|
     [
       "top#{rank}_player".to_sym,
       case rank
@@ -89,8 +94,6 @@ class TournamentEvent < ApplicationRecord
   belongs_to :top7a_player, class_name: :Player, optional: true
   belongs_to :top7b_player, class_name: :Player, optional: true
 
-  has_many :player_reward_conditions, dependent: :destroy
-
   # ---------------------------------------------------------------------------
   # validations
   # ---------------------------------------------------------------------------
@@ -99,13 +102,13 @@ class TournamentEvent < ApplicationRecord
 
   def unique_players
     all_player_ids = player_ids
-    duplicate = PLAYER_NAMES.reverse.find do |player_name|
+    duplicate = TOP_NAMES.reverse.find do |player_name|
       player_id = send(player_name)
       player_id && all_player_ids.count(player_id) > 1
     end
     return unless duplicate
 
-    original = PLAYER_NAMES.find do |player_name|
+    original = TOP_NAMES.find do |player_name|
       send(player_name) == send(duplicate)
     end
     errors.add(
@@ -122,7 +125,7 @@ class TournamentEvent < ApplicationRecord
     where(
       is_complete: false
     ).where(
-      PLAYER_NAMES.map do |player_name|
+      TOP_NAMES.map do |player_name|
         "#{player_name}_id IS NULL"
       end.join(' OR ')
     )
@@ -130,10 +133,10 @@ class TournamentEvent < ApplicationRecord
 
   def self.with_player(player_id)
     where(
-      PLAYER_NAMES.map do |player_name|
+      TOP_NAMES.map do |player_name|
         "#{player_name}_id = ?"
       end.join(' OR '),
-      *PLAYER_NAMES.map { player_id }
+      *TOP_NAMES.map { player_id }
     )
   end
 
@@ -153,33 +156,9 @@ class TournamentEvent < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   def player_ids
-    PLAYER_NAMES.map do |player_name|
+    TOP_NAMES.map do |player_name|
       send(player_name)
     end.compact
-  end
-
-  def compute_rewards
-    ids = []
-
-    if !is_out_of_ranking? && (participants_count || 0) > 0
-      reward_conditions = RewardCondition.by_is_online(online?).for_size(participants_count)
-      PLAYER_NAMES.each do |player_name|
-        if player = send(player_name)
-          reward_condition = reward_conditions.by_rank(
-            PLAYER_NAME_RANK[player_name]
-          ).first
-          if reward_condition
-            ids << PlayerRewardCondition.where(
-              player: player,
-              tournament_event: self,
-              reward_condition: reward_condition
-            ).first_or_create!.id
-          end
-        end
-      end
-    end
-
-    player_reward_conditions.where.not(id: ids).destroy_all
   end
 
   def as_json(options = {})
@@ -199,7 +178,7 @@ class TournamentEvent < ApplicationRecord
     ))
   end
 
-  PLAYER_NAMES.each do |player_name|
+  TOP_NAMES.each do |player_name|
     delegate :name,
              to: player_name,
              prefix: true,
@@ -221,7 +200,7 @@ class TournamentEvent < ApplicationRecord
     if replace_existing_values || bracket_url.blank?
       self.bracket_url = bracket.smashgg_url
     end
-    PLAYER_RANKS.each do |rank|
+    TOP_RANKS.each do |rank|
       player_name = "top#{rank}_player".to_sym
       user_name = "top#{rank}_smashgg_user".to_sym
       if replace_existing_values || send(player_name).nil?
@@ -248,7 +227,7 @@ class TournamentEvent < ApplicationRecord
     if replace_existing_values || bracket_url.blank?
       self.bracket_url = bracket.braacket_url
     end
-    PLAYER_RANKS.each do |rank|
+    TOP_RANKS.each do |rank|
       player_name = "top#{rank}_player".to_sym
       participant_player = "top#{rank}_participant_player".to_sym
       if replace_existing_values || send(player_name).nil?
@@ -269,7 +248,7 @@ class TournamentEvent < ApplicationRecord
       self.participants_count = bracket.participants_count
     end
     self.bracket_url = bracket.challonge_url if replace_existing_values || bracket_url.blank?
-    PLAYER_RANKS.each do |rank|
+    TOP_RANKS.each do |rank|
       player_name = "top#{rank}_player".to_sym
       participant_player = "top#{rank}_participant_player".to_sym
       next unless replace_existing_values || send(player_name).nil?
@@ -284,7 +263,7 @@ class TournamentEvent < ApplicationRecord
   def use_available_bracket_players
     return false if bracket.nil?
 
-    PLAYER_RANKS.each do |rank|
+    TOP_RANKS.each do |rank|
       player_name = "top#{rank}_player".to_sym
       user_name = "top#{rank}_smashgg_user".to_sym
       next unless send(player_name).nil?

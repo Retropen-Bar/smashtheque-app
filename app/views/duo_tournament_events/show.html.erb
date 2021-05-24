@@ -45,7 +45,7 @@
 
     <div class="row justify-content-center">
       <div class="col-auto">
-        <% DuoTournamentEvent::DUO_NAMES.each do |duo_name| %>
+        <% DuoTournamentEvent::TOP_NAMES.each do |duo_name| %>
           <div class="my-3">
             <strong>
               <%= DuoTournamentEvent.human_attribute_name("rank.#{duo_name}") %> :

@@ -25,7 +25,7 @@
 #  index_challonge_tournaments_on_slug          (slug) UNIQUE
 #
 class ChallongeTournament < ApplicationRecord
-  PARTICIPANT_NAMES = TournamentEvent::PLAYER_RANKS.map do |rank|
+  PARTICIPANT_NAMES = TournamentEvent::TOP_RANKS.map do |rank|
     "top#{rank}_participant_name".to_sym
   end.freeze
 
@@ -160,7 +160,7 @@ class ChallongeTournament < ApplicationRecord
   def self.participant_player(participant_name)
     return nil if participant_name.blank?
 
-    player_ids = TournamentEvent::PLAYER_RANKS.map do |rank|
+    player_ids = TournamentEvent::TOP_RANKS.map do |rank|
       joins(:tournament_event).where(
         "top#{rank}_participant_name" => participant_name
       ).pluck(
@@ -172,7 +172,7 @@ class ChallongeTournament < ApplicationRecord
     nil
   end
 
-  TournamentEvent::PLAYER_RANKS.each do |rank|
+  TournamentEvent::TOP_RANKS.each do |rank|
     define_method "top#{rank}_participant_player" do
       self.class.participant_player(send("top#{rank}_participant_name"))
     end

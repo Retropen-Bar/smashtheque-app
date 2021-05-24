@@ -71,7 +71,7 @@ ActiveAdmin.register DuoTournamentEvent do
     column :bracket, sortable: :bracket, &:bracket_admin_link
     column :is_online, &:online?
     column :participants_count
-    DuoTournamentEvent::DUO_NAMES.each do |duo_name|
+    DuoTournamentEvent::TOP_NAMES.each do |duo_name|
       column duo_name do |decorated|
         decorated.send("#{duo_name}_admin_link")
       end
@@ -183,7 +183,7 @@ ActiveAdmin.register DuoTournamentEvent do
             f.input :name
             f.input :date
             f.input :participants_count
-            DuoTournamentEvent::DUO_NAMES.each do |duo_name|
+            DuoTournamentEvent::TOP_NAMES.each do |duo_name|
               hint = f.object.decorate.send("#{duo_name}_bracket_suggestion")
               duo_input f, name: duo_name, hint: hint
             end
@@ -222,7 +222,7 @@ ActiveAdmin.register DuoTournamentEvent do
           row :date
           row :participants_count
           row :bracket_url, &:bracket_link
-          DuoTournamentEvent::DUO_NAMES.each do |duo_name|
+          DuoTournamentEvent::TOP_NAMES.each do |duo_name|
             row duo_name do |decorated|
               decorated.send("#{duo_name}_admin_link")
             end

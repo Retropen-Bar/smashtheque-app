@@ -1,6 +1,6 @@
 class TournamentEventDecorator < TournamentEventBaseDecorator
   def player_rank(player_id)
-    TournamentEvent::PLAYER_NAMES.each do |player_name|
+    TournamentEvent::TOP_NAMES.each do |player_name|
       return player_name if send("#{player_name}_id") == player_id
     end
     nil
@@ -19,7 +19,7 @@ class TournamentEventDecorator < TournamentEventBaseDecorator
     end
   end
 
-  TournamentEvent::PLAYER_RANKS.each do |rank|
+  TournamentEvent::TOP_RANKS.each do |rank|
     player_name = "top#{rank}_player".to_sym
     define_method "#{player_name}_bracket_suggestion" do
       return nil if bracket.nil?

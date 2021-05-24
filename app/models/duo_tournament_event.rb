@@ -55,16 +55,21 @@ class DuoTournamentEvent < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   include IsTournamentEvent
+
   def recurring_tournament_events
     recurring_tournament.duo_tournament_events
+  end
+
+  def duo?
+    true
   end
 
   # ---------------------------------------------------------------------------
   # CONSTANTS
   # ---------------------------------------------------------------------------
 
-  DUO_NAMES = TournamentEvent::PLAYER_RANKS.map { |rank| "top#{rank}_duo".to_sym }.freeze
-  DUO_NAME_RANK = TournamentEvent::PLAYER_RANKS.map do |rank|
+  TOP_NAMES = TournamentEvent::TOP_RANKS.map { |rank| "top#{rank}_duo".to_sym }.freeze
+  TOP_NAME_RANK = TournamentEvent::TOP_RANKS.map do |rank|
     [
       "top#{rank}_duo".to_sym,
       case rank
@@ -88,8 +93,6 @@ class DuoTournamentEvent < ApplicationRecord
   belongs_to :top7a_duo, class_name: :Duo, optional: true
   belongs_to :top7b_duo, class_name: :Duo, optional: true
 
-  has_many :duo_reward_duo_conditions, dependent: :destroy
-
   # ---------------------------------------------------------------------------
   # validations
   # ---------------------------------------------------------------------------
@@ -98,13 +101,13 @@ class DuoTournamentEvent < ApplicationRecord
 
   def unique_duos
     all_duo_ids = duo_ids
-    duplicate = DUO_NAMES.reverse.find do |duo_name|
+    duplicate = TOP_NAMES.reverse.find do |duo_name|
       duo_id = send(duo_name)
       duo_id && all_duo_ids.count(duo_id) > 1
     end
     return unless duplicate
 
-    original = DUO_NAMES.find do |duo_name|
+    original = TOP_NAMES.find do |duo_name|
       send(duo_name) == send(duplicate)
     end
     errors.add(
@@ -121,7 +124,7 @@ class DuoTournamentEvent < ApplicationRecord
     where(
       is_complete: false
     ).where(
-      DUO_NAMES.map do |duo_name|
+      TOP_NAMES.map do |duo_name|
         "#{duo_name}_id IS NULL"
       end.join(' OR ')
     )
@@ -129,10 +132,10 @@ class DuoTournamentEvent < ApplicationRecord
 
   def self.with_duo(duo_id)
     where(
-      DUO_NAMES.map do |duo_name|
+      TOP_NAMES.map do |duo_name|
         "#{duo_name}_id = ?"
       end.join(' OR '),
-      *DUO_NAMES.map { duo_id }
+      *TOP_NAMES.map { duo_id }
     )
   end
 
@@ -141,33 +144,9 @@ class DuoTournamentEvent < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   def duo_ids
-    DUO_NAMES.map do |duo_name|
+    TOP_NAMES.map do |duo_name|
       send(duo_name)
     end.compact
-  end
-
-  def compute_rewards
-    ids = []
-
-    if !is_out_of_ranking? && (participants_count || 0) > 0
-      reward_duo_conditions = RewardDuoCondition.by_is_online(online?).for_size(participants_count)
-      DUO_NAMES.each do |duo_name|
-        if duo = send(duo_name)
-          reward_duo_condition = reward_duo_conditions.by_rank(
-            DUO_NAME_RANK[duo_name]
-          ).first
-          if reward_duo_condition
-            ids << DuoRewardDuoCondition.where(
-              duo: duo,
-              duo_tournament_event: self,
-              reward_duo_condition: reward_duo_condition
-            ).first_or_create!.id
-          end
-        end
-      end
-    end
-
-    duo_reward_duo_conditions.where.not(id: ids).destroy_all
   end
 
   def as_json(options = {})
@@ -187,7 +166,7 @@ class DuoTournamentEvent < ApplicationRecord
     ))
   end
 
-  DUO_NAMES.each do |duo_name|
+  TOP_NAMES.each do |duo_name|
     delegate :name,
              to: duo_name,
              prefix: true,
@@ -209,7 +188,7 @@ class DuoTournamentEvent < ApplicationRecord
     if replace_existing_values || bracket_url.blank?
       self.bracket_url = bracket.smashgg_url
     end
-    # TournamentEvent::PLAYER_RANKS.each do |rank|
+    # TournamentEvent::TOP_RANKS.each do |rank|
     #   duo_name = "top#{rank}_duo".to_sym
     #   user_name = "top#{rank}_smashgg_duo".to_sym
     #   if replace_existing_values || send(duo_name).nil?

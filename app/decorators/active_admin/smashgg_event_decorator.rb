@@ -38,7 +38,7 @@ class ActiveAdmin::SmashggEventDecorator < SmashggEventDecorator
       bracket_url: smashgg_url,
       bracket_gid: model.to_global_id.to_s
     }
-    TournamentEvent::PLAYER_RANKS.each do |rank|
+    TournamentEvent::TOP_RANKS.each do |rank|
       player_name = "top#{rank}_player".to_sym
       user_name = "top#{rank}_smashgg_user".to_sym
       if player = send(user_name)&.player
@@ -56,7 +56,7 @@ class ActiveAdmin::SmashggEventDecorator < SmashggEventDecorator
       bracket_url: smashgg_url,
       bracket_gid: model.to_global_id.to_s
     }
-    # TournamentEvent::PLAYER_RANKS.each do |rank|
+    # TournamentEvent::TOP_RANKS.each do |rank|
     #   player_name = "top#{rank}_player".to_sym
     #   user_name = "top#{rank}_smashgg_user".to_sym
     #   if player = send(user_name)&.player

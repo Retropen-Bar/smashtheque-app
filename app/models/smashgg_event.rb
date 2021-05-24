@@ -49,11 +49,11 @@
 #
 class SmashggEvent < ApplicationRecord
 
-  USER_NAMES = TournamentEvent::PLAYER_RANKS.map do |rank|
+  USER_NAMES = TournamentEvent::TOP_RANKS.map do |rank|
     "top#{rank}_smashgg_user".to_sym
   end.freeze
   USER_NAME_RANK = Hash[
-    TournamentEvent::PLAYER_RANKS.map do |rank|
+    TournamentEvent::TOP_RANKS.map do |rank|
       [
         "top#{rank}_smashgg_user".to_sym,
         case rank
