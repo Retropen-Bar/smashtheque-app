@@ -63,12 +63,10 @@ class Api::V1::PlayersController < Api::V1::BaseController
   private
 
   def player_create_params
-    # TODO: remove :city_name when bot has been updated
     params.require(:player).permit(:name, :name_confirmation, :discord_id, :creator_discord_id, character_ids: [], team_ids: [])
   end
 
   def player_update_params
-    # TODO: remove :city_name when bot has been updated
     params.require(:player).permit(:name, :name_confirmation, :discord_id, character_ids: [], team_ids: [])
   end
 

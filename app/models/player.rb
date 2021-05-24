@@ -2,39 +2,26 @@
 #
 # Table name: players
 #
-#  id                              :bigint           not null, primary key
-#  ban_details                     :text
-#  best_reward_level1              :string
-#  best_reward_level2              :string
-#  character_names                 :text             default([]), is an Array
-#  is_accepted                     :boolean
-#  is_banned                       :boolean          default(FALSE), not null
-#  name                            :string
-#  old_names                       :string           default([]), is an Array
-#  points                          :integer          default(0), not null
-#  points_in_2019                  :integer          default(0), not null
-#  points_in_2020                  :integer          default(0), not null
-#  points_in_2021                  :integer          default(0), not null
-#  rank                            :integer
-#  rank_in_2019                    :integer
-#  rank_in_2020                    :integer
-#  rank_in_2021                    :integer
-#  team_names                      :text             default([]), is an Array
-#  created_at                      :datetime         not null
-#  updated_at                      :datetime         not null
-#  best_player_reward_condition_id :bigint
-#  creator_user_id                 :integer          not null
-#  user_id                         :integer
+#  id              :bigint           not null, primary key
+#  ban_details     :text
+#  character_names :text             default([]), is an Array
+#  is_accepted     :boolean
+#  is_banned       :boolean          default(FALSE), not null
+#  name            :string
+#  old_names       :string           default([]), is an Array
+#  team_names      :text             default([]), is an Array
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  creator_user_id :integer          not null
+#  user_id         :integer
 #
 # Indexes
 #
-#  index_players_on_best_player_reward_condition_id  (best_player_reward_condition_id)
-#  index_players_on_creator_user_id                  (creator_user_id)
-#  index_players_on_user_id                          (user_id)
+#  index_players_on_creator_user_id  (creator_user_id)
+#  index_players_on_user_id          (user_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (best_player_reward_condition_id => player_reward_conditions.id)
 #  fk_rails_...  (creator_user_id => users.id)
 #  fk_rails_...  (user_id => users.id)
 #
@@ -48,15 +35,9 @@ class Player < ApplicationRecord
     :name
   end
 
-  include HasPoints
+  include HasTrackRecords
 
   include PgSearch::Model
-
-  # ---------------------------------------------------------------------------
-  # CONSTANTS
-  # ---------------------------------------------------------------------------
-
-  POINTS_YEARS = (2019..2021).to_a.freeze
 
   # ---------------------------------------------------------------------------
   # RELATIONS
@@ -68,13 +49,13 @@ class Player < ApplicationRecord
   has_one :discord_user, through: :user
 
   # cache
-  belongs_to :best_player_reward_condition,
-             class_name: :PlayerRewardCondition,
-             optional: true
+  # belongs_to :best_player_reward_condition,
+  #            class_name: :PlayerRewardCondition,
+  #            optional: true
 
-  has_one :best_reward,
-          through: :best_player_reward_condition,
-          source: :reward
+  # has_one :best_reward,
+  #         through: :best_player_reward_condition,
+  #         source: :reward
 
   has_many :discord_guild_relateds, as: :related, dependent: :destroy
   has_many :discord_guilds, through: :discord_guild_relateds
@@ -99,9 +80,9 @@ class Player < ApplicationRecord
            through: :players_teams,
            after_remove: :after_remove_team
 
-  has_many :player_reward_conditions, dependent: :destroy
-  has_many :reward_conditions, through: :player_reward_conditions
-  has_many :rewards, through: :player_reward_conditions
+  has_many :met_reward_conditions, as: :awarded, dependent: :destroy
+  has_many :reward_conditions, through: :met_reward_conditions
+  has_many :rewards, through: :met_reward_conditions
 
   has_many :tournament_events_as_top1_player,
            class_name: :TournamentEvent,
@@ -217,12 +198,6 @@ class Player < ApplicationRecord
     if destroyed?
       # this is a deletion
       RetropenBotScheduler.rebuild_abc_for_name name
-
-      # if points was 0, player had 0 points and 0 rewards
-      # so it was not listed anywhere in the rewards section
-      if points > 0
-        RetropenBotScheduler.rebuild_rewards
-      end
     else
       # name
       if previous_changes.has_key?('name')
@@ -237,11 +212,6 @@ class Player < ApplicationRecord
       else
         # this is an update, and the name didn't change
         RetropenBotScheduler.rebuild_abc_for_name name
-      end
-
-      # rewards
-      if previous_changes.has_key?('points') || points > 0
-        RetropenBotScheduler.rebuild_rewards
       end
     end
 
@@ -432,6 +402,7 @@ class Player < ApplicationRecord
 
   def potential_user
     return nil unless user_id.nil?
+
     User.without_player.by_name_like(name).first
   end
 
@@ -447,54 +418,15 @@ class Player < ApplicationRecord
     TournamentEvent.with_player(id)
   end
 
-  # returns a hash { reward_id => count }
-  def rewards_counts
-    rewards.ordered_by_level.group(:id).count
-  end
-
-  def unique_rewards
-    Reward.where(id: rewards.select(:id))
-  end
-
-  def best_rewards
-    Hash[
-      rewards.order(:level1).group(:level1).pluck(:level1, "MAX(level2)")
-    ].map do |level1, level2|
-      Reward.online_1v1.by_level(level1, level2).first
-    end.sort_by(&:level2)
-  end
-
-  def update_points
-    POINTS_YEARS.each do |year|
-      self.attributes = {
-        "points_in_#{year}" => (
-          player_reward_conditions.on_year(year).points_total
-        )
-      }
-    end
-    self.points = player_reward_conditions.points_total
-  end
-
-  def update_best_reward
-    player_reward_condition =
-      player_reward_conditions.joins(:reward)
-                              .order(:level1, :level2, :points)
-                              .last
-    self.best_player_reward_condition = player_reward_condition
-    self.best_reward_level1 = player_reward_condition&.reward&.level1
-    self.best_reward_level2 = player_reward_condition&.reward&.level2
-  end
-
   # ---------------------------------------------------------------------------
   # GLOBAL SEARCH
   # ---------------------------------------------------------------------------
 
-  multisearchable against: %i(name old_names)
+  multisearchable against: %i[name old_names]
 
   # ---------------------------------------------------------------------------
   # VERSIONS
   # ---------------------------------------------------------------------------
 
-  has_paper_trail unless: Proc.new { ENV['NO_PAPERTRAIL'] }
-
+  has_paper_trail unless: proc { ENV['NO_PAPERTRAIL'] }
 end

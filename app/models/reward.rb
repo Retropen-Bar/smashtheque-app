@@ -31,14 +31,10 @@ class Reward < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   has_many :reward_conditions, dependent: :destroy
-
-  has_many :player_reward_conditions, through: :reward_conditions
-  has_many :players, through: :player_reward_conditions
-
-  has_many :reward_duo_conditions, dependent: :destroy
-
-  has_many :duo_reward_duo_conditions, through: :reward_duo_conditions
-  has_many :duos, through: :duo_reward_duo_conditions
+  has_many :met_reward_conditions, through: :reward_conditions
+  has_many :players, through: :met_reward_conditions, source: :awarded, source_type: :Player
+  has_many :duos, through: :met_reward_conditions, source: :awarded, source_type: :Duo
+  # has_many :awardeds, through: :met_reward_conditions
 
   has_one_attached :image
 
@@ -116,30 +112,6 @@ class Reward < ApplicationRecord
 
   def offline?
     [CATEGORY_OFFLINE_1V1, CATEGORY_OFFLINE_2V2].include?(category.to_s)
-  end
-
-  def condition_name
-    is_1v1? ? :reward_condition : :reward_duo_condition
-  end
-
-  def conditions_name
-    condition_name.to_s.pluralize.to_sym
-  end
-
-  def conditions
-    send(conditions_name)
-  end
-
-  def met_condition_name
-    is_1v1? ? :player_reward_condition : :duo_reward_duo_condition
-  end
-
-  def met_conditions_name
-    met_condition_name.to_s.pluralize.to_sym
-  end
-
-  def met_conditions
-    send(met_conditions_name)
   end
 
   def awarded_name

@@ -1,10 +1,10 @@
-ActiveAdmin.register PlayerRewardCondition do
+ActiveAdmin.register MetRewardCondition do
 
-  decorate_with ActiveAdmin::PlayerRewardConditionDecorator
+  decorate_with ActiveAdmin::MetRewardConditionDecorator
 
-  menu parent: '<i class="fas fa-fw fa-chess-rook"></i>Compétition 1v1'.html_safe,
+  menu parent: '<i class="fas fa-fw fa-chess"></i>Compétition'.html_safe,
        label: '<i class="fas fa-fw fa-trophy"></i>Récompenses obtenues'.html_safe,
-       priority: 4
+       priority: 5
 
   actions :index, :show
 
@@ -12,8 +12,7 @@ ActiveAdmin.register PlayerRewardCondition do
   # INDEX
   # ---------------------------------------------------------------------------
 
-  includes :tournament_event, :reward_condition,
-           player: { user: :discord_user },
+  includes :record, :event, :reward_condition,
            reward: { image_attachment: :blob }
 
   index do

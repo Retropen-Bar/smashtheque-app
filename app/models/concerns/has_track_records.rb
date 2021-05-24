@@ -1,5 +1,4 @@
-# Provides helpers about points
-module HasPoints
+module HasTrackRecords
   extend ActiveSupport::Concern
 
   included do
@@ -41,7 +40,7 @@ module HasPoints
     end
 
     def self.update_ranks!
-      Player::POINTS_YEARS.each do |year|
+      TrackRecord.points_years.each do |year|
         subquery =
           self.with_points_in(year)
               .select(
@@ -69,6 +68,45 @@ module HasPoints
       ")
       self.where.not(id: with_points.select(:id))
           .update_all(rank: nil)
+    end
+
+    # returns a hash { reward_id => count }
+    def rewards_counts
+      rewards.ordered_by_level.group(:id).count
+    end
+
+    def unique_rewards
+      Reward.where(id: rewards.select(:id))
+    end
+
+    def best_rewards
+      Hash[
+        rewards.order(:level1).group(:level1).pluck(:level1, "MAX(level2)")
+      ].map do |level1, level2|
+        Reward.online_1v1.by_level(level1, level2).first
+      end.sort_by(&:level2)
+    end
+
+    # TODO POINTS
+    def update_points
+      TrackRecord.points_years.each do |year|
+        self.attributes = {
+          "points_in_#{year}" => (
+            player_reward_conditions.on_year(year).points_total
+          )
+        }
+      end
+      self.points = player_reward_conditions.points_total
+    end
+
+    def update_best_reward
+      player_reward_condition =
+        player_reward_conditions.joins(:reward)
+                                .order(:level1, :level2, :points)
+                                .last
+      self.best_player_reward_condition = player_reward_condition
+      self.best_reward_level1 = player_reward_condition&.reward&.level1
+      self.best_reward_level2 = player_reward_condition&.reward&.level2
     end
 
   end

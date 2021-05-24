@@ -1,53 +1,47 @@
 # == Schema Information
 #
-# Table name: player_reward_conditions
+# Table name: met_reward_conditions
 #
 #  id                  :bigint           not null, primary key
+#  awarded_type        :string           not null
+#  event_type          :string           not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
-#  player_id           :bigint           not null
+#  awarded_id          :bigint           not null
+#  event_id            :bigint           not null
 #  reward_condition_id :bigint           not null
-#  tournament_event_id :bigint           not null
 #
 # Indexes
 #
-#  index_player_reward_conditions_on_player_id            (player_id)
-#  index_player_reward_conditions_on_reward_condition_id  (reward_condition_id)
-#  index_player_reward_conditions_on_tournament_event_id  (tournament_event_id)
-#  index_prc_on_all                                       (player_id,reward_condition_id,tournament_event_id) UNIQUE
+#  index_met_reward_conditions_on_awarded_type_and_awarded_id  (awarded_type,awarded_id)
+#  index_met_reward_conditions_on_event_type_and_event_id      (event_type,event_id)
+#  index_met_reward_conditions_on_reward_condition_id          (reward_condition_id)
+#  index_mrc_on_all                                            (awarded_type,awarded_id,reward_condition_id,event_type,event_id) UNIQUE
 #
 # Foreign Keys
 #
-#  fk_rails_...  (player_id => players.id)
 #  fk_rails_...  (reward_condition_id => reward_conditions.id)
-#  fk_rails_...  (tournament_event_id => tournament_events.id)
 #
-class PlayerRewardCondition < ApplicationRecord
-
+class MetRewardCondition < ApplicationRecord
   # ---------------------------------------------------------------------------
   # RELATIONS
   # ---------------------------------------------------------------------------
 
-  belongs_to :player
+  belongs_to :awarded, polymorphic: true
   belongs_to :reward_condition
-  belongs_to :tournament_event
+  belongs_to :event, polymorphic: true
 
   has_one :reward, through: :reward_condition
-
-  has_one :bested_player,
-           class_name: :Player,
-           foreign_key: :best_player_reward_condition_id,
-           dependent: :nullify
 
   # ---------------------------------------------------------------------------
   # CALLBACKS
   # ---------------------------------------------------------------------------
 
-  after_commit :update_player_cache
-  def update_player_cache
-    player.update_cache! unless player.destroyed?
-    Player.update_ranks!
-  end
+  # after_commit :update_awarded_track_records
+  # def update_awarded_track_records
+  #   awarded.update_cache! unless awarded.destroyed?
+  #   awarded.class.update_ranks!
+  # end
 
   # ---------------------------------------------------------------------------
   # HELPERS
@@ -64,10 +58,9 @@ class PlayerRewardCondition < ApplicationRecord
   # SCOPES
   # ---------------------------------------------------------------------------
 
-  scope :by_player, -> v { where(player_id: v) }
+  # scope :by_record, ->(v) { where(record: v) }
 
-  def self.on_year(year)
-    where(tournament_event_id: TournamentEvent.on_year(year).select(:id))
-  end
-
+  # def self.on_year(year)
+  #   where(tournament_event_id: TournamentEvent.on_year(year).select(:id))
+  # end
 end

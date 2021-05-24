@@ -2,34 +2,21 @@
 #
 # Table name: duos
 #
-#  id                               :bigint           not null, primary key
-#  best_reward_level1               :string
-#  best_reward_level2               :string
-#  name                             :string           not null
-#  points                           :integer          default(0), not null
-#  points_in_2019                   :integer          default(0), not null
-#  points_in_2020                   :integer          default(0), not null
-#  points_in_2021                   :integer          default(0), not null
-#  rank                             :integer
-#  rank_in_2019                     :integer
-#  rank_in_2020                     :integer
-#  rank_in_2021                     :integer
-#  created_at                       :datetime         not null
-#  updated_at                       :datetime         not null
-#  best_duo_reward_duo_condition_id :bigint
-#  player1_id                       :bigint           not null
-#  player2_id                       :bigint           not null
+#  id         :bigint           not null, primary key
+#  name       :string           not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  player1_id :bigint           not null
+#  player2_id :bigint           not null
 #
 # Indexes
 #
-#  index_duos_on_best_duo_reward_duo_condition_id  (best_duo_reward_duo_condition_id)
-#  index_duos_on_name                              (name)
-#  index_duos_on_player1_id                        (player1_id)
-#  index_duos_on_player2_id                        (player2_id)
+#  index_duos_on_name        (name)
+#  index_duos_on_player1_id  (player1_id)
+#  index_duos_on_player2_id  (player2_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (best_duo_reward_duo_condition_id => duo_reward_duo_conditions.id)
 #  fk_rails_...  (player1_id => players.id)
 #  fk_rails_...  (player2_id => players.id)
 #
@@ -43,7 +30,7 @@ class Duo < ApplicationRecord
     :name
   end
 
-  include HasPoints
+  include HasTrackRecords
 
   include PgSearch::Model
 
@@ -186,55 +173,16 @@ class Duo < ApplicationRecord
     DuoTournamentEvent.with_duo(id)
   end
 
-  # returns a hash { reward_id => count }
-  def rewards_counts
-    rewards.ordered_by_level.group(:id).count
-  end
-
-  def unique_rewards
-    Reward.where(id: rewards.select(:id))
-  end
-
-  def best_rewards
-    Hash[
-      rewards.order(:level1).group(:level1).pluck(:level1, "MAX(level2)")
-    ].map do |level1, level2|
-      Reward.online_2v2.by_level(level1, level2).first
-    end.sort_by(&:level2)
-  end
-
-  def update_points
-    Player::POINTS_YEARS.each do |year|
-      self.attributes = {
-        "points_in_#{year}" => (
-          duo_reward_duo_conditions.on_year(year).points_total
-        )
-      }
-    end
-    self.points = duo_reward_duo_conditions.points_total
-  end
-
-  def update_best_reward
-    duo_reward_duo_condition =
-      duo_reward_duo_conditions.joins(:reward)
-                              .order(:level1, :level2, :points)
-                              .last
-    self.best_duo_reward_duo_condition = duo_reward_duo_condition
-    self.best_reward_level1 = duo_reward_duo_condition&.reward&.level1
-    self.best_reward_level2 = duo_reward_duo_condition&.reward&.level2
-  end
-
   # ---------------------------------------------------------------------------
   # global search
   # ---------------------------------------------------------------------------
 
   include PgSearch::Model
-  multisearchable against: %i(name)
+  multisearchable against: %i[name]
 
   # ---------------------------------------------------------------------------
   # VERSIONS
   # ---------------------------------------------------------------------------
 
-  has_paper_trail unless: Proc.new { ENV['NO_PAPERTRAIL'] }
-
+  has_paper_trail unless: proc { ENV['NO_PAPERTRAIL'] }
 end

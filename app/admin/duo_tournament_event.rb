@@ -9,9 +9,9 @@ ActiveAdmin.register DuoTournamentEvent do
 
   has_paper_trail
 
-  menu parent: '<i class="fas fa-fw fa-chess-knight"></i>Compétition 2v2'.html_safe,
-       label: '<i class="fas fa-fw fa-calendar-alt"></i>Éditions'.html_safe,
-       priority: 1
+  menu parent: '<i class="fas fa-fw fa-chess"></i>Compétition'.html_safe,
+       label: '<i class="fas fa-fw fa-chess-knight"></i>Éditions 2v2'.html_safe,
+       priority: 2
 
   # ---------------------------------------------------------------------------
   # INDEX

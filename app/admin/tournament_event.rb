@@ -9,8 +9,8 @@ ActiveAdmin.register TournamentEvent do
 
   has_paper_trail
 
-  menu parent: '<i class="fas fa-fw fa-chess-rook"></i>Compétition 1v1'.html_safe,
-       label: '<i class="fas fa-fw fa-calendar-alt"></i>Éditions'.html_safe,
+  menu parent: '<i class="fas fa-fw fa-chess"></i>Compétition'.html_safe,
+       label: '<i class="fas fa-fw fa-chess-rook"></i>Éditions 1v1'.html_safe,
        priority: 1
 
   # ---------------------------------------------------------------------------
