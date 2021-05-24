@@ -235,10 +235,10 @@ ActiveAdmin.register DuoTournamentEvent do
           row :updated_at
         end
         panel 'Récompenses obtenues', style: 'margin-top: 50px' do
-          table_for resource.duo_reward_duo_conditions.admin_decorate,
-                    i18n: DuoRewardDuoCondition do
-            column :reward_duo_condition, &:reward_duo_condition_admin_link
-            column :duo, &:duo_admin_link
+          table_for resource.met_reward_conditions.admin_decorate,
+                    i18n: MetRewardCondition do
+            column :reward_condition, &:reward_condition_admin_link
+            column :awarded, &:awarded_admin_link
             column :reward, &:reward_admin_link
             column :points
           end

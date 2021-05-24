@@ -41,19 +41,6 @@ class Duo < ApplicationRecord
   belongs_to :player1, class_name: :Player
   belongs_to :player2, class_name: :Player
 
-  # cache
-  belongs_to :best_duo_reward_duo_condition,
-             class_name: :DuoRewardDuoCondition,
-             optional: true
-
-  has_one :best_reward,
-          through: :best_duo_reward_duo_condition,
-          source: :reward
-
-  has_many :duo_reward_duo_conditions, dependent: :destroy
-  has_many :reward_duo_conditions, through: :duo_reward_duo_conditions
-  has_many :rewards, through: :duo_reward_duo_conditions
-
   # ---------------------------------------------------------------------------
   # VALIDATIONS
   # ---------------------------------------------------------------------------

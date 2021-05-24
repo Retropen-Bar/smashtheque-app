@@ -21,16 +21,16 @@ class DuosController < PublicController
                                  .includes(
                                    recurring_tournament: :discord_guild
                                  ).decorate
-    @duo_reward_duo_conditions_by_duo_tournament_event_id = Hash[
-      @duo.duo_reward_duo_conditions
+    @met_reward_conditions_by_duo_tournament_event_id = Hash[
+      @duo.met_reward_conditions
           .includes(
             reward: {
               image_attachment: :blob
             }
-          ).map do |duo_reward_duo_condition|
+          ).map do |met_reward_condition|
         [
-          duo_reward_duo_condition.duo_tournament_event_id,
-          duo_reward_duo_condition
+          met_reward_condition.event_id,
+          met_reward_condition
         ]
       end
     ]

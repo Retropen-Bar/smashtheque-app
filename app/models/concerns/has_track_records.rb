@@ -2,6 +2,22 @@ module HasTrackRecords
   extend ActiveSupport::Concern
 
   included do
+    # ---------------------------------------------------------------------------
+    # RELATIONS
+    # ---------------------------------------------------------------------------
+
+    has_many :met_reward_conditions, as: :awarded, dependent: :destroy
+    has_many :reward_conditions, through: :met_reward_conditions
+    has_many :rewards, through: :met_reward_conditions
+
+    # cache
+    belongs_to :best_met_reward_condition,
+               class_name: :MetRewardCondition,
+               optional: true
+
+    has_one :best_reward,
+            through: :best_met_reward_condition,
+            source: :reward
 
     # ---------------------------------------------------------------------------
     # SCOPES
@@ -92,21 +108,19 @@ module HasTrackRecords
       TrackRecord.points_years.each do |year|
         self.attributes = {
           "points_in_#{year}" => (
-            player_reward_conditions.on_year(year).points_total
+            met_reward_conditions.on_year(year).points_total
           )
         }
       end
-      self.points = player_reward_conditions.points_total
+      self.points = met_reward_conditions.points_total
     end
 
     def update_best_reward
-      player_reward_condition =
-        player_reward_conditions.joins(:reward)
-                                .order(:level1, :level2, :points)
-                                .last
-      self.best_player_reward_condition = player_reward_condition
-      self.best_reward_level1 = player_reward_condition&.reward&.level1
-      self.best_reward_level2 = player_reward_condition&.reward&.level2
+      met_reward_condition =
+        met_reward_conditions.joins(:reward).order(:level1, :level2, :points).last
+      self.best_met_reward_condition = met_reward_condition
+      self.best_reward_level1 = met_reward_condition&.reward&.level1
+      self.best_reward_level2 = met_reward_condition&.reward&.level2
     end
 
   end

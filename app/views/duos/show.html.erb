@@ -80,7 +80,7 @@
         </thead>
         <tbody>
           <% @duo_tournament_events.each do |duo_tournament_event| %>
-            <% duo_reward_duo_condition = @duo_reward_duo_conditions_by_duo_tournament_event_id[duo_tournament_event.id]&.decorate %>
+            <% met_reward_condition = @met_reward_conditions_by_duo_tournament_event_id[duo_tournament_event.id]&.decorate %>
             <tr>
               <td class="align-middle"><%= l duo_tournament_event.date, format: :long %></td>
               <td class="align-middle"><%= duo_tournament_event.recurring_tournament_link %></th>
@@ -88,8 +88,8 @@
               <td class="align-middle text-center"><%= duo_tournament_event.bracket_icon_link(class: 'text-decoration-none') %></td>
               <td class="align-middle text-center"><%= duo_tournament_event.participants_count %></td>
               <td class="align-middle text-center"><%= duo_tournament_event.duo_rank_name(@duo.id) %></td>
-              <td class="align-middle text-center"><%= duo_reward_duo_condition&.points %></td>
-              <td class="align-middle text-center"><%= duo_reward_duo_condition&.reward_badge %></td>
+              <td class="align-middle text-center"><%= met_reward_condition&.points %></td>
+              <td class="align-middle text-center"><%= met_reward_condition&.reward_badge %></td>
             </tr>
           <% end %>
         </tbody>

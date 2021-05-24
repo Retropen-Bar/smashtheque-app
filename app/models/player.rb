@@ -48,15 +48,6 @@ class Player < ApplicationRecord
 
   has_one :discord_user, through: :user
 
-  # cache
-  # belongs_to :best_player_reward_condition,
-  #            class_name: :PlayerRewardCondition,
-  #            optional: true
-
-  # has_one :best_reward,
-  #         through: :best_player_reward_condition,
-  #         source: :reward
-
   has_many :discord_guild_relateds, as: :related, dependent: :destroy
   has_many :discord_guilds, through: :discord_guild_relateds
 
@@ -79,10 +70,6 @@ class Player < ApplicationRecord
   has_many :teams,
            through: :players_teams,
            after_remove: :after_remove_team
-
-  has_many :met_reward_conditions, as: :awarded, dependent: :destroy
-  has_many :reward_conditions, through: :met_reward_conditions
-  has_many :rewards, through: :met_reward_conditions
 
   has_many :tournament_events_as_top1_player,
            class_name: :TournamentEvent,

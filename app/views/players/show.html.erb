@@ -93,7 +93,7 @@
         </thead>
         <tbody>
           <% @tournament_events.each do |tournament_event| %>
-            <% player_reward_condition = @player_reward_conditions_by_tournament_event_id[tournament_event.id]&.decorate %>
+            <% met_reward_condition = @met_reward_conditions_by_tournament_event_id[tournament_event.id]&.decorate %>
             <tr>
               <td class="align-middle"><%= l tournament_event.date, format: :long %></td>
               <td class="align-middle"><%= tournament_event.recurring_tournament_link %></th>
@@ -101,8 +101,8 @@
               <td class="align-middle text-center"><%= tournament_event.bracket_icon_link(class: 'text-decoration-none') %></td>
               <td class="align-middle text-center"><%= tournament_event.participants_count %></td>
               <td class="align-middle text-center"><%= tournament_event.player_rank_name(@player.id) %></td>
-              <td class="align-middle text-center"><%= player_reward_condition&.points %></td>
-              <td class="align-middle text-center"><%= player_reward_condition&.reward_badge %></td>
+              <td class="align-middle text-center"><%= met_reward_condition&.points %></td>
+              <td class="align-middle text-center"><%= met_reward_condition&.reward_badge %></td>
             </tr>
           <% end %>
         </tbody>

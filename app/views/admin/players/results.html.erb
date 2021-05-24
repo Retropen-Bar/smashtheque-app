@@ -33,7 +33,7 @@
   <% Reward.online_1v1.grouped_by_level2.each do |(level2, level2_rewards)| %>
     <div>
       <% level2_rewards.each do |reward| %>
-        <%= link_to @player.reward_player_reward_conditions_admin_path(reward) do %>
+        <%= link_to @player.reward_met_reward_conditions_admin_path(reward) do %>
           <% count = @rewards_counts[reward.id] %>
           <% if count %>
             <%= reward.decorate.badge(count: count) %>
@@ -61,16 +61,16 @@
   </thead>
   <tbody>
     <% @tournament_events.each do |tournament_event| %>
-      <% player_reward_condition = tournament_event.player_reward_conditions.by_player(@player).first&.admin_decorate %>
+      <% met_reward_condition = tournament_event.met_reward_conditions.by_awarded(@player).first&.admin_decorate %>
       <tr>
         <th class="text-center"><%= tournament_event.recurring_tournament_admin_link %></th>
         <th class="text-center"><%= tournament_event.admin_link %></th>
         <td class="text-center"><%= tournament_event.date %></td>
         <td class="text-center"><%= tournament_event.participants_count %></td>
         <td class="text-center"><%= tournament_event.player_rank_name(@player.id) %></td>
-        <td class="text-center"><%= player_reward_condition&.reward_condition_admin_link %></td>
-        <td class="text-center"><%= player_reward_condition&.reward_admin_link %></td>
-        <td class="text-center"><%= player_reward_condition&.points %></td>
+        <td class="text-center"><%= met_reward_condition&.reward_condition_admin_link %></td>
+        <td class="text-center"><%= met_reward_condition&.reward_admin_link %></td>
+        <td class="text-center"><%= met_reward_condition&.points %></td>
       </tr>
     <% end %>
   </tbody>

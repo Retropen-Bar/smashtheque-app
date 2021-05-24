@@ -58,7 +58,7 @@ class MetRewardCondition < ApplicationRecord
   # SCOPES
   # ---------------------------------------------------------------------------
 
-  # scope :by_record, ->(v) { where(record: v) }
+  scope :by_awarded, ->(v) { where(awarded: v) }
 
   # def self.on_year(year)
   #   where(tournament_event_id: TournamentEvent.on_year(year).select(:id))

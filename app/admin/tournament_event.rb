@@ -220,10 +220,10 @@ ActiveAdmin.register TournamentEvent do
           row :updated_at
         end
         panel 'Récompenses obtenues', style: 'margin-top: 50px' do
-          table_for resource.player_reward_conditions.admin_decorate,
-                    i18n: PlayerRewardCondition do
+          table_for resource.met_reward_conditions.admin_decorate,
+                    i18n: MetRewardCondition do
             column :reward_condition, &:reward_condition_admin_link
-            column :player, &:player_admin_link
+            column :awarded, &:awarded_admin_link
             column :reward, &:reward_admin_link
             column :points
           end

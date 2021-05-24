@@ -56,14 +56,14 @@ class PlayersController < PublicController
                                 .includes(
                                   recurring_tournament: :discord_guild
                                 ).decorate
-    @player_reward_conditions_by_tournament_event_id = Hash[
-      @player.player_reward_conditions
+    @met_reward_conditions_by_tournament_event_id = Hash[
+      @player.met_reward_conditions
              .includes(
                reward: {
                  image_attachment: :blob
                }
-             ).map do |player_reward_condition|
-        [player_reward_condition.tournament_event_id, player_reward_condition]
+             ).map do |met_reward_condition|
+        [met_reward_condition.event_id, met_reward_condition]
       end
     ]
     @all_rewards = Reward.online_1v1.includes(image_attachment: :blob)
