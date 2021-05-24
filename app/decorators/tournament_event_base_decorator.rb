@@ -67,33 +67,24 @@ class TournamentEventBaseDecorator < BaseDecorator
   end
 
   def first_event_link(options = {})
-    event = first_event
-    if event
-      event.decorate.link(options)
-    else
-      options[:class] = [
-        options[:class],
-        :disabled
-      ].reject(&:blank?).join(' ')
-      h.link_to options[:label], '#', options
-    end
+    event_link first_event, options
   end
 
   def previous_event_link(options = {})
-    event = previous_event
-    if event
-      event.decorate.link(options)
-    else
-      options[:class] = [
-        options[:class],
-        :disabled
-      ].reject(&:blank?).join(' ')
-      h.link_to options[:label], '#', options
-    end
+    event_link previous_event, options
   end
 
   def next_event_link(options = {})
-    event = next_event
+    event_link next_event, options
+  end
+
+  def last_event_link(options = {})
+    event_link last_event, options
+  end
+
+  private
+
+  def event_link(event, options = {})
     if event
       event.decorate.link(options)
     else
@@ -105,16 +96,4 @@ class TournamentEventBaseDecorator < BaseDecorator
     end
   end
 
-  def last_event_link(options = {})
-    event = last_event
-    if event
-      event.decorate.link(options)
-    else
-      options[:class] = [
-        options[:class],
-        :disabled
-      ].reject(&:blank?).join(' ')
-      h.link_to options[:label], '#', options
-    end
-  end
 end
