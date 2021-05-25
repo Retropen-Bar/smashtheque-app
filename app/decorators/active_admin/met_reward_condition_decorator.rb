@@ -4,8 +4,8 @@ module ActiveAdmin
 
     decorates :met_reward_condition
 
-    def record_admin_link(options = {})
-      model.record&.admin_decorate&.admin_link(options)
+    def awarded_admin_link(options = {})
+      model.awarded&.admin_decorate&.admin_link(options)
     end
 
     def event_admin_link(options = {})

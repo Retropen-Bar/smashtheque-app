@@ -9,7 +9,7 @@ module IsTournamentEvent
     belongs_to :recurring_tournament, optional: true
     belongs_to :bracket, polymorphic: true, optional: true
 
-    has_many :met_reward_conditions, dependent: :destroy
+    has_many :met_reward_conditions, as: :event, dependent: :destroy
 
     has_one_attached :graph
 
@@ -175,12 +175,12 @@ module IsTournamentEvent
           participants_count
         )
 
-        TOP_NAMES.each do |top_name|
+        self.class::TOP_NAMES.each do |top_name|
           top = send(top_name)
           next if top.nil?
 
           reward_condition = reward_conditions.by_rank(
-            TOP_NAME_RANK[top_name]
+            self.class::TOP_NAME_RANK[top_name]
           ).first
           next if reward_condition.nil?
 
