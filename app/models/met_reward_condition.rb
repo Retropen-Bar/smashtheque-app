@@ -37,11 +37,36 @@ class MetRewardCondition < ApplicationRecord
   # CALLBACKS
   # ---------------------------------------------------------------------------
 
-  # after_commit :update_awarded_track_records
-  # def update_awarded_track_records
-  #   awarded.update_cache! unless awarded.destroyed?
-  #   awarded.class.update_ranks!
-  # end
+  after_commit :update_awarded_track_records
+  def update_awarded_track_records
+    awarded.update_track_records! unless awarded.destroyed?
+    TrackRecord.update_all_ranks!
+  end
+
+  # ---------------------------------------------------------------------------
+  # SCOPES
+  # ---------------------------------------------------------------------------
+
+  scope :by_awarded, ->(v) { where(awarded: v) }
+
+  def self.on_year(year)
+    where(
+      event_type: :TournamentEvent,
+      event_id: TournamentEvent.on_year(year).select(:id)
+    ).or(
+      where(
+        event_type: :DuoTournamentEvent,
+        event_id: DuoTournamentEvent.on_year(year).select(:id)
+      )
+    )
+  end
+
+  def self.by_is_online(val)
+    where(reward_condition_id: RewardCondition.by_is_online(val).select(:id))
+  end
+
+  scope :online, -> { by_is_online(true) }
+  scope :offline, -> { by_is_online(false) }
 
   # ---------------------------------------------------------------------------
   # HELPERS
@@ -53,14 +78,4 @@ class MetRewardCondition < ApplicationRecord
   def self.points_total
     joins(:reward_condition).sum(:points)
   end
-
-  # ---------------------------------------------------------------------------
-  # SCOPES
-  # ---------------------------------------------------------------------------
-
-  scope :by_awarded, ->(v) { where(awarded: v) }
-
-  # def self.on_year(year)
-  #   where(tournament_event_id: TournamentEvent.on_year(year).select(:id))
-  # end
 end

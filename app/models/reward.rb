@@ -34,7 +34,6 @@ class Reward < ApplicationRecord
   has_many :met_reward_conditions, through: :reward_conditions
   has_many :players, through: :met_reward_conditions, source: :awarded, source_type: :Player
   has_many :duos, through: :met_reward_conditions, source: :awarded, source_type: :Duo
-  # has_many :awardeds, through: :met_reward_conditions
 
   has_one_attached :image
 

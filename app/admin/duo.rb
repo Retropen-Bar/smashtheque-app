@@ -68,21 +68,6 @@ ActiveAdmin.register Duo do
       row :player2 do |decorated|
         decorated.player2_admin_link
       end
-      row :rank
-      row :points
-      Player::POINTS_YEARS.each do |year|
-        row "rank_in_#{year}"
-        row "points_in_#{year}"
-      end
-      row :best_reward do |decorated|
-        decorated.best_reward_admin_link
-      end
-      row :best_rewards do |decorated|
-        decorated.best_rewards_admin_links({}, class: 'reward-badge-32').join(' ').html_safe
-      end
-      row :unique_rewards do |decorated|
-        decorated.unique_rewards_admin_links({}, class: 'reward-badge-32').join(' ').html_safe
-      end
       row :created_at
       row :updated_at
     end
@@ -102,13 +87,12 @@ ActiveAdmin.register Duo do
   # ---------------------------------------------------------------------------
 
   member_action :results do
-    @duo = resource.admin_decorate
-    @duo_tournament_events = @duo.duo_tournament_events
-                                 .order(date: :desc)
-                                 .admin_decorate
+    @resource = resource.admin_decorate
+    @events = @resource.duo_tournament_events.order(date: :desc).admin_decorate
     @rewards_counts = @duo.rewards_counts
     @rewards_count = @rewards_counts.values.sum
-    @duo_tournament_events_count = @duo_tournament_events.count
+    @events_count = @events.count
+    render 'admin/shared/results'
   end
 
 end

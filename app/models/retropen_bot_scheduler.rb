@@ -1,5 +1,4 @@
 class RetropenBotScheduler
-
   def self.rebuild_all
     rebuild_abc
     rebuild_chars
@@ -195,13 +194,4 @@ class RetropenBotScheduler
   def self.rebuild_online_tournaments
     RetropenBotJobs::RebuildOnlineTournamentsJob.perform_later_if_needed
   end
-
-  # ---------------------------------------------------------------------------
-  # REWARDS
-  # ---------------------------------------------------------------------------
-
-  def self.rebuild_rewards
-    RetropenBotJobs::RebuildRewardsJob.perform_later_if_needed
-  end
-
 end

@@ -488,7 +488,7 @@ ActiveRecord::Schema.define(version: 2021_05_24_154440) do
     t.integer "year"
     t.boolean "is_online", default: false, null: false
     t.integer "points", null: false
-    t.integer "rank", null: false
+    t.integer "rank"
     t.integer "best_met_reward_condition_id"
     t.string "best_reward_level1"
     t.string "best_reward_level2"

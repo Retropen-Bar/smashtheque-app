@@ -37,29 +37,12 @@ class RetropenBot
     vendredi
     samedi
   ).freeze
-  CATEGORY_REWARDS = "L'observatoire d'Harmonie".freeze
-  CHANNEL_REWARDS_ONLINE_RANKINGS = %w(
-    online-top-100
-    online-top-200
-    online-top-300
-    online-top-400
-    online-top-500
-  ).freeze
-  CHANNEL_REWARDS_ONLINE_LEVEL1 = %w(
-    9-16-participants
-    17-24-participants
-    25-32-participants
-    33-64-participants
-    65-128-participants
-    129-1024-participants
-  ).freeze
 
   EMOJI_GUILD_ADMIN = '746006429156245536'.freeze
   EMOJI_TEAM_ADMIN = '745255339364057119'.freeze
   EMOJI_TWITCH = '743601202716999720'.freeze
   EMOJI_YOUTUBE = '743601431499767899'.freeze
   EMOJI_TOURNAMENT = '743286485930868827'.freeze
-  EMOJI_NO_REWARD = '790617900012535838'.freeze
   EMOJI_POINTS = '795277209715212298'.freeze
   EMOJI_GRAPHIC_DESIGNER = '752212651421204560'.freeze
   EMOJI_GRAPHIC_DESIGNER_AVAILABLE = '752212329327755304'.freeze
@@ -207,7 +190,7 @@ class RetropenBot
       lines = ["**#{team.short_name} : #{team.name}**"]
       lines += team.players
           .legit
-          .includes(:best_reward, :teams, :characters)
+          .includes(:teams, :characters)
           .to_a
           .sort_by { |p| p.name.downcase }
           .map do |player|
@@ -566,87 +549,6 @@ class RetropenBot
   end
 
   # ---------------------------------------------------------------------------
-  # REWARDS
-  # ---------------------------------------------------------------------------
-
-  def rewards_category
-    client.find_or_create_guild_category @guild_id, name: CATEGORY_REWARDS
-  end
-
-  def rewards_online_ranking_channel(idx, _rewards_category_id = nil)
-    rewards_category_id = _rewards_category_id || rewards_category['id']
-    find_or_create_readonly_channel @guild_id,
-                                    name: CHANNEL_REWARDS_ONLINE_RANKINGS[idx],
-                                    parent_id: rewards_category_id
-  end
-
-  def rewards_online_level1_channel(level1, _rewards_category_id = nil)
-    rewards_category_id = _rewards_category_id || rewards_category['id']
-    find_or_create_readonly_channel @guild_id,
-                                    name: CHANNEL_REWARDS_ONLINE_LEVEL1[level1-1],
-                                    parent_id: rewards_category_id
-  end
-
-  def rebuild_rewards_online_ranking_channel(players, channel_id)
-    nb_digits = players.first&.points&.to_s&.size || 0
-
-    lines = players.includes(:best_reward, :teams, :characters)
-                   .map do |player|
-      "`##{player.rank.to_s.rjust(3)} : #{player.points.to_s.rjust(nb_digits)}`#{emoji_tag(EMOJI_POINTS)}\t" + (
-        player_abc(player)
-      )
-    end.join(DiscordClient::MESSAGE_LINE_SEPARATOR)
-
-    client.replace_channel_content(
-      channel_id,
-      lines
-    )
-  end
-
-  def rebuild_rewards_online_ranking_channels(_rewards_category_id = nil)
-    Player.update_ranks!
-    ranked_players = Player.ranked
-                           .order(:rank)
-                           .legit
-    rewards_category_id = _rewards_category_id || rewards_category['id']
-
-    (0...CHANNEL_REWARDS_ONLINE_RANKINGS.count).each do |idx|
-      rebuild_rewards_online_ranking_channel(
-        ranked_players.offset(idx*100).limit(100),
-        rewards_online_ranking_channel(idx, rewards_category_id)['id']
-      )
-    end
-  end
-
-  def rebuild_rewards_level1_channel(level1, rewards_category_id = nil)
-    messages = []
-
-    Reward.by_level1(level1).order(:level2).each do |reward|
-      if reward_condition = reward.reward_conditions.first
-        messages << emoji_tag(reward.emoji)*3
-        messages << [
-          "**Joueurs ayant fait au mieux top #{reward_condition.rank} dans un tournoi de #{reward_condition.size_min} à #{reward_condition.size_max} participants :**",
-          players_lines(Player.by_best_reward(reward)).presence || "Aucun",
-          DiscordClient::EMPTY_LINE
-        ].join(DiscordClient::MESSAGE_LINE_SEPARATOR)
-      end
-    end
-
-    client.replace_channel_messages(
-      rewards_online_level1_channel(level1, rewards_category_id)['id'],
-      messages
-    )
-  end
-
-  def rebuild_rewards(_rewards_category_id = nil)
-    rewards_category_id = _rewards_category_id || rewards_category['id']
-    rebuild_rewards_online_ranking_channels rewards_category_id
-    (1..CHANNEL_REWARDS_ONLINE_LEVEL1.count).each do |level1|
-      rebuild_rewards_level1_channel level1, rewards_category_id
-    end
-  end
-
-  # ---------------------------------------------------------------------------
   # PRIVATE
   # ---------------------------------------------------------------------------
 
@@ -672,17 +574,7 @@ class RetropenBot
   end
 
   def player_abc(player, options = {})
-    line = ''
-    unless options[:with_best_reward] == false
-      line += emoji_tag(
-        if player.best_reward
-          player.best_reward.emoji
-        else
-          EMOJI_NO_REWARD
-        end
-      )
-    end
-    line += " #{player.name}"
+    line = player.name
     unless options[:with_teams] == false
       player.teams.each do |team|
         line += " [#{team.short_name}]"
@@ -701,7 +593,7 @@ class RetropenBot
 
   def players_lines(players, options = {})
     players.legit.includes(
-      :best_reward, :teams, :characters, :best_reward
+      :teams, :characters
     ).to_a.sort_by do |player|
       I18n.transliterate(player.name).downcase
     end.map do |player|

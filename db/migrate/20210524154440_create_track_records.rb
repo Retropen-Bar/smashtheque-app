@@ -6,7 +6,7 @@ class CreateTrackRecords < ActiveRecord::Migration[6.0]
       t.integer :year
       t.boolean :is_online, null: false, default: false
       t.integer :points, null: false
-      t.integer :rank, null: false
+      t.integer :rank
       t.integer :best_met_reward_condition_id
       t.string :best_reward_level1
       t.string :best_reward_level2
