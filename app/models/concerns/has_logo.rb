@@ -2,7 +2,6 @@ module HasLogo
   extend ActiveSupport::Concern
 
   included do
-
     # ---------------------------------------------------------------------------
     # RELATIONS
     # ---------------------------------------------------------------------------
@@ -31,7 +30,5 @@ module HasLogo
         logo.attach(io: File.open(f.path), filename: File.basename(uri.path))
       end
     end
-
   end
-
 end

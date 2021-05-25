@@ -2,7 +2,6 @@ module RelatedConcern
   extend ActiveSupport::Concern
 
   included do
-
     # ---------------------------------------------------------------------------
     # RELATIONS
     # ---------------------------------------------------------------------------
@@ -62,7 +61,5 @@ module RelatedConcern
         end
       }
     end
-
   end
-
 end

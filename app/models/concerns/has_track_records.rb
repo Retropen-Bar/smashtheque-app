@@ -122,6 +122,5 @@ module HasTrackRecords
       self.best_reward_level1 = met_reward_condition&.reward&.level1
       self.best_reward_level2 = met_reward_condition&.reward&.level2
     end
-
   end
 end

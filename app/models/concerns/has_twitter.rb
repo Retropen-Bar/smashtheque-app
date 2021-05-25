@@ -2,7 +2,6 @@ module HasTwitter
   extend ActiveSupport::Concern
 
   included do
-
     # ---------------------------------------------------------------------------
     # HELPERS
     # ---------------------------------------------------------------------------
@@ -14,6 +13,5 @@ module HasTwitter
                         .strip
                         .delete_prefix('@')
     end
-
   end
 end
