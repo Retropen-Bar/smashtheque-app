@@ -36,9 +36,6 @@ ActiveAdmin.register Reward do
     end
     column :category, &:category_status
     column :level, sortable: true
-    column :emoji do |decorated|
-      decorated.emoji_image_tag(max_height: 32)
-    end
     column :image do |decorated|
       decorated.image_image_tag(max_height: 32)
     end
@@ -77,7 +74,6 @@ ActiveAdmin.register Reward do
                   collection: reward_category_select_collection
           f.input :level1
           f.input :level2
-          f.input :emoji
           f.input :image,
                   as: :file,
                   hint: 'Laissez vide pour ne pas changer',
@@ -91,9 +87,6 @@ ActiveAdmin.register Reward do
         f.actions
       end
       column do
-        panel 'Emoji', id: 'current-emoji' do
-          f.object.decorate.emoji_image_tag
-        end
         panel 'Image', id: 'current-image' do
           f.object.decorate.image_image_tag
         end
@@ -101,7 +94,7 @@ ActiveAdmin.register Reward do
     end
   end
 
-  permit_params :category, :level1, :level2, :emoji, :image
+  permit_params :category, :level1, :level2, :image
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -113,10 +106,6 @@ ActiveAdmin.register Reward do
       row :category, &:category_status
       row :level1
       row :level2
-      row :emoji
-      row :emoji do |decorated|
-        decorated.emoji_image_tag(max_height: 64)
-      end
       row :image do |decorated|
         decorated.image_image_tag(max_height: 64)
       end

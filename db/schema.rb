@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_24_154440) do
+ActiveRecord::Schema.define(version: 2021_05_26_203445) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -363,7 +363,6 @@ ActiveRecord::Schema.define(version: 2021_05_24_154440) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "level1", null: false
     t.integer "level2", null: false
-    t.string "emoji", null: false
     t.string "category", null: false
     t.index ["category", "level1", "level2"], name: "index_rewards_on_category_and_level1_and_level2", unique: true
   end

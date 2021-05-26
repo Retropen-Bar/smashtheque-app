@@ -4,7 +4,6 @@
 #
 #  id         :bigint           not null, primary key
 #  category   :string           not null
-#  emoji      :string           not null
 #  level1     :integer          not null
 #  level2     :integer          not null
 #  created_at :datetime         not null
