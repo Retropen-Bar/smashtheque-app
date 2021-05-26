@@ -33,9 +33,9 @@ ActiveAdmin.register Player do
     column :teams do |decorated|
       decorated.teams_admin_short_links.join('<br/>').html_safe
     end
-    column "<img src=\"https://cdn.discordapp.com/emojis/#{RetropenBot::EMOJI_POINTS}.png?size=16\"/>".html_safe,
+    column "<img src=\"https://cdn.discordapp.com/emojis/#{RetropenBot::EMOJI_POINTS_ONLINE}.png?size=16\"/>".html_safe,
            :points_online
-    column "<img src=\"https://cdn.discordapp.com/emojis/#{RetropenBot::EMOJI_POINTS}.png?size=16\"/>".html_safe,
+    column "<img src=\"https://cdn.discordapp.com/emojis/#{RetropenBot::EMOJI_POINTS_OFFLINE}.png?size=16\"/>".html_safe,
            :points_offline
     column :creator_user do |decorated|
       decorated.creator_user_admin_link(size: 32)

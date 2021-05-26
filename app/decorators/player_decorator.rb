@@ -97,7 +97,7 @@ class PlayerDecorator < BaseDecorator
     value = options.delete(:value) || points
     [
       h.image_tag(
-        "https://cdn.discordapp.com/emojis/#{RetropenBot::EMOJI_POINTS}.png",
+        "https://cdn.discordapp.com/emojis/#{RetropenBot::EMOJI_POINTS_ONLINE}.png",
         options
       ),
       h.number_with_delimiter(value)
