@@ -213,8 +213,8 @@
   </slide-out>
 
   <div class="navbar-actions d-flex align-items-center ml-auto">
-    <button type="button" class="navbar-actions-search btn btn-link btn-icon rounded-circle" @click="mainNavVisible = false">
-      <%= svg_icon_tag :loupe %>
+    <button type="button" class="navbar-actions-search btn btn-link btn-icon rounded-circle" @click="mainNavVisible = false" data-toggle="modal" data-target="#search">
+      <%= svg_icon_tag :loupe, class: 'fs-sm' %>
       <span class="sr-only">Recherche</span>
     </button>
     

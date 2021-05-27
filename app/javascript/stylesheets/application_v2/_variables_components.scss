@@ -77,3 +77,18 @@ $custom-select-bg-size: 1rem;
 $custom-select-indicator-padding: 1.5rem;
 $custom-select-background: escape-svg($custom-select-indicator) right
   $custom-select-padding-x center / $custom-select-bg-size no-repeat;
+
+// INPUTS
+
+$input-bg: $gray-deep;
+$input-focus-bg: $gray-deep;
+$input-focus-border-color: $gray-dark;
+$input-border-color: $gray-dark;
+$input-color: $body-color;
+$input-focus-color: $body-color;
+
+$input-group-addon-bg: $gray-deep;
+$input-group-addon-border-color: $gray-dark;
+$input-group-addon-color: $body-color;
+
+$close-color: $body-color;

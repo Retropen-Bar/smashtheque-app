@@ -1,0 +1,33 @@
+<div id="search" class="modal fade mt-5" tabindex="-1">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content overflow-hidden">
+      <div class="modal-header bg-dark align-items-stretch p-0" :class="{ 'border-0': !isResult }">
+        <div class="input-group input-group-lg">
+          <label for="search-input" class="input-group-prepend mb-0">
+            <span class="input-group-text" id="search-icon">
+              <%= svg_icon_tag :loupe %>
+            </span>
+          </label>
+          <input type="text" placeholder="Recherche" id="search-input" v-model="searchQuery" @input="submitSearch" class="form-control" aria-label="Recherche" aria-describedby="search-icon">
+        </div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="removeSearchQuery">
+          <%= svg_icon_tag :croix %>
+        </button>
+      </div>
+      <div class="modal-body" :class="{ 'p-0': !isResult }">
+        <div class="search-result" v-show="isResult">
+          <transition-group
+            name="fade"
+            tag="div"
+          >
+            <section v-for="(result, type) in articleObj" v-bind:key="type" class="search-result-section">
+              <h5>{{ type }}</h5>
+              <a :href="link.url" v-for="link in result" v-bind:key="link.id" class="search-result-link" v-html="link.html">
+              </a>
+            </section>
+          </transition-group>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

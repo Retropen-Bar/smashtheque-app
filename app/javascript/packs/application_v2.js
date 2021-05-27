@@ -19,5 +19,6 @@ import "../src/shared/toggles";
 import "../src/shared/tooltips";
 import "../src/application_v2/filters";
 import "../src/application_v2/slideout";
+import "../src/application_v2/search";
 import "../src/application_v2/scrollactive";
 import "../src/application_v2/vue";
