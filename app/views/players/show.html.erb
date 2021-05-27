@@ -49,7 +49,9 @@
             <h2 class="text-left text-md-center mb-md-5">Fragments d'étoiles</h2>
           </div>
           <div class="col-6 col-md-12 d-flex align-items-center justify-content-start justify-content-md-center">
-            <div class="display-2"><%= player.points_count(64, class: 'd-none d-md-inline-block') %></div>
+            <div class="display-2">
+              <%= player.points_count(64, is_online: true, class: 'd-none d-md-inline-block') %>
+            </div>
           </div>
         </div>
       </div>
@@ -59,8 +61,8 @@
             <h2 class="text-left text-md-center mb-md-5">Classement</h2>
           </div>
           <div class="col-6 col-md-12 d-flex align-items-center justify-content-start justify-content-md-center">
-            <% if player.rank %>
-              <div class="display-2">#<%= player.rank %></div>
+            <% if rank = player.rank(is_online: true) %>
+              <div class="display-2">#<%= rank %></div>
             <% else %>
               Non classé
             <% end %>

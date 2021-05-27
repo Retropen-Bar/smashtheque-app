@@ -11,6 +11,28 @@ ActiveAdmin.register Duo do
   # INDEX
   # ---------------------------------------------------------------------------
 
+  controller do
+    def scoped_collection
+      super.with_track_records_online_all_time.with_track_records_offline_all_time
+    end
+  end
+
+  order_by(:points_online_all_time) do |order_clause|
+    if order_clause.order == 'desc'
+      'points_online_all_time DESC NULLS LAST'
+    else
+      'points_online_all_time ASC NULLS FIRST'
+    end
+  end
+
+  order_by(:points_offline_all_time) do |order_clause|
+    if order_clause.order == 'desc'
+      'points_offline_all_time DESC NULLS LAST'
+    else
+      'points_offline_all_time ASC NULLS FIRST'
+    end
+  end
+
   includes player1: { user: :discord_user },
            player2: { user: :discord_user }
 
@@ -26,6 +48,12 @@ ActiveAdmin.register Duo do
     column :player2 do |decorated|
       decorated.player2_admin_link
     end
+    column "<img src=\"https://cdn.discordapp.com/emojis/#{RetropenBot::EMOJI_POINTS_ONLINE}.png?size=16\"/>".html_safe,
+           sortable: :points_online_all_time,
+           &:points_online_all_time
+    column "<img src=\"https://cdn.discordapp.com/emojis/#{RetropenBot::EMOJI_POINTS_OFFLINE}.png?size=16\"/>".html_safe,
+           sortable: :points_offline_all_time,
+           &:points_offline_all_time
     column :created_at do |decorated|
       decorated.created_at_date
     end
@@ -33,12 +61,6 @@ ActiveAdmin.register Duo do
   end
 
   filter :name
-  filter :rank
-  filter :points
-  filter :best_reward,
-         as: :select,
-         collection: proc { Reward.online_2v2.admin_decorate },
-         input_html: { multiple: true, data: { select2: {} } }
 
   # ---------------------------------------------------------------------------
   # FORM
@@ -68,6 +90,10 @@ ActiveAdmin.register Duo do
       row :player2 do |decorated|
         decorated.player2_admin_link
       end
+      row :rank_online_all_time
+      row :rank_offline_all_time
+      row :points_online_all_time
+      row :points_offline_all_time
       row :created_at
       row :updated_at
     end

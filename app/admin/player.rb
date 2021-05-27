@@ -10,6 +10,28 @@ ActiveAdmin.register Player do
   # INDEX
   # ---------------------------------------------------------------------------
 
+  controller do
+    def scoped_collection
+      super.with_track_records_online_all_time.with_track_records_offline_all_time
+    end
+  end
+
+  order_by(:points_online_all_time) do |order_clause|
+    if order_clause.order == 'desc'
+      'points_online_all_time DESC NULLS LAST'
+    else
+      'points_online_all_time ASC NULLS FIRST'
+    end
+  end
+
+  order_by(:points_offline_all_time) do |order_clause|
+    if order_clause.order == 'desc'
+      'points_offline_all_time DESC NULLS LAST'
+    else
+      'points_offline_all_time ASC NULLS FIRST'
+    end
+  end
+
   includes :characters,
            teams: [
              :discord_guilds,
@@ -34,9 +56,11 @@ ActiveAdmin.register Player do
       decorated.teams_admin_short_links.join('<br/>').html_safe
     end
     column "<img src=\"https://cdn.discordapp.com/emojis/#{RetropenBot::EMOJI_POINTS_ONLINE}.png?size=16\"/>".html_safe,
-           :points_online
+           sortable: :points_online_all_time,
+           &:points_online_all_time
     column "<img src=\"https://cdn.discordapp.com/emojis/#{RetropenBot::EMOJI_POINTS_OFFLINE}.png?size=16\"/>".html_safe,
-           :points_offline
+           sortable: :points_offline_all_time,
+           &:points_offline_all_time
     column :creator_user do |decorated|
       decorated.creator_user_admin_link(size: 32)
     end
@@ -72,12 +96,6 @@ ActiveAdmin.register Player do
          input_html: { multiple: true, data: { select2: {} } }
   filter :is_accepted
   filter :is_banned
-  filter :rank
-  filter :points
-  filter :best_reward,
-         as: :select,
-         collection: proc { Reward.online_1v1.admin_decorate },
-         input_html: { multiple: true, data: { select2: {} } }
 
   action_item :rebuild_all,
               only: :index,

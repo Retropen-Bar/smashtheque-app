@@ -16,11 +16,7 @@
     </h5>
     <% if defined?(with_points) && with_points %>
       <div class="duo-points">
-        <% if defined?(year) && year %>
-          <%= duo.points_count(32, value: duo.points_in(year)) %>
-        <% else %>
-          <%= duo.points_count %>
-        <% end %>
+        <%= duo.points_count(32, is_online: true, year: defined?(year) && year) %>
       </div>
     <% end %>
   </div>

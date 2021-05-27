@@ -31,8 +31,55 @@ module HasTrackRecords
 
     # scope :with_points, -> { where('points > 0') }
     # scope :with_points_in, ->(year) { where(sanitize_sql(['points_in_? > 0', year])) }
-    # scope :ranked, -> { where.not(rank: nil) }
-    # scope :ranked_in, ->(year) { where.not(sanitize_sql("rank_in_#{year}") => nil) }
+
+    def self.with_track_records(is_online:, year: nil)
+      column_suffix = [
+        is_online ? 'online' : 'offline',
+        year ? "in_#{year}" : 'all_time'
+      ].join('_')
+      subquery = TrackRecord.by_tracked_type(self).by_is_online(is_online).on_year(year).select(
+        :tracked_id, "points AS points_#{column_suffix}", "rank AS rank_#{column_suffix}"
+      )
+      joins(
+        "LEFT OUTER JOIN (#{subquery.to_sql}) track_records_#{column_suffix}
+                      ON id = track_records_#{column_suffix}.tracked_id"
+      )
+    end
+
+    def self.with_track_records_online_all_time
+      with_track_records(is_online: true)
+    end
+
+    def self.with_track_records_online_in(year)
+      with_track_records(is_online: true, year: year)
+    end
+
+    def self.with_track_records_offline_all_time
+      with_track_records(is_online: false)
+    end
+
+    def self.with_track_records_offline_in(year)
+      with_track_records(is_online: false, year: year)
+    end
+
+    def self.with_all_track_records
+      result = with_track_records_online_all_time.with_track_records_offline_all_time
+      TrackRecord.points_years.each do |year|
+        result = result.with_track_records_online_in(year).with_track_records_offline_in(year)
+      end
+      result
+    end
+
+    def self.ranked_online_in(year)
+      where(id: TrackRecord.online.on_year(year).by_tracked_type(self).select(:tracked_id))
+    end
+
+    def self.ranked_offline_in(year)
+      where(id: TrackRecord.offline.on_year(year).by_tracked_type(self).select(:tracked_id))
+    end
+
+    scope :ranked_online, -> { ranked_online_in(nil) }
+    scope :ranked_offline, -> { ranked_offline_in(nil) }
 
     # ---------------------------------------------------------------------------
     # HELPERS
@@ -54,6 +101,14 @@ module HasTrackRecords
       track_records.offline.on_year(year).first&.points || 0
     end
 
+    def points(is_online:, year: nil)
+      if is_online
+        year ? points_online_in(year) : points_online_all_time
+      else
+        year ? points_offline_in(year) : points_offline_all_time
+      end
+    end
+
     def rank_online_all_time
       track_records.online.all_time.first&.rank
     end
@@ -68,6 +123,14 @@ module HasTrackRecords
 
     def rank_offline_in(year)
       track_records.offline.on_year(year).first&.rank
+    end
+
+    def rank(is_online:, year: nil)
+      if is_online
+        year ? rank_online_in(year) : rank_online_all_time
+      else
+        year ? rank_offline_in(year) : rank_offline_all_time
+      end
     end
 
     def update_track_record!(is_online:, year:)

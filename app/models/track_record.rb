@@ -70,6 +70,8 @@ class TrackRecord < ApplicationRecord
   # SCOPES
   # ---------------------------------------------------------------------------
 
+  scope :by_tracked_type, ->(v) { where(tracked_type: v.to_s) }
+
   scope :all_time, -> { where(year: nil) }
   scope :on_year, ->(v) { where(year: v) }
 
@@ -105,7 +107,7 @@ class TrackRecord < ApplicationRecord
 
   def self.update_ranks!(tracked_type:, is_online:, year:)
     subquery =
-      where(tracked_type: tracked_type).by_is_online(is_online).on_year(year).select(
+      by_tracked_type(tracked_type).by_is_online(is_online).on_year(year).select(
         :id,
         'ROW_NUMBER() OVER(ORDER BY points DESC) AS newrank'
       )

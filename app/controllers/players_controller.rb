@@ -80,7 +80,9 @@ class PlayersController < PublicController
 
   def ranking_online
     @players = apply_scopes(
-      Player.ranked.order(:rank)
+      Player.ranked_online.with_track_records_online_all_time.order(
+        :rank_online_all_time
+      )
     ).includes(:user, :discord_user, :teams, :characters)
 
     main_character = @players.first.characters.first&.decorate
@@ -95,7 +97,9 @@ class PlayersController < PublicController
   def ranking_online_year
     @year = params[:year].to_i
     @players = apply_scopes(
-      Player.ranked_in(@year).order("rank_in_#{@year}")
+      Player.ranked_online_in(@year).with_track_records_online_in(@year).order(
+        "rank_online_in_#{@year}"
+      )
     ).includes(:user, :discord_user, :teams, :characters)
 
     main_character = @players.first.characters.first&.decorate
