@@ -50,7 +50,8 @@ class PlayersController < PublicController
 
   def show
     @player = Player.legit.find(params[:id])
-    @rewards_counts = @player.rewards_counts
+    @online_rewards_counts = @player.rewards_counts(is_online: true)
+    @offline_rewards_counts = @player.rewards_counts(is_online: false)
     @tournament_events = @player.tournament_events
                                 .order(date: :desc)
                                 .includes(
@@ -66,7 +67,8 @@ class PlayersController < PublicController
         [met_reward_condition.event_id, met_reward_condition]
       end
     ]
-    @all_rewards = Reward.online_1v1.includes(image_attachment: :blob)
+    @all_online_rewards = Reward.online_1v1.includes(image_attachment: :blob)
+    @all_offline_rewards = Reward.offline_1v1.includes(image_attachment: :blob)
     main_character = @player.characters.first&.decorate
     if main_character
       @background_color = main_character.background_color
@@ -78,38 +80,20 @@ class PlayersController < PublicController
     @meta_properties['og:image'] = @player.decorate.any_image_url
   end
 
-  def ranking_online
-    @players = apply_scopes(
-      Player.ranked_online.with_track_records_online_all_time.order(
-        :rank_online_all_time
-      )
-    ).includes(:user, :discord_user, :teams, :characters)
+  def ranking_offline
+    ranking(is_online: false)
+  end
 
-    main_character = @players.first.characters.first&.decorate
-    if main_character
-      @background_color = main_character.background_color
-      @background_image_url = main_character.background_image_data_url
-      @background_size = main_character.background_size || 128
-    end
-    @meta_title = "Observatoire d'Harmonie Online"
+  def ranking_offline_year
+    ranking(is_online: false, year: params[:year].to_i)
+  end
+
+  def ranking_online
+    ranking(is_online: true)
   end
 
   def ranking_online_year
-    @year = params[:year].to_i
-    @players = apply_scopes(
-      Player.ranked_online_in(@year).with_track_records_online_in(@year).order(
-        "rank_online_in_#{@year}"
-      )
-    ).includes(:user, :discord_user, :teams, :characters)
-
-    main_character = @players.first.characters.first&.decorate
-    if main_character
-      @background_color = main_character.background_color
-      @background_image_url = main_character.background_image_data_url
-      @background_size = main_character.background_size || 128
-    end
-    @meta_title = "Observatoire d'Harmonie Online #{@year}"
-    render 'ranking_online'
+    ranking(is_online: true, year: params[:year].to_i)
   end
 
   def autocomplete
@@ -149,5 +133,47 @@ class PlayersController < PublicController
 
   def select_layout
     @map ? 'map' : 'application'
+  end
+
+  def ranking(is_online:, year: nil)
+    @year = year
+    @is_online = is_online
+
+    players =
+      if is_online
+        if year
+          Player.ranked_online_in(year).with_track_records_online_in(year).order(
+            "rank_online_in_#{year}"
+          )
+        else
+          Player.ranked_online.with_track_records_online_all_time.order(
+            :rank_online_all_time
+          )
+        end
+      elsif year
+        Player.ranked_offline_in(year).with_track_records_offline_in(year).order(
+          "rank_offline_in_#{year}"
+        )
+      else
+        Player.ranked_offline.with_track_records_offline_all_time.order(
+          :rank_offline_all_time
+        )
+      end
+
+    @players = apply_scopes(players).includes(:user, :discord_user, :teams, :characters)
+
+    main_character = @players.first&.characters&.first&.decorate
+    if main_character
+      @background_color = main_character.background_color
+      @background_image_url = main_character.background_image_data_url
+      @background_size = main_character.background_size || 128
+    end
+    @meta_title = [
+      "Observatoire d'Harmonie",
+      is_online ? 'Online' : 'Offline',
+      year
+    ].compact.join(' ')
+
+    render 'ranking'
   end
 end

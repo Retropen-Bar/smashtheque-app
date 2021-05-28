@@ -156,21 +156,30 @@ module HasTrackRecords
       end
     end
 
-    # returns a hash { reward_id => count }
-    def rewards_counts
-      rewards.ordered_by_level.group(:id).count
+    def all_rewards(is_online:)
+      if is_online
+        rewards.online
+      else
+        rewards.offline
+      end
     end
 
-    # def unique_rewards
-    #   Reward.where(id: rewards.select(:id))
-    # end
+    # returns a hash { reward_id => count }
+    def rewards_counts(is_online:)
+      all_rewards(is_online: is_online).ordered_by_level.group(:id).count
+    end
 
-    # def best_rewards
-    #   Hash[
-    #     rewards.order(:level1).group(:level1).pluck(:level1, "MAX(level2)")
-    #   ].map do |level1, level2|
-    #     Reward.online_1v1.by_level(level1, level2).first
-    #   end.sort_by(&:level2)
-    # end
+    def unique_rewards(is_online:)
+      Reward.where(id: all_rewards(is_online: is_online).select(:id))
+    end
+
+    def best_rewards(is_online:)
+      all_rewards(is_online: is_online).order(:level1).group(:level1).pluck(
+        :level1,
+        'MAX(level2)'
+      ).to_h.map do |level1, level2|
+        all_rewards(is_online: is_online).by_level(level1, level2).first
+      end.sort_by(&:level2)
+    end
   end
 end
