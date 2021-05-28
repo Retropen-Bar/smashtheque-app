@@ -72,10 +72,7 @@ Rails.application.routes.draw do
   resources :duos, only: [:index, :show] do
     collection do
       get :autocomplete
-      get 'ranking/offline/:year' => 'duos#ranking_offline_year', as: :offline_ranking_year
-      get 'ranking/offline' => 'duos#ranking_offline', as: :offline_ranking
-      get 'ranking/online/:year' => 'duos#ranking_online_year', as: :online_ranking_year
-      get 'ranking/online' => 'duos#ranking_online', as: :online_ranking
+      get :ranking
     end
   end
 
@@ -86,10 +83,7 @@ Rails.application.routes.draw do
     resources :smashgg_users, only: [:new, :create]
     collection do
       get :autocomplete
-      get 'ranking/offline/:year' => 'players#ranking_offline_year', as: :offline_ranking_year
-      get 'ranking/offline' => 'players#ranking_offline', as: :offline_ranking
-      get 'ranking/online/:year' => 'players#ranking_online_year', as: :online_ranking_year
-      get 'ranking/online' => 'players#ranking_online', as: :online_ranking
+      get :ranking
     end
   end
 

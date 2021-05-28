@@ -27,17 +27,7 @@
           <%= link_to 'Personnages', characters_path, class: 'dropdown-item' %>
           <%= link_to 'Communautés', communities_path, class: 'dropdown-item' %>
           <div class="dropdown-divider"></div>
-          <h6 class="dropdown-header">Observatoire d'Harmonie online</h6>
-          <% TrackRecord.points_years.reverse.each do |year| %>
-            <%= link_to year, online_ranking_year_players_path(year), class: 'dropdown-item' %>
-          <% end %>
-          <%= link_to 'Toutes années confondues', online_ranking_players_path, class: 'dropdown-item' %>
-          <div class="dropdown-divider"></div>
-          <h6 class="dropdown-header">Observatoire d'Harmonie offline</h6>
-          <% TrackRecord.points_years.reverse.each do |year| %>
-            <%= link_to year, offline_ranking_year_players_path(year), class: 'dropdown-item' %>
-          <% end %>
-          <%= link_to 'Toutes années confondues', offline_ranking_players_path, class: 'dropdown-item' %>
+          <%= link_to "Observatoire d'Harmonie 1v1", ranking_players_path, class: 'dropdown-item' %>
         </div>
       </li>
 
@@ -49,17 +39,7 @@
         <div class="dropdown-menu">
           <%= link_to 'Duos', duos_path, class: 'dropdown-item' %>
           <div class="dropdown-divider"></div>
-          <h6 class="dropdown-header">Observatoire d'Harmonie 2v2 online</h6>
-          <% TrackRecord.points_years.reverse.each do |year| %>
-            <%= link_to year, online_ranking_year_duos_path(year), class: 'dropdown-item' %>
-          <% end %>
-          <%= link_to 'Toutes années confondues', online_ranking_duos_path, class: 'dropdown-item' %>
-          <div class="dropdown-divider"></div>
-          <h6 class="dropdown-header">Observatoire d'Harmonie 2v2 offline</h6>
-          <% TrackRecord.points_years.reverse.each do |year| %>
-            <%= link_to year, offline_ranking_year_duos_path(year), class: 'dropdown-item' %>
-          <% end %>
-          <%= link_to 'Toutes années confondues', offline_ranking_duos_path, class: 'dropdown-item' %>
+          <%= link_to "Observatoire d'Harmonie 2v2", ranking_duos_path, class: 'dropdown-item' %>
         </div>
       </li>
 

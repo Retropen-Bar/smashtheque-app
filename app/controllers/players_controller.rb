@@ -80,20 +80,45 @@ class PlayersController < PublicController
     @meta_properties['og:image'] = @player.decorate.any_image_url
   end
 
-  def ranking_offline
-    ranking(is_online: false)
-  end
+  def ranking
+    @year = params[:year]&.to_i
+    @year = nil unless @year&.positive?
+    @is_online = params[:is_online]&.to_i == 1
 
-  def ranking_offline_year
-    ranking(is_online: false, year: params[:year].to_i)
-  end
+    players =
+      if @is_online
+        if @year
+          Player.ranked_online_in(@year).with_track_records_online_in(@year).order(
+            "rank_online_in_#{@year}"
+          )
+        else
+          Player.ranked_online.with_track_records_online_all_time.order(
+            :rank_online_all_time
+          )
+        end
+      elsif @year
+        Player.ranked_offline_in(@year).with_track_records_offline_in(@year).order(
+          "rank_offline_in_#{@year}"
+        )
+      else
+        Player.ranked_offline.with_track_records_offline_all_time.order(
+          :rank_offline_all_time
+        )
+      end
 
-  def ranking_online
-    ranking(is_online: true)
-  end
+    @players = apply_scopes(players).includes(:user, :discord_user, :teams, :characters)
 
-  def ranking_online_year
-    ranking(is_online: true, year: params[:year].to_i)
+    main_character = @players.first&.characters&.first&.decorate
+    if main_character
+      @background_color = main_character.background_color
+      @background_image_url = main_character.background_image_data_url
+      @background_size = main_character.background_size || 128
+    end
+    @meta_title = [
+      "Observatoire d'Harmonie",
+      @is_online ? 'Online' : 'Offline',
+      @year
+    ].compact.join(' ')
   end
 
   def autocomplete
@@ -133,47 +158,5 @@ class PlayersController < PublicController
 
   def select_layout
     @map ? 'map' : 'application'
-  end
-
-  def ranking(is_online:, year: nil)
-    @year = year
-    @is_online = is_online
-
-    players =
-      if is_online
-        if year
-          Player.ranked_online_in(year).with_track_records_online_in(year).order(
-            "rank_online_in_#{year}"
-          )
-        else
-          Player.ranked_online.with_track_records_online_all_time.order(
-            :rank_online_all_time
-          )
-        end
-      elsif year
-        Player.ranked_offline_in(year).with_track_records_offline_in(year).order(
-          "rank_offline_in_#{year}"
-        )
-      else
-        Player.ranked_offline.with_track_records_offline_all_time.order(
-          :rank_offline_all_time
-        )
-      end
-
-    @players = apply_scopes(players).includes(:user, :discord_user, :teams, :characters)
-
-    main_character = @players.first&.characters&.first&.decorate
-    if main_character
-      @background_color = main_character.background_color
-      @background_image_url = main_character.background_image_data_url
-      @background_size = main_character.background_size || 128
-    end
-    @meta_title = [
-      "Observatoire d'Harmonie",
-      is_online ? 'Online' : 'Offline',
-      year
-    ].compact.join(' ')
-
-    render 'ranking'
   end
 end

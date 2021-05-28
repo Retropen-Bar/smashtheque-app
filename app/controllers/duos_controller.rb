@@ -41,20 +41,42 @@ class DuosController < PublicController
     @meta_properties['og:type'] = 'profile'
   end
 
-  def ranking_offline
-    ranking(is_online: false)
-  end
+  def ranking
+    @year = params[:year]&.to_i
+    @year = nil unless @year&.positive?
+    @is_online = params[:is_online]&.to_i == 1
 
-  def ranking_offline_year
-    ranking(is_online: false, year: params[:year].to_i)
-  end
+    duos =
+      if @is_online
+        if @year
+          Duo.ranked_online_in(@year).with_track_records_online_in(@year).order(
+            "rank_online_in_#{@year}"
+          )
+        else
+          Duo.ranked_online.with_track_records_online_all_time.order(
+            :rank_online_all_time
+          )
+        end
+      elsif @year
+        Duo.ranked_offline_in(@year).with_track_records_offline_in(@year).order(
+          "rank_offline_in_#{@year}"
+        )
+      else
+        Duo.ranked_offline.with_track_records_offline_all_time.order(
+          :rank_offline_all_time
+        )
+      end
 
-  def ranking_online
-    ranking(is_online: true)
-  end
+    @duos = apply_scopes(duos).includes(
+      player1: { user: :discord_user },
+      player2: { user: :discord_user }
+    )
 
-  def ranking_online_year
-    ranking(is_online: true, year: params[:year].to_i)
+    @meta_title = [
+      "Observatoire d'Harmonie 2v2",
+      @is_online ? 'Online' : 'Offline',
+      @year
+    ].compact.join(' ')
   end
 
   def autocomplete
@@ -82,44 +104,5 @@ class DuosController < PublicController
 
   def select_layout
     @map ? 'map' : 'application'
-  end
-
-  def ranking(is_online:, year: nil)
-    @year = year
-    @is_online = is_online
-
-    duos =
-      if is_online
-        if year
-          Duo.ranked_online_in(year).with_track_records_online_in(year).order(
-            "rank_online_in_#{year}"
-          )
-        else
-          Duo.ranked_online.with_track_records_online_all_time.order(
-            :rank_online_all_time
-          )
-        end
-      elsif year
-        Duo.ranked_offline_in(year).with_track_records_offline_in(year).order(
-          "rank_offline_in_#{year}"
-        )
-      else
-        Duo.ranked_offline.with_track_records_offline_all_time.order(
-          :rank_offline_all_time
-        )
-      end
-
-    @duos = apply_scopes(duos).includes(
-      player1: { user: :discord_user },
-      player2: { user: :discord_user }
-    )
-
-    @meta_title = [
-      "Observatoire d'Harmonie 2v2",
-      is_online ? 'Online' : 'Offline',
-      year
-    ].compact.join(' ')
-
-    render 'ranking'
   end
 end

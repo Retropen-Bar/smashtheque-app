@@ -1,6 +1,7 @@
 <div class="text-center">
   <div id="list-toolbar">
     <h1 class="page-title"><%= @meta_title %></h1>
+    <%= render 'shared/ranking_filters' %>
     <%= render 'shared/pagination', collection: @duos %>
   </div>
 </div>
