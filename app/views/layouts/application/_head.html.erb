@@ -54,6 +54,12 @@
             <%= link_to year, online_ranking_year_duos_path(year), class: 'dropdown-item' %>
           <% end %>
           <%= link_to 'Toutes années confondues', online_ranking_duos_path, class: 'dropdown-item' %>
+          <div class="dropdown-divider"></div>
+          <h6 class="dropdown-header">Observatoire d'Harmonie 2v2 offline</h6>
+          <% TrackRecord.points_years.reverse.each do |year| %>
+            <%= link_to year, offline_ranking_year_duos_path(year), class: 'dropdown-item' %>
+          <% end %>
+          <%= link_to 'Toutes années confondues', offline_ranking_duos_path, class: 'dropdown-item' %>
         </div>
       </li>
 

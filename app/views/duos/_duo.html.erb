@@ -2,7 +2,9 @@
   <div class="card-body">
     <% if defined?(with_rank) && with_rank %>
       <div class="rank">
-        #<%= (defined?(year) && year) ? duo.rank_in(year) : duo.rank %>
+        #<%= duo.rank(
+          is_online: defined?(is_online) && is_online,
+          year: defined?(year) && year) %>
       </div>
     <% end %>
     <h5 class="card-title">
@@ -16,7 +18,10 @@
     </h5>
     <% if defined?(with_points) && with_points %>
       <div class="duo-points">
-        <%= duo.points_count(32, is_online: true, year: defined?(year) && year) %>
+        <%= duo.points_count(
+          32,
+          is_online: defined?(is_online) && is_online,
+          year: defined?(year) && year) %>
       </div>
     <% end %>
   </div>
