@@ -19,8 +19,6 @@ class MergeConditions < ActiveRecord::Migration[6.0]
   class PlayerRewardCondition < ApplicationRecord; end
 
   def clean_awards
-    # Player.update_all(best_player_reward_condition_id: nil)
-    # PlayerRewardCondition.delete_all
     change_table :players, bulk: true do |t|
       t.remove :best_player_reward_condition_id
       t.remove :best_reward_level1
@@ -28,8 +26,6 @@ class MergeConditions < ActiveRecord::Migration[6.0]
     end
     drop_table :player_reward_conditions
 
-    # Duo.update_all(best_duo_reward_duo_condition_id: nil)
-    # DuoRewardDuoCondition.delete_all
     change_table :duos, bulk: true do |t|
       t.remove :best_duo_reward_duo_condition_id
       t.remove :best_reward_level1
