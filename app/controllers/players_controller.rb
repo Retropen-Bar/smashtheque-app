@@ -3,6 +3,7 @@ class PlayersController < PublicController
 
   has_scope :by_character_id
   has_scope :by_team_id
+  has_scope :by_community_id
 
   has_scope :page, default: 1
   has_scope :per

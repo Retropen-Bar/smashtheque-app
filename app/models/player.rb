@@ -327,6 +327,10 @@ class Player < ApplicationRecord
     where(user_id: User.near_community(community, radius: radius))
   end
 
+  def self.by_community_id(community_id)
+    near_community(Community.find(community_id))
+  end
+
   def self.by_character_id(character_id)
     where(
       id: CharactersPlayer.where(character_id: character_id).select(:player_id)

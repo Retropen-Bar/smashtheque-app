@@ -1,5 +1,5 @@
-<div class="col-3">
-  <strong>Localisation</strong>
+<div class="col-6 col-md-3">
+  <strong>Observatoire</strong>
   <div class="custom-control custom-radio">
     <%= radio_button_tag :is_online,
                          1,
@@ -22,7 +22,7 @@
   </div>
 </div>
 
-<div class="col-3">
+<div class="col-6 col-md-3">
   <strong>Période</strong>
   <% TrackRecord.points_years.reverse.each do |year| %>
     <div class="custom-control custom-radio">
