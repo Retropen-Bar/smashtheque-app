@@ -1,7 +1,21 @@
 <div class="text-center">
   <div id="list-toolbar">
     <h1 class="page-title">Observatoire d'Harmonie 2v2</h1>
-    <%= render 'shared/ranking_filters' %>
+
+    <div id="filters-wrapper" class="text-left">
+
+      <%= form_tag nil, method: :get, id: "index-filters" do %>
+
+        <div class="form-row">
+
+          <div class="col-3"></div>
+          <%= render 'shared/ranking_filters' %>
+
+        </div>
+
+      <% end %>
+    </div>
+
     <%= render 'shared/pagination', collection: @duos %>
   </div>
 </div>

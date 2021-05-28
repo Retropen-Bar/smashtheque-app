@@ -327,6 +327,18 @@ class Player < ApplicationRecord
     where(user_id: User.near_community(community, radius: radius))
   end
 
+  def self.by_character_id(character_id)
+    where(
+      id: CharactersPlayer.where(character_id: character_id).select(:player_id)
+    )
+  end
+
+  def self.by_team_id(team_id)
+    where(
+      id: PlayersTeam.where(team_id: team_id).select(:player_id)
+    )
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------

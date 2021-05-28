@@ -1,7 +1,48 @@
 <div class="text-center">
   <div id="list-toolbar">
     <h1 class="page-title">Observatoire d'Harmonie 1v1</h1>
-    <%= render 'shared/ranking_filters' %>
+
+    <div id="filters-wrapper" class="text-left">
+
+      <%= form_tag nil, method: :get, id: "index-filters" do %>
+
+        <div class="form-row">
+
+          <div class="col-1"></div>
+
+          <%= render 'shared/ranking_filters' %>
+
+          <div class="col-4">
+            <div>
+              <strong>Personnages</strong>
+
+              <%= select_tag  :by_character_id,
+                              options_for_select(
+                                player_characters_select_collection,
+                                params[:by_character_id]
+                              ),
+                              prompt: 'Tous',
+                              class: 'custom-select' %>
+            </div>
+            <br/>
+            <div>
+              <strong>Équipes</strong>
+
+              <%= select_tag  :by_team_id,
+                              options_for_select(
+                                player_teams_select_collection,
+                                params[:by_team_id]
+                              ),
+                              prompt: 'Toutes',
+                              class: 'custom-select' %>
+            </div>
+          </div>
+
+        </div>
+
+      <% end %>
+    </div>
+
     <%= render 'shared/pagination', collection: @players %>
   </div>
 </div>
