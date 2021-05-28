@@ -25,24 +25,19 @@ module HasTrackRecords
     # SCOPES
     # ---------------------------------------------------------------------------
 
-    # def self.tracked
-
-    # end
-
-    # scope :with_points, -> { where('points > 0') }
-    # scope :with_points_in, ->(year) { where(sanitize_sql(['points_in_? > 0', year])) }
-
     def self.with_track_records(is_online:, year: nil)
       column_suffix = [
         is_online ? 'online' : 'offline',
         year ? "in_#{year}" : 'all_time'
       ].join('_')
       subquery = TrackRecord.by_tracked_type(self).by_is_online(is_online).on_year(year).select(
-        :tracked_id, "points AS points_#{column_suffix}", "rank AS rank_#{column_suffix}"
+        :tracked_id,
+        "points AS #{sanitize_sql("points_#{column_suffix}")}",
+        "rank AS #{sanitize_sql("rank_#{column_suffix}")}"
       )
       joins(
-        "LEFT OUTER JOIN (#{subquery.to_sql}) track_records_#{column_suffix}
-                      ON id = track_records_#{column_suffix}.tracked_id"
+        "LEFT OUTER JOIN (#{subquery.to_sql}) #{sanitize_sql("track_records_#{column_suffix}")}
+                      ON id = #{sanitize_sql("track_records_#{column_suffix}")}.tracked_id"
       )
     end
 

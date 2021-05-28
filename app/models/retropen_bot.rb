@@ -8,8 +8,6 @@ class RetropenBot
   CHANNEL_ABC_OTHERS = 'symboles-0-9'.freeze
   CATEGORY_CHARS1 = 'JOUEURS FR : ROSTER A-M'.freeze
   CATEGORY_CHARS2 = 'JOUEURS FR : ROSTER N-Z'.freeze
-  CATEGORY_CITIES = 'JOUEURS FR : VILLES MAJEURES'.freeze
-  CATEGORY_COUNTRIES = 'JOUEURS FR : PAYS MAJEURS'.freeze
   CATEGORY_TEAMS = 'ÉQUIPES FR'.freeze
   CHANNEL_TEAMS_LIST = 'listing-équipes'.freeze
   CHANNEL_TEAMS_LU1 = 'roster-équipes-a-i'.freeze
