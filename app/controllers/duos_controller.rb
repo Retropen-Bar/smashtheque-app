@@ -44,7 +44,7 @@ class DuosController < PublicController
   def ranking
     @year = params[:year]&.to_i
     @year = nil unless @year&.positive?
-    @is_online = params[:is_online]&.to_i == 1
+    @is_online = params[:is_online]&.to_i != 0
 
     duos =
       if @is_online
