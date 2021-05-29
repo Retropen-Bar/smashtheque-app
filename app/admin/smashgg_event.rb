@@ -58,9 +58,11 @@ ActiveAdmin.register SmashggEvent do
 
   filter :smashgg_id
   filter :tournament_name
+  filter :name
   filter :slug
   filter :start_at
   filter :is_online
+  filter :is_ignored
   filter :num_entrants
   filter :created_at
 
