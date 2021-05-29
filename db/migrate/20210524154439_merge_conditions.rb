@@ -41,6 +41,7 @@ class MergeConditions < ActiveRecord::Migration[6.0]
         rdc.attributes.symbolize_keys.slice(
           :reward_id, :size_min, :size_max, :rank, :points
         ).merge(
+          is_online: true,
           is_duo: true
         )
       )
