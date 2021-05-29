@@ -1,0 +1,49 @@
+<div class="col-6 col-md-3">
+  <strong>Observatoire</strong>
+  <div class="custom-control custom-radio">
+    <%= radio_button_tag :is_online,
+                         1,
+                         @is_online,
+                         id: "filter-online",
+                         class: 'custom-control-input' %>
+    <label class="custom-control-label" for="filter-online">
+      Online
+    </label>
+  </div>
+  <div class="custom-control custom-radio">
+    <%= radio_button_tag :is_online,
+                         0,
+                         !@is_online,
+                         id: "filter-offline",
+                         class: 'custom-control-input' %>
+    <label class="custom-control-label" for="filter-offline">
+      Offline
+    </label>
+  </div>
+</div>
+
+<div class="col-6 col-md-3">
+  <strong>Période</strong>
+  <% TrackRecord.points_years.reverse.each do |year| %>
+    <div class="custom-control custom-radio">
+      <%= radio_button_tag :year,
+                           year,
+                           @year == year,
+                           id: "filter-year-#{year}",
+                           class: 'custom-control-input' %>
+      <label class="custom-control-label" for="filter-year-<%= year %>">
+        <%= year %>
+      </label>
+    </div>
+  <% end %>
+  <div class="custom-control custom-radio">
+    <%= radio_button_tag :year,
+                         '',
+                         @year.nil?,
+                         id: 'filter-year-all',
+                         class: 'custom-control-input' %>
+    <label class="custom-control-label" for="filter-year-all">
+      All time
+    </label>
+  </div>
+</div>

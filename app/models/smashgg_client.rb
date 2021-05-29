@@ -1,7 +1,6 @@
 require 'graphql/client/http'
 
 class SmashggClient
-
   HTTP = GraphQL::Client::HTTP.new('https://api.smash.gg/gql/alpha') do
     def headers(context)
       {
@@ -126,16 +125,16 @@ class SmashggClient
 
   TournamentsSearchQuery =
     CLIENT.parse <<-GRAPHQL
-      query($name: String, $dateMin: Timestamp, $dateMax: Timestamp) {
+      query($name: String, $dateMin: Timestamp, $dateMax: Timestamp, $country: String) {
         tournaments(query: {
           perPage: 100
           sortBy: "startAt asc"
           filter: {
-            hasOnlineEvents: true
             videogameIds: [1386]
             name: $name
             afterDate: $dateMin
             beforeDate: $dateMax
+            countryCode: $country
           }
         }) {
           nodes {
@@ -218,13 +217,14 @@ class SmashggClient
     end
   end
 
-  def get_events(name:, from:, to:)
+  def get_events(name:, from:, to:, country:)
     response = CLIENT.query(
       TournamentsSearchQuery,
       variables: {
         name: name,
         dateMin: from.to_time.to_i,
-        dateMax: to.to_time.to_i
+        dateMax: to.to_time.to_i,
+        country: country
       }
     )
     if response.data.nil?
@@ -246,5 +246,4 @@ class SmashggClient
       }
     ).data.user.events.nodes
   end
-
 end

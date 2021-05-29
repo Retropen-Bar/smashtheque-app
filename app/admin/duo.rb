@@ -11,6 +11,28 @@ ActiveAdmin.register Duo do
   # INDEX
   # ---------------------------------------------------------------------------
 
+  controller do
+    def scoped_collection
+      super.with_track_records_online_all_time.with_track_records_offline_all_time
+    end
+  end
+
+  order_by(:points_online_all_time) do |order_clause|
+    if order_clause.order == 'desc'
+      'points_online_all_time DESC NULLS LAST'
+    else
+      'points_online_all_time ASC NULLS FIRST'
+    end
+  end
+
+  order_by(:points_offline_all_time) do |order_clause|
+    if order_clause.order == 'desc'
+      'points_offline_all_time DESC NULLS LAST'
+    else
+      'points_offline_all_time ASC NULLS FIRST'
+    end
+  end
+
   includes player1: { user: :discord_user },
            player2: { user: :discord_user }
 
@@ -26,6 +48,12 @@ ActiveAdmin.register Duo do
     column :player2 do |decorated|
       decorated.player2_admin_link
     end
+    column "<img src=\"https://cdn.discordapp.com/emojis/#{RetropenBot::EMOJI_POINTS_ONLINE}.png?size=16\"/>".html_safe,
+           sortable: :points_online_all_time,
+           &:points_online_all_time
+    column "<img src=\"https://cdn.discordapp.com/emojis/#{RetropenBot::EMOJI_POINTS_OFFLINE}.png?size=16\"/>".html_safe,
+           sortable: :points_offline_all_time,
+           &:points_offline_all_time
     column :created_at do |decorated|
       decorated.created_at_date
     end
@@ -33,12 +61,6 @@ ActiveAdmin.register Duo do
   end
 
   filter :name
-  filter :rank
-  filter :points
-  filter :best_reward,
-         as: :select,
-         collection: proc { Reward.online_2v2.admin_decorate },
-         input_html: { multiple: true, data: { select2: {} } }
 
   # ---------------------------------------------------------------------------
   # FORM
@@ -68,21 +90,10 @@ ActiveAdmin.register Duo do
       row :player2 do |decorated|
         decorated.player2_admin_link
       end
-      row :rank
-      row :points
-      Player::POINTS_YEARS.each do |year|
-        row "rank_in_#{year}"
-        row "points_in_#{year}"
-      end
-      row :best_reward do |decorated|
-        decorated.best_reward_admin_link
-      end
-      row :best_rewards do |decorated|
-        decorated.best_rewards_admin_links({}, class: 'reward-badge-32').join(' ').html_safe
-      end
-      row :unique_rewards do |decorated|
-        decorated.unique_rewards_admin_links({}, class: 'reward-badge-32').join(' ').html_safe
-      end
+      row :rank_online_all_time
+      row :rank_offline_all_time
+      row :points_online_all_time
+      row :points_offline_all_time
       row :created_at
       row :updated_at
     end
@@ -102,13 +113,15 @@ ActiveAdmin.register Duo do
   # ---------------------------------------------------------------------------
 
   member_action :results do
-    @duo = resource.admin_decorate
-    @duo_tournament_events = @duo.duo_tournament_events
-                                 .order(date: :desc)
-                                 .admin_decorate
-    @rewards_counts = @duo.rewards_counts
-    @rewards_count = @rewards_counts.values.sum
-    @duo_tournament_events_count = @duo_tournament_events.count
+    @resource = resource.admin_decorate
+    @events = @resource.duo_tournament_events.order(date: :desc).admin_decorate
+    @all_online_rewards = Reward.online_2v2
+    @all_offline_rewards = Reward.offline_2v2
+    @online_rewards_counts = @duo.rewards_counts(is_online: true)
+    @offline_rewards_counts = @duo.rewards_counts(is_online: false)
+    @rewards_count = @online_rewards_counts.values.sum + @offline_rewards_counts.values.sum
+    @events_count = @events.count
+    render 'admin/shared/results'
   end
 
 end

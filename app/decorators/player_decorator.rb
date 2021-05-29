@@ -1,4 +1,5 @@
 class PlayerDecorator < BaseDecorator
+  include HasTrackRecordsDecorator
 
   def autocomplete_name
     model.name
@@ -92,18 +93,6 @@ class PlayerDecorator < BaseDecorator
     :user
   end
 
-  def points_count(icon_size = 32, options = {})
-    options[:height] = icon_size
-    value = options.delete(:value) || points
-    [
-      h.image_tag(
-        "https://cdn.discordapp.com/emojis/#{RetropenBot::EMOJI_POINTS}.png",
-        options
-      ),
-      h.number_with_delimiter(value)
-    ].join('&nbsp;').html_safe
-  end
-
   def link(options = {})
     avatar_size = options.delete(:avatar_size) || 32
     if model.is_legit?
@@ -140,20 +129,7 @@ class PlayerDecorator < BaseDecorator
     end
   end
 
-  def best_rewards_badges(options = {})
-    best_rewards.map do |reward|
-      reward.decorate.badge(options.clone)
-    end
-  end
-
-  def unique_rewards_badges(options = {})
-    unique_rewards.ordered_by_level.decorate.map do |reward|
-      reward.badge(options.clone)
-    end
-  end
-
   def discord_badge(options = {})
     discord_user&.decorate&.discord_badge(options)
   end
-
 end

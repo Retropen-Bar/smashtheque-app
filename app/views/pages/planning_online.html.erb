@@ -52,7 +52,7 @@
     var calendarEl = document.getElementById("planning");
     var initialDate = '<%= @monday %>';
     var levels = <%= RecurringTournament::LEVELS.to_json.html_safe %>;
-    var eventsDataUrl = '<%= recurring_tournaments_path(format: :json) %>';
+    var eventsDataUrl = '<%= recurring_tournaments_path(by_is_online: true, format: :json) %>';
     window.newPlanningCalendar(calendarEl, initialDate, levels, eventsDataUrl);
   });
 </script>

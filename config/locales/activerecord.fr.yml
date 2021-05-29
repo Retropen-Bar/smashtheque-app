@@ -11,17 +11,15 @@ fr:
       discord_guild_admin: Admin de serveur Discord
       discord_user: Compte Discord
       duo: Duo
-      duo_reward_duo_condition: Récompense obtenue
       duo_tournament_event: Édition 2v2
       community: Communauté
       page: Page
       player: Joueur
-      player_reward_condition: Récompense obtenue
+      met_reward_condition: Récompense obtenue
       players_recurring_tournament: Certification
       recurring_tournament: Série
       reward: Récompense
       reward_condition: Condition de récompense
-      reward_duo_condition: Condition de récompense 2v2
       smashgg_event: Tournoi smash.gg
       smashgg_user: Compte smash.gg
       team: Équipe
@@ -105,25 +103,21 @@ fr:
         rank_in_2021: Classement 2021
         rewards: Récompenses
         unique_rewards: Récompenses uniques
-      duo_reward_duo_condition:
-        << : *SHARED
-        duo: Équipe
-        points: Fragments d'étoiles
-        reward: Récompense
-        reward_duo_condition: Condition
-        duo_tournament_event: Édition
-      duo_tournament_event:
-        << : *SHARED
+      base_tournament_event: &TOURNAMENT_EVENT
         bracket: Bracket
         bracket_gid: Bracket
         bracket_url: URL du bracket
         date: Date
         graph: Graph
         is_complete: Complet
+        is_online: Online ?
         is_out_of_ranking: Non noté ?
         name: Nom
         participants_count: Participants
         recurring_tournament: Série
+      duo_tournament_event:
+        << : *SHARED
+        << : *TOURNAMENT_EVENT
         top1_duo: Top 1
         top1_duo_id: Top 1
         top2_duo: Top 2
@@ -220,13 +214,13 @@ fr:
         team_ids: Équipes
         unique_rewards: Récompenses uniques
         user: Utilisateur
-      player_reward_condition:
+      met_reward_condition:
         << : *SHARED
-        player: Joueur
+        awarded: Récompensé
         points: Fragments d'étoiles
         reward: Récompense
         reward_condition: Condition
-        tournament_event: Édition
+        event: Édition
       players_recurring_tournament:
         << : *SHARED
         certifier_user: Certifié par
@@ -235,20 +229,26 @@ fr:
         recurring_tournament: Série
       recurring_tournament:
         << : *SHARED
+        address: Adresse du lieu
+        address_name: Nom du lieu
         contacts: TOs
         date_description: Description de la date
         discord_guild: Serveur Discord
         duo_tournament_events: Éditions 2v2
         is_archived: Stoppé ?
         is_online: Online ?
+        latitude: Latitude
         level: Difficulté
-        name: Tournoi
+        longitude: Longitude
+        misc: Autres infos
+        name: Nom
         recurring_type: Récurrence
         registration: Comment s'inscrire
         size: Taille
         starts_at_hour: Heure
         starts_at_min: Minutes
         tournament_events: Éditions 1v1
+        twitter_username: Compte Twitter
         wday: Jour de la semaine
       recurring_tournament/level:
         l1_playground: 1 - Cour de récréation
@@ -265,36 +265,26 @@ fr:
         << : *SHARED
         awardeds: Récompensés
         category: Catégorie
-        conditions: Conditions
-        duo_reward_duo_conditions: Obtensions 2v2
-        duos: Duos
         image: Image
         level: Niveau
         level1: Niveau 1
         level2: Niveau 2
         met_conditions: Récompenses obtenues
         name: Nom
-        reward_conditions: Conditions 1v1
-        reward_duo_conditions: Conditions 2v2
-        player_reward_conditions: Obtensions 1v1
-        players: Joueurs
+        reward_conditions: Conditions
+        met_reward_conditions: Obtensions
         style: Style
       reward/category:
         online_1v1: Online 1v1
         online_2v2: Online 2v2
+        offline_1v1: Offline 1v1
+        offline_2v2: Offline 2v2
       reward_condition:
         << : *SHARED
+        is_duo: Duo ?
+        is_online: Online ?
         level: Difficulté
-        player_reward_conditions: Obtensions
-        points: Fragments d'étoiles
-        rank: Rang
-        reward: Récompense
-        size_max: Taille max
-        size_min: Taille min
-      reward_duo_condition:
-        << : *SHARED
-        level: Difficulté
-        duo_reward_duo_conditions: Obtensions
+        met_reward_conditions: Obtensions
         points: Fragments d'étoiles
         rank: Rang
         reward: Récompense
@@ -363,16 +353,7 @@ fr:
         twitter_username: Compte Twitter
       tournament_event:
         << : *SHARED
-        bracket: Bracket
-        bracket_gid: Bracket
-        bracket_url: URL du bracket
-        date: Date
-        graph: Graph
-        is_complete: Complet
-        is_out_of_ranking: Non noté ?
-        name: Nom
-        participants_count: Participants
-        recurring_tournament: Série
+        << : *TOURNAMENT_EVENT
         top1_player: Top 1
         top1_player_id: Top 1
         top2_player: Top 2
@@ -429,9 +410,11 @@ fr:
         last_sign_in_at: Session précédente
         last_sign_in_ip: IP précédente
         main_address: Localisation principale
+        main_locality: Ville principale
         name: Nom
         player: Joueur
         secondary_address: Localisation secondaire
+        secondary_locality: Ville secondaire
         sign_in_count: Connexions
         twitter_username: Compte Twitter
       user/admin_level:

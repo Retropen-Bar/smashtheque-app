@@ -103,8 +103,8 @@ ActiveAdmin.register User do
                 :is_coach, :coaching_url, :coaching_details,
                 :is_graphic_designer, :graphic_designer_details,
                 :is_available_graphic_designer,
-                :main_address, :main_latitude, :main_longitude,
-                :secondary_address, :secondary_latitude, :secondary_longitude,
+                :main_address, :main_latitude, :main_longitude, :main_locality,
+                :secondary_address, :secondary_latitude, :secondary_longitude, :secondary_locality,
                 administrated_team_ids: [],
                 administrated_recurring_tournament_ids: []
 
@@ -141,9 +141,11 @@ ActiveAdmin.register User do
           row :main_address do |decorated|
             decorated.main_address_with_coordinates
           end
+          row :main_locality
           row :secondary_address do |decorated|
             decorated.secondary_address_with_coordinates
           end
+          row :secondary_locality
           row :is_caster
           row :is_coach
           row :coaching_url
@@ -201,6 +203,10 @@ ActiveAdmin.register User do
         end
       end
     end
+  end
+
+  action_item :public, only: :show do
+    link_to 'Page publique', resource, class: 'green'
   end
 
   # ---------------------------------------------------------------------------

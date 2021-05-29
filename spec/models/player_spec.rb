@@ -2,39 +2,26 @@
 #
 # Table name: players
 #
-#  id                              :bigint           not null, primary key
-#  ban_details                     :text
-#  best_reward_level1              :string
-#  best_reward_level2              :string
-#  character_names                 :text             default([]), is an Array
-#  is_accepted                     :boolean
-#  is_banned                       :boolean          default(FALSE), not null
-#  name                            :string
-#  old_names                       :string           default([]), is an Array
-#  points                          :integer          default(0), not null
-#  points_in_2019                  :integer          default(0), not null
-#  points_in_2020                  :integer          default(0), not null
-#  points_in_2021                  :integer          default(0), not null
-#  rank                            :integer
-#  rank_in_2019                    :integer
-#  rank_in_2020                    :integer
-#  rank_in_2021                    :integer
-#  team_names                      :text             default([]), is an Array
-#  created_at                      :datetime         not null
-#  updated_at                      :datetime         not null
-#  best_player_reward_condition_id :bigint
-#  creator_user_id                 :integer          not null
-#  user_id                         :integer
+#  id              :bigint           not null, primary key
+#  ban_details     :text
+#  character_names :text             default([]), is an Array
+#  is_accepted     :boolean
+#  is_banned       :boolean          default(FALSE), not null
+#  name            :string
+#  old_names       :string           default([]), is an Array
+#  team_names      :text             default([]), is an Array
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  creator_user_id :integer          not null
+#  user_id         :integer
 #
 # Indexes
 #
-#  index_players_on_best_player_reward_condition_id  (best_player_reward_condition_id)
-#  index_players_on_creator_user_id                  (creator_user_id)
-#  index_players_on_user_id                          (user_id)
+#  index_players_on_creator_user_id  (creator_user_id)
+#  index_players_on_user_id          (user_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (best_player_reward_condition_id => player_reward_conditions.id)
 #  fk_rails_...  (creator_user_id => users.id)
 #  fk_rails_...  (user_id => users.id)
 #

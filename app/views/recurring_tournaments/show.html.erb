@@ -16,88 +16,22 @@
       Infos clé
     </h2>
 
-    <div class="row">
-      <div class="col-6">
-
-        <p>
-          <strong>Difficulté</strong><br/>
-          <%= recurring_tournament.level_text %>
-        </p>
-
-        <p>
-          <strong>Taille</strong><br/>
-          <%= recurring_tournament.size %>
-        </p>
-
-        <p>
-          <strong>Localisation</strong><br/>
-          <% if recurring_tournament.is_online? %>
-            Online
-          <% else %>
-            Offline
-          <% end %>
-        </p>
-
-        <strong>Comment s'inscrire</strong><br/>
-        <pre style="white-space: pre-wrap;"><%= recurring_tournament.registration %></pre>
-
-      </div>
-      <div class="col-6">
-
-        <p>
-          <strong>Récurrence</strong><br/>
-          <%= recurring_tournament.recurring_type_text %>
-        </p>
-
-        <% if recurring_tournament.recurring_type.to_sym == :weekly %>
-
-          <p>
-            <strong>Jour de la semaine</strong><br/>
-            <%= recurring_tournament.wday_text %>
-          </p>
-
-        <% end %>
-
-        <p>
-          <strong>Démarrage</strong><br/>
-          <%= recurring_tournament.starts_at %>
-        </p>
-
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-6">
-
-        <% if recurring_tournament.discord_guild %>
-          <p>
-            <strong>Discord</strong><br/>
-            <%= recurring_tournament.discord_guild.decorate.link %>
-          </p>
-        <% end %>
-
-      </div>
-      <div class="col-6">
-
-        <% if recurring_tournament.contacts.any? %>
-
-          <p>
-            <strong>TOs</strong><br/>
-            <% recurring_tournament.contacts.each do |user| %>
-              <% if user.player %>
-                <%= user.decorate.player_link(class: 'btn btn-outline-primary') %>
-              <% else %>
-                <%= user.decorate.link(class: 'btn btn-outline-secondary') %>
-              <% end %>
-            <% end %>
-          </p>
-
-        <% end %>
-
-      </div>
-    </div>
+    <%= render 'modal_content', recurring_tournament: recurring_tournament %>
 
   </div>
+
+  <% if recurring_tournament.geocoded? %>
+    <div class="col-6 border bg-light shadow p-5 m-3 rounded">
+      <%= single_address_map({
+            name: recurring_tournament.full_address.html_safe,
+            latitude: recurring_tournament.latitude,
+            longitude: recurring_tournament.longitude
+          }) %>
+    </div>
+  <% end %>
+</div>
+
+<div class="row">
 
   <div class="col border bg-light shadow p-5 m-3 rounded">
 

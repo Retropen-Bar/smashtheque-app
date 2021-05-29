@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_09_195839) do
+ActiveRecord::Schema.define(version: 2021_05_26_203445) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -193,20 +193,8 @@ ActiveRecord::Schema.define(version: 2021_05_09_195839) do
     t.index ["user_id"], name: "index_discord_users_on_user_id"
   end
 
-  create_table "duo_reward_duo_conditions", force: :cascade do |t|
-    t.bigint "duo_id", null: false
-    t.bigint "reward_duo_condition_id", null: false
-    t.bigint "duo_tournament_event_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["duo_id", "reward_duo_condition_id", "duo_tournament_event_id"], name: "index_drdc_on_all", unique: true
-    t.index ["duo_id"], name: "index_duo_reward_duo_conditions_on_duo_id"
-    t.index ["duo_tournament_event_id"], name: "index_duo_reward_duo_conditions_on_duo_tournament_event_id"
-    t.index ["reward_duo_condition_id"], name: "index_duo_reward_duo_conditions_on_reward_duo_condition_id"
-  end
-
   create_table "duo_tournament_events", force: :cascade do |t|
-    t.bigint "recurring_tournament_id", null: false
+    t.integer "recurring_tournament_id"
     t.string "name", null: false
     t.date "date", null: false
     t.integer "participants_count"
@@ -225,6 +213,7 @@ ActiveRecord::Schema.define(version: 2021_05_09_195839) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "is_out_of_ranking", default: false, null: false
+    t.boolean "is_online", default: false, null: false
     t.index ["bracket_type", "bracket_id"], name: "index_duo_tournament_events_on_bracket_type_and_bracket_id"
     t.index ["recurring_tournament_id"], name: "index_duo_tournament_events_on_recurring_tournament_id"
     t.index ["top1_duo_id"], name: "index_duo_tournament_events_on_top1_duo_id"
@@ -243,21 +232,23 @@ ActiveRecord::Schema.define(version: 2021_05_09_195839) do
     t.bigint "player2_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "points", default: 0, null: false
-    t.bigint "best_duo_reward_duo_condition_id"
-    t.string "best_reward_level1"
-    t.string "best_reward_level2"
-    t.integer "rank"
-    t.integer "points_in_2019", default: 0, null: false
-    t.integer "rank_in_2019"
-    t.integer "points_in_2020", default: 0, null: false
-    t.integer "rank_in_2020"
-    t.integer "points_in_2021", default: 0, null: false
-    t.integer "rank_in_2021"
-    t.index ["best_duo_reward_duo_condition_id"], name: "index_duos_on_best_duo_reward_duo_condition_id"
     t.index ["name"], name: "index_duos_on_name"
     t.index ["player1_id"], name: "index_duos_on_player1_id"
     t.index ["player2_id"], name: "index_duos_on_player2_id"
+  end
+
+  create_table "met_reward_conditions", force: :cascade do |t|
+    t.string "awarded_type", null: false
+    t.bigint "awarded_id", null: false
+    t.bigint "reward_condition_id", null: false
+    t.string "event_type", null: false
+    t.bigint "event_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["awarded_type", "awarded_id", "reward_condition_id", "event_type", "event_id"], name: "index_mrc_on_all", unique: true
+    t.index ["awarded_type", "awarded_id"], name: "index_met_reward_conditions_on_awarded_type_and_awarded_id"
+    t.index ["event_type", "event_id"], name: "index_met_reward_conditions_on_event_type_and_event_id"
+    t.index ["reward_condition_id"], name: "index_met_reward_conditions_on_reward_condition_id"
   end
 
   create_table "pages", force: :cascade do |t|
@@ -282,18 +273,6 @@ ActiveRecord::Schema.define(version: 2021_05_09_195839) do
     t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable_type_and_searchable_id"
   end
 
-  create_table "player_reward_conditions", force: :cascade do |t|
-    t.bigint "player_id", null: false
-    t.bigint "reward_condition_id", null: false
-    t.bigint "tournament_event_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["player_id", "reward_condition_id", "tournament_event_id"], name: "index_prc_on_all", unique: true
-    t.index ["player_id"], name: "index_player_reward_conditions_on_player_id"
-    t.index ["reward_condition_id"], name: "index_player_reward_conditions_on_reward_condition_id"
-    t.index ["tournament_event_id"], name: "index_player_reward_conditions_on_tournament_event_id"
-  end
-
   create_table "players", force: :cascade do |t|
     t.string "name"
     t.boolean "is_accepted"
@@ -303,21 +282,9 @@ ActiveRecord::Schema.define(version: 2021_05_09_195839) do
     t.text "team_names", default: [], array: true
     t.boolean "is_banned", default: false, null: false
     t.text "ban_details"
-    t.integer "points", default: 0, null: false
-    t.bigint "best_player_reward_condition_id"
-    t.string "best_reward_level1"
-    t.string "best_reward_level2"
-    t.integer "rank"
     t.integer "creator_user_id", null: false
     t.integer "user_id"
     t.string "old_names", default: [], array: true
-    t.integer "points_in_2019", default: 0, null: false
-    t.integer "rank_in_2019"
-    t.integer "points_in_2020", default: 0, null: false
-    t.integer "rank_in_2020"
-    t.integer "points_in_2021", default: 0, null: false
-    t.integer "rank_in_2021"
-    t.index ["best_player_reward_condition_id"], name: "index_players_on_best_player_reward_condition_id"
     t.index ["creator_user_id"], name: "index_players_on_creator_user_id"
     t.index ["user_id"], name: "index_players_on_user_id"
   end
@@ -367,8 +334,14 @@ ActiveRecord::Schema.define(version: 2021_05_09_195839) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "date_description"
     t.boolean "is_archived", default: false, null: false
-    t.integer "starts_at_hour", default: 0, null: false
-    t.integer "starts_at_min", default: 0, null: false
+    t.integer "starts_at_hour", null: false
+    t.integer "starts_at_min", null: false
+    t.string "address_name"
+    t.string "address"
+    t.float "latitude"
+    t.float "longitude"
+    t.string "twitter_username"
+    t.text "misc"
     t.index ["discord_guild_id"], name: "index_recurring_tournaments_on_discord_guild_id"
   end
 
@@ -380,18 +353,9 @@ ActiveRecord::Schema.define(version: 2021_05_09_195839) do
     t.integer "points", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "is_online", default: false, null: false
+    t.boolean "is_duo", default: false, null: false
     t.index ["reward_id"], name: "index_reward_conditions_on_reward_id"
-  end
-
-  create_table "reward_duo_conditions", force: :cascade do |t|
-    t.bigint "reward_id", null: false
-    t.integer "size_min", null: false
-    t.integer "size_max", null: false
-    t.integer "rank", null: false
-    t.integer "points", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["reward_id"], name: "index_reward_duo_conditions_on_reward_id"
   end
 
   create_table "rewards", force: :cascade do |t|
@@ -399,7 +363,6 @@ ActiveRecord::Schema.define(version: 2021_05_09_195839) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "level1", null: false
     t.integer "level2", null: false
-    t.string "emoji", null: false
     t.string "category", null: false
     t.index ["category", "level1", "level2"], name: "index_rewards_on_category_and_level1_and_level2", unique: true
   end
@@ -486,7 +449,7 @@ ActiveRecord::Schema.define(version: 2021_05_09_195839) do
   end
 
   create_table "tournament_events", force: :cascade do |t|
-    t.integer "recurring_tournament_id", null: false
+    t.integer "recurring_tournament_id"
     t.string "name", null: false
     t.date "date", null: false
     t.bigint "top1_player_id"
@@ -505,6 +468,7 @@ ActiveRecord::Schema.define(version: 2021_05_09_195839) do
     t.string "bracket_type"
     t.bigint "bracket_id"
     t.boolean "is_out_of_ranking", default: false, null: false
+    t.boolean "is_online", default: false, null: false
     t.index ["bracket_type", "bracket_id"], name: "index_tournament_events_on_bracket_type_and_bracket_id"
     t.index ["recurring_tournament_id"], name: "index_tournament_events_on_recurring_tournament_id"
     t.index ["top1_player_id"], name: "index_tournament_events_on_top1_player_id"
@@ -515,6 +479,22 @@ ActiveRecord::Schema.define(version: 2021_05_09_195839) do
     t.index ["top5b_player_id"], name: "index_tournament_events_on_top5b_player_id"
     t.index ["top7a_player_id"], name: "index_tournament_events_on_top7a_player_id"
     t.index ["top7b_player_id"], name: "index_tournament_events_on_top7b_player_id"
+  end
+
+  create_table "track_records", force: :cascade do |t|
+    t.string "tracked_type", null: false
+    t.bigint "tracked_id", null: false
+    t.integer "year"
+    t.boolean "is_online", default: false, null: false
+    t.integer "points", null: false
+    t.integer "rank"
+    t.integer "best_met_reward_condition_id"
+    t.string "best_reward_level1"
+    t.string "best_reward_level2"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["tracked_type", "tracked_id", "year", "is_online"], name: "index_track_records_on_all", unique: true
+    t.index ["tracked_type", "tracked_id"], name: "index_track_records_on_tracked_type_and_tracked_id"
   end
 
   create_table "twitch_channels", force: :cascade do |t|
@@ -561,6 +541,8 @@ ActiveRecord::Schema.define(version: 2021_05_09_195839) do
     t.string "secondary_address"
     t.float "secondary_latitude"
     t.float "secondary_longitude"
+    t.string "main_locality"
+    t.string "secondary_locality"
   end
 
   create_table "versions", force: :cascade do |t|
@@ -593,9 +575,6 @@ ActiveRecord::Schema.define(version: 2021_05_09_195839) do
   add_foreign_key "discord_guild_admins", "discord_users"
   add_foreign_key "discord_guild_relateds", "discord_guilds"
   add_foreign_key "discord_users", "users"
-  add_foreign_key "duo_reward_duo_conditions", "duo_tournament_events"
-  add_foreign_key "duo_reward_duo_conditions", "duos"
-  add_foreign_key "duo_reward_duo_conditions", "reward_duo_conditions"
   add_foreign_key "duo_tournament_events", "duos", column: "top1_duo_id"
   add_foreign_key "duo_tournament_events", "duos", column: "top2_duo_id"
   add_foreign_key "duo_tournament_events", "duos", column: "top3_duo_id"
@@ -605,14 +584,10 @@ ActiveRecord::Schema.define(version: 2021_05_09_195839) do
   add_foreign_key "duo_tournament_events", "duos", column: "top7a_duo_id"
   add_foreign_key "duo_tournament_events", "duos", column: "top7b_duo_id"
   add_foreign_key "duo_tournament_events", "recurring_tournaments"
-  add_foreign_key "duos", "duo_reward_duo_conditions", column: "best_duo_reward_duo_condition_id"
   add_foreign_key "duos", "players", column: "player1_id"
   add_foreign_key "duos", "players", column: "player2_id"
+  add_foreign_key "met_reward_conditions", "reward_conditions"
   add_foreign_key "pages", "pages", column: "parent_id"
-  add_foreign_key "player_reward_conditions", "players"
-  add_foreign_key "player_reward_conditions", "reward_conditions"
-  add_foreign_key "player_reward_conditions", "tournament_events"
-  add_foreign_key "players", "player_reward_conditions", column: "best_player_reward_condition_id"
   add_foreign_key "players", "users"
   add_foreign_key "players", "users", column: "creator_user_id"
   add_foreign_key "players_recurring_tournaments", "players"
@@ -624,7 +599,6 @@ ActiveRecord::Schema.define(version: 2021_05_09_195839) do
   add_foreign_key "recurring_tournament_contacts", "users"
   add_foreign_key "recurring_tournaments", "discord_guilds"
   add_foreign_key "reward_conditions", "rewards"
-  add_foreign_key "reward_duo_conditions", "rewards"
   add_foreign_key "smashgg_events", "smashgg_users", column: "top1_smashgg_user_id"
   add_foreign_key "smashgg_events", "smashgg_users", column: "top2_smashgg_user_id"
   add_foreign_key "smashgg_events", "smashgg_users", column: "top3_smashgg_user_id"
@@ -645,4 +619,5 @@ ActiveRecord::Schema.define(version: 2021_05_09_195839) do
   add_foreign_key "tournament_events", "players", column: "top7a_player_id"
   add_foreign_key "tournament_events", "players", column: "top7b_player_id"
   add_foreign_key "tournament_events", "recurring_tournaments"
+  add_foreign_key "track_records", "met_reward_conditions", column: "best_met_reward_condition_id"
 end

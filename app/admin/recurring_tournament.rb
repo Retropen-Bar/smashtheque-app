@@ -1,5 +1,4 @@
 ActiveAdmin.register RecurringTournament do
-
   decorate_with ActiveAdmin::RecurringTournamentDecorator
 
   has_paper_trail
@@ -20,30 +19,18 @@ ActiveAdmin.register RecurringTournament do
     column :name do |decorated|
       link_to decorated.name, [:admin, decorated.model]
     end
-    column :tournament_events do |decorated|
-      decorated.tournament_events_admin_link
-    end
-    column :duo_tournament_events do |decorated|
-      decorated.duo_tournament_events_admin_link
-    end
-    column :recurring_type do |decorated|
-      decorated.recurring_type_text
-    end
-    column 'Date' do |decorated|
-      decorated.full_date
-    end
+    column :tournament_events, &:tournament_events_admin_link
+    column :duo_tournament_events, &:duo_tournament_events_admin_link
+    column :recurring_type, &:recurring_type_text
+    column 'Date', &:full_date
     column :is_online
-    column :level do |decorated|
-      decorated.short_level_status
-    end
+    column :level, &:short_level_status
     column :size
     column :contacts do |decorated|
       decorated.contacts_admin_links(size: 32).join('<br/>').html_safe
     end
     column :is_archived
-    column :created_at do |decorated|
-      decorated.created_at_date
-    end
+    column :created_at, &:created_at_date
     actions
   end
 
@@ -71,7 +58,7 @@ ActiveAdmin.register RecurringTournament do
   action_item :rebuild,
               only: :index,
               if: proc { current_user.is_root? } do
-    link_to 'Rebuild', [:rebuild, :admin, :recurring_tournaments], class: 'blue'
+    link_to 'Rebuild', %i[rebuild admin recurring_tournaments], class: 'blue'
   end
   collection_action :rebuild do
     RetropenBotScheduler.rebuild_online_tournaments
@@ -83,35 +70,62 @@ ActiveAdmin.register RecurringTournament do
   # ---------------------------------------------------------------------------
 
   form do |f|
-    f.inputs do
-      f.input :name
-      f.input :date_description
-      f.input :recurring_type,
-              collection: recurring_tournament_recurring_type_select_collection,
-              input_html: { data: { select2: {} } },
-              include_blank: false
-      f.input :wday,
-              as: :select,
-              collection: recurring_tournament_wday_select_collection,
-              input_html: { data: { select2: {} } },
-              include_blank: false
-      f.input :starts_at_hour
-      f.input :starts_at_min
-      f.input :discord_guild,
-              collection: recurring_tournament_discord_guild_select_collection,
-              input_html: { data: { select2: {} } }
-      f.input :is_online
-      f.input :level,
-              collection: recurring_tournament_level_select_collection,
-              input_html: { data: { select2: {} } },
-              include_blank: false
-      f.input :size,
-              as: :select,
-              collection: recurring_tournament_size_select_collection
-      f.input :registration,
-              input_html: { rows: 5 }
-      users_input f, :contacts
-      f.input :is_archived
+    render 'admin/shared/google_places_api'
+    f.semantic_errors(*f.object.errors.keys)
+    columns do
+      column do
+        f.inputs 'La série' do
+          f.input :name
+          f.input :level,
+                  collection: recurring_tournament_level_select_collection,
+                  input_html: { data: { select2: {} } },
+                  include_blank: false
+          f.input :size,
+                  as: :select,
+                  collection: recurring_tournament_size_select_collection
+          f.input :is_archived
+        end
+        f.inputs 'Contacts' do
+          users_input f, :contacts
+          f.input :twitter_username
+          f.input :discord_guild,
+                  collection: recurring_tournament_discord_guild_select_collection,
+                  input_html: { data: { select2: {} } }
+          f.input :registration,
+                  input_html: { rows: 5 }
+        end
+      end
+      column do
+        f.inputs 'Localisation' do
+          f.input :is_online,
+                  input_html: {
+                    data: {
+                      toggle: '.online-fields',
+                      untoggle: '.offline-fields'
+                    }
+                  }
+          f.input :address_name, wrapper_html: { class: 'offline-fields' }
+          div class: 'offline-fields' do
+            address_input f
+          end
+          f.input :misc,
+                  input_html: { rows: 5 }
+        end
+        f.inputs 'Temporalité' do
+          f.input :date_description
+          f.input :recurring_type,
+                  collection: recurring_tournament_recurring_type_select_collection,
+                  input_html: { data: { select2: {} } },
+                  include_blank: false
+          f.input :wday,
+                  as: :select,
+                  collection: recurring_tournament_wday_select_collection,
+                  input_html: { data: { select2: {} } },
+                  include_blank: false
+          f.input :starts_at_hour
+          f.input :starts_at_min
+        end
+      end
     end
     f.actions
   end
@@ -119,6 +133,8 @@ ActiveAdmin.register RecurringTournament do
   permit_params :name, :recurring_type,
                 :date_description, :wday, :starts_at_hour, :starts_at_min,
                 :discord_guild_id, :is_online, :level, :size, :registration,
+                :address_name, :address, :latitude, :longitude,
+                :twitter_username, :misc,
                 :is_archived, contact_ids: []
 
   # ---------------------------------------------------------------------------
@@ -126,37 +142,40 @@ ActiveAdmin.register RecurringTournament do
   # ---------------------------------------------------------------------------
 
   show do
-    attributes_table do
-      row :name
-      row :tournament_events do |decorated|
-        decorated.tournament_events_admin_link
+    columns do
+      column do
+        attributes_table do
+          row :name
+          row :tournament_events, &:tournament_events_admin_link
+          row :duo_tournament_events, &:duo_tournament_events_admin_link
+          row :recurring_type, &:recurring_type_text
+          row 'Date', &:full_date
+          row :discord_guild, &:discord_guild_admin_link
+          row :is_online
+          row :level, &:level_status
+          row :size
+          row :registration, &:formatted_registration
+          row :contacts do |decorated|
+            decorated.contacts_admin_links(size: 32).join('<br/>').html_safe
+          end
+          row :address_name
+          row :address, &:address_with_coordinates
+          row :twitter_username
+          row :misc, &:formatted_misc
+          row :is_archived
+          row :created_at
+          row :updated_at
+        end
       end
-      row :duo_tournament_events do |decorated|
-        decorated.duo_tournament_events_admin_link
+      column do
+        if resource.geocoded?
+          single_address_map({
+            name: resource.full_address.html_safe,
+            latitude: resource.latitude,
+            longitude: resource.longitude
+          })
+        end
       end
-      row :recurring_type do |decorated|
-        decorated.recurring_type_text
-      end
-      row 'Date' do |decorated|
-        decorated.full_date
-      end
-      row :discord_guild do |decorated|
-        decorated.discord_guild_admin_link
-      end
-      row :is_online
-      row :level do |decorated|
-        decorated.level_status
-      end
-      row :size
-      row :registration do |decorated|
-        decorated.formatted_registration
-      end
-      row :contacts do |decorated|
-        decorated.contacts_admin_links(size: 32).join('<br/>').html_safe
-      end
-      row :is_archived
-      row :created_at
-      row :updated_at
     end
     active_admin_comments
   end
@@ -164,5 +183,4 @@ ActiveAdmin.register RecurringTournament do
   action_item :public, only: :show do
     link_to 'Page publique', resource, class: 'green'
   end
-
 end

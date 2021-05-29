@@ -27,11 +27,7 @@
           <%= link_to 'Personnages', characters_path, class: 'dropdown-item' %>
           <%= link_to 'Communautés', communities_path, class: 'dropdown-item' %>
           <div class="dropdown-divider"></div>
-          <h6 class="dropdown-header">Observatoire d'Harmonie online</h6>
-          <% Player::POINTS_YEARS.reverse.each do |year| %>
-            <%= link_to year, online_ranking_year_players_path(year), class: 'dropdown-item' %>
-          <% end %>
-          <%= link_to 'Toutes années confondues', online_ranking_players_path, class: 'dropdown-item' %>
+          <%= link_to "Observatoire d'Harmonie 1v1", ranking_players_path, class: 'dropdown-item' %>
         </div>
       </li>
 
@@ -43,11 +39,7 @@
         <div class="dropdown-menu">
           <%= link_to 'Duos', duos_path, class: 'dropdown-item' %>
           <div class="dropdown-divider"></div>
-          <h6 class="dropdown-header">Observatoire d'Harmonie 2v2 online</h6>
-          <% Player::POINTS_YEARS.reverse.each do |year| %>
-            <%= link_to year, online_ranking_year_duos_path(year), class: 'dropdown-item' %>
-          <% end %>
-          <%= link_to 'Toutes années confondues', online_ranking_duos_path, class: 'dropdown-item' %>
+          <%= link_to "Observatoire d'Harmonie 2v2", ranking_duos_path, class: 'dropdown-item' %>
         </div>
       </li>
 
@@ -57,10 +49,12 @@
           <span>Compétition</span>
         <% end %>
         <div class="dropdown-menu">
-          <%= link_to 'Séries de tournois', recurring_tournaments_path, class: 'dropdown-item' %>
+          <%= link_to 'Toutes les séries', recurring_tournaments_path, class: 'dropdown-item' %>
           <%= link_to 'Éditions 1v1', tournament_events_path, class: 'dropdown-item' %>
           <%= link_to 'Éditions 2v2', duo_tournament_events_path, class: 'dropdown-item' %>
-          <%= link_to 'Planning hebdo', planning_path, class: 'dropdown-item' %>
+          <div class="dropdown-divider"></div>
+          <%= link_to 'Planning hebdo online', planning_path, class: 'dropdown-item' %>
+          <%= link_to 'Carte du offline', recurring_tournaments_path(map: 1), class: 'dropdown-item' %>
         </div>
       </li>
 

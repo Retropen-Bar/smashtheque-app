@@ -19,7 +19,6 @@
 #  fk_rails_...  (player_id => players.id)
 #
 class CharactersPlayer < ApplicationRecord
-
   # ---------------------------------------------------------------------------
   # RELATIONS
   # ---------------------------------------------------------------------------
@@ -55,5 +54,4 @@ class CharactersPlayer < ApplicationRecord
   def self.positioned
     order(:position)
   end
-
 end

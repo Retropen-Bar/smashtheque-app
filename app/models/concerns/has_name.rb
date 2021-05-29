@@ -1,9 +1,7 @@
-# Provides helpers about names
 module HasName
   extend ActiveSupport::Concern
 
   included do
-
     # ---------------------------------------------------------------------------
     # SCOPES
     # ---------------------------------------------------------------------------
@@ -29,6 +27,5 @@ module HasName
       end
       result
     end
-
   end
 end

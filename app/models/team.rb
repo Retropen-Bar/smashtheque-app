@@ -24,6 +24,8 @@ class Team < ApplicationRecord
     :name
   end
 
+  include HasTwitter
+
   # ---------------------------------------------------------------------------
   # RELATIONS
   # ---------------------------------------------------------------------------
@@ -67,14 +69,6 @@ class Team < ApplicationRecord
 
     # in any case, both the teams list and the teams lineups must be updated
     RetropenBotScheduler.rebuild_teams
-  end
-
-  def twitter_username=(v)
-    super (v || '').gsub('https://', '')
-                   .gsub('http://', '')
-                   .gsub('twitter.com/', '')
-                   .gsub('@', '')
-                   .strip
   end
 
   # ---------------------------------------------------------------------------

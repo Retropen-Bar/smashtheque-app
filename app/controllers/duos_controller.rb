@@ -15,62 +15,68 @@ class DuosController < PublicController
 
   def show
     @duo = Duo.find(params[:id])
-    @rewards_counts = @duo.rewards_counts
+    @online_rewards_counts = @duo.rewards_counts(is_online: true)
+    @offline_rewards_counts = @duo.rewards_counts(is_online: false)
     @duo_tournament_events = @duo.duo_tournament_events
                                  .order(date: :desc)
                                  .includes(
                                    recurring_tournament: :discord_guild
                                  ).decorate
-    @duo_reward_duo_conditions_by_duo_tournament_event_id = Hash[
-      @duo.duo_reward_duo_conditions
+    @met_reward_conditions_by_duo_tournament_event_id = Hash[
+      @duo.met_reward_conditions
           .includes(
             reward: {
               image_attachment: :blob
             }
-          ).map do |duo_reward_duo_condition|
+          ).map do |met_reward_condition|
         [
-          duo_reward_duo_condition.duo_tournament_event_id,
-          duo_reward_duo_condition
+          met_reward_condition.event_id,
+          met_reward_condition
         ]
       end
     ]
-    @all_rewards = Reward.online_2v2.includes(image_attachment: :blob)
-    # main_character = @duo.characters.first&.decorate
-    # if main_character
-    #   @background_color = main_character.background_color
-    #   @background_image_url = main_character.background_image_data_url
-    #   @background_size = main_character.background_size || 128
-    # end
+    @all_online_rewards = Reward.online_2v2.includes(image_attachment: :blob)
+    @all_offline_rewards = Reward.offline_2v2.includes(image_attachment: :blob)
     @meta_title = @duo.name
     @meta_properties['og:type'] = 'profile'
   end
 
-  def ranking_online
-    @duos = apply_scopes(
-      Duo.ranked.order(:rank)
-    ).includes(
-      player1: { user: :discord_user },
-      player2: { user: :discord_user }
-    )
-    # main_character = @players.first.characters.first&.decorate
-    # if main_character
-    #   @background_color = main_character.background_color
-    #   @background_image_url = main_character.background_image_data_url
-    #   @background_size = main_character.background_size || 128
-    # end
-    @meta_title = "Observatoire d'Harmonie Online 2v2"
-  end
+  def ranking
+    @year = params[:year]&.to_i
+    @year = nil unless @year&.positive?
+    @is_online = params[:is_online]&.to_i != 0
 
-  def ranking_online_year
-    @year = params[:year].to_i
-    @duos = apply_scopes(
-      Duo.ranked_in(@year).order("rank_in_#{@year}")
-    ).includes(
+    duos =
+      if @is_online
+        if @year
+          Duo.ranked_online_in(@year).with_track_records_online_in(@year).order(
+            "rank_online_in_#{@year}"
+          )
+        else
+          Duo.ranked_online.with_track_records_online_all_time.order(
+            :rank_online_all_time
+          )
+        end
+      elsif @year
+        Duo.ranked_offline_in(@year).with_track_records_offline_in(@year).order(
+          "rank_offline_in_#{@year}"
+        )
+      else
+        Duo.ranked_offline.with_track_records_offline_all_time.order(
+          :rank_offline_all_time
+        )
+      end
+
+    @duos = apply_scopes(duos).includes(
       player1: { user: :discord_user },
       player2: { user: :discord_user }
     )
-    @meta_title = "Observatoire d'Harmonie Online 2v2 #{@year}"
-    render 'ranking_online'
+
+    @meta_title = [
+      "Observatoire d'Harmonie 2v2",
+      @is_online ? 'Online' : 'Offline',
+      @year
+    ].compact.join(' ')
   end
 
   def autocomplete
@@ -99,5 +105,4 @@ class DuosController < PublicController
   def select_layout
     @map ? 'map' : 'application'
   end
-
 end

@@ -1,0 +1,82 @@
+<div class="text-center">
+  <div id="list-toolbar">
+    <h1 class="page-title">Observatoire d'Harmonie 1v1</h1>
+
+    <div id="filters-wrapper" class="text-left">
+
+      <%= form_tag nil, method: :get, id: "index-filters" do %>
+
+        <div class="form-row">
+
+          <div class="col-md-3"></div>
+
+          <%= render 'shared/ranking_filters' %>
+
+        </div>
+
+        <div class="form-row">
+
+          <div class="col-12 col-md-4">
+            <strong>Personnages</strong>
+
+            <%= select_tag  :by_character_id,
+                            options_for_select(
+                              player_characters_select_collection,
+                              params[:by_character_id]
+                            ),
+                            prompt: 'Tous',
+                            class: 'custom-select' %>
+          </div>
+
+          <div class="col-12 col-md-4">
+            <strong>Équipes</strong>
+
+            <%= select_tag  :by_team_id,
+                            options_for_select(
+                              player_teams_select_collection,
+                              params[:by_team_id]
+                            ),
+                            prompt: 'Toutes',
+                            class: 'custom-select' %>
+          </div>
+
+          <div class="col-12 col-md-4">
+            <strong>Communautés</strong>
+
+            <%= select_tag  :by_community_id,
+                            options_for_select(
+                              Community.order(:name).map do |community|
+                                [
+                                  community.name,
+                                  community.id
+                                ]
+                              end,
+                              params[:by_community_id]
+                            ),
+                            prompt: 'Toutes',
+                            class: 'custom-select' %>
+          </div>
+
+        </div>
+
+      <% end %>
+    </div>
+
+    <%= render 'shared/pagination', collection: @players %>
+  </div>
+</div>
+
+<div class="cards-list players">
+  <% @players.each_with_index do |player, idx| %>
+    <div class="card-container">
+      <%= render 'players/player',
+                 player: player.decorate,
+                 with_rank: true,
+                 with_points: true,
+                 is_online: @is_online,
+                 year: @year %>
+    </div>
+  <% end %>
+</div>
+
+<%= render 'shared/pagination', collection: @players %>

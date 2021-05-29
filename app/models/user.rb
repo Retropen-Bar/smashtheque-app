@@ -19,11 +19,13 @@
 #  last_sign_in_ip               :inet
 #  main_address                  :string
 #  main_latitude                 :float
+#  main_locality                 :string
 #  main_longitude                :float
 #  name                          :string           not null
 #  remember_created_at           :datetime
 #  secondary_address             :string
 #  secondary_latitude            :float
+#  secondary_locality            :string
 #  secondary_longitude           :float
 #  sign_in_count                 :integer          default(0), not null
 #  twitter_username              :string
@@ -52,6 +54,8 @@ class User < ApplicationRecord
   def self.on_abc_name
     :name
   end
+
+  include HasTwitter
 
   # ---------------------------------------------------------------------------
   # RELATIONS
@@ -116,14 +120,6 @@ class User < ApplicationRecord
         RetropenBotScheduler.rebuild_graphic_designers_list
       end
     end
-  end
-
-  def twitter_username=(v)
-    super (v || '').gsub('https://', '')
-                   .gsub('http://', '')
-                   .gsub('twitter.com/', '')
-                   .gsub('@', '')
-                   .strip
   end
 
   # ---------------------------------------------------------------------------
@@ -308,6 +304,7 @@ class User < ApplicationRecord
 
   def potential_discord_user
     return nil unless discord_user.nil?
+
     DiscordUser.without_user.by_username_like(name).first
   end
 
@@ -319,14 +316,14 @@ class User < ApplicationRecord
     result = []
     if main_latitude
       result << {
-        name: main_address,
+        name: main_locality,
         latitude: main_latitude,
         longitude: main_longitude
       }
     end
     if secondary_latitude
       result << {
-        name: secondary_address,
+        name: secondary_locality,
         latitude: secondary_latitude,
         longitude: secondary_longitude
       }
@@ -348,5 +345,4 @@ class User < ApplicationRecord
       closest_secondary_community
     ].compact.uniq
   end
-
 end

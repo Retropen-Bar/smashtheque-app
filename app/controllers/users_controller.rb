@@ -60,8 +60,8 @@ class UsersController < PublicController
       is_caster
       is_coach coaching_url coaching_details
       is_graphic_designer graphic_designer_details is_available_graphic_designer
-      main_address main_latitude main_longitude
-      secondary_address secondary_latitude secondary_longitude
+      main_address main_latitude main_longitude main_locality
+      secondary_address secondary_latitude secondary_longitude secondary_locality
     ) + [{
       player_attributes: %i(
         id

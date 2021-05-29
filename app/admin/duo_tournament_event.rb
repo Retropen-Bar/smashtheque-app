@@ -1,18 +1,17 @@
 ActiveAdmin.register DuoTournamentEvent do
-
   decorate_with ActiveAdmin::DuoTournamentEventDecorator
 
   sidebar 'Autres éditions', only: :show do
     div class: 'tournament-events-nav-links' do
-      resource.duo_tournament_events_nav_links
+      resource.events_nav_links
     end
   end
 
   has_paper_trail
 
-  menu parent: '<i class="fas fa-fw fa-chess-knight"></i>Compétition 2v2'.html_safe,
-       label: '<i class="fas fa-fw fa-calendar-alt"></i>Éditions'.html_safe,
-       priority: 1
+  menu parent: '<i class="fas fa-fw fa-chess"></i>Compétition'.html_safe,
+       label: '<i class="fas fa-fw fa-chess-knight"></i>Éditions 2v2'.html_safe,
+       priority: 2
 
   # ---------------------------------------------------------------------------
   # INDEX
@@ -68,31 +67,33 @@ ActiveAdmin.register DuoTournamentEvent do
       link_to decorated.name, [:admin, decorated.model]
     end
     column :date
-    column :bracket_url do |decorated|
-      decorated.bracket_icon_link
-    end
-    column :bracket, sortable: :bracket do |decorated|
-      decorated.bracket_admin_link
-    end
+    column :bracket_url, &:bracket_icon_link
+    column :bracket, sortable: :bracket, &:bracket_admin_link
+    column :is_online, &:online?
     column :participants_count
-    DuoTournamentEvent::DUO_NAMES.each do |duo_name|
+    DuoTournamentEvent::TOP_NAMES.each do |duo_name|
       column duo_name do |decorated|
         decorated.send("#{duo_name}_admin_link")
       end
     end
+    column :is_online, &:online?
     column :is_complete
     column :is_out_of_ranking
     actions
   end
 
   scope :all, default: true
-  scope :with_missing_graph
-  scope :with_missing_duos
-  scope :with_missing_data
+
+  scope :with_missing_graph, group: :missing
+  scope :with_missing_duos, group: :missing
+  scope :with_missing_data, group: :missing
 
   scope :on_smashgg, group: :bracket
   scope :on_braacket, group: :bracket
   scope :on_challonge, group: :bracket
+
+  scope :online, group: :location
+  scope :offline, group: :location
 
   filter :recurring_tournament
   filter :name
@@ -178,14 +179,15 @@ ActiveAdmin.register DuoTournamentEvent do
                         }
                       }
                     },
-                    include_blank: "Aucun"
+                    include_blank: 'Aucun'
             f.input :name
             f.input :date
             f.input :participants_count
-            DuoTournamentEvent::DUO_NAMES.each do |duo_name|
+            DuoTournamentEvent::TOP_NAMES.each do |duo_name|
               hint = f.object.decorate.send("#{duo_name}_bracket_suggestion")
               duo_input f, name: duo_name, hint: hint
             end
+            f.input :is_online, hint: "Seulement si le tournoi n'appartient pas à une série"
             f.input :is_complete
             f.input :is_out_of_ranking
           end
@@ -199,7 +201,7 @@ ActiveAdmin.register DuoTournamentEvent do
                 :top1_duo_id, :top2_duo_id, :top3_duo_id,
                 :top4_duo_id, :top5a_duo_id, :top5b_duo_id,
                 :top7a_duo_id, :top7b_duo_id,
-                :is_complete, :is_out_of_ranking,
+                :is_online, :is_complete, :is_out_of_ranking,
                 :bracket_url, :bracket_gid,
                 :graph
 
@@ -219,34 +221,25 @@ ActiveAdmin.register DuoTournamentEvent do
           row :name
           row :date
           row :participants_count
-          row :bracket_url do |decorated|
-            decorated.bracket_link
-          end
-          DuoTournamentEvent::DUO_NAMES.each do |duo_name|
+          row :bracket_url, &:bracket_link
+          DuoTournamentEvent::TOP_NAMES.each do |duo_name|
             row duo_name do |decorated|
               decorated.send("#{duo_name}_admin_link")
             end
           end
+          row :is_online, &:online?
           row :is_complete
           row :is_out_of_ranking
-          row :bracket do |decorated|
-            decorated.bracket_admin_link
-          end
+          row :bracket, &:bracket_admin_link
           row :created_at
           row :updated_at
         end
         panel 'Récompenses obtenues', style: 'margin-top: 50px' do
-          table_for resource.duo_reward_duo_conditions.admin_decorate,
-                    i18n: DuoRewardDuoCondition do
-            column :reward_duo_condition do |decorated|
-              decorated.reward_duo_condition_admin_link
-            end
-            column :duo do |decorated|
-              decorated.duo_admin_link
-            end
-            column :reward do |decorated|
-              decorated.reward_admin_link
-            end
+          table_for resource.met_reward_conditions.admin_decorate,
+                    i18n: MetRewardCondition do
+            column :reward_condition, &:reward_condition_admin_link
+            column :awarded, &:awarded_admin_link
+            column :reward, &:reward_admin_link
             column :points
           end
         end
@@ -262,19 +255,11 @@ ActiveAdmin.register DuoTournamentEvent do
 
   action_item :other_actions, only: :show do
     dropdown_menu 'Autres actions' do
-      if resource.is_on_smashgg?
-        item 'Compléter avec smash.gg', action: :complete_with_bracket
-      end
-      if resource.is_on_braacket?
-        item 'Compléter avec Braacket', action: :complete_with_bracket
-      end
-      if resource.is_on_challonge?
-        item 'Compléter avec Challonge', action: :complete_with_bracket
-      end
+      item 'Compléter avec smash.gg', action: :complete_with_bracket if resource.is_on_smashgg?
+      item 'Compléter avec Braacket', action: :complete_with_bracket if resource.is_on_braacket?
+      item 'Compléter avec Challonge', action: :complete_with_bracket if resource.is_on_challonge?
       item 'Recalculer les récompenses', action: :compute_rewards
-      if resource.graph.attached?
-        item 'Supprimer le graph', action: :purge_graph
-      end
+      item 'Supprimer le graph', action: :purge_graph if resource.graph.attached?
     end
   end
 
@@ -291,8 +276,8 @@ ActiveAdmin.register DuoTournamentEvent do
     if resource.complete_with_bracket && resource.save
       redirect_to request.referer, notice: 'Données mises à jour'
     else
-      puts "Model errors: #{resource.errors.full_messages}"
-      puts "Bracket errors: #{resource.bracket&.errors&.full_messages}"
+      Rails.logger.debug "Model errors: #{resource.errors.full_messages}"
+      Rails.logger.debug "Bracket errors: #{resource.bracket&.errors&.full_messages}"
       flash[:error] = 'Mise à jour échouée'
       redirect_to request.referer
     end
@@ -302,5 +287,4 @@ ActiveAdmin.register DuoTournamentEvent do
     resource.compute_rewards
     redirect_to request.referer, notice: 'Calcul effectué'
   end
-
 end

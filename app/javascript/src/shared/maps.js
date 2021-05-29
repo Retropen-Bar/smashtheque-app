@@ -65,6 +65,12 @@ let toggleLayersMenu = function(element) {
   $element.closest('.layers').toggleClass('expanded');
 };
 
+let openMapModal = function(url) {
+  $.get(url, function(html) {
+    $('#map-modal').html(html).modal();
+  });
+};
+
 $(document).on('click', '.layer[data-map][data-layer]', function(e) {
   toggleMapLayerElement(e.currentTarget);
   return false;
@@ -86,3 +92,4 @@ $(document).on('click', '.layers .layers-title', function(e) {
 });
 
 window.maps = {};
+window.openMapModal = openMapModal;

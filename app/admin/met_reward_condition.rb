@@ -1,10 +1,9 @@
-ActiveAdmin.register PlayerRewardCondition do
+ActiveAdmin.register MetRewardCondition do
+  decorate_with ActiveAdmin::MetRewardConditionDecorator
 
-  decorate_with ActiveAdmin::PlayerRewardConditionDecorator
-
-  menu parent: '<i class="fas fa-fw fa-chess-rook"></i>Compétition 1v1'.html_safe,
+  menu parent: '<i class="fas fa-fw fa-chess"></i>Compétition'.html_safe,
        label: '<i class="fas fa-fw fa-trophy"></i>Récompenses obtenues'.html_safe,
-       priority: 4
+       priority: 5
 
   actions :index, :show
 
@@ -12,26 +11,17 @@ ActiveAdmin.register PlayerRewardCondition do
   # INDEX
   # ---------------------------------------------------------------------------
 
-  includes :tournament_event, :reward_condition,
-           player: { user: :discord_user },
+  includes :awarded, :event, :reward_condition,
            reward: { image_attachment: :blob }
 
   index do
     selectable_column
     id_column
-    column :player do |decorated|
-      decorated.player_admin_link
-    end
-    column :reward do |decorated|
-      decorated.reward_admin_link
-    end
+    column :awarded, &:awarded_admin_link
+    column :reward, &:reward_admin_link
     column :points
-    column :tournament_event do |decorated|
-      decorated.tournament_event_admin_link
-    end
-    column :reward_condition do |decorated|
-      decorated.reward_condition_admin_link
-    end
+    column :event, &:event_admin_link
+    column :reward_condition, &:reward_condition_admin_link
     actions
   end
 
@@ -47,6 +37,7 @@ ActiveAdmin.register PlayerRewardCondition do
   end
   collection_action :recompute_all do
     TournamentEvent.compute_all_rewards
+    DuoTournamentEvent.compute_all_rewards
     redirect_to request.referer, notice: 'Recalcul terminé'
   end
 
@@ -57,22 +48,13 @@ ActiveAdmin.register PlayerRewardCondition do
   show do
     attributes_table do
       row :id
-      row :player do |decorated|
-        decorated.player_admin_link
-      end
-      row :reward do |decorated|
-        decorated.reward_admin_link
-      end
+      row :awarded, &:awarded_admin_link
+      row :reward, &:reward_admin_link
       row :points
-      row :tournament_event do |decorated|
-        decorated.tournament_event_admin_link
-      end
-      row :reward_condition do |decorated|
-        decorated.reward_condition_admin_link
-      end
+      row :event, &:event_admin_link
+      row :reward_condition, &:reward_condition_admin_link
       row :created_at
       row :updated_at
     end
   end
-
 end

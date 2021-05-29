@@ -8,6 +8,7 @@ module MapsHelper
       player.user.addresses.each do |address|
         player.characters.each_with_index do |character, idx|
           next if idx > 0 && !with_seconds
+
           icons[character.id.to_s] ||= {
             icon_url: character.decorate.emoji_image_url,
             icon_size: 32,
@@ -41,7 +42,7 @@ module MapsHelper
   end
 
   def communities_map(communities, map_options: {})
-    markers = {all: []}
+    markers = { all: [] }
     communities.geocoded.each do |community|
       marker = {
         latlng: [
@@ -57,6 +58,33 @@ module MapsHelper
                 options: map_options || {}
   end
 
+  def recurring_tournaments_map(recurring_tournaments, map_options: {}, &block)
+    markers = { all: [] }
+    icons = {}
+    recurring_tournaments.geocoded.each do |recurring_tournament|
+      icons[recurring_tournament.id.to_s] ||= {
+        icon_url: recurring_tournament.decorate.discord_guild_icon_image_url,
+        icon_size: 32,
+        icon_anchor: [16, 16],
+        class_name: 'avatar-icon'
+      }
+      marker = {
+        icon: recurring_tournament.id.to_s,
+        latlng: [
+          recurring_tournament.latitude,
+          recurring_tournament.longitude
+        ],
+        modal_url: modal_recurring_tournament_path(recurring_tournament)
+      }
+      markers[:all] << marker
+    end
+
+    france_map  markers: markers,
+                icons: icons,
+                options: map_options || {},
+                &block
+  end
+
   def user_addresses_map(user, map_options: {})
     markers = {
       all: user.addresses.map do |address|
@@ -68,6 +96,23 @@ module MapsHelper
           popup: address[:name]
         }
       end
+    }
+
+    france_map  markers: markers,
+                options: map_options || {}
+  end
+
+  def single_address_map(address, map_options: {})
+    markers = {
+      all: [
+        {
+          latlng: [
+            address[:latitude],
+            address[:longitude]
+          ],
+          popup: address[:name]
+        }
+      ]
     }
 
     france_map  markers: markers,

@@ -4,6 +4,8 @@
 
 <% else %>
 
+  <% importable_smashgg_ids = [] %>
+
   <table>
     <thead>
       <tr>
@@ -17,17 +19,18 @@
     </thead>
     <tbody>
       <% @smashgg_events.each do |smashgg_event| %>
-        <% decorated = smashgg_event.decorate %>
+        <% decorated = smashgg_event.admin_decorate %>
         <tr>
           <td><%= l smashgg_event.start_at.to_date, format: :long %></td>
           <td><%= decorated.tournament_smashgg_link %></td>
           <td><%= decorated.smashgg_link %></td>
-          <td class="text-center"><%= smashgg_event.is_online? %></td>
+          <td class="text-center"><%= decorated.online_status %></td>
           <td class="text-center"><%= smashgg_event.num_entrants %></td>
           <td class="text-center">
             <% if smashgg_event.persisted? %>
               <%= link_to 'Voir', [:admin, smashgg_event], target: '_blank' %>
             <% else %>
+              <% importable_smashgg_ids << smashgg_event.smashgg_id %>
               <%= semantic_form_for([:admin, smashgg_event], html: {target: '_blank'}) do |f| %>
                 <%= f.input :smashgg_id, as: :hidden %>
                 <%= f.submit 'Importer', class: 'button-auto green' %>
@@ -38,5 +41,17 @@
       <% end %>
     </tbody>
   </table>
+
+  <% if importable_smashgg_ids.any? %>
+    <center>
+      <%= form_tag(bulk_create_admin_smashgg_events_path) do %>
+        <% importable_smashgg_ids.each do |smashgg_id| %>
+          <%= hidden_field_tag 'smashgg_ids[]', smashgg_id %>
+        <% end %>
+        <%= submit_tag  "Importer les #{importable_smashgg_ids.count} événements",
+                        class: 'button-auto blue' %>
+      <% end %>
+    </center>
+  <% end %>
 
 <% end %>

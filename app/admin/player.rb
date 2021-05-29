@@ -1,5 +1,4 @@
 ActiveAdmin.register Player do
-
   decorate_with ActiveAdmin::PlayerDecorator
 
   has_paper_trail
@@ -11,11 +10,25 @@ ActiveAdmin.register Player do
   # INDEX
   # ---------------------------------------------------------------------------
 
-  order_by(:best_reward_level) do |order_clause|
+  controller do
+    def scoped_collection
+      super.with_track_records_online_all_time.with_track_records_offline_all_time
+    end
+  end
+
+  order_by(:points_online_all_time) do |order_clause|
     if order_clause.order == 'desc'
-      'best_reward_level1 DESC, best_reward_level2 DESC'
+      'points_online_all_time DESC NULLS LAST'
     else
-      'best_reward_level1, best_reward_level2'
+      'points_online_all_time ASC NULLS FIRST'
+    end
+  end
+
+  order_by(:points_offline_all_time) do |order_clause|
+    if order_clause.order == 'desc'
+      'points_offline_all_time DESC NULLS LAST'
+    else
+      'points_offline_all_time ASC NULLS FIRST'
     end
   end
 
@@ -42,18 +55,18 @@ ActiveAdmin.register Player do
     column :teams do |decorated|
       decorated.teams_admin_short_links.join('<br/>').html_safe
     end
-    column "<img src=\"https://cdn.discordapp.com/emojis/#{RetropenBot::EMOJI_POINTS}.png?size=16\"/>".html_safe,
-           :points
+    column "<img src=\"https://cdn.discordapp.com/emojis/#{RetropenBot::EMOJI_POINTS_ONLINE}.png?size=16\"/>".html_safe,
+           sortable: :points_online_all_time,
+           &:points_online_all_time
+    column "<img src=\"https://cdn.discordapp.com/emojis/#{RetropenBot::EMOJI_POINTS_OFFLINE}.png?size=16\"/>".html_safe,
+           sortable: :points_offline_all_time,
+           &:points_offline_all_time
     column :creator_user do |decorated|
       decorated.creator_user_admin_link(size: 32)
     end
     column :is_accepted
-    column :is_banned do |decorated|
-      decorated.ban_status
-    end
-    column :created_at do |decorated|
-      decorated.created_at_date
-    end
+    column :is_banned, &:ban_status
+    column :created_at, &:created_at_date
     actions dropdown: true do |decorated|
       if !decorated.is_accepted? && !decorated.model.potential_duplicates.any?
         item 'Valider', accept_admin_player_path(decorated.model), class: 'green'
@@ -83,17 +96,11 @@ ActiveAdmin.register Player do
          input_html: { multiple: true, data: { select2: {} } }
   filter :is_accepted
   filter :is_banned
-  filter :rank
-  filter :points
-  filter :best_reward,
-         as: :select,
-         collection: proc { Reward.online_1v1.admin_decorate },
-         input_html: { multiple: true, data: { select2: {} } }
 
   action_item :rebuild_all,
               only: :index,
               if: proc { current_user.is_root? } do
-    link_to 'Rebuild', [:rebuild_all, :admin, :players], class: 'blue'
+    link_to 'Rebuild', %i[rebuild_all admin players], class: 'blue'
   end
   collection_action :rebuild_all do
     RetropenBotScheduler.rebuild_all
@@ -175,21 +182,20 @@ ActiveAdmin.register Player do
       row :is_accepted
       row :is_banned
       row :ban_details
-      row :rank
-      row :points
-      Player::POINTS_YEARS.each do |year|
-        row "rank_in_#{year}"
-        row "points_in_#{year}"
-      end
-      row :best_reward do |decorated|
-        decorated.best_reward_admin_link
-      end
-      row :best_rewards do |decorated|
-        decorated.best_rewards_admin_links({}, class: 'reward-badge-32').join(' ').html_safe
-      end
-      row :unique_rewards do |decorated|
-        decorated.unique_rewards_admin_links({}, class: 'reward-badge-32').join(' ').html_safe
-      end
+      row :rank_online_all_time
+      row :rank_offline_all_time
+      row :points_online_all_time
+      row :points_offline_all_time
+
+      # row :best_reward do |decorated|
+      #   decorated.best_reward_admin_link
+      # end
+      # row :best_rewards do |decorated|
+      #   decorated.best_rewards_admin_links({}, class: 'reward-badge-32').join(' ').html_safe
+      # end
+      # row :unique_rewards do |decorated|
+      #   decorated.unique_rewards_admin_links({}, class: 'reward-badge-32').join(' ').html_safe
+      # end
       row :created_at
       row :updated_at
     end
@@ -197,9 +203,7 @@ ActiveAdmin.register Player do
     if resource.potential_duplicates.any?
       panel 'Doublons potentiels', style: 'margin-top: 50px' do
         table_for resource.potential_duplicates.admin_decorate, i18n: Player do
-          column :name do |decorated|
-            decorated.admin_link
-          end
+          column :name, &:admin_link
           column :characters do |decorated|
             decorated.characters_admin_links.join(' ').html_safe
           end
@@ -210,9 +214,7 @@ ActiveAdmin.register Player do
             decorated.creator_user_admin_link(size: 32)
           end
           column :is_accepted
-          column :created_at do |decorated|
-            decorated.created_at_date
-          end
+          column :created_at, &:created_at_date
         end
       end
     end
@@ -232,18 +234,10 @@ ActiveAdmin.register Player do
             end
           end
           row :name
-          row :admin_level do |decorated|
-            decorated.admin_level_status
-          end
-          row :twitter_username do |decorated|
-            decorated.twitter_link
-          end
-          row :discord_user do |decorated|
-            decorated.discord_user_admin_link
-          end
-          row :player do |decorated|
-            decorated.player_admin_link
-          end
+          row :admin_level, &:admin_level_status
+          row :twitter_username, &:twitter_link
+          row :discord_user, &:discord_user_admin_link
+          row :player, &:player_admin_link
           row :administrated_teams do |decorated|
             decorated.administrated_teams_admin_links(size: 32).join('<br/>').html_safe
           end
@@ -270,6 +264,7 @@ ActiveAdmin.register Player do
               if: proc { !resource.is_accepted? } do
     link_to 'Valider', [:accept, :admin, resource], class: 'green'
   end
+
   member_action :accept do
     resource.update_attribute :is_accepted, true
     redirect_to request.referer
@@ -293,6 +288,7 @@ ActiveAdmin.register Player do
             { action: :create_user },
             class: 'blue'
   end
+
   member_action :create_user do
     resource.return_or_create_user!
     redirect_to request.referer, notice: 'Utilisateur créé'
@@ -303,13 +299,15 @@ ActiveAdmin.register Player do
   # ---------------------------------------------------------------------------
 
   member_action :results do
-    @player = resource.admin_decorate
-    @tournament_events = @player.tournament_events
-                                .order(date: :desc)
-                                .admin_decorate
-    @rewards_counts = @player.rewards_counts
-    @rewards_count = @rewards_counts.values.sum
-    @tournament_events_count = @tournament_events.count
+    @resource = resource.admin_decorate
+    @events = @resource.tournament_events.order(date: :desc).admin_decorate
+    @all_online_rewards = Reward.online_1v1
+    @all_offline_rewards = Reward.offline_1v1
+    @online_rewards_counts = @player.rewards_counts(is_online: true)
+    @offline_rewards_counts = @player.rewards_counts(is_online: false)
+    @rewards_count = @online_rewards_counts.values.sum + @offline_rewards_counts.values.sum
+    @events_count = @events.count
+    render 'admin/shared/results'
   end
 
   # ---------------------------------------------------------------------------
@@ -319,8 +317,8 @@ ActiveAdmin.register Player do
   action_item :potential_users, only: :index do
     link_to 'Utilisateurs potentiels', { action: :potential_users }, class: :blue
   end
+
   collection_action :potential_users do
     @players = Player.with_potential_user.page(params[:page] || 1).per(50)
   end
-
 end

@@ -4,7 +4,6 @@
 #
 #  id         :bigint           not null, primary key
 #  category   :string           not null
-#  emoji      :string           not null
 #  level1     :integer          not null
 #  level2     :integer          not null
 #  created_at :datetime         not null
@@ -15,12 +14,15 @@
 #  index_rewards_on_category_and_level1_and_level2  (category,level1,level2) UNIQUE
 #
 class Reward < ApplicationRecord
-
   CATEGORY_ONLINE_1V1 = 'online_1v1'.freeze
   CATEGORY_ONLINE_2V2 = 'online_2v2'.freeze
+  CATEGORY_OFFLINE_1V1 = 'offline_1v1'.freeze
+  CATEGORY_OFFLINE_2V2 = 'offline_2v2'.freeze
   CATEGORIES = [
     CATEGORY_ONLINE_1V1,
-    CATEGORY_ONLINE_2V2
+    CATEGORY_ONLINE_2V2,
+    CATEGORY_OFFLINE_1V1,
+    CATEGORY_OFFLINE_2V2
   ].freeze
 
   # ---------------------------------------------------------------------------
@@ -28,14 +30,9 @@ class Reward < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   has_many :reward_conditions, dependent: :destroy
-
-  has_many :player_reward_conditions, through: :reward_conditions
-  has_many :players, through: :player_reward_conditions
-
-  has_many :reward_duo_conditions, dependent: :destroy
-
-  has_many :duo_reward_duo_conditions, through: :reward_duo_conditions
-  has_many :duos, through: :duo_reward_duo_conditions
+  has_many :met_reward_conditions, through: :reward_conditions
+  has_many :players, through: :met_reward_conditions, source: :awarded, source_type: :Player
+  has_many :duos, through: :met_reward_conditions, source: :awarded, source_type: :Duo
 
   has_one_attached :image
 
@@ -59,23 +56,27 @@ class Reward < ApplicationRecord
               greater_than: 0
             },
             uniqueness: {
-              scope: %i(category level1)
+              scope: %i[category level1]
             }
-  validates :image, content_type: /\Aimage\/.*\z/
+  validates :image, content_type: %r{\Aimage/.*\z}
 
   # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
 
-  scope :by_category, -> v { where(category: v) }
-  scope :by_level1, -> v { where(level1: v) }
-  scope :by_level2, -> v { where(level2: v) }
-  scope :by_level, -> (a, b) { where(level1: a, level2: b) }
+  scope :by_category, ->(v) { where(category: v) }
+  scope :by_level1, ->(v) { where(level1: v) }
+  scope :by_level2, ->(v) { where(level2: v) }
+  scope :by_level, ->(a, b) { where(level1: a, level2: b) }
 
-  scope :online_1v1, -> { by_category(CATEGORY_ONLINE_1V1) }
+  scope :online, -> { by_category([CATEGORY_ONLINE_1V1, CATEGORY_ONLINE_2V2]) }
   scope :online_2v2, -> { by_category(CATEGORY_ONLINE_2V2) }
+  scope :online_1v1, -> { by_category(CATEGORY_ONLINE_1V1) }
+  scope :offline, -> { by_category([CATEGORY_OFFLINE_1V1, CATEGORY_OFFLINE_2V2]) }
+  scope :offline_1v1, -> { by_category(CATEGORY_OFFLINE_1V1) }
+  scope :offline_2v2, -> { by_category(CATEGORY_OFFLINE_2V2) }
 
-  def self.ordered_by_level(asc = true)
+  def self.ordered_by_level(asc: true)
     if asc
       order(:level1, :level2)
     else
@@ -96,52 +97,29 @@ class Reward < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   def is_1v1?
-    category.to_s == CATEGORY_ONLINE_1V1
+    [CATEGORY_ONLINE_1V1, CATEGORY_OFFLINE_1V1].include?(category.to_s)
   end
+
   def is_2v2?
-    category.to_s == CATEGORY_ONLINE_2V2
+    [CATEGORY_ONLINE_2V2, CATEGORY_OFFLINE_2V2].include?(category.to_s)
   end
 
-  def condition_name
-    case category
-    when CATEGORY_ONLINE_1V1
-      :reward_condition
-    when CATEGORY_ONLINE_2V2
-      :reward_duo_condition
-    end
-  end
-  def conditions_name
-    condition_name.to_s.pluralize.to_sym
-  end
-  def conditions
-    send(conditions_name)
+  def online?
+    [CATEGORY_ONLINE_1V1, CATEGORY_ONLINE_2V2].include?(category.to_s)
   end
 
-  def met_condition_name
-    case category
-    when CATEGORY_ONLINE_1V1
-      :player_reward_condition
-    when CATEGORY_ONLINE_2V2
-      :duo_reward_duo_condition
-    end
-  end
-  def met_conditions_name
-    met_condition_name.to_s.pluralize.to_sym
-  end
-  def met_conditions
-    send(met_conditions_name)
+  def offline?
+    [CATEGORY_OFFLINE_1V1, CATEGORY_OFFLINE_2V2].include?(category.to_s)
   end
 
   def awarded_name
-    if is_1v1?
-      :player
-    else
-      :duo
-    end
+    is_1v1? ? :player : :duo
   end
+
   def awardeds_name
     awarded_name.to_s.pluralize.to_sym
   end
+
   def awardeds
     send(awardeds_name)
   end
@@ -150,6 +128,5 @@ class Reward < ApplicationRecord
   # VERSIONS
   # ---------------------------------------------------------------------------
 
-  has_paper_trail unless: Proc.new { ENV['NO_PAPERTRAIL'] }
-
+  has_paper_trail unless: proc { ENV['NO_PAPERTRAIL'] }
 end

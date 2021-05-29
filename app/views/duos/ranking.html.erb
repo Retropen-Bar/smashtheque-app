@@ -1,0 +1,36 @@
+<div class="text-center">
+  <div id="list-toolbar">
+    <h1 class="page-title">Observatoire d'Harmonie 2v2</h1>
+
+    <div id="filters-wrapper" class="text-left">
+
+      <%= form_tag nil, method: :get, id: "index-filters" do %>
+
+        <div class="form-row">
+
+          <div class="col-md-3"></div>
+          <%= render 'shared/ranking_filters' %>
+
+        </div>
+
+      <% end %>
+    </div>
+
+    <%= render 'shared/pagination', collection: @duos %>
+  </div>
+</div>
+
+<div class="cards-list duos">
+  <% @duos.each_with_index do |duo, idx| %>
+    <div class="card-container">
+      <%= render 'duos/duo',
+                 duo: duo.decorate,
+                 with_rank: true,
+                 with_points: true,
+                 is_online: defined?(@is_online) && @is_online,
+                 year: defined?(@year) && @year %>
+    </div>
+  <% end %>
+</div>
+
+<%= render 'shared/pagination', collection: @duos %>

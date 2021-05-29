@@ -6,7 +6,7 @@ ActiveAdmin.register Reward do
 
   menu parent: '<i class="fas fa-fw fa-chess"></i>Compétition'.html_safe,
        label: '<i class="fas fa-fw fa-trophy"></i>Récompenses'.html_safe,
-       priority: 2
+       priority: 3
 
   # ---------------------------------------------------------------------------
   # INDEX
@@ -34,31 +34,26 @@ ActiveAdmin.register Reward do
     column :name, sortable: true do |decorated|
       link_to decorated.name, [:admin, decorated.model]
     end
-    column :category do |decorated|
-      decorated.category_status
-    end
+    column :category, &:category_status
     column :level, sortable: true
-    column :emoji do |decorated|
-      decorated.emoji_image_tag(max_height: 32)
-    end
     column :image do |decorated|
       decorated.image_image_tag(max_height: 32)
     end
-    column :conditions do |decorated|
-      decorated.conditions_admin_link
-    end
-    column :met_conditions do |decorated|
-      decorated.met_conditions_admin_link
-    end
-    column :created_at do |decorated|
-      decorated.created_at_date
-    end
+    column :reward_conditions, &:reward_conditions_admin_link
+    column :met_reward_conditions, &:met_reward_conditions_admin_link
+    column :created_at, &:created_at_date
     actions
   end
 
   scope :all, default: true
-  scope :online_1v1
-  scope :online_2v2
+
+  scope :online, group: :online
+  scope :online_1v1, group: :online
+  scope :online_2v2, group: :online
+
+  scope :offline, group: :offline
+  scope :offline_1v1, group: :offline
+  scope :offline_2v2, group: :offline
 
   filter :category,
          as: :select,
@@ -79,7 +74,6 @@ ActiveAdmin.register Reward do
                   collection: reward_category_select_collection
           f.input :level1
           f.input :level2
-          f.input :emoji
           f.input :image,
                   as: :file,
                   hint: 'Laissez vide pour ne pas changer',
@@ -93,9 +87,6 @@ ActiveAdmin.register Reward do
         f.actions
       end
       column do
-        panel 'Emoji', id: 'current-emoji' do
-          f.object.decorate.emoji_image_tag
-        end
         panel 'Image', id: 'current-image' do
           f.object.decorate.image_image_tag
         end
@@ -103,7 +94,7 @@ ActiveAdmin.register Reward do
     end
   end
 
-  permit_params :category, :level1, :level2, :emoji, :image
+  permit_params :category, :level1, :level2, :image
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -112,47 +103,21 @@ ActiveAdmin.register Reward do
   show do
     attributes_table do
       row :name
-      row :category do |decorated|
-        decorated.category_status
-      end
+      row :category, &:category_status
       row :level1
       row :level2
-      row :emoji
-      row :emoji do |decorated|
-        decorated.emoji_image_tag(max_height: 64)
-      end
       row :image do |decorated|
         decorated.image_image_tag(max_height: 64)
       end
       row :badge do |decorated|
         decorated.all_badge_sizes(count: 99)
       end
-      if resource.is_1v1?
-        row :reward_conditions do |decorated|
-          decorated.reward_conditions_admin_link
-        end
-        row :player_reward_conditions do |decorated|
-          decorated.player_reward_conditions_admin_link
-        end
-        row :players do |decorated|
-          decorated.players_admin_link
-        end
-      end
-      if resource.is_2v2?
-        row :reward_duo_conditions do |decorated|
-          decorated.reward_duo_conditions_admin_link
-        end
-        row :duo_reward_duo_conditions do |decorated|
-          decorated.duo_reward_duo_conditions_admin_link
-        end
-        row :duos do |decorated|
-          decorated.duos_admin_link
-        end
-      end
+      row :reward_conditions, &:reward_conditions_admin_link
+      row :met_reward_conditions, &:met_reward_conditions_admin_link
+      row :awardeds, &:awardeds_admin_link
       row :created_at
       row :updated_at
     end
     active_admin_comments
   end
-
 end

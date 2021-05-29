@@ -1,0 +1,113 @@
+<div class="big-numbers">
+
+  <div class="big-number txt-rose">
+    <div class="big-number--value">
+      <%= @events_count %>
+    </div>
+    <div class="big-number--title">
+      <%= pluralize_without_count @events_count, 'Tournoi' %>
+    </div>
+  </div>
+
+  <div class="big-number txt-blue">
+    <div class="big-number--value">
+      <%= @rewards_count %>
+    </div>
+    <div class="big-number--title">
+      <%= pluralize_without_count @rewards_count, 'Récompense' %>
+    </div>
+  </div>
+
+  <div class="big-number txt-red">
+    <div class="big-number--value">
+      <%= @resource.points_online_all_time %>
+    </div>
+    <div class="big-number--title">
+      <%= pluralize_without_count @resource.points_online_all_time, 'Fragment' %> online
+    </div>
+  </div>
+
+  <div class="big-number txt-green">
+    <div class="big-number--value">
+      <%= @resource.points_offline_all_time %>
+    </div>
+    <div class="big-number--title">
+      <%= pluralize_without_count @resource.points_offline_all_time, 'Fragment' %> offline
+    </div>
+  </div>
+
+</div>
+
+<div style="display: flex; justify-content: space-evenly;">
+
+  <div class="text-center" style="margin-bottom: 30px">
+    <% @all_online_rewards.grouped_by_level2.each do |(level2, level2_rewards)| %>
+      <div>
+        <% level2_rewards.each do |reward| %>
+          <%= link_to @resource.reward_met_reward_conditions_admin_path(reward) do %>
+            <% count = @online_rewards_counts[reward.id] %>
+            <% if count %>
+              <%= reward.decorate.badge(count: count) %>
+            <% else %>
+              <%= reward.decorate.badge(class: 'disabled') %>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="text-center" style="margin-bottom: 30px">
+    <% @all_offline_rewards.grouped_by_level2.each do |(level2, level2_rewards)| %>
+      <div>
+        <% level2_rewards.each do |reward| %>
+          <%= link_to @resource.reward_met_reward_conditions_admin_path(reward) do %>
+            <% count = @offline_rewards_counts[reward.id] %>
+            <% if count %>
+              <%= reward.decorate.badge(count: count) %>
+            <% else %>
+              <%= reward.decorate.badge(class: 'disabled') %>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th class="text-center">Série</th>
+      <th class="text-center">Édition</th>
+      <th class="text-center">Date</th>
+      <th class="text-center">Participants</th>
+      <th class="text-center">Résultat</th>
+      <th class="text-center">Condition</th>
+      <th class="text-center">Badge</th>
+      <th class="text-center">Points</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @events.each do |event| %>
+      <% met_reward_condition = event.met_reward_conditions.by_awarded(@resource).first&.admin_decorate %>
+      <tr>
+        <th class="text-center"><%= event.recurring_tournament_admin_link %></th>
+        <th class="text-center"><%= event.admin_link %></th>
+        <td class="text-center"><%= event.date %></td>
+        <td class="text-center"><%= event.participants_count %></td>
+        <td class="text-center">
+          <% if event.is_a?(TournamentEvent) %>
+            <%= event.player_rank_name(@resource.id) %>
+          <% else %>
+            <%= event.duo_rank_name(@resource.id) %>
+          <% end %>
+        </td>
+        <td class="text-center"><%= met_reward_condition&.reward_condition_admin_link %></td>
+        <td class="text-center"><%= met_reward_condition&.reward_admin_link %></td>
+        <td class="text-center"><%= met_reward_condition&.points %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

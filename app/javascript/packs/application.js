@@ -16,6 +16,7 @@ import "../src/shared/select2"
 import "../src/shared/toastr"
 import "../src/shared/toggles"
 
+import "../src/application/filters"
 import "../src/application/fullcalendar"
 import "../src/application/global_search"
 

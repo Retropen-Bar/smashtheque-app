@@ -1,8 +1,15 @@
 class PublicController < ApplicationController
 
+  helper_method :current_page_params
   helper_method :user_team_admin?
 
   before_action :check_access! if ENV['HIDE_WEBSITE']
+
+  protected
+
+  def current_page_params
+    {}
+  end
 
   private
 

@@ -2,11 +2,11 @@
 
 <h1 class="page-title">
   <small class="text-muted"><%= tournament_event.recurring_tournament_name %></small><br/>
-  <%= tournament_event.first_tournament_event_link label: '⇤', class: 'btn btn-link' %>
-  <%= tournament_event.previous_tournament_event_link label: '←', class: 'btn btn-link' %>
+  <%= tournament_event.first_event_link label: '⇤', class: 'btn btn-link' %>
+  <%= tournament_event.previous_event_link label: '←', class: 'btn btn-link' %>
   <%= tournament_event.name %>
-  <%= tournament_event.next_tournament_event_link label: '→', class: 'btn btn-link' %>
-  <%= tournament_event.last_tournament_event_link label: '⇥', class: 'btn btn-link' %>
+  <%= tournament_event.next_event_link label: '→', class: 'btn btn-link' %>
+  <%= tournament_event.last_event_link label: '⇥', class: 'btn btn-link' %>
 </h1>
 
 <div class="row">
@@ -45,7 +45,7 @@
 
     <div class="row justify-content-center">
       <div class="col-auto">
-        <% TournamentEvent::PLAYER_NAMES.each do |player_name| %>
+        <% TournamentEvent::TOP_NAMES.each do |player_name| %>
           <div class="my-3">
             <strong>
               <%= TournamentEvent.human_attribute_name("rank.#{player_name}") %> :

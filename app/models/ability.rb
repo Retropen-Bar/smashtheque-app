@@ -64,12 +64,10 @@ class Ability
     # PlayersRecurringTournament
     can manage_or_cru, PlayersRecurringTournament
 
-    # Reward, RewardCondition & PlayerRewardCondition
+    # Reward, RewardCondition & MetRewardCondition
     can manage_or_read, Reward
     can manage_or_read, RewardCondition
-    can manage_or_read, RewardDuoCondition
-    can :read, DuoRewardDuoCondition
-    can :read, PlayerRewardCondition
+    can :read, MetRewardCondition
 
     # SmashggEvent
     can manage_or_cru, SmashggEvent

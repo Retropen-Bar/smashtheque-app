@@ -3,16 +3,22 @@
 # Table name: recurring_tournaments
 #
 #  id               :bigint           not null, primary key
+#  address          :string
+#  address_name     :string
 #  date_description :string
 #  is_archived      :boolean          default(FALSE), not null
 #  is_online        :boolean          default(FALSE), not null
+#  latitude         :float
 #  level            :string
+#  longitude        :float
+#  misc             :text
 #  name             :string           not null
 #  recurring_type   :string           not null
 #  registration     :text
 #  size             :integer
 #  starts_at_hour   :integer          not null
 #  starts_at_min    :integer          not null
+#  twitter_username :string
 #  wday             :integer
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
@@ -28,6 +34,12 @@
 #
 class RecurringTournament < ApplicationRecord
   # ---------------------------------------------------------------------------
+  # MODULES
+  # ---------------------------------------------------------------------------
+
+  geocoded_by :address
+
+  # ---------------------------------------------------------------------------
   # CONCERNS
   # ---------------------------------------------------------------------------
 
@@ -35,6 +47,8 @@ class RecurringTournament < ApplicationRecord
   def self.on_abc_name
     :name
   end
+
+  include HasTwitter
 
   # ---------------------------------------------------------------------------
   # CONSTANTS
@@ -79,8 +93,8 @@ class RecurringTournament < ApplicationRecord
            through: :recurring_tournament_contacts,
            source: :user
 
-  has_many :tournament_events
-  has_many :duo_tournament_events
+  has_many :tournament_events, dependent: :nullify
+  has_many :duo_tournament_events, dependent: :nullify
 
   # ---------------------------------------------------------------------------
   # validations
@@ -109,6 +123,7 @@ class RecurringTournament < ApplicationRecord
   # SCOPES
   # ---------------------------------------------------------------------------
 
+  scope :by_is_online, -> v { where(is_online: v) }
   scope :online, -> { where(is_online: true) }
   scope :offline, -> { where(is_online: false) }
 

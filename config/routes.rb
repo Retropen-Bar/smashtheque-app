@@ -72,8 +72,7 @@ Rails.application.routes.draw do
   resources :duos, only: [:index, :show] do
     collection do
       get :autocomplete
-      get 'ranking/online/:year' => 'duos#ranking_online_year', as: :online_ranking_year
-      get 'ranking/online' => 'duos#ranking_online', as: :online_ranking
+      get :ranking
     end
   end
 
@@ -84,17 +83,16 @@ Rails.application.routes.draw do
     resources :smashgg_users, only: [:new, :create]
     collection do
       get :autocomplete
-      get 'ranking/online/:year' => 'players#ranking_online_year', as: :online_ranking_year
-      get 'ranking/online' => 'players#ranking_online', as: :online_ranking
+      get :ranking
     end
   end
 
   resources :teams, only: [:index, :edit, :update]
   get 'teams/:id' => 'players#team_index'
 
-  resources :recurring_tournaments, only: [:index, :show, :edit, :update] do
-    resources :tournament_events, only: [:new, :create]
-    resources :duo_tournament_events, only: [:new, :create]
+  resources :recurring_tournaments, only: %i[index show edit update] do
+    resources :tournament_events, only: %i[new create]
+    resources :duo_tournament_events, only: %i[new create]
     collection do
       get 'contacts' => 'players#recurring_tournament_contacts_index'
     end

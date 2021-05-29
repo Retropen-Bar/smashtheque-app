@@ -1,0 +1,192 @@
+<div class="row">
+  <div class="col m-3 p-0 bg-semi-transparent rounded shadow overflow-hidden">
+
+    <ul class="nav nav-pills nav-fill" id="rewards-tablist" role="tablist">
+      <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="online-rewards-tab"
+           data-toggle="tab" href="#online-rewards"
+           role="tab" aria-controls="online-rewards" aria-selected="true">
+          Online
+        </a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="offline-rewards-tab"
+           data-toggle="tab" href="#offline-rewards"
+           role="tab" aria-controls="offline-rewards" aria-selected="false">
+          Offline
+        </a>
+      </li>
+    </ul>
+
+    <div class="tab-content p-3 p-md-5">
+
+      <div class="tab-pane active" id="online-rewards"
+           role="tabpanel" aria-labelledby="online-rewards-tab">
+        <div class="row">
+          <div class="col-12 col-md text-center">
+            <div class="row">
+              <div class="col-6 col-md-12 d-flex align-items-center justify-content-start justify-content-md-center">
+                <h2 class="text-left text-md-center mb-md-5">Meilleurs badges</h2>
+              </div>
+              <div class="col-6 col-md-12 text-left text-md-center">
+                <% if @online_rewards_counts.any? %>
+                  <div class="mb-md-5">
+                    <%== awarded.best_rewards_badges(is_online: true, class: 'm-0').join(' ') %>
+                  </div>
+                  <button type="button"
+                          class="btn btn-primary d-none d-md-inline"
+                          data-toggle="modal"
+                          data-target="#online-rewards-modal">
+                    Voir tout
+                  </button>
+                <% else %>
+                  Aucun badge obtenu
+                <% end %>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md text-center my-5 my-md-0">
+            <div class="row">
+              <div class="col-6 col-md-12 d-flex align-items-center justify-content-start justify-content-md-center">
+                <h2 class="text-left text-md-center mb-md-5">Fragments d'étoiles</h2>
+              </div>
+              <div class="col-6 col-md-12 d-flex align-items-center justify-content-start justify-content-md-center">
+                <div class="display-2">
+                  <%= awarded.points_count(64, is_online: true, class: 'd-none d-md-inline-block') %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md text-center">
+            <div class="row">
+              <div class="col-6 col-md-12 d-flex align-items-center justify-content-start justify-content-md-center">
+                <h2 class="text-left text-md-center mb-md-5">Classement</h2>
+              </div>
+              <div class="col-6 col-md-12 d-flex align-items-center justify-content-start justify-content-md-center">
+                <% if rank = awarded.rank(is_online: true) %>
+                  <div class="display-2">#<%= rank %></div>
+                <% else %>
+                  Non classé
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane" id="offline-rewards"
+           role="tabpanel" aria-labelledby="offline-rewards-tab">
+        <div class="row">
+          <div class="col-12 col-md text-center">
+            <div class="row">
+              <div class="col-6 col-md-12 d-flex align-items-center justify-content-start justify-content-md-center">
+                <h2 class="text-left text-md-center mb-md-5">Meilleurs badges</h2>
+              </div>
+              <div class="col-6 col-md-12 text-left text-md-center">
+                <% if @offline_rewards_counts.any? %>
+                  <div class="mb-md-5">
+                    <%== awarded.best_rewards_badges(is_online: false, class: 'm-0').join(' ') %>
+                  </div>
+                  <button type="button"
+                          class="btn btn-primary d-none d-md-inline"
+                          data-toggle="modal"
+                          data-target="#offline-rewards-modal">
+                    Voir tout
+                  </button>
+                <% else %>
+                  Aucun badge obtenu
+                <% end %>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md text-center my-5 my-md-0">
+            <div class="row">
+              <div class="col-6 col-md-12 d-flex align-items-center justify-content-start justify-content-md-center">
+                <h2 class="text-left text-md-center mb-md-5">Fragments d'étoiles</h2>
+              </div>
+              <div class="col-6 col-md-12 d-flex align-items-center justify-content-start justify-content-md-center">
+                <div class="display-2">
+                  <%= awarded.points_count(64, is_online: false, class: 'd-none d-md-inline-block') %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md text-center">
+            <div class="row">
+              <div class="col-6 col-md-12 d-flex align-items-center justify-content-start justify-content-md-center">
+                <h2 class="text-left text-md-center mb-md-5">Classement</h2>
+              </div>
+              <div class="col-6 col-md-12 d-flex align-items-center justify-content-start justify-content-md-center">
+                <% if rank = awarded.rank(is_online: false) %>
+                  <div class="display-2">#<%= rank %></div>
+                <% else %>
+                  Non classé
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<div id="online-rewards-modal" class="modal fade" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Tous les badges online de <%= awarded.name %></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <% @all_online_rewards.grouped_by_level1.each do |(level1, level1_rewards)| %>
+            <div class="col">
+              <% level1_rewards.each do |reward| %>
+                <% count = @online_rewards_counts[reward.id] %>
+                <% if count %>
+                  <%= reward.decorate.badge(count: count) %>
+                <% else %>
+                  <%= reward.decorate.badge(class: 'disabled') %>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="offline-rewards-modal" class="modal fade" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Tous les badges offline de <%= awarded.name %></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <% @all_offline_rewards.grouped_by_level1.each do |(level1, level1_rewards)| %>
+            <div class="col">
+              <% level1_rewards.each do |reward| %>
+                <% count = @offline_rewards_counts[reward.id] %>
+                <% if count %>
+                  <%= reward.decorate.badge(count: count) %>
+                <% else %>
+                  <%= reward.decorate.badge(class: 'disabled') %>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
