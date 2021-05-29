@@ -142,9 +142,22 @@ class SmashggUser < ApplicationRecord
   def fetch_smashgg_events
     data = SmashggClient.new.get_user_events(user_id: smashgg_id)
     return nil if data.nil?
+
     data.map do |event_data|
       attributes = SmashggEvent.attributes_from_event_data(event_data)
       SmashggEvent.where(smashgg_id: attributes[:smashgg_id]).first_or_initialize(attributes)
+    end
+  end
+
+  def import_missing_smashgg_events
+    fetch_smashgg_events.each do |smashgg_event|
+      next if smashgg_event.persisted?
+
+      smashgg_event.fetch_smashgg_data # because standings are not fetched yet
+      unless smashgg_event.save
+        # do not exit on errors
+        Rails.logger.debug "SmashggEvent errors: #{smashgg_event.errors.full_messages}"
+      end
     end
   end
 

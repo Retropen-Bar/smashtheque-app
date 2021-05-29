@@ -129,6 +129,14 @@ ActiveAdmin.register SmashggUser do
               only: :show do
     link_to 'Importer les données de smash.gg', [:fetch_smashgg_data, :admin, resource]
   end
+
+  action_item :other_actions, only: :show do
+    dropdown_menu 'Autres actions' do
+      item 'Voir les tournois', action: :smashgg_events
+      item 'Importer tous les tournois', action: :import_missing_smashgg_events
+    end
+  end
+
   member_action :fetch_smashgg_data do
     resource.fetch_smashgg_data
     if resource.save
@@ -139,13 +147,15 @@ ActiveAdmin.register SmashggUser do
     end
   end
 
+  member_action :import_missing_smashgg_events do
+    resource.import_missing_smashgg_events
+    redirect_to request.referer, notice: 'Import terminé'
+  end
+
   # ---------------------------------------------------------------------------
   # EVENTS
   # ---------------------------------------------------------------------------
 
-  action_item :smashgg_events, only: :show do
-    link_to 'Voir les tournois', { action: :smashgg_events }, class: :orange
-  end
   member_action :smashgg_events do
     @smashgg_events = resource.fetch_smashgg_events
   end
