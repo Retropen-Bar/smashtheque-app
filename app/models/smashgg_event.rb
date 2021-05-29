@@ -230,7 +230,9 @@ class SmashggEvent < ApplicationRecord
           else
             placement.to_s
           end
-        slug = standing.entrant.participants.first.user.slug
+        slug = standing.entrant.participants.first&.user&.slug
+        next if slug.blank?
+
         smashgg_user = SmashggUser.where(smashgg_id: smashgg_id).first_or_create!(slug: slug)
         result["top#{idx}_smashgg_user".to_sym] = smashgg_user
       end
