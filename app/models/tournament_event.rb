@@ -188,25 +188,20 @@ class TournamentEvent < ApplicationRecord
   def use_smashgg_event(replace_existing_values)
     return false unless bracket.is_a?(SmashggEvent)
 
-    if replace_existing_values || name.blank?
-      self.name = bracket.tournament_name
-    end
-    if replace_existing_values || date.nil?
-      self.date = bracket.start_at
-    end
+    self.is_online = bracket.is_online
+    self.name = bracket.tournament_name if replace_existing_values || name.blank?
+    self.date = bracket.start_at if replace_existing_values || date.nil?
     if replace_existing_values || participants_count.nil?
       self.participants_count = bracket.num_entrants
     end
-    if replace_existing_values || bracket_url.blank?
-      self.bracket_url = bracket.smashgg_url
-    end
+    self.bracket_url = bracket.smashgg_url if replace_existing_values || bracket_url.blank?
     TOP_RANKS.each do |rank|
       player_name = "top#{rank}_player".to_sym
       user_name = "top#{rank}_smashgg_user".to_sym
-      if replace_existing_values || send(player_name).nil?
-        if player = bracket.send(user_name)&.player
-          self.send("#{player_name}=", player)
-        end
+      next unless replace_existing_values || send(player_name).nil?
+
+      if (player = bracket.send(user_name)&.player)
+        send("#{player_name}=", player)
       end
     end
     true

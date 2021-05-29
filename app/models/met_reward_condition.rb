@@ -33,6 +33,11 @@ class MetRewardCondition < ApplicationRecord
 
   has_one :reward, through: :reward_condition
 
+  has_many :bested_track_records,
+           class_name: :TrackRecord,
+           foreign_key: :best_met_reward_condition_id,
+           dependent: :nullify
+
   # ---------------------------------------------------------------------------
   # CALLBACKS
   # ---------------------------------------------------------------------------

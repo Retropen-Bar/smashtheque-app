@@ -32,6 +32,7 @@ class ActiveAdmin::SmashggEventDecorator < SmashggEventDecorator
 
   def create_tournament_event_admin_path
     attributes = {
+      is_online: is_online?,
       name: tournament_name,
       date: start_at,
       participants_count: num_entrants,
@@ -41,9 +42,9 @@ class ActiveAdmin::SmashggEventDecorator < SmashggEventDecorator
     TournamentEvent::TOP_RANKS.each do |rank|
       player_name = "top#{rank}_player".to_sym
       user_name = "top#{rank}_smashgg_user".to_sym
-      if player = send(user_name)&.player
-        attributes["#{player_name}_id"] = player.id
-      end
+      next unless (player = send(user_name)&.player)
+
+      attributes["#{player_name}_id"] = player.id
     end
     new_admin_tournament_event_path(tournament_event: attributes)
   end
