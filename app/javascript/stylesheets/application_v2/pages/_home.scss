@@ -1,0 +1,313 @@
+.pages.home {
+  --gap: #{"min(9px, 1.6vmax)"};
+  --hover-translate: 0.15em;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  @include media-breakpoint-up(sm) {
+    --gap: #{"min(15px, 1.6vmax)"};
+  }
+
+  .navbar {
+    background-color: transparent;
+  }
+
+  main {
+    flex-grow: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: calc(50% - var(--gap) / 2) calc(50% - var(--gap) / 2);
+    grid-gap: var(--gap);
+    padding: var(--gap);
+    text-align: center;
+    position: relative;
+  }
+}
+
+.home-nav-item {
+  --glass: linear-gradient(
+    337deg,
+    rgba(255, 255, 255, 0) 78%,
+    rgba(255, 255, 255, 1) 155%
+  );
+  --bg: ;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  border-radius: 0.75em;
+  background-image: var(--bg, $black);
+  font-size: calc(0.75rem + 0.7vmin);
+  transition: box-shadow 300ms;
+  overflow: hidden;
+  position: relative;
+  transition-property: background, transform;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in-out;
+
+  @include media-breakpoint-up(md) {
+    font-size: calc(0.75rem + 1vmax);
+  }
+
+  @include media-breakpoint-up(md-lg) {
+    font-size: calc(0.75rem + 1.5vmax);
+  }
+
+  @include media-breakpoint-up(xl) {
+    font-size: calc(0.75rem + 2vmin);
+  }
+
+  &:after {
+    content: "";
+    display: block;
+    height: 100%;
+    width: 231%;
+    background: var(--glass);
+    transform: rotate(25deg);
+    position: absolute;
+    top: 40%;
+    left: -71%;
+
+    @include media-breakpoint-up(md-lg) {
+      --glass: linear-gradient(
+        337deg,
+        rgba(255, 255, 255, 0) 50%,
+        rgba(255, 255, 255, 1) 213%
+      );
+      transform: rotate(14deg);
+      width: 130%;
+      height: 100%;
+      top: 40%;
+      left: -39%;
+    }
+  }
+
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-decoration: none;
+    width: 100%;
+    height: 100%;
+    color: $white;
+    position: relative;
+    z-index: 1;
+
+    > * {
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+  img {
+    width: 5.7em;
+    height: auto;
+    filter: invert(100%);
+
+    @include media-breakpoint-up(md) {
+      width: 7em;
+    }
+
+    @include media-breakpoint-up(md-lg) {
+      width: 5.7em;
+    }
+  }
+
+  h2 {
+    text-transform: uppercase;
+    font-weight: 500;
+    line-height: 1.15;
+    opacity: 0.9;
+    max-width: 90%;
+    margin-top: 0.25em;
+    font-size: inherit;
+  }
+
+  &--center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 34.9vw;
+    width: 34.9vw;
+    background: $body-bg;
+    border-radius: 100%;
+    background-position: center;
+    background-size: 100%, 100%;
+    font-size: calc(0.5rem + 0.5vw);
+    transition-property: none;
+
+    @include media-breakpoint-up(md) {
+      height: 20.5vmax;
+      width: 20.5vmax;
+      font-size: calc(0.75rem + 0.55vmax);
+    }
+
+    @include media-breakpoint-up(xxl) {
+      font-size: calc(0.75rem + 0.625vmax);
+      height: 15.5vmax;
+      width: 15.5vmax;
+    }
+
+    &:before {
+      content: "";
+      display: block;
+      background: var(--bg, #000);
+      height: calc(100% - 2 * var(--gap));
+      width: calc(100% - 2 * var(--gap));
+      border-radius: 50%;
+      transition-property: background, transform;
+      position: absolute;
+    }
+
+    &:after {
+      content: none;
+    }
+
+    h2 {
+      font-size: inherit;
+    }
+
+    img {
+      width: 4em;
+      height: 4em;
+      position: relative;
+      z-index: 1;
+
+      @include media-breakpoint-up(md-lg) {
+        width: 4.5em;
+        height: 4.5em;
+      }
+    }
+  }
+
+  &--players {
+    --bg-deg: 218deg;
+    --bg: linear-gradient(var(--bg-deg), #e8538f 13%, #eb4848 93%);
+
+    &:hover {
+      --bg-deg: 38deg;
+      transform: translate(
+        calc(-1 * var(--hover-translate)),
+        calc(-1 * var(--hover-translate))
+      );
+    }
+  }
+
+  &--championship {
+    --bg-deg: 215deg;
+    --bg: linear-gradient(
+      var(--bg-deg),
+      rgba(255, 198, 65, 1) 8%,
+      rgba(255, 126, 70, 1) 94%
+    );
+
+    &:hover {
+      --bg-deg: 35deg;
+      transform: translate(
+        var(--hover-translate),
+        calc(-1 * var(--hover-translate))
+      );
+    }
+  }
+
+  &--smashtheque-tv {
+    --bg-deg: 216deg;
+    --bg: linear-gradient(var(--bg-deg), #3bd99e -2%, #79c83f 101%);
+
+    &:hover {
+      --bg-deg: 36deg;
+      transform: translate(
+        calc(-1 * var(--hover-translate)),
+        var(--hover-translate)
+      );
+    }
+  }
+
+  &--harmonie {
+    --bg-deg: 209deg;
+    --bg: linear-gradient(var(--bg-deg), #55c0fe -1%, #605fff 89%);
+
+    &:hover {
+      --bg-deg: 29deg;
+      transform: translate(var(--hover-translate), var(--hover-translate));
+    }
+  }
+
+  &--community {
+    --bg-deg: 210deg;
+    --bg: linear-gradient(var(--bg-deg), #b84ed2 8%, #584bcb 98%);
+    z-index: 2;
+
+    &:hover {
+      --bg-deg: 30deg;
+
+      &:before,
+      a > * {
+        transform: scale(0.97);
+      }
+    }
+  }
+}
+
+.guides {
+  text-align: center;
+
+  &-link {
+    margin: 0 auto;
+    display: inline-block;
+    font-size: calc(0.75rem + 0.55vmax);
+    transition: transform 0.2s ease-in-out;
+    backface-visibility: hidden;
+
+    @include media-breakpoint-up(md-lg) {
+      font-size: calc(0.75rem + 0.55vmax);
+    }
+
+    @include media-breakpoint-up(xxl) {
+      font-size: calc(0.75rem + 0.625vmax);
+    }
+
+    a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-image: linear-gradient(204deg, #ff97d5 6%, #db4cba 88%);
+      border-radius: 0.5em;
+      color: $white;
+      text-decoration: none;
+      width: 15em;
+      padding: 0.25em;
+      text-transform: uppercase;
+
+      @include media-breakpoint-up(lg) {
+        width: 17em;
+      }
+    }
+
+    img {
+      width: 2em;
+      height: 2em;
+      position: relative;
+      z-index: 1;
+      margin-right: 0.5em;
+      filter: invert(100%);
+
+      @include media-breakpoint-up(md-lg) {
+        width: 2em;
+        height: 2em;
+      }
+    }
+
+    &:hover {
+      transform: scale(1.03);
+
+      a {
+        background-image: linear-gradient(24deg, #ff97d5 6%, #db4cba 88%);
+      }
+    }
+  }
+}

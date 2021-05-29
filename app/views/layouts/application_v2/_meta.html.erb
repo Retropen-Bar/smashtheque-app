@@ -1,0 +1,6 @@
+<%= content_tag :title, [@meta_title, 'Smashthèque'].compact.join(' | ') %>
+<%= tag :meta, name: :description, content: @meta_description %>
+
+<% @meta_properties.each do |key, value| %>
+  <%= tag :meta, property: key, content: value %>
+<% end %>

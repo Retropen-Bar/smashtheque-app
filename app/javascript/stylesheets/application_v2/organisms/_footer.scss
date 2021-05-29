@@ -1,0 +1,36 @@
+footer {
+  font-size: 0.625rem;
+
+  .nav:first-child {
+    li:not(:last-child) {
+      position: relative;
+      &::after {
+        content: "";
+        display: block;
+        height: 1.25em;
+        border-left: 1px solid theme-color-level(light, 8);
+        transform: translateY(-50%);
+        position: absolute;
+        right: 0;
+        top: 50%;
+      }
+    }
+  }
+
+  .nav-link {
+    color: $body-color;
+
+    &:hover {
+      color: $white;
+    }
+
+    svg {
+      width: 1.75em;
+      height: 1.75em;
+    }
+  }
+
+  @include media-breakpoint-up(md) {
+    font-size: 0.875rem;
+  }
+}

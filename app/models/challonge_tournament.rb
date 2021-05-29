@@ -116,9 +116,9 @@ class ChallongeTournament < ApplicationRecord
       slug: data['url'],
 
       name: data['name'],
-      start_at: data['start_at'] && DateTime.parse(data['start_at']),
       participants_count: data['participants_count']
     }
+    result[:start_at] = DateTime.parse(data['start_at']) if data['start_at']
     data['participants'].each do |_participant|
       if participant = _participant['participant']
         placement = participant['final_rank']

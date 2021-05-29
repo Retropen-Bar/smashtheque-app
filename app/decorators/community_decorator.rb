@@ -4,6 +4,10 @@ class CommunityDecorator < BaseDecorator
     name
   end
 
+  def listing_name
+   name
+  end
+
   def players_count
     model.players.count
   end

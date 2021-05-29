@@ -19,6 +19,13 @@ class UserDecorator < BaseDecorator
     ].join('&nbsp;').html_safe
   end
 
+  def name_and_tag
+    name_and_tag_string = h.content_tag(:span, name)
+    name_and_tag_string += "&nbsp;|&nbsp;#{h.content_tag(:span, player.team_names.first)}".html_safe if player&.team_names&.first&.present?
+
+    name_and_tag_string
+  end
+
   def player_link(options = {})
     model.player.decorate.link(options)
   end

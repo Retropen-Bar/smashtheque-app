@@ -1,0 +1,28 @@
+.btn {
+  &-icon {
+    color: $body-color;
+    padding-left: $btn-padding-y;
+    padding-right: $btn-padding-y;
+
+    svg {
+      width: 1.5em;
+      height: 1.5em;
+    }
+
+    &:hover,
+    &:focus {
+      text-decoration: none;
+      color: $white;
+    }
+  }
+
+  &-gradient-pink {
+    background: linear-gradient(204deg, #ff97d5 6%, #db4cba 88%);
+    color: $white;
+
+    &:hover {
+      color: $white;
+      background: linear-gradient(24deg, #ff97d5 6%, #db4cba 88%);
+    }
+  }
+}

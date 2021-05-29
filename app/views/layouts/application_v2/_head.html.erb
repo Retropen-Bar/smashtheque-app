@@ -1,0 +1,255 @@
+<nav class="navbar navbar-dark navbar-expand-xl shadow-sm"
+     id="main-nav">
+
+  <%= link_to root_path, class: 'navbar-brand' do %>
+    <%= image_tag 'logo.png', srcset: { "logo@2x.png" => "2x", "logo@3x.png" => "3x" } %>
+  <% end %>
+
+  <slide-out dock="right" :visible.sync="visible" :arrow-button="false" size="273px" title="Menu" class="collapse navbar-collapse" id="navbarSupportedContent">
+    <%= link_to page_path(slug: 'guides'), class: 'btn btn-gradient-pink rounded w-100 d-flex d-xl-none align-items-center mb-4' do %>
+      <%= render partial: 'shared/icons/panneau' %>
+      <span class="pl-2">Besoin d'aide ?</span>
+    <% end %>
+
+    <ul class="navbar-nav">
+
+      <li class="nav-item dropdown">
+        <%= link_to players_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
+          <span>Joueurs & Cie</span>
+        <% end %>
+        
+        <div class="dropdown-menu">
+          <button type="button" class="btn btn-back btn-sm">
+            <span>Joueurs</span>
+          </button>
+          <%= link_to players_path, class: 'dropdown-item' do %>
+            <%= render partial: 'shared/icons/joueur' %>
+            <span>Abécédaire</span>
+          <% end %>
+          <%= link_to teams_path, class: 'dropdown-item' do %>
+            <%= render partial: 'shared/icons/groupe' %>
+            <span>Équipes</span>
+          <% end %>
+          <%= link_to characters_path, class: 'dropdown-item' do %>
+            <%= render partial: 'shared/icons/mario' %>
+            <span>Personages</span>
+          <% end %>
+          <%= link_to communities_path, class: 'dropdown-item' do %>
+            <%= render partial: 'shared/icons/lieu' %>
+            <span>Communautés</span>
+          <% end %>
+          <div class="dropdown-divider"></div>
+          <h6 class="dropdown-header">Observatoire d'Harmonie online</h6>
+          <% Player::POINTS_YEARS.reverse.each do |year| %>
+            <%= link_to year, online_ranking_year_players_path(year), class: 'dropdown-item' %>
+          <% end %>
+          <%= link_to 'Toutes années confondues', online_ranking_players_path, class: 'dropdown-item' %>
+        </div>
+      </li>
+
+      <li class="nav-item dropdown">
+        <%= link_to duos_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
+          <span>2v2</span>
+        <% end %>
+        <div class="dropdown-menu">
+          <button type="button" class="btn btn-back btn-sm">
+            <span>2v2</span>
+          </button>
+          <%= link_to 'Duos', duos_path, class: 'dropdown-item' %>
+          <div class="dropdown-divider"></div>
+          <h6 class="dropdown-header">Observatoire d'Harmonie 2v2 online</h6>
+          <% Player::POINTS_YEARS.reverse.each do |year| %>
+            <%= link_to year, online_ranking_year_duos_path(year), class: 'dropdown-item' %>
+          <% end %>
+          <%= link_to 'Toutes années confondues', online_ranking_duos_path, class: 'dropdown-item' %>
+        </div>
+      </li>
+
+      <li class="nav-item dropdown">
+        <%= link_to recurring_tournaments_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
+          <span>Compétition</span>
+        <% end %>
+        <div class="dropdown-menu">
+          <button type="button" class="btn btn-back btn-sm">
+            <span>Compétition</span>
+          </button>
+          <%= link_to 'Séries de tournois', recurring_tournaments_path, class: 'dropdown-item' %>
+          <%= link_to 'Éditions 1v1', tournament_events_path, class: 'dropdown-item' %>
+          <%= link_to 'Éditions 2v2', duo_tournament_events_path, class: 'dropdown-item' %>
+          <%= link_to 'Planning hebdo', planning_path, class: 'dropdown-item' %>
+        </div>
+      </li>
+
+      <li class="nav-item dropdown">
+        <%= link_to '#', class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
+          <span>Acteurs</span>
+        <% end %>
+        <div class="dropdown-menu">
+          <button type="button" class="btn btn-back btn-sm">
+            <span>Acteurs</span>
+          </button>
+          <%= link_to 'TOs', contacts_recurring_tournaments_path, class: 'dropdown-item' %>
+          <%= link_to 'Commentateurs', caster_users_path, class: 'dropdown-item' %>
+          <%= link_to 'Coachs', coach_users_path, class: 'dropdown-item' %>
+          <%= link_to 'Graphistes', graphic_designer_users_path, class: 'dropdown-item' %>
+          <%= link_to 'Chaînes Twitch', twitch_channels_path, class: 'dropdown-item' %>
+          <%= link_to 'Chaînes YouTube', you_tube_channels_path, class: 'dropdown-item' %>
+        </div>
+      </li>
+
+      <li class="nav-item">
+        <%= link_to discord_guilds_path, class: 'nav-link' do %>
+          <i class="fab fa-discord"></i>
+          <span>Serveurs</span>
+        <% end %>
+      </li>
+
+      <li class="nav-item dropdown">
+        <%= link_to '#', class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
+          <span>Informations</span>
+        <% end %>
+        <div class="dropdown-menu">
+          <button type="button" class="btn btn-back btn-sm">
+            <span>Informations</span>
+          </button>
+          <% Page.published.header.order("LOWER(name)").each do |page| %>
+            <% if page.children.published.any? %>
+              <div class="dropdown-divider"></div>
+              <h6 class="dropdown-header"><%= page.name %></h6>
+              <% page.children.published.each do |subpage| %>
+                <%= link_to subpage.name,
+                            page_path(slug: subpage.slug),
+                            class: 'dropdown-item' %>
+              <% end %>
+              <div class="dropdown-divider"></div>
+            <% else %>
+              <%= link_to page.name,
+                          page_path(slug: page.slug),
+                          class: 'dropdown-item' %>
+            <% end %>
+          <% end %>
+        </div>
+      </li>
+      <% if admin_user_signed_in? %>
+        <li class="nav-item dropdown ml-xl-auto">
+          <%= link_to '#', class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
+            <%= fas_icon_tag 'plus-square', %w(fa-lg) %>
+            <span class="d-xl-none">Administration</span>
+          <% end %>
+          <div class="dropdown-menu dropdown-menu-right">
+            <button type="button" class="btn btn-back btn-sm">
+              <span>Administration</span>
+            </button>
+
+            <%= link_to new_admin_user_path, class: 'dropdown-item' do %>
+              <%= fas_icon_tag 'user-secret', %w(fa-fw mr-2) %>
+              Un utilisateur
+            <% end %>
+            <%= link_to new_admin_player_path, class: 'dropdown-item' do %>
+              <%= fas_icon_tag 'user', %w(fa-fw mr-2) %>
+              Un joueur
+            <% end %>
+            <%= link_to new_admin_duo_path, class: 'dropdown-item' do %>
+              <%= fas_icon_tag 'user-friends', %w(fa-fw mr-2) %>
+              Un duo
+            <% end %>
+            <%= link_to new_admin_team_path, class: 'dropdown-item' do %>
+              <%= fas_icon_tag 'users', %w(fa-fw mr-2) %>
+              Une équipe
+            <% end %>
+            <div class="dropdown-divider"></div>
+            <%= link_to new_admin_recurring_tournament_path, class: 'dropdown-item' do %>
+              <%= fas_icon_tag 'chess', %w(fa-fw mr-2) %>
+              Une série
+            <% end %>
+            <%= link_to new_admin_tournament_event_path, class: 'dropdown-item' do %>
+              <%= fas_icon_tag 'chess-rook', %w(fa-fw mr-2) %>
+              Une édition 1v1
+            <% end %>
+            <%= link_to new_admin_duo_tournament_event_path, class: 'dropdown-item' do %>
+              <%= fas_icon_tag 'chess-knight', %w(fa-fw mr-2) %>
+              Une édition 2v2
+            <% end %>
+            <%= link_to new_admin_challonge_tournament_path, class: 'dropdown-item' do %>
+              <img src="https://assets.challonge.com/assets/challonge_fireball_orange-a973ff3b12c34c780fc21313ec71aada3b9b779cbd3a62769e9199ce08395692.svg" height="16" class="fa-fw mr-2"/>
+              Un bracket Challonge
+            <% end %>
+            <%= link_to new_admin_smashgg_event_path, class: 'dropdown-item' do %>
+              <img src="https://smash.gg/images/gg-app-icon.png" height="16" class="fa-fw mr-2"/>
+              Un bracket smash.gg
+            <% end %>
+            <div class="dropdown-divider"></div>
+            <%= link_to new_admin_discord_user_path, class: 'dropdown-item' do %>
+              <%= fab_icon_tag 'discord', %w(fa-fw mr-2) %>
+              Un compte Discord
+            <% end %>
+            <%= link_to new_admin_discord_guild_path, class: 'dropdown-item' do %>
+              <%= fas_icon_tag 'cocktail', %w(fa-fw mr-2) %>
+              Un serveur Discord
+            <% end %>
+            <div class="dropdown-divider"></div>
+            <%= link_to new_admin_twitch_channel_path, class: 'dropdown-item' do %>
+              <%= fab_icon_tag 'twitch', %w(fa-fw mr-2) %>
+              Une chaîne Twitch
+            <% end %>
+            <%= link_to new_admin_you_tube_channel_path, class: 'dropdown-item' do %>
+              <%= fab_icon_tag 'youtube', %w(fa-fw mr-2) %>
+              Une chaîne YouTube
+            <% end %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </slide-out>
+
+  <div class="navbar-actions d-flex align-items-center ml-auto">
+    <button type="button" class="navbar-actions-search btn btn-link btn-icon" @click="visible = false">
+      <%= render partial: 'shared/icons/loupe' %>
+      <span class="sr-only">Recherche</span>
+    </button>
+
+    <ul class="navbar-actions-login navbar-nav mx-2 text-center text-lg-right">
+      <% if user_signed_in? %>
+        <li class="nav-item dropdown">
+          <%= link_to '#', class: "btn btn-link btn-icon dropdown-toggle", data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false}, '@click': "visible = false" do %>
+            <%= current_user.decorate.default_avatar(24) %> <span class="current-user-name"><%= current_user.decorate.name_and_tag %></span>
+          <% end %>
+          <div class="dropdown-menu dropdown-menu-right">
+            <p class="dropdown-item-text mb-0 current-user-name"><%= current_user.decorate.name_and_tag %></p>
+            <div class="dropdown-divider"></div>
+            <%= link_to 'Profil', current_user, class: 'dropdown-item' %>
+            <% if current_user.administrated_teams.any? %>
+              <div class="dropdown-divider"></div>
+              <% current_user.administrated_teams.decorate.each do |team| %>
+                <%= link_to team.full_name_with_logo(max_width: 32, max_height: 32),
+                            team,
+                            class: 'dropdown-item' %>
+              <% end %>
+            <% end %>
+            <% if current_user.administrated_recurring_tournaments.any? %>
+              <div class="dropdown-divider"></div>
+              <% current_user.administrated_recurring_tournaments
+                             .decorate
+                             .each do |recurring_tournament| %>
+                <%= link_to recurring_tournament.name_with_logo(32),
+                            recurring_tournament_path(recurring_tournament),
+                            class: 'dropdown-item' %>
+              <% end %>
+            <% end %>
+            <%= link_to 'Déconnexion', destroy_user_session_path, class: 'dropdown-item' %>
+          </div>
+        </li>
+      <% else %>
+        <li class="nav-item">
+          <%= link_to user_discord_omniauth_authorize_path, class: 'btn btn-link btn-icon' do %>
+            <%= render partial: 'shared/icons/avatar' %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+
+    <button @click="visible = true" type="button" class='navbar-actions-menu btn btn-link btn-icon'>
+      <%= render partial: 'shared/icons/menu' %>
+    </button>
+  </div>
+</nav>
