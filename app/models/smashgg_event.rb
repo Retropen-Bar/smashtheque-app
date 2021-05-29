@@ -48,22 +48,19 @@
 #  fk_rails_...  (top7b_smashgg_user_id => smashgg_users.id)
 #
 class SmashggEvent < ApplicationRecord
-
   USER_NAMES = TournamentEvent::TOP_RANKS.map do |rank|
     "top#{rank}_smashgg_user".to_sym
   end.freeze
-  USER_NAME_RANK = Hash[
-    TournamentEvent::TOP_RANKS.map do |rank|
-      [
-        "top#{rank}_smashgg_user".to_sym,
-        case rank
-        when '5a', '5b' then 5
-        when '7a', '7b' then 7
-        else rank.to_i
-        end
-      ]
-    end
-  ].freeze
+  USER_NAME_RANK = TournamentEvent::TOP_RANKS.map do |rank|
+    [
+      "top#{rank}_smashgg_user".to_sym,
+      case rank
+      when '5a', '5b' then 5
+      when '7a', '7b' then 7
+      else rank.to_i
+      end
+    ]
+  end.to_h.freeze
 
   # ---------------------------------------------------------------------------
   # RELATIONS
@@ -97,30 +94,25 @@ class SmashggEvent < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   def self.with_tournament_event
-    where(id: (
-      TournamentEvent.by_bracket_type(:SmashggEvent).select(:bracket_id)
-    ))
+    where(id: TournamentEvent.by_bracket_type(:SmashggEvent).select(:bracket_id))
   end
+
   def self.without_tournament_event
-    where.not(id: (
-      TournamentEvent.by_bracket_type(:SmashggEvent).select(:bracket_id)
-    ))
+    where.not(id: TournamentEvent.by_bracket_type(:SmashggEvent).select(:bracket_id))
   end
 
   def self.with_duo_tournament_event
-    where(id: (
-      DuoTournamentEvent.by_bracket_type(:SmashggEvent).select(:bracket_id)
-    ))
+    where(id: DuoTournamentEvent.by_bracket_type(:SmashggEvent).select(:bracket_id))
   end
+
   def self.without_duo_tournament_event
-    where.not(id: (
-      DuoTournamentEvent.by_bracket_type(:SmashggEvent).select(:bracket_id)
-    ))
+    where.not(id: DuoTournamentEvent.by_bracket_type(:SmashggEvent).select(:bracket_id))
   end
 
   def self.with_any_tournament_event
     with_tournament_event.or(with_duo_tournament_event)
   end
+
   def self.without_any_tournament_event
     without_tournament_event.without_duo_tournament_event
   end
@@ -129,7 +121,7 @@ class SmashggEvent < ApplicationRecord
     where(
       USER_NAMES.map do |user_name|
         "#{user_name}_id = ?"
-      end.join(" OR "),
+      end.join(' OR '),
       *USER_NAMES.map { smashgg_user_id }
     )
   end
@@ -170,11 +162,11 @@ class SmashggEvent < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   def self.slug_from_url(url)
-    url.slice(/tournament\/[^\/]+\/event\/[^\/]+/)
+    url.slice(%r{tournament/[^/]+/event/[^/]+})
   end
 
   def self.tournament_slug_from_url(url)
-    url.slice(/tournament\/[^\/]+/)
+    url.slice(%r{tournament/[^/]+})
   end
 
   def smashgg_url=(url)
@@ -195,13 +187,12 @@ class SmashggEvent < ApplicationRecord
   end
 
   def self.from_url(url)
-    if slug = slug_from_url(url)
+    if (slug = slug_from_url(url))
       from_slug(slug)
-    elsif tournament_slug = tournament_slug_from_url(url)
+    elsif (tournament_slug = tournament_slug_from_url(url))
       from_tournament_slug(tournament_slug)
-    else
-      nil
     end
+    nil
   end
 
   def self.attributes_from_event_data(data)
@@ -220,26 +211,27 @@ class SmashggEvent < ApplicationRecord
     }
     begin
       data.standings.nodes.each do |standing|
-        if smashgg_id = standing&.entrant&.participants&.first&.user&.id
-          placement = standing.placement
-          if (placement || 0) > 0 && placement < 8
-            idx = case placement
-            when 5, 6
-              result.has_key?(:top5a_smashgg_user) ? '5b' : '5a'
-            when 7, 8
-              result.has_key?(:top7a_smashgg_user) ? '7b' : '7a'
-            else
-              placement.to_s
-            end
-            slug = standing.entrant.participants.first.user.slug
-            smashgg_user = SmashggUser.where(smashgg_id: smashgg_id)
-                                      .first_or_create!(slug: slug)
-            result["top#{idx}_smashgg_user".to_sym] = smashgg_user
+        smashgg_id = standing&.entrant&.participants&.first&.user&.id
+        next unless smashgg_id
+
+        placement = standing.placement
+        next unless (placement || 0).positive? && placement < 8
+
+        idx =
+          case placement
+          when 5, 6
+            result.key?(:top5a_smashgg_user) ? '5b' : '5a'
+          when 7, 8
+            result.key?(:top7a_smashgg_user) ? '7b' : '7a'
+          else
+            placement.to_s
           end
-        end
+        slug = standing.entrant.participants.first.user.slug
+        smashgg_user = SmashggUser.where(smashgg_id: smashgg_id).first_or_create!(slug: slug)
+        result["top#{idx}_smashgg_user".to_sym] = smashgg_user
       end
     rescue GraphQL::Client::UnfetchedFieldError
-      puts 'standings not available'
+      Rails.logger.debug 'standings not available'
     end
     result
   end
@@ -272,7 +264,7 @@ class SmashggEvent < ApplicationRecord
 
     data.map do |event_data|
       attributes = attributes_from_event_data(event_data)
-      self.where(smashgg_id: attributes[:smashgg_id]).first_or_initialize(attributes)
+      where(smashgg_id: attributes[:smashgg_id]).first_or_initialize(attributes)
     end
   end
 
@@ -292,6 +284,5 @@ class SmashggEvent < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   include PgSearch::Model
-  multisearchable against: %i(name tournament_name)
-
+  multisearchable against: %i[name tournament_name]
 end
