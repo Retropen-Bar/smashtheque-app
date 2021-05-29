@@ -19,12 +19,12 @@
     </thead>
     <tbody>
       <% @smashgg_events.each do |smashgg_event| %>
-        <% decorated = smashgg_event.decorate %>
+        <% decorated = smashgg_event.admin_decorate %>
         <tr>
           <td><%= l smashgg_event.start_at.to_date, format: :long %></td>
           <td><%= decorated.tournament_smashgg_link %></td>
           <td><%= decorated.smashgg_link %></td>
-          <td class="text-center"><%= smashgg_event.is_online? %></td>
+          <td class="text-center"><%= decorated.online_status %></td>
           <td class="text-center"><%= smashgg_event.num_entrants %></td>
           <td class="text-center">
             <% if smashgg_event.persisted? %>

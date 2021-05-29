@@ -261,9 +261,15 @@ class SmashggEvent < ApplicationRecord
     slug && "https://smash.gg/#{slug}"
   end
 
-  def self.lookup(name:, from:, to:)
-    data = SmashggClient.new.get_events(name: name, from: from, to: to)
+  def self.lookup(name:, from:, to:, country:)
+    data = SmashggClient.new.get_events(
+      name: name,
+      from: from,
+      to: to,
+      country: country
+    )
     return nil if data.nil?
+
     data.map do |event_data|
       attributes = attributes_from_event_data(event_data)
       self.where(smashgg_id: attributes[:smashgg_id]).first_or_initialize(attributes)

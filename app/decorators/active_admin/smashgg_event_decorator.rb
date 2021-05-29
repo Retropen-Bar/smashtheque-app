@@ -1,15 +1,21 @@
 class ActiveAdmin::SmashggEventDecorator < SmashggEventDecorator
   include ActiveAdmin::BaseDecorator
 
+  ONLINE_STATUS_COLORS = {
+    true => :green,
+    false => :yellow
+  }.freeze
+
   decorates :smashgg_event
 
   def start_at_date
     return nil if model.start_at.nil?
+
     h.l model.start_at.to_date, format: :default
   end
 
   def admin_link(options = {})
-    super({label: icon_and_full_name(size: 16)}.merge(options))
+    super({ label: icon_and_full_name(size: 16) }.merge(options))
   end
 
   def tournament_event_admin_link(options = {})
@@ -21,7 +27,7 @@ class ActiveAdmin::SmashggEventDecorator < SmashggEventDecorator
   end
 
   def any_tournament_event_admin_link(options = {})
-   any_tournament_event&.admin_decorate&.admin_link(options)
+    any_tournament_event&.admin_decorate&.admin_link(options)
   end
 
   SmashggEvent::USER_NAMES.each do |user_name|
@@ -67,4 +73,10 @@ class ActiveAdmin::SmashggEventDecorator < SmashggEventDecorator
     new_admin_duo_tournament_event_path(duo_tournament_event: attributes)
   end
 
+  def online_status
+    arbre do
+      status_tag  (is_online? ? 'online' : 'offline'),
+                  class: ONLINE_STATUS_COLORS[is_online?]
+    end
+  end
 end

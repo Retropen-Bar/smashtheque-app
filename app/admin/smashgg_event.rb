@@ -185,7 +185,13 @@ ActiveAdmin.register SmashggEvent do
     @from = params[:from] ? Date.parse(params[:from]) : (Date.today - 1.month)
     @to = params[:to] ? Date.parse(params[:to]) : Date.today
     # add 1 day because we are using dates and not datetimes
-    @smashgg_events = SmashggEvent.lookup(name: @name, from: @from, to: @to + 1.day)
+    @country = params[:country]
+    @smashgg_events = SmashggEvent.lookup(
+      name: @name,
+      from: @from,
+      to: @to + 1.day,
+      country: @country
+    )
   end
 
 end
