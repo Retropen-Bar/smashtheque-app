@@ -102,6 +102,21 @@ ActiveAdmin.register SmashggEvent do
     smashgg_event.fetch_smashgg_data
   end
 
+  collection_action :bulk_create, method: :post do
+    creations_count = 0
+    (params[:smashgg_ids] || []).each do |smashgg_id|
+      smashgg_event = SmashggEvent.new(smashgg_id: smashgg_id)
+      smashgg_event.fetch_smashgg_data
+      if smashgg_event.save
+        creations_count += 1
+      else
+        # do not exit on errors
+        Rails.logger.debug "SmashggEvent errors: #{smashgg_event.errors.full_messages}"
+      end
+    end
+    redirect_to request.referer, notice: "#{creations_count} imports effectués"
+  end
+
   # ---------------------------------------------------------------------------
   # SHOW
   # ---------------------------------------------------------------------------

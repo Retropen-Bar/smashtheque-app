@@ -1,5 +1,4 @@
 ActiveAdmin.register SmashggUser do
-
   decorate_with ActiveAdmin::SmashggUserDecorator
 
   menu parent: '<img src="https://smash.gg/images/gg-app-icon.png" height="16" class="logo"/>smash.gg'.html_safe,
@@ -161,5 +160,4 @@ ActiveAdmin.register SmashggUser do
   collection_action :suggestions do
     @smashgg_users = SmashggUser.without_player
   end
-
 end
