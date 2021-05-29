@@ -4,6 +4,8 @@ fr:
       default_confirmation: Action groupée
       labels:
         create_tournament_event: Créer une édition pour
+        ignore: Ignorer
+        stop_ignoring: Ne plus ignorer
     scopes:
       accepted: Validés
       admins: Admins

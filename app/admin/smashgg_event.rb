@@ -64,6 +64,22 @@ ActiveAdmin.register SmashggEvent do
   filter :num_entrants
   filter :created_at
 
+  batch_action :ignore do |ids|
+    batch_action_collection.where(id: ids).each do |smashgg_event|
+      smashgg_event.is_ignored = true
+      smashgg_event.save!
+    end
+    redirect_to request.referer, notice: 'Modifications effectuées'
+  end
+
+  batch_action :stop_ignoring do |ids|
+    batch_action_collection.where(id: ids).each do |smashgg_event|
+      smashgg_event.is_ignored = false
+      smashgg_event.save!
+    end
+    redirect_to request.referer, notice: 'Modifications effectuées'
+  end
+
   batch_action :create_tournament_event, form: -> {
     {
       I18n.t('activerecord.models.recurring_tournament') => (
