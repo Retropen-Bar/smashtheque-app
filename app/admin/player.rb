@@ -301,8 +301,11 @@ ActiveAdmin.register Player do
   member_action :results do
     @resource = resource.admin_decorate
     @events = @resource.tournament_events.order(date: :desc).admin_decorate
-    @rewards_counts = @player.rewards_counts
-    @rewards_count = @rewards_counts.values.sum
+    @all_online_rewards = Reward.online_1v1
+    @all_offline_rewards = Reward.offline_1v1
+    @online_rewards_counts = @player.rewards_counts(is_online: true)
+    @offline_rewards_counts = @player.rewards_counts(is_online: false)
+    @rewards_count = @online_rewards_counts.values.sum + @offline_rewards_counts.values.sum
     @events_count = @events.count
     render 'admin/shared/results'
   end

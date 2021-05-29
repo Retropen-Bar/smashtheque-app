@@ -41,11 +41,11 @@
 <div style="display: flex; justify-content: space-evenly;">
 
   <div class="text-center" style="margin-bottom: 30px">
-    <% Reward.online_1v1.grouped_by_level2.each do |(level2, level2_rewards)| %>
+    <% @all_online_rewards.grouped_by_level2.each do |(level2, level2_rewards)| %>
       <div>
         <% level2_rewards.each do |reward| %>
           <%= link_to @resource.reward_met_reward_conditions_admin_path(reward) do %>
-            <% count = @rewards_counts[reward.id] %>
+            <% count = @online_rewards_counts[reward.id] %>
             <% if count %>
               <%= reward.decorate.badge(count: count) %>
             <% else %>
@@ -58,11 +58,11 @@
   </div>
 
   <div class="text-center" style="margin-bottom: 30px">
-    <% Reward.offline_1v1.grouped_by_level2.each do |(level2, level2_rewards)| %>
+    <% @all_offline_rewards.grouped_by_level2.each do |(level2, level2_rewards)| %>
       <div>
         <% level2_rewards.each do |reward| %>
           <%= link_to @resource.reward_met_reward_conditions_admin_path(reward) do %>
-            <% count = @rewards_counts[reward.id] %>
+            <% count = @offline_rewards_counts[reward.id] %>
             <% if count %>
               <%= reward.decorate.badge(count: count) %>
             <% else %>

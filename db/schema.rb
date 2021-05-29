@@ -334,8 +334,8 @@ ActiveRecord::Schema.define(version: 2021_05_26_203445) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "date_description"
     t.boolean "is_archived", default: false, null: false
-    t.integer "starts_at_hour", default: 0, null: false
-    t.integer "starts_at_min", default: 0, null: false
+    t.integer "starts_at_hour", null: false
+    t.integer "starts_at_min", null: false
     t.string "address_name"
     t.string "address"
     t.float "latitude"

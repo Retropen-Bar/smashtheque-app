@@ -16,8 +16,8 @@
 #  recurring_type   :string           not null
 #  registration     :text
 #  size             :integer
-#  starts_at_hour   :integer          default(0), not null
-#  starts_at_min    :integer          default(0), not null
+#  starts_at_hour   :integer          not null
+#  starts_at_min    :integer          not null
 #  twitter_username :string
 #  wday             :integer
 #  created_at       :datetime         not null
