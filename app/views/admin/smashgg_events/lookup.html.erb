@@ -25,6 +25,8 @@
 
 <% else %>
 
+  <% importable_smashgg_ids = [] %>
+
   <table>
     <thead>
       <tr>
@@ -49,6 +51,7 @@
             <% if smashgg_event.persisted? %>
               <%= link_to 'Voir', [:admin, smashgg_event], target: '_blank' %>
             <% else %>
+              <% importable_smashgg_ids << smashgg_event.smashgg_id %>
               <%= semantic_form_for([:admin, smashgg_event], html: {target: '_blank'}) do |f| %>
                 <%= f.input :smashgg_id, as: :hidden %>
                 <%= f.submit 'Importer', class: 'button-auto green' %>
@@ -59,5 +62,17 @@
       <% end %>
     </tbody>
   </table>
+
+  <% if importable_smashgg_ids.any? %>
+    <center>
+      <%= form_tag(bulk_create_admin_smashgg_events_path) do %>
+        <% importable_smashgg_ids.each do |smashgg_id| %>
+          <%= hidden_field_tag 'smashgg_ids[]', smashgg_id %>
+        <% end %>
+        <%= submit_tag  "Importer les #{importable_smashgg_ids.count} événements",
+                        class: 'button-auto blue' %>
+      <% end %>
+    </center>
+  <% end %>
 
 <% end %>
