@@ -1,5 +1,4 @@
 ActiveAdmin.register SmashggEvent do
-
   decorate_with ActiveAdmin::SmashggEventDecorator
 
   menu parent: '<img src="https://smash.gg/images/gg-app-icon.png" height="16" class="logo"/>smash.gg'.html_safe,
@@ -42,6 +41,7 @@ ActiveAdmin.register SmashggEvent do
         decorated.send("#{user_name}_admin_link")
       end
     end
+    column :is_ignored
     column :created_at do |decorated|
       decorated.created_at_date
     end
@@ -49,6 +49,9 @@ ActiveAdmin.register SmashggEvent do
   end
 
   scope :all, default: true
+
+  scope :not_ignored, group: :ignored
+  scope :ignored, group: :ignored
 
   scope :with_any_tournament_event, group: :tournament_event
   scope :without_any_tournament_event, group: :tournament_event
@@ -63,14 +66,22 @@ ActiveAdmin.register SmashggEvent do
 
   batch_action :create_tournament_event, form: -> {
     {
-      I18n.t('activerecord.models.recurring_tournament') => RecurringTournament.order(:name).pluck(:name, :id)
+      I18n.t('activerecord.models.recurring_tournament') => (
+        [['Aucune', '']] + RecurringTournament.order('LOWER(name)').pluck(:name, :id)
+      )
     }
   } do |ids, inputs|
     if batch_action_collection.where(id: ids).with_tournament_event.any?
       flash[:error] = 'Certains tournois sont déjà reliés à une édition'
       redirect_to request.referer
+    elsif batch_action_collection.where(id: ids).ignored.any?
+      flash[:error] = 'Certains tournois sont ignorés'
+      redirect_to request.referer
     else
-      recurring_tournament = RecurringTournament.find(inputs[I18n.t('activerecord.models.recurring_tournament')])
+      recurring_tournament_id = inputs[I18n.t('activerecord.models.recurring_tournament')]
+      unless recurring_tournament_id.blank?
+        recurring_tournament = RecurringTournament.find(recurring_tournament_id)
+      end
       batch_action_collection.where(id: ids).each do |smashgg_event|
         smashgg_event.fetch_smashgg_data
         smashgg_event.save!
@@ -145,15 +156,51 @@ ActiveAdmin.register SmashggEvent do
       row :duo_tournament_event do |decorated|
         decorated.duo_tournament_event_admin_link
       end
+      row :is_ignored
       row :created_at
       row :updated_at
     end
   end
 
+  action_item :ignore,
+              only: :show,
+              if: proc { !resource.is_ignored? } do
+    link_to 'Ignorer', [:ignore, :admin, resource]
+  end
+
+  member_action :ignore do
+    resource.is_ignored = true
+    if resource.save
+      redirect_to request.referer, notice: 'Modification effectuée'
+    else
+      flash[:error] = 'Modification impossible'
+      redirect_to request.referer
+    end
+  end
+
+  action_item :stop_ignoring,
+              only: :show,
+              if: proc { resource.is_ignored? } do
+    link_to 'Ne plus ignorer', [:stop_ignoring, :admin, resource]
+  end
+
+  member_action :stop_ignoring do
+    resource.is_ignored = false
+    if resource.save
+      redirect_to request.referer, notice: 'Modification effectuée'
+    else
+      flash[:error] = 'Modification impossible'
+      redirect_to request.referer
+    end
+  end
+
   action_item :fetch_smashgg_data,
               only: :show do
-    link_to 'Importer les données de smash.gg', [:fetch_smashgg_data, :admin, resource]
+    link_to 'Importer les données de smash.gg',
+            [:fetch_smashgg_data, :admin, resource],
+            class: 'orange'
   end
+
   member_action :fetch_smashgg_data do
     resource.fetch_smashgg_data
     if resource.save
@@ -166,7 +213,9 @@ ActiveAdmin.register SmashggEvent do
 
   action_item :create_tournament_event,
               only: :show,
-              if: proc { resource.tournament_event.nil? && resource.duo_tournament_event.nil? } do
+              if: proc {
+                resource.tournament_event.nil? && resource.duo_tournament_event.nil? && !resource.is_ignored?
+              } do
     dropdown_menu "Créer l'édition", button: { class: 'blue' } do
       item 'Édition 1v1', resource.create_tournament_event_admin_path
       item 'Édition 2v2', resource.create_duo_tournament_event_admin_path
@@ -180,6 +229,7 @@ ActiveAdmin.register SmashggEvent do
   action_item :lookup, only: :index do
     link_to 'Rechercher sur smash.gg', { action: :lookup }, class: :orange
   end
+
   collection_action :lookup do
     @name = params[:name]
     @from = params[:from] ? Date.parse(params[:from]) : (Date.today - 1.month)
@@ -193,5 +243,4 @@ ActiveAdmin.register SmashggEvent do
       country: @country
     )
   end
-
 end

@@ -16,8 +16,10 @@ fr:
       geocoded: Géolocalisé
       graphic_designers: Graphistes
       helps: Aides
+      ignored: Ignoré
       lambda: Normaux
       not_geocoded: Non géolocalisé
+      not_ignored: Non ignoré
       offline: Offline
       online: Online
       online_1v1: Online 1v1

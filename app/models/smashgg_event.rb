@@ -3,6 +3,7 @@
 # Table name: smashgg_events
 #
 #  id                    :bigint           not null, primary key
+#  is_ignored            :boolean          default(FALSE), not null
 #  is_online             :boolean
 #  name                  :string
 #  num_entrants          :integer
@@ -92,6 +93,9 @@ class SmashggEvent < ApplicationRecord
   # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
+
+  scope :ignored, -> { where(is_ignored: true) }
+  scope :not_ignored, -> { where(is_ignored: false) }
 
   def self.with_tournament_event
     where(id: TournamentEvent.by_bracket_type(:SmashggEvent).select(:bracket_id))
