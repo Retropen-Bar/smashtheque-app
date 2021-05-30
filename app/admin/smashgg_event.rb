@@ -110,7 +110,39 @@ ActiveAdmin.register SmashggEvent do
         tournament_event.use_smashgg_event(true)
         tournament_event.save!
       end
-      redirect_to request.referer, notice: 'Éditions créées'
+      redirect_to request.referer, notice: 'Éditions 1v1 créées'
+    end
+  end
+
+  batch_action :create_duo_tournament_event, form: -> {
+    {
+      I18n.t('activerecord.models.recurring_tournament') => (
+        [['Aucune', '']] + RecurringTournament.order('LOWER(name)').pluck(:name, :id)
+      )
+    }
+  } do |ids, inputs|
+    if batch_action_collection.where(id: ids).with_duo_tournament_event.any?
+      flash[:error] = 'Certains tournois sont déjà reliés à une édition'
+      redirect_to request.referer
+    elsif batch_action_collection.where(id: ids).ignored.any?
+      flash[:error] = 'Certains tournois sont ignorés'
+      redirect_to request.referer
+    else
+      recurring_tournament_id = inputs[I18n.t('activerecord.models.recurring_tournament')]
+      unless recurring_tournament_id.blank?
+        recurring_tournament = RecurringTournament.find(recurring_tournament_id)
+      end
+      batch_action_collection.where(id: ids).each do |smashgg_event|
+        smashgg_event.fetch_smashgg_data
+        smashgg_event.save!
+        duo_tournament_event = DuoTournamentEvent.new(
+          recurring_tournament: recurring_tournament,
+          bracket: smashgg_event
+        )
+        duo_tournament_event.use_smashgg_event(true)
+        duo_tournament_event.save!
+      end
+      redirect_to request.referer, notice: 'Éditions 2v2 créées'
     end
   end
 

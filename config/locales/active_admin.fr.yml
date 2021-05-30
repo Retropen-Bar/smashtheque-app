@@ -3,7 +3,8 @@ fr:
     batch_actions:
       default_confirmation: Action groupée
       labels:
-        create_tournament_event: Créer une édition pour
+        create_duo_tournament_event: Créer une édition 2v2 pour
+        create_tournament_event: Créer une édition 1v1 pour
         ignore: Ignorer
         stop_ignoring: Ne plus ignorer
     scopes:
