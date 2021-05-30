@@ -63,12 +63,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :discord_users, only: [] do
-    member do
-      get :refetch
-    end
-  end
-
   resources :duos, only: [:index, :show] do
     collection do
       get :autocomplete
@@ -112,6 +106,7 @@ Rails.application.routes.draw do
 
   resources :users, only: %i(show edit update) do
     member do
+      get :refetch
       get :create_player
     end
   end
