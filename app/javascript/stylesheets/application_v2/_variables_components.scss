@@ -17,14 +17,14 @@ $navbar-light-hover-color: $white;
 
 // DROPDOWNS
 
-$dropdown-bg: rgba($gray-deep, 0.85);
+$dropdown-bg: rgba($gray-medium, 0.9);
 $dropdown-spacer: 0.5rem;
 $dropdown-header-color: theme-color-level("light", -1);
 $dropdown-border-width: 0;
 $dropdown-link-color: $body-color;
-$dropdown-link-active-bg: $gray-deep;
+$dropdown-link-active-bg: $gray-dark;
 $dropdown-link-active-color: $white;
 $dropdown-link-hover-color: $white;
-$dropdown-link-hover-bg: $gray-dark;
+$dropdown-link-hover-bg: $gray-deep;
 $dropdown-divider-bg: $white;
 $dropdown-item-padding-y: 0.5rem;

@@ -2,11 +2,27 @@ $enable-responsive-font-sizes: true;
 $font-family-base: "Sora", Arial, sans-serif;
 
 $gray-light: #aeb9c9;
+$gray-medium: #393c42;
 $gray-deep: #26282c;
 $gray-dark: #1b1d20;
 $gray-darker: #121314;
 
+$red: #ee647d;
+$yellow: #ffaa49;
+$green: #60d376;
+$blue: #6296ff;
+$purple: #aa5ce5;
+$pink: #ff97d5;
+
+$players: $red;
+$championship: #ffaa49;
+$smashtheque-tv: #60d376;
+$harmony: #6296ff;
+$community: #aa5ce5;
+$guides: $pink;
+
+
 $body-bg: $gray-darker;
 $body-color: $gray-light;
 
-$border-radius: .5rem;
+$border-radius: 0.625rem;

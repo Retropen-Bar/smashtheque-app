@@ -22,6 +22,13 @@
     }
   }
 
+  .dropdown-toggle {
+    &:focus {
+      outline: 0;
+      box-shadow: none;
+    }
+  }
+
   .nav-link:focus {
     box-shadow: none;
   }
@@ -44,7 +51,7 @@
     border-top-left-radius: $border-radius;
     padding: 1rem;
 
-    @include  media-breakpoint-down(lg) {
+    @include media-breakpoint-down(lg) {
       display: flex;
       flex-direction: column;
       overflow-x: hidden;
@@ -78,11 +85,17 @@
     }
   }
 
-  .vue-slideout-btn-close:hover {
-    border-color: transparent;
-
+  .vue-slideout-btn-close {
     svg {
-      fill: $white;
+      margin: 3px 0;
+    }
+
+    &:hover {
+      border-color: transparent;
+
+      svg {
+        fill: $white;
+      }
     }
   }
 
@@ -104,7 +117,7 @@
     }
   }
 
-  @include media-breakpoint-up(xl) {
+  @include media-breakpoint-up(xxl) {
     .vue-slideout {
       backdrop-filter: none;
       position: static;
@@ -165,12 +178,11 @@
   }
 
   &-collapse {
-    
     .btn-back {
       display: none;
     }
 
-    @include media-breakpoint-down(lg) {
+    @include media-breakpoint-down(xl) {
       .navbar-nav {
         position: relative;
         flex-grow: 1;
@@ -212,7 +224,7 @@
           background-color: rgba($white, 0.1);
 
           &:after {
-            content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='%23fff'%3E %3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 5l7 7-7 7' /%3E %3C/svg%3E");
+            content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23fff'%3E %3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 5l7 7-7 7' /%3E %3C/svg%3E");
           }
         }
       }
@@ -226,7 +238,7 @@
         font-weight: 600;
 
         &:before {
-          content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='%23aeb9c9'%3E %3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 5l7 7-7 7' /%3E %3C/svg%3E");
+          content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23aeb9c9'%3E %3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 5l7 7-7 7' /%3E %3C/svg%3E");
           border: 0;
           width: 1rem;
           height: 1rem;
@@ -268,14 +280,117 @@
       }
 
       .dropdown-item {
+        white-space: normal;
+        display: flex;
+
         &:hover {
           background: transparent;
         }
+
         .icon {
           width: 1.25rem;
           height: 1.25rem;
           margin-right: 0.75rem;
         }
+      }
+
+      .dropdown-header {
+        white-space: normal;
+      }
+    }
+
+    @include media-breakpoint-up(xl) {
+      .nav-item {
+        margin-left: 0.35rem;
+        margin-right: 0.35rem;
+      }
+
+      .dropdown-toggle:not(.admin),
+      .navbar-nav .nav-link:not(.admin) {
+        font-size: $font-size-sm;
+        border-radius: $btn-padding-x-lg * 2;
+        padding: $btn-padding-y $btn-padding-x-lg !important;
+        font-weight: 600;
+
+        &:after {
+          content: none;
+        }
+
+        &[aria-expanded="true"] {
+          background-color: rgba($body-color, 0.1);
+        }
+
+        &:hover {
+          background-color: $gray-medium;
+        }
+      }
+
+      .dropdown-menu {
+        overflow: hidden;
+        padding-top: 5px;
+        padding-bottom: 5px;
+
+        &:after {
+          content: "";
+          display: block;
+          height: 5px;
+          background-color: $gray-darker;
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+        }
+
+        &.players {
+          &:after {
+            background-color: $players;
+          }
+        }
+
+        &.championship {
+          &:after {
+            background-color: $championship;
+          }
+        }
+
+        &.smashtheque-tv {
+          &:after {
+            background-color: $smashtheque-tv;
+          }
+        }
+
+        &.harmony {
+          &:after {
+            background-color: $harmony;
+          }
+        }
+
+        &.community {
+          &:after {
+            background-color: $community;
+          }
+        }
+
+        &.guides {
+          &:after {
+            background-color: $guides;
+          }
+        }
+      }
+    }
+
+    @media screen and (min-width: 1550px) {
+      margin-left: 2rem;
+
+      .nav-item {
+        margin-left: 0.625rem;
+        margin-right: 0.625rem;
+      }
+
+      .dropdown-toggle:not(.admin),
+      .navbar-nav .nav-link:not(.admin) {
+        font-size: $font-size-base;
+        padding: $btn-padding-y $btn-padding-x-lg * 1.25 !important;
       }
     }
   }
@@ -294,29 +409,38 @@
       }
 
       .dropdown-toggle {
-        @include media-breakpoint-down(xs) {
-          border-radius: 50%;
-        }
-
         &::after {
           content: none;
-        }
-
-        .current-user-name {
-          @include media-breakpoint-down(xs) {
-            display: none;
-          }
         }
       }
 
       .dropdown-menu {
         position: absolute;
       }
+
+      .current-user-name {
+        padding-left: map-get($spacers, 2);
+      }
+
+      .btn-link:not(.dropdown-toggle) span,
+      .current-user-name {
+        display: none;
+      }
+
+      @media screen and (min-width: 1500px) {
+        .btn-link:not(.dropdown-toggle) span,
+        .current-user-name {
+          display: inline;
+        }
+      }
     }
 
-    @include media-breakpoint-up(xl) {
-      &-menu {
-        display: none;
+    &-separator {
+      @media screen and (min-width: 1500px) {
+        border-left: 1px solid $body-color;
+        margin: 0 $spacer * 1.15;
+        align-self: stretch;
+        height: auto;
       }
     }
   }
