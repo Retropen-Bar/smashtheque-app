@@ -63,12 +63,13 @@ group :test do
 end
 
 # ADMIN
-gem 'activeadmin'
+gem 'activeadmin', github: 'activeadmin/activeadmin', branch: 'master'
 gem 'draper'
 
 # authentication & permissions
 gem 'devise', '~> 4.7.1'
 gem 'omniauth-discord'
+gem 'omniauth-rails_csrf_protection'
 gem 'cancancan'
 
 # other translations
