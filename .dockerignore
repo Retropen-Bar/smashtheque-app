@@ -22,6 +22,7 @@ docker-compose.override.yml
 .github
 latest.dump
 node_modules
+Procfile
 tmp
 
 # Other
