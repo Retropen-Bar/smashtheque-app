@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: https://github.com/mauricew/ruby-twitch-api.git
-  revision: afdea35d7e0ef1612620c89a9580a24a14ab813e
+  revision: fce26d6ab527521ed0cd30762e4071c8df6e3e10
   specs:
     twitch-api (0.4.0)
       faraday (~> 1.0)
@@ -245,7 +245,7 @@ GEM
       activerecord
       kaminari-core (= 1.2.1)
     kaminari-core (1.2.1)
-    listen (3.2.1)
+    listen (3.5.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     lograge (0.11.2)
@@ -354,7 +354,7 @@ GEM
       activerecord (>= 5.2.4)
       activesupport (>= 5.2.4)
       i18n
-    rb-fsevent (0.10.4)
+    rb-fsevent (0.11.0)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rbnacl (3.4.0)
@@ -495,7 +495,7 @@ DEPENDENCIES
   has_scope
   icalendar
   jbuilder (~> 2.7)
-  listen (~> 3.2)
+  listen (~> 3.5)
   lograge
   markdown_views
   memory_profiler
@@ -527,7 +527,7 @@ DEPENDENCIES
   webpacker
 
 RUBY VERSION
-   ruby 2.6.6p146
+   ruby 3.0.1p64
 
 BUNDLED WITH
-   2.2.16
+   2.2.17
