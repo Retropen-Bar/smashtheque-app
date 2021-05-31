@@ -294,7 +294,8 @@ fr:
         << : *SHARED
         any_tournament_event: Édition
         duo_tournament_event: Édition 2v2
-        is_online: Online?
+        is_ignored: Ignoré ?
+        is_online: Online ?
         num_entrants: Participants
         slug: Slug
         smashgg_id: ID

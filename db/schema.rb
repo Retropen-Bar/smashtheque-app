@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_26_203445) do
+ActiveRecord::Schema.define(version: 2021_05_29_161740) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -387,6 +387,7 @@ ActiveRecord::Schema.define(version: 2021_05_26_203445) do
     t.bigint "top5b_smashgg_user_id"
     t.bigint "top7a_smashgg_user_id"
     t.bigint "top7b_smashgg_user_id"
+    t.boolean "is_ignored", default: false, null: false
     t.index ["slug"], name: "index_smashgg_events_on_slug", unique: true
     t.index ["smashgg_id"], name: "index_smashgg_events_on_smashgg_id", unique: true
     t.index ["top1_smashgg_user_id"], name: "index_smashgg_events_on_top1_smashgg_user_id"
