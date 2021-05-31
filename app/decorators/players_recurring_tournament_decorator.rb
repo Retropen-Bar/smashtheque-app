@@ -1,3 +1,2 @@
 class PlayersRecurringTournamentDecorator < BaseDecorator
-
 end

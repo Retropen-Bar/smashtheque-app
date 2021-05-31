@@ -106,15 +106,15 @@ class RecurringTournamentDecorator < BaseDecorator
   end
 
   def as_autocomplete_result
-    h.content_tag :div, class: 'recurring-tournament' do
-      h.content_tag :div, class: :name do
+    h.tag.div class: 'recurring-tournament' do
+      h.tag.div class: :name do
         name
       end
     end
   end
 
   def link(options = {})
-    super({label: name_with_logo(64)}.merge(options))
+    super({ label: name_with_logo(64) }.merge(options))
   end
 
   def discord_guild_icon_image_url(size = nil)

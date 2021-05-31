@@ -1,6 +1,6 @@
 class BaseDecorator < Draper::Decorator
-
   delegate_all
+
   include Rails.application.routes.url_helpers
 
   def created_at_date
@@ -13,24 +13,25 @@ class BaseDecorator < Draper::Decorator
 
   def twitter_url
     return nil if model.twitter_username.blank?
+
     "https://twitter.com/#{model.twitter_username}"
   end
 
   def twitter_link(options = {})
     return nil if model.twitter_username.blank?
-    h.content_tag :i,
 
     txt = options.delete(:label) || [
-      h.content_tag(:i, '', class: 'fab fa-twitter'),
+      h.fab_icon_tag(:twitter),
       model.twitter_username
     ].join('&nbsp;').html_safe
 
-    h.link_to txt, twitter_url, { target: '_blank' }.merge(options)
+    h.link_to txt, twitter_url, { target: '_blank', rel: :noopener }.merge(options)
   end
 
   def twitter_name
     return nil if twitter_username.blank?
-    '@' + twitter_username
+
+    "@#{twitter_username}"
   end
 
   def path
@@ -42,5 +43,4 @@ class BaseDecorator < Draper::Decorator
     url = options.delete(:url) || path
     h.link_to txt, url, options
   end
-
 end

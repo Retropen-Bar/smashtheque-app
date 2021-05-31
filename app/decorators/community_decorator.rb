@@ -1,11 +1,10 @@
 class CommunityDecorator < BaseDecorator
-
   def autocomplete_name
     name
   end
 
   def listing_name
-   name
+    name
   end
 
   def players_count
@@ -17,8 +16,8 @@ class CommunityDecorator < BaseDecorator
   end
 
   def as_autocomplete_result
-    h.content_tag :div, class: 'community' do
-      h.content_tag :div, class: :name do
+    h.tag.div class: 'community' do
+      h.tag.div class: :name do
         name
       end
     end
@@ -38,12 +37,14 @@ class CommunityDecorator < BaseDecorator
 
   def logo_image_tag(options = {})
     return nil unless model.logo.attached?
+
     url = model.logo.service_url
     h.image_tag_with_max_size url, options.merge(class: 'avatar')
   end
 
   def first_discord_guild_icon_image_url(size = nil)
     return nil if model.first_discord_guild.nil?
+
     model.first_discord_guild.decorate.icon_image_url(size)
   end
 
@@ -57,5 +58,4 @@ class CommunityDecorator < BaseDecorator
       name
     ].join('&nbsp;').html_safe
   end
-
 end

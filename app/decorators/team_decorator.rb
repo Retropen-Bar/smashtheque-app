@@ -1,5 +1,4 @@
 class TeamDecorator < BaseDecorator
-
   def full_name
     "#{name} (#{short_name})"
   end
@@ -23,7 +22,7 @@ class TeamDecorator < BaseDecorator
   end
 
   def listing_name
-   full_name
+    full_name
   end
 
   def players_count
@@ -44,12 +43,14 @@ class TeamDecorator < BaseDecorator
 
   def logo_image_tag(options = {})
     return nil unless model.logo.attached?
+
     url = model.logo.service_url
     h.image_tag_with_max_size url, options.merge(class: 'avatar')
   end
 
   def first_discord_guild_icon_image_url(size = nil)
     return nil if model.first_discord_guild.nil?
+
     model.first_discord_guild.decorate.icon_image_url(size)
   end
 
@@ -59,32 +60,32 @@ class TeamDecorator < BaseDecorator
 
   def roster_image_tag(options = {})
     return nil unless model.roster.attached?
+
     url = model.roster.service_url
     h.image_tag_with_max_size url, options
   end
 
   def as_autocomplete_result
-    h.content_tag :div, class: 'team' do
-      h.content_tag :div, class: :name do
+    h.tag.div class: 'team' do
+      h.tag.div class: :name do
         full_name
       end
     end
   end
 
   def link(options = {})
-    super({label: short_name_with_logo(max_width: 32, max_height: 32)}.merge(options))
+    super({ label: short_name_with_logo(max_width: 32, max_height: 32) }.merge(options))
   end
 
   def badges
     (
       '' + (
-        is_offline? ? h.content_tag(:span, 'Offline', class: 'badge badge-success') : ''
+        is_offline? ? h.tag.span('Offline', class: 'badge badge-success') : ''
       ) + ' ' + (
-        is_online? ? h.content_tag(:span, 'Online', class: 'badge badge-warning') : ''
+        is_online? ? h.tag.span('Online', class: 'badge badge-warning') : ''
       ) + ' ' + (
-        is_sponsor? ? h.content_tag(:span, 'Sponsor', class: 'badge badge-dark') : ''
+        is_sponsor? ? h.tag.span('Sponsor', class: 'badge badge-dark') : ''
       )
     ).html_safe
   end
-
 end

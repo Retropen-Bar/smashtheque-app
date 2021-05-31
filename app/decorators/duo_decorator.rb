@@ -6,7 +6,7 @@ class DuoDecorator < BaseDecorator
   end
 
   def avatars_tag(size)
-    h.content_tag :div, class: 'avatars' do
+    h.tag.div class: 'avatars' do
       (
         player1&.decorate&.avatar_tag(size)
       ) + (
@@ -24,7 +24,7 @@ class DuoDecorator < BaseDecorator
 
   def link(options = {})
     avatar_size = options.delete(:avatar_size) || 32
-    super({label: name_with_avatars(size: avatar_size)}.merge(options))
+    super({ label: name_with_avatars(size: avatar_size) }.merge(options))
   end
 
   def icon_class
@@ -32,8 +32,8 @@ class DuoDecorator < BaseDecorator
   end
 
   def as_autocomplete_result
-    h.content_tag :div, class: :duo do
-      h.content_tag :div, class: :name do
+    h.tag.div class: :duo do
+      h.tag.div class: :name do
         name
       end
     end
