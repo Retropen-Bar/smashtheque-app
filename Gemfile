@@ -32,6 +32,7 @@ group :development, :test do
   gem 'rswag-specs'
   gem 'factory_bot_rails'
   gem 'faker'
+  gem 'rexml'
 end
 
 group :development do

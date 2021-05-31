@@ -373,6 +373,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
+    rexml (3.2.5)
     rollbar (2.27.0)
     rouge (3.26.0)
     rspec-core (3.9.2)
@@ -510,6 +511,7 @@ DEPENDENCIES
   rails (~> 6.0.3, >= 6.0.3.5)
   rails-i18n
   rbnacl-libsodium
+  rexml
   rollbar
   rspec-rails
   rswag-api
