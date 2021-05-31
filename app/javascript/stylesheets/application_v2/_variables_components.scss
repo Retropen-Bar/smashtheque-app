@@ -5,10 +5,15 @@ $custom-colors: (
 $theme-colors: map-merge($theme-colors, $custom-colors);
 
 $additional-grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
   md-lg: 1024px,
+  xl: 1200px,
   xxl: 1400px,
 );
-$grid-breakpoints: map-merge($grid-breakpoints, $additional-grid-breakpoints);
+$grid-breakpoints: $additional-grid-breakpoints;
 
 // NAVBAR
 

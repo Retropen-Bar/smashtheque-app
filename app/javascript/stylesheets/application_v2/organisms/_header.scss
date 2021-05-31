@@ -51,7 +51,7 @@
     border-top-left-radius: $border-radius;
     padding: 1rem;
 
-    @include media-breakpoint-down(lg) {
+    @include media-breakpoint-down(xl) {
       display: flex;
       flex-direction: column;
       overflow-x: hidden;
@@ -96,6 +96,10 @@
       svg {
         fill: $white;
       }
+    }
+
+    @include media-breakpoint-up(xl) {
+      margin-top: 0.5rem;
     }
   }
 
@@ -299,7 +303,7 @@
       }
     }
 
-    @include media-breakpoint-up(xl) {
+    @include media-breakpoint-up(xxl) {
       .nav-item {
         margin-left: 0.35rem;
         margin-right: 0.35rem;
@@ -403,6 +407,9 @@
     }
 
     &-login {
+      margin-left: map-get($spacers, 2);
+      margin-right: map-get($spacers, 2);
+
       .avatar,
       .nav-link:not(.dropdown-toggle) {
         border-radius: 50%;
@@ -427,7 +434,14 @@
         display: none;
       }
 
+      @include media-breakpoint-up(xxl) {
+        margin-left: map-get($map: $spacers, $key: 2);
+      }
+
       @media screen and (min-width: 1500px) {
+        margin-left: 0;
+        margin-right: 0;
+
         .btn-link:not(.dropdown-toggle) span,
         .current-user-name {
           display: inline;
