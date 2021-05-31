@@ -1,16 +1,18 @@
 class UsersController < PublicController
-
   before_action :set_user
   before_action :verify_user!
-  before_action :verify_user_ban!, only: %i(edit update)
+  before_action :verify_user_ban!, only: %i[edit update]
   decorates_assigned :user
 
-  def show
+  def show; end
 
-  end
+  def edit; end
 
-  def edit
+  def refetch
+    redirect_to request.referer, notice: 'Données mises à jour' and return if @user.refetch
 
+    flash[:error] = 'Impossible de mettre à jour les données'
+    redirect_to request.referer
   end
 
   def update
@@ -23,9 +25,8 @@ class UsersController < PublicController
   end
 
   def create_player
-    if @user.player
-      redirect_to request.referrer, notice: 'Fiche joueur déjà existante' and return
-    end
+    redirect_to request.referer, notice: 'Fiche joueur déjà existante' and return if @user.player
+
     @user.create_player!(
       name: @user.name,
       creator_user: @user
@@ -41,36 +42,35 @@ class UsersController < PublicController
 
   def verify_user!
     authenticate_user!
-    unless current_user.is_admin? || current_user == @user
-      flash[:error] = 'Accès non autorisé'
-      redirect_to root_path and return
-    end
+    return if current_user.is_admin? || current_user == @user
+
+    flash[:error] = 'Accès non autorisé'
+    redirect_to root_path and return
   end
 
   def verify_user_ban!
-    if @user.player&.is_banned?
-      flash[:error] = 'Modification non autorisée'
-      redirect_to root_path and return
-    end
+    return unless @user.player&.is_banned?
+
+    flash[:error] = 'Modification non autorisée'
+    redirect_to root_path and return
   end
 
   def user_params
-    params.require(:user).permit(%i(
+    params.require(:user).permit(%i[
       name twitter_username
       is_caster
       is_coach coaching_url coaching_details
       is_graphic_designer graphic_designer_details is_available_graphic_designer
       main_address main_latitude main_longitude main_locality
       secondary_address secondary_latitude secondary_longitude secondary_locality
-    ) + [{
-      player_attributes: %i(
+    ] + [{
+      player_attributes: %i[
         id
         name
-      ) + [{
+      ] + [{
         character_ids: [],
         team_ids: []
       }]
     }])
   end
-
 end

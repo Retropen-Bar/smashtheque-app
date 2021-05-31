@@ -15,7 +15,7 @@
       <% next if suggestion.nil? %>
       <% suggested_player = suggestion.first %>
       <tr>
-        <td><%= smashgg_user.admin_decorate.admin_link %></td>
+        <td><%= smashgg_user.admin_decorate.admin_link %> (<%= smashgg_user.country %>)</td>
         <td><%= suggested_player.admin_decorate.admin_link(with_teams: true) %></td>
         <td>
           <% case suggestion.second %>

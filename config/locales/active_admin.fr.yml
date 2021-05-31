@@ -3,7 +3,10 @@ fr:
     batch_actions:
       default_confirmation: Action groupée
       labels:
-        create_tournament_event: Créer une édition pour
+        create_duo_tournament_event: Créer une édition 2v2 pour
+        create_tournament_event: Créer une édition 1v1 pour
+        ignore: Ignorer
+        stop_ignoring: Ne plus ignorer
     scopes:
       accepted: Validés
       admins: Admins
@@ -16,8 +19,10 @@ fr:
       geocoded: Géolocalisé
       graphic_designers: Graphistes
       helps: Aides
+      ignored: Ignoré
       lambda: Normaux
       not_geocoded: Non géolocalisé
+      not_ignored: Non ignoré
       offline: Offline
       online: Online
       online_1v1: Online 1v1

@@ -278,8 +278,23 @@ class User < ApplicationRecord
     discord_user.return_or_create_user!
   end
 
-  def admin_level=(v)
-    super v.presence
+  def refetch_discord_user
+    return true unless discord_user
+
+    discord_user.fetch_discord_data
+    discord_user.save
+  end
+
+  def refetch_smashgg_users
+    player&.refetch_smashgg_users
+  end
+
+  def refetch
+    refetch_discord_user && refetch_smashgg_users
+  end
+
+  def admin_level=(val)
+    super val.presence
   end
 
   def is_admin?

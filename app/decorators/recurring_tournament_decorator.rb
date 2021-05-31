@@ -119,13 +119,20 @@ class RecurringTournamentDecorator < BaseDecorator
 
   def discord_guild_icon_image_url(size = nil)
     return nil if model.discord_guild.nil?
+
     model.discord_guild.decorate.icon_image_url(size)
   end
 
   def discord_guild_icon_image_tag(size = nil, options = {})
-    url = discord_guild_icon_image_url(size)
+    url = discord_guild_icon_image_url
     return nil if url.blank?
-    h.image_tag_with_max_size url, options.merge(class: 'avatar')
+
+    h.image_tag_with_max_size url,
+                              {
+                                max_width: size,
+                                max_height: size,
+                                class: 'avatar'
+                              }.merge(options)
   end
 
   def name_with_logo(size = nil, options = {})
@@ -137,6 +144,7 @@ class RecurringTournamentDecorator < BaseDecorator
 
   def address_with_coordinates
     return nil if address.blank?
+
     "#{address} (#{latitude}, #{longitude})"
   end
 

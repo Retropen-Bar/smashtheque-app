@@ -421,6 +421,14 @@ class Player < ApplicationRecord
     TournamentEvent.with_player(id)
   end
 
+  def refetch_smashgg_users
+    smashgg_users.each do |smashgg_user|
+      smashgg_user.fetch_smashgg_data
+      return false unless smashgg_user.save
+    end
+    true
+  end
+
   # ---------------------------------------------------------------------------
   # GLOBAL SEARCH
   # ---------------------------------------------------------------------------
