@@ -36,6 +36,8 @@ group :development, :test do
 end
 
 group :development do
+  # Easy local server
+  gem 'webrick'
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'web-console', '>= 3.3.0'
   gem 'listen', '~> 3.5'
@@ -115,7 +117,7 @@ gem 'sidekiq-cron', '~> 1.1'
 gem 'active_storage_validations'
 
 # S3
-gem 'aws-sdk-s3', require: false
+gem 'aws-sdk-s3'
 
 # Markdown
 gem 'markdown_views'
