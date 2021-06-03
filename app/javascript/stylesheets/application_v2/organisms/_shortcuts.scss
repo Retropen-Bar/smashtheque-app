@@ -21,6 +21,7 @@
     text-align: center;
     line-height: 1.33;
     position: relative;
+    transition: color 0.2s ease-in-out;
 
     .icon {
       @include size(2rem);
@@ -28,23 +29,35 @@
     }
 
     &:after {
-      content: '';
+      content: "";
       display: block;
       width: 39px;
       height: 9px;
       background-color: $gray-medium-light;
       border-radius: 9px;
       border: 3px solid $gray-dark;
+      opacity: 0;
+      transition: opacity 0.2s ease-in-out;
       position: absolute;
       top: 0;
       left: 50%;
       transform: translate(-50%, -50%);
     }
 
-    @each $section in ('players', 'championship', 'smashtheque-tv', 'harmony') {
+    &.active:after {
+      opacity: 1;
+    }
+
+    @each $section in ("players", "championship", "smashtheque-tv", "harmony") {
       &.#{$section} {
         &:after {
           background-color: map-get($sections, $section);
+        }
+
+        &.active,
+        &:hover {
+          color: map-get($sections, $section);
+          text-decoration: none;
         }
       }
     }

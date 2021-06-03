@@ -14,6 +14,7 @@ class PlayersController < PublicController
   def index
     @players = players Player
     @meta_title = 'Joueurs'
+    render layout: 'application_v2'
   end
 
   def community_index
