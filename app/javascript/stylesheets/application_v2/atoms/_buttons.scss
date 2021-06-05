@@ -25,4 +25,34 @@
       background: linear-gradient(24deg, #ff97d5 6%, #db4cba 88%);
     }
   }
+
+  &-sm {
+    font-size: $font-size-base * 0.8;
+  }
+
+  &-dark {
+    $background: $gray-deep;
+    $hover-background: lighten($background, 7.5%);
+
+    color: $body-color;
+  
+    @include hover() {
+      color: $body-color;
+      @include gradient-bg($hover-background);
+    }
+
+    @each $section_name, $color in $sections {
+      $hover-background: darken($color, 7.5%);
+    
+      &.#{$section_name}:not(:disabled):not(.disabled).active {
+        background-color: rgba($color, 0.5);
+        color: color-yiq($color);
+    
+        @include hover() {
+          color: color-yiq($hover-background);
+          background-color: rgba($hover-background, 0.5);
+        }
+      }
+    }
+  }
 }

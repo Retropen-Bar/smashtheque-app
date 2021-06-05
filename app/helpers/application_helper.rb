@@ -21,6 +21,11 @@ module ApplicationHelper
     end
   end
 
+  def current_class?(path)
+    return ' active' if request.path == path
+    ''
+  end
+
   def current_section?(section_name)
     case section_name
     when :players
@@ -28,5 +33,9 @@ module ApplicationHelper
     else
       return false
     end
+  end
+  
+  def current_section_name
+    return :players if current_section?(:players)
   end
 end

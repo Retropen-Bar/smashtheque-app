@@ -1,0 +1,69 @@
+.section-nav {
+  margin-left: -$grid-gutter-width / 2;
+  margin-right: -$grid-gutter-width / 2;
+  overflow: auto;
+
+  &-wrapper {
+    width: max-content;
+  }
+
+  &-bg {
+    background-color: $gray-deep;
+    border-radius: $border-radius * 1.5;
+    width: max-content;
+    padding-left: 0.25em;
+    padding-right: 0.25em;
+    margin-left: $grid-gutter-width / 2;
+    margin-right: $grid-gutter-width / 2;
+  }
+
+  &-link {
+    font-size: $small-font-size;
+    color: $gray-light;
+    opacity: 0.5;
+    padding: 0.5em 1em;
+    width: max-content;
+
+    &.active {
+      font-weight: bold;
+      opacity: 1;
+    }
+
+    &:hover {
+      opacity: 1;
+      color: inherit;
+      text-decoration: none;
+    }
+  }
+
+  @each $section, $color in $sections {
+    &.#{$section} {
+      .section-nav-link {
+        &.active {
+          color: $color;
+        }
+      }
+    }
+  }
+}
+
+
+.nav-pills {
+  .nav-link {
+    color: rgba($body-color, 0.7);
+
+    @include hover() {
+      color: $body-color;
+    }
+  }
+}
+
+@each $section_name, $color in $sections {
+  .#{$section_name} {
+    .nav-link.active,
+    .show > .nav-link {
+      color: $color;
+      background-color: rgba($color, 0.1);
+    }
+  }
+}

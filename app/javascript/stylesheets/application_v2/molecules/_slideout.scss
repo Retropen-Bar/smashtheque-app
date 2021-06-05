@@ -1,0 +1,35 @@
+.vue-slideout {
+  backdrop-filter: blur(2px);
+}
+
+.vue-slideout-mask {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.vue-slideout-layout {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.vue-slideout-header {
+  background-color: $gray-deep;
+  border-color: $gray-medium;
+  border-top-color: transparent;
+  border-top-left-radius: $border-radius;
+  border-top-right-radius: $border-radius;
+}
+
+.vue-slideout-content {
+  background-color: $gray-deep;
+  padding: 1rem;
+}
+
+.vue-slideout-btn-close {
+  &:hover {
+    border-color: transparent;
+
+    svg {
+      fill: $white;
+    }
+  }
+}

@@ -26,7 +26,7 @@
     "background-size: #{@background_size}px;" if @background_image_url
   %><%=
     "background-image: url(\"#{image_url('static-bg.png').gsub('"', "\"")}\");" if @static
-  %>" class="<%= controller.controller_name %> <%= controller.action_name %><% if @static %> static<% end %>">
+  %>" class="<%= controller.controller_name %> <%= controller.action_name %> <%= "section-#{current_section_name}" %><% if @static %> static<% end %>">
     <%= render partial: 'layouts/application_v2/flash', flash: flash %>
     <%= render partial: 'layouts/application_v2/head' %>
 
