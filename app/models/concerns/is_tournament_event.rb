@@ -123,7 +123,10 @@ module IsTournamentEvent
           model = document.searchable.decorate
           {
             id: model.to_global_id.to_s,
-            text: model.decorate.autocomplete_name
+            text: [
+              model.autocomplete_name,
+              model.start_at&.to_date
+            ].join("\n")
           }
         end
       }
