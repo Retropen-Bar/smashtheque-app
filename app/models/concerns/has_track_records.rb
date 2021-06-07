@@ -37,7 +37,7 @@ module HasTrackRecords
       )
       joins(
         "LEFT OUTER JOIN (#{subquery.to_sql}) #{sanitize_sql("track_records_#{column_suffix}")}
-                      ON id = #{sanitize_sql("track_records_#{column_suffix}")}.tracked_id"
+                      ON #{table_name}.id = #{sanitize_sql("track_records_#{column_suffix}")}.tracked_id"
       )
     end
 
