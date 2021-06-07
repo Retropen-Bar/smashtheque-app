@@ -57,6 +57,7 @@ class PlayersController < PublicController
     @online_rewards_counts = @player.rewards_counts(is_online: true)
     @offline_rewards_counts = @player.rewards_counts(is_online: false)
     @tournament_events = @player.tournament_events
+                                .visible
                                 .order(date: :desc)
                                 .includes(
                                   recurring_tournament: :discord_guild

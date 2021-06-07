@@ -190,6 +190,10 @@ class RecurringTournament < ApplicationRecord
     ))
   end
 
+  def hidden?
+    is_hidden?
+  end
+
   # ---------------------------------------------------------------------------
   # global search
   # ---------------------------------------------------------------------------
@@ -202,5 +206,4 @@ class RecurringTournament < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   has_paper_trail unless: Proc.new { ENV['NO_PAPERTRAIL'] }
-
 end

@@ -103,6 +103,18 @@ module IsTournamentEvent
       )
     end
 
+    def visible?
+      !hidden?
+    end
+
+    def hidden?
+      recurring_tournament&.hidden?
+    end
+
+    def gives_rewards?
+      visible? && !is_out_of_ranking?
+    end
+
     # ---------------------------------------------------------------------------
     # HELPERS
     # ---------------------------------------------------------------------------
@@ -183,7 +195,7 @@ module IsTournamentEvent
     def compute_rewards
       ids = []
 
-      if !is_out_of_ranking? && (participants_count || 0) > 0
+      if gives_rewards? && (participants_count || 0) > 0
         reward_conditions = RewardCondition.by_is_online(
           online?
         ).by_is_duo(
