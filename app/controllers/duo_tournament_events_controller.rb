@@ -11,7 +11,7 @@ class DuoTournamentEventsController < PublicController
   has_scope :per
 
   def index
-    @duo_tournament_events = apply_scopes(DuoTournamentEvent.order(date: :desc)).all
+    @duo_tournament_events = apply_scopes(DuoTournamentEvent.visible.order(date: :desc)).all
     respond_to do |format|
       format.html do
         @meta_title = 'Éditions 2v2 passées'

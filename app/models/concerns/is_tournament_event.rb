@@ -89,6 +89,20 @@ module IsTournamentEvent
       where.not(id: online.select(:id))
     end
 
+    def self.visible
+      without_recurring_tournament.or(
+        with_recurring_tournament.where(
+          recurring_tournament_id: RecurringTournament.visible.select(:id)
+        )
+      )
+    end
+
+    def self.hidden
+      with_recurring_tournament.where(
+        recurring_tournament_id: RecurringTournament.hidden.select(:id)
+      )
+    end
+
     # ---------------------------------------------------------------------------
     # HELPERS
     # ---------------------------------------------------------------------------

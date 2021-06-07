@@ -236,6 +236,7 @@ fr:
         discord_guild: Serveur Discord
         duo_tournament_events: Éditions 2v2
         is_archived: Stoppé ?
+        is_hidden: Masqué ?
         is_online: Online ?
         latitude: Latitude
         level: Difficulté
