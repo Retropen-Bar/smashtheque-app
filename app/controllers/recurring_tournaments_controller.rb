@@ -67,6 +67,8 @@ class RecurringTournamentsController < PublicController
   end
 
   def show
+    redirect_to root_path and return if @recurring_tournament.hidden?
+
     @tournament_events = @recurring_tournament.tournament_events.order(date: :desc)
     @duo_tournament_events = @recurring_tournament.duo_tournament_events.order(date: :desc)
     @meta_title = @recurring_tournament.name

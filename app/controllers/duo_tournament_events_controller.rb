@@ -47,6 +47,8 @@ class DuoTournamentEventsController < PublicController
   end
 
   def show
+    redirect_to root_path and return if @duo_tournament_event.hidden?
+
     @meta_title = @duo_tournament_event.name
     @meta_properties['og:type'] = 'profile'
     if @recurring_tournament
