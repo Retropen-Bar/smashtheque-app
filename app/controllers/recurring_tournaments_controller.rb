@@ -33,7 +33,7 @@ class RecurringTournamentsController < PublicController
   def index_html
     @map = params[:map].to_i == 1
     @recurring_tournaments = apply_scopes(
-      RecurringTournament.order('lower(name)')
+      RecurringTournament.visible.order('lower(name)')
     ).includes(:discord_guild).all
     @meta_title = 'Tournois'
   end
@@ -41,7 +41,7 @@ class RecurringTournamentsController < PublicController
   def index_json
     start = params[:startStr] ? Date.parse(params[:startStr]) : Time.now
     render json: apply_scopes(
-      RecurringTournament.recurring.not_archived
+      RecurringTournament.visible.recurring.not_archived
     ).all.decorate.map { |rc|
       rc.as_event(week_start: start).merge(
         url: recurring_tournament_path(rc)
@@ -54,7 +54,7 @@ class RecurringTournamentsController < PublicController
     cal.x_wr_calname = 'Planning online à 7 jours'
 
     apply_scopes(
-      RecurringTournament.recurring.not_archived
+      RecurringTournament.visible.recurring.not_archived
     ).per(1000).all.decorate.each do |recurring_tournament|
       event = recurring_tournament.as_ical_event
       event.url = polymorphic_url recurring_tournament
@@ -67,6 +67,8 @@ class RecurringTournamentsController < PublicController
   end
 
   def show
+    redirect_to root_path and return if @recurring_tournament.hidden?
+
     @tournament_events = @recurring_tournament.tournament_events.order(date: :desc)
     @duo_tournament_events = @recurring_tournament.duo_tournament_events.order(date: :desc)
     @meta_title = @recurring_tournament.name

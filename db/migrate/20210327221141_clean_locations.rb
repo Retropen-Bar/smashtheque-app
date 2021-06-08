@@ -10,6 +10,7 @@ class CleanLocations < ActiveRecord::Migration[6.0]
     add_column :locations, :address, :string
     Location.update_all("address = name")
     change_column :locations, :address, :string, null: false
+    Location.where(latitude: nil).delete_all
     change_column :locations, :latitude, :float, null: false
     change_column :locations, :longitude, :float, null: false
     change_column :locations, :name, :string, null: false

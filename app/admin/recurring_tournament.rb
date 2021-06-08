@@ -30,12 +30,15 @@ ActiveAdmin.register RecurringTournament do
       decorated.contacts_admin_links(size: 32).join('<br/>').html_safe
     end
     column :is_archived
+    column :is_hidden
     column :created_at, &:created_at_date
     actions
   end
 
   scope :all, default: true
-  scope :archived
+
+  scope :archived, group: :special
+  scope :hidden, group: :special
 
   scope :online, group: :loctype
   scope :offline, group: :loctype
@@ -54,6 +57,7 @@ ActiveAdmin.register RecurringTournament do
          collection: proc { recurring_tournament_level_select_collection },
          input_html: { multiple: true, data: { select2: {} } }
   filter :is_archived
+  filter :is_hidden
 
   action_item :rebuild,
               only: :index,
@@ -84,6 +88,7 @@ ActiveAdmin.register RecurringTournament do
                   as: :select,
                   collection: recurring_tournament_size_select_collection
           f.input :is_archived
+          f.input :is_hidden
         end
         f.inputs 'Contacts' do
           users_input f, :contacts
@@ -135,7 +140,7 @@ ActiveAdmin.register RecurringTournament do
                 :discord_guild_id, :is_online, :level, :size, :registration,
                 :address_name, :address, :latitude, :longitude,
                 :twitter_username, :misc,
-                :is_archived, contact_ids: []
+                :is_archived, :is_hidden, contact_ids: []
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -163,6 +168,7 @@ ActiveAdmin.register RecurringTournament do
           row :twitter_username
           row :misc, &:formatted_misc
           row :is_archived
+          row :is_hidden
           row :created_at
           row :updated_at
         end
