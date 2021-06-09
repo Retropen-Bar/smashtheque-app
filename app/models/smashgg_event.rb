@@ -191,11 +191,12 @@ class SmashggEvent < ApplicationRecord
   end
 
   def self.from_url(url)
-    if (slug = slug_from_url(url))
-      from_slug(slug)
-    elsif (tournament_slug = tournament_slug_from_url(url))
-      from_tournament_slug(tournament_slug)
-    end
+    slug = slug_from_url(url)
+    return from_slug(slug) if slug
+
+    tournament_slug = tournament_slug_from_url(url)
+    return from_tournament_slug(tournament_slug) if tournament_slug
+
     nil
   end
 
