@@ -103,9 +103,7 @@ ActiveAdmin.register SmashggUser do
       row :twitch_username do |decorated|
         decorated.twitch_link
       end
-      row :twitter_username do |decorated|
-        decorated.twitter_link
-      end
+      row :twitter_username, &:twitter_link
       row :discord_discriminated_username do |decorated|
         decorated.discord_link
       end
