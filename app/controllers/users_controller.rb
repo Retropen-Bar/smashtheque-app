@@ -1,10 +1,14 @@
 class UsersController < PublicController
-  before_action :set_user
+  before_action :set_user, except: :me
   before_action :verify_user!
   before_action :verify_user_ban!, only: %i[edit update]
   decorates_assigned :user
 
   def show; end
+
+  def me
+    redirect_to current_user
+  end
 
   def edit; end
 
