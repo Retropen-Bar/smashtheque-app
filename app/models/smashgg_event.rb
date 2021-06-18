@@ -62,6 +62,9 @@ class SmashggEvent < ApplicationRecord
       end
     ]
   end.to_h.freeze
+  SHORT_URL_REGEXP = %r{\Ahttps://smash.gg/[^/]+\z}
+  EVENT_URL_REGEXP = %r{tournament/[^/]+/event/[^/]+}
+  TOURNAMENT_URL_REGEXP = %r{tournament/[^/]+}
 
   # ---------------------------------------------------------------------------
   # RELATIONS
@@ -165,15 +168,25 @@ class SmashggEvent < ApplicationRecord
   # HELPERS
   # ---------------------------------------------------------------------------
 
+  def self.long_url_from_short_url(url)
+    Net::HTTP.get_response(URI.parse(url))['location']
+  rescue StandardError => e
+    logger.debug "Error fetching short URL: #{e.inspect}"
+    ''
+  end
+
   def self.slug_from_url(url)
-    url.slice(%r{tournament/[^/]+/event/[^/]+})
+    url = long_url_from_short_url(url) if SHORT_URL_REGEXP =~ url
+    url.slice(EVENT_URL_REGEXP)
   end
 
   def self.tournament_slug_from_url(url)
-    url.slice(%r{tournament/[^/]+})
+    url = long_url_from_short_url(url) if SHORT_URL_REGEXP =~ url
+    url.slice(TOURNAMENT_URL_REGEXP)
   end
 
   def smashgg_url=(url)
+    url = self.class.long_url_from_short_url(url) if SHORT_URL_REGEXP =~ url
     self.slug = self.class.slug_from_url(url)
     self.tournament_slug = self.class.tournament_slug_from_url(url)
   end
