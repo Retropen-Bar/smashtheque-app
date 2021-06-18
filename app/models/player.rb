@@ -337,6 +337,12 @@ class Player < ApplicationRecord
     )
   end
 
+  def self.by_main_character_id(character_id)
+    where(
+      id: CharactersPlayer.mains.where(character_id: character_id).select(:player_id)
+    )
+  end
+
   def self.by_team_id(team_id)
     where(
       id: PlayersTeam.where(team_id: team_id).select(:player_id)

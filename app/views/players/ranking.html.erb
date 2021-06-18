@@ -26,6 +26,29 @@
                             ),
                             prompt: 'Tous',
                             class: 'custom-select' %>
+            <% unless params[:by_character_id].blank? %>
+              <div class="custom-control custom-radio">
+                <%= radio_button_tag :by_character_id_mains_only,
+                                     0,
+                                     !@mains_only,
+                                     id: "filter-mains-and-secondaries",
+                                     class: 'custom-control-input' %>
+                <label class="custom-control-label" for="filter-mains-and-secondaries">
+                  Mains et seconds
+                </label>
+              </div>
+              <div class="custom-control custom-radio">
+                <%= radio_button_tag :by_character_id_mains_only,
+                                     1,
+                                     @mains_only,
+                                     id: "filter-mains-only",
+                                     class: 'custom-control-input' %>
+                <label class="custom-control-label" for="filter-mains-only">
+                  Uniquement les mains
+                </label>
+              </div>
+            <% end %>
+
           </div>
 
           <div class="col-12 col-md-4">

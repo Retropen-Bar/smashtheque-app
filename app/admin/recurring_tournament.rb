@@ -165,7 +165,7 @@ ActiveAdmin.register RecurringTournament do
           end
           row :address_name
           row :address, &:address_with_coordinates
-          row :twitter_username
+          row :twitter_username, &:twitter_link
           row :misc, &:formatted_misc
           row :is_archived
           row :is_hidden
