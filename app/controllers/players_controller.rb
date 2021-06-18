@@ -1,7 +1,13 @@
 class PlayersController < PublicController
   decorates_assigned :player
 
-  has_scope :by_character_id
+  has_scope :by_character_id do |controller, scope, value|
+    if controller.params[:by_character_id_mains_only] == '1'
+      scope.by_main_character_id(value)
+    else
+      scope.by_character_id(value)
+    end
+  end
   has_scope :by_team_id
   has_scope :by_community_id
 
@@ -89,6 +95,7 @@ class PlayersController < PublicController
     @year = params[:year]&.to_i
     @year = nil unless @year&.positive?
     @is_online = params[:is_online]&.to_i != 0
+    @mains_only = params[:by_character_id_mains_only]&.to_i == 1
 
     players =
       if @is_online
