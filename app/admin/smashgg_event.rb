@@ -37,7 +37,7 @@ ActiveAdmin.register SmashggEvent do
     end
     column :num_entrants
     SmashggEvent::USER_NAMES.each do |user_name|
-      column user_name do |decorated|
+      column user_name, sortable: "#{user_name}_id".to_sym do |decorated|
         decorated.send("#{user_name}_admin_link")
       end
     end
