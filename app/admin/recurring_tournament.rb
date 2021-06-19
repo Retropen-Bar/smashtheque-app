@@ -213,6 +213,19 @@ ActiveAdmin.register RecurringTournament do
     active_admin_comments
   end
 
+  action_item :other_actions, only: :show do
+    dropdown_menu 'Autres actions' do
+      if resource.logo.attached?
+        item 'Supprimer le logo', action: :purge_logo
+      end
+    end
+  end
+
+  member_action :purge_logo do
+    resource.logo.purge
+    redirect_to request.referer, notice: 'Logo supprimé'
+  end
+
   action_item :public, only: :show do
     link_to 'Page publique', resource, class: 'green'
   end
