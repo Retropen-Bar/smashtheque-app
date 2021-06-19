@@ -44,6 +44,8 @@ class RecurringTournament < ApplicationRecord
   # CONCERNS
   # ---------------------------------------------------------------------------
 
+  include HasLogo
+
   include HasName
   def self.on_abc_name
     :name

@@ -5,7 +5,7 @@ module ActiveAdmin
     decorates :team
 
     def admin_link(options = {})
-      super({ label: full_name_with_logo(size: 32) }.merge(options))
+      super({ label: full_name_with_logo(max_width: 32, max_height: 32) }.merge(options))
     end
 
     def discord_guilds_admin_links(options = {})

@@ -114,7 +114,21 @@ class RecurringTournamentDecorator < BaseDecorator
   end
 
   def link(options = {})
-    super({ label: name_with_logo(64) }.merge(options))
+    super({ label: name_with_logo(max_width: 64, max_height: 64) }.merge(options))
+  end
+
+  def any_image_url
+    logo_url.presence || discord_guild_icon_image_url || default_logo_image_url
+  end
+
+  def any_image_tag(options = {})
+    h.image_tag_with_max_size any_image_url, options.merge(class: 'avatar')
+  end
+
+  def logo_image_tag(options = {})
+    return nil unless model.logo.attached?
+
+    h.image_tag_with_max_size logo_url, options.merge(class: 'avatar')
   end
 
   def discord_guild_icon_image_url(size = nil)
@@ -135,9 +149,13 @@ class RecurringTournamentDecorator < BaseDecorator
                               }.merge(options)
   end
 
-  def name_with_logo(size = nil, options = {})
+  def default_logo_image_url
+    'smash.svg'
+  end
+
+  def name_with_logo(options = {})
     [
-      discord_guild_icon_image_tag(size, options),
+      any_image_tag(options),
       name
     ].join('&nbsp;').html_safe
   end

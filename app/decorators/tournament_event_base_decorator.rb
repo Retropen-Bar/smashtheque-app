@@ -1,7 +1,7 @@
 class TournamentEventBaseDecorator < BaseDecorator
-  def name_with_logo(size = nil, options = {})
+  def name_with_logo(options = {})
     [
-      recurring_tournament&.decorate&.discord_guild_icon_image_tag(size, options),
+      recurring_tournament&.decorate&.any_image_tag(options),
       name
     ].compact.join('&nbsp;').html_safe
   end
@@ -14,7 +14,7 @@ class TournamentEventBaseDecorator < BaseDecorator
   end
 
   def link(options = {})
-    super({ label: name_with_logo(64) }.merge(options))
+    super({ label: name_with_logo(max_width: 64, max_height: 64) }.merge(options))
   end
 
   def recurring_tournament_link

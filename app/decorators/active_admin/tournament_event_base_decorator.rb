@@ -11,7 +11,7 @@ module ActiveAdmin
     end
 
     def admin_link(options = {})
-      super({ label: name_with_logo(32) }.merge(options))
+      super({ label: name_with_logo(max_width: 32, max_height: 32) }.merge(options))
     end
 
     def first_event_admin_link(options = {})
