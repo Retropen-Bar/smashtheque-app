@@ -173,7 +173,7 @@ class SmashggEvent < ApplicationRecord
               .joins(:tournament_event)
               .where.not(smashgg_users: { player_id: nil })
               .where.not(tournament_events: { player_id => nil })
-              .where("tournament_events.#{player_id} != smashgg_users.player_id")
+              .where("tournament_events.#{sanitize_sql(player_id)} != smashgg_users.player_id")
               .select(:id)
     )
   end
@@ -186,13 +186,13 @@ class SmashggEvent < ApplicationRecord
         .joins(:tournament_event)
         .where.not(smashgg_users: { player_id: nil })
         .where.not(tournament_events: { player_id => nil })
-        .where("tournament_events.#{player_id} != smashgg_users.player_id")
+        .where("tournament_events.#{sanitize_sql(player_id)} != smashgg_users.player_id")
         .pluck(
           :id,
           'smashgg_users.id',
           'smashgg_users.player_id',
           'tournament_events.id',
-          "tournament_events.#{player_id}"
+          "tournament_events.#{sanitize_sql(player_id)}"
         ).map do |data|
           {
             rank: rank,
