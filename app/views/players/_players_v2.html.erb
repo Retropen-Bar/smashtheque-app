@@ -1,0 +1,78 @@
+<% if @map %>
+
+  <%= players_map(players.limit(nil).offset(0), @map_seconds) do %>
+    <div id="map-list-link">
+      <div class="btn-group" role="group">
+        <%= link_to 'Liste', url_for(map: 0), class: 'btn btn-outline-primary' %>
+        <button type="button" class="btn btn-primary">Carte</button>
+      </div>
+    </div>
+    <h1 id="map-title"><%= title %></h1>
+  <% end %>
+
+<% else %>
+
+  <h1 class="page-title index-title sr-only"><%= title %></h1>
+  <div class="container">
+    <section class="index-section">
+      <nav class="section-nav players mt-3">
+        <div class="section-nav-wrapper">
+          <div class="section-nav-bg d-flex">
+            <%= link_to 'Abécédaire', players_path, class: "section-nav-link#{current_class?(players_path)}" %>
+            <%= link_to 'Équipes', teams_path, class: "section-nav-link#{current_class?(teams_path)}" %>
+            <%= link_to 'Personnages', characters_path, class: "section-nav-link#{current_class?(characters_path)}" %>
+            <%= link_to 'Communautés locales', communities_path, class: "section-nav-link#{current_class?(communities_path)}" %>
+            <%= link_to "Observatoire d'Harmonie 1v1", ranking_players_path, class: "section-nav-link#{current_class?(ranking_players_path)}" %>
+          </div>
+        </div>
+      </nav>
+
+    </section>
+
+    <section id="index-filters" class="index-section py-3 d-flex align-items-center">
+      <small class="text-muted"><%= players.total_count %> résultat(s)</small>
+      <div role="group" class="ml-auto btn-group btn-group-sm players">
+        <button type="button" class="btn">
+          <%= render partial: 'shared/icons/liste' %>
+          <span class="sr-only">Liste</span>
+        </button>
+        <%= link_to url_for(map: 1), class: 'btn btn-outline' do %>
+          <%= render partial: 'shared/icons/map' %>
+          <span class="sr-only">Carte</span>
+        <% end %>
+      </div>
+      <button @click="filtersVisible = true" type="button" class="btn btn-dark players btn-sm rounded-pill ml-3<%= ' active' if params[:on_abc] %>">
+        <%= render partial: 'shared/icons/filtres' %> Filtres<%= ' (1)' if params[:on_abc] %>
+      </button>
+      <slide-out dock="bottom" :visible.sync="filtersVisible" :size="[0]" :arrow-button="false" title="Filtres">
+        <template #header>
+          <div class="d-flex align-items-center justify-content-between mt-1">
+            <p class="mb-0">
+              <%= render partial: 'shared/icons/filtres' %> Filtres<%= ' (1)' if params[:on_abc] %>
+            </p>
+            <button @click="filtersVisible = false" type="button" class="btn btn-sm btn-icon rounded-circle ml-3">
+              <%= render partial: 'shared/icons/croix' %>
+              <span class="sr-only">Fermer</span>
+            </button>
+          </div>
+        </template>
+        <section>
+          <p><%= render partial: 'shared/icons/filtres' %> Abcédaire</p>
+          <%= render 'shared/letters' %>
+        </section>
+      </slide-out>
+    </section> 
+
+    <div class="cards-list players">
+      <% players.each do |player| %>
+        <%= render 'players/player_v2',
+                  player: player.decorate,
+                  with_addresses: defined?(with_addresses) && with_addresses,
+                  with_communities: defined?(with_communities) && with_communities %>
+      <% end %>
+    </div>
+
+    <%= render 'shared/pagination', collection: players %>
+  </div>
+
+<% end %>

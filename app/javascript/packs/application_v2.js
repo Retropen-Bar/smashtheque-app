@@ -10,10 +10,11 @@ import "jquery";
 import "jquery-ui/ui/widgets/sortable";
 import "popper.js";
 
-import "../src/application_v2/slideout"
 import "../src/shared/images"
 import "../src/shared/maps"
 import "../src/shared/maps_autocomplete"
 import "../src/shared/select2"
 import "../src/shared/toastr"
 import "../src/shared/toggles"
+import "../src/application_v2/slideout"
+import "../src/application_v2/vue"
