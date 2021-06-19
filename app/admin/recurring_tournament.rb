@@ -11,11 +11,15 @@ ActiveAdmin.register RecurringTournament do
   # INDEX
   # ---------------------------------------------------------------------------
 
-  includes contacts: :discord_user
+  includes contacts: :discord_user,
+           logo_attachment: :blob
 
   index do
     selectable_column
     id_column
+    column :logo do |decorated|
+      decorated.logo_image_tag(max_height: 32)
+    end
     column :name do |decorated|
       link_to decorated.name, [:admin, decorated.model]
     end
@@ -132,10 +136,30 @@ ActiveAdmin.register RecurringTournament do
         end
       end
     end
+    f.inputs 'Logo' do
+      columns do
+        column do
+          f.input :logo,
+                  as: :file,
+                  hint: 'Laissez vide pour ne pas changer',
+                  input_html: {
+                    accept: 'image/*',
+                    data: {
+                      previewpanel: 'current-logo'
+                    }
+                  }
+        end
+        column do
+          panel 'Logo', id: 'current-logo' do
+            f.object.decorate.logo_image_tag
+          end
+        end
+      end
+    end
     f.actions
   end
 
-  permit_params :name, :recurring_type,
+  permit_params :name, :recurring_type, :logo,
                 :date_description, :wday, :starts_at_hour, :starts_at_min,
                 :discord_guild_id, :is_online, :level, :size, :registration,
                 :address_name, :address, :latitude, :longitude,
@@ -151,6 +175,9 @@ ActiveAdmin.register RecurringTournament do
       column do
         attributes_table do
           row :name
+          row :logo do |decorated|
+            decorated.logo_image_tag(max_height: 64)
+          end
           row :tournament_events, &:tournament_events_admin_link
           row :duo_tournament_events, &:duo_tournament_events_admin_link
           row :recurring_type, &:recurring_type_text
@@ -184,6 +211,19 @@ ActiveAdmin.register RecurringTournament do
       end
     end
     active_admin_comments
+  end
+
+  action_item :other_actions, only: :show do
+    dropdown_menu 'Autres actions' do
+      if resource.logo.attached?
+        item 'Supprimer le logo', action: :purge_logo
+      end
+    end
+  end
+
+  member_action :purge_logo do
+    resource.logo.purge
+    redirect_to request.referer, notice: 'Logo supprimé'
   end
 
   action_item :public, only: :show do

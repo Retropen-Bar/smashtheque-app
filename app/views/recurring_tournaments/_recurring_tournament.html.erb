@@ -5,7 +5,7 @@
       <%= recurring_tournament.tournament_events_count %>
     </div>
     <%= link_to(recurring_tournament, class: 'recurring-tournament-link') do %>
-      <%= recurring_tournament.discord_guild_icon_image_tag(64) %>
+      <%= recurring_tournament.any_image_tag(max_width: 64, max_height: 64) %>
       <div class="recurring-tournament-name-and-tags">
         <div>
           <%= recurring_tournament.name %>

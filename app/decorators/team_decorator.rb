@@ -3,14 +3,14 @@ class TeamDecorator < BaseDecorator
     "#{name} (#{short_name})"
   end
 
-  def full_name_with_logo(options)
+  def full_name_with_logo(options = {})
     [
       any_image_tag(options),
       full_name
     ].join('&nbsp;').html_safe
   end
 
-  def short_name_with_logo(options)
+  def short_name_with_logo(options = {})
     [
       any_image_tag(options),
       short_name
@@ -44,8 +44,7 @@ class TeamDecorator < BaseDecorator
   def logo_image_tag(options = {})
     return nil unless model.logo.attached?
 
-    url = model.logo.service_url
-    h.image_tag_with_max_size url, options.merge(class: 'avatar')
+    h.image_tag_with_max_size logo_url, options.merge(class: 'avatar')
   end
 
   def first_discord_guild_icon_image_url(size = nil)
