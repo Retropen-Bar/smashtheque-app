@@ -273,6 +273,19 @@ ActiveAdmin.register SmashggEvent do
   end
 
   # ---------------------------------------------------------------------------
+  # WRONG PLAYERS
+  # ---------------------------------------------------------------------------
+
+  action_item :wrong_players, only: :index do
+    errors_count = SmashggEvent.with_wrong_players.count
+    link_to "Voir les #{errors_count} erreurs", { action: :wrong_players }, class: :red
+  end
+
+  collection_action :wrong_players do
+    @wrong_players = SmashggEvent.wrong_players
+  end
+
+  # ---------------------------------------------------------------------------
   # SEARCH
   # ---------------------------------------------------------------------------
 

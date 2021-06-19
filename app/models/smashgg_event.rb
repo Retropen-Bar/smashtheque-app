@@ -164,6 +164,76 @@ class SmashggEvent < ApplicationRecord
     )
   end
 
+  def self.with_wrong_players_ranked(rank)
+    user_name = "top#{rank}_smashgg_user".to_sym
+    player_id = "top#{rank}_player_id".to_sym
+
+    where(
+      id: self.joins(user_name)
+              .joins(:tournament_event)
+              .where.not(smashgg_users: { player_id: nil })
+              .where.not(tournament_events: { player_id => nil })
+              .where("tournament_events.#{player_id} != smashgg_users.player_id")
+              .select(:id)
+    )
+  end
+
+  def self.wrong_players_ranked(rank)
+    user_name = "top#{rank}_smashgg_user".to_sym
+    player_id = "top#{rank}_player_id".to_sym
+
+    self.joins(user_name)
+        .joins(:tournament_event)
+        .where.not(smashgg_users: { player_id: nil })
+        .where.not(tournament_events: { player_id => nil })
+        .where("tournament_events.#{player_id} != smashgg_users.player_id")
+        .pluck(
+          :id,
+          'smashgg_users.id',
+          'smashgg_users.player_id',
+          'tournament_events.id',
+          "tournament_events.#{player_id}"
+        ).map do |data|
+          {
+            rank: rank,
+            smashgg_event_id: data[0],
+            smashgg_user_id: data[1],
+            smashgg_user_player_id: data[2],
+            tournament_event_id: data[3],
+            tournament_event_player_id: data[4]
+          }
+        end
+  end
+
+  def self.with_wrong_players
+    with_wrong_players_ranked(1).or(
+      with_wrong_players_ranked(2)
+    ).or(
+      with_wrong_players_ranked(3)
+    ).or(
+      with_wrong_players_ranked(4)
+    ).or(
+      with_wrong_players_ranked('5a')
+    ).or(
+      with_wrong_players_ranked('5b')
+    ).or(
+      with_wrong_players_ranked('7a')
+    ).or(
+      with_wrong_players_ranked('7b')
+    )
+  end
+
+  def self.wrong_players
+    wrong_players_ranked(1) +
+    wrong_players_ranked(2) +
+    wrong_players_ranked(3) +
+    wrong_players_ranked(4) +
+    wrong_players_ranked('5a') +
+    wrong_players_ranked('5b') +
+    wrong_players_ranked('7a') +
+    wrong_players_ranked('7b')
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------
