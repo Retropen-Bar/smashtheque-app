@@ -70,9 +70,11 @@ gem 'activeadmin', github: 'activeadmin/activeadmin', branch: 'master'
 gem 'draper'
 
 # authentication & permissions
-gem 'devise', '~> 4.7.1'
+gem 'devise', '>= 4.8.0'
+gem 'omniauth', '>= 2.0.0'
+gem 'omniauth-oauth2', '>= 1.7.1'
 gem 'omniauth-discord'
-gem 'omniauth-rails_csrf_protection'
+gem 'omniauth-rails_csrf_protection', '>= 1.0.0'
 gem 'cancancan'
 
 # other translations

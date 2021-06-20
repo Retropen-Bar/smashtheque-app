@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/activeadmin/activeadmin.git
-  revision: 2660411ad6032122bc0acc1459df4bec75ac8cf8
+  revision: 45e8bf80bd8aff136fbc9cb60d0177b2ee0ff30a
   branch: master
   specs:
     activeadmin (2.9.0)
@@ -112,7 +112,7 @@ GEM
       aws-sigv4 (~> 1.1)
     aws-sigv4 (1.2.1)
       aws-eventstream (~> 1, >= 1.0.2)
-    bcrypt (3.1.15)
+    bcrypt (3.1.16)
     bindex (0.8.1)
     bootsnap (1.4.8)
       msgpack (~> 1.0)
@@ -137,7 +137,7 @@ GEM
     childprocess (3.0.0)
     commonmarker (0.21.0)
       ruby-enum (~> 0.5)
-    concurrent-ruby (1.1.8)
+    concurrent-ruby (1.1.9)
     connection_pool (2.2.3)
     crass (1.0.6)
     database_cleaner-active_record (2.0.0)
@@ -146,7 +146,7 @@ GEM
     database_cleaner-core (2.0.1)
     ddtrace (0.47.0)
       msgpack
-    devise (4.7.2)
+    devise (4.8.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0)
@@ -184,11 +184,19 @@ GEM
       railties (>= 5.0.0)
     faker (2.13.0)
       i18n (>= 1.6, < 2)
-    faraday (1.3.0)
+    faraday (1.4.2)
+      faraday-em_http (~> 1.0)
+      faraday-em_synchrony (~> 1.0)
+      faraday-excon (~> 1.1)
       faraday-net_http (~> 1.0)
+      faraday-net_http_persistent (~> 1.1)
       multipart-post (>= 1.2, < 3)
-      ruby2_keywords
+      ruby2_keywords (>= 0.0.4)
+    faraday-em_http (1.0.0)
+    faraday-em_synchrony (1.0.0)
+    faraday-excon (1.1.0)
     faraday-net_http (1.0.1)
+    faraday-net_http_persistent (1.1.0)
     faraday_middleware (1.0.0)
       faraday (~> 1.0)
     ffi (1.13.1)
@@ -233,7 +241,7 @@ GEM
       thor (>= 0.14, < 2.0)
     json-schema (2.8.1)
       addressable (>= 2.4)
-    jwt (2.2.2)
+    jwt (2.2.3)
     kaminari (1.2.1)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.1)
@@ -254,7 +262,7 @@ GEM
       activesupport (>= 4)
       railties (>= 4)
       request_store (~> 1.0)
-    loofah (2.9.1)
+    loofah (2.10.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -278,27 +286,28 @@ GEM
     multipart-post (2.1.1)
     netrc (0.11.0)
     nio4r (2.5.7)
-    nokogiri (1.11.6)
+    nokogiri (1.11.7)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
-    oauth2 (1.4.4)
+    oauth2 (1.4.7)
       faraday (>= 0.8, < 2.0)
       jwt (>= 1.0, < 3.0)
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
       rack (>= 1.2, < 3)
-    omniauth (1.9.1)
+    omniauth (2.0.4)
       hashie (>= 3.4.6)
       rack (>= 1.6.2, < 3)
+      rack-protection
     omniauth-discord (1.0.0)
       omniauth
       omniauth-oauth2
-    omniauth-oauth2 (1.7.0)
+    omniauth-oauth2 (1.7.1)
       oauth2 (~> 1.4)
-      omniauth (~> 1.9)
-    omniauth-rails_csrf_protection (0.1.2)
+      omniauth (>= 1.9, < 3)
+    omniauth-rails_csrf_protection (1.0.0)
       actionpack (>= 4.2)
-      omniauth (>= 1.3.1)
+      omniauth (~> 2.0)
     opus-ruby (1.0.1)
       ffi
     orm_adapter (0.5.0)
@@ -317,6 +326,8 @@ GEM
     rack (2.2.3)
     rack-mini-profiler (2.3.1)
       rack (>= 1.2.0)
+    rack-protection (2.1.0)
+      rack
     rack-proxy (0.6.5)
       rack
     rack-test (1.1.0)
@@ -405,7 +416,7 @@ GEM
       railties (>= 3.1, < 7.0)
     ruby-enum (0.8.0)
       i18n
-    ruby2_keywords (0.0.2)
+    ruby2_keywords (0.0.4)
     rubyzip (2.3.0)
     selenium-webdriver (3.142.7)
       childprocess (>= 0.5, < 4.0)
@@ -440,8 +451,8 @@ GEM
       unf_ext
     unf_ext (0.0.7.7)
     uniform_notifier (1.14.2)
-    warden (1.2.8)
-      rack (>= 2.0.6)
+    warden (1.2.9)
+      rack (>= 2.0.9)
     web-console (4.0.4)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -486,7 +497,7 @@ DEPENDENCIES
   capybara (>= 2.15)
   database_cleaner-active_record
   ddtrace
-  devise (~> 4.7.1)
+  devise (>= 4.8.0)
   devise-i18n
   discordrb
   draper
@@ -503,8 +514,10 @@ DEPENDENCIES
   markdown_views
   memory_profiler
   nokogiri (>= 1.11.0.rc4)
+  omniauth (>= 2.0.0)
   omniauth-discord
-  omniauth-rails_csrf_protection
+  omniauth-oauth2 (>= 1.7.1)
+  omniauth-rails_csrf_protection (>= 1.0.0)
   paper_trail
   pg
   pg_search

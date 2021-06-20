@@ -218,7 +218,7 @@
         </li>
       <% else %>
         <li class="nav-item">
-          <%= link_to user_discord_omniauth_authorize_path do %>
+          <%= link_to user_discord_omniauth_authorize_path, method: :post do %>
             <%= fas_icon_tag 'sign-in-alt', %w(fa-lg) %>
           <% end %>
         </li>
