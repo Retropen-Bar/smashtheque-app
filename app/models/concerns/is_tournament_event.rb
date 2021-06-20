@@ -371,6 +371,22 @@ module IsTournamentEvent
       end
     end
 
+    def self.potential_duplicates
+      self.with_recurring_tournament
+          .group(:recurring_tournament_id, :date)
+          .select(
+            :recurring_tournament_id,
+            :date
+          ).having(
+            'COUNT(*) > 1'
+          ).map do |results|
+            where(
+              recurring_tournament_id: results[:recurring_tournament_id],
+              date: results[:date]
+            ).to_a
+          end
+    end
+
     # ---------------------------------------------------------------------------
     # GLOBAL SEARCH
     # ---------------------------------------------------------------------------

@@ -291,4 +291,16 @@ ActiveAdmin.register TournamentEvent do
     resource.compute_rewards
     redirect_to request.referer, notice: 'Calcul effectué'
   end
+
+  # ---------------------------------------------------------------------------
+  # DUPLICATES
+  # ---------------------------------------------------------------------------
+
+  action_item :potential_duplicates, only: :index do
+    link_to 'Vérifier les doublons', { action: :potential_duplicates }, class: :blue
+  end
+
+  collection_action :potential_duplicates do
+    @potential_duplicates = TournamentEvent.potential_duplicates
+  end
 end
