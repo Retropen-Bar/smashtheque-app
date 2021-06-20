@@ -262,7 +262,7 @@ GEM
       activesupport (>= 4)
       railties (>= 4)
       request_store (~> 1.0)
-    loofah (2.10.0)
+    loofah (2.9.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -511,6 +511,7 @@ DEPENDENCIES
   jbuilder (~> 2.7)
   listen (~> 3.5)
   lograge
+  loofah (= 2.9.1)
   markdown_views
   memory_profiler
   nokogiri (>= 1.11.0.rc4)
