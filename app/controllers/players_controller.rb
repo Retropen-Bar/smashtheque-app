@@ -118,7 +118,14 @@ class PlayersController < PublicController
         )
       end
 
-    @players = apply_scopes(players).includes(:user, :discord_user, :teams, :characters)
+    @players = apply_scopes(
+      players.legit
+    ).includes(
+      :user, :discord_user,
+      :characters, :smashgg_users,
+      best_reward: { image_attachment: :blob },
+      teams: { logo_attachment: :blob }
+    )
 
     main_character = @players.first&.characters&.first&.decorate
     if main_character
