@@ -257,6 +257,10 @@ class User < ApplicationRecord
     )
   end
 
+  def self.by_main_countrycode(countrycode)
+    where(main_countrycode: countrycode)
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------

@@ -8,6 +8,13 @@ class PlayersController < PublicController
       scope.by_character_id(value)
     end
   end
+  has_scope :by_fr_only, type: :boolean, default: false, allow_blank: true do |_, scope, value|
+    if value
+      scope.by_main_countrycode([nil, 'FR'])
+    else
+      scope.by_main_countrycode([nil, 'FR', 'CH', 'BE', 'CA'])
+    end
+  end
   has_scope :by_team_id
   has_scope :by_community_id
 
@@ -96,6 +103,7 @@ class PlayersController < PublicController
     @year = nil unless @year&.positive?
     @is_online = params[:is_online]&.to_i != 0
     @mains_only = params[:by_character_id_mains_only]&.to_i == 1
+    @fr_only = params[:by_fr_only]&.to_i == 1
 
     players =
       if @is_online
