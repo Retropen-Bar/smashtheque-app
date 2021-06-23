@@ -133,6 +133,9 @@ gem 'twitch-api', github: 'mauricew/ruby-twitch-api'
 # Geocoding
 gem 'geocoder'
 
+# Countries
+gem 'countries'
+
 group :production do
   # for assets compilation
   gem 'activerecord-nulldb-adapter'

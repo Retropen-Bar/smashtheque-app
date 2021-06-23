@@ -56,4 +56,16 @@ class UserDecorator < BaseDecorator
 
     "#{secondary_address} (#{secondary_latitude}, #{secondary_longitude})"
   end
+
+  def main_country_name
+    return nil if main_countrycode.blank?
+
+    ISO3166::Country.new(main_countrycode)&.translation('fr')
+  end
+
+  def secondary_country_name
+    return nil if secondary_countrycode.blank?
+
+    ISO3166::Country.new(secondary_countrycode)&.translation('fr')
+  end
 end

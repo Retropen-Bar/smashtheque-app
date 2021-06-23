@@ -103,8 +103,10 @@ ActiveAdmin.register User do
                 :is_coach, :coaching_url, :coaching_details,
                 :is_graphic_designer, :graphic_designer_details,
                 :is_available_graphic_designer,
-                :main_address, :main_latitude, :main_longitude, :main_locality,
-                :secondary_address, :secondary_latitude, :secondary_longitude, :secondary_locality,
+                :main_address, :main_latitude, :main_longitude,
+                :main_locality, :main_countrycode,
+                :secondary_address, :secondary_latitude, :secondary_longitude,
+                :secondary_locality, :secondary_countrycode,
                 administrated_team_ids: [],
                 administrated_recurring_tournament_ids: []
 
@@ -117,33 +119,23 @@ ActiveAdmin.register User do
       column do
         attributes_table do
           row :name
-          row :admin_level do |decorated|
-            decorated.admin_level_status
-          end
+          row :admin_level, &:admin_level_status
           row :twitter_username, &:twitter_link
-          row :discord_user do |decorated|
-            decorated.discord_user_admin_link
-          end
-          row :player do |decorated|
-            decorated.player_admin_link
-          end
-          row :created_players do |decorated|
-            decorated.created_players_admin_link
-          end
+          row :discord_user, &:discord_user_admin_link
+          row :player, &:player_admin_link
+          row :created_players, &:created_players_admin_link
           row :administrated_teams do |decorated|
             decorated.administrated_teams_admin_links(size: 32).join('<br/>').html_safe
           end
           row :administrated_recurring_tournaments do |decorated|
             decorated.administrated_recurring_tournaments_admin_links(size: 32).join('<br/>').html_safe
           end
-          row :main_address do |decorated|
-            decorated.main_address_with_coordinates
-          end
+          row :main_address, &:main_address_with_coordinates
           row :main_locality
-          row :secondary_address do |decorated|
-            decorated.secondary_address_with_coordinates
-          end
+          row :main_countrycode, &:main_country_name
+          row :secondary_address, &:secondary_address_with_coordinates
           row :secondary_locality
+          row :secondary_countrycode, &:secondary_country_name
           row :is_caster
           row :is_coach
           row :coaching_url

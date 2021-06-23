@@ -412,10 +412,12 @@ fr:
         last_sign_in_at: Session précédente
         last_sign_in_ip: IP précédente
         main_address: Localisation principale
+        main_countrycode: Pays principal
         main_locality: Ville principale
         name: Nom
         player: Joueur
         secondary_address: Localisation secondaire
+        secondary_countrycode: Pays secondaire
         secondary_locality: Ville secondaire
         sign_in_count: Connexions
         twitter_username: Compte Twitter

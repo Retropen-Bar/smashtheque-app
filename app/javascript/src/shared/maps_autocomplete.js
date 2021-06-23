@@ -1,7 +1,7 @@
 const DATA_KEY = 'data-maps-autocomplete';
 
 let onPlaceChanged = function(input, target, place) {
-  // console.log('[Maps Autocomplete] onPlaceChanged', input, target, place);
+  console.log('[Maps Autocomplete] onPlaceChanged', input, target, place);
 
   $(input).val(place.formatted_address);
 
@@ -17,6 +17,16 @@ let onPlaceChanged = function(input, target, place) {
   if(target.longitude) {
     $(target.longitude).val(place.geometry.location.lng());
   }
+
+  // clean old values for components
+  if(target.locality) {
+    $(target.locality).val(null);
+  }
+  if(target.countrycode) {
+    $(target.countrycode).val(null);
+  }
+
+  // set new values
   for (const component of place.address_components) {
     const componentType = component.types[0];
     switch (componentType) {
@@ -24,10 +34,14 @@ let onPlaceChanged = function(input, target, place) {
         if(target.locality) {
           $(target.locality).val(component.long_name);
         }
+        break;
       case "country":
-        if(target.country) {
-          $(target.country).val(component.long_name);
+        if(target.countrycode) {
+          $(target.countrycode).val(component.short_name);
         }
+        break;
+      default:
+        // do nothing
     }
   }
 };
