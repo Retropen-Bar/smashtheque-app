@@ -49,6 +49,28 @@ class User < ApplicationRecord
               longitude: :main_longitude
 
   # ---------------------------------------------------------------------------
+  # CONSTANTS
+  # ---------------------------------------------------------------------------
+
+  FRENCH_SPEAKING_COUNTRIES = [
+    'FR', # France
+
+    'GF', # Guyane
+    'GP', # Guadeloupe
+    'MQ', # Martinique
+    'NC', # Nouvelle-Caledonie
+    'PF', # Polynesie
+    'RE', # Reunion
+    'YT', # Mayotte
+
+    'BE', # Belgique
+    'CA', # Canada
+    'CH', # Suisse
+    'MA', # Maroc
+    'MC'  # Monaco
+  ].freeze
+
+  # ---------------------------------------------------------------------------
   # CONCERNS
   # ---------------------------------------------------------------------------
 

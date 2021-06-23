@@ -51,6 +51,18 @@ let onPlaceRemoved = function(input, target) {
 
   $(target.latitude).val('');
   $(target.longitude).val('');
+  if(target.formatted) {
+    $(target.formatted).val(null);
+  }
+  if(target.name) {
+    $(target.name).val(null);
+  }
+  if(target.locality) {
+    $(target.locality).val(null);
+  }
+  if(target.countrycode) {
+    $(target.countrycode).val(null);
+  }
 }
 
 let initInput = function(input) {

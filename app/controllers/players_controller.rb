@@ -12,7 +12,7 @@ class PlayersController < PublicController
     if value
       scope.by_main_countrycode([nil, 'FR'])
     else
-      scope.by_main_countrycode([nil, 'FR', 'CH', 'BE', 'CA'])
+      scope.by_main_countrycode([nil, 'FR'] + User::FRENCH_SPEAKING_COUNTRIES)
     end
   end
   has_scope :by_team_id
