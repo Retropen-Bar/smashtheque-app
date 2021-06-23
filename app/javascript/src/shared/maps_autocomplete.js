@@ -1,7 +1,7 @@
 const DATA_KEY = 'data-maps-autocomplete';
 
 let onPlaceChanged = function(input, target, place) {
-  console.log('[Maps Autocomplete] onPlaceChanged', input, target, place);
+  // console.log('[Maps Autocomplete] onPlaceChanged', input, target, place);
 
   $(input).val(place.formatted_address);
 
@@ -72,7 +72,7 @@ let initInput = function(input) {
     autocomplete,
     'place_changed',
     function(){
-      console.log('place changed', this);
+      // console.log('place changed', this);
       onPlaceChanged(input, target, this.getPlace());
     }
   );
