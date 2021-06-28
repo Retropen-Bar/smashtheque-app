@@ -2,9 +2,7 @@
   <div class="resource-avatar card">
     <% if player.is_legit? %>
       <%= link_to player.avatar_tag(76), player %>
-      <%= player.best_reward&.decorate&.badge(class: 'reward-badge-32') %>
-    <% else %>
-      <%= player.default_avatar(76) %>
+      <%= player.best_reward&.decorate&.badge(is_online: true, class: 'reward-badge-25') %>
     <% end %>
   </div>
   <div class="resource-content card flex-grow-1<%= 'with-rank' if defined?(with_rank) && with_rank %>">
@@ -45,7 +43,7 @@
       <% if player.characters.present? %>
         <div class="player-characters-list flex-shrink-0">
           <% player.characters[0...3].each do |character| %>
-            <%= character.decorate.link %>
+          <%= character.decorate.link %>
           <% end %>
         </div>
       <% end %>

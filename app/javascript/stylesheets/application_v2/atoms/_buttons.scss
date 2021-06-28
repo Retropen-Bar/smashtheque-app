@@ -45,8 +45,8 @@
       $hover-background: darken($color, 7.5%);
     
       &.#{$section_name}:not(:disabled):not(.disabled).active {
-        background-color: rgba($color, 0.5);
-        color: color-yiq($color);
+        background-color: rgba($color, 0.8);
+        color: color-yiq($color, $light: $white);
     
         @include hover() {
           color: color-yiq($hover-background);

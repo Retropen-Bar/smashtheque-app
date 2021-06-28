@@ -1,0 +1,59 @@
+.page-item {
+  .page-link {
+    border-radius: $border-radius;
+    margin-left: 0.125rem;
+    padding-left: 0.7rem;
+    padding-right: 0.7rem;
+  }
+
+  &:first-child {
+    .page-link {
+      border-top-left-radius: $border-radius;
+      border-bottom-left-radius: $border-radius;
+    }
+  }
+  &:last-child {
+    .page-link {
+      border-top-right-radius: $border-radius;
+      border-bottom-right-radius: $border-radius;
+    }
+  }
+  &.active .page-link {
+    border-color: transparent;
+  }
+}
+
+.pagination-sm {
+  .page-item {
+    &:first-child {
+      .page-link {
+        border-top-left-radius: $border-radius;
+        border-bottom-left-radius: $border-radius;
+      }
+    }
+    &:last-child {
+      .page-link {
+        border-top-right-radius: $border-radius;
+        border-bottom-right-radius: $border-radius;
+      }
+    }
+  }
+}
+
+@each $section_name, $color in $sections {
+  .#{$section_name} {
+    .page-link {
+      &:focus {
+        outline: $pagination-focus-outline;
+        box-shadow: $pagination-focus-box-shadow;
+      }
+    }
+
+    .page-item {
+      &.active .page-link {
+        color: $color;
+        background-color: $gray-deep;
+      }
+    }
+  }
+}

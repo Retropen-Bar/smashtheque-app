@@ -9,7 +9,7 @@ class UserDecorator < BaseDecorator
   end
 
   def default_avatar(size)
-    h.image_tag 'default-avatar.jpg', width: size, class: :avatar
+    h.image_tag 'default-avatar.svg', width: size, class: :avatar
   end
 
   def avatar_and_name(size: nil)

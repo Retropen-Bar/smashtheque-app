@@ -29,7 +29,7 @@ class DiscordUserDecorator < BaseDecorator
   end
 
   def default_avatar_url
-    @@default_avatar_url ||= h.image_url('default-avatar.jpg')
+    @@default_avatar_url ||= h.image_url('default-avatar.svg')
   end
 
   def avatar_tag(size = nil)
