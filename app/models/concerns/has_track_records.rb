@@ -12,15 +12,6 @@ module HasTrackRecords
 
     has_many :track_records, as: :tracked, dependent: :destroy
 
-    # cache
-    belongs_to :best_met_reward_condition,
-               class_name: :MetRewardCondition,
-               optional: true
-
-    has_one :best_reward,
-            through: :best_met_reward_condition,
-            source: :reward
-
     # ---------------------------------------------------------------------------
     # SCOPES
     # ---------------------------------------------------------------------------
@@ -175,6 +166,24 @@ module HasTrackRecords
       ).to_h.map do |level1, level2|
         all_rewards(is_online: is_online).by_level(level1, level2).first
       end.sort_by(&:level2)
+    end
+
+    def reward_best_reward_condition(reward)
+      reward.reward_conditions.where(
+        id: met_reward_conditions.select(:reward_condition_id)
+      ).order(:points).last
+    end
+
+    def unique_reward_conditions(is_online:)
+      unique_rewards(is_online: is_online).ordered_by_level.map do |reward|
+        reward_best_reward_condition(reward)
+      end
+    end
+
+    def best_reward_conditions(is_online:)
+      best_rewards(is_online: is_online).map do |reward|
+        reward_best_reward_condition(reward)
+      end
     end
   end
 end

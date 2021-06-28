@@ -16,7 +16,7 @@ class RewardDecorator < BaseDecorator
   end
 
   def badge(options = {})
-    return nil if !model.image.attached?
+    return nil unless model.image.attached?
 
     classes = [
       'reward-badge',
@@ -25,7 +25,13 @@ class RewardDecorator < BaseDecorator
 
     count = options.delete(:count)
 
-    h.tag.div class: classes do
+    wrapper_options = { class: classes }
+    if options[:tooltip]
+      wrapper_options[:title] = options[:tooltip]
+      wrapper_options[:data] = { tooltip: {} }
+    end
+
+    h.tag.div(**wrapper_options) do
       (
         h.image_tag badge_image_url
       ) + (
