@@ -1,4 +1,4 @@
-<nav class="navbar navbar-dark navbar-expand-xl shadow-sm"
+<nav class="navbar navbar-dark navbar-expand-xxl shadow-sm"
      id="main-nav">
 
   <%= link_to root_path, class: 'navbar-brand' do %>
@@ -6,7 +6,7 @@
   <% end %>
 
   <slide-out dock="right" :visible.sync="visible" :arrow-button="false" size="273px" title="Menu" class="collapse navbar-collapse" id="navbarSupportedContent">
-    <%= link_to page_path(slug: 'guides'), class: 'btn btn-gradient-pink rounded w-100 d-flex d-xl-none align-items-center mb-4' do %>
+    <%= link_to page_path(slug: 'guides'), class: 'btn btn-gradient-pink rounded w-100 d-flex d-xxl-none align-items-center mb-4 border-0 py-2' do %>
       <%= render partial: 'shared/icons/panneau' %>
       <span class="pl-2">Besoin d'aide ?</span>
     <% end %>
@@ -18,9 +18,9 @@
           <span>Joueurs & Cie</span>
         <% end %>
         
-        <div class="dropdown-menu">
+        <div class="dropdown-menu players">
           <button type="button" class="btn btn-back btn-sm">
-            <span>Joueurs</span>
+            <span>Joueurs & Cie</span>
           </button>
           <%= link_to players_path, class: 'dropdown-item' do %>
             <%= render partial: 'shared/icons/joueur' %>
@@ -36,11 +36,10 @@
           <% end %>
           <%= link_to communities_path, class: 'dropdown-item' do %>
             <%= render partial: 'shared/icons/lieu' %>
-            <span>Communautés</span>
+            <span>Communautés locales</span>
           <% end %>
           <div class="dropdown-divider"></div>
-          <h6 class="dropdown-header">Observatoire d'Harmonie online</h6>
-          <%= link_to '1v1', ranking_players_path, class: 'dropdown-item' %>
+          <%= link_to "Observatoire d'Harmonie 1v1", ranking_players_path, class: 'dropdown-item' %>
         </div>
       </li>
 
@@ -48,14 +47,13 @@
         <%= link_to duos_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
           <span>2v2</span>
         <% end %>
-        <div class="dropdown-menu">
+        <div class="dropdown-menu players">
           <button type="button" class="btn btn-back btn-sm">
             <span>2v2</span>
           </button>
           <%= link_to 'Duos', duos_path, class: 'dropdown-item' %>
           <div class="dropdown-divider"></div>
-          <h6 class="dropdown-header">Observatoire d'Harmonie 2v2 online</h6>
-          <%= link_to '2v2', ranking_duos_path, class: 'dropdown-item' %>
+          <%= link_to "Observatoire d'Harmonie 2v2", ranking_duos_path, class: 'dropdown-item' %>
         </div>
       </li>
 
@@ -63,7 +61,7 @@
         <%= link_to recurring_tournaments_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
           <span>Compétition</span>
         <% end %>
-        <div class="dropdown-menu">
+        <div class="dropdown-menu championship">
           <button type="button" class="btn btn-back btn-sm">
             <span>Compétition</span>
           </button>
@@ -78,7 +76,7 @@
         <%= link_to '#', class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
           <span>Acteurs</span>
         <% end %>
-        <div class="dropdown-menu">
+        <div class="dropdown-menu community">
           <button type="button" class="btn btn-back btn-sm">
             <span>Acteurs</span>
           </button>
@@ -102,7 +100,7 @@
         <%= link_to '#', class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
           <span>Informations</span>
         <% end %>
-        <div class="dropdown-menu">
+        <div class="dropdown-menu guides">
           <button type="button" class="btn btn-back btn-sm">
             <span>Informations</span>
           </button>
@@ -125,10 +123,10 @@
         </div>
       </li>
       <% if admin_user_signed_in? %>
-        <li class="nav-item dropdown ml-xl-auto">
-          <%= link_to '#', class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
+        <li class="nav-item dropdown ml-xxl-auto">
+          <%= link_to '#', class: 'nav-link dropdown-toggle admin', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
             <%= fas_icon_tag 'plus-square', %w(fa-lg) %>
-            <span class="d-xl-none">Administration</span>
+            <span class="d-xxl-none">Administration</span>
           <% end %>
           <div class="dropdown-menu dropdown-menu-right">
             <button type="button" class="btn btn-back btn-sm">
@@ -197,16 +195,18 @@
   </slide-out>
 
   <div class="navbar-actions d-flex align-items-center ml-auto">
-    <button type="button" class="navbar-actions-search btn btn-link btn-icon" @click="visible = false">
+    <button type="button" class="navbar-actions-search btn btn-link btn-icon rounded-circle" @click="visible = false">
       <%= render partial: 'shared/icons/loupe' %>
       <span class="sr-only">Recherche</span>
     </button>
+    
+    <hr class="navbar-actions-separator d-none d-xxl-block" />
 
-    <ul class="navbar-actions-login navbar-nav mx-2 text-center text-lg-right">
+    <ul class="navbar-actions-login navbar-nav text-center text-lg-right">
       <% if user_signed_in? %>
         <li class="nav-item dropdown">
-          <%= link_to '#', class: "btn btn-link btn-icon dropdown-toggle", data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false}, '@click': "visible = false" do %>
-            <%= current_user.decorate.default_avatar(24) %> <span class="current-user-name"><%= current_user.decorate.name_and_tag %></span>
+          <%= link_to '#', class: "btn btn-link btn-icon dropdown-toggle rounded-pill", data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false}, '@click': "visible = false" do %>
+            <%= current_user.decorate.avatar_tag(24) %> <span class="current-user-name"><%= current_user.decorate.name_and_tag %></span>
           <% end %>
           <div class="dropdown-menu dropdown-menu-right">
             <p class="dropdown-item-text mb-0 current-user-name"><%= current_user.decorate.name_and_tag %></p>
@@ -235,14 +235,15 @@
         </li>
       <% else %>
         <li class="nav-item">
-          <%= link_to user_discord_omniauth_authorize_path, class: 'btn btn-link btn-icon' do %>
+          <%= link_to user_discord_omniauth_authorize_path, class: 'btn btn-link btn-icon rounded-pill' do %>
             <%= render partial: 'shared/icons/avatar' %>
+            <span class="pl-2">Connexion</span>
           <% end %>
         </li>
       <% end %>
     </ul>
 
-    <button @click="visible = true" type="button" class='navbar-actions-menu btn btn-link btn-icon'>
+    <button @click="visible = true" type="button" class='navbar-actions-menu btn btn-link btn-icon rounded-circle d-xxl-none'>
       <%= render partial: 'shared/icons/menu' %>
     </button>
   </div>

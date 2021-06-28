@@ -160,6 +160,8 @@
       width: calc(100% - 2 * var(--gap));
       border-radius: 50%;
       transition-property: background, transform;
+      transition-duration: 0.2s;
+      transition-timing-function: ease-in-out;
       position: absolute;
     }
 
@@ -254,7 +256,6 @@
 }
 
 .guides {
-  text-align: center;
 
   &-link {
     margin: 0 auto;
