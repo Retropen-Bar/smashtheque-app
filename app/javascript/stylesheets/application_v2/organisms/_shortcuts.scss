@@ -1,0 +1,65 @@
+.shortcuts {
+  padding: 0 0.75rem;
+  background-color: $gray-dark;
+  border-radius: $border-radius * 2 $border-radius * 2 0 0;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.55);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: $zindex-fixed;
+
+  &-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 0 0 25%;
+    color: $gray-medium-light;
+    padding-top: 1.25rem;
+    padding-bottom: 0.75rem;
+    font-size: 0.75rem;
+    text-align: center;
+    line-height: 1.33;
+    position: relative;
+    transition: color 0.2s ease-in-out;
+
+    .icon {
+      @include size(2rem);
+      margin-bottom: 2px;
+    }
+
+    &:after {
+      content: "";
+      display: block;
+      width: 39px;
+      height: 9px;
+      background-color: $gray-medium-light;
+      border-radius: 9px;
+      border: 3px solid $gray-dark;
+      opacity: 0;
+      transition: opacity 0.2s ease-in-out;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    &.active:after {
+      opacity: 1;
+    }
+
+    @each $section in ("players", "championship", "smashtheque-tv", "harmony") {
+      &.#{$section} {
+        &:after {
+          background-color: map-get($sections, $section);
+        }
+
+        &.active,
+        &:hover {
+          color: map-get($sections, $section);
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}

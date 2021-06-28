@@ -1,0 +1,20 @@
+<% if !action_name.eql?('home') %>
+<nav class="shortcuts d-flex d-md-none justify-content-between">
+  <%= link_to players_path, class: "shortcuts-link players#{' active' if current_section?(:players)}" do %>
+    <%= render partial: 'shared/icons/groupe' %>
+    <span class="mt-n2">Joueurs <br/>& Cie</span>
+  <% end %>
+  <%= link_to players_path, class: "shortcuts-link championship#{' active' if current_section?(:championship)}" do %>
+    <%= render partial: 'shared/icons/trophe' %>
+    <span>Tournois</span>
+  <% end %>
+  <%= link_to players_path, class: "shortcuts-link smashtheque-tv#{' active' if current_section?(:smashtheque_tv)}" do %>
+    <%= render partial: 'shared/icons/tv' %>
+    <span>ST<sup>TV</sup></span>
+  <% end %>
+  <%= link_to players_path, class: "shortcuts-link harmony#{' active' if current_section?(:harmony)}" do %>
+    <%= render partial: 'shared/icons/telescope' %>
+    <span>Observatoire</sup></span>
+  <% end %>
+</nav>
+<% end %>

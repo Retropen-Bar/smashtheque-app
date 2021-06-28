@@ -21,4 +21,12 @@ module ApplicationHelper
     end
   end
 
+  def current_section?(section_name)
+    case section_name
+    when :players
+      return true if controller_name.match(/(players|teams|duos)/)
+    else
+      return false
+    end
+  end
 end
