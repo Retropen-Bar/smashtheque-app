@@ -48,7 +48,7 @@ module ActiveAdmin
 
     def teams_admin_short_links
       model.teams.admin_decorate.map do |team|
-        team.admin_link(label: team.short_name_with_logo(size: 32))
+        team.admin_link(label: team.short_name_with_logo(max_width: 32, max_height: 32))
       end
     end
 

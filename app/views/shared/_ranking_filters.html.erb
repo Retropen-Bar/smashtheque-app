@@ -1,4 +1,4 @@
-<div class="col-6 col-md-3">
+<div class="col-4 col-md-3">
   <strong>Observatoire</strong>
   <div class="custom-control custom-radio">
     <%= radio_button_tag :is_online,
@@ -22,7 +22,7 @@
   </div>
 </div>
 
-<div class="col-6 col-md-3">
+<div class="col-4 col-md-3">
   <strong>Période</strong>
   <% TrackRecord.points_years.reverse.each do |year| %>
     <div class="custom-control custom-radio">
@@ -44,6 +44,30 @@
                          class: 'custom-control-input' %>
     <label class="custom-control-label" for="filter-year-all">
       All time
+    </label>
+  </div>
+</div>
+
+<div class="col-4 col-md-3">
+  <strong>Localisation</strong>
+  <div class="custom-control custom-radio">
+    <%= radio_button_tag :by_fr_only,
+                         0,
+                         !@fr_only,
+                         id: "filter-french",
+                         class: 'custom-control-input' %>
+    <label class="custom-control-label" for="filter-french">
+      Pays francophones
+    </label>
+  </div>
+  <div class="custom-control custom-radio">
+    <%= radio_button_tag :by_fr_only,
+                         1,
+                         @fr_only,
+                         id: "filter-france",
+                         class: 'custom-control-input' %>
+    <label class="custom-control-label" for="filter-france">
+      France uniquement
     </label>
   </div>
 </div>

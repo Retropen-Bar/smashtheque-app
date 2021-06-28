@@ -141,9 +141,7 @@ ActiveAdmin.register Team do
           row :discord_guilds do |decorated|
             decorated.discord_guilds_admin_links
           end
-          row :twitter_username do |decorated|
-            decorated.twitter_link
-          end
+          row :twitter_username, &:twitter_link
           row :created_at
           row :updated_at
         end

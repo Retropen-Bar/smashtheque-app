@@ -1,5 +1,4 @@
 module ActiveAdmin::ImagesHelper
-
   # add support for :
   # - link_options
   # - max_height
@@ -34,5 +33,4 @@ module ActiveAdmin::ImagesHelper
       tag
     end
   end
-
 end

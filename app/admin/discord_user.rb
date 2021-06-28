@@ -109,9 +109,7 @@ ActiveAdmin.register DiscordUser do
           row :admin_level do |decorated|
             decorated.admin_level_status
           end
-          row :twitter_username do |decorated|
-            decorated.twitter_link
-          end
+          row :twitter_username, &:twitter_link
           row :discord_user do |decorated|
             decorated.discord_user_admin_link
           end

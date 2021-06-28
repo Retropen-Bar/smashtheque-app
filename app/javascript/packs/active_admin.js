@@ -11,6 +11,7 @@ import "jquery-minicolors"
 import "html5sortable"
 import "tippy.js"
 
+import "../src/shared/autoclick"
 import "../src/shared/global_search"
 import "../src/shared/images"
 import "../src/shared/maps"

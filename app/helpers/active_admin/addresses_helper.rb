@@ -10,7 +10,8 @@ module ActiveAdmin
         address_address_input(form, prefix, options),
         address_latitude_input(form, prefix),
         address_longitude_input(form, prefix),
-        address_locality_input(form, prefix)
+        address_locality_input(form, prefix),
+        address_countrycode_input(form, prefix)
       ].compact.join.html_safe
     end
 
@@ -23,7 +24,8 @@ module ActiveAdmin
                         target: {
                           latitude: "#address-#{prefix}latitude",
                           longitude: "#address-#{prefix}longitude",
-                          locality: "#address-#{prefix}locality"
+                          locality: "#address-#{prefix}locality",
+                          countrycode: "#address-#{prefix}countrycode"
                         }
                       }.merge(options)
                     }
@@ -48,6 +50,17 @@ module ActiveAdmin
 
     def address_locality_input(form, prefix)
       key = "#{prefix}locality".to_sym
+      return unless form.object.has_attribute?(key)
+
+      form.input  key,
+                  as: :hidden,
+                  input_html: {
+                    id: "address-#{key}"
+                  }
+    end
+
+    def address_countrycode_input(form, prefix)
+      key = "#{prefix}countrycode".to_sym
       return unless form.object.has_attribute?(key)
 
       form.input  key,

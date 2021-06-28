@@ -1,5 +1,4 @@
 class DiscordUserDecorator < BaseDecorator
-
   # warning: this method is an ActiveAdmin convention
   def full_name
     discriminated_username
@@ -22,6 +21,7 @@ class DiscordUserDecorator < BaseDecorator
 
   def avatar_url(size = nil)
     return nil if avatar.blank?
+
     extension = model.avatar.start_with?('a_') ? :gif : :png
     url = "https://cdn.discordapp.com/avatars/#{model.discord_id}/#{model.avatar}.#{extension}"
     url += "?size=#{size}" if size
@@ -34,11 +34,12 @@ class DiscordUserDecorator < BaseDecorator
 
   def avatar_tag(size = nil)
     return nil if avatar.blank?
+
     h.image_tag 's.gif',
                 class: 'avatar',
                 style: [
                   "background-image: url(\"#{avatar_url}\"), url(\"#{default_avatar_url}\")",
-                  "background-size: cover",
+                  'background-size: cover',
                   "width: #{size}px",
                   "height: #{size}px"
                 ].join(';')
@@ -49,7 +50,7 @@ class DiscordUserDecorator < BaseDecorator
   end
 
   def link(options = {})
-    h.content_tag :div, avatar_and_name_or_id(size: 32), options
+    h.tag.div avatar_and_name_or_id(size: 32), options
   end
 
   def discord_badge(options = {})
@@ -61,6 +62,4 @@ class DiscordUserDecorator < BaseDecorator
       )
     end
   end
-
-
 end

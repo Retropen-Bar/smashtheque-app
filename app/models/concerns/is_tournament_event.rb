@@ -89,6 +89,32 @@ module IsTournamentEvent
       where.not(id: online.select(:id))
     end
 
+    def self.visible
+      without_recurring_tournament.or(
+        with_recurring_tournament.where(
+          recurring_tournament_id: RecurringTournament.visible.select(:id)
+        )
+      )
+    end
+
+    def self.hidden
+      with_recurring_tournament.where(
+        recurring_tournament_id: RecurringTournament.hidden.select(:id)
+      )
+    end
+
+    def visible?
+      !hidden?
+    end
+
+    def hidden?
+      recurring_tournament&.hidden?
+    end
+
+    def gives_rewards?
+      visible? && !is_out_of_ranking?
+    end
+
     # ---------------------------------------------------------------------------
     # HELPERS
     # ---------------------------------------------------------------------------
@@ -123,7 +149,10 @@ module IsTournamentEvent
           model = document.searchable.decorate
           {
             id: model.to_global_id.to_s,
-            text: model.decorate.autocomplete_name
+            text: [
+              model.autocomplete_name,
+              model.start_at&.to_date
+            ].join("\n")
           }
         end
       }
@@ -166,7 +195,7 @@ module IsTournamentEvent
     def compute_rewards
       ids = []
 
-      if !is_out_of_ranking? && (participants_count || 0) > 0
+      if gives_rewards? && (participants_count || 0) > 0
         reward_conditions = RewardCondition.by_is_online(
           online?
         ).by_is_duo(
@@ -340,6 +369,22 @@ module IsTournamentEvent
       open(url) do |f|
         graph.attach(io: File.open(f.path), filename: File.basename(uri.path))
       end
+    end
+
+    def self.potential_duplicates
+      self.with_recurring_tournament
+          .group(:recurring_tournament_id, :date)
+          .select(
+            :recurring_tournament_id,
+            :date
+          ).having(
+            'COUNT(*) > 1'
+          ).map do |results|
+            where(
+              recurring_tournament_id: results[:recurring_tournament_id],
+              date: results[:date]
+            ).to_a
+          end
     end
 
     # ---------------------------------------------------------------------------

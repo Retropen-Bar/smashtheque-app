@@ -14,4 +14,14 @@ class RewardConditionDecorator < BaseDecorator
   def met_reward_conditions_count
     met_reward_conditions.count
   end
+
+  def reward_badge(options = {})
+    return nil unless reward
+
+    tooltip = [
+      "Top #{rank} #{online? ? 'online' : 'offline'}",
+      "#{size_min} à #{size_max} joueurs"
+    ].join('<br/>')
+    reward.decorate.badge({ tooltip: tooltip }.merge(options))
+  end
 end

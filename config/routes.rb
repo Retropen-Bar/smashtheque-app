@@ -105,6 +105,9 @@ Rails.application.routes.draw do
   resources :graphic_designer_users, only: [:index], path: :graphic_designers
 
   resources :users, only: %i(show edit update) do
+    collection do
+      get :me
+    end
     member do
       get :refetch
       get :create_player

@@ -1,5 +1,5 @@
 class MetRewardConditionDecorator < BaseDecorator
-  def reward_badge
-    reward&.decorate&.badge
+  def reward_badge(options = {})
+    reward_condition.decorate.reward_badge(options)
   end
 end

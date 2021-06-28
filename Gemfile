@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.6.6'
+ruby '3.0.1'
 
 # Framework
 gem 'rails', '~> 6.0.3', '>= 6.0.3.5'
@@ -32,12 +32,15 @@ group :development, :test do
   gem 'rswag-specs'
   gem 'factory_bot_rails'
   gem 'faker'
+  gem 'rexml'
 end
 
 group :development do
+  # Easy local server
+  gem 'webrick'
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'web-console', '>= 3.3.0'
-  gem 'listen', '~> 3.2'
+  gem 'listen', '~> 3.5'
   gem 'annotate'
   # Display performance information such as SQL time and flame graphs for each request in your browser.
   # Can be configured to work on production as well see: https://github.com/MiniProfiler/rack-mini-profiler/blob/master/README.md
@@ -63,12 +66,15 @@ group :test do
 end
 
 # ADMIN
-gem 'activeadmin'
+gem 'activeadmin', github: 'activeadmin/activeadmin', branch: 'master'
 gem 'draper'
 
 # authentication & permissions
-gem 'devise', '~> 4.7.1'
+gem 'devise', '>= 4.8.0'
+gem 'omniauth', '>= 2.0.0'
+gem 'omniauth-oauth2', '>= 1.7.1'
 gem 'omniauth-discord'
+gem 'omniauth-rails_csrf_protection', '>= 1.0.0'
 gem 'cancancan'
 
 # other translations
@@ -113,7 +119,7 @@ gem 'sidekiq-cron', '~> 1.1'
 gem 'active_storage_validations'
 
 # S3
-gem 'aws-sdk-s3', require: false
+gem 'aws-sdk-s3'
 
 # Markdown
 gem 'markdown_views'
@@ -127,6 +133,9 @@ gem 'twitch-api', github: 'mauricew/ruby-twitch-api'
 # Geocoding
 gem 'geocoder'
 
+# Countries
+gem 'countries'
+
 group :production do
   # for assets compilation
   gem 'activerecord-nulldb-adapter'
@@ -135,7 +144,8 @@ group :production do
 end
 
 # security fixes
-gem 'nokogiri', ">= 1.11.0.rc4"
+gem 'loofah', '2.9.1'
+gem 'nokogiri', '>= 1.11.0.rc4'
 
 # datadog logs
 gem 'lograge'

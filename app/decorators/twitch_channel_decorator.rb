@@ -1,15 +1,12 @@
 class TwitchChannelDecorator < BaseDecorator
-
   def channel_url
     "https://www.twitch.tv/#{model.slug}"
   end
 
   def channel_link(with_icon: false)
     txt = model.slug
-    if with_icon
-      txt = '<i class="fab fa-twitch fa-lg"></i> ' + txt
-    end
-    h.link_to txt.html_safe, channel_url, target: '_blank'
+    txt = "<i class='fab fa-twitch fa-lg'></i> #{txt}" if with_icon
+    h.link_to txt.html_safe, channel_url, target: '_blank', rel: :noopener
   end
 
   def related_link(options = {})
@@ -18,6 +15,7 @@ class TwitchChannelDecorator < BaseDecorator
 
   def profile_image_tag(options = {})
     return nil if profile_image_url.blank?
+
     h.image_tag_with_max_size profile_image_url, options
   end
 
@@ -28,5 +26,4 @@ class TwitchChannelDecorator < BaseDecorator
       h.fas_icon_tag :globe, options
     end
   end
-
 end

@@ -18,12 +18,14 @@
 #  last_sign_in_at               :datetime
 #  last_sign_in_ip               :inet
 #  main_address                  :string
+#  main_countrycode              :string
 #  main_latitude                 :float
 #  main_locality                 :string
 #  main_longitude                :float
 #  name                          :string           not null
 #  remember_created_at           :datetime
 #  secondary_address             :string
+#  secondary_countrycode         :string
 #  secondary_latitude            :float
 #  secondary_locality            :string
 #  secondary_longitude           :float
@@ -45,6 +47,28 @@ class User < ApplicationRecord
   geocoded_by :main_address,
               latitude: :main_latitude,
               longitude: :main_longitude
+
+  # ---------------------------------------------------------------------------
+  # CONSTANTS
+  # ---------------------------------------------------------------------------
+
+  FRENCH_SPEAKING_COUNTRIES = [
+    'FR', # France
+
+    'GF', # Guyane
+    'GP', # Guadeloupe
+    'MQ', # Martinique
+    'NC', # Nouvelle-Caledonie
+    'PF', # Polynesie
+    'RE', # Reunion
+    'YT', # Mayotte
+
+    'BE', # Belgique
+    'CA', # Canada
+    'CH', # Suisse
+    'MA', # Maroc
+    'MC'  # Monaco
+  ].freeze
 
   # ---------------------------------------------------------------------------
   # CONCERNS
@@ -253,6 +277,10 @@ class User < ApplicationRecord
     ).except(
       :select
     )
+  end
+
+  def self.by_main_countrycode(countrycode)
+    where(main_countrycode: countrycode)
   end
 
   # ---------------------------------------------------------------------------

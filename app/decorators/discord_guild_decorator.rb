@@ -23,7 +23,7 @@ class DiscordGuildDecorator < BaseDecorator
   end
 
   def invitation_link
-    h.link_to model.invitation_url, model.invitation_url, target: '_blank'
+    h.link_to model.invitation_url, model.invitation_url, target: '_blank', rel: :noopener
   end
 
   def icon_image_url(size = nil)
@@ -58,7 +58,11 @@ class DiscordGuildDecorator < BaseDecorator
   end
 
   def link
-    h.link_to icon_and_name(size: 32), model.invitation_url, target: '_blank', class: 'btn btn-outline-primary'
+    h.link_to icon_and_name(size: 32),
+              model.invitation_url,
+              target: '_blank',
+              rel: :noopener,
+              class: 'btn btn-outline-primary'
   end
 
   def related_characters

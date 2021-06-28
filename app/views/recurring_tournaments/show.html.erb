@@ -1,7 +1,7 @@
 <%= admin_edit_link(recurring_tournament) %>
 
 <h1 class="page-title">
-  <%= recurring_tournament.name %>
+  <%= recurring_tournament.name_with_logo(max_width: 64, max_height: 64) %>
 </h1>
 
 <div class="row">
@@ -10,7 +10,21 @@
     <h2 class="text-center mb-5">
       <% if user_recurring_tournament_admin? %>
         <div class="float-right">
-          <%= link_to 'Modifier', [:edit, recurring_tournament], class: 'btn btn-primary' %>
+          <%= link_to 'Modifier', [:edit, recurring_tournament], class: 'btn btn-primary mr-2' %>
+          <%= form_for(recurring_tournament, html: { class: 'd-inline-block' }) do |f| %>
+            <%= f.hidden_field :is_archived, value: !recurring_tournament.is_archived? %>
+            <% if recurring_tournament.is_archived? %>
+              <%= f.button type: :submit, class: 'btn btn-success' do %>
+                <%= fas_icon_tag :play, %w(mr-2) %>
+                Relancer
+              <% end %>
+            <% else %>
+              <%= f.button type: :submit, class: 'btn btn-danger' do %>
+                <%= fas_icon_tag :pause, %w(mr-2) %>
+                Mettre en pause
+              <% end %>
+            <% end %>
+          <% end %>
         </div>
       <% end %>
       Infos clé

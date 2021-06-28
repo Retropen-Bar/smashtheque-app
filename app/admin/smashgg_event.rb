@@ -37,7 +37,7 @@ ActiveAdmin.register SmashggEvent do
     end
     column :num_entrants
     SmashggEvent::USER_NAMES.each do |user_name|
-      column user_name do |decorated|
+      column user_name, sortable: "#{user_name}_id".to_sym do |decorated|
         decorated.send("#{user_name}_admin_link")
       end
     end
@@ -270,6 +270,19 @@ ActiveAdmin.register SmashggEvent do
       item 'Édition 1v1', resource.create_tournament_event_admin_path
       item 'Édition 2v2', resource.create_duo_tournament_event_admin_path
     end
+  end
+
+  # ---------------------------------------------------------------------------
+  # WRONG PLAYERS
+  # ---------------------------------------------------------------------------
+
+  action_item :wrong_players, only: :index do
+    errors_count = SmashggEvent.with_wrong_players.count
+    link_to "Voir les #{errors_count} erreurs", { action: :wrong_players }, class: :red
+  end
+
+  collection_action :wrong_players do
+    @wrong_players = SmashggEvent.wrong_players
   end
 
   # ---------------------------------------------------------------------------

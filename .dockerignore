@@ -1,19 +1,44 @@
 # GIT
 .git
+.gitattributes
 .gitignore
 
 # Docker
-Dockerfile*
 .dockerignore
-docker
-!/docker/rails
-docker-compose.yml
-docker-compose.override.yml
+Caddyfile
+docker-compose*
+Dockerfile*
+/docker
 
 # Rails
+.rspec
+.rubocop.yml
+.ruby-version
+/app/javascript
 /config/application.yml
 /config/database.yml
+/config/database.yml.example
 /config/master.key
+/config/spring.rb
+/config/webpack
+/coverage
+/db/seeds.rb
+/doc
+/log
+/public
+!/public/assets/.sprockets-manifest*
+!/public/packs/manifest.json
+/spec
+/storage
+
+# Node
+.browserslistrc
+babel.config.js
+package.json
+postcss.config.js
+yarn.lock
+yarn-error.log
+/node_modules
 
 # Dev
 .byebug_history
@@ -22,6 +47,7 @@ docker-compose.override.yml
 .github
 latest.dump
 node_modules
+Procfile
 tmp
 
 # Other

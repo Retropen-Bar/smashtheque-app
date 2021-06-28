@@ -16,9 +16,34 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
 
+    services:
+      db:
+        image: postgres:13
+        ports: ['5432:5432']
+        env:
+          POSTGRES_USER: rails
+          POSTGRES_PASSWORD: rails
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgres://rails:rails@localhost:5432/rails
+      RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Compile assets
+        run: RAILS_ENV=production bundle exec rails assets:precompile
 
       - name: Extract branch name
         shell: bash
@@ -45,6 +70,7 @@ jobs:
       - name: Build & Push Rails to Docker Hub
         uses: docker/build-push-action@v2
         with:
+          context: .
           file: ./Dockerfile.release
           push: true
           tags: |
@@ -65,9 +91,8 @@ jobs:
       - name: Build & Push Caddy to Docker Hub
         uses: docker/build-push-action@v2
         with:
+          context: public
           file: ./Dockerfile.caddy
-          build-args: |
-            RAILS_IMAGE=retropenbar/smashtheque-app:${{ github.sha }}
           push: true
           tags: |
             retropenbar/smashtheque-caddy:${{ github.sha }}

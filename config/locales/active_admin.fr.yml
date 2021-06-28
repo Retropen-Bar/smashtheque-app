@@ -6,6 +6,7 @@ fr:
         create_duo_tournament_event: Créer une édition 2v2 pour
         create_tournament_event: Créer une édition 1v1 pour
         ignore: Ignorer
+        set_recurring_tournament: Définir la série pour
         stop_ignoring: Ne plus ignorer
     scopes:
       accepted: Validés
@@ -19,6 +20,7 @@ fr:
       geocoded: Géolocalisé
       graphic_designers: Graphistes
       helps: Aides
+      hidden: Masqué
       ignored: Ignoré
       lambda: Normaux
       not_geocoded: Non géolocalisé
@@ -55,6 +57,7 @@ fr:
       without_character: Sans perso
       without_discord_user: Non relié à Discord
       without_player: Non lié à un joueur
+      without_recurring_tournament: Sans série
       without_smashgg_user: Sans smash.gg
       without_tournament_event: Sans édition 1v1
       without_user: Sans utilisateur

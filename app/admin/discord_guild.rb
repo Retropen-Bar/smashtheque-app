@@ -138,9 +138,7 @@ ActiveAdmin.register DiscordGuild do
       row :admins do |decorated|
         decorated.admins_admin_links(size: 32).join('<br/>').html_safe
       end
-      row :twitter_username do |decorated|
-        decorated.twitter_link
-      end
+      row :twitter_username, &:twitter_link
       row :created_at
       row :updated_at
     end
