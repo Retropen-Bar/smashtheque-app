@@ -7,6 +7,7 @@
 #  address_name     :string
 #  date_description :string
 #  is_archived      :boolean          default(FALSE), not null
+#  is_hidden        :boolean          default(FALSE), not null
 #  is_online        :boolean          default(FALSE), not null
 #  latitude         :float
 #  level            :string
@@ -42,6 +43,8 @@ class RecurringTournament < ApplicationRecord
   # ---------------------------------------------------------------------------
   # CONCERNS
   # ---------------------------------------------------------------------------
+
+  include HasLogo
 
   include HasName
   def self.on_abc_name
@@ -146,6 +149,9 @@ class RecurringTournament < ApplicationRecord
   scope :archived, -> { where(is_archived: true) }
   scope :not_archived, -> { where(is_archived: false) }
 
+  scope :hidden, -> { where(is_hidden: true) }
+  scope :visible, -> { where(is_hidden: false) }
+
   scope :by_discord_guild_id, -> v { where(discord_guild_id: v) }
 
   def self.by_discord_guild_discord_id(discord_id)
@@ -186,6 +192,10 @@ class RecurringTournament < ApplicationRecord
     ))
   end
 
+  def hidden?
+    is_hidden?
+  end
+
   # ---------------------------------------------------------------------------
   # global search
   # ---------------------------------------------------------------------------
@@ -198,5 +208,4 @@ class RecurringTournament < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   has_paper_trail unless: Proc.new { ENV['NO_PAPERTRAIL'] }
-
 end

@@ -51,7 +51,7 @@ class CharactersPlayer < ApplicationRecord
   # SCOPES
   # ---------------------------------------------------------------------------
 
-  def self.positioned
-    order(:position)
-  end
+  scope :positioned, -> { order(:position) }
+  scope :mains, -> { where(position: 0) }
+  scope :secondaries, -> { where.not(position: 0) }
 end

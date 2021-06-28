@@ -19,6 +19,7 @@ import "../src/shared/toggles"
 import "../src/application/filters"
 import "../src/application/fullcalendar"
 import "../src/application/global_search"
+import "../src/application/tooltips"
 
 // make images available
 const images = require.context('../images', true)

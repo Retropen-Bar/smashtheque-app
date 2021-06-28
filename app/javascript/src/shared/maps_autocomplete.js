@@ -17,6 +17,16 @@ let onPlaceChanged = function(input, target, place) {
   if(target.longitude) {
     $(target.longitude).val(place.geometry.location.lng());
   }
+
+  // clean old values for components
+  if(target.locality) {
+    $(target.locality).val(null);
+  }
+  if(target.countrycode) {
+    $(target.countrycode).val(null);
+  }
+
+  // set new values
   for (const component of place.address_components) {
     const componentType = component.types[0];
     switch (componentType) {
@@ -24,10 +34,14 @@ let onPlaceChanged = function(input, target, place) {
         if(target.locality) {
           $(target.locality).val(component.long_name);
         }
+        break;
       case "country":
-        if(target.country) {
-          $(target.country).val(component.long_name);
+        if(target.countrycode) {
+          $(target.countrycode).val(component.short_name);
         }
+        break;
+      default:
+        // do nothing
     }
   }
 };
@@ -37,6 +51,18 @@ let onPlaceRemoved = function(input, target) {
 
   $(target.latitude).val('');
   $(target.longitude).val('');
+  if(target.formatted) {
+    $(target.formatted).val(null);
+  }
+  if(target.name) {
+    $(target.name).val(null);
+  }
+  if(target.locality) {
+    $(target.locality).val(null);
+  }
+  if(target.countrycode) {
+    $(target.countrycode).val(null);
+  }
 }
 
 let initInput = function(input) {
@@ -58,7 +84,7 @@ let initInput = function(input) {
     autocomplete,
     'place_changed',
     function(){
-      console.log('place changed', this);
+      // console.log('place changed', this);
       onPlaceChanged(input, target, this.getPlace());
     }
   );

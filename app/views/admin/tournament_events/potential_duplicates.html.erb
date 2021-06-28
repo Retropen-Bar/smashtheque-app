@@ -1,0 +1,24 @@
+<table>
+  <thead>
+    <tr>
+      <th>Série</th>
+      <th>Date</th>
+      <th>Éditions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @potential_duplicates.each do |events| %>
+      <tr>
+        <td><%= events.first.recurring_tournament.admin_decorate.admin_link %></td>
+        <td><%= events.first.date %></td>
+        <td>
+          <% events.each do |event| %>
+            <div>
+              <%= event.admin_decorate.admin_link %>
+            </div>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

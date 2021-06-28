@@ -11,7 +11,7 @@ class TournamentEventsController < PublicController
   has_scope :per
 
   def index
-    @tournament_events = apply_scopes(TournamentEvent.order(date: :desc)).all
+    @tournament_events = apply_scopes(TournamentEvent.visible.order(date: :desc)).all
     respond_to do |format|
       format.html do
         @meta_title = 'Éditions passées'
@@ -45,6 +45,8 @@ class TournamentEventsController < PublicController
   end
 
   def show
+    redirect_to root_path and return if @tournament_event.hidden?
+
     @meta_title = @tournament_event.name
     @meta_properties['og:type'] = 'profile'
     if @recurring_tournament

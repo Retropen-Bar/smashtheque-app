@@ -59,6 +59,7 @@ ActiveAdmin.register TournamentEvent do
 
   scope :all, default: true
 
+  scope :without_recurring_tournament, group: :missing
   scope :with_missing_graph, group: :missing
   scope :with_missing_players, group: :missing
   scope :with_missing_data, group: :missing
@@ -99,6 +100,24 @@ ActiveAdmin.register TournamentEvent do
              action: :use_available_players
       end
     end
+  end
+
+  batch_action :set_recurring_tournament, form: -> {
+    {
+      I18n.t('activerecord.models.recurring_tournament') => (
+        [['Aucune', '']] + RecurringTournament.order('LOWER(name)').pluck(:name, :id)
+      )
+    }
+  } do |ids, inputs|
+    recurring_tournament_id = inputs[I18n.t('activerecord.models.recurring_tournament')]
+    unless recurring_tournament_id.blank?
+      recurring_tournament = RecurringTournament.find(recurring_tournament_id)
+    end
+    batch_action_collection.where(id: ids).each do |event|
+      event.recurring_tournament = recurring_tournament
+      event.save!
+    end
+    redirect_to request.referer, notice: 'Éditions mises à jour'
   end
 
   # ---------------------------------------------------------------------------
@@ -271,5 +290,17 @@ ActiveAdmin.register TournamentEvent do
   member_action :compute_rewards do
     resource.compute_rewards
     redirect_to request.referer, notice: 'Calcul effectué'
+  end
+
+  # ---------------------------------------------------------------------------
+  # DUPLICATES
+  # ---------------------------------------------------------------------------
+
+  action_item :potential_duplicates, only: :index do
+    link_to 'Vérifier les doublons', { action: :potential_duplicates }, class: :blue
+  end
+
+  collection_action :potential_duplicates do
+    @potential_duplicates = TournamentEvent.potential_duplicates
   end
 end

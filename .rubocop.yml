@@ -9,7 +9,7 @@ AllCops:
   NewCops: enable
   DisplayCopNames: true
   DisplayStyleGuide: true
-  TargetRubyVersion: 2.6
+  TargetRubyVersion: 3.0
   Exclude:
     - "bin/*"
     - Capfile

@@ -14,15 +14,21 @@ module HasTrackRecordsDecorator
     ].join('&nbsp;').html_safe
   end
 
-  def best_rewards_badges(options = {})
-    best_rewards(is_online: options.delete(:is_online)).map do |reward|
-      reward.decorate.badge(options.clone)
+  def best_rewards_badges(opt = {})
+    options = opt.clone
+    best_reward_conditions(
+      is_online: options.delete(:is_online)
+    ).map do |reward_condition|
+      reward_condition.decorate.reward_badge(options)
     end
   end
 
-  def unique_rewards_badges(options = {})
-    unique_rewards(is_online: options.delete(:is_online)).ordered_by_level.decorate.map do |reward|
-      reward.badge(options.clone)
+  def unique_rewards_badges(opt = {})
+    options = opt.clone
+    unique_reward_conditions(
+      is_online: options.delete(:is_online)
+    ).map do |reward_condition|
+      reward_condition.decorate.reward_badge(options)
     end
   end
 end

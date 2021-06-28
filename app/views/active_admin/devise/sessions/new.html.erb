@@ -1,3 +1,4 @@
-<%= javascript_tag do %>
-  window.location.href = '<%= user_discord_omniauth_authorize_path %>';
-<% end %>
+<%= link_to 'Login',
+            user_discord_omniauth_authorize_path,
+            method: :post,
+            data: { autoclick: true } %>

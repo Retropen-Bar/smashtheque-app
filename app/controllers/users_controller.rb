@@ -1,10 +1,14 @@
 class UsersController < PublicController
-  before_action :set_user
+  before_action :set_user, except: :me
   before_action :verify_user!
   before_action :verify_user_ban!, only: %i[edit update]
   decorates_assigned :user
 
   def show; end
+
+  def me
+    redirect_to current_user
+  end
 
   def edit; end
 
@@ -61,8 +65,9 @@ class UsersController < PublicController
       is_caster
       is_coach coaching_url coaching_details
       is_graphic_designer graphic_designer_details is_available_graphic_designer
-      main_address main_latitude main_longitude main_locality
-      secondary_address secondary_latitude secondary_longitude secondary_locality
+      main_address main_latitude main_longitude main_locality main_countrycode
+      secondary_address secondary_latitude secondary_longitude
+      secondary_locality secondary_countrycode
     ] + [{
       player_attributes: %i[
         id

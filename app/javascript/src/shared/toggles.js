@@ -9,6 +9,14 @@ let onCheckboxClick = function(input) {
   $($input.attr(DATA_KEY_INVERSE)).toggle(!isChecked);
 };
 
+let onSelectChange = function(select) {
+  // console.log('[Toggle] onSelectChange', select);
+  let $select = $(select);
+  let hasValue = ('' + $select.val()).length > 0;
+  $($select.attr(DATA_KEY)).toggle(hasValue);
+  $($select.attr(DATA_KEY_INVERSE)).toggle(!hasValue);
+};
+
 let init = function() {
   let checkboxSelector = 'input[type=checkbox][' + DATA_KEY + ']';
   $(checkboxSelector).each(function() {
@@ -17,6 +25,17 @@ let init = function() {
   $(document).on('click', checkboxSelector, function(e) {
     window.setTimeout(function() {
       onCheckboxClick(e.target);
+    }, 0);
+    return true;
+  });
+
+  let selectSelector = 'select[' + DATA_KEY + ']';
+  $(selectSelector).each(function() {
+    onSelectChange(this);
+  });
+  $(document).on('change', selectSelector, function(e) {
+    window.setTimeout(function() {
+      onSelectChange(e.target);
     }, 0);
     return true;
   });

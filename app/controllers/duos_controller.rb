@@ -18,6 +18,7 @@ class DuosController < PublicController
     @online_rewards_counts = @duo.rewards_counts(is_online: true)
     @offline_rewards_counts = @duo.rewards_counts(is_online: false)
     @duo_tournament_events = @duo.duo_tournament_events
+                                 .visible
                                  .order(date: :desc)
                                  .includes(
                                    recurring_tournament: :discord_guild

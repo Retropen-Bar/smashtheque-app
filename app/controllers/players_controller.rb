@@ -1,7 +1,20 @@
 class PlayersController < PublicController
   decorates_assigned :player
 
-  has_scope :by_character_id
+  has_scope :by_character_id do |controller, scope, value|
+    if controller.params[:by_character_id_mains_only] == '1'
+      scope.by_main_character_id(value)
+    else
+      scope.by_character_id(value)
+    end
+  end
+  has_scope :by_fr_only, type: :boolean, default: false, allow_blank: true do |_, scope, value|
+    if value
+      scope.by_main_countrycode([nil, 'FR'])
+    else
+      scope.by_main_countrycode([nil, 'FR'] + User::FRENCH_SPEAKING_COUNTRIES)
+    end
+  end
   has_scope :by_team_id
   has_scope :by_community_id
 
@@ -58,6 +71,7 @@ class PlayersController < PublicController
     @online_rewards_counts = @player.rewards_counts(is_online: true)
     @offline_rewards_counts = @player.rewards_counts(is_online: false)
     @tournament_events = @player.tournament_events
+                                .visible
                                 .order(date: :desc)
                                 .includes(
                                   recurring_tournament: :discord_guild
@@ -89,6 +103,8 @@ class PlayersController < PublicController
     @year = params[:year]&.to_i
     @year = nil unless @year&.positive?
     @is_online = params[:is_online]&.to_i != 0
+    @mains_only = params[:by_character_id_mains_only]&.to_i == 1
+    @fr_only = params[:by_fr_only]&.to_i == 1
 
     players =
       if @is_online
@@ -111,7 +127,13 @@ class PlayersController < PublicController
         )
       end
 
-    @players = apply_scopes(players).includes(:user, :discord_user, :teams, :characters)
+    @players = apply_scopes(
+      players.legit
+    ).includes(
+      :user, :discord_user,
+      :characters, :smashgg_users,
+      teams: { logo_attachment: :blob }
+    )
 
     main_character = @players.first&.characters&.first&.decorate
     if main_character
@@ -156,8 +178,7 @@ class PlayersController < PublicController
       base.legit.order(:name)
     ).includes(
       :user, :discord_user,
-      :teams, :characters, :smashgg_users,
-      best_reward: { image_attachment: :blob }
+      :teams, :characters, :smashgg_users
     )
   end
 

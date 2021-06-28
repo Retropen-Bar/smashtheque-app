@@ -35,9 +35,9 @@ class PlayerDecorator < BaseDecorator
     end
     # option 2: SmashggUser
     smashgg_users.each do |smashgg_user|
-      unless smashgg_user.avatar_url.blank?
-        return smashgg_user.decorate.any_image_url
-      end
+      next if smashgg_user.avatar_url.blank?
+
+      return smashgg_user.decorate.any_image_url
     end
     # default
     h.image_url 'default-avatar.svg'
@@ -45,9 +45,7 @@ class PlayerDecorator < BaseDecorator
 
   def name_with_avatar(size: nil, with_teams: false)
     txt = [name]
-    if with_teams
-      txt = teams.map(&:short_name) + txt
-    end
+    txt = teams.map(&:short_name) + txt if with_teams
     [
       avatar_tag(size),
       txt.join('&nbsp;|&nbsp;')
@@ -59,12 +57,12 @@ class PlayerDecorator < BaseDecorator
   end
 
   def map_popup
-    h.content_tag :div, class: 'map-popup-player' do
+    h.tag.div class: 'map-popup-player' do
       h.link_to model, class: 'player' do
         [
           name_with_avatar(size: 64),
           (
-            h.content_tag :div, class: 'player-characters' do
+            h.tag.div class: 'player-characters' do
               model.characters.map do |character|
                 character.decorate.emoji_image_tag(max_height: 32)
               end.join('&nbsp;').html_safe
@@ -77,11 +75,10 @@ class PlayerDecorator < BaseDecorator
 
   def ban_status
     if model.is_banned?
-      h.content_tag :span,
-                    'oui',
-                    class: 'status_tag yes',
-                    title: model.ban_details,
-                    data: { tooltip: {} }
+      h.tag.span  'oui',
+                  class: 'status_tag yes',
+                  title: model.ban_details,
+                  data: { tooltip: {} }
     else
       arbre do
         status_tag :no
@@ -96,7 +93,7 @@ class PlayerDecorator < BaseDecorator
   def link(options = {})
     avatar_size = options.delete(:avatar_size) || 32
     if model.is_legit?
-      super({label: name_with_avatar(size: avatar_size)}.merge(options))
+      super({ label: name_with_avatar(size: avatar_size) }.merge(options))
     else
       [
         default_avatar(avatar_size),
@@ -107,23 +104,21 @@ class PlayerDecorator < BaseDecorator
 
   def name_and_old_names(with_teams: false)
     result = with_teams ? name_with_teams : name
-    if old_names.any?
-      result += " (aka #{old_names.reverse.join(', ')})"
-    end
+    result += " (aka #{old_names.reverse.join(', ')})" if old_names.any?
     result
   end
 
   def name_and_old_names_and_main(with_teams: false)
     result = name_and_old_names(with_teams: with_teams)
     characters.first(5).each do |character|
-      result += ' ' + character.decorate.emoji_image_tag(max_height: 20)
+      result += " #{character.decorate.emoji_image_tag(max_height: 20)}"
     end
     result.html_safe
   end
 
   def as_autocomplete_result
-    h.content_tag :div, class: :player do
-      h.content_tag :div, class: :name do
+    h.tag.div class: :player do
+      h.tag.div class: :name do
         name_and_old_names_and_main(with_teams: true)
       end
     end

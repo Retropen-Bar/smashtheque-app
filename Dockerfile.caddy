@@ -1,6 +1,5 @@
-ARG RAILS_IMAGE
-
-FROM $RAILS_IMAGE AS rails
 FROM abiosoft/caddy
 
-COPY --from=rails /rails/public /rails/public
+# Copy the application assets
+# Those must have been precompiled externally
+COPY . /rails/public
