@@ -131,7 +131,6 @@ class PlayersController < PublicController
     ).includes(
       :user, :discord_user,
       :characters, :smashgg_users,
-      best_reward: { image_attachment: :blob },
       teams: { logo_attachment: :blob }
     )
 
@@ -178,8 +177,7 @@ class PlayersController < PublicController
       base.legit.order(:name)
     ).includes(
       :user, :discord_user,
-      :teams, :characters, :smashgg_users,
-      best_reward: { image_attachment: :blob }
+      :teams, :characters, :smashgg_users
     )
   end
 
