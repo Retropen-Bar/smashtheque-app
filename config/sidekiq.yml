@@ -1,12 +1,8 @@
 :concurrency: 1
 :queues:
-  - abc
   - active_storage_analysis
   - active_storage_purge
   - actors
-  - chars
   - discord
-  - rewards
   - smashgg
-  - teams
   - tournaments

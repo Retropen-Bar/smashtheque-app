@@ -176,50 +176,6 @@ class Player < ApplicationRecord
                                    .return_or_create_user!
   end
 
-  after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] || !is_legit? }
-  def update_discord
-    # on create: previous_changes = {"id"=>[nil, <id>], "name"=>[nil, <name>], ...}
-    # on update: previous_changes = {"name"=>["old_name", "new_name"], ...}
-    # on delete: destroyed? = true and old attributes are available
-
-    if destroyed?
-      # this is a deletion
-      RetropenBotScheduler.rebuild_abc_for_name name
-    else
-      # name
-      if previous_changes.has_key?('name')
-        # this is creation or an update with changes on the name
-        old_name = previous_changes['name'].first
-        new_name = previous_changes['name'].last
-        if RetropenBot.name_letter(old_name) != RetropenBot.name_letter(new_name)
-          RetropenBotScheduler.rebuild_abc_for_name old_name
-        end
-        RetropenBotScheduler.rebuild_abc_for_name new_name
-
-      else
-        # this is an update, and the name didn't change
-        RetropenBotScheduler.rebuild_abc_for_name name
-      end
-    end
-
-    # this handles both existing and new characters
-    RetropenBotScheduler.rebuild_chars_for_characters characters
-  end
-
-  # this is required because removing a has_many relation
-  # is not visible inside an after_commit callback
-  def after_remove_character(character)
-    return true if ENV['NO_DISCORD'] || !is_legit?
-    RetropenBotScheduler.rebuild_chars_for_character character
-  end
-
-  # this is required because removing a has_many relation
-  # is not visible inside an after_commit callback
-  def after_remove_team(team)
-    return true if ENV['NO_DISCORD'] || !is_legit?
-    RetropenBotScheduler.rebuild_teams_lu
-  end
-
   # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------

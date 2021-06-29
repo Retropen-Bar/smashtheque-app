@@ -1,18 +1,8 @@
 class RetropenBot
-
   # ---------------------------------------------------------------------------
   # CONSTANTS
   # ---------------------------------------------------------------------------
 
-  CATEGORY_ABC = 'JOUEURS FR : ABÉCÉDAIRE'.freeze
-  CHANNEL_ABC_OTHERS = 'symboles-0-9'.freeze
-  CATEGORY_CHARS1 = 'JOUEURS FR : ROSTER A-M'.freeze
-  CATEGORY_CHARS2 = 'JOUEURS FR : ROSTER N-Z'.freeze
-  CATEGORY_TEAMS = 'ÉQUIPES FR'.freeze
-  CHANNEL_TEAMS_LIST = 'listing-équipes'.freeze
-  CHANNEL_TEAMS_LU1 = 'roster-équipes-a-i'.freeze
-  CHANNEL_TEAMS_LU2 = 'roster-équipes-j-r'.freeze
-  CHANNEL_TEAMS_LU3 = 'roster-équipes-s-z-autres'.freeze
   CATEGORY_ACTORS = 'ACTEURS DE LA SCÈNE SMASH'.freeze
   CHANNEL_CASTERS = 'casters'.freeze
   CHANNEL_COACHES = 'coachs'.freeze
@@ -67,157 +57,6 @@ class RetropenBot
 
   def client
     @client ||= DiscordClient.new
-  end
-
-  # ---------------------------------------------------------------------------
-  # ABC
-  # ---------------------------------------------------------------------------
-
-  def self.name_letter(name)
-    return nil if name.blank?
-    I18n.transliterate(name.first).downcase
-  end
-
-  def abc_category
-    client.find_or_create_guild_category @guild_id, name: CATEGORY_ABC
-  end
-
-  def rebuild_abc_letter(letter, abc_category_id = nil)
-    abc_channel = find_or_create_readonly_channel @guild_id,
-                                                  name: letter,
-                                                  parent_id: abc_category_id || abc_category['id']
-
-    rebuild_channel_with_players abc_channel['id'],
-                                 Player.on_abc(letter)
-  end
-
-  def rebuild_abc_others(abc_category_id = nil)
-    abc_others_channel = find_or_create_readonly_channel @guild_id,
-                                                         name: CHANNEL_ABC_OTHERS,
-                                                         parent_id: abc_category_id || abc_category['id']
-    rebuild_channel_with_players abc_others_channel['id'],
-                                 Player.on_abc_others
-  end
-
-  def rebuild_abc_for_letter(letter, abc_category_id = nil)
-    if ('a'..'z').include?(letter)
-      rebuild_abc_letter letter, abc_category_id
-    else
-      rebuild_abc_others abc_category_id
-    end
-  end
-
-  # ---------------------------------------------------------------------------
-  # CHARS
-  # ---------------------------------------------------------------------------
-
-  def chars_category1
-    client.find_or_create_guild_category @guild_id, name: CATEGORY_CHARS1
-  end
-
-  def chars_category2
-    client.find_or_create_guild_category @guild_id, name: CATEGORY_CHARS2
-  end
-
-  def rebuild_chars_for_character(character, chars_category1_id: nil, chars_category2_id: nil)
-    return false if character.nil?
-    letter = self.class.name_letter character.name
-    parent_category_id = if ('a'..'m').include?(letter)
-      chars_category1_id || chars_category1['id']
-    else
-      chars_category2_id || chars_category2['id']
-    end
-    channel_name = character.name.parameterize
-    channel = find_or_create_readonly_channel @guild_id,
-                                              name: channel_name,
-                                              parent_id: parent_category_id
-    rebuild_channel_with_players channel['id'],
-                                 character.players
-  end
-
-  # ---------------------------------------------------------------------------
-  # TEAMS
-  # ---------------------------------------------------------------------------
-
-  # LU 1 : a..i
-  # LU 2 : j..r
-  # LU 3 : s..z + autres
-
-  def teams_category
-    client.find_or_create_guild_category @guild_id, name: CATEGORY_TEAMS
-  end
-
-  def teams_list_channel(teams_category_id = nil)
-    find_or_create_readonly_channel @guild_id,
-                                    name: CHANNEL_TEAMS_LIST,
-                                    parent_id: teams_category_id || teams_category['id']
-  end
-
-  def teams_lu_channel1(teams_category_id = nil)
-    find_or_create_readonly_channel @guild_id,
-                                    name: CHANNEL_TEAMS_LU1,
-                                    parent_id: teams_category_id || teams_category['id']
-  end
-
-  def teams_lu_channel2(teams_category_id = nil)
-    find_or_create_readonly_channel @guild_id,
-                                    name: CHANNEL_TEAMS_LU2,
-                                    parent_id: teams_category_id || teams_category['id']
-  end
-
-  def teams_lu_channel3(teams_category_id = nil)
-    find_or_create_readonly_channel @guild_id,
-                                    name: CHANNEL_TEAMS_LU3,
-                                    parent_id: teams_category_id || teams_category['id']
-  end
-
-  def rebuild_teams_list(_teams_category_id = nil)
-    teams_category_id = _teams_category_id || teams_category['id']
-    lines = Team.order(:name).map do |team|
-      team_line(team)
-    end.join(DiscordClient::MESSAGE_LINE_SEPARATOR)
-    client.replace_channel_content teams_list_channel(teams_category_id)['id'], lines
-  end
-
-  def rebuild_teams_lu(_teams_category_id = nil)
-    # build lines
-    lines1 = []
-    lines2 = []
-    lines3 = []
-    Team.order(:name).each do |team|
-      admins = team.team_admins.map(&:user_id)
-      lines = ["**#{team.short_name} : #{team.name}**"]
-      lines += team.players
-          .legit
-          .includes(:teams, :characters)
-          .to_a
-          .sort_by { |p| p.name.downcase }
-          .map do |player|
-        line = player_abc player
-        if admins.include?(player.user_id)
-          line += ' (capitaine)'
-        end
-        line
-      end
-      lines = lines.join(DiscordClient::MESSAGE_LINE_SEPARATOR)
-      letter = self.class.name_letter team.name
-      if ('a'..'i').include?(letter)
-        lines1 << lines
-      elsif ('j'..'r').include?(letter)
-        lines2 << lines
-      else
-        lines3 << lines
-      end
-    end
-    lines1 = lines1.join(DiscordClient::MESSAGE_LINE_SEPARATOR * 2)
-    lines2 = lines2.join(DiscordClient::MESSAGE_LINE_SEPARATOR * 2)
-    lines3 = lines3.join(DiscordClient::MESSAGE_LINE_SEPARATOR * 2)
-
-    # rebuild channels
-    teams_category_id = _teams_category_id || teams_category['id']
-    client.replace_channel_content teams_lu_channel1(teams_category_id)['id'], lines1
-    client.replace_channel_content teams_lu_channel2(teams_category_id)['id'], lines2
-    client.replace_channel_content teams_lu_channel3(teams_category_id)['id'], lines3
   end
 
   # ---------------------------------------------------------------------------
@@ -672,5 +511,4 @@ class RetropenBot
                                              find_params,
                                              create_params.merge(readonly: true)
   end
-
 end
