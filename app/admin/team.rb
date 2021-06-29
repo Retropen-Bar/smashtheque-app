@@ -55,16 +55,6 @@ ActiveAdmin.register Team do
     link_to 'Page publique', resource, class: 'green'
   end
 
-  action_item :rebuild,
-              only: :index,
-              if: proc { current_user.is_root? } do
-    link_to 'Rebuild', [:rebuild, :admin, :teams], class: 'blue'
-  end
-  collection_action :rebuild do
-    RetropenBotScheduler.rebuild_teams
-    redirect_to request.referer, notice: 'Demande effectuée'
-  end
-
   # ---------------------------------------------------------------------------
   # FORM
   # ---------------------------------------------------------------------------

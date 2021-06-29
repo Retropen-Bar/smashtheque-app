@@ -19,7 +19,6 @@
 #  fk_rails_...  (team_id => teams.id)
 #
 class PlayersTeam < ApplicationRecord
-
   # ---------------------------------------------------------------------------
   # RELATIONS
   # ---------------------------------------------------------------------------
@@ -34,20 +33,10 @@ class PlayersTeam < ApplicationRecord
   validates :team_id, uniqueness: { scope: :player_id }
 
   # ---------------------------------------------------------------------------
-  # CALLBACKS
-  # ---------------------------------------------------------------------------
-
-  after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] || !player.is_legit? }
-  def update_discord
-    RetropenBotScheduler.rebuild_teams_lu
-  end
-
-  # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
 
   def self.positioned
     order(:position)
   end
-
 end
