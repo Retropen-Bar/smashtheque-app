@@ -5,6 +5,7 @@
 
 .modal-header {
   background-color: $red;
+  padding: 10px 10px 5px 10px;
 
   .close {
     opacity: 0.35;
@@ -19,4 +20,10 @@
   text-align: center;
   font-weight: 600;
   color: $gray-darker;
+}
+
+.modal-dialog.modal-auto {
+  .modal-content {
+    width: auto;
+  }
 }
