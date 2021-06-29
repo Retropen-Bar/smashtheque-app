@@ -1,0 +1,22 @@
+.modal-backdrop {
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.modal-header {
+  background-color: $red;
+
+  .close {
+    opacity: 0.35;
+    text-shadow: none;
+    font-weight: 300;
+    font-size: 30px;
+  }
+}
+
+.modal-title {
+  width: 100%;
+  text-align: center;
+  font-weight: 600;
+  color: $gray-darker;
+}
