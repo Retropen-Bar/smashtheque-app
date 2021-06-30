@@ -60,16 +60,14 @@ class Player < ApplicationRecord
            inverse_of: :player,
            dependent: :destroy
   has_many :characters,
-           through: :characters_players,
-           after_remove: :after_remove_character
+           through: :characters_players
 
   has_many :players_teams,
            -> { positioned },
            inverse_of: :player,
            dependent: :destroy
   has_many :teams,
-           through: :players_teams,
-           after_remove: :after_remove_team
+           through: :players_teams
 
   has_many :tournament_events_as_top1_player,
            class_name: :TournamentEvent,
