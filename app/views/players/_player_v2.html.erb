@@ -46,6 +46,11 @@
           <% end %>
         </div>
       <% end %>
+      <% if player.is_legit? %>
+        <%= link_to player, class: 'resource-link' do %>
+          <span class="sr-only">Voir plus</span>
+        <% end %>
+      <% end %>
     </div>
     <%= admin_edit_link(player) %>
   </div>
