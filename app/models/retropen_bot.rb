@@ -386,6 +386,11 @@ class RetropenBot
     rebuild_online_tournaments_oneshot online_tournaments_category_id
   end
 
+  def self.name_letter(name)
+    return nil if name.blank?
+    I18n.transliterate(name.first).downcase
+  end
+
   # ---------------------------------------------------------------------------
   # PRIVATE
   # ---------------------------------------------------------------------------
