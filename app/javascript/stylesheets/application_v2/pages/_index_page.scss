@@ -1,10 +1,100 @@
+#index-nav {
+  @include media-breakpoint-up(lg) {
+    position: sticky;
+    top: $header-height-tablet + $grid-gutter-width / 2;
+  }
+}
+
 #index-filters {
-  background-color: $gray-darker;
   position: sticky;
-  top: 56px;
+  top: $header-height-mobile;
+  background: $gray-darker;
+
+  @include media-breakpoint-up(md) {
+    top: $header-height-tablet;
+  }
+
+  .vue-slideout {
+    &-layout {
+      width: 100% !important;
+    }
+
+    &-header {
+      display: flex;
+
+      & > div {
+        flex-grow: 1;
+      }
+
+      p {
+        display: flex;
+        align-items: center;
+      }
+
+      svg {
+        margin-right: 0.5em;
+      }
+    }
+
+    &-content {
+      h5 {
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-bottom: -1rem;
+      }
+
+      svg {
+        margin-right: 0.5em;
+      }
+    }
+
+    @include media-breakpoint-up(xl) {
+      display: block !important;
+      position: static;
+      opacity: 1;
+
+      &-mask {
+        opacity: 0;
+      }
+
+      &-layout {
+        padding-top: 0;
+        position: static;
+        transform: none;
+      }
+
+      &-header {
+        height: auto;
+        background-color: $gray-deep;
+        border: 0;
+        @include border-top-radius($border-radius);
+        position: static;
+        padding: 0.5rem 1rem;
+
+        button {
+          display: none;
+        }
+      }
+
+      &-content {
+        background-color: $gray-dark;
+        @include border-bottom-radius($border-radius);
+      }
+    }
+  }
+}
+
+#index-nav,
+#index-filters {
   z-index: $zindex-modal;
 
-  .vue-slideout-layout {
-    width: 100%!important;
+  @include media-breakpoint-up(xl) {
+    top: $header-height-desktop + $grid-gutter-width / 2;
+  }
+}
+
+.index-section {
+  @include media-breakpoint-up(xl) {
+    width: 224px;
   }
 }

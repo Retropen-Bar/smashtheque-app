@@ -1,28 +1,50 @@
 .section-nav {
-  margin-left: -$grid-gutter-width / 2;
-  margin-right: -$grid-gutter-width / 2;
-  overflow: auto;
+  @include media-breakpoint-down(md) {
+    margin-left: -$grid-gutter-width / 2;
+    margin-right: -$grid-gutter-width / 2;
+    overflow: auto;
+  }
 
   &-wrapper {
     width: max-content;
+
+    @include media-breakpoint-up(md) {
+      width: auto;
+    }
   }
 
   &-bg {
-    background-color: $gray-deep;
+    display: flex;
+    background-color: $gray-dark;
     border-radius: $border-radius * 1.5;
     width: max-content;
-    padding-left: 0.25em;
-    padding-right: 0.25em;
+    padding: 0.25em;
     margin-left: $grid-gutter-width / 2;
     margin-right: $grid-gutter-width / 2;
+
+    @include media-breakpoint-up(md) {
+      width: auto;
+    }
+
+    @include media-breakpoint-up(lg) {
+      border-radius: $border-radius;
+      flex-direction: column;
+      padding: 1em;
+      margin-left: 0;
+      margin-right: 0;
+    }
   }
 
   &-link {
-    font-size: $small-font-size;
+    display: flex;
+    font-size: 80%;
     color: $gray-light;
     opacity: 0.5;
     padding: 0.5em 1em;
     width: max-content;
+    border-radius: $border-radius * 1.5;
+    line-height: 1.15;
+    transition: $transition-base;
 
     &.active {
       font-weight: bold;
@@ -32,7 +54,38 @@
     &:hover {
       opacity: 1;
       color: inherit;
+      background-color: rgba($body-color, 0.1);
       text-decoration: none;
+    }
+
+    svg {
+      display: none;
+      margin-right: 0.75em;
+    }
+
+    @include media-breakpoint-down(md) {
+      & + * {
+        margin-left: 0.25em;
+      }
+    }
+
+    @include media-breakpoint-up(lg) {
+      width: auto;
+      padding: 0.75em 1em;
+      font-size: 0.875rem;
+      border-radius: $border-radius;
+
+      span {
+        margin-top: 0.3ch;
+      }
+
+      svg {
+        display: inline-block;
+      }
+
+      & + * {
+        margin-top: 0.5em;
+      }
     }
   }
 
@@ -41,12 +94,12 @@
       .section-nav-link {
         &.active {
           color: $color;
+          background-color: rgba($color, 0.1);
         }
       }
     }
   }
 }
-
 
 .nav-pills {
   .nav-link {
@@ -54,6 +107,7 @@
 
     @include hover() {
       color: $body-color;
+      background-color: rgba($body-color, 0.1);
     }
   }
 }

@@ -1,25 +1,7 @@
 .page-item {
   .page-link {
-    border-radius: $border-radius;
-    margin-left: 0.125rem;
     padding-left: 0.7rem;
     padding-right: 0.7rem;
-  }
-
-  &:first-child {
-    .page-link {
-      border-top-left-radius: $border-radius;
-      border-bottom-left-radius: $border-radius;
-    }
-  }
-  &:last-child {
-    .page-link {
-      border-top-right-radius: $border-radius;
-      border-bottom-right-radius: $border-radius;
-    }
-  }
-  &.active .page-link {
-    border-color: transparent;
   }
 }
 
@@ -27,14 +9,15 @@
   .page-item {
     &:first-child {
       .page-link {
-        border-top-left-radius: $border-radius;
-        border-bottom-left-radius: $border-radius;
+        border-top-left-radius: $border-radius * 1.5;
+        border-bottom-left-radius: $border-radius * 1.5;
       }
     }
+
     &:last-child {
       .page-link {
-        border-top-right-radius: $border-radius;
-        border-bottom-right-radius: $border-radius;
+        border-top-right-radius: $border-radius * 1.5;
+        border-bottom-right-radius: $border-radius * 1.5;
       }
     }
   }
@@ -51,8 +34,8 @@
 
     .page-item {
       &.active .page-link {
-        color: $color;
-        background-color: $gray-deep;
+        color: color-yiq($color, $light: $white);
+        background-color: rgba($color, 0.7);
       }
     }
   }

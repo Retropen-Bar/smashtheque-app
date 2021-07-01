@@ -1,4 +1,10 @@
 .btn {
+  &-with-icon {
+    svg {
+      margin-right: 0.5em;
+    }
+  }
+
   &-icon {
     color: $body-color;
     padding-left: $btn-padding-y;
