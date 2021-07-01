@@ -32,6 +32,14 @@ class Ability
     # ApiToken
     # only root
 
+    # BraacketTournament
+    can manage_or_cru, BraacketTournament
+    can :fetch_braacket_data, BraacketTournament
+
+    # ChallongeTournament
+    can manage_or_cru, ChallongeTournament
+    can :fetch_challonge_data, ChallongeTournament
+
     # Character
     can manage_or_cru, Character
 
