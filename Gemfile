@@ -149,3 +149,6 @@ gem 'nokogiri', '>= 1.11.0.rc4'
 
 # datadog logs
 gem 'lograge'
+
+# fix CORS
+gem 'rack-cors'
