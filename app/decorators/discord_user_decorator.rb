@@ -49,17 +49,37 @@ class DiscordUserDecorator < BaseDecorator
     model.player.decorate.link(options)
   end
 
+  def discord_url
+    return nil if model.discord_id.blank?
+
+    "discord://-/users/#{discord_id}"
+  end
+
   def link(options = {})
-    h.tag.div avatar_and_name_or_id(size: 32), options
+    h.link_to avatar_and_name_or_id(size: 32),
+              discord_url,
+              { target: '_blank', rel: :noopener }.merge(options)
+  end
+
+  def discord_link(options = {})
+    return nil if model.discord_id.blank?
+
+    txt = options.delete(:label) || [
+      h.fab_icon_tag(:discord),
+      discriminated_username
+    ].join('&nbsp;').html_safe
+
+    h.link_to txt,
+              discord_url,
+              { target: '_blank', rel: :noopener }.merge(options)
   end
 
   def discord_badge(options = {})
-    h.link_to '#', class: 'account-badge' do
-      (
-        h.fab_icon_tag :discord
-      ) + ' ' + (
+    h.link_to discord_url, class: 'account-badge', target: '_blank', rel: :noopener do
+      [
+        h.fab_icon_tag(:discord),
         avatar_and_name(size: options.delete(:size) || 32)
-      )
+      ].join('&nbsp;').html_safe
     end
   end
 end
