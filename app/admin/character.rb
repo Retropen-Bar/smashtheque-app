@@ -1,5 +1,4 @@
 ActiveAdmin.register Character do
-
   decorate_with ActiveAdmin::CharacterDecorator
 
   has_paper_trail
@@ -110,15 +109,4 @@ ActiveAdmin.register Character do
   action_item :public, only: :show do
     link_to 'Page publique', resource, class: 'green'
   end
-
-  action_item :rebuild,
-              only: :show,
-              if: proc { current_user.is_root? } do
-    link_to 'Rebuild', [:rebuild, :admin, resource], class: 'blue'
-  end
-  member_action :rebuild do
-    RetropenBotScheduler.rebuild_chars_for_character resource
-    redirect_to request.referer, notice: 'Demande effectuée'
-  end
-
 end
