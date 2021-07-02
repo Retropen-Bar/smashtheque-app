@@ -58,20 +58,6 @@ class Team < ApplicationRecord
   validates :roster, content_type: /\Aimage\/.*\z/
 
   # ---------------------------------------------------------------------------
-  # CALLBACKS
-  # ---------------------------------------------------------------------------
-
-  after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] }
-  def update_discord
-    # on create: previous_changes = {"id"=>[nil, <id>], "name"=>[nil, <name>], ...}
-    # on update: previous_changes = {"name"=>["old_name", "new_name"], ...}
-    # on delete: destroyed? = true and old attributes are available
-
-    # in any case, both the teams list and the teams lineups must be updated
-    RetropenBotScheduler.rebuild_teams
-  end
-
-  # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
 

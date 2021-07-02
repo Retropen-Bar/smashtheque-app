@@ -32,6 +32,7 @@
     position: absolute;
     right: 0.25rem;
     top: 0.25rem;
+    z-index: 2;
   }
 }
 
@@ -75,6 +76,11 @@
     inset: 0;
     z-index: 1;
   }
+}
+
+.resource-link {
+  position: absolute;
+  inset: 0;
 }
 
 .player {
