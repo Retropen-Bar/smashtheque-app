@@ -34,6 +34,13 @@ module ActiveAdmin
         bracket_url: challonge_url,
         bracket_gid: model.to_global_id.to_s
       }
+      TournamentEvent::TOP_RANKS.each do |rank|
+        player_name = "top#{rank}_player".to_sym
+        participant_player = "top#{rank}_participant_player".to_sym
+        if (player = send(participant_player))
+          attributes["#{player_name}_id"] = player.id
+        end
+      end
       new_admin_tournament_event_path(tournament_event: attributes)
     end
 

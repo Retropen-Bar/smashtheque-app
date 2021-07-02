@@ -1,5 +1,4 @@
 ActiveAdmin.register DiscordUser do
-
   decorate_with ActiveAdmin::DiscordUserDecorator
 
   menu parent: '<i class="fab fa-fw fa-discord"></i>Discord'.html_safe,
@@ -17,18 +16,12 @@ ActiveAdmin.register DiscordUser do
     column :discord_id do |decorated|
       link_to decorated.discord_id, [:admin, decorated.model]
     end
-    column :username do |decorated|
-      decorated.avatar_and_name(size: 32)
-    end
-    column :user do |decorated|
-      decorated.user_admin_link
-    end
+    column :username, &:link
+    column :user, &:user_admin_link
     column :administrated_discord_guilds do |decorated|
       decorated.administrated_discord_guilds_admin_links(size: 32).join('<br/>').html_safe
     end
-    column :created_at do |decorated|
-      decorated.created_at_date
-    end
+    column :created_at, &:created_at_date
     actions
   end
 
@@ -75,15 +68,9 @@ ActiveAdmin.register DiscordUser do
   show do
     attributes_table do
       row :discord_id
-      row :avatar do |decorated|
-        decorated.avatar_tag
-      end
-      row :username do |decorated|
-        decorated.discriminated_username
-      end
-      row :user do |decorated|
-        decorated.user_admin_link
-      end
+      row :avatar, &:avatar_tag
+      row :username, &:discord_link
+      row :user, &:user_admin_link
       row :administrated_discord_guilds do |decorated|
         decorated.administrated_discord_guilds_admin_links(size: 32).join('<br/>').html_safe
       end
@@ -106,16 +93,10 @@ ActiveAdmin.register DiscordUser do
             end
           end
           row :name
-          row :admin_level do |decorated|
-            decorated.admin_level_status
-          end
+          row :admin_level, &:admin_level_status
           row :twitter_username, &:twitter_link
-          row :discord_user do |decorated|
-            decorated.discord_user_admin_link
-          end
-          row :player do |decorated|
-            decorated.player_admin_link
-          end
+          row :discord_user, &:discord_user_admin_link
+          row :player, &:player_admin_link
           row :administrated_teams do |decorated|
             decorated.administrated_teams_admin_links(size: 32).join('<br/>').html_safe
           end
@@ -189,5 +170,4 @@ ActiveAdmin.register DiscordUser do
       end
     }
   end
-
 end
