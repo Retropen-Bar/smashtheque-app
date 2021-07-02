@@ -1,6 +1,6 @@
 <div class="container-fluid">
 
-  <div class="row bg-light">
+  <div class="row bg-light py-5">
 
     <% [[], Character.limit(1).decorate, Character.limit(3).decorate].each do |characters| %>
 
@@ -30,4 +30,36 @@
 
   </div>
 
+  <div class="row bg-darker py-5">
+
+    <div class="col inline-modal-container">
+      <%= render  'characters_modal',
+                  player: current_user.player,
+                  modal_id: 'chars-modal' %>
+    </div>
+
+    <div class="col inline-modal-container">
+      <%= render  'social_modal',
+                  player: current_user.player.decorate,
+                  modal_id: 'social-modal' %>
+    </div>
+
+  </div>
+
 </div>
+
+<component is="style">
+  .inline-modal-container .modal {
+    position: relative;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    z-index: 1;
+    display: block;
+    opacity: 1;
+  }
+  .inline-modal-container .modal-dialog {
+    transform: none !important;
+  }
+</component>
