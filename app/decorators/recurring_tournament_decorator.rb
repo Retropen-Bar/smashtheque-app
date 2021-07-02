@@ -166,6 +166,12 @@ class RecurringTournamentDecorator < BaseDecorator
     "#{address} (#{latitude}, #{longitude})"
   end
 
+  def country_name
+    return nil if countrycode.blank?
+
+    ISO3166::Country.new(countrycode)&.translation('fr')
+  end
+
   def full_address
     [
       address_name,

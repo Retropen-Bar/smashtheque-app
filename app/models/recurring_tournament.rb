@@ -5,12 +5,14 @@
 #  id               :bigint           not null, primary key
 #  address          :string
 #  address_name     :string
+#  countrycode      :string
 #  date_description :string
 #  is_archived      :boolean          default(FALSE), not null
 #  is_hidden        :boolean          default(FALSE), not null
 #  is_online        :boolean          default(FALSE), not null
 #  latitude         :float
 #  level            :string
+#  locality         :string
 #  longitude        :float
 #  misc             :text
 #  name             :string           not null
@@ -164,6 +166,37 @@ class RecurringTournament < ApplicationRecord
 
   def is_recurring?
     %i(weekly bimonthly monthly).include?(recurring_type.to_sym)
+  end
+
+  def self.near_community(community, radius: 50)
+    near(
+      [community.latitude, community.longitude],
+      radius,
+      units: :km,
+      select: 'id',
+      select_distance: false,
+      select_bearing: false
+    ).except(
+      :select
+    )
+  end
+
+  def self.by_community_id_in(*community_ids)
+    communities = Community.where(id: community_ids).to_a
+    first_community = communities.shift
+    result = near_community(first_community)
+    communities.each do |other_community|
+      result = result.or(near_community(other_community))
+    end
+    result
+  end
+
+  # ---------------------------------------------------------------------------
+  # RANSACK
+  # ---------------------------------------------------------------------------
+
+  def self.ransackable_scopes(auth_object = nil)
+    super + %i[by_community_id_in]
   end
 
   # ---------------------------------------------------------------------------
