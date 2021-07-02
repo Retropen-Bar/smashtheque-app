@@ -46,7 +46,7 @@ module ActiveAdmin
     end
 
     def recurring_tournament_locality_select_collection
-      RecurringTournament.order('LOWER(locality)').pluck('DISTINCT LOWER(locality)').reject(&:blank?).map(&:titleize)
+      RecurringTournament.pluck('DISTINCT locality').reject(&:blank?).sort
     end
 
     def recurring_tournament_community_select_collection
