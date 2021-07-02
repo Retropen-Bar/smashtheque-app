@@ -1,0 +1,16 @@
+.list-characters {
+  li {
+    a {
+      font-size: 0.75rem;
+      font-weight: 600;
+
+      img {
+        margin-right: 20px;
+      }
+    }
+
+    & + li {
+      margin-top: 10px;
+    }
+  }
+}

@@ -1,0 +1,30 @@
+.card-box {
+
+  .card-body {
+    &:last-child {
+      @include border-radius(0 0 $card-inner-border-radius $card-inner-border-radius);
+    }
+  }
+
+  .card-header {
+    background-color: $gray-darker;
+    font-size: 0.938rem;
+    font-weight: 600;
+    padding: 5px 15px;
+  }
+
+  .card-body {
+    background-color: $gray-dark;
+    padding: 10px 50px 10px 15px;
+  }
+}
+
+@each $section_name, $color in $sections {
+  .#{$section_name} {
+    .card-box {
+      .card-header {
+        color: $color;
+      }
+    }
+  }
+}

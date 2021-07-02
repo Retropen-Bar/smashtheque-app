@@ -30,6 +30,10 @@ class PlayersController < PublicController
     render layout: 'application_v2'
   end
 
+  def test
+    render layout: 'application_v2'
+  end
+
   def community_index
     @community = Community.find(params[:id]).decorate
     @players = players @community.model.players

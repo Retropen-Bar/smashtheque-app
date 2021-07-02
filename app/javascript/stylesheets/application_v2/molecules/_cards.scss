@@ -1,7 +1,0 @@
-.card {
-  .card-body {
-    &:last-child {
-      @include border-radius(0 0 $card-inner-border-radius $card-inner-border-radius);
-    }
-  }
-}

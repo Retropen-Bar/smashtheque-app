@@ -1,0 +1,33 @@
+<div class="container-fluid">
+
+  <div class="row bg-light">
+
+    <% [[], Character.limit(1).decorate, Character.limit(3).decorate].each do |characters| %>
+
+      <div class="col">
+
+        <div class="card card-box mt-3">
+          <div class="card-header">Titre</div>
+          <div class="card-body">
+            <ul class="list-unstyled list-characters">
+              <% characters.each do |character| %>
+                <li>
+                  <%= character.link(
+                    label: character.emoji_and_name(
+                      max_width: 48,
+                      max_height: 48
+                    )
+                  ) %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>
