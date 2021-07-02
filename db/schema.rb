@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_02_164057) do
+ActiveRecord::Schema.define(version: 2021_07_02_183859) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -214,6 +214,7 @@ ActiveRecord::Schema.define(version: 2021_07_02_164057) do
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "is_out_of_ranking", default: false, null: false
     t.boolean "is_online", default: false, null: false
+    t.text "not_duplicates", default: [], array: true
     t.index ["bracket_type", "bracket_id"], name: "index_duo_tournament_events_on_bracket_type_and_bracket_id"
     t.index ["recurring_tournament_id"], name: "index_duo_tournament_events_on_recurring_tournament_id"
     t.index ["top1_duo_id"], name: "index_duo_tournament_events_on_top1_duo_id"
@@ -473,6 +474,7 @@ ActiveRecord::Schema.define(version: 2021_07_02_164057) do
     t.bigint "bracket_id"
     t.boolean "is_out_of_ranking", default: false, null: false
     t.boolean "is_online", default: false, null: false
+    t.text "not_duplicates", default: [], array: true
     t.index ["bracket_type", "bracket_id"], name: "index_tournament_events_on_bracket_type_and_bracket_id"
     t.index ["recurring_tournament_id"], name: "index_tournament_events_on_recurring_tournament_id"
     t.index ["top1_player_id"], name: "index_tournament_events_on_top1_player_id"

@@ -380,11 +380,18 @@ module IsTournamentEvent
           ).having(
             'COUNT(*) > 1'
           ).map do |results|
-            where(
+            results = where(
               recurring_tournament_id: results[:recurring_tournament_id],
               date: results[:date]
             ).to_a
-          end
+            if results.first.not_duplicates.include?(results.second.id.to_s) || (
+              results.second.not_duplicates.include?(results.first.id.to_s)
+            )
+              nil
+            else
+              results
+            end
+          end.compact
     end
 
     # ---------------------------------------------------------------------------

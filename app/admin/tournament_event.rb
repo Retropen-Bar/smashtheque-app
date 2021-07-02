@@ -303,4 +303,13 @@ ActiveAdmin.register TournamentEvent do
   collection_action :potential_duplicates do
     @potential_duplicates = TournamentEvent.potential_duplicates
   end
+
+  member_action :not_duplicates, method: :post do
+    resource.not_duplicates = resource.not_duplicates + [params[:not_duplicate_id]]
+    if resource.save
+      head :ok
+    else
+      head :unprocessable_entity
+    end
+  end
 end

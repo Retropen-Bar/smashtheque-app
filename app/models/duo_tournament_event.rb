@@ -10,6 +10,7 @@
 #  is_online               :boolean          default(FALSE), not null
 #  is_out_of_ranking       :boolean          default(FALSE), not null
 #  name                    :string           not null
+#  not_duplicates          :text             default([]), is an Array
 #  participants_count      :integer
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
