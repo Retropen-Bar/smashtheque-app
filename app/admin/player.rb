@@ -97,16 +97,6 @@ ActiveAdmin.register Player do
   filter :is_accepted
   filter :is_banned
 
-  action_item :rebuild_all,
-              only: :index,
-              if: proc { current_user.is_root? } do
-    link_to 'Rebuild', %i[rebuild_all admin players], class: 'blue'
-  end
-  collection_action :rebuild_all do
-    RetropenBotScheduler.rebuild_all
-    redirect_to request.referer, notice: 'Demande effectuée'
-  end
-
   # ---------------------------------------------------------------------------
   # FORM
   # ---------------------------------------------------------------------------
