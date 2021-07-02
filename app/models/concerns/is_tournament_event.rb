@@ -365,10 +365,10 @@ module IsTournamentEvent
     end
 
     def graph_url=(url)
+      return if url.blank?
+
       uri = URI.parse(url)
-      open(url) do |f|
-        graph.attach(io: File.open(f.path), filename: File.basename(uri.path))
-      end
+      graph.attach(io: Down.download(url), filename: File.basename(uri.path))
     end
 
     def self.potential_duplicates

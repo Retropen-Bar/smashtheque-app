@@ -20,15 +20,15 @@ module HasLogo
 
     def logo_url
       return nil unless logo.attached?
+
       logo.service_url
     end
 
     def logo_url=(url)
-      return false if url.blank?
+      return if url.blank?
+
       uri = URI.parse(url)
-      open(url) do |f|
-        logo.attach(io: File.open(f.path), filename: File.basename(uri.path))
-      end
+      logo.attach(io: Down.download(url), filename: File.basename(uri.path))
     end
   end
 end
