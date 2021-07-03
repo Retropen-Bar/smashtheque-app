@@ -34,8 +34,8 @@
 
     .page-item {
       &.active .page-link {
-        color: color-yiq($color, $light: $white);
-        background-color: rgba($color, 0.7);
+        color: $white;
+        background-color: $color;
       }
     }
   }

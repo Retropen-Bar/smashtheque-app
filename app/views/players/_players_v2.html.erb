@@ -36,7 +36,10 @@
                   <%= render partial: 'shared/icons/lieu' %>
                   <span>Communautés locales</span>
                 <% end %>
-                <%= link_to "Observatoire d'Harmonie 1v1", ranking_players_path, class: "section-nav-link#{current_class?(ranking_players_path)}" %>
+                <%= link_to ranking_players_path, class: "section-nav-link#{current_class?(ranking_players_path)}" do %>
+                  <%= render partial: 'shared/icons/telescope' %>
+                  <span>Observatoire d'Harmonie 1v1</span>
+                <% end %>
               </div>
             </div>
           </nav>
@@ -74,7 +77,7 @@
                   </div>
                 </template>
                 <section class="mb-n4">
-                  <h5><%= render partial: 'shared/icons/abcd' %> Abcédaire</h5>
+                  <h5><%= render partial: 'shared/icons/abcd' %> Abécédaire</h5>
                   <%= render 'shared/letters' %>
                 </section>
               </slide-out>

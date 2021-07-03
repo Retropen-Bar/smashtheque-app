@@ -51,12 +51,12 @@
       $hover-background: darken($color, 7.5%);
     
       &.#{$section_name}:not(:disabled):not(.disabled).active {
-        background-color: rgba($color, 0.8);
-        color: color-yiq($color, $light: $white);
+        background-color: $color;
+        color: theme-color('dark');
     
         @include hover() {
-          color: color-yiq($hover-background);
-          background-color: rgba($hover-background, 0.5);
+          color: color-yiq($hover-background, $light: $white);
+          background-color: $hover-background;
         }
       }
     }

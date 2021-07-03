@@ -58,9 +58,10 @@
       text-decoration: none;
     }
 
-    svg {
+    .icon {
       display: none;
       margin-right: 0.75em;
+      flex-shrink: 0;
     }
 
     @include media-breakpoint-down(md) {
@@ -79,7 +80,7 @@
         margin-top: 0.3ch;
       }
 
-      svg {
+      .icon {
         display: inline-block;
       }
 
@@ -118,6 +119,7 @@
     .show > .nav-link {
       color: $color;
       background-color: rgba($color, 0.1);
+      font-weight: 600;
     }
   }
 }
