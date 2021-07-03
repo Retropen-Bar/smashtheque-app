@@ -1,0 +1,62 @@
+<% stats = players_stats(collection.object.limit(nil)) %>
+
+<div class="big-numbers">
+
+  <div class="big-number txt-blue">
+    <div class="big-number--value">
+      <%= stats[:players_count] %>
+    </div>
+    <div class="big-number--title">
+      <%= pluralize_without_count stats[:players_count], 'Joueur' %>
+    </div>
+  </div>
+
+  <div class="big-number txt-green">
+    <div class="big-number--value">
+      <%= stats[:online_rewards_count] %>
+    </div>
+    <div class="big-number--title">
+      <%= pluralize_without_count stats[:online_rewards_count], 'Récompense' %> online
+    </div>
+  </div>
+
+  <div class="big-number txt-yellow">
+    <div class="big-number--value">
+      <%= stats[:offline_rewards_count] %>
+    </div>
+    <div class="big-number--title">
+      <%= pluralize_without_count stats[:offline_rewards_count], 'Récompense' %> offline
+    </div>
+  </div>
+
+  <div class="big-number txt-green">
+    <div class="big-number--value">
+      <img src="https://cdn.discordapp.com/emojis/<%= RetropenBot::EMOJI_POINTS_ONLINE %>.png?size=32"/>
+      <%= stats[:online_points] %>
+    </div>
+    <div class="big-number--title">
+      <%= pluralize_without_count stats[:online_points], 'Fragment' %> online
+    </div>
+  </div>
+
+  <div class="big-number txt-yellow">
+    <div class="big-number--value">
+      <img src="https://cdn.discordapp.com/emojis/<%= RetropenBot::EMOJI_POINTS_OFFLINE %>.png?size=32"/>
+      <%= stats[:offline_points] %>
+    </div>
+    <div class="big-number--title">
+      <%= pluralize_without_count stats[:offline_points], 'Fragment' %> offline
+    </div>
+  </div>
+
+</div>
+
+<div class="characters-stats">
+  <h3>Top 10 des persos :</h3>
+  <% stats[:most_played_characters].first(10).each do |character_id, count| %>
+    <span>
+      <%= Character.find(character_id).admin_decorate.admin_emoji_link %>&nbsp;<%= count %>
+    </span>
+  <% end %>
+
+</div>
