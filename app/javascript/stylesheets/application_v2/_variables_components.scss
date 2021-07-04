@@ -41,12 +41,15 @@ $card-border-width: 0;
 
 // PAGINATIONS
 
-$pagination-bg: transparent;
-$pagination-disabled-bg: transparent;
-$pagination-disabled-border-color: transparent;
-$pagination-border-color: transparent;
-$pagination-hover-bg: $gray-deep;
-$pagination-hover-border-color: transparent;
+$pagination-bg: $gray-deep;
+$pagination-disabled-bg: $gray-dark;
+$pagination-disabled-border-color: $gray-dark;
+$pagination-border-color: $gray-dark;
+$pagination-hover-bg: $gray-medium;
+$pagination-hover-color: $white;
+$pagination-hover-border-color: $gray-dark;
+$pagination-active-bg: $gray-medium;
+$pagination-active-border-color: $gray-dark;
 
 // MODALS
 
