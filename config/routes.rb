@@ -78,6 +78,7 @@ Rails.application.routes.draw do
     collection do
       get :autocomplete
       get :ranking
+      get :test
     end
   end
 

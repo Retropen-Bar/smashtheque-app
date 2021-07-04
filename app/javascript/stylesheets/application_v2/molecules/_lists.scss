@@ -1,0 +1,30 @@
+.list-characters {
+  margin-bottom: 0;
+
+  li {
+    a {
+      font-size: 0.75rem;
+      font-weight: 600;
+
+      img {
+        margin-right: 20px;
+      }
+    }
+
+    & + li {
+      margin-top: 10px;
+    }
+  }
+}
+
+.list-socials {
+  margin-bottom: 0;
+
+  li {
+    a {
+      i {
+        color: currentColor;
+      }
+    }
+  }
+}

@@ -1,0 +1,52 @@
+<div id="<%= modal_id %>" class="modal fade" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-auto modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Personnages</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <% characters = player.characters.to_a %>
+        <% main = characters.shift&.decorate %>
+        <% if main %>
+          <div class="card card-box">
+            <div class="card-header">Principal</div>
+            <div class="card-body">
+              <ul class="list-unstyled list-characters">
+                <li>
+                  <%= main.link(
+                    label: main.emoji_and_name(
+                      max_width: 48,
+                      max_height: 48
+                    )
+                  ) %>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <% if characters.any? %>
+            <div class="card card-box mt-3">
+              <div class="card-header">Secondaire(s)</div>
+              <div class="card-body">
+                <ul class="list-unstyled list-characters">
+                  <% characters.map(&:decorate).each do |character| %>
+                    <li>
+                      <%= character.link(
+                        label: character.emoji_and_name(
+                          max_width: 48,
+                          max_height: 48
+                        )
+                      ) %>
+                    </li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
