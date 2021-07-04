@@ -2,7 +2,7 @@
      id="main-nav">
 
   <%= link_to root_path, class: 'navbar-brand' do %>
-    <%= image_tag 'logo.png', srcset: { "logo@2x.png" => "2x", "logo@3x.png" => "3x" } %>
+    <%= image_tag 'logo.png', width: '290', srcset: { "logo@2x.png" => "2x", "logo@3x.png" => "3x" } %>
   <% end %>
 
   <slide-out dock="right" :visible.sync="mainNavVisible" :arrow-button="false" size="273px" title="Menu" class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -14,7 +14,7 @@
     <ul class="navbar-nav">
 
       <li class="nav-item dropdown">
-        <%= link_to players_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
+        <%= link_to players_path, class: "nav-link dropdown-toggle#{' active' if current_section?(:players)}", data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
           <span>Joueurs & Cie</span>
         <% end %>
         
