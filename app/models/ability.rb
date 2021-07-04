@@ -54,7 +54,7 @@ class Ability
     can manage_or_cru, DiscordGuildAdmin
 
     # DiscordUser
-    can manage_or_read, DiscordUser
+    can manage_or_cru, DiscordUser
     can :fetch_discord_data, DiscordUser
 
     # Duo
