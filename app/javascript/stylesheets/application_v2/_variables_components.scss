@@ -50,3 +50,14 @@ $pagination-hover-color: $white;
 $pagination-hover-border-color: $gray-dark;
 $pagination-active-bg: $gray-medium;
 $pagination-active-border-color: $gray-dark;
+
+// MODALS
+
+// $zindex-modal-backdrop: 10000;
+// $zindex-modal: 10001;
+$modal-backdrop-opacity: 0.9;
+$modal-header-border-width: 0;
+$modal-title-line-height: 1.25;
+$modal-content-inner-border-radius: 15px;
+$modal-content-border-radius: 15px;
+$modal-content-bg: $gray-deep;
