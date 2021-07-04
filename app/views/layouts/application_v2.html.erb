@@ -26,23 +26,25 @@
     "background-size: #{@background_size}px;" if @background_image_url
   %><%=
     "background-image: url(\"#{image_url('static-bg.png').gsub('"', "\"")}\");" if @static
-  %>" class="<%= controller.controller_name %> <%= controller.action_name %><% if @static %> static<% end %>">
-    <%= render partial: 'layouts/application_v2/flash', flash: flash %>
-    <%= render partial: 'layouts/application_v2/head' %>
+  %>" class="<%= controller.controller_name %> <%= controller.action_name %> <%= "section-#{current_section_name}" %><% if @static %> static<% end %>">
+    <div id="app">
+      <%= render partial: 'layouts/application_v2/flash', flash: flash %>
+      <%= render partial: 'layouts/application_v2/head' %>
 
-    <% if @static %>
-      <div class="d-flex justify-content-center my-5 mx-3">
-        <div class="bg-semi-transparent shadow p-3 p-md-5 rounded"
-              style="width: 100%; max-width: 1024px;">
-          <% end %>
-          <%= yield %>
-          <% if @static %>
+      <% if @static %>
+        <div class="d-flex justify-content-center my-5 mx-3">
+          <div class="bg-semi-transparent shadow p-3 p-md-5 rounded"
+                style="width: 100%; max-width: 1024px;">
+            <% end %>
+            <%= yield %>
+            <% if @static %>
+          </div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
 
-    <%= render partial: 'layouts/application_v2/shortcuts' %>
-    <%= render partial: 'layouts/application_v2/footer' %>
+      <%= render partial: 'layouts/application_v2/shortcuts' %>
+      <%= render partial: 'layouts/application_v2/footer' %>
+    </div>
     <%= javascript_pack_tag 'application_v2' %>
   </body>
 </html>

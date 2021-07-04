@@ -1,0 +1,57 @@
+<article class="resource player d-flex">
+  <div class="resource-avatar card">
+    <% if player.is_legit? %>
+      <%= link_to player.avatar_tag(76), player %>
+    <% end %>
+  </div>
+  <div class="resource-content card flex-grow-1<%= 'with-rank' if defined?(with_rank) && with_rank %>">
+    <div class="card-body d-flex">
+      <div class="resource-meta flex-grow-1">
+        <% if defined?(with_rank) && with_rank %>
+          <div class="rank">
+            #<%= player.rank(
+              is_online: defined?(is_online) && is_online,
+              year: defined?(year) && year) %>
+          </div>
+        <% end %>
+        <h5 class="resource-title card-title text-truncate">
+          <% if player.is_legit? %>
+            <%= link_to player.name, player %>
+          <% else %>
+            -
+          <% end %>
+        </h5>
+        <% if player.is_legit? && player.teams.present? %>
+          <small class="player-teams">
+            <% player.teams[0...2].each do |team| %>
+              <div class="player-team">
+                <%= team.short_name %>
+              </div>
+            <% end %>
+          </small>
+        <% end %>
+        <% if defined?(with_points) && with_points %>
+          <div class="player-points">
+            <%= player.points_count(
+              32,
+              is_online: defined?(is_online) && is_online,
+              year: defined?(year) && year) %>
+          </div>
+        <% end %>
+      </div>
+      <% if player.characters.present? %>
+        <div class="player-characters-list flex-shrink-0">
+          <% player.characters[0...3].each do |character| %>
+          <%= character.decorate.link %>
+          <% end %>
+        </div>
+      <% end %>
+      <% if player.is_legit? %>
+        <%= link_to player, class: 'resource-link' do %>
+          <span class="sr-only">Voir plus</span>
+        <% end %>
+      <% end %>
+    </div>
+    <%= admin_edit_link(player) %>
+  </div>
+</article>

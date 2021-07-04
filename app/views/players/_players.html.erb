@@ -1,5 +1,4 @@
 <% if @map %>
-
   <%= players_map(players.limit(nil).offset(0), @map_seconds) do %>
     <div id="map-list-link">
       <div class="btn-group" role="group">
@@ -9,7 +8,6 @@
     </div>
     <h1 id="map-title"><%= title %></h1>
   <% end %>
-
 <% else %>
 
   <div class="text-center">
@@ -36,5 +34,4 @@
   </div>
 
   <%= render 'shared/pagination', collection: players %>
-
 <% end %>

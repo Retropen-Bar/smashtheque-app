@@ -1,0 +1,36 @@
+.btn-group > .btn {
+  border-radius: $border-radius * 1.5;
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
+}
+
+.btn-group-sm > .btn {
+  font-size: $font-size-base * 0.8;
+}
+
+.btn-group > .btn.btn-outline {
+  $background: $gray-deep;
+  $hover-background: lighten($background, 7.5%);
+
+  background-color: $background;
+  color: rgba($body-color, 0.7);
+
+  @include hover() {
+    color: $body-color;
+    @include gradient-bg($hover-background);
+  }
+}
+
+@each $section_name, $color in $sections {
+  $hover-background: darken($color, 7.5%);
+
+  .btn-group.#{$section_name} > .btn:not(.btn-outline) {
+    background-color: rgba($color, 0.8);
+    color: color-yiq($color, $light: $white);
+
+    @include hover() {
+      color: color-yiq($hover-background);
+      background-color: rgba($hover-background, 0.5);
+    }
+  }
+}

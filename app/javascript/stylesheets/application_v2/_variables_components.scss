@@ -1,6 +1,6 @@
 $custom-colors: (
   light: $gray-light,
-  dark: $gray-dark,
+  dark: $gray-deep,
 );
 $theme-colors: map-merge($theme-colors, $custom-colors);
 
@@ -33,3 +33,17 @@ $dropdown-link-hover-color: $white;
 $dropdown-link-hover-bg: $gray-deep;
 $dropdown-divider-bg: $white;
 $dropdown-item-padding-y: 0.5rem;
+
+// CARDS
+
+$card-bg: $gray-deep;
+$card-border-width: 0;
+
+// PAGINATIONS
+
+$pagination-bg: transparent;
+$pagination-disabled-bg: transparent;
+$pagination-disabled-border-color: transparent;
+$pagination-border-color: transparent;
+$pagination-hover-bg: $gray-deep;
+$pagination-hover-border-color: transparent;

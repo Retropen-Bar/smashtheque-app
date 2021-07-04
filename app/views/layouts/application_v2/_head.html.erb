@@ -5,7 +5,7 @@
     <%= image_tag 'logo.png', srcset: { "logo@2x.png" => "2x", "logo@3x.png" => "3x" } %>
   <% end %>
 
-  <slide-out dock="right" :visible.sync="visible" :arrow-button="false" size="273px" title="Menu" class="collapse navbar-collapse" id="navbarSupportedContent">
+  <slide-out dock="right" :visible.sync="mainNavVisible" :arrow-button="false" size="273px" title="Menu" class="collapse navbar-collapse" id="navbarSupportedContent">
     <%= link_to page_path(slug: 'guides'), class: 'btn btn-gradient-pink rounded w-100 d-flex d-xxl-none align-items-center mb-4 border-0 py-2' do %>
       <%= render partial: 'shared/icons/panneau' %>
       <span class="pl-2">Besoin d'aide ?</span>
@@ -195,7 +195,7 @@
   </slide-out>
 
   <div class="navbar-actions d-flex align-items-center ml-auto">
-    <button type="button" class="navbar-actions-search btn btn-link btn-icon rounded-circle" @click="visible = false">
+    <button type="button" class="navbar-actions-search btn btn-link btn-icon rounded-circle" @click="mainNavVisible = false">
       <%= render partial: 'shared/icons/loupe' %>
       <span class="sr-only">Recherche</span>
     </button>
@@ -205,7 +205,7 @@
     <ul class="navbar-actions-login navbar-nav text-center text-lg-right">
       <% if user_signed_in? %>
         <li class="nav-item dropdown">
-          <%= link_to '#', class: "btn btn-link btn-icon dropdown-toggle rounded-pill", data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false}, '@click': "visible = false" do %>
+          <%= link_to '#', class: "btn btn-link btn-icon dropdown-toggle rounded-pill", data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false}, '@click': "mainNavVisible = false" do %>
             <%= current_user.decorate.avatar_tag(24) %> <span class="current-user-name"><%= current_user.decorate.name_and_tag %></span>
           <% end %>
           <div class="dropdown-menu dropdown-menu-right">
@@ -243,7 +243,7 @@
       <% end %>
     </ul>
 
-    <button @click="visible = true" type="button" class='navbar-actions-menu btn btn-link btn-icon rounded-circle d-xxl-none'>
+    <button @click="mainNavVisible = true" type="button" class='navbar-actions-menu btn btn-link btn-icon rounded-circle d-xxl-none'>
       <%= render partial: 'shared/icons/menu' %>
     </button>
   </div>

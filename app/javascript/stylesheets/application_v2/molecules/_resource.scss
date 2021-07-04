@@ -1,0 +1,160 @@
+.resource {
+  --bg-color: #{$gray-deep};
+  --shadow: 2px 2px 10px 0 rgba(0, 0, 0, 0.3);
+
+  display: flex;
+  position: relative;
+  transition-duration: 0.2s;
+  transition-property: color, background;
+  transition-timing-function: ease-in-out;
+
+  & + * {
+    margin-top: 1.25rem;
+  }
+
+  &:hover {
+    --bg-color: #{$gray-medium};
+
+    .admin-edit-link {
+      display: flex;
+    }
+  }
+
+  .admin-edit-link {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    width: 1.5rem;
+    height: 1.5rem;
+    background-color: rgba($body-color, 0.3);
+    padding: 3px;
+    position: absolute;
+    right: 0.25rem;
+    top: 0.25rem;
+    z-index: 2;
+  }
+}
+
+.resource-avatar {
+  background-color: var(--bg-color);
+  overflow: hidden;
+  margin-right: 0.875rem;
+  transition: inherit;
+  flex-shrink: 0;
+  box-shadow: var(--shadow);
+  width: 76px;
+  height: 76px;
+}
+
+.resource-content {
+  background-color: var(--bg-color);
+  box-shadow: var(--shadow);
+  transition: inherit;
+  overflow: hidden;
+}
+
+.resource-meta {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+
+  > * + * {
+    margin-top: 0.25rem;
+  }
+}
+
+.resource-title {
+  font-size: 0.875rem;
+  max-width: 100%;
+  margin-bottom: 0;
+
+  a:after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+}
+
+.resource-link {
+  position: absolute;
+  inset: 0;
+}
+
+.player {
+  .reward-badge {
+    transform: translate(50%, 50%);
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+
+  .player-characters-list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    padding-left: calc(1rem + 2%);
+    margin: -1.25rem -1.25rem -1.25rem 0;
+    position: relative;
+
+    &::before {
+      content: "";
+      display: block;
+      background-color: $gray-dark;
+      clip-path: polygon(12% 0, 100% 0%, 100% 100%, 0% 100%);
+      position: absolute;
+      inset: 0;
+    }
+
+    @media screen and (min-width: 375px) {
+      width: 125px;
+    }
+
+    a {
+      position: relative;
+      border-radius: 50%;
+      line-height: 1;
+      transition: $transition-base;
+      z-index: 2;
+
+      &:hover {
+        background-color: $gray-medium;
+      }
+    }
+
+    a:not(:first-child) {
+      margin-left: 0.4rem;
+
+      @media screen and (max-width: 374px) {
+        display: none;
+      }
+
+      .emoji {
+        width: 1.25rem;
+        height: auto;
+      }
+    }
+  }
+
+  .player-teams {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 0.6875rem;
+    position: relative;
+  }
+
+  .player-team {
+    color: $players;
+
+    & + *:before {
+      content: "•";
+      display: inline-block;
+      margin-left: 0.5ch;
+      margin-right: 0.5ch;
+      color: $body-color;
+    }
+  }
+}

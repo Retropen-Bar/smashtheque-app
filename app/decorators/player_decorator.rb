@@ -40,7 +40,7 @@ class PlayerDecorator < BaseDecorator
       return smashgg_user.decorate.any_image_url
     end
     # default
-    h.image_url 'default-avatar.jpg'
+    h.image_url 'default-avatar.svg'
   end
 
   def name_with_avatar(size: nil, with_teams: false)
@@ -53,7 +53,7 @@ class PlayerDecorator < BaseDecorator
   end
 
   def default_avatar(size)
-    h.image_tag 'default-avatar.jpg', width: size, class: :avatar
+    h.image_tag 'default-avatar.svg', width: size, class: :avatar
   end
 
   def map_popup

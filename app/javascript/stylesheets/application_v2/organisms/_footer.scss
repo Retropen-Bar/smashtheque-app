@@ -34,3 +34,9 @@ footer {
     font-size: 0.875rem;
   }
 }
+
+@include media-breakpoint-down(xs) {
+  body:not(.home) footer {
+    margin-bottom: 88px;
+  }
+}
