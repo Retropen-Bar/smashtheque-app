@@ -1,6 +1,8 @@
 class PlayersController < PublicController
   decorates_assigned :player
 
+  skip_before_action :verify_authenticity_token, only: :index
+
   has_scope :by_character_id do |controller, scope, value|
     if controller.params[:by_character_id_mains_only] == '1'
       scope.by_main_character_id(value)
@@ -27,7 +29,14 @@ class PlayersController < PublicController
   def index
     @players = players Player
     @meta_title = 'Joueurs'
-    render layout: 'application_v2'
+    respond_to do |format|
+      format.html do
+        render layout: 'application_v2'
+      end
+      format.json do
+        render 'map'
+      end
+    end
   end
 
   def test
@@ -187,6 +196,7 @@ class PlayersController < PublicController
   end
 
   def select_layout
-    @map ? 'map' : 'application'
+    'application_v2'
+    # @map ? 'map' : 'application'
   end
 end

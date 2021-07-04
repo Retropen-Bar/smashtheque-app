@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::Base
-
   # Warning : this file is used by ActiveAdmin
 
   helper_method :admin_user_signed_in?
@@ -79,5 +78,4 @@ class ApplicationController < ActionController::Base
   def render_map(locals)
     render_to_string partial: 'shared/map', layout: false, locals: locals
   end
-
 end

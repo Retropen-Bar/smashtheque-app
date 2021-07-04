@@ -1,4 +1,4 @@
-<div class='map-container'>
+<div class='map-container' data-url="<%= url_for(format: :json, map: 1) %>">
   <div class='map' id='<%= container_id %>'></div>
 
   <% if layers.any? %>
@@ -46,55 +46,3 @@
   <%= html_content.presence %>
 
 </div>
-
-<script>
-
-  var map = L.map('<%= container_id %>', {<%= options.map{|k,v| "#{k}: #{v}"}.join(', ') %>});
-  window.maps['<%= container_id %>'] = {map: map};
-  map.setView([<%= center[:latlng][0] %>, <%= center[:latlng][1] %>], <%= center[:zoom] %>);
-
-  var icons = {};
-  <% icons.each do |key, icon| %>
-    <% icon_settings = prep_icon_settings(icon) %>
-    icons['<%= key %>'] = L.icon({
-      iconUrl: '<%= icon_settings[:icon_url] %>',
-      iconSize: <%= icon_settings[:icon_size] %>,
-      iconAnchor: <%= icon_settings[:icon_anchor] %>,
-      className: '<%= icon_settings[:class_name] %>'
-    });
-  <% end %>
-
-  var markers = L.markerClusterGroup({
-    showCoverageOnHover: false,
-    zoomToBoundsOnClick: true,
-    removeOutsideVisibleBounds: true
-  });
-  var layers = {};
-  var marker;
-  <% markers.each do |layer_id, layer_markers| %>
-    layers['<%= layer_id %>'] = L.featureGroup.subGroup(markers, []).addTo(map);
-    <% layer_markers.each_with_index do |marker, index| %>
-      <% icon_param = marker[:icon].blank? ? '' : ", {icon: icons['#{marker[:icon]}']}" %>
-      marker = L.marker([<%= marker[:latlng][0] %>, <%= marker[:latlng][1] %>]<%== icon_param %>).addTo(layers['<%= layer_id %>']);
-      <% if marker[:popup] %>
-        marker.bindPopup('<%= escape_javascript marker[:popup] %>');
-      <% elsif marker[:modal_url] %>
-        marker.on('click', function(ev) {
-          openMapModal('<%= marker[:modal_url] %>');
-        });
-      <% end %>
-    <% end %>
-  <% end %>
-  window.maps['<%= container_id %>'].layers = layers;
-
-  L.tileLayer('<%= tile_layer %>', {
-    attribution: '<%= attribution %>',
-    maxZoom: <%= max_zoom %>,
-    <% options.each do |key, value| %>
-      <%= key.to_s.camelize(:lower) %>: '<%= value %>',
-    <% end %>
-  }).addTo(map);
-
-  markers.addTo(map);
-
-</script>

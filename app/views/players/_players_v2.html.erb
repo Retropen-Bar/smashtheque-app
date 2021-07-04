@@ -1,6 +1,6 @@
 <% if @map %>
 
-  <%= players_map(players.limit(nil).offset(0), @map_seconds) do %>
+  <%= players_map(players.limit(100).offset(0), @map_seconds) do %>
     <div id="map-list-link">
       <div class="btn-group" role="group">
         <%= link_to 'Liste', url_for(map: 0), class: 'btn btn-outline-primary' %>
