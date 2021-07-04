@@ -20,7 +20,7 @@
       }
 
       @include media-breakpoint-up(xl) {
-        width: auto;
+        width: 290px;
       }
     }
   }
@@ -296,17 +296,23 @@
         border-radius: $btn-padding-x-lg * 2;
         padding: $btn-padding-y $btn-padding-x-lg !important;
         font-weight: 600;
+        border: 2px solid transparent;
+        color: rgba($gray-light, 0.7);
+        transition: $transition-base;
+        text-transform: uppercase;
 
         &:after {
           content: none;
         }
 
-        &[aria-expanded="true"] {
+        &:not(.active)[aria-expanded="true"] {
           background-color: rgba($body-color, 0.1);
         }
-
-        &:hover {
-          background-color: $gray-medium;
+        
+        &:not(.active):hover,
+        &:not(.active)[aria-expanded="true"] {
+          border-color: $body-color;
+          color: $body-color;
         }
       }
 
@@ -374,7 +380,6 @@
 
       .dropdown-toggle:not(.admin),
       .navbar-nav .nav-link:not(.admin) {
-        font-size: $font-size-base;
         padding: $btn-padding-y $btn-padding-x-lg * 1.25 !important;
       }
     }
@@ -405,14 +410,24 @@
       .dropdown-menu {
         position: absolute;
       }
-
-      .current-user-name {
+      
+      .dropdown-toggle .current-user-name {
         padding-left: map-get($spacers, 2);
+        display: none;
       }
 
-      .btn-link:not(.dropdown-toggle) span,
-      .current-user-name {
-        display: none;
+      .dropdown-item-text.current-user-name {
+        display: block;
+      }
+
+      @include media-breakpoint-up(sm) {
+        .dropdown-item-text.current-user-name {
+          display: none;
+        }
+
+        .dropdown-toggle .current-user-name {
+          display: inline;
+        }
       }
 
       @include media-breakpoint-up(xxl) {
@@ -422,11 +437,6 @@
       @media screen and (min-width: 1500px) {
         margin-left: 0;
         margin-right: 0;
-
-        .btn-link:not(.dropdown-toggle) span,
-        .current-user-name {
-          display: inline;
-        }
       }
     }
 
@@ -436,6 +446,27 @@
         margin: 0 $spacer * 1.15;
         align-self: stretch;
         height: auto;
+      }
+    }
+  }
+}
+
+
+
+@include media-breakpoint-up(xxl) {
+  @each $section_name, $color in $sections {
+    .section-#{$section_name} #main-nav {
+      .dropdown-toggle:not(.admin),
+      .navbar-nav .nav-link:not(.admin) { 
+        &.active {
+          border-color: $color;
+          color: $color;
+          background-color: transparent;
+
+          &[aria-expanded="true"] {
+            background-color: rgba($color, 0.1);
+          }
+        }
       }
     }
   }

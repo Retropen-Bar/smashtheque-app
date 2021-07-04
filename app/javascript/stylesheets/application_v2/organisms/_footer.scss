@@ -35,7 +35,7 @@ footer {
   }
 }
 
-@include media-breakpoint-down(xs) {
+@include media-breakpoint-down(sm) {
   body:not(.home) footer {
     margin-bottom: 88px;
   }

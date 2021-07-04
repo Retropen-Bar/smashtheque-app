@@ -25,12 +25,12 @@
   $hover-background: darken($color, 7.5%);
 
   .btn-group.#{$section_name} > .btn:not(.btn-outline) {
-    background-color: rgba($color, 0.8);
-    color: color-yiq($color, $light: $white);
+    background-color: $color;
+    color: $white;
 
     @include hover() {
-      color: color-yiq($hover-background);
-      background-color: rgba($hover-background, 0.5);
+      color: rgba($white, 0.85);
+      background-color: $hover-background;
     }
   }
 }
