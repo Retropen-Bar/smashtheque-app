@@ -16,13 +16,7 @@ class Ability
     manage_or_read = admin_level >= ADMIN_LEVEL_ADMIN ? :manage : :read
 
     # User
-    if admin_level >= ADMIN_LEVEL_ADMIN
-      can :manage, User
-      cannot :manage, User, is_root: true
-      can :read, User
-    elsif user.persisted?
-      can :read, User
-    end
+    can manage_or_cru, User
 
     # ApiRequest
     if admin_level >= ADMIN_LEVEL_ADMIN
