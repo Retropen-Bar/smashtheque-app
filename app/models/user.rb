@@ -310,7 +310,10 @@ class User < ApplicationRecord
     return true unless discord_user
 
     discord_user.fetch_discord_data
-    discord_user.save
+    return false unless discord_user.save
+
+    discord_user.update_discord_roles
+    true
   end
 
   def refetch_smashgg_users
