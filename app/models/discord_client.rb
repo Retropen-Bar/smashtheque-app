@@ -1,5 +1,4 @@
 class DiscordClient
-
   EMPTY_LINE = "\u200b".freeze
   MESSAGE_LINE_SEPARATOR = "\n".freeze
   SLEEP_TIMER = (ENV['DISCORD_SLEEP'] || 5).to_i
@@ -46,6 +45,36 @@ class DiscordClient
       return role['id'] if role['name'] == role_name
     end
     nil
+  end
+
+  def add_role_to_user(guild_id:, user_id:, role_id:)
+    Rails.logger.debug "[DiscordClient] adding role #{role_id} to member #{user_id}"
+    guild = bot.server(guild_id)
+    member = guild.member(user_id)
+    if member.roles.map(&:id).include?(role_id.to_i)
+      Rails.logger.debug "Member #{user_id} already has role #{role_id}"
+      return false
+    end
+    member.set_roles(member.roles.map(&:id) + [role_id.to_i])
+  end
+
+  def remove_role_from_user(guild_id:, user_id:, role_id:)
+    Rails.logger.debug "[DiscordClient] removing role #{role_id} from member #{user_id}"
+    guild = bot.server(guild_id)
+    member = guild.member(user_id)
+    unless member.roles.map(&:id).include?(role_id.to_i)
+      Rails.logger.debug "Member #{user_id} does not have role #{role_id}"
+      return false
+    end
+    member.set_roles(member.roles.map(&:id) - [role_id.to_i])
+  end
+
+  def toggle_user_role(toggle, guild_id:, user_id:, role_id:)
+    if toggle
+      add_role_to_user(guild_id: guild_id, user_id: user_id, role_id: role_id)
+    else
+      remove_role_from_user(guild_id: guild_id, user_id: user_id, role_id: role_id)
+    end
   end
 
   def bot_user_id
@@ -109,7 +138,7 @@ class DiscordClient
   end
 
   def find_or_create_guild_text_channel(guild_id, find_params, create_params = {})
-    puts "[DiscordClient] find_or_create_guild_text_channel(#{guild_id}, #{find_params.inspect}, #{create_params.inspect})"
+    Rails.logger.debug "[DiscordClient] find_or_create_guild_text_channel(#{guild_id}, #{find_params.inspect}, #{create_params.inspect})"
     found_channel = find_guild_text_channel(guild_id, find_params)
     return found_channel if found_channel
 
@@ -174,11 +203,11 @@ class DiscordClient
     return nil if response.nil?
     error = JSON.parse(response)
     if retry_after = error['retry_after']
-      puts "Retrying in #{retry_after} seconds..."
+      Rails.logger.debug "Retrying in #{retry_after} seconds..."
       sleep retry_after
       delete_channel_message(channel_id, message_id)
     else
-      puts "Unknown error: #{error}"
+      Rails.logger.debug "Unknown error: #{error}"
     end
   end
 
@@ -205,9 +234,9 @@ class DiscordClient
         existing_message = existing_messages[message_idx]
         # but only update it if needed
         if existing_message['content'].eql?(new_message.strip)
-          puts 'existing message is already OK, no need to update it'
+          Rails.logger.debug 'existing message is already OK, no need to update it'
         else
-          puts 'existing message is different, we need to update it'
+          Rails.logger.debug 'existing message is different, we need to update it'
           edit_channel_message channel_id, existing_message['id'], new_message
         end
       else
@@ -228,9 +257,9 @@ class DiscordClient
   private
 
   def api_get(path)
-    puts "=== API REQUEST ==="
+    Rails.logger.debug "=== API REQUEST ==="
     url = URI("#{Discordrb::API::APIBASE}#{path}")
-    puts "GET #{url}"
+    Rails.logger.debug "GET #{url}"
 
     https = Net::HTTP.new(url.host, url.port)
     https.use_ssl = true
@@ -244,9 +273,9 @@ class DiscordClient
   end
 
   def api_post(path, params)
-    puts "=== API REQUEST ==="
+    Rails.logger.debug "=== API REQUEST ==="
     url = URI("#{Discordrb::API::APIBASE}#{path}")
-    puts "POST #{url} #{params.to_json}"
+    Rails.logger.debug "POST #{url} #{params.to_json}"
 
     https = Net::HTTP.new(url.host, url.port)
     https.use_ssl = true
@@ -262,9 +291,9 @@ class DiscordClient
   end
 
   def api_patch(path, params)
-    puts "=== API REQUEST ==="
+    Rails.logger.debug "=== API REQUEST ==="
     url = URI("#{Discordrb::API::APIBASE}#{path}")
-    puts "PATCH #{url} #{params.to_json}"
+    Rails.logger.debug "PATCH #{url} #{params.to_json}"
 
     https = Net::HTTP.new(url.host, url.port)
     https.use_ssl = true
@@ -276,11 +305,11 @@ class DiscordClient
 
     response = https.request(request)
 
-    puts "=== API RESPONSE ==="
-    puts response.inspect
+    Rails.logger.debug "=== API RESPONSE ==="
+    Rails.logger.debug response.inspect
 
     if response.is_a?(Net::HTTPTooManyRequests)
-      puts "too many requests, wait for #{SLEEP_TIMER}s and retry"
+      Rails.logger.debug "too many requests, wait for #{SLEEP_TIMER}s and retry"
       sleep SLEEP_TIMER
       api_patch(path, params)
     else
@@ -289,9 +318,9 @@ class DiscordClient
   end
 
   def api_delete(path)
-    puts "=== API REQUEST ==="
+    Rails.logger.debug "=== API REQUEST ==="
     url = URI("#{Discordrb::API::APIBASE}#{path}")
-    puts "DELETE #{url}"
+    Rails.logger.debug "DELETE #{url}"
 
     https = Net::HTTP.new(url.host, url.port)
     https.use_ssl = true
@@ -352,5 +381,4 @@ class DiscordClient
       b
     )
   end
-
 end

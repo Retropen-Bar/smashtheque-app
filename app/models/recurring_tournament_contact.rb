@@ -20,7 +20,6 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class RecurringTournamentContact < ApplicationRecord
-
   # ---------------------------------------------------------------------------
   # RELATIONS
   # ---------------------------------------------------------------------------
@@ -28,4 +27,12 @@ class RecurringTournamentContact < ApplicationRecord
   belongs_to :recurring_tournament
   belongs_to :user
 
+  # ---------------------------------------------------------------------------
+  # CALLBACKS
+  # ---------------------------------------------------------------------------
+
+  after_commit :update_discord_user_discord_roles, unless: proc { ENV['NO_DISCORD'] }
+  def update_discord_user_discord_roles
+    user&.discord_user&.update_discord_roles
+  end
 end
