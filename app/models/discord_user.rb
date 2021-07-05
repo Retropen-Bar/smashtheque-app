@@ -267,4 +267,7 @@ class DiscordUser < ApplicationRecord
     nil
   end
 
+  def update_discord_roles
+    RetropenBotScheduler.update_member_roles(discord_id: discord_id)
+  end
 end

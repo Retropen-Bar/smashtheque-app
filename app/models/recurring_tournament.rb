@@ -96,7 +96,8 @@ class RecurringTournament < ApplicationRecord
            dependent: :destroy
   has_many :contacts,
            through: :recurring_tournament_contacts,
-           source: :user
+           source: :user,
+           after_remove: :after_remove_contact
 
   has_many :tournament_events, dependent: :nullify
   has_many :duo_tournament_events, dependent: :nullify
@@ -119,9 +120,20 @@ class RecurringTournament < ApplicationRecord
     self.starts_at_min ||= 0
   end
 
-  after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] }
+  after_commit :update_discord, unless: proc { ENV['NO_DISCORD'] }
   def update_discord
     RetropenBotScheduler.rebuild_online_tournaments
+    return true unless previous_changes.has_key?('is_online')
+
+    contacts.each do |user|
+      user&.discord_user&.update_discord_roles
+    end
+  end
+
+  def after_remove_contact(user)
+    return true if ENV['NO_DISCORD']
+
+    user&.discord_user&.update_discord_roles
   end
 
   # ---------------------------------------------------------------------------
