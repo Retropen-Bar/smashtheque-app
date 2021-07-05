@@ -83,7 +83,9 @@ class Ability
     # Tournaments
     can manage_or_cru, RecurringTournament
     can manage_or_cru, TournamentEvent
+    can :convert_to_duo_tournament_event, TournamentEvent
     can manage_or_cru, DuoTournamentEvent
+    can :convert_to_tournament_event, DuoTournamentEvent
 
     # Team
     can manage_or_cru, Team

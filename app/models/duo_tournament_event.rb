@@ -217,4 +217,27 @@ class DuoTournamentEvent < ApplicationRecord
     end
     true
   end
+
+  def convert_to_tournament_event
+    tournament_event = TournamentEvent.new(
+      attributes.slice(
+        *%w[bracket_type bracket_id bracket_url
+           date name participants_count
+           is_complete is_online is_out_of_ranking
+           recurring_tournament_id]
+      )
+    )
+    self.class.transaction do
+      destroy!
+      tournament_event.save!
+    end
+    tournament_event
+  rescue ActiveRecord::RecordNotDestroyed
+    Rails.logger.debug 'Unable to destroy DuoTournamentEvent'
+    nil
+  rescue ActiveRecord::RecordInvalid
+    Rails.logger.debug 'Unable to create TournamentEvent:'
+    Rails.logger.debug tournament_event.errors.full_messages
+    nil
+  end
 end

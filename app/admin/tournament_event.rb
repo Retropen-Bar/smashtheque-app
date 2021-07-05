@@ -264,6 +264,7 @@ ActiveAdmin.register TournamentEvent do
       item 'Compléter avec Challonge', action: :complete_with_bracket if resource.is_on_challonge?
       item 'Recalculer les récompenses', action: :compute_rewards
       item 'Supprimer le graph', action: :purge_graph if resource.graph.attached?
+      item 'Convertir en édition 2v2', action: :convert_to_duo_tournament_event
     end
   end
 
@@ -290,6 +291,16 @@ ActiveAdmin.register TournamentEvent do
   member_action :compute_rewards do
     resource.compute_rewards
     redirect_to request.referer, notice: 'Calcul effectué'
+  end
+
+  member_action :convert_to_duo_tournament_event do
+    duo_tournament_event = resource.convert_to_duo_tournament_event
+    if duo_tournament_event
+      redirect_to [:admin, duo_tournament_event], notice: 'Conversion effectuée'
+    else
+      flash[:error] = 'Conversion échouée'
+      redirect_to request.referer
+    end
   end
 
   # ---------------------------------------------------------------------------
