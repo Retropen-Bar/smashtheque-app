@@ -51,6 +51,10 @@ class DiscordClient
     Rails.logger.debug "[DiscordClient] adding role #{role_id} to member #{user_id}"
     guild = bot.server(guild_id)
     member = guild.member(user_id)
+    if member.nil?
+      Rails.logger.debug "Account #{user_id} is not a member of this guild"
+      return false
+    end
     if member.roles.map(&:id).include?(role_id.to_i)
       Rails.logger.debug "Member #{user_id} already has role #{role_id}"
       return false
@@ -62,6 +66,10 @@ class DiscordClient
     Rails.logger.debug "[DiscordClient] removing role #{role_id} from member #{user_id}"
     guild = bot.server(guild_id)
     member = guild.member(user_id)
+    if member.nil?
+      Rails.logger.debug "Account #{user_id} is not a member of this guild"
+      return false
+    end
     unless member.roles.map(&:id).include?(role_id.to_i)
       Rails.logger.debug "Member #{user_id} does not have role #{role_id}"
       return false
