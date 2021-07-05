@@ -16,7 +16,8 @@ class Ability
     manage_or_read = admin_level >= ADMIN_LEVEL_ADMIN ? :manage : :read
 
     # User
-    can manage_or_cru, User
+    can manage_or_cru, User, { is_root: false }
+    can :read, User, { is_root: true }
 
     # ApiRequest
     if admin_level >= ADMIN_LEVEL_ADMIN
