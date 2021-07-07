@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_02_183859) do
+ActiveRecord::Schema.define(version: 2021_07_07_195416) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -549,8 +549,8 @@ ActiveRecord::Schema.define(version: 2021_07_02_183859) do
     t.float "secondary_longitude"
     t.string "main_locality"
     t.string "secondary_locality"
-    t.string "main_countrycode"
-    t.string "secondary_countrycode"
+    t.string "main_countrycode", null: false
+    t.string "secondary_countrycode", null: false
   end
 
   create_table "versions", force: :cascade do |t|
