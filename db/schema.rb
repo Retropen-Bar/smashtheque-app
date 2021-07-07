@@ -549,8 +549,8 @@ ActiveRecord::Schema.define(version: 2021_07_07_195416) do
     t.float "secondary_longitude"
     t.string "main_locality"
     t.string "secondary_locality"
-    t.string "main_countrycode", null: false
-    t.string "secondary_countrycode", null: false
+    t.string "main_countrycode", default: "", null: false
+    t.string "secondary_countrycode", default: "", null: false
   end
 
   create_table "versions", force: :cascade do |t|
