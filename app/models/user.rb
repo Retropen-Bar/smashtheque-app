@@ -18,14 +18,14 @@
 #  last_sign_in_at               :datetime
 #  last_sign_in_ip               :inet
 #  main_address                  :string
-#  main_countrycode              :string
+#  main_countrycode              :string           default(""), not null
 #  main_latitude                 :float
 #  main_locality                 :string
 #  main_longitude                :float
 #  name                          :string           not null
 #  remember_created_at           :datetime
 #  secondary_address             :string
-#  secondary_countrycode         :string
+#  secondary_countrycode         :string           default(""), not null
 #  secondary_latitude            :float
 #  secondary_locality            :string
 #  secondary_longitude           :float
@@ -310,7 +310,10 @@ class User < ApplicationRecord
     return true unless discord_user
 
     discord_user.fetch_discord_data
-    discord_user.save
+    return false unless discord_user.save
+
+    discord_user.update_discord_roles
+    true
   end
 
   def refetch_smashgg_users

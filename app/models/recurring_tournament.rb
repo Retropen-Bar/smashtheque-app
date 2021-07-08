@@ -5,12 +5,14 @@
 #  id               :bigint           not null, primary key
 #  address          :string
 #  address_name     :string
+#  countrycode      :string
 #  date_description :string
 #  is_archived      :boolean          default(FALSE), not null
 #  is_hidden        :boolean          default(FALSE), not null
 #  is_online        :boolean          default(FALSE), not null
 #  latitude         :float
 #  level            :string
+#  locality         :string
 #  longitude        :float
 #  misc             :text
 #  name             :string           not null
@@ -94,7 +96,8 @@ class RecurringTournament < ApplicationRecord
            dependent: :destroy
   has_many :contacts,
            through: :recurring_tournament_contacts,
-           source: :user
+           source: :user,
+           after_remove: :after_remove_contact
 
   has_many :tournament_events, dependent: :nullify
   has_many :duo_tournament_events, dependent: :nullify
@@ -117,9 +120,20 @@ class RecurringTournament < ApplicationRecord
     self.starts_at_min ||= 0
   end
 
-  after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] }
+  after_commit :update_discord, unless: proc { ENV['NO_DISCORD'] }
   def update_discord
     RetropenBotScheduler.rebuild_online_tournaments
+    return true unless previous_changes.has_key?('is_online')
+
+    contacts.each do |user|
+      user&.discord_user&.update_discord_roles
+    end
+  end
+
+  def after_remove_contact(user)
+    return true if ENV['NO_DISCORD']
+
+    user&.discord_user&.update_discord_roles
   end
 
   # ---------------------------------------------------------------------------
@@ -164,6 +178,37 @@ class RecurringTournament < ApplicationRecord
 
   def is_recurring?
     %i(weekly bimonthly monthly).include?(recurring_type.to_sym)
+  end
+
+  def self.near_community(community, radius: 50)
+    near(
+      [community.latitude, community.longitude],
+      radius,
+      units: :km,
+      select: 'id',
+      select_distance: false,
+      select_bearing: false
+    ).except(
+      :select
+    )
+  end
+
+  def self.by_community_id_in(*community_ids)
+    communities = Community.where(id: community_ids).to_a
+    first_community = communities.shift
+    result = near_community(first_community)
+    communities.each do |other_community|
+      result = result.or(near_community(other_community))
+    end
+    result
+  end
+
+  # ---------------------------------------------------------------------------
+  # RANSACK
+  # ---------------------------------------------------------------------------
+
+  def self.ransackable_scopes(auth_object = nil)
+    super + %i[by_community_id_in]
   end
 
   # ---------------------------------------------------------------------------

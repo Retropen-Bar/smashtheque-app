@@ -70,12 +70,6 @@ RSpec.describe Ability, type: :model do
   end
 
   context 'helps cannot' do
-    it 'create admins' do
-      expect(@help.can?(:create, User)).to be_falsy
-    end
-    it 'update admins' do
-      expect(@help.can?(:update, User)).to be_falsy
-    end
     it 'destroy admins' do
       expect(@help.can?(:destroy, User)).to be_falsy
     end
@@ -88,6 +82,12 @@ RSpec.describe Ability, type: :model do
   end
 
   context 'helps can' do
+    it 'create admins' do
+      expect(@help.can?(:create, User)).to be_truthy
+    end
+    it 'update admins' do
+      expect(@help.can?(:update, User)).to be_truthy
+    end
     it 'create a Community' do
       expect(@help.can?(:create, Community)).to be_truthy
     end

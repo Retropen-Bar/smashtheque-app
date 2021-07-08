@@ -130,6 +130,7 @@ class RecurringTournamentsController < PublicController
       :date_description, :wday, :starts_at_hour, :starts_at_min,
       :discord_guild_id, :is_online, :level, :size, :registration,
       :address_name, :address, :latitude, :longitude,
+      :locality, :countrycode,
       :twitter_username, :misc,
       :is_archived
     )

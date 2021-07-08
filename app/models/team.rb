@@ -83,15 +83,15 @@ class Team < ApplicationRecord
 
   def roster_url
     return nil unless roster.attached?
+
     roster.service_url
   end
 
   def roster_url=(url)
-    return false if url.blank?
+    return if url.blank?
+
     uri = URI.parse(url)
-    open(url) do |f|
-      roster.attach(io: File.open(f.path), filename: File.basename(uri.path))
-    end
+    roster.attach(io: Down.download(url), filename: File.basename(uri.path))
   end
 
   def as_json(options = {})

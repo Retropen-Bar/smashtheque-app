@@ -21,6 +21,7 @@ import "../src/shared/toastr"
 import "../src/shared/toggles"
 
 import "../src/active_admin/colors"
+import "../src/active_admin/forms"
 import "../src/active_admin/global_search"
 import "../src/active_admin/layout"
 import "../src/active_admin/time_zone"

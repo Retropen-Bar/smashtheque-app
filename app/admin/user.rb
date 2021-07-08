@@ -73,10 +73,12 @@ ActiveAdmin.register User do
     f.semantic_errors *f.object.errors.keys
     f.inputs do
       f.input :name
-      f.input :admin_level,
-              collection: user_admin_level_select_collection,
-              required: false,
-              input_html: { disabled: f.object.is_root? }
+      if can? :admin_level, f.object
+        f.input :admin_level,
+                collection: user_admin_level_select_collection,
+                required: false,
+                input_html: { disabled: f.object.is_root? }
+      end
       f.input :twitter_username
       f.input :administrated_teams,
               collection: user_administrated_teams_select_collection,
@@ -98,17 +100,23 @@ ActiveAdmin.register User do
     f.actions
   end
 
-  permit_params :name, :admin_level, :twitter_username,
-                :is_caster,
-                :is_coach, :coaching_url, :coaching_details,
-                :is_graphic_designer, :graphic_designer_details,
-                :is_available_graphic_designer,
-                :main_address, :main_latitude, :main_longitude,
-                :main_locality, :main_countrycode,
-                :secondary_address, :secondary_latitude, :secondary_longitude,
-                :secondary_locality, :secondary_countrycode,
-                administrated_team_ids: [],
-                administrated_recurring_tournament_ids: []
+  permit_params do
+    parameters = %i[
+      name twitter_username is_caster
+      is_coach coaching_url coaching_details
+      is_graphic_designer graphic_designer_details is_available_graphic_designer
+      main_address main_latitude main_longitude
+      main_locality main_countrycode
+      secondary_address secondary_latitude secondary_longitude
+      secondary_locality secondary_countrycode
+    ] + [
+      administrated_team_ids: [],
+      administrated_recurring_tournament_ids: []
+    ]
+    # resource is not defined here so we cheat with current_user
+    parameters.push :admin_level if can? :admin_level, current_user
+    parameters
+  end
 
   # ---------------------------------------------------------------------------
   # SHOW

@@ -365,10 +365,10 @@ module IsTournamentEvent
     end
 
     def graph_url=(url)
+      return if url.blank?
+
       uri = URI.parse(url)
-      open(url) do |f|
-        graph.attach(io: File.open(f.path), filename: File.basename(uri.path))
-      end
+      graph.attach(io: Down.download(url), filename: File.basename(uri.path))
     end
 
     def self.potential_duplicates
@@ -380,11 +380,18 @@ module IsTournamentEvent
           ).having(
             'COUNT(*) > 1'
           ).map do |results|
-            where(
+            results = where(
               recurring_tournament_id: results[:recurring_tournament_id],
               date: results[:date]
             ).to_a
-          end
+            if results.first.not_duplicates.include?(results.second.id.to_s) || (
+              results.second.not_duplicates.include?(results.first.id.to_s)
+            )
+              nil
+            else
+              results
+            end
+          end.compact
     end
 
     # ---------------------------------------------------------------------------

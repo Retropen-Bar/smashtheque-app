@@ -12,9 +12,9 @@ class PlayersController < PublicController
   end
   has_scope :by_fr_only, type: :boolean, default: false, allow_blank: true do |_, scope, value|
     if value
-      scope.by_main_countrycode([nil, 'FR'])
+      scope.by_main_countrycode(['', 'FR'])
     else
-      scope.by_main_countrycode([nil, 'FR'] + User::FRENCH_SPEAKING_COUNTRIES)
+      scope.by_main_countrycode(['', 'FR'] + User::FRENCH_SPEAKING_COUNTRIES)
     end
   end
   has_scope :by_team_id

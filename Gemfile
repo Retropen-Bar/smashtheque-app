@@ -153,3 +153,6 @@ gem 'lograge'
 
 # fix CORS
 gem 'rack-cors'
+
+# download images
+gem 'down'

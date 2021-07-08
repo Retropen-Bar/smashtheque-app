@@ -16,13 +16,8 @@ class Ability
     manage_or_read = admin_level >= ADMIN_LEVEL_ADMIN ? :manage : :read
 
     # User
-    if admin_level >= ADMIN_LEVEL_ADMIN
-      can :manage, User
-      cannot :manage, User, is_root: true
-      can :read, User
-    elsif user.persisted?
-      can :read, User
-    end
+    can manage_or_cru, User, { is_root: false }
+    can :read, User, { is_root: true }
 
     # ApiRequest
     if admin_level >= ADMIN_LEVEL_ADMIN
@@ -54,7 +49,7 @@ class Ability
     can manage_or_cru, DiscordGuildAdmin
 
     # DiscordUser
-    can manage_or_read, DiscordUser
+    can manage_or_cru, DiscordUser
     can :fetch_discord_data, DiscordUser
 
     # Duo
@@ -88,7 +83,9 @@ class Ability
     # Tournaments
     can manage_or_cru, RecurringTournament
     can manage_or_cru, TournamentEvent
+    can :convert_to_duo_tournament_event, TournamentEvent
     can manage_or_cru, DuoTournamentEvent
+    can :convert_to_tournament_event, DuoTournamentEvent
 
     # Team
     can manage_or_cru, Team

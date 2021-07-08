@@ -28,7 +28,7 @@ class RetropenBot
 
   EMOJI_GUILD_ADMIN = '746006429156245536'.freeze
   EMOJI_TEAM_ADMIN = '745255339364057119'.freeze
-  EMOJI_TWITCH = '743601202716999720'.freeze
+  EMOJI_TWITCH = '862611411024085012'.freeze
   EMOJI_YOUTUBE = '743601431499767899'.freeze
   EMOJI_TOURNAMENT = '743286485930868827'.freeze
   EMOJI_POINTS_ONLINE = '795277209715212298'.freeze
@@ -38,6 +38,9 @@ class RetropenBot
   EMOJI_GRAPHIC_DESIGNER_UNAVAILABLE = '752212328833089746'.freeze
   EMOJI_CASTER = '745255394632269984'.freeze
   EMOJI_COACH = '743286485930868827'.freeze
+
+  ONLINE_TO_ROLE_ID = ENV['DISCORD_ONLINE_TO_ROLE_ID']
+  OFFLINE_TO_ROLE_ID = ENV['DISCORD_OFFLINE_TO_ROLE_ID']
 
   # ---------------------------------------------------------------------------
   # CONSTRUCTOR
@@ -389,6 +392,37 @@ class RetropenBot
   def self.name_letter(name)
     return nil if name.blank?
     I18n.transliterate(name.first).downcase
+  end
+
+  # ---------------------------------------------------------------------------
+  # ROLES
+  # ---------------------------------------------------------------------------
+
+  def toggle_role(discord_id, role_id, toggle)
+    return false unless role_id
+
+    client.toggle_user_role(
+      toggle,
+      guild_id: @guild_id,
+      user_id: discord_id,
+      role_id: role_id
+    )
+  end
+
+  def update_member_roles(discord_id)
+    discord_user = DiscordUser.find_by(discord_id: discord_id)
+    return false unless discord_user
+
+    toggle_role(
+      discord_id,
+      ONLINE_TO_ROLE_ID,
+      discord_user.administrated_recurring_tournaments.online.any?
+    )
+    toggle_role(
+      discord_id,
+      OFFLINE_TO_ROLE_ID,
+      discord_user.administrated_recurring_tournaments.offline.any?
+    )
   end
 
   # ---------------------------------------------------------------------------

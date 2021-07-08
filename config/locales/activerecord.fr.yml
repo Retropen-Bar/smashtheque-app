@@ -232,6 +232,7 @@ fr:
         address: Adresse du lieu
         address_name: Nom du lieu
         contacts: TOs
+        countrycode: Pays
         date_description: Description de la date
         discord_guild: Serveur Discord
         duo_tournament_events: Éditions 2v2
@@ -240,6 +241,7 @@ fr:
         is_online: Online ?
         latitude: Latitude
         level: Difficulté
+        locality: Ville
         longitude: Longitude
         misc: Autres infos
         name: Nom
