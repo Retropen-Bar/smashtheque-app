@@ -4,7 +4,9 @@
 
     <%= render 'layouts/application_v2/players/index_nav' %>
 
-    <div class="list-characters">
+    <div class="d-block d-lg-none mt-3"></div>
+
+    <div class="list-characters text-center text-lg-left">
       <% @characters.each do |character| %>
         <%= render 'characters/character_v2', character: character.decorate %>
       <% end %>
