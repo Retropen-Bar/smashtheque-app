@@ -1,7 +1,6 @@
 class TeamsController < PublicController
-
-  before_action :set_team, only: %w(edit update)
-  before_action :verify_team!, only: %w(edit update)
+  before_action :set_team, only: %w[edit update]
+  before_action :verify_team!, only: %w[edit update]
   decorates_assigned :team
 
   has_scope :administrated_by
@@ -10,13 +9,12 @@ class TeamsController < PublicController
   has_scope :on_abc
 
   def index
-    @teams = apply_scopes(Team.order("lower(name)")).all
+    @teams = apply_scopes(Team.order('lower(name)')).all
     @meta_title = 'Équipes'
+    render layout: 'application_v2'
   end
 
-  def edit
-
-  end
+  def edit; end
 
   def update
     @team.attributes = team_params
@@ -48,5 +46,4 @@ class TeamsController < PublicController
       player_ids: []
     )
   end
-
 end
