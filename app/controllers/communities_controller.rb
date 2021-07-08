@@ -1,5 +1,4 @@
 class CommunitiesController < PublicController
-
   has_scope :page, default: 1
   has_scope :per
   has_scope :on_abc
@@ -8,6 +7,6 @@ class CommunitiesController < PublicController
   def index
     @communities = apply_scopes(Community.order("lower(name)")).all
     @meta_title = 'Communautés'
+    render layout: 'application_v2'
   end
-
 end

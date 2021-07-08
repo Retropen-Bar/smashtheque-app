@@ -31,8 +31,19 @@ class CommunityDecorator < BaseDecorator
     logo_url.presence || first_discord_guild_icon_image_url || default_logo_image_url
   end
 
-  def any_image_tag(options = {})
-    h.image_tag_with_max_size any_image_url, options.merge(class: 'avatar')
+  def any_non_default_image_url
+    logo_url.presence || first_discord_guild_icon_image_url
+  end
+
+  def avatar_tag(size = nil)
+    h.image_tag 's.gif',
+                class: 'avatar',
+                style: [
+                  "background-image: url(\"#{any_non_default_image_url}\"), url(\"#{default_logo_image_url}\")",
+                  'background-size: cover',
+                  "width: #{size}px",
+                  "height: #{size}px"
+                ].join(';')
   end
 
   def logo_image_tag(options = {})
@@ -49,7 +60,7 @@ class CommunityDecorator < BaseDecorator
   end
 
   def default_logo_image_url
-    'default-community-logo.png'
+    @@default_logo_image_url ||= h.image_url('default-community-logo.png')
   end
 
   def name_with_logo(options = {})
