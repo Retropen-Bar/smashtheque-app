@@ -13,7 +13,7 @@ module IconsHelper
 
     File.read(file_path).gsub(
       'viewBox=',
-      'class="icon" fill="currentColor" viewBox='
+      "class=\"icon icon--#{name}\" fill=\"currentColor\" viewBox="
     ).html_safe
   end
 end

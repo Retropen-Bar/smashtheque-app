@@ -25,31 +25,31 @@
               <small class="text-muted d-inline-block d-xl-none"><%= players.total_count %> résultat(s)</small>
               <div role="group" class="ml-auto btn-group btn-group-sm players d-flex d-xl-none">
                 <button type="button" class="btn">
-                  <%= render partial: 'shared/icons/liste' %>
+                  <%= svg_icon_tag :liste %>
                   <span class="sr-only">Liste</span>
                 </button>
                 <%= link_to url_for(map: 1), class: 'btn btn-outline' do %>
-                  <%= render partial: 'shared/icons/map' %>
+                  <%= svg_icon_tag :map %>
                   <span class="sr-only">Carte</span>
                 <% end %>
               </div>
               <button @click="filtersVisible = true" type="button" class="btn btn-dark btn-sm btn-with-icon rounded-pill players  ml-3<%= ' active' if params[:on_abc] %> d-flex d-xl-none">
-                <%= render partial: 'shared/icons/filtres' %> Filtres<%= ' (1)' if params[:on_abc] %>
+                <%= svg_icon_tag :filtres %> Filtres<%= ' (1)' if params[:on_abc] %>
               </button>
               <slide-out dock="bottom" :visible.sync="filtersVisible" :size="[0]" :arrow-button="false" title="Filtres">
                 <template #header>
                   <div class="d-flex align-items-center justify-content-between">
                     <p class="m-0">
-                      <%= render partial: 'shared/icons/filtres' %> Filtres<%= ' (1)' if params[:on_abc] %>
+                      <%= svg_icon_tag :filtres %> Filtres<%= ' (1)' if params[:on_abc] %>
                     </p>
                     <button @click="filtersVisible = false" type="button" class="btn btn-sm btn-icon rounded-circle ml-3">
-                      <%= render partial: 'shared/icons/croix' %>
+                      <%= svg_icon_tag :croix %>
                       <span class="sr-only">Fermer</span>
                     </button>
                   </div>
                 </template>
                 <section class="mb-n4">
-                  <h5><%= render partial: 'shared/icons/abcd' %> Abécédaire</h5>
+                  <h5><%= svg_icon_tag :abcd %> Abécédaire</h5>
                   <%= render 'shared/letters' %>
                 </section>
               </slide-out>
@@ -60,11 +60,11 @@
               <small class="text-muted"><%= players.total_count %> résultat(s)</small>
               <div role="group" class="ml-auto btn-group btn-group-sm players">
                 <button type="button" class="btn">
-                  <%= render partial: 'shared/icons/liste' %>
+                  <%= svg_icon_tag :liste %>
                   <span class="sr-only">Liste</span>
                 </button>
                 <%= link_to url_for(map: 1), class: 'btn btn-outline' do %>
-                  <%= render partial: 'shared/icons/map' %>
+                  <%= svg_icon_tag :map %>
                   <span class="sr-only">Carte</span>
                 <% end %>
               </div>
