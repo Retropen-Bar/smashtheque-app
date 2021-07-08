@@ -33,7 +33,7 @@
                   <span class="sr-only">Carte</span>
                 <% end %>
               </div>
-              <button @click="filtersVisible = true" type="button" class="btn btn-dark btn-sm btn-with-icon rounded-pill players  ml-3<%= ' active' if params[:on_abc] %> d-flex d-xl-none">
+              <button @click="filtersVisible = true" type="button" class="btn btn-dark btn-sm btn-with-icon rounded-pill players ml-3<%= ' active' if params[:on_abc] %> d-flex d-xl-none">
                 <%= svg_icon_tag :filtres %> Filtres<%= ' (1)' if params[:on_abc] %>
               </button>
               <slide-out dock="bottom" :visible.sync="filtersVisible" :size="[0]" :arrow-button="false" title="Filtres">
@@ -90,4 +90,5 @@
       </div>
     </div>
   </div>
+
 <% end %>

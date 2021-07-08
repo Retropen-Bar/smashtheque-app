@@ -1,5 +1,4 @@
 class DuosController < PublicController
-
   decorates_assigned :duo
 
   has_scope :page, default: 1
@@ -11,6 +10,7 @@ class DuosController < PublicController
   def index
     @duos = duos Duo
     @meta_title = 'Duos'
+    render layout: 'application_v2'
   end
 
   def show

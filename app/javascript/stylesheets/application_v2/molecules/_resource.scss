@@ -213,3 +213,9 @@
     }
   }
 }
+
+.duo {
+  .resource-avatar + .resource-avatar {
+    margin-left: -34px;
+  }
+}
