@@ -169,6 +169,8 @@ GEM
       rest-client (>= 2.1.0.rc1)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
+    down (5.2.2)
+      addressable (~> 2.5)
     draper (4.0.2)
       actionpack (>= 5.0)
       activemodel (>= 5.0)
@@ -508,6 +510,7 @@ DEPENDENCIES
   devise (>= 4.8.0)
   devise-i18n
   discordrb
+  down
   draper
   factory_bot_rails
   faker

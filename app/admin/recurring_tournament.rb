@@ -62,6 +62,17 @@ ActiveAdmin.register RecurringTournament do
          input_html: { multiple: true, data: { select2: {} } }
   filter :is_archived
   filter :is_hidden
+  filter :is_online
+  filter :by_community_id,
+         as: :select,
+         label: 'Communauté',
+         collection: proc { recurring_tournament_community_select_collection },
+         input_html: { multiple: true, data: { select2: {} } }
+  filter :locality,
+         as: :select,
+         label: 'Ville (exacte)',
+         collection: proc { recurring_tournament_locality_select_collection },
+         input_html: { multiple: true, data: { select2: {} } }
 
   action_item :rebuild,
               only: :index,
@@ -163,6 +174,7 @@ ActiveAdmin.register RecurringTournament do
                 :date_description, :wday, :starts_at_hour, :starts_at_min,
                 :discord_guild_id, :is_online, :level, :size, :registration,
                 :address_name, :address, :latitude, :longitude,
+                :locality, :countrycode,
                 :twitter_username, :misc,
                 :is_archived, :is_hidden, contact_ids: []
 
@@ -192,6 +204,8 @@ ActiveAdmin.register RecurringTournament do
           end
           row :address_name
           row :address, &:address_with_coordinates
+          row :locality
+          row :countrycode, &:country_name
           row :twitter_username, &:twitter_link
           row :misc, &:formatted_misc
           row :is_archived

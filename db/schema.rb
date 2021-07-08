@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_23_122732) do
+ActiveRecord::Schema.define(version: 2021_07_07_195416) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -214,6 +214,7 @@ ActiveRecord::Schema.define(version: 2021_06_23_122732) do
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "is_out_of_ranking", default: false, null: false
     t.boolean "is_online", default: false, null: false
+    t.text "not_duplicates", default: [], array: true
     t.index ["bracket_type", "bracket_id"], name: "index_duo_tournament_events_on_bracket_type_and_bracket_id"
     t.index ["recurring_tournament_id"], name: "index_duo_tournament_events_on_recurring_tournament_id"
     t.index ["top1_duo_id"], name: "index_duo_tournament_events_on_top1_duo_id"
@@ -343,6 +344,8 @@ ActiveRecord::Schema.define(version: 2021_06_23_122732) do
     t.string "twitter_username"
     t.text "misc"
     t.boolean "is_hidden", default: false, null: false
+    t.string "locality"
+    t.string "countrycode"
     t.index ["discord_guild_id"], name: "index_recurring_tournaments_on_discord_guild_id"
   end
 
@@ -471,6 +474,7 @@ ActiveRecord::Schema.define(version: 2021_06_23_122732) do
     t.bigint "bracket_id"
     t.boolean "is_out_of_ranking", default: false, null: false
     t.boolean "is_online", default: false, null: false
+    t.text "not_duplicates", default: [], array: true
     t.index ["bracket_type", "bracket_id"], name: "index_tournament_events_on_bracket_type_and_bracket_id"
     t.index ["recurring_tournament_id"], name: "index_tournament_events_on_recurring_tournament_id"
     t.index ["top1_player_id"], name: "index_tournament_events_on_top1_player_id"
@@ -545,8 +549,8 @@ ActiveRecord::Schema.define(version: 2021_06_23_122732) do
     t.float "secondary_longitude"
     t.string "main_locality"
     t.string "secondary_locality"
-    t.string "main_countrycode"
-    t.string "secondary_countrycode"
+    t.string "main_countrycode", default: "", null: false
+    t.string "secondary_countrycode", default: "", null: false
   end
 
   create_table "versions", force: :cascade do |t|

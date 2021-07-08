@@ -41,6 +41,10 @@ ActiveAdmin.register Player do
            creator_user: :discord_user
 
   index do
+    div do
+      render 'index_top'
+    end
+
     selectable_column
     id_column
     column :name do |decorated|

@@ -87,4 +87,14 @@ class RetropenBotScheduler
   def self.rebuild_online_tournaments
     RetropenBotJobs::RebuildOnlineTournamentsJob.perform_later_if_needed
   end
+
+  # ---------------------------------------------------------------------------
+  # ROLES
+  # ---------------------------------------------------------------------------
+
+  def self.update_member_roles(discord_id:)
+    return false unless discord_id
+
+    RetropenBotJobs::UpdateMemberRolesJob.perform_later(discord_id: discord_id)
+  end
 end

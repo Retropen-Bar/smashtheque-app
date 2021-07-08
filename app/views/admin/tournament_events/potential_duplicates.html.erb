@@ -4,6 +4,7 @@
       <th>Série</th>
       <th>Date</th>
       <th>Éditions</th>
+      <th>Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -16,6 +17,20 @@
             <div>
               <%= event.admin_decorate.admin_link %>
             </div>
+          <% end %>
+        </td>
+        <td>
+          <%= form_tag(
+            [:not_duplicates, :admin, events.first],
+            remote: true,
+            data: {
+              success: "$(this).closest('tr').hide()"
+            }
+          ) do %>
+            <%= hidden_field_tag  :not_duplicate_id,
+                                  events.second.id,
+                                  id: "#{events.first.id}-not-duplicate" %>
+            <%= submit_tag 'Ignorer', class: 'button-auto red' %>
           <% end %>
         </td>
       </tr>
