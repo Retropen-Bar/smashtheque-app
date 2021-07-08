@@ -1,9 +1,13 @@
-<h1 class="page-title">Personnages</h1>
+<h1 class="page-title index-title sr-only">Personnages</h1>
+<div class="container-xl mt-lg-5">
+  <div class="row flex-nowrap align-items-start flex-column flex-lg-row">
 
-<div class="cards-list characters">
-  <% @characters.each do |character| %>
-    <div class="card-container">
-      <%= render 'character', character: character.decorate %>
+    <%= render 'layouts/application_v2/players/index_nav' %>
+
+    <div class="list-characters">
+      <% @characters.each do |character| %>
+        <%= render 'characters/character_v2', character: character.decorate %>
+      <% end %>
     </div>
-  <% end %>
+  </div>
 </div>

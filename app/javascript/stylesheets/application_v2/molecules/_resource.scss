@@ -219,3 +219,23 @@
     margin-left: -34px;
   }
 }
+
+.character {
+  .resource-avatar {
+    width: 208px;
+    height: 208px;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0;
+  }
+  .character-name {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 10px 30px;
+    @include border-bottom-radius($card-border-radius);
+    background-color: $gray-dark;
+    text-align: center;
+  }
+}
