@@ -5,7 +5,7 @@
       <%= team.players.count %>
     </div>
     <%= link_to(team, class: 'team-link') do %>
-      <%= team.any_image_tag(max_width: 64, max_height: 64) %>
+      <%= team.avatar_tag(64) %>
       <div class="team-name-and-tags">
         <div>
           <%= team.full_name %>

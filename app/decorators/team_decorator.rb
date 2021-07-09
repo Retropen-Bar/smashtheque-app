@@ -37,8 +37,19 @@ class TeamDecorator < BaseDecorator
     logo_url.presence || first_discord_guild_icon_image_url || default_logo_image_url
   end
 
-  def any_image_tag(options = {})
-    h.image_tag_with_max_size any_image_url, options.merge(class: 'avatar')
+  def any_non_default_image_url
+    logo_url.presence || first_discord_guild_icon_image_url
+  end
+
+  def avatar_tag(size = nil)
+    h.image_tag 's.gif',
+                class: 'avatar',
+                style: [
+                  "background-image: url(\"#{any_non_default_image_url}\"), url(\"#{default_logo_image_url}\")",
+                  'background-size: cover',
+                  "width: #{size}px",
+                  "height: #{size}px"
+                ].join(';')
   end
 
   def logo_image_tag(options = {})
@@ -54,7 +65,7 @@ class TeamDecorator < BaseDecorator
   end
 
   def default_logo_image_url
-    'default-team-logo.png'
+    @@default_logo_image_url ||= h.image_url('default-team-logo.png')
   end
 
   def roster_image_tag(options = {})
@@ -77,14 +88,25 @@ class TeamDecorator < BaseDecorator
   end
 
   def badges
-    (
-      '' + (
-        is_offline? ? h.tag.span('Offline', class: 'badge badge-success') : ''
-      ) + ' ' + (
-        is_online? ? h.tag.span('Online', class: 'badge badge-warning') : ''
-      ) + ' ' + (
-        is_sponsor? ? h.tag.span('Sponsor', class: 'badge badge-dark') : ''
-      )
-    ).html_safe
+    [
+      is_offline? && h.tag.span(class: 'badge badge-with-icon badge-primary') do
+        [
+          h.svg_icon_tag(:offline),
+          '<span class="d-none d-sm-inline">Offline</span>'
+        ].join(' ').html_safe
+      end,
+      is_online? && h.tag.span(class: 'badge badge-with-icon badge-primary') do
+        [
+          h.svg_icon_tag(:online),
+          '<span class="d-none d-sm-inline">Online</span>'
+        ].join(' ').html_safe
+      end,
+      is_sponsor? && h.tag.span(class: 'badge badge-with-icon badge-primary') do
+        [
+          h.svg_icon_tag(:sponsor),
+          '<span class="d-none d-sm-inline">Sponsor</span>'
+        ].join(' ').html_safe
+      end
+    ].reject(&:blank?).join(' ').html_safe
   end
 end

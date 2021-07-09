@@ -76,6 +76,10 @@
     inset: 0;
     z-index: 1;
   }
+
+  @media screen and (min-width: breakpoint-min("md", $grid-breakpoints)) {
+    font-size: 1rem;
+  }
 }
 
 .resource-link {
@@ -155,6 +159,57 @@
       margin-left: 0.5ch;
       margin-right: 0.5ch;
       color: $body-color;
+    }
+  }
+}
+
+.team {
+  .team-players-count {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    padding-left: calc(1rem + 2%);
+    margin: -1.25rem -1.25rem -1.25rem 0;
+    position: relative;
+
+    &::before {
+      content: "";
+      display: block;
+      background-color: $gray-dark;
+      clip-path: polygon(12% 0, 100% 0%, 100% 100%, 0% 100%);
+      position: absolute;
+      inset: 0;
+    }
+
+    @media screen and (min-width: 375px) {
+      width: 85px;
+    }
+
+    a {
+      position: relative;
+      border-radius: 50%;
+      line-height: 1;
+      transition: $transition-base;
+      z-index: 2;
+      font-weight: 600;
+      font-size: 0.875rem;
+
+      .icon {
+        height: 1em;
+        width: 1em;
+        margin-left: 0.25em;
+      }
+    }
+  }
+
+  .team-badges {
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+
+    .badge + .badge {
+      margin-left: 0.25em;
     }
   }
 }
