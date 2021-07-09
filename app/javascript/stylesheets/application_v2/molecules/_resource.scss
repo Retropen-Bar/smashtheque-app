@@ -221,19 +221,20 @@
 }
 
 .character {
+  width: 208px;
+  height: 208px;
+  flex-direction: column;
+
   .resource-avatar {
-    width: 208px;
-    height: 208px;
     align-items: center;
     justify-content: center;
     margin-right: 0;
+    width: 100%;
+    flex-grow: 1;
+    @include border-bottom-radius(0);
   }
   .character-name {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    padding: 10px 30px;
+    padding: 10px;
     @include border-bottom-radius($card-border-radius);
     background-color: $gray-dark;
     text-align: center;
