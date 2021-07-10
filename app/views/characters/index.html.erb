@@ -6,7 +6,7 @@
 
     <div class="d-block d-lg-none mt-3"></div>
 
-    <div class="characters list row justify-content-center justify-content-lg-start">
+    <div class="characters list d-flex flex-wrap justify-content-center justify-content-lg-start">
       <% @characters.each do |character| %>
         <div class="col-auto">
           <%= render 'characters/character_v2', character: character.decorate %>

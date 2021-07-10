@@ -114,7 +114,7 @@
 }
 
 @each $section_name, $color in $sections {
-  .#{$section_name} {
+  .section-#{$section_name} {
     .nav-link.active,
     .show > .nav-link {
       color: $color;

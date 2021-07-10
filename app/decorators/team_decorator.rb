@@ -5,14 +5,14 @@ class TeamDecorator < BaseDecorator
 
   def full_name_with_logo(options = {})
     [
-      any_image_tag(options),
+      logo_image_tag(options),
       full_name
     ].join('&nbsp;').html_safe
   end
 
   def short_name_with_logo(options = {})
     [
-      any_image_tag(options),
+      logo_image_tag(options),
       short_name
     ].join('&nbsp;').html_safe
   end

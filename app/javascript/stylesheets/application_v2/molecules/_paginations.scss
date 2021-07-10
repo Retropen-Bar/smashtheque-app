@@ -24,7 +24,7 @@
 }
 
 @each $section_name, $color in $sections {
-  .#{$section_name} {
+  .section-#{$section_name} {
     .page-link {
       &:focus {
         outline: $pagination-focus-outline;

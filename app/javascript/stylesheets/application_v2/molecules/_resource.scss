@@ -20,6 +20,11 @@
     }
   }
 
+  .card-body {
+    padding-top: $card-spacer-x / 2;
+    padding-bottom: $card-spacer-x / 2;
+  }
+
   .admin-edit-link {
     display: none;
     align-items: center;
@@ -41,7 +46,7 @@
     justify-content: center;
     padding: 1rem;
     padding-left: calc(1rem + 2%);
-    margin: -1.25rem -1.25rem -1.25rem 0;
+    margin: (-$card-spacer-x / 2) -1.25rem (-$card-spacer-x / 2) 0;
     position: relative;
 
     &::before {
@@ -67,8 +72,8 @@
       font-size: 0.875rem;
 
       .icon {
-        height: 1em;
-        width: 1em;
+        height: 1.2em;
+        width: 1.2em;
         margin-left: 0.25em;
       }
     }
@@ -140,7 +145,7 @@
     justify-content: center;
     padding: 1rem;
     padding-left: calc(1rem + 2%);
-    margin: -1.25rem -1.25rem -1.25rem 0;
+    margin: (-$card-spacer-x / 2) -1.25rem (-$card-spacer-x / 2) 0;
     position: relative;
 
     &::before {
@@ -221,8 +226,8 @@
 }
 
 .character {
-  width: 208px;
-  height: 208px;
+  width: 200px;
+  height: 200px;
   flex-direction: column;
 
   .resource-avatar {

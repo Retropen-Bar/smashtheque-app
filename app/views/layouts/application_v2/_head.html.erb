@@ -235,7 +235,7 @@
         </li>
       <% else %>
         <li class="nav-item">
-          <%= link_to user_discord_omniauth_authorize_path, class: 'btn btn-link btn-icon rounded-pill' do %>
+          <%= link_to user_discord_omniauth_authorize_path, class: 'btn btn-link btn-icon rounded-pill', method: 'post' do %>
             <%= svg_icon_tag :avatar %>
             <span class="pl-2">Connexion</span>
           <% end %>
