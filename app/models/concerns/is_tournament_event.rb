@@ -312,6 +312,14 @@ module IsTournamentEvent
       false
     end
 
+    def use_bracket(replace_existing_values)
+      return use_smashgg_event(replace_existing_values) if is_on_smashgg?
+      return use_braacket_tournament(replace_existing_values) if is_on_braacket?
+      return use_challonge_tournament(replace_existing_values) if is_on_challonge?
+
+      false
+    end
+
     def complete_with_smashgg
       update_smashgg_event && use_smashgg_event(false)
     end

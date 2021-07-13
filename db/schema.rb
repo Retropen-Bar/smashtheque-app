@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_07_195416) do
+ActiveRecord::Schema.define(version: 2021_07_13_203706) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -94,6 +94,7 @@ ActiveRecord::Schema.define(version: 2021_07_07_195416) do
     t.string "top7b_participant_name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "is_ignored", default: false, null: false
     t.index ["slug"], name: "index_braacket_tournaments_on_slug", unique: true
   end
 
@@ -113,6 +114,7 @@ ActiveRecord::Schema.define(version: 2021_07_07_195416) do
     t.string "top7b_participant_name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "is_ignored", default: false, null: false
     t.index ["challonge_id"], name: "index_challonge_tournaments_on_challonge_id", unique: true
     t.index ["slug"], name: "index_challonge_tournaments_on_slug", unique: true
   end
