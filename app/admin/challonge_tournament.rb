@@ -1,11 +1,10 @@
 ActiveAdmin.register ChallongeTournament do
-
   decorate_with ActiveAdmin::ChallongeTournamentDecorator
+
+  is_bracket
 
   menu parent: '<img src="https://assets.challonge.com/assets/challonge_fireball_orange-a973ff3b12c34c780fc21313ec71aada3b9b779cbd3a62769e9199ce08395692.svg" height="16" class="logo"/>Challonge'.html_safe,
        label: '<i class="fas fa-fw fa-chess"></i>Tournois'.html_safe
-
-  actions :index, :show, :new, :create, :destroy
 
   # ---------------------------------------------------------------------------
   # INDEX
@@ -29,47 +28,20 @@ ActiveAdmin.register ChallongeTournament do
     ChallongeTournament::PARTICIPANT_NAMES.each do |participant_name|
       column participant_name
     end
+    column :is_ignored
     column :created_at do |decorated|
       decorated.created_at_date
     end
     actions
   end
 
-  scope :all, default: true
-
-  scope :with_any_tournament_event, group: :tournament_event
-  scope :without_any_tournament_event, group: :tournament_event
-
   filter :challonge_id
   filter :slug
   filter :name
   filter :start_at
+  filter :is_ignored
   filter :participants_count
   filter :created_at
-
-  batch_action :create_tournament_event, form: -> {
-    {
-      I18n.t('activerecord.models.recurring_tournament') => RecurringTournament.order(:name).pluck(:name, :id)
-    }
-  } do |ids, inputs|
-    if batch_action_collection.where(id: ids).with_tournament_event.any?
-      flash[:error] = 'Certains tournois sont déjà reliés à une édition'
-      redirect_to request.referer
-    else
-      recurring_tournament = RecurringTournament.find(inputs[I18n.t('activerecord.models.recurring_tournament')])
-      batch_action_collection.where(id: ids).each do |challonge_tournament|
-        challonge_tournament.fetch_challonge_data
-        challonge_tournament.save!
-        tournament_event = TournamentEvent.new(
-          recurring_tournament: recurring_tournament,
-          bracket: challonge_tournament
-        )
-        tournament_event.use_challonge_tournament(true)
-        tournament_event.save!
-      end
-      redirect_to request.referer, notice: 'Éditions créées'
-    end
-  end
 
   # ---------------------------------------------------------------------------
   # FORM
@@ -83,10 +55,6 @@ ActiveAdmin.register ChallongeTournament do
   end
 
   permit_params :challonge_id, :challonge_url
-
-  before_create do |challonge_tournament|
-    challonge_tournament.fetch_challonge_data
-  end
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -110,32 +78,9 @@ ActiveAdmin.register ChallongeTournament do
       row :duo_tournament_event do |decorated|
         decorated.duo_tournament_event_admin_link
       end
+      row :is_ignored
       row :created_at
       row :updated_at
     end
   end
-
-  action_item :create_tournament_event,
-              only: :show,
-              if: proc { resource.tournament_event.nil? && resource.duo_tournament_event.nil? } do
-    dropdown_menu "Créer l'édition", button: { class: 'blue' } do
-      item 'Édition 1v1', resource.create_tournament_event_admin_path
-      item 'Édition 2v2', resource.create_duo_tournament_event_admin_path
-    end
-  end
-
-  action_item :fetch_challonge_data,
-              only: :show do
-    link_to 'Importer les données de Challonge', [:fetch_challonge_data, :admin, resource]
-  end
-  member_action :fetch_challonge_data do
-    resource.fetch_challonge_data
-    if resource.save
-      redirect_to [:admin, resource], notice: 'Import réussi'
-    else
-      flash[:error] = 'Import échoué'
-      redirect_to request.referer
-    end
-  end
-
 end

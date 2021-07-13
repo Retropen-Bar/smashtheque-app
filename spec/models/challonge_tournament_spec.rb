@@ -3,6 +3,7 @@
 # Table name: challonge_tournaments
 #
 #  id                     :bigint           not null, primary key
+#  is_ignored             :boolean          default(FALSE), not null
 #  name                   :string
 #  participants_count     :integer
 #  slug                   :string           not null

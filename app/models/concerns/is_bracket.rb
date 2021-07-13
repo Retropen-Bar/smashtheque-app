@@ -13,6 +13,9 @@ module IsBracket
     # SCOPES
     # ---------------------------------------------------------------------------
 
+    scope :ignored, -> { where(is_ignored: true) }
+    scope :not_ignored, -> { where(is_ignored: false) }
+
     def self.with_tournament_event
       where(id: TournamentEvent.by_bracket_type(to_s.to_sym).select(:bracket_id))
     end
@@ -44,12 +47,5 @@ module IsBracket
     def any_tournament_event
       tournament_event || duo_tournament_event
     end
-
-    # ---------------------------------------------------------------------------
-    # global search
-    # ---------------------------------------------------------------------------
-
-    include PgSearch::Model
-    multisearchable against: %i[name]
   end
 end
