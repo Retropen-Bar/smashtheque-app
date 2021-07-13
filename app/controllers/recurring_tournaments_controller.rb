@@ -126,7 +126,7 @@ class RecurringTournamentsController < PublicController
 
   def recurring_tournament_params
     params.require(:recurring_tournament).permit(
-      :name, :recurring_type,
+      :name, :recurring_type, :logo,
       :date_description, :wday, :starts_at_hour, :starts_at_min,
       :discord_guild_id, :is_online, :level, :size, :registration,
       :address_name, :address, :latitude, :longitude,
