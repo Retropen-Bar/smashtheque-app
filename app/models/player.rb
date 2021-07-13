@@ -398,6 +398,15 @@ class Player < ApplicationRecord
     true
   end
 
+  def move_results_to!(other_player_id)
+    TournamentEvent::TOP_RANKS.each do |rank|
+      TournamentEvent.where("top#{rank}_player_id" => id).find_each do |te|
+        te.send("top#{rank}_player_id=", other_player_id)
+        te.save!
+      end
+    end
+  end
+
   # ---------------------------------------------------------------------------
   # GLOBAL SEARCH
   # ---------------------------------------------------------------------------
