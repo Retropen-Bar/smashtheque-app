@@ -400,9 +400,11 @@ class Player < ApplicationRecord
 
   def move_results_to!(other_player_id)
     TournamentEvent::TOP_RANKS.each do |rank|
-      TournamentEvent.where("top#{rank}_player_id" => id).find_each do |te|
-        te.send("top#{rank}_player_id=", other_player_id)
-        te.save!
+      TournamentEvent.where(
+        self.class.sanitize_sql("top#{rank}_player_id") => id
+      ).find_each do |tournament_event|
+        tournament_event.send("top#{rank}_player_id=", other_player_id)
+        tournament_event.save!
       end
     end
   end
