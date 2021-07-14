@@ -3,6 +3,9 @@ class TeamsController < PublicController
   before_action :verify_team!, only: %w[edit update]
   decorates_assigned :team
 
+  has_scope :by_is_online
+  has_scope :by_is_offline
+  has_scope :by_is_sponsor
   has_scope :administrated_by
   has_scope :page, default: 1
   has_scope :per
@@ -52,6 +55,14 @@ class TeamsController < PublicController
       :short_name, :name, :logo, :roster, :twitter_username,
       :is_offline, :is_online, :is_sponsor,
       player_ids: []
+    )
+  end
+
+  def current_page_params
+    params.permit(
+      :by_is_online, :by_is_offline, :by_is_sponsor,
+      :administrated_by,
+      :page, :per, :on_abc
     )
   end
 end
