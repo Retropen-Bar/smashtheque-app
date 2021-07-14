@@ -7,7 +7,9 @@
       </button>
     </div>
     <div class="modal-body">
-      <%= player.decorate.map_popup %>
+      <%= render 'player_v2',
+                 player: player,
+                 with_communities: true %>
     </div>
   </div>
 </div>
