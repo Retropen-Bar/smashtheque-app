@@ -3,6 +3,7 @@
 # Table name: braacket_tournaments
 #
 #  id                     :bigint           not null, primary key
+#  is_ignored             :boolean          default(FALSE), not null
 #  name                   :string
 #  participants_count     :integer
 #  slug                   :string           not null
@@ -102,6 +103,8 @@ class BraacketTournament < ApplicationRecord
     self.attributes = self.class.attributes_from_api_data(api_data) if api_data
   end
 
+  alias_method :fetch_provider_data, :fetch_braacket_data
+
   def braacket_url
     slug && "https://braacket.com/tournament/#{slug}"
   end
@@ -126,4 +129,11 @@ class BraacketTournament < ApplicationRecord
       self.class.participant_player(send("top#{rank}_participant_name"))
     end
   end
+
+  # ---------------------------------------------------------------------------
+  # global search
+  # ---------------------------------------------------------------------------
+
+  include PgSearch::Model
+  multisearchable against: %i[name]
 end
