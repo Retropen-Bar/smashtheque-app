@@ -19,49 +19,55 @@
       <li class="nav-item dropdown">
         <%= link_to players_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
           <%= fas_icon_tag :user %>
-          <span>Joueurs</span>
+          <span>Joueurs & Cie</span>
         <% end %>
         <div class="dropdown-menu">
           <%= link_to 'Abécédaire', players_path, class: 'dropdown-item' %>
           <%= link_to 'Équipes', teams_path, class: 'dropdown-item' %>
           <%= link_to 'Personnages', characters_path, class: 'dropdown-item' %>
-          <%= link_to 'Communautés', communities_path, class: 'dropdown-item' %>
-          <div class="dropdown-divider"></div>
-          <%= link_to "Observatoire d'Harmonie 1v1", ranking_players_path, class: 'dropdown-item' %>
-        </div>
-      </li>
-
-      <li class="nav-item dropdown">
-        <%= link_to duos_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
-          <%= fas_icon_tag 'user-friends' %>
-          <span>2v2</span>
-        <% end %>
-        <div class="dropdown-menu">
           <%= link_to 'Duos', duos_path, class: 'dropdown-item' %>
-          <div class="dropdown-divider"></div>
-          <%= link_to "Observatoire d'Harmonie 2v2", ranking_duos_path, class: 'dropdown-item' %>
+          <%= link_to 'Communautés locales', communities_path, class: 'dropdown-item' %>
         </div>
       </li>
 
       <li class="nav-item dropdown">
         <%= link_to recurring_tournaments_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
           <%= fas_icon_tag :chess %>
-          <span>Compétition</span>
+          <span>Tournois</span>
         <% end %>
         <div class="dropdown-menu">
-          <%= link_to 'Toutes les séries', recurring_tournaments_path, class: 'dropdown-item' %>
+          <%= link_to 'Séries de tournois', recurring_tournaments_path, class: 'dropdown-item' %>
           <%= link_to 'Éditions 1v1', tournament_events_path, class: 'dropdown-item' %>
           <%= link_to 'Éditions 2v2', duo_tournament_events_path, class: 'dropdown-item' %>
-          <div class="dropdown-divider"></div>
-          <%= link_to 'Planning hebdo online', planning_path, class: 'dropdown-item' %>
           <%= link_to 'Carte du offline', map_recurring_tournaments_path, class: 'dropdown-item' %>
+        </div>
+      </li>
+
+      <li class="nav-item dropdown">
+        <%= link_to planning_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
+          <%= fas_icon_tag :tv %>
+          <span>Smashthèque TV</span>
+        <% end %>
+        <div class="dropdown-menu">
+          <%= link_to 'Planning hebdo online', planning_path, class: 'dropdown-item' %>
+        </div>
+      </li>
+
+      <li class="nav-item dropdown">
+        <%= link_to ranking_players_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
+          <%= fas_icon_tag 'user-friends' %>
+          <span>Observatoire d'Harmonie</span>
+        <% end %>
+        <div class="dropdown-menu">
+          <%= link_to "Observatoire d'Harmonie 1v1", ranking_players_path, class: 'dropdown-item' %>
+          <%= link_to "Observatoire d'Harmonie 2v2", ranking_duos_path, class: 'dropdown-item' %>
         </div>
       </li>
 
       <li class="nav-item dropdown">
         <%= link_to '#', class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
           <%= fas_icon_tag 'user-tie' %>
-          <span>Acteurs</span>
+          <span>Communauté</span>
         <% end %>
         <div class="dropdown-menu">
           <%= link_to 'TOs', contacts_recurring_tournaments_path, class: 'dropdown-item' %>
@@ -70,20 +76,14 @@
           <%= link_to 'Graphistes', graphic_designer_users_path, class: 'dropdown-item' %>
           <%= link_to 'Chaînes Twitch', twitch_channels_path, class: 'dropdown-item' %>
           <%= link_to 'Chaînes YouTube', you_tube_channels_path, class: 'dropdown-item' %>
+          <%= link_to 'Serveurs Discord', discord_guilds_path, class: 'dropdown-item' %>
         </div>
-      </li>
-
-      <li class="nav-item">
-        <%= link_to discord_guilds_path, class: 'nav-link' do %>
-          <i class="fab fa-discord"></i>
-          <span>Serveurs</span>
-        <% end %>
       </li>
 
       <li class="nav-item dropdown">
         <%= link_to '#', class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
           <%= fas_icon_tag 'info-circle' %>
-          <span>Informations</span>
+          <span>Guides</span>
         <% end %>
         <div class="dropdown-menu">
           <% Page.published.header.order("LOWER(name)").each do |page| %>
