@@ -1,77 +1,69 @@
-<% if @map %>
+<h1 class="page-title index-title sr-only"><%= title %></h1>
+<div class="container-xl mt-lg-5">
+  <div class="row flex-nowrap align-items-start flex-column flex-lg-row">
 
-  <%= players_map(players.limit(100).offset(0), @map_seconds) do %>
-    <div id="map-list-link">
-      <div class="btn-group" role="group">
-        <%= link_to 'Liste', url_for(map: 0), class: 'btn btn-outline-primary' %>
-        <button type="button" class="btn btn-primary">Carte</button>
-      </div>
-    </div>
-    <h1 id="map-title"><%= title %></h1>
-  <% end %>
+    <%= render 'layouts/application_v2/players/index_nav' %>
 
-<% else %>
-
-  <h1 class="page-title index-title sr-only"><%= title %></h1>
-  <div class="container-xl mt-lg-5">
-    <div class="row flex-nowrap align-items-start flex-column flex-lg-row">
-
-      <%= render 'layouts/application_v2/players/index_nav' %>
-
-      <div class="col">
-        <div class="row flex-column flex-lg-row align-items-start">
-          <div id="index-filters" class="col-12 col-xl-auto order-xl-1">
-            <section class="index-section py-3 py-xl-0 d-flex d-xl-block flex-wrap align-items-center">
-              <small class="text-muted d-inline-block d-xl-none"><%= players.total_count %> résultat(s)</small>
-              <div role="group" class="ml-auto btn-group btn-group-sm players d-flex d-xl-none">
-                <button type="button" class="btn">
-                  <%= svg_icon_tag :liste %>
-                  <span class="sr-only">Liste</span>
-                </button>
-                <%= link_to url_for(map: 1), class: 'btn btn-outline' do %>
-                  <%= svg_icon_tag :map %>
-                  <span class="sr-only">Carte</span>
-                <% end %>
-              </div>
-              <button @click="filtersVisible = true" type="button" class="btn btn-dark btn-sm btn-with-icon rounded-pill players ml-3<%= ' active' if params[:on_abc] %> d-flex d-xl-none">
-                <%= svg_icon_tag :filtres %> Filtres<%= ' (1)' if params[:on_abc] %>
+    <div class="col">
+      <div class="row flex-column flex-lg-row align-items-start">
+        <div id="index-filters" class="col-12 col-xl-auto order-xl-1">
+          <section class="index-section py-3 py-xl-0 d-flex d-xl-block flex-wrap align-items-center">
+            <small class="text-muted d-inline-block d-xl-none"><%= players.total_count %> résultat(s)</small>
+            <div role="group" class="ml-auto btn-group btn-group-sm players d-flex d-xl-none">
+              <button type="button" class="btn">
+                <%= svg_icon_tag :liste %>
+                <span class="sr-only">Liste</span>
               </button>
-              <slide-out dock="bottom" :visible.sync="filtersVisible" :size="[0]" :arrow-button="false" title="Filtres">
-                <template #header>
-                  <div class="d-flex align-items-center justify-content-between">
-                    <p class="m-0">
-                      <%= svg_icon_tag :filtres %> Filtres<%= ' (1)' if params[:on_abc] %>
-                    </p>
-                    <button @click="filtersVisible = false" type="button" class="btn btn-sm btn-icon rounded-circle ml-3">
-                      <%= svg_icon_tag :croix %>
-                      <span class="sr-only">Fermer</span>
-                    </button>
-                  </div>
-                </template>
-                <section class="mb-n4">
-                  <h5><%= svg_icon_tag :abcd %> Abécédaire</h5>
-                  <%= render 'shared/letters' %>
-                </section>
-              </slide-out>
-            </section>
-          </div>
-          <div class="col">
-            <section class="py-3 d-none d-xl-flex flex-wrap align-items-center">
-              <small class="text-muted"><%= players.total_count %> résultat(s)</small>
-              <div role="group" class="ml-auto btn-group btn-group-sm players">
-                <button type="button" class="btn">
-                  <%= svg_icon_tag :liste %>
-                  <span class="sr-only">Liste</span>
-                </button>
-                <%= link_to url_for(map: 1), class: 'btn btn-outline' do %>
-                  <%= svg_icon_tag :map %>
-                  <span class="sr-only">Carte</span>
-                <% end %>
-              </div>
+              <%= link_to url_for(map: 1), class: 'btn btn-outline' do %>
+                <%= svg_icon_tag :map %>
+                <span class="sr-only">Carte</span>
+              <% end %>
+            </div>
+            <button @click="filtersVisible = true" type="button" class="btn btn-dark btn-sm btn-with-icon rounded-pill players ml-3<%= ' active' if params[:on_abc] %> d-flex d-xl-none">
+              <%= svg_icon_tag :filtres %> Filtres<%= ' (1)' if params[:on_abc] %>
+            </button>
+            <slide-out dock="bottom" :visible.sync="filtersVisible" :size="[0]" :arrow-button="false" title="Filtres">
+              <template #header>
+                <div class="d-flex align-items-center justify-content-between">
+                  <p class="m-0">
+                    <%= svg_icon_tag :filtres %> Filtres<%= ' (1)' if params[:on_abc] %>
+                  </p>
+                  <button @click="filtersVisible = false" type="button" class="btn btn-sm btn-icon rounded-circle ml-3">
+                    <%= svg_icon_tag :croix %>
+                    <span class="sr-only">Fermer</span>
+                  </button>
+                </div>
+              </template>
+              <section class="mb-n4">
+                <h5><%= svg_icon_tag :abcd %> Abécédaire</h5>
+                <%= render 'shared/letters' %>
+              </section>
+            </slide-out>
+          </section>
+        </div>
+        <div class="col">
+          <section class="py-3 d-none d-xl-flex flex-wrap align-items-center">
+            <small class="text-muted"><%= players.total_count %> résultat(s)</small>
+            <div role="group" class="ml-auto btn-group btn-group-sm players">
+              <%= link_to url_for(map: nil), class: "btn #{'btn-outline' if @map}" do %>
+                <%= svg_icon_tag :liste %>
+                <span class="sr-only">Liste</span>
+              <% end %>
+              <%= link_to url_for(map: 1), class: "btn #{'btn-outline' unless @map}" do %>
+                <%= svg_icon_tag :map %>
+                <span class="sr-only">Carte</span>
+              <% end %>
+            </div>
+            <% unless @map %>
               <div class="ml-3">
                 <%= render 'shared/pagination_v2', collection: players %>
               </div>
-            </section>
+            <% end %>
+          </section>
+
+          <% if @map %>
+            <%= players_map(players.limit(100).offset(0), @map_seconds) %>
+          <% else %>
             <div class="players list row">
               <% players.each do |player| %>
                 <div class="col-12 col-lg-6">
@@ -85,10 +77,9 @@
             <div class='my-4'>
               <%= render 'shared/pagination_v2', collection: players %>
             </div>
-          </div>
+          <% end %>
         </div>
       </div>
     </div>
   </div>
-
-<% end %>
+</div>
