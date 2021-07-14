@@ -56,23 +56,6 @@ class PlayerDecorator < BaseDecorator
     h.image_tag 'default-avatar.svg', width: size, class: :avatar
   end
 
-  def map_popup
-    h.tag.div class: 'map-popup-player' do
-      h.link_to model, class: 'player' do
-        [
-          name_with_avatar(size: 64),
-          (
-            h.tag.div class: 'player-characters' do
-              model.characters.map do |character|
-                character.decorate.emoji_image_tag(max_height: 32)
-              end.join('&nbsp;').html_safe
-            end
-          )
-        ].join('<br/>').html_safe
-      end
-    end
-  end
-
   def ban_status
     if model.is_banned?
       h.tag.span  'oui',
