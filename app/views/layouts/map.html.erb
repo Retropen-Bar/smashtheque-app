@@ -4,29 +4,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <%= render partial: 'layouts/application_v2/meta' %>
+    <title>Smashthèque</title>
 
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= favicon_link_tag '/favicon-32.png' %>
 
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <%= stylesheet_pack_tag 'application_v2', media: 'all' %>
+    <%= stylesheet_pack_tag 'application', media: 'all' %>
+    <%= javascript_pack_tag 'application' %>
   </head>
-  <body class="map-layout <%= controller.controller_name %> <%= controller.action_name %> <%= "section-#{current_section_name}" %>">
+  <body class="map-layout">
     <%= render partial: 'layouts/application/flash', flash: flash %>
     <%= render partial: 'layouts/application/head' %>
 
-    <div id="app">
-      <%= yield %>
-    </div>
+    <%= yield %>
 
     <div id="map-modal" class="modal fade" tabindex="-1" aria-hidden="true"></div>
 
     <%= render partial: 'layouts/map/footer' %>
-    <%= javascript_pack_tag 'application_v2' %>
   </body>
 </html>

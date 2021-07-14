@@ -39,14 +39,22 @@ class RecurringTournamentsController < PublicController
   end
 
   def index_json
-    start = params[:startStr] ? Date.parse(params[:startStr]) : Time.now
-    render json: apply_scopes(
-      RecurringTournament.visible.recurring.not_archived
-    ).all.decorate.map { |rc|
-      rc.as_event(week_start: start).merge(
-        url: recurring_tournament_path(rc)
-      )
-    }
+    @map = params[:map].to_i == 1
+    if @map
+      @recurring_tournaments = apply_scopes(
+        RecurringTournament.visible.order('lower(name)')
+      ).includes(:discord_guild).all
+      render 'map'
+    else
+      start = params[:startStr] ? Date.parse(params[:startStr]) : Time.now
+      render json: apply_scopes(
+        RecurringTournament.visible.recurring.not_archived
+      ).all.decorate.map { |rc|
+        rc.as_event(week_start: start).merge(
+          url: recurring_tournament_path(rc)
+        )
+      }
+    end
   end
 
   def index_ical
