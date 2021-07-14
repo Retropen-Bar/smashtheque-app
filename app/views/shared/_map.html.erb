@@ -1,4 +1,4 @@
-<div class='map-container' data-url="<%= url_for(format: :json, map: 1) %>">
+<div class='map-container' data-url="<%= url_with(format: :json) %>">
   <div class='map' id='<%= container_id %>'></div>
 
   <% if layers.any? %>
@@ -14,14 +14,14 @@
         <h3>Seconds</h3>
         <div class="btn-group btn-group-sm" role="group">
           <% if @map_seconds %>
-            <%= link_to 'Sans', url_for(map: 1, seconds: 0), class: 'btn btn-outline-primary' %>
+            <%= link_to 'Sans', url_with(seconds: 0), class: 'btn btn-outline-primary' %>
           <% else %>
             <button type="button" class="btn btn-primary">Sans</button>
           <% end %>
           <% if @map_seconds %>
             <button type="button" class="btn btn-primary">Avec</button>
           <% else %>
-            <%= link_to 'Avec', url_for(map: 1, seconds: 1), class: 'btn btn-outline-primary' %>
+            <%= link_to 'Avec', url_with(seconds: 1), class: 'btn btn-outline-primary' %>
           <% end %>
         </div>
       </div>
@@ -43,6 +43,10 @@
     </div>
   <% end %>
 
-  <%= html_content.presence %>
+  <% if defined?(html_content) %>
+    <%= html_content.presence %>
+  <% end %>
 
 </div>
+
+<div id="map-modal" class="modal fade" tabindex="-1" aria-hidden="true"></div>

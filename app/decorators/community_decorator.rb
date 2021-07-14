@@ -65,7 +65,7 @@ class CommunityDecorator < BaseDecorator
 
   def name_with_logo(options = {})
     [
-      any_image_tag(options),
+      avatar_tag(options[:max_height]),
       name
     ].join('&nbsp;').html_safe
   end

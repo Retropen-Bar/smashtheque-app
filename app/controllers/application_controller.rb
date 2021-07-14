@@ -78,4 +78,12 @@ class ApplicationController < ActionController::Base
   def render_map(locals)
     render_to_string partial: 'shared/map', layout: false, locals: locals
   end
+
+  def skip_bullet
+    previous_value = Bullet.enable?
+    Bullet.enable = false
+    yield
+  ensure
+    Bullet.enable = previous_value
+  end
 end

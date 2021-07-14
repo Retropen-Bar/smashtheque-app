@@ -1,5 +1,4 @@
 class PublicController < ApplicationController
-
   helper_method :current_page_params
   helper_method :user_team_admin?
 
@@ -29,5 +28,4 @@ class PublicController < ApplicationController
     # check
     authenticate_admin_user! unless session[:token] == ENV['PUBLIC_ACCESS_TOKEN']
   end
-
 end

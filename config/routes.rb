@@ -51,7 +51,6 @@ Rails.application.routes.draw do
   # PUBLIC
 
   resources :characters, only: :index
-  get 'characters/:id' => 'players#character_index', as: :character
 
   resources :discord_guilds, only: [:index] do
     collection do
@@ -70,20 +69,22 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :communities, only: :index
-  get 'communities/:id' => 'players#community_index', as: :community
+  resources :communities, only: %i[index show]
 
   resources :players, only: [:index, :show] do
     resources :smashgg_users, only: [:new, :create]
     collection do
+      get :map
       get :autocomplete
       get :ranking
       get :test
     end
+    member do
+      get :modal
+    end
   end
 
-  resources :teams, only: [:index, :edit, :update]
-  get 'teams/:id' => 'players#team_index'
+  resources :teams, only: %i[index show edit update]
 
   resources :recurring_tournaments, only: %i[index show edit update] do
     resources :tournament_events, only: %i[new create]

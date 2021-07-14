@@ -27,7 +27,7 @@ module MapsHelper
               address[:latitude],
               address[:longitude]
             ],
-            popup: player.decorate.map_popup
+            modal_url: modal_player_path(player)
           }
         end
       end

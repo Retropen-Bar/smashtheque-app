@@ -3,6 +3,8 @@ class PlayersController < PublicController
 
   skip_before_action :verify_authenticity_token, only: :index
 
+  around_action :skip_bullet, only: :map, if: -> { defined?(Bullet) }
+
   has_scope :by_character_id do |controller, scope, value|
     if controller.params[:by_character_id_mains_only] == '1'
       scope.by_main_character_id(value)
@@ -24,54 +26,34 @@ class PlayersController < PublicController
   has_scope :per
   has_scope :on_abc
 
-  layout :select_layout
+  layout 'application_v2'
 
   def index
     @players = players Player
     @meta_title = 'Joueurs'
+  end
+
+  def map
+    @map = true
+    @map_seconds = params[:seconds].to_i == 1
+    @players = apply_scopes(Player.legit)
     respond_to do |format|
       format.html do
-        render layout: 'application_v2'
+        # nothing special
       end
       format.json do
-        render 'map'
+        @players = @players.includes(:user, :characters)
       end
     end
+    @meta_title = 'Carte des joueurs'
   end
 
-  def test
-    render layout: 'application_v2'
+  def modal
+    @player = Player.legit.find(params[:id])
+    render :modal, layout: false
   end
 
-  def community_index
-    @community = Community.find(params[:id]).decorate
-    @players = players @community.model.players
-    @meta_title = @community.name
-    @meta_properties['og:type'] = 'profile'
-    @meta_properties['og:image'] = @community.decorate.any_image_url
-    render 'communities/show'
-  end
-
-  def team_index
-    @team = Team.find(params[:id]).decorate
-    @players = players @team.model.players
-    @meta_title = @team.name
-    @meta_properties['og:type'] = 'profile'
-    @meta_properties['og:image'] = @team.any_image_url
-    render 'teams/show'
-  end
-
-  def character_index
-    @character = Character.find(params[:id]).decorate
-    @players = players @character.model.players
-    @background_color = @character.background_color
-    @background_image_url = @character.background_image_data_url
-    @background_size = @character.background_size || 128
-    @meta_title = @character.pretty_name
-    @meta_properties['og:type'] = 'profile'
-    @meta_properties['og:image'] = @character.emoji_image_url
-    render 'characters/show'
-  end
+  def test; end
 
   def recurring_tournament_contacts_index
     @players = players Player.recurring_tournament_contacts
@@ -185,8 +167,6 @@ class PlayersController < PublicController
   private
 
   def players(base)
-    @map = params[:map].to_i == 1
-    @map_seconds = params[:seconds].to_i == 1 if @map
     apply_scopes(
       base.legit.order(:name)
     ).includes(
@@ -195,8 +175,12 @@ class PlayersController < PublicController
     )
   end
 
-  def select_layout
-    'application_v2'
-    # @map ? 'map' : 'application'
+  def current_page_params
+    params.permit(
+      :by_character_id, :by_character_id_mains_only,
+      :by_fr_only, :by_team_id, :by_community_id,
+      :seconds,
+      :page, :per, :on_abc
+    )
   end
 end
