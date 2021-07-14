@@ -13,12 +13,12 @@
 
     <ul class="navbar-nav">
 
-      <li class="nav-item dropdown">
+      <li class="nav-item dropdown players">
         <%= link_to players_path, class: "nav-link dropdown-toggle#{' active' if current_section?(:players)}", data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
           <span>Joueurs & Cie</span>
         <% end %>
         
-        <div class="dropdown-menu players">
+        <div class="dropdown-menu">
           <button type="button" class="btn btn-back btn-sm">
             <span>Joueurs & Cie</span>
           </button>
@@ -34,77 +34,89 @@
             <%= svg_icon_tag :mario %>
             <span>Personnages</span>
           <% end %>
+          <%= link_to duos_path, class: 'dropdown-item' do %>
+            <%= svg_icon_tag :duo %>
+            <span>Duos</span>
+          <% end %>
           <%= link_to communities_path, class: 'dropdown-item' do %>
             <%= svg_icon_tag :lieu %>
             <span>Communautés locales</span>
           <% end %>
-          <div class="dropdown-divider"></div>
-          <%= link_to "Observatoire d'Harmonie 1v1", ranking_players_path, class: 'dropdown-item' %>
         </div>
       </li>
 
-      <li class="nav-item dropdown">
-        <%= link_to duos_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
-          <span>2v2</span>
-        <% end %>
-        <div class="dropdown-menu players">
-          <button type="button" class="btn btn-back btn-sm">
-            <span>2v2</span>
-          </button>
-          <%= link_to 'Duos', duos_path, class: 'dropdown-item' %>
-          <div class="dropdown-divider"></div>
-          <%= link_to "Observatoire d'Harmonie 2v2", ranking_duos_path, class: 'dropdown-item' %>
-        </div>
-      </li>
-
-      <li class="nav-item dropdown">
+      <li class="nav-item dropdown championship">
         <%= link_to recurring_tournaments_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
-          <span>Compétition</span>
+          <span>Tournois</span>
         <% end %>
-        <div class="dropdown-menu championship">
+
+        <div class="dropdown-menu">
           <button type="button" class="btn btn-back btn-sm">
-            <span>Compétition</span>
+            <span>Tournois</span>
           </button>
           <%= link_to 'Séries de tournois', recurring_tournaments_path, class: 'dropdown-item' %>
           <%= link_to 'Éditions 1v1', tournament_events_path, class: 'dropdown-item' %>
           <%= link_to 'Éditions 2v2', duo_tournament_events_path, class: 'dropdown-item' %>
-          <%= link_to 'Planning hebdo', planning_path, class: 'dropdown-item' %>
           <%= link_to 'Carte du offline', map_recurring_tournaments_path, class: 'dropdown-item' %>
         </div>
       </li>
 
-      <li class="nav-item dropdown">
-        <%= link_to '#', class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
-          <span>Acteurs</span>
+      <li class="nav-item dropdown smashtheque-tv">
+        <%= link_to planning_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
+          <span>Smashthèque TV</span>
         <% end %>
-        <div class="dropdown-menu community">
+
+        <div class="dropdown-menu">
           <button type="button" class="btn btn-back btn-sm">
-            <span>Acteurs</span>
+            <span>Smashthèque TV</span>
           </button>
+          <%= link_to 'Planning hebdo', planning_path, class: 'dropdown-item' %>
+        </div>
+      </li>
+
+      <li class="nav-item dropdown rosalina">
+        <%= link_to duos_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
+          <span>Observatoire d'Harmonie</span>
+        <% end %>
+
+        <div class="dropdown-menu">
+          <button type="button" class="btn btn-back btn-sm">
+            <span>Observatoire d'Harmonie</span>
+          </button>
+
+          <%= link_to "Observatoire d'Harmonie 1v1", ranking_players_path, class: 'dropdown-item' %>
+          <%= link_to "Observatoire d'Harmonie 2v2", ranking_duos_path, class: 'dropdown-item' %>
+        </div>
+      </li>
+
+      <li class="nav-item dropdown community">
+        <%= link_to '#', class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
+          <span>Communauté</span>
+        <% end %>
+        <div class="dropdown-menu">
+          <button type="button" class="btn btn-back btn-sm">
+            <span>Communauté</span>
+          </button>
+
           <%= link_to 'TOs', contacts_recurring_tournaments_path, class: 'dropdown-item' %>
           <%= link_to 'Commentateurs', caster_users_path, class: 'dropdown-item' %>
           <%= link_to 'Coachs', coach_users_path, class: 'dropdown-item' %>
           <%= link_to 'Graphistes', graphic_designer_users_path, class: 'dropdown-item' %>
           <%= link_to 'Chaînes Twitch', twitch_channels_path, class: 'dropdown-item' %>
           <%= link_to 'Chaînes YouTube', you_tube_channels_path, class: 'dropdown-item' %>
+          <%= link_to 'Serveurs Discord', discord_guilds_path, class: 'dropdown-item' %>
         </div>
       </li>
 
-      <li class="nav-item">
-        <%= link_to discord_guilds_path, class: 'nav-link' do %>
-          <i class="fab fa-discord"></i>
-          <span>Serveurs</span>
-        <% end %>
-      </li>
-
-      <li class="nav-item dropdown">
+      <li class="nav-item dropdown guides">
         <%= link_to '#', class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
-          <span>Informations</span>
+          <span>Guides</span>
         <% end %>
-        <div class="dropdown-menu guides">
+        <div class="dropdown-menu">
           <button type="button" class="btn btn-back btn-sm">
-            <span>Informations</span>
+            <span>Guides</span>
           </button>
+
           <% Page.published.header.order("LOWER(name)").each do |page| %>
             <% if page.children.published.any? %>
               <div class="dropdown-divider"></div>
