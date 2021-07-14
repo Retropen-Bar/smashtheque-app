@@ -69,6 +69,10 @@ class Team < ApplicationRecord
     where(id: TeamAdmin.where(user_id: user_id).select(:team_id))
   end
 
+  scope :by_is_online, -> v { where(is_online: v) }
+  scope :by_is_offline, -> v { where(is_offline: v) }
+  scope :by_is_sponsor, -> v { where(is_sponsor: v) }
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------
