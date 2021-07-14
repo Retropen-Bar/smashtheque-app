@@ -49,6 +49,18 @@ class SmashggUserDecorator < BaseDecorator
     end
   end
 
+  def smashgg_badge_logo_only(options = {})
+    return nil if model.slug.blank?
+
+    h.link_to smashgg_url, target: '_blank', rel: :noopener do
+      (
+        h.content_tag :span, "Profil smash.gg de #{prefixed_gamer_tag || slug}", class: 'sr-only'
+      ) + ' ' + (
+        h.svg_icon_tag(:smashgg)
+      )
+    end
+  end
+
   def smashgg_link
     return nil if model.slug.blank?
 

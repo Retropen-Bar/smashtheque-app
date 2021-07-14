@@ -1,64 +1,39 @@
-<div class="row">
-
-  <div class="col-8">
-    <div class="cards-list players" style="margin-top: 50px;">
-      <div class="card-container">
-        <%= render 'player',
-                   player: player,
-                   with_communities: true %>
+<div class="container-lg">
+  <article class="show-page">
+    <section class="show-page-header card">
+    <div class="show-page-header-bg"
+    
+    style="<%=
+        "background-color: #{@background_color};" if @background_color
+      %><%=
+        "background-image: url(\"#{@background_image_url.gsub('"', "\"")}\");" if @background_image_url
+      %><%=
+        "background-image: url(\"#{image_url('static-bg.png').gsub('"', "\"")}\");" if @static
+      %>"
+    ></div>
+      <div class="show-page-header-content card justify-content-start">
+        <div class="card-body d-flex">
+          <div class="show-page-avatar">
+            <% if player.is_legit? %>
+              <%= player.avatar_tag(94) %>
+            <% end %>
+          </div>
+          <div class="show-page-main-info">
+            <h1 class="show-page-title card-title text-truncate">
+              <% if player.is_legit? %>
+                <%= link_to player.name, player %>
+              <% else %>
+                -
+              <% end %>
+            </h1>
+            <div class="show-page-socials">
+              <%= render 'player_accounts_v2', player: player %>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-
-  <div class="col-4">
-    <div class="p-3 p-md-5 m-3">
-      <%= render 'player_accounts', player: player %>
-    </div>
-  </div>
-</div>
-
-<%= render 'shared/rewards', awarded: player %>
-
-<div class="row">
-
-  <div class="col bg-semi-transparent shadow p-5 m-3 rounded">
-    <h2 class="text-center mb-5">Palmarès complet</h2>
-
-    <% if @tournament_events.count > 0 %>
-      <table class="table table-borderless table-striped table-responsive-md bg-light">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">Date</th>
-            <th scope="col">Série</th>
-            <th scope="col">Édition</th>
-            <th scope="col" class="text-center">Bracket</th>
-            <th scope="col" class="text-center">Participants</th>
-            <th scope="col" class="text-center">Résultat</th>
-            <th scope="col" class="text-center">Fragments</th>
-            <th scope="col" class="text-center">Badge</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @tournament_events.each do |tournament_event| %>
-            <% met_reward_condition = @met_reward_conditions_by_tournament_event_id[tournament_event.id]&.decorate %>
-            <tr>
-              <td class="align-middle"><%= l tournament_event.date, format: :long %></td>
-              <td class="align-middle"><%= tournament_event.recurring_tournament_link %></th>
-              <td class="align-middle"><%= tournament_event.link(label: tournament_event.name) %></th>
-              <td class="align-middle text-center"><%= tournament_event.bracket_icon_link(class: 'text-decoration-none') %></td>
-              <td class="align-middle text-center"><%= tournament_event.participants_count %></td>
-              <td class="align-middle text-center"><%= tournament_event.player_rank_name(@player.id) %></td>
-              <td class="align-middle text-center"><%= met_reward_condition&.points %></td>
-              <td class="align-middle text-center"><%= met_reward_condition&.reward_badge %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    <% else %>
-      <div class="text-center">
-        Aucun résultat connu à ce jour
-      </div>
-    <% end %>
-
-  </div>
+    </section>
+    <section class="show-page-body card">
+    </section>
+  </article>
 </div>

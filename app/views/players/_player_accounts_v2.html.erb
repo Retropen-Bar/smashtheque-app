@@ -1,0 +1,7 @@
+<% if player.discord_user %>
+  <%= player.discord_user.decorate.discord_badge_logo_only %>
+<% end %>
+
+<% player.smashgg_users.each do |smashgg_user| %>
+  <%= smashgg_user.decorate.smashgg_badge_logo_only %>
+<% end %>

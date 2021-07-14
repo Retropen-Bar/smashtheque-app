@@ -1,0 +1,40 @@
+.show-page {
+  &-header {
+    &-bg {
+      padding-top: 20%;
+    }
+
+    @include media-breakpoint-down(sm) {
+      &.card,
+      .card {
+        border-radius: 0;
+      }
+      margin-left: -$grid-gutter-width / 2;
+      margin-right: -$grid-gutter-width / 2;
+    }
+  }
+
+  &-avatar {
+    height: 5.875rem / 2 - $card-spacer-x;
+    width: 94px;
+
+    .avatar {
+      border-radius: 50%;
+      box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.16);
+      border: 3px solid $white;
+      background-color: $gray-light;
+      transform: translateY(-50%);
+      position: absolute;
+      top: 0;
+    }
+  }
+
+  &-main-info {
+    padding-left: $card-spacer-y;
+  }
+
+  &-title {
+    font-size: 1.25rem;
+    margin-bottom: 0;
+  }
+}

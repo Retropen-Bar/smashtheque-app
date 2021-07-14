@@ -2,3 +2,8 @@
   @include make-container($grid-gutter-width);
   max-width: 1396px + 2 * ($grid-gutter-width / 2);
 }
+
+.container-lg {
+  @include make-container($grid-gutter-width);
+  max-width: 949px + 2 * ($grid-gutter-width / 2);
+}

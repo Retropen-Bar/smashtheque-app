@@ -18,15 +18,7 @@
 
     <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?libraries=places&key=#{ENV['GOOGLE_MAPS_API_KEY']}" %>
   </head>
-  <body style="<%=
-    "background-color: #{@background_color};" if @background_color
-  %><%=
-    "background-image: url(\"#{@background_image_url.gsub('"', "\"")}\");" if @background_image_url
-  %><%=
-    "background-size: #{@background_size}px;" if @background_image_url
-  %><%=
-    "background-image: url(\"#{image_url('static-bg.png').gsub('"', "\"")}\");" if @static
-  %>" class="<%= controller.controller_name %> <%= controller.action_name %> <%= "section-#{current_section_name}" %><% if @static %> static<% end %>">
+  <body class="<%= controller.controller_name %> <%= controller.action_name %> <%= "section-#{current_section_name}" %><% if @static %> static<% end %>">
     <div id="app">
       <%= render partial: 'layouts/application_v2/flash', flash: flash %>
       <%= render partial: 'layouts/application_v2/head' %>

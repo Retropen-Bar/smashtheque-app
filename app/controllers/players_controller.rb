@@ -101,6 +101,7 @@ class PlayersController < PublicController
     @meta_title = @player.name
     @meta_properties['og:type'] = 'profile'
     @meta_properties['og:image'] = @player.decorate.any_image_url
+    render layout: 'application_v2'
   end
 
   def ranking
