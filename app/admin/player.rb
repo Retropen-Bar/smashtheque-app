@@ -260,32 +260,46 @@ ActiveAdmin.register Player do
   end
 
   member_action :accept do
-    resource.update_attribute :is_accepted, true
-    redirect_to request.referer
-  end
-
-  action_item :results,
-              only: :show do
-    link_to 'Résultats', [:results, :admin, resource]
+    resource.is_accepted = true
+    if resource.save
+      redirect_to request.referer, notice: 'Joueur validé'
+    else
+      Rails.logger.error "Player errors: #{resource.errors.full_messages}"
+      flash[:error] = 'Impossible de valider ce joueur'
+      redirect_to request.referer
+    end
   end
 
   action_item :public, only: :show do
     link_to 'Page publique', resource, class: 'green'
   end
 
-  action_item :create_user,
-              only: :show,
-              if: proc {
-                resource.user_id.nil? && resource._potential_user.nil?
-              } do
-    link_to "Créer l'utilisateur",
-            { action: :create_user },
-            class: 'blue'
+  action_item :other_actions, only: :show do
+    dropdown_menu 'Autres actions' do
+      if resource.user_id.nil? && resource._potential_user.nil?
+        item "Créer l'utilisateur", action: :create_user
+      end
+      item 'Voir les résultats', [:results, :admin, resource]
+      if resource.tournament_events.any? && can?(:move_results, resource)
+        item 'Transférer les résultats', action: :move_results
+      end
+    end
   end
 
   member_action :create_user do
     resource.return_or_create_user!
     redirect_to request.referer, notice: 'Utilisateur créé'
+  end
+
+  member_action :move_results do
+    @player = resource
+    render 'move_results'
+  end
+
+  member_action :do_move_results, method: :post do
+    other_player_id = params[:player][:id]
+    resource.move_results_to!(other_player_id)
+    redirect_to [:admin, resource], notice: 'Transfert effectué'
   end
 
   # ---------------------------------------------------------------------------

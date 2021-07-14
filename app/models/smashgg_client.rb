@@ -241,7 +241,7 @@ class SmashggClient
       return nil
     end
     result = []
-    response.data.tournaments.nodes&.each do |node|
+    response.data.tournaments&.nodes&.each do |node|
       node.events&.each do |event|
         result << event if event.videogame.id == SMASH_ULTIMATE_ID
       end

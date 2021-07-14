@@ -3,6 +3,7 @@
 # Table name: challonge_tournaments
 #
 #  id                     :bigint           not null, primary key
+#  is_ignored             :boolean          default(FALSE), not null
 #  name                   :string
 #  participants_count     :integer
 #  slug                   :string           not null
@@ -25,16 +26,19 @@
 #  index_challonge_tournaments_on_slug          (slug) UNIQUE
 #
 class ChallongeTournament < ApplicationRecord
+  # ---------------------------------------------------------------------------
+  # CONCERNS
+  # ---------------------------------------------------------------------------
+
+  include IsBracket
+
+  # ---------------------------------------------------------------------------
+  # CONSTANTS
+  # ---------------------------------------------------------------------------
+
   PARTICIPANT_NAMES = TournamentEvent::TOP_RANKS.map do |rank|
     "top#{rank}_participant_name".to_sym
   end.freeze
-
-  # ---------------------------------------------------------------------------
-  # RELATIONS
-  # ---------------------------------------------------------------------------
-
-  has_one :tournament_event, as: :bracket, dependent: :nullify
-  has_one :duo_tournament_event, as: :bracket, dependent: :nullify
 
   # ---------------------------------------------------------------------------
   # VALIDATIONS
@@ -42,43 +46,6 @@ class ChallongeTournament < ApplicationRecord
 
   validates :challonge_id, presence: true, uniqueness: true
   validates :slug, presence: true, uniqueness: true
-
-  # ---------------------------------------------------------------------------
-  # CALLBACKS
-  # ---------------------------------------------------------------------------
-
-  # ---------------------------------------------------------------------------
-  # SCOPES
-  # ---------------------------------------------------------------------------
-
-  def self.with_tournament_event
-    where(id: (
-      TournamentEvent.by_bracket_type(:ChallongeTournament).select(:bracket_id)
-    ))
-  end
-  def self.without_tournament_event
-    where.not(id: (
-      TournamentEvent.by_bracket_type(:ChallongeTournament).select(:bracket_id)
-    ))
-  end
-
-  def self.with_duo_tournament_event
-    where(id: (
-      DuoTournamentEvent.by_bracket_type(:ChallongeTournament).select(:bracket_id)
-    ))
-  end
-  def self.without_duo_tournament_event
-    where.not(id: (
-      DuoTournamentEvent.by_bracket_type(:ChallongeTournament).select(:bracket_id)
-    ))
-  end
-
-  def self.with_any_tournament_event
-    with_tournament_event.or(with_duo_tournament_event)
-  end
-  def self.without_any_tournament_event
-    without_tournament_event.without_duo_tournament_event
-  end
 
   # ---------------------------------------------------------------------------
   # HELPERS
@@ -149,12 +116,10 @@ class ChallongeTournament < ApplicationRecord
     end
   end
 
+  alias_method :fetch_provider_data, :fetch_challonge_data
+
   def challonge_url
     slug && "https://challonge.com/#{slug}"
-  end
-
-  def any_tournament_event
-    tournament_event || duo_tournament_event
   end
 
   def self.participant_player(participant_name)

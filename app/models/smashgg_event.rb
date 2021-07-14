@@ -49,6 +49,16 @@
 #  fk_rails_...  (top7b_smashgg_user_id => smashgg_users.id)
 #
 class SmashggEvent < ApplicationRecord
+  # ---------------------------------------------------------------------------
+  # CONCERNS
+  # ---------------------------------------------------------------------------
+
+  include IsBracket
+
+  # ---------------------------------------------------------------------------
+  # CONSTANTS
+  # ---------------------------------------------------------------------------
+
   USER_NAMES = TournamentEvent::TOP_RANKS.map do |rank|
     "top#{rank}_smashgg_user".to_sym
   end.freeze
@@ -79,9 +89,6 @@ class SmashggEvent < ApplicationRecord
   belongs_to :top7a_smashgg_user, class_name: :SmashggUser, optional: true
   belongs_to :top7b_smashgg_user, class_name: :SmashggUser, optional: true
 
-  has_one :tournament_event, as: :bracket, dependent: :nullify
-  has_one :duo_tournament_event, as: :bracket, dependent: :nullify
-
   # ---------------------------------------------------------------------------
   # VALIDATIONS
   # ---------------------------------------------------------------------------
@@ -90,39 +97,8 @@ class SmashggEvent < ApplicationRecord
   validates :slug, presence: true, uniqueness: true
 
   # ---------------------------------------------------------------------------
-  # CALLBACKS
-  # ---------------------------------------------------------------------------
-
-  # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
-
-  scope :ignored, -> { where(is_ignored: true) }
-  scope :not_ignored, -> { where(is_ignored: false) }
-
-  def self.with_tournament_event
-    where(id: TournamentEvent.by_bracket_type(:SmashggEvent).select(:bracket_id))
-  end
-
-  def self.without_tournament_event
-    where.not(id: TournamentEvent.by_bracket_type(:SmashggEvent).select(:bracket_id))
-  end
-
-  def self.with_duo_tournament_event
-    where(id: DuoTournamentEvent.by_bracket_type(:SmashggEvent).select(:bracket_id))
-  end
-
-  def self.without_duo_tournament_event
-    where.not(id: DuoTournamentEvent.by_bracket_type(:SmashggEvent).select(:bracket_id))
-  end
-
-  def self.with_any_tournament_event
-    with_tournament_event.or(with_duo_tournament_event)
-  end
-
-  def self.without_any_tournament_event
-    without_tournament_event.without_duo_tournament_event
-  end
 
   def self.with_smashgg_user(smashgg_user_id)
     where(
@@ -335,6 +311,8 @@ class SmashggEvent < ApplicationRecord
     self.attributes = self.class.attributes_from_event_data(event_data)
   end
 
+  alias_method :fetch_provider_data, :fetch_smashgg_data
+
   def tournament_smashgg_url
     tournament_slug && "https://smash.gg/#{tournament_slug}/details"
   end
@@ -363,10 +341,6 @@ class SmashggEvent < ApplicationRecord
       return user_name if send("#{user_name}_id") == smashgg_user_id
     end
     nil
-  end
-
-  def any_tournament_event
-    tournament_event || duo_tournament_event
   end
 
   # ---------------------------------------------------------------------------
