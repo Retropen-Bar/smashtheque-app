@@ -14,8 +14,6 @@ class RecurringTournamentsController < PublicController
   has_scope :per
   has_scope :on_abc
 
-  layout :select_layout
-
   def index
     respond_to do |format|
       format.html do
@@ -31,7 +29,6 @@ class RecurringTournamentsController < PublicController
   end
 
   def index_html
-    @map = params[:map].to_i == 1
     @recurring_tournaments = apply_scopes(
       RecurringTournament.visible.order('lower(name)')
     ).includes(:discord_guild).all
@@ -39,22 +36,14 @@ class RecurringTournamentsController < PublicController
   end
 
   def index_json
-    @map = params[:map].to_i == 1
-    if @map
-      @recurring_tournaments = apply_scopes(
-        RecurringTournament.visible.order('lower(name)')
-      ).includes(:discord_guild).all
-      render 'map'
-    else
-      start = params[:startStr] ? Date.parse(params[:startStr]) : Time.now
-      render json: apply_scopes(
-        RecurringTournament.visible.recurring.not_archived
-      ).all.decorate.map { |rc|
-        rc.as_event(week_start: start).merge(
-          url: recurring_tournament_path(rc)
-        )
-      }
-    end
+    start = params[:startStr] ? Date.parse(params[:startStr]) : Time.now
+    render json: apply_scopes(
+      RecurringTournament.visible.recurring.not_archived
+    ).all.decorate.map { |rc|
+      rc.as_event(week_start: start).merge(
+        url: recurring_tournament_path(rc)
+      )
+    }
   end
 
   def index_ical
@@ -72,6 +61,14 @@ class RecurringTournamentsController < PublicController
 
     cal.publish
     render plain: cal.to_ical
+  end
+
+  def map
+    @recurring_tournaments = apply_scopes(
+      RecurringTournament.visible.order('LOWER(name)')
+    ).includes(:discord_guild).all
+    @meta_title = 'Carte des tournois'
+    render layout: 'map'
   end
 
   def show
@@ -142,9 +139,5 @@ class RecurringTournamentsController < PublicController
       :twitter_username, :misc,
       :is_archived
     )
-  end
-
-  def select_layout
-    @map ? 'map' : 'application'
   end
 end

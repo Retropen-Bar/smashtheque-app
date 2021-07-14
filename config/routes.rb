@@ -90,6 +90,7 @@ Rails.application.routes.draw do
     resources :tournament_events, only: %i[new create]
     resources :duo_tournament_events, only: %i[new create]
     collection do
+      get :map
       get 'contacts' => 'players#recurring_tournament_contacts_index'
     end
     member do
