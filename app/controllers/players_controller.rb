@@ -36,15 +36,7 @@ class PlayersController < PublicController
   def map
     @map = true
     @map_seconds = params[:seconds].to_i == 1
-    @players = apply_scopes(Player.legit)
-    respond_to do |format|
-      format.html do
-        # nothing special
-      end
-      format.json do
-        @players = @players.includes(:user, :characters)
-      end
-    end
+    @players = apply_scopes(Player.legit).includes(:user, :characters)
     @meta_title = 'Carte des joueurs'
   end
 

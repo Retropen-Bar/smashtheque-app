@@ -55,7 +55,7 @@
             </div>
           </section>
 
-          <%= render 'shared/map', container_id: :map, layers: [] %>
+          <%= players_map(@players.limit(nil).offset(0), @map_seconds) %>
         </div>
       </div>
     </div>

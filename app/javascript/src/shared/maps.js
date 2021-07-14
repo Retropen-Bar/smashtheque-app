@@ -15,7 +15,7 @@ L.Icon.Default.mergeOptions({
 // ----------------------------------------------------------------------------
 
 let toggleMapLayer = function(element, map_id, layer_id) {
-  console.log('toggleMapLayer', element, map_id, layer_id);
+  // console.log('toggleMapLayer', element, map_id, layer_id);
   let map = window.maps[map_id].map,
       layer = window.maps[map_id].layers[layer_id];
   if(map.hasLayer(layer)) {
@@ -39,7 +39,7 @@ let toggleAllMapLayers = function(element, map_id, show) {
   // console.log('toggleAllMapLayers', element, map_id, show);
   let map = window.maps[map_id].map,
       layers = window.maps[map_id].layers;
-  for(layer_id in layers) {
+  Object.keys(layers).forEach(function(layer_id) {
     let layer = layers[layer_id],
         $layerElement = $('.layer[data-map="' + map_id + '"][data-layer="' + layer_id + '"]').first();
     if(show && !map.hasLayer(layer)) {
@@ -50,7 +50,7 @@ let toggleAllMapLayers = function(element, map_id, show) {
       layer.remove();
       $layerElement.removeClass('layer-visible').addClass('layer-hidden');
     }
-  }
+  });
 };
 
 let toggleAllMapLayersElements = function(element, show) {
