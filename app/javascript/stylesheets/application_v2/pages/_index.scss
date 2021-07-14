@@ -1,2 +1,16 @@
+#app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  main {
+    flex-grow: 1;
+  }
+
+  footer {
+    margin-top: auto;
+  }
+}
+
 @import "home";
 @import "index_page";

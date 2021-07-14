@@ -1,17 +1,55 @@
-<div class="text-center">
-  <div id="list-toolbar">
-    <h1 class="page-title">Équipes</h1>
-    <%= render 'shared/letters' %>
-    <%= render 'shared/pagination', collection: @teams %>
+<h1 class="page-title index-title sr-only">Équipes</h1>
+<div class="container-xl mt-lg-5">
+  <div class="row flex-nowrap align-items-start flex-column flex-lg-row">
+
+    <%= render 'layouts/application_v2/players/index_nav' %>
+
+    <div class="col">
+      <div class="row flex-column flex-lg-row align-items-start">
+        <div id="index-filters" class="col-12 col-xl-auto order-xl-1">
+          <section class="index-section py-3 py-xl-0 d-flex d-xl-block flex-wrap align-items-center">
+            <small class="text-muted d-inline-block d-xl-none"><%= @teams.total_count %> résultat(s)</small>
+            <button @click="filtersVisible = true" type="button" class="btn btn-dark btn-sm btn-with-icon rounded-pill players  ml-auto<%= ' active' if params[:on_abc] %> d-flex d-xl-none">
+              <%= svg_icon_tag :filtres %> Filtres<%= ' (1)' if params[:on_abc] %>
+            </button>
+            <slide-out dock="bottom" :visible.sync="filtersVisible" :size="[0]" :arrow-button="false" title="Filtres">
+              <template #header>
+                <div class="d-flex align-items-center justify-content-between">
+                  <p class="m-0">
+                    <%= svg_icon_tag :filtres %> Filtres<%= ' (1)' if params[:on_abc] %>
+                  </p>
+                  <button @click="filtersVisible = false" type="button" class="btn btn-sm btn-icon rounded-circle ml-3">
+                    <%= svg_icon_tag :croix %>
+                    <span class="sr-only">Fermer</span>
+                  </button>
+                </div>
+              </template>
+              <section class="mb-n4">
+                <h5><%= svg_icon_tag :abcd %> Abécédaire</h5>
+                <%= render 'shared/letters' %>
+              </section>
+            </slide-out>
+          </section>
+        </div>
+        <div class="col">
+          <section class="py-3 d-none d-xl-flex flex-wrap align-items-center">
+            <small class="text-muted"><%= @teams.total_count %> résultat(s)</small>
+            <div class="ml-auto">
+              <%= render 'shared/pagination_v2', collection: @teams %>
+            </div>
+          </section>
+          <div class="players list row">
+            <% @teams.each do |team| %>
+              <div class="col-12 col-lg-6">
+                <%= render 'teams/team_v2', team: team.decorate %>
+              </div>
+            <% end %>
+          </div>
+          <div class='my-4'>
+            <%= render 'shared/pagination_v2', collection: @teams %>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
-
-<div class="cards-list teams">
-  <% @teams.each do |team| %>
-    <div class="card-container">
-      <%= render 'team', team: team.decorate %>
-    </div>
-  <% end %>
-</div>
-
-<%= render 'shared/pagination', collection: @teams %>

@@ -1,0 +1,30 @@
+<div id="index-nav" class="col-12 col-lg-auto">
+  <section class="index-section">
+    <nav class="section-nav players mt-3 mt-lg-0">
+      <div class="section-nav-wrapper">
+        <div class="section-nav-bg">
+         <%= link_to players_path, class: "section-nav-link#{current_class?(players_path)}" do %>
+            <%= svg_icon_tag :joueur %>
+            <span>Abécédaire</span>
+          <% end %>
+          <%= link_to teams_path, class: "section-nav-link#{current_class?(teams_path)}" do %>
+            <%= svg_icon_tag :groupe %>
+            <span>Équipes</span>
+          <% end %>
+          <%= link_to characters_path, class: "section-nav-link#{current_class?(characters_path)}" do %>
+            <%= svg_icon_tag :mario %>
+            <span>Personages</span>
+          <% end %>
+          <%= link_to communities_path, class: "section-nav-link#{current_class?(communities_path)}" do %>
+            <%= svg_icon_tag :lieu %>
+            <span>Communautés locales</span>
+          <% end %>
+          <%= link_to ranking_players_path, class: "section-nav-link#{current_class?(ranking_players_path)}" do %>
+            <%= svg_icon_tag :telescope %>
+            <span>Observatoire d'Harmonie 1v1</span>
+          <% end %>
+        </div>
+      </div>
+    </nav>
+  </section>
+</div>

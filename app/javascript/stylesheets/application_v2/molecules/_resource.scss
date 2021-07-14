@@ -20,6 +20,11 @@
     }
   }
 
+  .card-body {
+    padding-top: $card-spacer-x / 2;
+    padding-bottom: $card-spacer-x / 2;
+  }
+
   .admin-edit-link {
     display: none;
     align-items: center;
@@ -33,6 +38,45 @@
     right: 0.25rem;
     top: 0.25rem;
     z-index: 2;
+  }
+
+  .players-count {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    padding-left: calc(1rem + 2%);
+    margin: (-$card-spacer-x / 2) -1.25rem (-$card-spacer-x / 2) 0;
+    position: relative;
+
+    &::before {
+      content: "";
+      display: block;
+      background-color: $gray-dark;
+      clip-path: polygon(12% 0, 100% 0%, 100% 100%, 0% 100%);
+      position: absolute;
+      inset: 0;
+    }
+
+    @media screen and (min-width: 375px) {
+      width: 85px;
+    }
+
+    a {
+      position: relative;
+      border-radius: 50%;
+      line-height: 1;
+      transition: $transition-base;
+      z-index: 2;
+      font-weight: 600;
+      font-size: 0.875rem;
+
+      .icon {
+        height: 1.2em;
+        width: 1.2em;
+        margin-left: 0.25em;
+      }
+    }
   }
 }
 
@@ -76,6 +120,10 @@
     inset: 0;
     z-index: 1;
   }
+
+  @media screen and (min-width: breakpoint-min("md", $grid-breakpoints)) {
+    font-size: 1rem;
+  }
 }
 
 .resource-link {
@@ -97,7 +145,7 @@
     justify-content: center;
     padding: 1rem;
     padding-left: calc(1rem + 2%);
-    margin: -1.25rem -1.25rem -1.25rem 0;
+    margin: (-$card-spacer-x / 2) -1.25rem (-$card-spacer-x / 2) 0;
     position: relative;
 
     &::before {
@@ -156,5 +204,44 @@
       margin-right: 0.5ch;
       color: $body-color;
     }
+  }
+}
+
+.team {
+  .team-badges {
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+
+    .badge + .badge {
+      margin-left: 0.25em;
+    }
+  }
+}
+
+.duo {
+  .resource-avatar + .resource-avatar {
+    margin-left: -34px;
+  }
+}
+
+.character {
+  width: 200px;
+  height: 200px;
+  flex-direction: column;
+
+  .resource-avatar {
+    align-items: center;
+    justify-content: center;
+    margin-right: 0;
+    width: 100%;
+    flex-grow: 1;
+    @include border-bottom-radius(0);
+  }
+  .character-name {
+    padding: 10px;
+    @include border-bottom-radius($card-border-radius);
+    background-color: $gray-dark;
+    text-align: center;
   }
 }

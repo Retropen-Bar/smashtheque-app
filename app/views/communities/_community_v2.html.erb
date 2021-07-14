@@ -1,0 +1,24 @@
+<article class="resource community d-flex">
+  <div class="resource-avatar card">
+    <%= link_to community.avatar_tag(76), community %>
+  </div>
+  <div class="resource-content card flex-grow-1">
+    <div class="card-body d-flex">
+      <div class="resource-meta flex-grow-1">
+        <h5 class="resource-title card-title text-truncate">
+          <%= link_to community.name, community %>
+        </h5>
+      </div>
+      <div class="players-count flex-shrink-0">
+        <%= link_to players_path(by_community_id: community.id) do %>
+          <%= community.players_count %>
+          <%= svg_icon_tag(:groupe2) %>
+        <% end %>
+      </div>
+      <%= link_to community, class: 'resource-link' do %>
+        <span class="sr-only">Voir plus</span>
+      <% end %>
+    </div>
+    <%= admin_edit_link(community) %>
+  </div>
+</article>

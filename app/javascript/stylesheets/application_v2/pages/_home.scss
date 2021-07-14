@@ -1,9 +1,6 @@
 .pages.home #app {
   --gap: #{"min(9px, 1.6vmax)"};
   --hover-translate: 0.15em;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
 
   @include media-breakpoint-up(sm) {
     --gap: #{"min(15px, 1.6vmax)"};
@@ -14,7 +11,6 @@
   }
 
   main {
-    flex-grow: 1;
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: calc(50% - var(--gap) / 2) calc(50% - var(--gap) / 2);
@@ -256,7 +252,6 @@
 }
 
 .guides {
-
   &-link {
     margin: 0 auto;
     display: inline-block;

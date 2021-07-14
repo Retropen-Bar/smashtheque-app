@@ -7,7 +7,7 @@
 
   <slide-out dock="right" :visible.sync="mainNavVisible" :arrow-button="false" size="273px" title="Menu" class="collapse navbar-collapse" id="navbarSupportedContent">
     <%= link_to page_path(slug: 'guides'), class: 'btn btn-gradient-pink rounded w-100 d-flex d-xxl-none align-items-center mb-4 border-0 py-2' do %>
-      <%= render partial: 'shared/icons/panneau' %>
+      <%= svg_icon_tag :panneau %>
       <span class="pl-2">Besoin d'aide ?</span>
     <% end %>
 
@@ -23,19 +23,19 @@
             <span>Joueurs & Cie</span>
           </button>
           <%= link_to players_path, class: 'dropdown-item' do %>
-            <%= render partial: 'shared/icons/joueur' %>
+            <%= svg_icon_tag :joueur %>
             <span>Abécédaire</span>
           <% end %>
           <%= link_to teams_path, class: 'dropdown-item' do %>
-            <%= render partial: 'shared/icons/groupe' %>
+            <%= svg_icon_tag :groupe %>
             <span>Équipes</span>
           <% end %>
           <%= link_to characters_path, class: 'dropdown-item' do %>
-            <%= render partial: 'shared/icons/mario' %>
+            <%= svg_icon_tag :mario %>
             <span>Personages</span>
           <% end %>
           <%= link_to communities_path, class: 'dropdown-item' do %>
-            <%= render partial: 'shared/icons/lieu' %>
+            <%= svg_icon_tag :lieu %>
             <span>Communautés locales</span>
           <% end %>
           <div class="dropdown-divider"></div>
@@ -196,7 +196,7 @@
 
   <div class="navbar-actions d-flex align-items-center ml-auto">
     <button type="button" class="navbar-actions-search btn btn-link btn-icon rounded-circle" @click="mainNavVisible = false">
-      <%= render partial: 'shared/icons/loupe' %>
+      <%= svg_icon_tag :loupe %>
       <span class="sr-only">Recherche</span>
     </button>
     
@@ -235,8 +235,8 @@
         </li>
       <% else %>
         <li class="nav-item">
-          <%= link_to user_discord_omniauth_authorize_path, class: 'btn btn-link btn-icon rounded-pill' do %>
-            <%= render partial: 'shared/icons/avatar' %>
+          <%= link_to user_discord_omniauth_authorize_path, class: 'btn btn-link btn-icon rounded-pill', method: 'post' do %>
+            <%= svg_icon_tag :avatar %>
             <span class="pl-2">Connexion</span>
           <% end %>
         </li>
@@ -244,7 +244,7 @@
     </ul>
 
     <button @click="mainNavVisible = true" type="button" class='navbar-actions-menu btn btn-link btn-icon rounded-circle d-xxl-none'>
-      <%= render partial: 'shared/icons/menu' %>
+      <%= svg_icon_tag :menu %>
     </button>
   </div>
 </nav>

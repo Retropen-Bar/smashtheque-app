@@ -1,0 +1,27 @@
+<article class="resource team d-flex">
+  <div class="resource-avatar card">
+    <%= link_to team.avatar_tag(76), team %>
+  </div>
+  <div class="resource-content card flex-grow-1">
+    <div class="card-body d-flex">
+      <div class="resource-meta flex-grow-1">
+        <h5 class="resource-title card-title text-truncate">
+          <%= link_to team.full_name, team %>
+        </h5>
+        <div class="team-badges">
+          <%= team.badges %>
+        </div>
+      </div>
+      <div class="players-count flex-shrink-0">
+        <%= link_to players_path(by_team_id: team.id) do %>
+          <%= team.players_count %>
+          <%= svg_icon_tag(:groupe2) %>
+        <% end %>
+      </div>
+      <%= link_to team, class: 'resource-link' do %>
+        <span class="sr-only">Voir plus</span>
+      <% end %>
+    </div>
+    <%= admin_edit_link(team) %>
+  </div>
+</article>

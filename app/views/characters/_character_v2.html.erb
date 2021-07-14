@@ -1,0 +1,15 @@
+<article class="resource character d-inline-flex">
+  <div class="resource-avatar card" style="<%=
+    "background-color: #{character.background_color};" unless character.background_color.blank?
+  %><%=
+    "background-image: url(\"#{character.background_image_data_url.gsub('"', "\"")}\");background-size: 240px;" unless character.background_image.blank?
+  %>">
+    <%= link_to character.emoji_image_tag, character %>
+  </div>
+  <div class="character-name">
+    <%= character.name.titleize %>
+  </div>
+  <%= link_to character, class: 'resource-link' do %>
+    <span class="sr-only">Voir plus</span>
+  <% end %>
+</article>

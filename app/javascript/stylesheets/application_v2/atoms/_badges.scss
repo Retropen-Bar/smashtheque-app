@@ -1,0 +1,19 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+
+  &-with-icon {
+    svg {
+      width: 1em;
+      height: 1em;
+      margin-right: 0.25em;
+    }
+  }
+}
+
+@each $section_name, $color in $sections {
+  .section-#{$section_name} .badge-primary {
+    color: $color;
+    background-color: rgba($color, 0.1);
+  }
+}
