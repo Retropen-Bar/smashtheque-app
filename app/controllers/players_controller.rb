@@ -49,7 +49,7 @@ class PlayersController < PublicController
   def recurring_tournament_contacts_index
     @players = players Player.recurring_tournament_contacts
     @meta_title = 'TOs'
-    render 'recurring_tournaments/contacts'
+    render 'recurring_tournaments/contacts', layout: 'application'
   end
 
   def show
@@ -132,6 +132,7 @@ class PlayersController < PublicController
       @is_online ? 'Online' : 'Offline',
       @year
     ].compact.join(' ')
+    render layout: 'application'
   end
 
   def autocomplete

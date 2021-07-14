@@ -15,13 +15,13 @@
             <%= svg_icon_tag :mario %>
             <span>Personnages</span>
           <% end %>
+          <%= link_to duos_path, class: "section-nav-link#{current_class?(duos_path)}" do %>
+            <%= svg_icon_tag :duo %>
+            <span>Duos</span>
+          <% end %>
           <%= link_to communities_path, class: "section-nav-link#{current_class?(communities_path)}" do %>
             <%= svg_icon_tag :lieu %>
             <span>Communautés locales</span>
-          <% end %>
-          <%= link_to ranking_players_path, class: "section-nav-link#{current_class?(ranking_players_path)}" do %>
-            <%= svg_icon_tag :telescope %>
-            <span>Observatoire d'Harmonie 1v1</span>
           <% end %>
         </div>
       </div>
