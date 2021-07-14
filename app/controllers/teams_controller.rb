@@ -8,10 +8,18 @@ class TeamsController < PublicController
   has_scope :per
   has_scope :on_abc
 
+  layout 'application_v2'
+
   def index
     @teams = apply_scopes(Team.order('lower(name)')).all
     @meta_title = 'Équipes'
-    render layout: 'application_v2'
+  end
+
+  def show
+    @team = Team.find(params[:id]).decorate
+    @meta_title = @team.name
+    @meta_properties['og:type'] = 'profile'
+    @meta_properties['og:image'] = @team.any_image_url
   end
 
   def edit; end

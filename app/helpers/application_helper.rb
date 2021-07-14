@@ -38,4 +38,8 @@ module ApplicationHelper
   def current_section_name
     return :players if current_section?(:players)
   end
+
+  def url_with(changes)
+    url_for(current_page_params.merge(changes))
+  end
 end

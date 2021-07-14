@@ -1,6 +1,12 @@
 .map-container
   position: relative
 
+  @include media-breakpoint-down(md)
+    flex-wrap: wrap
+    margin-right: -($grid-gutter-width / 2)
+    margin-left: -($grid-gutter-width / 2)
+    border-top: 3px solid $red
+
   .map
     position: relative
     z-index: 1
@@ -103,3 +109,5 @@
         content: '☑'
       &.layer-hidden:before
         content: '☐'
+
+

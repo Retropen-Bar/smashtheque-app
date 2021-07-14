@@ -1,4 +1,4 @@
-<h1 class="page-title index-title sr-only"><%= title %></h1>
+<h1 class="page-title index-title sr-only">Carte des joueurs</h1>
 <div class="container-xl mt-lg-5">
   <div class="row flex-nowrap align-items-start flex-column flex-lg-row">
 
@@ -8,8 +8,18 @@
       <div class="row flex-column flex-lg-row align-items-start">
         <div id="index-filters" class="col-12 col-xl-auto order-xl-1">
           <section class="index-section py-3 py-xl-0 d-flex d-xl-block flex-wrap align-items-center">
-            <small class="text-muted d-inline-block d-xl-none"><%= duos.total_count %> résultat(s)</small>
-            <button @click="filtersVisible = true" type="button" class="btn btn-dark btn-sm btn-with-icon rounded-pill players ml-auto<%= ' active' if params[:on_abc] %> d-flex d-xl-none">
+            <small class="text-muted d-inline-block d-xl-none"><%= @players.total_count %> résultat(s)</small>
+            <div role="group" class="ml-auto btn-group btn-group-sm players d-flex d-xl-none">
+              <%= link_to url_with(action: :index), class: 'btn btn-outline' do %>
+                <%= svg_icon_tag :liste %>
+                <span class="sr-only">Liste</span>
+              <% end %>
+              <%= link_to url_with(action: :map), class: 'btn' do %>
+                <%= svg_icon_tag :map %>
+                <span class="sr-only">Carte</span>
+              <% end %>
+            </div>
+            <button @click="filtersVisible = true" type="button" class="btn btn-dark btn-sm btn-with-icon rounded-pill players ml-3<%= ' active' if params[:on_abc] %> d-flex d-xl-none">
               <%= svg_icon_tag :filtres %> Filtres<%= ' (1)' if params[:on_abc] %>
             </button>
             <slide-out dock="bottom" :visible.sync="filtersVisible" :size="[0]" :arrow-button="false" title="Filtres">
@@ -25,29 +35,27 @@
                 </div>
               </template>
               <section class="mb-n4">
-                <h5><%= svg_icon_tag :abcd %> Abécédaire</h5>
-                <%= render 'shared/letters' %>
+                <%= render 'filters' %>
               </section>
             </slide-out>
           </section>
         </div>
         <div class="col">
           <section class="py-3 d-none d-xl-flex flex-wrap align-items-center">
-            <small class="text-muted"><%= duos.total_count %> résultat(s)</small>
-            <div class="ml-auto">
-              <%= render 'shared/pagination_v2', collection: duos %>
+            <small class="text-muted"><%= @players.total_count %> résultat(s)</small>
+            <div role="group" class="ml-auto btn-group btn-group-sm players">
+              <%= link_to url_with(action: :index), class: 'btn btn-outline' do %>
+                <%= svg_icon_tag :liste %>
+                <span class="sr-only">Liste</span>
+              <% end %>
+              <%= link_to url_with(action: :map), class: 'btn' do %>
+                <%= svg_icon_tag :map %>
+                <span class="sr-only">Carte</span>
+              <% end %>
             </div>
           </section>
-          <div class="duos list row">
-            <% duos.each do |duo| %>
-              <div class="col-12 col-lg-6">
-                <%= render 'duos/duo_v2', duo: duo.decorate %>
-              </div>
-            <% end %>
-          </div>
-          <div class='my-4'>
-            <%= render 'shared/pagination_v2', collection: duos %>
-          </div>
+
+          <%= players_map(@players.limit(nil).offset(0), @map_seconds) %>
         </div>
       </div>
     </div>

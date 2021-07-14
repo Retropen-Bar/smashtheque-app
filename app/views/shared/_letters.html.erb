@@ -1,13 +1,13 @@
 <ul class="filter-letters nav nav-pills justify-content-center mt-4 mb-4">
   <li class="nav-item">
     <%= link_to 'Tout',
-                current_page_params.merge(on_abc: nil),
+                url_with(on_abc: nil),
                 class: "nav-link #{'active' if !params[:on_abc]}" %>
   </li>
   <% (('a'..'z').to_a+['$']).each do |letter| %>
     <li class="nav-item">
       <%= link_to letter.upcase,
-                  current_page_params.merge(on_abc: letter),
+                  url_with(on_abc: letter),
                   class: "nav-link #{'active' if params[:on_abc] == letter}" %>
     </li>
   <% end %>

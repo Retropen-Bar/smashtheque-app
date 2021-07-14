@@ -1,4 +1,4 @@
-<div class='map-container'>
+<div class='map-container' data-url="<%= url_with(format: :json) %>">
   <div class='map' id='<%= container_id %>'></div>
 
   <% if layers.any? %>
@@ -14,14 +14,14 @@
         <h3>Seconds</h3>
         <div class="btn-group btn-group-sm" role="group">
           <% if @map_seconds %>
-            <%= link_to 'Sans', url_for(map: 1, seconds: 0), class: 'btn btn-outline-primary' %>
+            <%= link_to 'Sans', url_with(seconds: 0), class: 'btn btn-outline-primary' %>
           <% else %>
             <button type="button" class="btn btn-primary">Sans</button>
           <% end %>
           <% if @map_seconds %>
             <button type="button" class="btn btn-primary">Avec</button>
           <% else %>
-            <%= link_to 'Avec', url_for(map: 1, seconds: 1), class: 'btn btn-outline-primary' %>
+            <%= link_to 'Avec', url_with(seconds: 1), class: 'btn btn-outline-primary' %>
           <% end %>
         </div>
       </div>
@@ -43,58 +43,10 @@
     </div>
   <% end %>
 
-  <%= html_content.presence %>
+  <% if defined?(html_content) %>
+    <%= html_content.presence %>
+  <% end %>
 
 </div>
 
-<script>
-
-  var map = L.map('<%= container_id %>', {<%= options.map{|k,v| "#{k}: #{v}"}.join(', ') %>});
-  window.maps['<%= container_id %>'] = {map: map};
-  map.setView([<%= center[:latlng][0] %>, <%= center[:latlng][1] %>], <%= center[:zoom] %>);
-
-  var icons = {};
-  <% icons.each do |key, icon| %>
-    <% icon_settings = prep_icon_settings(icon) %>
-    icons['<%= key %>'] = L.icon({
-      iconUrl: '<%= icon_settings[:icon_url] %>',
-      iconSize: <%= icon_settings[:icon_size] %>,
-      iconAnchor: <%= icon_settings[:icon_anchor] %>,
-      className: '<%= icon_settings[:class_name] %>'
-    });
-  <% end %>
-
-  var markers = L.markerClusterGroup({
-    showCoverageOnHover: false,
-    zoomToBoundsOnClick: true,
-    removeOutsideVisibleBounds: true
-  });
-  var layers = {};
-  var marker;
-  <% markers.each do |layer_id, layer_markers| %>
-    layers['<%= layer_id %>'] = L.featureGroup.subGroup(markers, []).addTo(map);
-    <% layer_markers.each_with_index do |marker, index| %>
-      <% icon_param = marker[:icon].blank? ? '' : ", {icon: icons['#{marker[:icon]}']}" %>
-      marker = L.marker([<%= marker[:latlng][0] %>, <%= marker[:latlng][1] %>]<%== icon_param %>).addTo(layers['<%= layer_id %>']);
-      <% if marker[:popup] %>
-        marker.bindPopup('<%= escape_javascript marker[:popup] %>');
-      <% elsif marker[:modal_url] %>
-        marker.on('click', function(ev) {
-          openMapModal('<%= marker[:modal_url] %>');
-        });
-      <% end %>
-    <% end %>
-  <% end %>
-  window.maps['<%= container_id %>'].layers = layers;
-
-  L.tileLayer('<%= tile_layer %>', {
-    attribution: '<%= attribution %>',
-    maxZoom: <%= max_zoom %>,
-    <% options.each do |key, value| %>
-      <%= key.to_s.camelize(:lower) %>: '<%= value %>',
-    <% end %>
-  }).addTo(map);
-
-  markers.addTo(map);
-
-</script>
+<div id="map-modal" class="modal fade" tabindex="-1" aria-hidden="true"></div>
