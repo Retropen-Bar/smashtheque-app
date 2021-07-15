@@ -1,0 +1,57 @@
+<%= form_tag nil, method: :get do %>
+
+  <h5><%= svg_icon_tag :online %> Online</h5>
+
+  <div class="my-4">
+    <div class="btn-group btn-group-toggle btn-group-sm players" data-toggle="buttons">
+      <% [false, true, ''].each_with_index do |v, idx| %>
+        <% is_active = (params[:by_is_online] || '') == v.to_s %>
+        <label class="btn <%= 'btn-outline' unless is_active %>">
+          <%= radio_button_tag :by_is_online, v, is_active %>
+          <%  case v
+              when true %>Oui
+          <%  when false %>Non
+          <%  else %>Tout
+          <% end %>
+        </label>
+      <% end %>
+    </div>
+  </div>
+
+  <h5><%= svg_icon_tag :offline %> Offline</h5>
+
+  <div class="my-4">
+    <div class="btn-group btn-group-toggle btn-group-sm players" data-toggle="buttons">
+      <% [false, true, ''].each_with_index do |v, idx| %>
+        <% is_active = (params[:by_is_offline] || '') == v.to_s %>
+        <label class="btn <%= 'btn-outline' unless is_active %>">
+          <%= radio_button_tag :by_is_offline, v, is_active %>
+          <%  case v
+              when true %>Oui
+          <%  when false %>Non
+          <%  else %>Tout
+          <% end %>
+        </label>
+      <% end %>
+    </div>
+  </div>
+
+  <h5><%= svg_icon_tag :sponsor %> Sponsor</h5>
+
+  <div class="my-4">
+    <div class="btn-group btn-group-toggle btn-group-sm players" data-toggle="buttons">
+      <% [false, true, ''].each_with_index do |v, idx| %>
+        <% is_active = (params[:by_is_sponsor] || '') == v.to_s %>
+        <label class="btn <%= 'btn-outline' unless is_active %>">
+          <%= radio_button_tag :by_is_sponsor, v, is_active %>
+          <%  case v
+              when true %>Oui
+          <%  when false %>Non
+          <%  else %>Tout
+          <% end %>
+        </label>
+      <% end %>
+    </div>
+  </div>
+
+<% end %>
