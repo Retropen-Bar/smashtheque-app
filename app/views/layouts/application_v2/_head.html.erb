@@ -76,12 +76,12 @@
 
       <li class="nav-item dropdown rosalina">
         <%= link_to ranking_players_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
-          <span>Observatoire d'Harmonie</span>
+          <span>Observatoire</span>
         <% end %>
 
         <div class="dropdown-menu">
           <button type="button" class="btn btn-back btn-sm">
-            <span>Observatoire d'Harmonie</span>
+            <span>Observatoire</span>
           </button>
 
           <%= link_to "Observatoire d'Harmonie 1v1", ranking_players_path, class: 'dropdown-item' %>
@@ -219,10 +219,10 @@
       <% if user_signed_in? %>
         <li class="nav-item dropdown">
           <%= link_to '#', class: "btn btn-link btn-icon dropdown-toggle rounded-pill", data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false}, '@click': "mainNavVisible = false" do %>
-            <%= current_user.decorate.avatar_tag(24) %> <span class="current-user-name"><%= current_user.decorate.name_and_tag %></span>
+            <%= current_user.decorate.avatar_tag(24) %> <span class="current-user-name"><%= current_user.decorate.name.truncate(10, omission: '...') %></span>
           <% end %>
           <div class="dropdown-menu dropdown-menu-right">
-            <p class="dropdown-item-text mb-0 current-user-name"><%= current_user.decorate.name_and_tag %></p>
+            <p class="dropdown-item-text mb-0 current-user-name"><%= current_user.decorate.name.truncate(10, omission: '...') %></p>
             <div class="dropdown-divider"></div>
             <%= link_to 'Profil', current_user, class: 'dropdown-item' %>
             <% if current_user.administrated_teams.any? %>
