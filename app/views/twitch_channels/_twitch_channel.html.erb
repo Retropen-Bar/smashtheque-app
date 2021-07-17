@@ -14,7 +14,7 @@
         <% when :Player %>
           <%= twitch_channel.related.decorate.avatar_tag(32) %>
         <% when :Team %>
-          <%= twitch_channel.related.decorate.any_image_tag %>
+          <%= twitch_channel.related.decorate.avatar_tag(32) %>
         <% end %>
       <% end %>
     <% end %>

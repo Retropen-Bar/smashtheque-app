@@ -294,7 +294,7 @@
       .navbar-nav .nav-link:not(.admin) {
         font-size: $font-size-sm;
         border-radius: $btn-padding-x-lg * 2;
-        padding: $btn-padding-y $btn-padding-x-lg !important;
+        padding: $btn-padding-y $btn-padding-x !important;
         font-weight: 600;
         border: 2px solid transparent;
         color: rgba($gray-light, 0.7);
@@ -303,16 +303,6 @@
 
         &:after {
           content: none;
-        }
-
-        &:not(.active)[aria-expanded="true"] {
-          background-color: rgba($body-color, 0.1);
-        }
-        
-        &:not(.active):hover,
-        &:not(.active)[aria-expanded="true"] {
-          border-color: $body-color;
-          color: $body-color;
         }
       }
 
@@ -331,40 +321,12 @@
           left: 0;
           right: 0;
         }
+      }
 
-        &.players {
-          &:after {
-            background-color: $players;
-          }
-        }
-
-        &.championship {
-          &:after {
-            background-color: $championship;
-          }
-        }
-
-        &.smashtheque-tv {
-          &:after {
-            background-color: $smashtheque-tv;
-          }
-        }
-
-        &.harmony {
-          &:after {
-            background-color: $harmony;
-          }
-        }
-
-        &.community {
-          &:after {
-            background-color: $community;
-          }
-        }
-
-        &.guides {
-          &:after {
-            background-color: $guides;
+      @each $section, $color in $sections {
+        .dropdown.#{$section} {
+          .dropdown-menu:after {
+            background-color: $color;
           }
         }
       }
@@ -372,16 +334,6 @@
 
     @media screen and (min-width: 1550px) {
       margin-left: 2rem;
-
-      .nav-item {
-        margin-left: 0.625rem;
-        margin-right: 0.625rem;
-      }
-
-      .dropdown-toggle:not(.admin),
-      .navbar-nav .nav-link:not(.admin) {
-        padding: $btn-padding-y $btn-padding-x-lg * 1.25 !important;
-      }
     }
   }
 
@@ -455,14 +407,19 @@
 
 @include media-breakpoint-up(xxl) {
   @each $section_name, $color in $sections {
-    .section-#{$section_name} #main-nav {
-      .dropdown-toggle:not(.admin),
-      .navbar-nav .nav-link:not(.admin) { 
-        &.active {
-          border-color: $color;
-          color: $color;
-          background-color: transparent;
-
+    .dropdown.#{$section_name} {
+      .dropdown-toggle,
+      .navbar-nav .nav-link {
+        &:not(.admin) {
+          &:hover, &[aria-expanded="true"] {
+            border-color: rgba($color, 0.5);
+            color: rgba($color, 0.5);
+          }
+          &.active {
+            border-color: $color;
+            color: $color;
+            background-color: transparent;
+          }
           &[aria-expanded="true"] {
             background-color: rgba($color, 0.1);
           }
