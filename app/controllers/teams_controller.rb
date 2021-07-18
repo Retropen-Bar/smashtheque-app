@@ -3,15 +3,26 @@ class TeamsController < PublicController
   before_action :verify_team!, only: %w[edit update]
   decorates_assigned :team
 
+  has_scope :by_is_online
+  has_scope :by_is_offline
+  has_scope :by_is_sponsor
   has_scope :administrated_by
   has_scope :page, default: 1
   has_scope :per
   has_scope :on_abc
 
+  layout 'application_v2'
+
   def index
     @teams = apply_scopes(Team.order('lower(name)')).all
     @meta_title = 'Équipes'
-    render layout: 'application_v2'
+  end
+
+  def show
+    @team = Team.find(params[:id]).decorate
+    @meta_title = @team.name
+    @meta_properties['og:type'] = 'profile'
+    @meta_properties['og:image'] = @team.any_image_url
   end
 
   def edit; end
@@ -44,6 +55,14 @@ class TeamsController < PublicController
       :short_name, :name, :logo, :roster, :twitter_username,
       :is_offline, :is_online, :is_sponsor,
       player_ids: []
+    )
+  end
+
+  def current_page_params
+    params.permit(
+      :by_is_online, :by_is_offline, :by_is_sponsor,
+      :administrated_by,
+      :page, :per, :on_abc
     )
   end
 end

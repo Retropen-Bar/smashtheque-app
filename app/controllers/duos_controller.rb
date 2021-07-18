@@ -5,8 +5,6 @@ class DuosController < PublicController
   has_scope :per
   has_scope :on_abc
 
-  layout :select_layout
-
   def index
     @duos = duos Duo
     @meta_title = 'Duos'
@@ -94,16 +92,11 @@ class DuosController < PublicController
   private
 
   def duos(base)
-    @map = params[:map].to_i == 1
     apply_scopes(
-      base.order("LOWER(name)")
+      base.order('LOWER(name)')
     ).includes(
       player1: { user: :discord_user },
       player2: { user: :discord_user }
     )
-  end
-
-  def select_layout
-    @map ? 'map' : 'application'
   end
 end

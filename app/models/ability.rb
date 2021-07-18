@@ -29,11 +29,11 @@ class Ability
 
     # BraacketTournament
     can manage_or_cru, BraacketTournament
-    can :fetch_braacket_data, BraacketTournament
+    can :fetch_provider_data, BraacketTournament
 
     # ChallongeTournament
     can manage_or_cru, ChallongeTournament
-    can :fetch_challonge_data, ChallongeTournament
+    can :fetch_provider_data, ChallongeTournament
 
     # Character
     can manage_or_cru, Character
@@ -74,7 +74,7 @@ class Ability
 
     # SmashggEvent
     can manage_or_cru, SmashggEvent
-    can :fetch_smashgg_data, SmashggEvent
+    can :fetch_provider_data, SmashggEvent
 
     # SmashggUser
     can manage_or_cru, SmashggUser

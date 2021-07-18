@@ -1,5 +1,4 @@
 module MapsHelper
-
   def players_map(players, with_seconds, map_options: {}, &block)
     icons = {}
     markers = {}
@@ -28,7 +27,7 @@ module MapsHelper
               address[:latitude],
               address[:longitude]
             ],
-            popup: player.decorate.map_popup
+            modal_url: modal_player_path(player)
           }
         end
       end
@@ -143,7 +142,7 @@ module MapsHelper
 
     render_map  markers: markers,
                 layers: layers,
-                icons: icons,
+                icons: prep_icons_settings(icons),
                 options: options,
                 tile_layer: tile_layer,
                 attribution: nil,#attribution,
@@ -154,14 +153,19 @@ module MapsHelper
   end
 
   def prep_icon_settings(settings)
-    settings[:name] = 'icon' if settings[:name].nil? or settings[:name].blank?
+    settings[:name] = 'icon' if settings[:name].nil? || settings[:name].blank?
     settings[:shadow_url] = '' if settings[:shadow_url].nil?
     settings[:icon_size] = [] if settings[:icon_size].nil?
     settings[:shadow_size] = [] if settings[:shadow_size].nil?
     settings[:icon_anchor] = [0, 0] if settings[:icon_anchor].nil?
     settings[:shadow_anchor] = [0, 0] if settings[:shadow_anchor].nil?
     settings[:popup_anchor] = [0, 0] if settings[:popup_anchor].nil?
-    return settings
+    settings
   end
 
+  def prep_icons_settings(icons)
+    icons.map do |id, settings|
+      [id, prep_icon_settings(settings)]
+    end.to_h
+  end
 end

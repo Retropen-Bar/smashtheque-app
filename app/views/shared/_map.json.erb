@@ -1,0 +1,11 @@
+<%= {
+  container_id: container_id,
+  map_options: options,
+  center: center,
+  icons: icons,
+  layers_markers: markers,
+  tile_layer: tile_layer,
+  attribution: attribution,
+  max_zoom: max_zoom,
+  tile_options: options.transform_keys { |key| key.to_s.camelize(:lower) }
+}.to_json.html_safe %>

@@ -3,12 +3,11 @@
   <% @title += ('<div class="float-right">' + link_to('Modifier', [:edit, @team], class: 'btn btn-primary') + '</div>').html_safe %>
 <% end %>
 
-<%= render 'players/players',
-           players: @players,
-           title: @title,
-           with_communities: true %>
+<h1 class="text-center">
+  <%= @title %>
+</h1>
 
-<% if !@map && @team.roster.attached? %>
+<% if @team.roster.attached? %>
   <div class="text-center">
     <%= @team.roster_image_tag(max_width: '100%') %>
   </div>

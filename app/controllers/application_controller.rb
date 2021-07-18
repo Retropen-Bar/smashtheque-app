@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::Base
-
   # Warning : this file is used by ActiveAdmin
 
   helper_method :admin_user_signed_in?
@@ -80,4 +79,11 @@ class ApplicationController < ActionController::Base
     render_to_string partial: 'shared/map', layout: false, locals: locals
   end
 
+  def skip_bullet
+    previous_value = Bullet.enable?
+    Bullet.enable = false
+    yield
+  ensure
+    Bullet.enable = previous_value
+  end
 end

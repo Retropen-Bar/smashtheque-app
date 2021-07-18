@@ -398,6 +398,17 @@ class Player < ApplicationRecord
     true
   end
 
+  def move_results_to!(other_player_id)
+    TournamentEvent::TOP_RANKS.each do |rank|
+      TournamentEvent.where(
+        self.class.sanitize_sql("top#{rank}_player_id") => id
+      ).find_each do |tournament_event|
+        tournament_event.send("top#{rank}_player_id=", other_player_id)
+        tournament_event.save!
+      end
+    end
+  end
+
   # ---------------------------------------------------------------------------
   # GLOBAL SEARCH
   # ---------------------------------------------------------------------------

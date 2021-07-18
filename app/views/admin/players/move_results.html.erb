@@ -1,0 +1,17 @@
+<h2>Attribuer les résultats à un autre joueur</h2>
+
+<%= semantic_form_for(Player.new,
+                      url: do_move_results_admin_player_path(@player)) do |f| %>
+  <%= player_input  f,
+                    name: :id,
+                    value: @player,
+                    label: false,
+                    input_html: {
+                      style: 'width: 300px;'
+                    } %>
+  <%= f.submit 'Valider', class: 'button-auto green' %>
+<% end %>
+
+<p class="txt-warning">
+  Attention, cette action est difficilement réversible donc sois sûr de ce que tu fais&nbsp;!
+</p>
