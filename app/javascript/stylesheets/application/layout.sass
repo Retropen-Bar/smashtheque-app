@@ -37,6 +37,8 @@ body
 
   ul.navbar-nav
     li.nav-item
+      position: relative
+
       a
         &:not(.btn)
           color: $dark-gray
@@ -58,6 +60,20 @@ body
         i
 
         span
+
+      &.newpill
+        &::after
+          content: 'NEW'
+          display: block
+          position: absolute
+          top: -8px
+          right: -4px
+          border-radius: 12px
+          padding: 5px 10px
+          font-size: 10px
+          color: $red
+          font-weight: bold
+
 
   form#main-global-search-form
     select
