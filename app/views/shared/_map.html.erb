@@ -57,7 +57,7 @@
   <% icons.each do |key, icon| %>
     <% icon_settings = prep_icon_settings(icon) %>
     icons['<%= key %>'] = L.icon({
-      iconUrl: '<%= icon_settings[:icon_url] %>',
+      iconUrl: '<%= icon_settings[:icon_url].html_safe %>',
       iconSize: <%= icon_settings[:icon_size] %>,
       iconAnchor: <%= icon_settings[:icon_anchor] %>,
       className: '<%= icon_settings[:class_name] %>'
