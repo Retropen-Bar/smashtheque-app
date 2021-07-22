@@ -1,0 +1,6 @@
+@each $section-name, $color in $sections {
+  body.#{$section-name} .custom-control-input:checked ~ .custom-control-label::before {
+    border-color: $color;
+    @include gradient-bg($color);
+  }
+}
