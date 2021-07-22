@@ -117,6 +117,12 @@ class RecurringTournamentDecorator < BaseDecorator
     super({ label: name_with_logo(max_width: 64, max_height: 64) }.merge(options))
   end
 
+  def map_image_url
+    return h.url_for(logo) if logo.attached?
+
+    discord_guild_icon_image_url || default_logo_image_url
+  end
+
   def any_image_url
     logo_url.presence || discord_guild_icon_image_url || default_logo_image_url
   end

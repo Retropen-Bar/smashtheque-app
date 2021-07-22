@@ -63,7 +63,7 @@ module MapsHelper
     icons = {}
     recurring_tournaments.geocoded.each do |recurring_tournament|
       icons[recurring_tournament.id.to_s] ||= {
-        icon_url: recurring_tournament.decorate.any_image_url,
+        icon_url: recurring_tournament.decorate.map_image_url,
         icon_size: 32,
         icon_anchor: [16, 16],
         class_name: 'avatar-icon'
