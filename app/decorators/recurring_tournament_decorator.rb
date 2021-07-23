@@ -150,7 +150,7 @@ class RecurringTournamentDecorator < BaseDecorator
   end
 
   def default_logo_image_url
-    'smash.svg'
+    @@default_logo_image_url ||= h.image_url('smash.svg')
   end
 
   def name_with_logo(options = {})
