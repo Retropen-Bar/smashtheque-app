@@ -1,7 +1,7 @@
 .show-page {
   &-header {
     &-bg {
-      padding-top: 20%;
+      padding-top: 25%;
     }
 
     @include media-breakpoint-down(sm) {
@@ -18,7 +18,7 @@
       grid-template-columns: auto 1fr;
       grid-template-rows: 1fr 1fr;
       gap: 0.5rem 0;
-      padding: $card-spacer-x / 1.5;
+      padding: $card-spacer-x / 1.5 $card-spacer-x;
     }
   }
 
@@ -80,5 +80,40 @@
 
   .list-teams {
     margin-top: 0;
+  }
+
+  &-body {
+    @include media-breakpoint-down(md) {
+      margin-left: -$grid-gutter-width / 2;
+      margin-right: -$grid-gutter-width / 2;
+      border-radius: 0;
+      background: transparent;
+    }
+  }
+
+  &-section-title {
+    display: flex;
+    align-items: center;
+
+    h2 {
+      font-size: 1.25rem;
+      margin: 0;
+    }
+
+    &-separator {
+      flex-grow: 1;
+      border-bottom: 2px solid currentColor;
+      margin-left: 1rem;
+    }
+  }
+}
+
+@each $section_name, $color in $sections {
+  .section-#{$section_name} {
+    .show-page {
+      &-section-title {
+        color: $color;
+      }
+    }
   }
 }
