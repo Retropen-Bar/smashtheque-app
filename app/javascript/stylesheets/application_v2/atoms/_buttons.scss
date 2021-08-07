@@ -41,7 +41,7 @@
     $hover-background: lighten($background, 7.5%);
 
     color: $body-color;
-  
+
     @include hover() {
       color: $body-color;
       @include gradient-bg($hover-background);
@@ -49,16 +49,28 @@
 
     @each $section_name, $color in $sections {
       $hover-background: darken($color, 7.5%);
-    
+
       &.#{$section_name}:not(:disabled):not(.disabled).active {
         background-color: $color;
-        color: theme-color('dark');
-    
+        color: theme-color("dark");
+
         @include hover() {
           color: color-yiq($hover-background, $light: $white);
           background-color: $hover-background;
         }
       }
     }
+  }
+}
+
+.btn-see-more {
+  @extend .btn-icon, .rounded-circle;
+  padding: 0;
+  display: flex;
+
+  svg {
+    transform: rotate(90deg);
+    height: 1.25em;
+    width: 1.25em;
   }
 }

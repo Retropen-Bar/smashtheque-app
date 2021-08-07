@@ -12,11 +12,20 @@
       margin-left: -$grid-gutter-width / 2;
       margin-right: -$grid-gutter-width / 2;
     }
+
+    &-content {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 0.5rem 0;
+      padding: $card-spacer-x / 1.5;
+    }
   }
 
   &-avatar {
-    height: 5.875rem / 2 - $card-spacer-x;
+    height: 5.875rem / 2 - $card-spacer-x / 1.5;
     width: 94px;
+    align-self: center;
 
     .avatar {
       border-radius: 50%;
@@ -29,12 +38,47 @@
     }
   }
 
+  &-meta {
+    grid-row: 2;
+    grid-column: 1;
+    align-self: center;
+    @include badge-variant($gray-dark);
+  }
+
   &-main-info {
-    padding-left: $card-spacer-y;
+    padding-left: $card-spacer-x;
+    grid-row: span 2;
+
+    > * + * {
+      margin-top: 0.25rem;
+    }
   }
 
   &-title {
     font-size: 1.25rem;
     margin-bottom: 0;
+    font-weight: 600;
+  }
+
+  &-socials {
+    background-color: $gray-deep;
+    border-top-left-radius: $border-radius;
+    padding: ($card-spacer-y * 0.5) $card-spacer-y;
+    position: absolute;
+    right: 0;
+    bottom: 100%;
+
+    svg {
+      width: 1.125rem;
+      height: auto;
+    }
+
+    > * + * {
+      margin-left: 0.5rem;
+    }
+  }
+
+  .list-teams {
+    margin-top: 0;
   }
 }

@@ -88,7 +88,7 @@ class DiscordUserDecorator < BaseDecorator
       [
         h.content_tag(:span, "Compte smash.gg de #{discriminated_username}", class: 'sr-only'),
         h.svg_icon_tag(:discord)
-      ].join('&nbsp;').html_safe
+      ].join('').html_safe
     end
   end
 end

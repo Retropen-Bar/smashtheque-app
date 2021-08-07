@@ -1,22 +1,35 @@
+<% modal_id = "player-#{player.id}" %>
+
 <div class="container-lg">
-  <article class="show-page">
+  <article class="show-page player">
     <section class="show-page-header card">
-    <div class="show-page-header-bg"
-    
-    style="<%=
-        "background-color: #{@background_color};" if @background_color
-      %><%=
-        "background-image: url(\"#{@background_image_url.gsub('"', "\"")}\");" if @background_image_url
-      %><%=
-        "background-image: url(\"#{image_url('static-bg.png').gsub('"', "\"")}\");" if @static
-      %>"
-    ></div>
-      <div class="show-page-header-content card justify-content-start">
-        <div class="card-body d-flex">
+      <div class="show-page-header-bg"
+      
+      style="<%=
+          "background-color: #{@background_color};" if @background_color
+        %><%=
+          "background-image: url(\"#{@background_image_url.gsub('"', "\"")}\");" if @background_image_url
+        %><%=
+          "background-image: url(\"#{image_url('static-bg.png').gsub('"', "\"")}\");" if @static
+        %>"
+      ></div>
+      <div class="card justify-content-start">
+        <div class="show-page-header-content card-body">
           <div class="show-page-avatar">
             <% if player.is_legit? %>
               <%= player.avatar_tag(94) %>
             <% end %>
+          </div>
+          <div class="show-page-meta badge badge-pill d-inline-flex d-md-none">
+            <div class="list-characters-compact list-characters-compact--sm mx-auto">
+              <% player.characters[0...3].each do |character| %>
+                <%= character.decorate.link %>
+              <% end %>
+              <button class="btn btn-sm btn-see-more" data-toggle="modal" data-target="#<%= modal_id %>">
+                <span class="sr-only">Voir plus</span>
+                <%= svg_icon_tag(:suspension) %>
+              </button>
+            </div>
           </div>
           <div class="show-page-main-info">
             <h1 class="show-page-title card-title text-truncate">
@@ -26,9 +39,22 @@
                 -
               <% end %>
             </h1>
-            <div class="show-page-socials">
-              <%= render 'player_accounts_v2', player: player %>
-            </div>
+            <% if player.is_legit? && player.teams.present? %>
+              <small class="list-teams player-teams">
+                <% player.teams.each do |team| %>
+                  <div class="list-team"><%= team.short_name %></div>
+                <% end %>
+              </small>
+            <% end %>
+            <% player.user&.addresses&.each do |address| %>
+              <small class="player-community">
+                <i class="fas fa-map-marker-alt"></i>
+                <%= address[:name] %>
+              </small>
+            <% end %>
+          </div>
+          <div class="show-page-socials">
+            <%= render 'player_accounts_v2', player: player %>
           </div>
         </div>
       </div>
@@ -37,3 +63,4 @@
     </section>
   </article>
 </div>
+<%= render 'characters_modal', modal_id: modal_id %>

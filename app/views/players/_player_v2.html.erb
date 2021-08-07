@@ -22,11 +22,9 @@
           <% end %>
         </h5>
         <% if player.is_legit? && player.teams.present? %>
-          <small class="player-teams">
+          <small class="list-teams list-teams--sm player-teams">
             <% player.teams[0...2].each do |team| %>
-              <div class="player-team">
-                <%= team.short_name %>
-              </div>
+              <div class="list-team"><%= team.short_name %></div>
             <% end %>
           </small>
         <% end %>
@@ -40,7 +38,7 @@
         <% end %>
       </div>
       <% if player.characters.present? %>
-        <div class="player-characters-list flex-shrink-0">
+        <div class="list-characters-compact flex-shrink-0">
           <% player.characters[0...3].each do |character| %>
           <%= character.decorate.link %>
           <% end %>
