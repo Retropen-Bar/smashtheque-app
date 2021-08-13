@@ -5,7 +5,7 @@ class Api::V1::DiscordUsersController < Api::V1::BaseController
   end
 
   def refetch
-    discord_user = DiscordUser.find_by(discord_id: params[:discord_id])
+    discord_user = DiscordUser.find_or_initialize_by(discord_id: params[:discord_id])
     discord_user.fetch_discord_data
     if discord_user.save
       discord_user.update_discord_roles
