@@ -1,0 +1,35 @@
+
+<ul class="nav nav-pills nav-tabs" id="rewards-tablist" role="tablist">
+  <li class="nav-item" role="presentation">
+    <a class="nav-link active" id="online-rewards-tab"
+        data-toggle="tab" href="#online-rewards"
+        role="tab" aria-controls="online-rewards" aria-selected="true">
+      Online
+    </a>
+  </li>
+  <li class="nav-item" role="presentation">
+    <a class="nav-link" id="offline-rewards-tab"
+        data-toggle="tab" href="#offline-rewards"
+        role="tab" aria-controls="offline-rewards" aria-selected="false">
+      Offline
+    </a>
+  </li>
+</ul>
+
+<div class="tab-content p-0">
+
+  <div class="tab-pane active" id="online-rewards"
+        role="tabpanel" aria-labelledby="online-rewards-tab">
+    <%= render 'shared/rewards/reward_by_type', rewards_counts: @online_rewards_counts, awarded: awarded, is_online: true, modal_id: 'online-rewards-modal' %>
+  </div>
+
+  <div class="tab-pane" id="offline-rewards"
+        role="tabpanel" aria-labelledby="offline-rewards-tab">
+    <%= render 'shared/rewards/reward_by_type', rewards_counts: @offline_rewards_counts, awarded: awarded, is_online: false, modal_id: 'offline-rewards-modal' %>
+  </div>
+
+</div>
+
+<%= render 'shared/rewards/badges_modal', all_rewards: @all_online_rewards, rewards_counts: @offline_rewards_counts, awarded: awarded, is_online: true, modal_id: 'online-rewards-modal' %>
+
+<%= render 'shared/rewards/badges_modal', all_rewards: @all_offline_rewards, rewards_counts: @offline_rewards_counts, awarded: awarded, is_online: false, modal_id: 'offline-rewards-modal' %>

@@ -1,10 +1,6 @@
 .card-box {
-
-  .card-body {
-    &:last-child {
-      @include border-radius(0 0 $card-inner-border-radius $card-inner-border-radius);
-    }
-  }
+  @include border-radius($card-inner-border-radius);
+  overflow: hidden;
 
   .card-header {
     background-color: $gray-darker;
@@ -15,7 +11,56 @@
 
   .card-body {
     background-color: $gray-dark;
-    padding: 10px 50px 10px 15px;
+
+    .card-title {
+      font-size: 1.25rem;
+      margin-bottom: 0;
+    }
+  }
+
+  &--sm {
+    .card-body {
+      padding: $card-spacer-y;
+    }
+  }
+
+  &--square {
+    position: relative;
+
+    .card-body {
+      padding: 100% 0 0;
+    }
+
+    .card-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: $card-spacer-y;
+      position: absolute;
+      inset: 0;
+    }
+  }
+
+  &--stat {
+    font-size: 1.25rem;
+    font-weight: 600;
+
+    svg,
+    img {
+      width: 100%;
+      height: auto;
+      max-width: 44px;
+      max-height: 44px;
+
+      object-fit: contain;
+      object-position: center;
+      margin-bottom: auto;
+    }
+
+    small {
+      font-size: 0.875rem;
+    }
   }
 }
 

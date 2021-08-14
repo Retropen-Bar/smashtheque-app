@@ -33,7 +33,7 @@ class RewardDecorator < BaseDecorator
 
     h.tag.div(**wrapper_options) do
       (
-        h.image_tag badge_image_url
+        h.image_tag badge_image_url, class: 'img-fluid'
       ) + (
         if count.nil?
           ''

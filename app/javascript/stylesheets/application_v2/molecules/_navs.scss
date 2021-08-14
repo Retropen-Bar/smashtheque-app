@@ -102,7 +102,7 @@
   }
 }
 
-.nav-pills {
+.nav-letters {
   .nav-link {
     color: rgba($body-color, 0.7);
 
@@ -113,8 +113,46 @@
   }
 }
 
+.nav-tabs {
+  display: inline-flex;
+  border: 0;
+  border-radius: $rounded-pill;
+  background-color: $gray-deep;
+  margin-bottom: 1em;
+
+  .nav-link {
+    font-size: $font-size-sm;
+    border-radius: $rounded-pill;
+    border: 0;
+    padding: 0.125em 0.75em;
+    color: rgba($body-color, 0.7);
+
+    @include transition(
+      border 0.2s linear,
+      color 0.2s linear,
+      width 0.2s linear,
+      background-color 0.2s linear
+    );
+
+    @include hover() {
+      color: $body-color;
+    }
+  }
+}
+
 @each $section_name, $color in $sections {
-  .section-#{$section_name} {
+  .section-#{$section_name} .nav-tabs {
+    .nav-link.active,
+    .show > .nav-link {
+      color: $gray-deep;
+      background-color: $color;
+      font-weight: 600;
+    }
+  }
+}
+
+@each $section_name, $color in $sections {
+  .section-#{$section_name} .nav-letters {
     .nav-link.active,
     .show > .nav-link {
       color: $color;

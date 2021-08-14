@@ -73,6 +73,16 @@
   }
 }
 
+.list-badges {
+  width: max-content;
+
+  img {
+    width: 100%;
+    max-width: 44px;
+    min-width: 36px;
+  }
+}
+
 .list-socials {
   margin-bottom: 0;
 
