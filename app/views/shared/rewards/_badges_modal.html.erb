@@ -10,7 +10,7 @@
       <div class="modal-body">
         <div class="row">
           <% all_rewards.grouped_by_level1.each do |(level1, level1_rewards)| %>
-            <div class="col">
+            <div class="col reward-badges">
               <% level1_rewards.each do |reward| %>
                 <% count = rewards_counts[reward.id] %>
                 <% if count %>

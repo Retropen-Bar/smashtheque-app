@@ -77,7 +77,39 @@
               <span class="show-page-section-title-separator"></span>
             </div>
             <div class="show-page-section-body">
-              Le palmarès
+              <% if @tournament_events.count > 0 %>
+                <div class="list-y">
+                  <% @tournament_events.each do |tournament_event| %>
+                    <% met_reward_condition = @met_reward_conditions_by_tournament_event_id[tournament_event.id]&.decorate %>
+                      <article class="palmares-item list-x">
+                        <div class="palmares-rewards text-center">
+                          <%= met_reward_condition&.reward_badge(size: 24) %>
+                          <% if !met_reward_condition&.points.nil? %>
+                          <small class="d-block rounded-pill bg-layout py-1 px-2 mt-1">
+                            <%= met_reward_condition&.points_count(16, is_online: met_reward_condition&.reward&.online?, delimiter: '&nbsp;', value: met_reward_condition&.points) %>
+                          </small>
+                          <% end %>
+                        </div>
+                        <div class="card-box palmares-info flex-grow-1">
+                          <div class="card-body">
+                            <div class="list-y ">
+                              <time class="fs-sm"><%= l tournament_event.date, format: :long %></time>
+                              <h3><%= tournament_event.player_rank_name(@player.id) %> - <%= tournament_event.participants_count %></h3>
+                              <%= tournament_event.recurring_tournament_link %>
+                              <%= tournament_event.link(label: tournament_event.name) %>
+                            </div>
+                          </div>
+                          <div class="card-footer">
+                            <%= tournament_event.bracket_icon_link(class: 'text-decoration-none') %>
+                          </div>
+                        </div>
+                  
+                      </article>
+                  <% end %>
+                </div>
+              <% else %>
+                <p>Aucun palmarès</p>
+              <% end %>
             </div>
           </section>
         </div>

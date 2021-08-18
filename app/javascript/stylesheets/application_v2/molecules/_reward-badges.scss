@@ -1,6 +1,4 @@
 .reward-badge {
-  height: 42px;
-
   &.disabled {
     filter: grayscale(0.5);
     opacity: 0.6;
@@ -10,5 +8,11 @@
     text-align: center;
     font-size: 0.75rem;
     font-weight: 600;
+  }
+}
+
+.reward-badges {
+  .reward-badge {
+    height: 42px;
   }
 }
