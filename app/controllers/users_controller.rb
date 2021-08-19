@@ -13,10 +13,12 @@ class UsersController < PublicController
   def edit; end
 
   def refetch
-    redirect_to request.referer, notice: 'Données mises à jour' and return if @user.refetch
+    if @user.refetch
+      redirect_back fallback_location: { action: :show }, notice: 'Données mises à jour' and return
+    end
 
     flash[:error] = 'Impossible de mettre à jour les données'
-    redirect_to request.referer
+    redirect_back fallback_location: { action: :show }
   end
 
   def update
@@ -29,7 +31,10 @@ class UsersController < PublicController
   end
 
   def create_player
-    redirect_to request.referer, notice: 'Fiche joueur déjà existante' and return if @user.player
+    if @user.player
+      redirect_back fallback_location: { action: :show }, notice: 'Fiche joueur déjà existante'
+      return
+    end
 
     @user.create_player!(
       name: @user.name,
