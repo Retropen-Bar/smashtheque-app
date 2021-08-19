@@ -1,5 +1,65 @@
 .palmares {
+  & > *:not(:first-child) {
+    margin-top: 0.75rem;
+  }
+
+  &-item {
+    font-size: 0.75rem;
+    position: relative;
+
+    &:not(:last-child) {
+      padding-bottom: 28px;
+
+      &:before {
+        content: "";
+        width: 2px;
+        height: 100%;
+        background-color: $body-color;
+        transform: translateX(-1px);
+        position: absolute;
+        left: 36px;
+        top: 0;
+      }
+    }
+  }
+
   &-rewards {
-    flex: 0 0 72px;
+    flex: 0 0 64px;
+    position: relative;
+    z-index: 1;
+
+    &:not(:empty) {
+      padding-bottom: 0.75rem;
+    }
+  }
+
+  &-points {
+    font-variant-numeric: oldstyle-nums;
+  }
+
+  &-info {
+    position: relative;
+    z-index: 1;
+  }
+
+  &-title {
+    font-size: 1rem;
+    color: $white;
+  }
+
+  &-tournament-logo {
+    flex: 0 0 1.25rem;
+  }
+
+  &-action-link {
+    svg {
+      width: 1.75em;
+      height: 1.75em;
+    }
+
+    img {
+      width: 1.5em;
+      height: 1.5em;
+    }
   }
 }

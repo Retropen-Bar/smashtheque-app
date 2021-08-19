@@ -25,7 +25,7 @@
     <h3 class="sr-only">Classement</h3>
     <div class="card-body">
       <div class="card-content">
-        <%= svg_icon_tag(:médaille, ['card-box-icon']) %>
+        <%= svg_icon_tag(:médaille, class: 'card-box-icon') %>
         <% if rank = awarded.rank(is_online: is_online) %>
           <p class="mb-0">#<%= rank %></p>
         <% else %>
@@ -48,13 +48,13 @@
   <h3 class="fs-sm mb-3">Classement par années</h3>
   <ul class="list-y list-unstyled text-center">
     <li class="d-flex bg-layout-dark rounded-pill py-1 px-3">
-      <span class="flex-grow-1">2021</span><span>&nbsp;•&nbsp;</span><span class="flex-grow-1 font-weight-bold text-players"><%= svg_icon_tag(:médaille, ['card-box-icon']) %>&nbsp;#1</span><span>&nbsp;•&nbsp;</span><span class="flex-grow-1"><%= awarded.points_count(16, is_online: is_online, class: 'card-box-icon', delimiter: '&nbsp;') %></span>
+      <span class="flex-grow-1">2021</span><span>&nbsp;•&nbsp;</span><span class="flex-grow-1 font-weight-bold text-players"><%= svg_icon_tag(:médaille, class: 'card-box-icon') %>&nbsp;#1</span><span>&nbsp;•&nbsp;</span><span class="flex-grow-1"><%= awarded.points_count(16, is_online: is_online, class: 'card-box-icon', delimiter: '&nbsp;') %></span>
     </li>
     <li class="d-flex bg-layout-dark rounded-pill py-1 px-3">
-      <span class="flex-grow-1">2021</span><span>&nbsp;•&nbsp;</span><span class="flex-grow-1 font-weight-bold text-players"><%= svg_icon_tag(:médaille, ['card-box-icon']) %>&nbsp;#1</span><span>&nbsp;•&nbsp;</span><span class="flex-grow-1"><%= awarded.points_count(16, is_online: is_online, class: 'card-box-icon', delimiter: '&nbsp;') %></span>
+      <span class="flex-grow-1">2021</span><span>&nbsp;•&nbsp;</span><span class="flex-grow-1 font-weight-bold text-players"><%= svg_icon_tag(:médaille, class: 'card-box-icon') %>&nbsp;#1</span><span>&nbsp;•&nbsp;</span><span class="flex-grow-1"><%= awarded.points_count(16, is_online: is_online, class: 'card-box-icon', delimiter: '&nbsp;') %></span>
     </li>
     <li class="d-flex bg-layout-dark rounded-pill py-1 px-3">
-      <span class="flex-grow-1">2021</span><span>&nbsp;•&nbsp;</span><span class="flex-grow-1 font-weight-bold text-players"><%= svg_icon_tag(:médaille, ['card-box-icon']) %>&nbsp;#1</span><span>&nbsp;•&nbsp;</span><span class="flex-grow-1"><%= awarded.points_count(16, is_online: is_online, class: 'card-box-icon', delimiter: '&nbsp;') %></span>
+      <span class="flex-grow-1">2021</span><span>&nbsp;•&nbsp;</span><span class="flex-grow-1 font-weight-bold text-players"><%= svg_icon_tag(:médaille, class: 'card-box-icon') %>&nbsp;#1</span><span>&nbsp;•&nbsp;</span><span class="flex-grow-1"><%= awarded.points_count(16, is_online: is_online, class: 'card-box-icon', delimiter: '&nbsp;') %></span>
     </li>
   </ul>
 </section>

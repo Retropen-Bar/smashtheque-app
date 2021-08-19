@@ -78,33 +78,41 @@
             </div>
             <div class="show-page-section-body">
               <% if @tournament_events.count > 0 %>
-                <div class="list-y">
+                <div class="palmares list-y">
                   <% @tournament_events.each do |tournament_event| %>
                     <% met_reward_condition = @met_reward_conditions_by_tournament_event_id[tournament_event.id]&.decorate %>
-                      <article class="palmares-item list-x">
-                        <div class="palmares-rewards text-center">
-                          <%= met_reward_condition&.reward_badge(size: 24) %>
-                          <% if !met_reward_condition&.points.nil? %>
-                          <small class="d-block rounded-pill bg-layout py-1 px-2 mt-1">
-                            <%= met_reward_condition&.points_count(16, is_online: met_reward_condition&.reward&.online?, delimiter: '&nbsp;', value: met_reward_condition&.points) %>
-                          </small>
-                          <% end %>
-                        </div>
-                        <div class="card-box palmares-info flex-grow-1">
-                          <div class="card-body">
-                            <div class="list-y ">
-                              <time class="fs-sm"><%= l tournament_event.date, format: :long %></time>
-                              <h3><%= tournament_event.player_rank_name(@player.id) %> - <%= tournament_event.participants_count %></h3>
-                              <%= tournament_event.recurring_tournament_link %>
-                              <%= tournament_event.link(label: tournament_event.name) %>
+                    <article class="palmares-item list-x align-items-start">
+                      <div class="palmares-rewards text-center mr-2 bg-bg bg-md-layout">
+                        <%= met_reward_condition&.reward_badge(size: 24) %>
+                        <% if !met_reward_condition&.points.nil? %>
+                        <p class="palmares-points d-block rounded-pill bg-layout py-1 px-2 mt-1 mb-0">
+                          <%= met_reward_condition&.points_count(16, is_online: met_reward_condition&.reward&.online?, delimiter: '&nbsp;', value: met_reward_condition&.points) %>
+                        </p>
+                        <% end %>
+                      </div>
+                      <div class="palmares-info card-box flex-grow-1">
+                        <div class="card-body py-3">
+                          <div class="list-y">
+                            <div>
+                              <time class="palmares-date" datetime="<%= tournament_event.date.to_s(:db) %>"><%= l tournament_event.date, format: :long %></time>
+                              <h3 class="palmares-title"><%= tournament_event.player_rank_name(@player.id) %> - <%= tournament_event.participants_count %> participants</h3>
+                            </div>
+                            <div class="palmares-tournament d-flex">
+                              <div class="palmares-tournament-logo mr-2">
+                                <%= tournament_event.recurring_tournament&.decorate&.any_image_tag %>
+                              </div>
+                              <div class="palmares-tournament-names d-flex flex-column">
+                                <p class="m-0"><%= tournament_event.recurring_tournament&.name %></p>
+                                <%= tournament_event.link(label: tournament_event.name, class: "text-accent font-weight-bolder text-decoration") %>
+                              </div>
                             </div>
                           </div>
-                          <div class="card-footer">
-                            <%= tournament_event.bracket_icon_link(class: 'text-decoration-none') %>
-                          </div>
                         </div>
-                  
-                      </article>
+                        <div class="card-footer bg-layout bg-md-bg">
+                          <%= tournament_event.bracket_icon_link(text: 'Bracket', class: ' palmares-action-link  font-weight-bolder', backet_icon_options: {height: 12, class: 'text-accent'}) %>
+                        </div>
+                      </div>
+                    </article>
                   <% end %>
                 </div>
               <% else %>

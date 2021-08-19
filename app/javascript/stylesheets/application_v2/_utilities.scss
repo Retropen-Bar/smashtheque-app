@@ -9,3 +9,20 @@
 .border-left {
   border-left: 1px solid;
 }
+
+.text-decoration {
+  text-decoration: underline !important;
+}
+
+@each $section_name, $color in $sections {
+  .section-#{$section_name} {
+    .text-accent {
+      color: $color !important;
+    }
+
+    .bg-accent {
+      background-color: $color !important;
+      color: color-yiq($color) !important;
+    }
+  }
+}

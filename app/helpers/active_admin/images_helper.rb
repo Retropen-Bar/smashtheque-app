@@ -14,6 +14,11 @@ module ActiveAdmin::ImagesHelper
     with_link = options.delete(:with_link)
     link_options = options.delete(:link_options)
 
+    # class
+
+    classes = ['img-fluid']
+    classes << options.delete(:class)
+
     # max size
 
     style = []
@@ -23,7 +28,7 @@ module ActiveAdmin::ImagesHelper
 
     # tag itself
 
-    tag = image_tag source, options.merge(style: style.join)
+    tag = image_tag source, options.merge(style: style.join, class: classes.join(' '))
 
     # link
 
