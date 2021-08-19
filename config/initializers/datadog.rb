@@ -1,4 +1,4 @@
-if defined?(Datadog)
+if defined?(Datadog) && ENV['DATADOG_HOST']
   Datadog.configure do |c|
     # This will activate auto-instrumentation for Rails
     c.use :rails
