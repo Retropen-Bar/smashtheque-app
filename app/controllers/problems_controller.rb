@@ -61,7 +61,8 @@ class ProblemsController < PublicController
 
   def verify_recurring_tournament!
     authenticate_user!
-    return if current_user.is_admin? || user_recurring_tournament_admin?
+    return if current_user.is_admin?
+    return if user_recurring_tournament_admin? && @recurring_tournament.has_signed_charter?
 
     flash[:error] = 'Accès non autorisé'
     redirect_to root_path
