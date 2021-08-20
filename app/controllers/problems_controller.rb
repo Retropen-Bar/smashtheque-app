@@ -20,7 +20,9 @@ class ProblemsController < PublicController
   def show; end
 
   def new
-    @problem = @recurring_tournament.problems.new(occurred_at: Time.current)
+    @problem = @recurring_tournament.problems.new(
+      problem_params.merge(occurred_at: Time.current)
+    )
   end
 
   def create
@@ -75,6 +77,8 @@ class ProblemsController < PublicController
   end
 
   def problem_params
+    return {} unless params[:problem]
+
     params.require(:problem).permit(
       :player_id, :duo_id,
       :occurred_at, :nature, :details, :proof

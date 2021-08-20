@@ -1,3 +1,11 @@
-<h1 class="page-title">Signaler un nouveau problème</h1>
+<h1 class="page-title">
+  <%= recurring_tournament.link %>
+</h1>
+<h2 class="text-center">
+  Signaler un nouveau problème
+</h2>
+<div class="m-3 text-center">
+  <%= link_to 'Retourner à la liste', { action: :index }, class: 'btn btn-secondary' %>
+</div>
 
 <%= render 'form', problem: @problem %>

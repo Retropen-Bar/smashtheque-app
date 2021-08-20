@@ -340,6 +340,14 @@ class User < ApplicationRecord
     !admin_level.nil?
   end
 
+  def administrated_charted_online_recurring_tournaments
+    administrated_recurring_tournaments.online.with_charter
+  end
+
+  def is_charted_online_recurring_tournament_administrator?
+    administrated_charted_online_recurring_tournaments.any?
+  end
+
   # provides: @discord_user_id
   delegate :id,
            to: :discord_user,
