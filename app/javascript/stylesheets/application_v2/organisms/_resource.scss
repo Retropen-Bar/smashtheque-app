@@ -78,6 +78,18 @@
       }
     }
   }
+
+  &--dark {
+    .card {
+      background-color: $gray-dark;
+    }
+
+    &:hover {
+      .card {
+        background-color: $gray-medium;
+      }
+    }
+  }
 }
 
 .resource-avatar {
@@ -132,6 +144,8 @@
 }
 
 .resource.player {
+  min-height: 64px;
+
   .reward-badge {
     transform: translate(50%, 50%);
     position: absolute;
@@ -155,6 +169,12 @@
       clip-path: polygon(12% 0, 100% 0%, 100% 100%, 0% 100%);
       position: absolute;
       inset: 0;
+    }
+
+    &--dark {
+      &::before {
+        background-color: $gray-darker;
+      }
     }
 
     @media screen and (min-width: 375px) {

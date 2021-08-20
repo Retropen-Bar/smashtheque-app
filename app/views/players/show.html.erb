@@ -109,10 +109,19 @@
                           </div>
                         </div>
                         <div class="card-footer bg-layout bg-md-bg">
-                          <%= tournament_event.bracket_icon_link(text: 'Bracket', class: ' palmares-action-link  font-weight-bolder', backet_icon_options: {height: 12, class: 'text-accent'}) %>
+                          <div class="d-flex justify-content-around align-items-center">
+                            <%= tournament_event.bracket_icon_link(text: 'Bracket', class: ' palmares-action-link  font-weight-bolder', backet_icon_options: {height: 12, class: 'text-accent'}) %>
+                            
+                            <button type="button"
+                                    class="palmares-action-link btn btn-sm btn-link btn-with-icon rounded-pill font-weight-bolder"
+                                    data-toggle="modal"
+                                    data-target="#top8-<%= tournament_event.id %>-modal">
+                                    <%= svg_icon_tag(:top3, class: 'text-accent mr-0') %>&nbsp;Top 8</button>
+                          </div>
                         </div>
                       </div>
                     </article>
+                    <%= render 'top8_modal', tournament_event: tournament_event, modal_id: "top8-#{tournament_event.id}-modal" %>
                   <% end %>
                 </div>
               <% else %>

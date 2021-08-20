@@ -7,7 +7,7 @@
     font-size: 0.75rem;
     position: relative;
 
-    &:not(:last-child) {
+    &:not(:nth-last-child(2)) {
       padding-bottom: 28px;
 
       &:before {
@@ -52,14 +52,21 @@
   }
 
   &-action-link {
+    font-size: inherit;
+
     svg {
-      width: 1.75em;
-      height: 1.75em;
+      width: 2.5em;
+      height: 2.5em;
+    }
+
+    .icon--top3 {
+      width: 2em;
+      height: 2em;
     }
 
     img {
-      width: 1.5em;
-      height: 1.5em;
+      width: 2em;
+      height: 2em;
     }
   }
 }

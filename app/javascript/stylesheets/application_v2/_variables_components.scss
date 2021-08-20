@@ -54,8 +54,8 @@ $pagination-active-border-color: $gray-dark;
 // MODALS
 
 $modal-sm: 260px;
-// $zindex-modal-backdrop: 10000;
-// $zindex-modal: 10001;
+$zindex-modal-backdrop: 10000;
+$zindex-modal: 10001;
 $modal-backdrop-opacity: 0.9;
 $modal-header-border-width: 0;
 $modal-title-line-height: 1.25;
@@ -75,4 +75,5 @@ $custom-select-color: $body-color;
 $custom-select-indicator: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path fill='#{$body-color}' d='M2,9.4c-0.1-1.2,1.5-1.9,2.3-1c0,0,11.7,11.8,11.7,11.8L27.7,8.4c1.2-1.2,3.2,0.7,1.9,1.9C29.6,10.3,16,24,16,24L2.4,10.3C2.1,10.1,2,9.7,2,9.4z'/></svg>");
 $custom-select-bg-size: 1rem;
 $custom-select-indicator-padding: 1.5rem;
-$custom-select-background: escape-svg($custom-select-indicator) right $custom-select-padding-x center / $custom-select-bg-size no-repeat;
+$custom-select-background: escape-svg($custom-select-indicator) right
+  $custom-select-padding-x center / $custom-select-bg-size no-repeat;
