@@ -2,6 +2,7 @@
 
 <h1 class="page-title">
   <%= recurring_tournament.name_with_logo(max_width: 64, max_height: 64) %>
+  <div><small><%= recurring_tournament.badges %></small></div>
 </h1>
 
 <% if user_recurring_tournament_admin? %>
