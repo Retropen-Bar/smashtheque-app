@@ -1,7 +1,7 @@
 ActiveAdmin.register Problem do
   decorate_with ActiveAdmin::ProblemDecorator
 
-  menu label: '<i class="fas fa-fw fa-exclamation-circle"></i>Situations problématiques'.html_safe
+  menu label: '<i class="fas fa-fw fa-exclamation-circle"></i>Problèmes signalés'.html_safe
 
   # ---------------------------------------------------------------------------
   # INDEX
@@ -86,12 +86,15 @@ ActiveAdmin.register Problem do
               input_html: { data: { select2: {} } }
       f.input :details,
               input_html: { rows: 5 }
+      f.input :proof,
+              as: :file,
+              hint: 'Laissez vide pour ne pas changer'
     end
     f.actions
   end
 
   permit_params :player_id, :duo_id, :recurring_tournament_id,
-                :occurred_at, :nature, :details
+                :occurred_at, :nature, :details, :proof
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -106,6 +109,7 @@ ActiveAdmin.register Problem do
       row :nature
       row :details, &:formatted_details
       row :reporting_user, &:reporting_user_admin_link
+      row :proof, &:proof_link
       row :created_at
       row :updated_at
     end

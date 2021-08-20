@@ -24,4 +24,10 @@ class ProblemDecorator < BaseDecorator
 
     model.class.human_attribute_name("nature.#{model.nature}")
   end
+
+  def proof_link
+    return nil unless proof.attached?
+
+    h.link_to proof.filename, proof.service_url, target: '_blank', rel: :noopener
+  end
 end

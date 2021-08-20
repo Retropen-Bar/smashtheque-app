@@ -56,9 +56,7 @@
 
       <% if problem.proof.attached? %>
         <dt>Justificatif</dt>
-        <dd><%= link_to problem.proof.filename,
-                        problem.proof.service_url,
-                        target: '_blank' %></dd>
+        <dd><%= problem.proof_link %></dd>
       <% end %>
 
     </dl>

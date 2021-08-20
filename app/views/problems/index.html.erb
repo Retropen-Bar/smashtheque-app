@@ -1,8 +1,8 @@
 <h1 class="page-title">
-  <%= recurring_tournament.name_with_logo(max_width: 64, max_height: 64) %>
+  <%= recurring_tournament.link %>
 </h1>
 <h2 class="text-center">
-  Situations problématiques
+  Problèmes signalés
 </h2>
 
 <div class="m-3 text-center">
@@ -14,7 +14,7 @@
 </div>
 
 <div class="table-responsive">
-  <table class="table table-bordered table-striped">
+  <table class="table table-bordered table-striped bg-light">
     <thead>
       <tr>
         <th>ID</th>
@@ -22,8 +22,8 @@
         <th>Nature du problème</th>
         <th>Joueur</th>
         <th>Duo</th>
-        <th>Ajouté par</th>
-        <th>le</th>
+        <th>Signalé par</th>
+        <th>Signalé le</th>
       </tr>
     </thead>
     <tbody>
@@ -50,7 +50,7 @@
             <%= problem.reporting_user_link %>
           </td>
           <td>
-            <%= l problem.created_at, format: :default %>
+            <%= l problem.created_at.to_date, format: :default %>
           </td>
         </tr>
       <% end %>

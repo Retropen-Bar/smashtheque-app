@@ -17,7 +17,7 @@ fr:
       player: Joueur
       met_reward_condition: Récompense obtenue
       players_recurring_tournament: Certification
-      problem: Problème
+      problem: Problème signalé
       recurring_tournament: Série
       reward: Récompense
       reward_condition: Condition de récompense
@@ -237,7 +237,7 @@ fr:
         player: Joueur
         proof: Justificatif
         recurring_tournament: Série
-        reporting_user: TO
+        reporting_user: Signalé par
       problem/nature:
         bad: Comportement grave
         bad__discriminating_players: Propos discriminants contre des joueurs
