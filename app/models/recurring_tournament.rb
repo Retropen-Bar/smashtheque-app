@@ -2,37 +2,42 @@
 #
 # Table name: recurring_tournaments
 #
-#  id               :bigint           not null, primary key
-#  address          :string
-#  address_name     :string
-#  countrycode      :string
-#  date_description :string
-#  is_archived      :boolean          default(FALSE), not null
-#  is_hidden        :boolean          default(FALSE), not null
-#  is_online        :boolean          default(FALSE), not null
-#  latitude         :float
-#  level            :string
-#  locality         :string
-#  longitude        :float
-#  misc             :text
-#  name             :string           not null
-#  recurring_type   :string           not null
-#  registration     :text
-#  size             :integer
-#  starts_at_hour   :integer          not null
-#  starts_at_min    :integer          not null
-#  twitter_username :string
-#  wday             :integer
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  discord_guild_id :bigint
+#  id                     :bigint           not null, primary key
+#  address                :string
+#  address_name           :string
+#  countrycode            :string
+#  date_description       :string
+#  is_archived            :boolean          default(FALSE), not null
+#  is_hidden              :boolean          default(FALSE), not null
+#  is_online              :boolean          default(FALSE), not null
+#  latitude               :float
+#  level                  :string
+#  locality               :string
+#  longitude              :float
+#  misc                   :text
+#  name                   :string           not null
+#  recurring_type         :string           not null
+#  registration           :text
+#  signed_charter_at      :date
+#  size                   :integer
+#  starts_at_hour         :integer          not null
+#  starts_at_min          :integer          not null
+#  twitter_username       :string
+#  wday                   :integer
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  charter_signer_user_id :bigint
+#  discord_guild_id       :bigint
 #
 # Indexes
 #
-#  index_recurring_tournaments_on_discord_guild_id  (discord_guild_id)
+#  index_recurring_tournaments_on_charter_signer_user_id  (charter_signer_user_id)
+#  index_recurring_tournaments_on_discord_guild_id        (discord_guild_id)
+#  index_recurring_tournaments_on_signed_charter_at       (signed_charter_at)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (charter_signer_user_id => users.id)
 #  fk_rails_...  (discord_guild_id => discord_guilds.id)
 #
 class RecurringTournament < ApplicationRecord
@@ -90,6 +95,9 @@ class RecurringTournament < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   belongs_to :discord_guild, optional: true
+  belongs_to :charter_signer_user,
+             class_name: :User,
+             optional: true
 
   has_many :recurring_tournament_contacts,
            inverse_of: :recurring_tournament,
@@ -111,6 +119,8 @@ class RecurringTournament < ApplicationRecord
   validates :level, presence: true, inclusion: { in: LEVELS }
   validates :recurring_type, presence: true, inclusion: { in: RECURRING_TYPES }
   validates :wday, presence: true
+  validates :charter_signer_user, presence: true, unless: -> { signed_charter_at.blank? }
+  validates :charter_signer_user, absence: true, if: -> { signed_charter_at.blank? }
 
   # ---------------------------------------------------------------------------
   # CALLBACKS
@@ -142,16 +152,16 @@ class RecurringTournament < ApplicationRecord
   # SCOPES
   # ---------------------------------------------------------------------------
 
-  scope :by_is_online, -> v { where(is_online: v) }
+  scope :by_is_online, ->(v) { where(is_online: v) }
   scope :online, -> { where(is_online: true) }
   scope :offline, -> { where(is_online: false) }
 
-  scope :by_level_in, -> v { where(level: v) }
-  scope :by_recurring_type_in, -> v { where(recurring_type: v) }
-  scope :by_wday_in, -> v { on_wday(v) }
+  scope :by_level_in, ->(v) { where(level: v) }
+  scope :by_recurring_type_in, ->(v) { where(recurring_type: v) }
+  scope :by_wday_in, ->(v) { on_wday(v) }
 
-  scope :by_size_geq, -> v { where("size >= ?", v) }
-  scope :by_size_leq, -> v { where("size <= ?", v) }
+  scope :by_size_geq, ->(v) { where('size >= ?', v) }
+  scope :by_size_leq, ->(v) { where('size <= ?', v) }
 
   scope :weekly, -> { where(recurring_type: :weekly) }
   scope :bimonthly, -> { where(recurring_type: :bimonthly) }
@@ -159,8 +169,8 @@ class RecurringTournament < ApplicationRecord
   scope :irregular, -> { where(recurring_type: :irregular) }
   scope :oneshot, -> { where(recurring_type: :oneshot) }
 
-  scope :recurring, -> { where(recurring_type: %i(weekly bimonthly monthly)) }
-  scope :on_wday, -> v { where(wday: v) }
+  scope :recurring, -> { where(recurring_type: %i[weekly bimonthly monthly]) }
+  scope :on_wday, ->(v) { where(wday: v) }
 
   scope :archived, -> { where(is_archived: true) }
   scope :not_archived, -> { where(is_archived: false) }
@@ -168,7 +178,10 @@ class RecurringTournament < ApplicationRecord
   scope :hidden, -> { where(is_hidden: true) }
   scope :visible, -> { where(is_hidden: false) }
 
-  scope :by_discord_guild_id, -> v { where(discord_guild_id: v) }
+  scope :by_discord_guild_id, ->(v) { where(discord_guild_id: v) }
+
+  scope :with_charter, -> { where.not(signed_charter_at: nil) }
+  scope :without_charter, -> { where(signed_charter_at: nil) }
 
   def self.by_discord_guild_discord_id(discord_id)
     by_discord_guild_id(DiscordGuild.by_discord_id(discord_id).select(:id))
@@ -179,7 +192,7 @@ class RecurringTournament < ApplicationRecord
   end
 
   def is_recurring?
-    %i(weekly bimonthly monthly).include?(recurring_type.to_sym)
+    %i[weekly bimonthly monthly].include?(recurring_type.to_sym)
   end
 
   def self.near_community(community, radius: 50)
@@ -241,6 +254,10 @@ class RecurringTournament < ApplicationRecord
 
   def hidden?
     is_hidden?
+  end
+
+  def has_signed_charter?
+    !signed_charter_at.nil?
   end
 
   # ---------------------------------------------------------------------------

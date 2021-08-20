@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_19_144956) do
+ActiveRecord::Schema.define(version: 2021_08_20_120401) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -366,7 +366,11 @@ ActiveRecord::Schema.define(version: 2021_08_19_144956) do
     t.boolean "is_hidden", default: false, null: false
     t.string "locality"
     t.string "countrycode"
+    t.date "signed_charter_at"
+    t.bigint "charter_signer_user_id"
+    t.index ["charter_signer_user_id"], name: "index_recurring_tournaments_on_charter_signer_user_id"
     t.index ["discord_guild_id"], name: "index_recurring_tournaments_on_discord_guild_id"
+    t.index ["signed_charter_at"], name: "index_recurring_tournaments_on_signed_charter_at"
   end
 
   create_table "reward_conditions", force: :cascade do |t|
@@ -630,6 +634,7 @@ ActiveRecord::Schema.define(version: 2021_08_19_144956) do
   add_foreign_key "recurring_tournament_contacts", "recurring_tournaments"
   add_foreign_key "recurring_tournament_contacts", "users"
   add_foreign_key "recurring_tournaments", "discord_guilds"
+  add_foreign_key "recurring_tournaments", "users", column: "charter_signer_user_id"
   add_foreign_key "reward_conditions", "rewards"
   add_foreign_key "smashgg_events", "smashgg_users", column: "top1_smashgg_user_id"
   add_foreign_key "smashgg_events", "smashgg_users", column: "top2_smashgg_user_id"

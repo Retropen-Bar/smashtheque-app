@@ -90,7 +90,7 @@ class Problem < ApplicationRecord
   # VALIDATIONS
   # ---------------------------------------------------------------------------
 
-  validates_presence_of :player, if: -> { duo.nil? }
+  validates :player, presence: true, if: -> { duo.nil? }
 
   validates :nature, inclusion: { in: NATURES }
 

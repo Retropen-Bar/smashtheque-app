@@ -1,5 +1,10 @@
 module ActiveAdmin
   module BaseDecorator
+    ONLINE_STATUS_COLORS = {
+      true => :green,
+      false => :yellow
+    }.freeze
+
     def arbre(&block)
       Arbre::Context.new({}, self, &block).to_s
     end
@@ -14,6 +19,13 @@ module ActiveAdmin
         model.respond_to?(:discarded?) && (model.discarded? ? 'discarded' : 'kept') || nil
       ].reject(&:blank?).join(' ')
       h.link_to txt, (options[:url] || [:admin, model]), options
+    end
+
+    def online_status
+      arbre do
+        status_tag  (is_online? ? 'online' : 'offline'),
+                    class: ONLINE_STATUS_COLORS[is_online?]
+      end
     end
   end
 end

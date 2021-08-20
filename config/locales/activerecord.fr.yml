@@ -273,6 +273,7 @@ fr:
         << : *SHARED
         address: Adresse du lieu
         address_name: Nom du lieu
+        charter_signer_user: Charte signée par
         contacts: TOs
         countrycode: Pays
         date_description: Description de la date
@@ -289,6 +290,7 @@ fr:
         name: Nom
         recurring_type: Récurrence
         registration: Comment s'inscrire
+        signed_charter_at: Charte signée le
         size: Taille
         starts_at_hour: Heure
         starts_at_min: Minutes

@@ -27,14 +27,15 @@ ActiveAdmin.register RecurringTournament do
     column :duo_tournament_events, &:duo_tournament_events_admin_link
     column :recurring_type, &:recurring_type_text
     column 'Date', &:full_date
-    column :is_online
+    column 'Localisation', :is_online, sortable: :is_online, &:online_status
     column :level, &:short_level_status
     column :size
     column :contacts do |decorated|
       decorated.contacts_admin_links(size: 32).join('<br/>').html_safe
     end
-    column :is_archived
-    column :is_hidden
+    column 'Charte', :signed_charter_at, sortable: :signed_charter_at, &:charter_signature_status
+    column 'Stoppée', :is_archived
+    column 'Masquée', :is_hidden
     column :created_at, &:created_at_date
     actions
   end
@@ -46,6 +47,9 @@ ActiveAdmin.register RecurringTournament do
 
   scope :online, group: :loctype
   scope :offline, group: :loctype
+
+  scope :with_charter, group: :charter
+  scope :without_charter, group: :charter
 
   filter :name
   filter :recurring_type,
@@ -147,9 +151,9 @@ ActiveAdmin.register RecurringTournament do
         end
       end
     end
-    f.inputs 'Logo' do
-      columns do
-        column do
+    columns do
+      column do
+        f.inputs 'Logo' do
           f.input :logo,
                   as: :file,
                   hint: 'Laissez vide pour ne pas changer',
@@ -159,11 +163,15 @@ ActiveAdmin.register RecurringTournament do
                       previewpanel: 'current-logo'
                     }
                   }
-        end
-        column do
-          panel 'Logo', id: 'current-logo' do
+          panel '', id: 'current-logo' do
             f.object.decorate.logo_image_tag
           end
+        end
+      end
+      column do
+        f.inputs 'Charte du Fair-Play' do
+          f.input :signed_charter_at
+          user_input f, :charter_signer_user
         end
       end
     end
@@ -176,6 +184,7 @@ ActiveAdmin.register RecurringTournament do
                 :address_name, :address, :latitude, :longitude,
                 :locality, :countrycode,
                 :twitter_username, :misc,
+                :signed_charter_at, :charter_signer_user_id,
                 :is_archived, :is_hidden, contact_ids: []
 
   # ---------------------------------------------------------------------------
@@ -208,6 +217,8 @@ ActiveAdmin.register RecurringTournament do
           row :countrycode, &:country_name
           row :twitter_username, &:twitter_link
           row :misc, &:formatted_misc
+          row :signed_charter_at
+          row :charter_signer_user, &:charter_signer_user_admin_link
           row :is_archived
           row :is_hidden
           row :created_at
