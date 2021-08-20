@@ -106,6 +106,10 @@ class User < ApplicationRecord
            through: :team_admins,
            source: :team
 
+  has_many :reported_problems,
+           class_name: :Problem,
+           foreign_key: :reporting_user_id
+
   accepts_nested_attributes_for :player
 
   # ---------------------------------------------------------------------------
@@ -245,7 +249,7 @@ class User < ApplicationRecord
   end
 
   def self.by_name_contains_like(term)
-    where("unaccent(name) ILIKE unaccent(?)", "%#{term}%")
+    where('unaccent(name) ILIKE unaccent(?)', "%#{term}%")
   end
 
   def self.by_keyword(term)
@@ -281,6 +285,10 @@ class User < ApplicationRecord
 
   def self.by_main_countrycode(countrycode)
     where(main_countrycode: countrycode)
+  end
+
+  def self.with_reported_problems
+    where(id: Problem.select(:reporting_user_id))
   end
 
   # ---------------------------------------------------------------------------

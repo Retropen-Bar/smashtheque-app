@@ -102,6 +102,8 @@ class RecurringTournament < ApplicationRecord
   has_many :tournament_events, dependent: :nullify
   has_many :duo_tournament_events, dependent: :nullify
 
+  has_many :problems
+
   # ---------------------------------------------------------------------------
   # validations
   # ---------------------------------------------------------------------------

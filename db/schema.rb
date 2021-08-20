@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_13_203706) do
+ActiveRecord::Schema.define(version: 2021_08_19_144956) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -314,6 +314,24 @@ ActiveRecord::Schema.define(version: 2021_07_13_203706) do
     t.index ["team_id"], name: "index_players_teams_on_team_id"
   end
 
+  create_table "problems", force: :cascade do |t|
+    t.bigint "reporting_user_id", null: false
+    t.bigint "player_id"
+    t.bigint "duo_id"
+    t.bigint "recurring_tournament_id"
+    t.string "nature", null: false
+    t.date "occurred_at", null: false
+    t.text "details", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["duo_id"], name: "index_problems_on_duo_id"
+    t.index ["nature"], name: "index_problems_on_nature"
+    t.index ["occurred_at"], name: "index_problems_on_occurred_at"
+    t.index ["player_id"], name: "index_problems_on_player_id"
+    t.index ["recurring_tournament_id"], name: "index_problems_on_recurring_tournament_id"
+    t.index ["reporting_user_id"], name: "index_problems_on_reporting_user_id"
+  end
+
   create_table "recurring_tournament_contacts", force: :cascade do |t|
     t.integer "recurring_tournament_id", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -605,6 +623,10 @@ ActiveRecord::Schema.define(version: 2021_07_13_203706) do
   add_foreign_key "players_recurring_tournaments", "users", column: "certifier_user_id"
   add_foreign_key "players_teams", "players"
   add_foreign_key "players_teams", "teams"
+  add_foreign_key "problems", "duos"
+  add_foreign_key "problems", "players"
+  add_foreign_key "problems", "recurring_tournaments"
+  add_foreign_key "problems", "users", column: "reporting_user_id"
   add_foreign_key "recurring_tournament_contacts", "recurring_tournaments"
   add_foreign_key "recurring_tournament_contacts", "users"
   add_foreign_key "recurring_tournaments", "discord_guilds"

@@ -1,0 +1,61 @@
+<h1 class="page-title">
+  <%= recurring_tournament.name_with_logo(max_width: 64, max_height: 64) %>
+</h1>
+<h2 class="text-center">
+  Situations problématiques
+</h2>
+
+<div class="m-3 text-center">
+  <%= link_to 'Ajouter', { action: :new }, class: 'btn btn-primary' %>
+</div>
+
+<div class="m-3 text-center">
+  <%= render 'shared/pagination', collection: @problems %>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Date</th>
+        <th>Nature du problème</th>
+        <th>Joueur</th>
+        <th>Duo</th>
+        <th>Ajouté par</th>
+        <th>le</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @problems.decorate.each do |problem| %>
+        <tr>
+          <th>#<%= problem.id %></th>
+          <td>
+            <%= link_to [@recurring_tournament, problem] do %>
+              <%= l problem.occurred_at, format: :default %>
+            <% end %>
+          </td>
+          <td>
+            <%= link_to [@recurring_tournament, problem] do %>
+              <%= problem.nature %>
+            <% end %>
+          </td>
+          <td>
+            <%= problem.player_link %>
+          </td>
+          <td>
+            <%= problem.duo_link %>
+          </td>
+          <td>
+            <%= problem.reporting_user_link %>
+          </td>
+          <td>
+            <%= l problem.created_at, format: :default %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%= render 'shared/pagination', collection: @problems %>
