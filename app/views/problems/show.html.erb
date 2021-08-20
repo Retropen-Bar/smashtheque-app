@@ -6,10 +6,11 @@
 <h2 class="text-center">
   Problème #<%= problem.id %>
 </h2>
-
-<div class="m-3 text-center">
-  <%= link_to 'Retour à la liste', [recurring_tournament, :problems], class: 'btn btn-secondary' %>
-</div>
+<% if current_user.is_admin? || user_recurring_tournament_admin? %>
+  <div class="m-3 text-center">
+    <%= link_to 'Retour à la liste', [recurring_tournament, :problems], class: 'btn btn-secondary' %>
+  </div>
+<% end %>
 
 <div class="row">
 
