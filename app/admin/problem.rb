@@ -1,7 +1,8 @@
 ActiveAdmin.register Problem do
   decorate_with ActiveAdmin::ProblemDecorator
 
-  menu label: '<i class="fas fa-fw fa-exclamation-circle"></i>Problèmes signalés'.html_safe
+  menu parent: '<i class="fas fa-fw fa-chess"></i>Compétition'.html_safe,
+       label: '<i class="fas fa-fw fa-exclamation-circle"></i>Problèmes signalés'.html_safe
 
   # ---------------------------------------------------------------------------
   # INDEX

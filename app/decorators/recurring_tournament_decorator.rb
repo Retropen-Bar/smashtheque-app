@@ -194,4 +194,8 @@ class RecurringTournamentDecorator < BaseDecorator
       )
     ).html_safe
   end
+
+  def charter_signer_user_link(options = {})
+    charter_signer_user&.decorate&.link(options)
+  end
 end

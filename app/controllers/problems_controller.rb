@@ -6,7 +6,8 @@ class ProblemsController < PublicController
   decorates_assigned :recurring_tournament
   decorates_assigned :problem
 
-  before_action :verify_problem!, only: %w[new create]
+  before_action :verify_recurring_tournament!, except: :show
+  before_action :verify_charted!, only: :show
 
   has_scope :page, default: 1
   has_scope :per
@@ -58,9 +59,17 @@ class ProblemsController < PublicController
     @problem = Problem.find(params[:id])
   end
 
-  def verify_problem!
+  def verify_recurring_tournament!
     authenticate_user!
     return if current_user.is_admin? || user_recurring_tournament_admin?
+
+    flash[:error] = 'Accès non autorisé'
+    redirect_to root_path
+  end
+
+  def verify_charted!
+    authenticate_user!
+    return if current_user.is_admin? || user_charted?
 
     flash[:error] = 'Accès non autorisé'
     redirect_to root_path

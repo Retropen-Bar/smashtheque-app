@@ -21,10 +21,20 @@
         <% end %>
       <% end %>
     <% end %>
-    <%= link_to 'Problèmes signalés',
-                [recurring_tournament, :problems],
-                class: 'btn btn-secondary ml-2' %>
+    <% if recurring_tournament.has_signed_charter? %>
+      <%= link_to problems_count(recurring_tournament.problems.count),
+                  [recurring_tournament, :problems],
+                  class: 'btn btn-secondary ml-2' %>
+      <div class="mt-3">
+        Charte signée par <%=
+          recurring_tournament.charter_signer_user_link
+        %> le <%=
+          l recurring_tournament.signed_charter_at, format: :default
+        %>
+      </div>
+    <% end %>
   </div>
+
 <% end %>
 
 <div class="row">
