@@ -59,10 +59,24 @@
         </div>
       </div>
     </section>
+    <nav class="show-page-nav section-nav players d-md-none">
+      <div class="section-nav-wrapper">
+        <div class="section-nav-bg shadow-lg">
+         <%= link_to player_path(player, anchor: 'statistiques'), class: "section-nav-link" do %>
+            <%= svg_icon_tag :joueur %>
+            <span>Statistiques</span>
+          <% end %>
+          <%= link_to player_path(player, anchor: 'palmares'), class: "section-nav-link" do %>
+            <%= svg_icon_tag :groupe %>
+            <span>Palmarès</span>
+          <% end %>
+        </div>
+      </div>
+    </nav>
     <section class="show-page-body card">
       <div class="show-page-content card-body">
         <div class="row">
-          <section class="show-page-section col-md-6">
+          <section id="statistiques" class="show-page-section col-md-6">
             <div class="show-page-section-title">
               <h2>Statistiques</h2>
               <span class="show-page-section-title-separator"></span>
@@ -71,7 +85,7 @@
               <%= render 'shared/rewards/rewards', awarded: player %>
             </div>
           </section>
-          <section class="show-page-section col-md-6 mt-4 mt-md-0">
+          <section id="palmares" class="show-page-section col-md-6 mt-4 mt-md-0">
             <div class="show-page-section-title">
               <h2>Palmarès</h2>
               <span class="show-page-section-title-separator"></span>
