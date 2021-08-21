@@ -37,9 +37,23 @@
     font-variant-numeric: oldstyle-nums;
   }
 
+  &-type {
+    background-color: rgba($body-color, 0.1);
+    line-height: 1;
+    font-size: 10px;
+    position: absolute;
+    top: 0.25rem;
+    right: 0.25rem;
+  }
+
   &-info {
+    background-color: rgba($gray-deep, 0.7);
     position: relative;
     z-index: 1;
+
+    .card-body {
+      background-color: transparent;
+    }
   }
 
   &-title {
@@ -49,6 +63,10 @@
 
   &-tournament-logo {
     flex: 0 0 1.25rem;
+  }
+
+  &-actions {
+    background-color: $gray-deep;
   }
 
   &-action-link {

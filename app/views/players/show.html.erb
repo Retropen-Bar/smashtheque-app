@@ -13,7 +13,7 @@
           "background-image: url(\"#{image_url('static-bg.png').gsub('"', "\"")}\");" if @static
         %>"
       ></div>
-      <div class="card justify-content-start">
+      <div class="show-page-header-body card justify-content-start">
         <div class="show-page-header-content card-body">
           <div class="show-page-avatar">
             <% if player.is_legit? %>
@@ -53,7 +53,17 @@
               </small>
             <% end %>
           </div>
-          <div class="show-page-socials">
+          <div class="show-page-side">
+            <div class="list-characters-compact list-characters-compact--xxl flex-shrink-0">
+              <% player.characters[0...3].each do |character| %>
+              <%= character.decorate.link %>
+              <% end %>
+            </div>
+            <button class="btn btn-sm fs-xs btn-dark rounded-pill ml-3" data-toggle="modal" data-target="#<%= modal_id %>">
+              <span>Voir plus</span>
+            </button>
+          </div>
+          <div class="show-page-socials bg-layout bg-md-layout-dark">
             <%= render 'player_accounts_v2', player: player %>
           </div>
         </div>
@@ -81,8 +91,18 @@
               <h2>Statistiques</h2>
               <span class="show-page-section-title-separator"></span>
             </div>
-            <div class="show-page-section-body">
+            <div class="show-page-section-body d-block d-md-none">
               <%= render 'shared/rewards/rewards', awarded: player %>
+            </div>
+            <h3 class="show-page-section-subtitle h6 d-none d-md-inline-block px-2 py-1 bg-layout rounded-pill"><%= svg_icon_tag(:online) %>&nbsp;Online</h3>
+            <div class="show-page-section-body show-page-section-body--with-bg d-none d-md-block">
+              <%= render 'shared/rewards/reward_by_type', rewards_counts: @online_rewards_counts, awarded: player, is_online: true, modal_id: 'online-rewards-modal-desktop' %>
+              <%= render 'shared/rewards/badges_modal', all_rewards: @all_online_rewards, rewards_counts: @offline_rewards_counts, awarded: player, is_online: true, modal_id: 'online-rewards-modal-desktop' %>
+            </div>
+            <h3 class="show-page-section-subtitle h6 d-none d-md-inline-block px-2 py-1 bg-layout rounded-pill mt-3"><%= svg_icon_tag(:offline) %>&nbsp;Offline</h3>
+            <div class="show-page-section-body show-page-section-body--with-bg d-none d-md-block">
+              <%= render 'shared/rewards/reward_by_type', rewards_counts: @offline_rewards_counts, awarded: player, is_online: false, modal_id: 'offline-rewards-modal-desktop' %>
+              <%= render 'shared/rewards/badges_modal', all_rewards: @all_offline_rewards, rewards_counts: @offline_rewards_counts, awarded: player, is_online: false, modal_id: 'offline-rewards-modal-desktop' %>
             </div>
           </section>
           <section id="palmares" class="show-page-section col-md-6 mt-4 mt-md-0">
@@ -95,17 +115,22 @@
                 <div class="palmares list-y">
                   <% @tournament_events.each do |tournament_event| %>
                     <% met_reward_condition = @met_reward_conditions_by_tournament_event_id[tournament_event.id]&.decorate %>
+                    <% is_online = met_reward_condition&.reward&.online? %>
                     <article class="palmares-item list-x align-items-start">
-                      <div class="palmares-rewards text-center mr-2 bg-bg bg-md-layout">
+                      <div class="palmares-rewards text-center mr-2 bg-layout-dark">
                         <%= met_reward_condition&.reward_badge(size: 24) %>
                         <% if !met_reward_condition&.points.nil? %>
                         <p class="palmares-points d-block rounded-pill bg-layout py-1 px-2 mt-1 mb-0">
-                          <%= met_reward_condition&.points_count(16, is_online: met_reward_condition&.reward&.online?, delimiter: '&nbsp;', value: met_reward_condition&.points) %>
+                          <%= met_reward_condition&.points_count(16, is_online: is_online, delimiter: '&nbsp;', value: met_reward_condition&.points) %>
                         </p>
                         <% end %>
                       </div>
                       <div class="palmares-info card-box flex-grow-1">
                         <div class="card-body py-3">
+                          <div class="palmares-type p-1 rounded-circle">
+                            <%= svg_icon_tag(is_online ? :online : :offline) %>
+                            <span class="sr-only"><%= is_online ? 'Online' : 'Offline' %></span>
+                          </div>
                           <div class="list-y">
                             <div>
                               <time class="palmares-date" datetime="<%= tournament_event.date.to_s(:db) %>"><%= l tournament_event.date, format: :long %></time>
@@ -122,15 +147,15 @@
                             </div>
                           </div>
                         </div>
-                        <div class="card-footer bg-layout bg-md-bg">
+                        <div class="palmares-actions card-footer py-2">
                           <div class="d-flex justify-content-around align-items-center">
-                            <%= tournament_event.bracket_icon_link(text: 'Bracket', class: ' palmares-action-link  font-weight-bolder', backet_icon_options: {height: 12, class: 'text-accent'}) %>
-                            
                             <button type="button"
                                     class="palmares-action-link btn btn-sm btn-link btn-with-icon rounded-pill font-weight-bolder"
                                     data-toggle="modal"
                                     data-target="#top8-<%= tournament_event.id %>-modal">
                                     <%= svg_icon_tag(:top3, class: 'text-accent mr-0') %>&nbsp;Top 8</button>
+
+                            <%= tournament_event.bracket_icon_link(text: 'Bracket', class: ' palmares-action-link  font-weight-bolder', backet_icon_options: {height: 12, class: 'text-accent'}) %>
                           </div>
                         </div>
                       </div>

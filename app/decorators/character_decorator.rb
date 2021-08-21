@@ -74,7 +74,7 @@ class CharacterDecorator < BaseDecorator
   def link(options = {})
     super({
       url: players_path(by_character_id: id),
-      label: emoji_image_tag(max_height: '32px')
+      label: emoji_image_tag
     }.merge(options))
   end
 

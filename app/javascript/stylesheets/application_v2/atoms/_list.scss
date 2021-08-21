@@ -20,3 +20,10 @@
     margin-top: 0.5rem;
   }
 }
+
+.list-row {
+  display: flex;
+  background-color: rgba($gray-deep, 0.7);
+  border-radius: $rounded-pill;
+  padding: map-get($spacers, 1) map-get($spacers, 3);
+}

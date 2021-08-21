@@ -20,10 +20,10 @@
               <article class="resource resource--dark player flex-grow-1">
                 <div class="resource-content card flex-grow-1 shadow-none">
                   <div class="card-body d-flex align-items-center">
-                    <div class="d-flex align-items-center flex-grow-1">
+                    <div class="d-flex align-items-center flex-grow-1 min-w-0">
                       <span class="h2 mb-0 font-weight-bold mr-3">#<%= rank %></span>
-                      <div>
-                        <%= awarded&.decorate&.link(label: awarded&.name, class: 'font-weight-bolder text-truncate') || '?' %>
+                      <div class="min-w-0">
+                        <%= awarded&.decorate&.link(label: awarded&.name, class: 'font-weight-bolder text-truncate d-block') || '?' %>
                         <% if awarded&.is_legit? && awarded&.teams.present? %>
                           <small class="list-teams fs-sm player-teams font-weight-bolder">
                             <% awarded&.teams[0...2].each do |team| %>
