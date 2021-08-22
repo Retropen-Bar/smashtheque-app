@@ -3,24 +3,28 @@
     margin-top: 0.75rem;
   }
 
+  &-wrapper {
+    &:not(:last-child) {
+      .palmares-item {
+        padding-bottom: 28px;
+
+        &:before {
+          content: "";
+          width: 2px;
+          height: 100%;
+          background-color: $body-color;
+          transform: translateX(-1px);
+          position: absolute;
+          left: 32px;
+          top: 0;
+        }
+      }
+    }
+  }
+
   &-item {
     font-size: 0.75rem;
     position: relative;
-
-    &:not(:nth-last-child(2)) {
-      padding-bottom: 28px;
-
-      &:before {
-        content: "";
-        width: 2px;
-        height: 100%;
-        background-color: $body-color;
-        transform: translateX(-1px);
-        position: absolute;
-        left: 32px;
-        top: 0;
-      }
-    }
   }
 
   &-rewards {

@@ -92,12 +92,20 @@
     > * + * {
       margin-top: 0.25rem;
     }
+
+    @include media-breakpoint-up(md) {
+      padding-left: calc(#{$card-spacer-x} + 10px);
+    }
   }
 
   &-title {
     font-size: 1.25rem;
     margin-bottom: 0;
     font-weight: 600;
+
+    @include media-breakpoint-up(md) {
+      font-size: 1.5rem;
+    }
   }
 
   &-socials {

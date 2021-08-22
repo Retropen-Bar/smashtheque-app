@@ -1,0 +1,46 @@
+<% is_online = met_reward_condition&.reward&.online? %>
+<article class="palmares-item list-x align-items-start">
+  <div class="palmares-rewards text-center mr-2 bg-layout-dark">
+    <%= met_reward_condition&.reward_badge(size: 24) %>
+    <% if !met_reward_condition&.points.nil? %>
+    <p class="palmares-points d-block rounded-pill bg-layout py-1 px-2 mt-1 mb-0">
+      <%= met_reward_condition&.points_count(16, is_online: is_online, delimiter: '&nbsp;', value: met_reward_condition&.points) %>
+    </p>
+    <% end %>
+  </div>
+  <div class="palmares-info card-box flex-grow-1">
+    <div class="card-body py-3">
+      <div class="palmares-type p-1 rounded-circle">
+        <%= svg_icon_tag(is_online ? :online : :offline) %>
+        <span class="sr-only"><%= is_online ? 'Online' : 'Offline' %></span>
+      </div>
+      <div class="list-y">
+        <div>
+          <time class="palmares-date" datetime="<%= tournament_event.date.to_s(:db) %>"><%= l tournament_event.date, format: :long %></time>
+          <h3 class="palmares-title"><%= tournament_event.player_rank_name(@player.id) %> - <%= tournament_event.participants_count %> participants</h3>
+        </div>
+        <div class="palmares-tournament d-flex">
+          <div class="palmares-tournament-logo mr-2">
+            <%= tournament_event.recurring_tournament&.decorate&.any_image_tag %>
+          </div>
+          <div class="palmares-tournament-names d-flex flex-column">
+            <p class="m-0"><%= tournament_event.recurring_tournament&.name %></p>
+            <%= tournament_event.link(label: tournament_event.name, class: "text-accent font-weight-bolder text-decoration") %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="palmares-actions card-footer py-2">
+      <div class="d-flex justify-content-around align-items-center">
+        <button type="button"
+                class="palmares-action-link btn btn-sm btn-link btn-with-icon rounded-pill font-weight-bolder"
+                data-toggle="modal"
+                data-target="#top8-<%= tournament_event.id %>-modal">
+                <%= svg_icon_tag(:top3, class: 'text-accent mr-0') %>&nbsp;Top 8</button>
+
+        <%= tournament_event.bracket_icon_link(text: 'Bracket', class: ' palmares-action-link  font-weight-bolder', backet_icon_options: {height: 12, class: 'text-accent'}) %>
+      </div>
+    </div>
+  </div>
+</article>
+<%= render 'top8_modal', tournament_event: tournament_event, modal_id: "top8-#{tournament_event.id}-modal" %>
