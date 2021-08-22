@@ -6,13 +6,12 @@
 
   .badge-counter {
     text-align: center;
-    font-size: 0.75rem;
+    font-size: calc(0.75rem + 0.625vw);
     font-weight: 600;
   }
 }
 
 .reward-badges {
-  .reward-badge {
-    height: 42px;
-  }
+  display: grid;
+  grid-auto-rows: 1fr;
 }

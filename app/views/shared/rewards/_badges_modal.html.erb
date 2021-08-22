@@ -1,5 +1,5 @@
 <div id="<%= modal_id %>" class="modal fade" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+  <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Tous les badges <%= is_online ? 'online' : 'offline' %> de <%= awarded.name %></h5>
@@ -14,7 +14,9 @@
               <% level1_rewards.each do |reward| %>
                 <% count = rewards_counts[reward.id] %>
                 <% if count %>
-                  <%= reward.decorate.badge(count: count, class: 'mb-2') %>
+                  <div>
+                    <%= reward.decorate.badge(count: count, class: 'mb-2') %>
+                  </div>
                 <% else %>
                   <%= reward.decorate.badge(class: 'disabled mb-2') %>
                 <% end %>

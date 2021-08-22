@@ -134,3 +134,13 @@
     }
   }
 }
+
+.list-communities {
+  display: flex;
+
+  svg {
+    margin-top: 4px;
+    margin-right: 4px;
+    flex-shrink: 0;
+  }
+}

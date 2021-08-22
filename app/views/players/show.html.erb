@@ -32,7 +32,7 @@
             </div>
           </div>
           <div class="show-page-main-info">
-            <h1 class="show-page-title card-title text-truncate">
+            <h1 class="show-page-title card-title">
               <% if player.is_legit? %>
                 <%= link_to player.name, player %>
               <% else %>
@@ -46,11 +46,18 @@
                 <% end %>
               </small>
             <% end %>
-            <% player.user&.addresses&.each do |address| %>
-              <small class="player-community">
-                <i class="fas fa-map-marker-alt"></i>
-                <%= address[:name] %>
-              </small>
+            <% if !player.user&.addresses&.empty? %>
+              <div class="list-communities player-communities">
+                <%= svg_icon_tag(:lieu, class: "fs-xs") %> 
+                <div class="d-inline-block">
+                  <% player.user&.addresses&.each_with_index do |address, index| %>
+                    <% if index != 0 %>&nbsp;<small>•</small>&nbsp;<% end %>
+                    <small class="player-community">
+                      <%= address[:name] %>
+                    </small>
+                  <% end %>
+                </div>
+              </div>
             <% end %>
           </div>
           <div class="show-page-side">
@@ -97,7 +104,7 @@
             <h3 class="show-page-section-subtitle h6 d-none d-md-inline-block px-2 py-1 bg-layout rounded-pill"><%= svg_icon_tag(:online) %>&nbsp;Online</h3>
             <div class="show-page-section-body show-page-section-body--with-bg d-none d-md-block">
               <%= render 'shared/rewards/reward_by_type', rewards_counts: @online_rewards_counts, awarded: player, is_online: true, modal_id: 'online-rewards-modal-desktop' %>
-              <%= render 'shared/rewards/badges_modal', all_rewards: @all_online_rewards, rewards_counts: @offline_rewards_counts, awarded: player, is_online: true, modal_id: 'online-rewards-modal-desktop' %>
+              <%= render 'shared/rewards/badges_modal', all_rewards: @all_online_rewards, rewards_counts: @online_rewards_counts, awarded: player, is_online: true, modal_id: 'online-rewards-modal-desktop' %>
             </div>
             <h3 class="show-page-section-subtitle h6 d-none d-md-inline-block px-2 py-1 bg-layout rounded-pill mt-3"><%= svg_icon_tag(:offline) %>&nbsp;Offline</h3>
             <div class="show-page-section-body show-page-section-body--with-bg d-none d-md-block">
