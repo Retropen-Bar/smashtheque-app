@@ -78,16 +78,22 @@
     </section>
     <nav class="show-page-nav section-nav players d-md-none">
       <div class="section-nav-wrapper">
-        <div class="section-nav-bg shadow-lg">
-         <%= link_to player_path(player, anchor: 'statistiques'), class: "section-nav-link" do %>
-            <%= svg_icon_tag :joueur %>
-            <span>Statistiques</span>
-          <% end %>
-          <%= link_to player_path(player, anchor: 'palmares'), class: "section-nav-link" do %>
-            <%= svg_icon_tag :groupe %>
-            <span>Palmarès</span>
-          <% end %>
-        </div>
+        <scrollactive
+          ref="scrollactive"
+          active-class="active"
+          offset="116"
+        >
+          <div class="section-nav-bg shadow-lg">
+          <%= link_to player_path(player, anchor: 'statistiques'), class: "section-nav-link scrollactive-item" do %>
+              <%= svg_icon_tag :joueur %>
+              <span>Statistiques</span>
+            <% end %>
+            <%= link_to player_path(player, anchor: 'palmares'), class: "section-nav-link scrollactive-item" do %>
+              <%= svg_icon_tag :groupe %>
+              <span>Palmarès</span>
+            <% end %>
+          </div>
+        </scrollactive>
       </div>
     </nav>
     <section class="show-page-body card">
