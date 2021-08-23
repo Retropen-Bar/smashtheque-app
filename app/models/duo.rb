@@ -30,6 +30,7 @@ class Duo < ApplicationRecord
     :name
   end
 
+  include HasProblems
   include HasTrackRecords
 
   include PgSearch::Model

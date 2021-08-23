@@ -1,0 +1,66 @@
+<%= admin_edit_link(problem) %>
+
+<h1 class="page-title">
+  <%= recurring_tournament.name_with_logo(max_width: 64, max_height: 64) %>
+</h1>
+<h2 class="text-center">
+  Problème #<%= problem.id %>
+</h2>
+<% if current_user.is_admin? || user_recurring_tournament_admin? %>
+  <div class="m-3 text-center">
+    <%= link_to 'Retour à la liste', [recurring_tournament, :problems], class: 'btn btn-secondary' %>
+  </div>
+<% end %>
+
+<div class="row">
+
+  <div class="col border bg-light shadow p-5 m-3 rounded">
+    <h2 class="text-center mb-5">
+      <% if user_recurring_tournament_admin? %>
+        <div class="float-right">
+          <%= link_to 'Modifier', [:edit, @recurring_tournament, @problem], class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+      Contexte
+    </h2>
+
+    <dl>
+
+      <dt>Joueur</dt>
+      <dd><%= problem.player_link %></dd>
+
+      <dt>Duo</dt>
+      <dd><%= problem.duo_link %></dd>
+
+      <dt>Date</dt>
+      <dd><%= l problem.occurred_at, format: :default %></dd>
+
+      <dt>Ajouté par</dt>
+      <dd><%= problem.reporting_user_link %></dd>
+
+      <dt>Ajouté le</dt>
+      <dd><%= l problem.created_at.to_date, format: :default %></dd>
+
+    </dl>
+  </div>
+
+  <div class="col border bg-light shadow p-5 m-3 rounded">
+    <h2 class="text-center mb-5">Description du problème</h2>
+
+    <dl>
+
+      <dt>Nature du problème</dt>
+      <dd><%= problem.nature %></dd>
+
+      <dt>Détails</dt>
+      <dd><pre><%= problem.details %></pre></dd>
+
+      <% if problem.proof.attached? %>
+        <dt>Justificatif</dt>
+        <dd><%= problem.proof_link %></dd>
+      <% end %>
+
+    </dl>
+  </div>
+
+</div>

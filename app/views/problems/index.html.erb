@@ -1,0 +1,19 @@
+<h1 class="page-title">
+  <%= recurring_tournament.link %>
+</h1>
+<h2 class="text-center">
+  <%= problems_count(@problems.count) %>
+</h2>
+<div class="m-3 text-center">
+  <%= link_to 'Signaler un nouveau problème', { action: :new }, class: 'btn btn-primary' %>
+</div>
+
+<div class="m-3 text-center">
+  <%= render 'shared/pagination', collection: @problems %>
+</div>
+
+<div class="table-responsive">
+  <%= render 'index', problems: @problems %>
+</div>
+
+<%= render 'shared/pagination', collection: @problems %>

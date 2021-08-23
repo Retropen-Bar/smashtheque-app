@@ -1,0 +1,47 @@
+<div class="container">
+
+  <%= simple_form_for([@recurring_tournament, problem]) do |f| %>
+
+    <div class="form-inputs">
+
+      <%= render 'shared/form_errors', f: f %>
+
+      <div class="row">
+        <div class="col-6">
+          <h2>Contexte</h2>
+
+          <div class="p-3 mb-2 bg-light text-dark">
+            <%= player_input f, name: :player_id, value: problem.player %>
+            <%= duo_input f, name: :duo_id, value: problem.duo %>
+            <%= f.input :occurred_at %>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <h2>Description du problème</h2>
+
+          <div class="p-3 mb-2 bg-light text-dark">
+            <%= f.input :nature,
+                        required: true,
+                        as: :grouped_select,
+                        collection: problem_nature_select_collection,
+                        group_label_method: :first,
+                        group_method: :last %>
+            <%= f.input :details, input_html: { rows: 5 } %>
+            <%= f.input :proof,
+                        as: :file,
+                        hint: 'Laissez vide pour ne pas changer' %>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="form-actions text-center my-5">
+      <%= link_to 'Annuler', [@recurring_tournament, :problems], class: 'btn btn-secondary mr-3' %>
+      <%= f.button :submit, 'Valider', class: 'btn btn-primary' %>
+    </div>
+
+  <% end %>
+
+</div>
