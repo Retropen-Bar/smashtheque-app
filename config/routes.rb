@@ -117,6 +117,7 @@ Rails.application.routes.draw do
 
   resources :pages, param: :slug, only: :show
 
+  get 'charter' => 'redirections#charter', as: :charter
   get 'bot' => 'redirections#bot'
 
   unless Rails.application.config.consider_all_requests_local

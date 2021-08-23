@@ -56,7 +56,7 @@
           <%= link_to 'Planning hebdo online', planning_path, class: 'dropdown-item' %>
           <%= link_to 'Carte du offline', recurring_tournaments_path(map: 1), class: 'dropdown-item' %>
           <div class="dropdown-divider"></div>
-          <%= link_to 'https://s3.eu-west-3.amazonaws.com/static.smashtheque.fr/doc/cdfp/charte.pdf', class: 'dropdown-item' do %>
+          <%= link_to charter_path, class: 'dropdown-item', target: '_blank' do %>
             Charte du Fair-Play
             <%= fas_icon_tag 'external-link-alt', %w(ml-2 fa-sm) %>
           <% end %>

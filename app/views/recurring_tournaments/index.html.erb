@@ -41,9 +41,9 @@
                   <%= radio_button_tag :by_is_online,
                                        v,
                                        (params[:by_is_online] || '') == v.to_s,
-                                       id: "customRadioInline#{idx}",
+                                       id: "radio-is-online-#{idx}",
                                        class: 'custom-control-input' %>
-                  <label class="custom-control-label" for="customRadioInline<%= idx %>">
+                  <label class="custom-control-label" for="radio-is-online-<%= idx %>">
                     <%  case v
                         when true %>Online
                     <%  when false %>Offline
@@ -64,6 +64,25 @@
               </div>
             </div>
           </div>
+
+          <div class="text-center my-3">
+            <div class="custom-control custom-switch">
+              <%= check_box_tag :with_charter,
+                                1,
+                                (params[:with_charter] == '1'),
+                                class: 'custom-control-input',
+                                id: 'charter-only' %>
+              <label class="custom-control-label" for="charter-only">
+                Voir uniquement les tournois signataires de la <%=
+                  link_to charter_path, target: '_blank' do
+                %>
+                  Charte du Fair-Play
+                  <%= fas_icon_tag 'external-link-alt', %w(fa-sm) %>
+                <% end %>
+              </label>
+            </div>
+          </div>
+
 
         <% end %>
       </div>
