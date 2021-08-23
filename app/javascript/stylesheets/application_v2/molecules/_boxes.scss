@@ -43,8 +43,12 @@
   }
 
   &--stat {
-    font-size: 1.25rem;
+    font-size: calc(0.75rem + 0.6vw);
     font-weight: 600;
+
+    @include media-breakpoint-up(sm) {
+      font-size: 1.25rem;
+    }
 
     .card-box-icon {
       width: 100%;

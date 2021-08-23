@@ -1,6 +1,6 @@
 <% is_online = met_reward_condition&.reward&.online? %>
 <article class="palmares-item list-x align-items-start">
-  <div class="palmares-rewards text-center mr-2 bg-layout-dark">
+  <div class="palmares-rewards text-center mr-2 bg-layout-dark<% if met_reward_condition&.points.nil? %> no-reward<% end %>">
     <%= met_reward_condition&.reward_badge(size: 24) %>
     <% if !met_reward_condition&.points.nil? %>
     <p class="palmares-points d-block rounded-pill bg-layout py-1 px-2 mt-1 mb-0">
@@ -21,7 +21,7 @@
         </div>
         <div class="palmares-tournament d-flex">
           <div class="palmares-tournament-logo mr-2">
-            <%= tournament_event.recurring_tournament&.decorate&.any_image_tag %>
+            <%= tournament_event.recurring_tournament&.decorate&.any_image_tag(class:'rounded-circle') %>
           </div>
           <div class="palmares-tournament-names d-flex flex-column">
             <p class="m-0"><%= tournament_event.recurring_tournament&.name %></p>

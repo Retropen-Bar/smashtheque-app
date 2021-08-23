@@ -1,6 +1,6 @@
 .show-page {
   &-header {
-    @include media-breakpoint-down(sm) {
+    @include media-breakpoint-down(md) {
       &.card,
       .card {
         border-radius: 0;
@@ -9,7 +9,7 @@
       margin-right: -$grid-gutter-width / 2;
     }
 
-    @include media-breakpoint-up(md) {
+    @include media-breakpoint-up(lg) {
       margin-top: 30px;
     }
 
@@ -21,7 +21,7 @@
         padding-top: 25vh;
       }
 
-      @include media-breakpoint-up(md) {
+      @include media-breakpoint-up(lg) {
         border-radius: $border-radius $border-radius 0 0;
         padding-top: calc(8vh + #{$border-radius});
 
@@ -115,7 +115,7 @@
     min-width: 0;
     position: absolute;
     right: 0;
-    bottom: 100%;
+    bottom: calc(100% - 0.5px);
 
     @include media-breakpoint-up(md) {
       border-top-right-radius: $border-radius;
@@ -156,6 +156,7 @@
       display: block;
       background-color: $gray-dark;
       clip-path: polygon(12% 0, 100% 0%, 100% 100%, 0% 100%);
+      border-bottom-right-radius: $border-radius;
       position: absolute;
       inset: 0;
     }
@@ -174,8 +175,12 @@
         filter: grayscale(1);
       }
 
-      a:hover img {
-        filter: none;
+      a:hover {
+        background: none;
+
+        img {
+          filter: none;
+        }
       }
     }
   }
@@ -186,8 +191,26 @@
     top: $header-height-mobile + 8px;
     z-index: $zindex-dropdown;
 
+    @include media-breakpoint-down(md) {
+      max-width: 600px;
+      top: $header-height-tablet + 8px;
+    }
+
+    @include media-breakpoint-down(sm) {
+      max-width: 450px;
+    }
+
+    @include media-breakpoint-up(sm) {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
     .section-nav-bg {
       background-color: $gray-darker;
+
+      @include media-breakpoint-down(md) {
+        width: max-content;
+      }
     }
   }
 
@@ -195,18 +218,24 @@
     margin-top: 30px;
     background-color: $gray-dark;
 
-    @include media-breakpoint-down(sm) {
-      padding-top: 2.5rem;
+    @include media-breakpoint-down(md) {
       margin-top: -3rem;
+      padding-top: 2.5rem;
       margin-left: -$grid-gutter-width / 2;
       margin-right: -$grid-gutter-width / 2;
       border-radius: 0;
     }
 
-    @include media-breakpoint-down(xs) {
+    @include media-breakpoint-down(md) {
+      > .card-body {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+    }
+
+    @include media-breakpoint-down(sm) {
       > .card-body {
         max-width: 450px;
-        margin: 0 auto;
       }
     }
   }
@@ -216,6 +245,26 @@
 
     .card-body {
       background-color: transparent;
+    }
+
+    .card-box-icon img {
+      height: 100%;
+    }
+
+    button.rounded-pill {
+      display: none;
+
+      @media screen and (min-width: 375px) {
+        display: block;
+      }
+    }
+
+    button.btn-see-more {
+      display: block;
+
+      @media screen and (min-width: 375px) {
+        display: none;
+      }
     }
   }
 

@@ -16,6 +16,7 @@ import "../src/shared/maps_autocomplete";
 import "../src/shared/select2";
 import "../src/shared/toastr";
 import "../src/shared/toggles";
+import "../src/shared/tooltips";
 import "../src/application_v2/filters";
 import "../src/application_v2/slideout";
 import "../src/application_v2/scrollactive";

@@ -42,7 +42,7 @@
             <% if player.is_legit? && player.teams.present? %>
               <small class="list-teams player-teams">
                 <% player.teams.each do |team| %>
-                  <div class="list-team"><%= team.short_name %></div>
+                  <%= team.decorate.link(label: team.short_name, class: 'list-team') %>
                 <% end %>
               </small>
             <% end %>
@@ -76,11 +76,11 @@
         </div>
       </div>
     </section>
-    <nav class="show-page-nav section-nav players d-md-none">
+    <nav class="show-page-nav section-nav players d-lg-none">
       <div class="section-nav-wrapper">
         <scrollactive
           ref="scrollactive"
-          :active-class="active"
+          :active-class="'active'"
           :offset="116"
         >
           <div class="section-nav-bg shadow-lg">
@@ -99,7 +99,7 @@
     <section class="show-page-body card">
       <div class="show-page-content card-body">
         <div class="row">
-          <section id="statistiques" class="show-page-section col-md-6">
+          <section id="statistiques" class="show-page-section col-lg-6">
             <div class="show-page-section-title">
               <h2>Statistiques</h2>
               <span class="show-page-section-title-separator"></span>
@@ -118,7 +118,7 @@
               <%= render 'shared/rewards/badges_modal', all_rewards: @all_offline_rewards, rewards_counts: @offline_rewards_counts, awarded: player, is_online: false, modal_id: 'offline-rewards-modal-desktop' %>
             </div>
           </section>
-          <section id="palmares" class="show-page-section col-md-6 mt-4 mt-md-0">
+          <section id="palmares" class="show-page-section col-lg-6 mt-4 mt-lg-0">
             <div class="show-page-section-title">
               <h2>Palmarès</h2>
               <span class="show-page-section-title-separator"></span>
@@ -139,7 +139,7 @@
                     
                 <palmares-filters v-bind:palmares="<%= palmares.to_json %>" inline-template>
                   <section>
-                    <div id="palmares-filters">
+                    <div id="palmares-filters" class="mb-3">
                       <div class="btn-group btn-group-sm" role="group" aria-label="Type de palmarès">
                         <button
                           type="button"
@@ -179,7 +179,7 @@
                       </button>
                       
                     </div>
-                    <div class="palmares list-y">
+                    <div class="palmares">
                       <div class="palmares-wrapper" v-for="p in filteredData" v-html="p.template"></div>
                     </div>
                   </section>

@@ -1,12 +1,12 @@
 .reward-badge {
   &.disabled {
     filter: grayscale(0.5);
-    opacity: 0.6;
+    opacity: 0.35;
   }
 
   .badge-counter {
     text-align: center;
-    font-size: calc(0.75rem + 0.625vw);
+    font-size: calc(0.75rem + 0.3vw);
     font-weight: 600;
   }
 }

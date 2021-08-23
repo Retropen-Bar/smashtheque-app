@@ -11,6 +11,7 @@
         <% if tournament_event.graph_image_tag %>
           <div class="text-center">
             <%= tournament_event.graph_image_tag max_width: '100%', max_height: 600, class: 'shadow mx-auto' %>
+            <br/>
             <%= tournament_event.bracket_icon_link(text: 'Bracket', class: 'btn btn-sm btn-dark bg-layout-dark rounded-pill font-weight-bolder mx-auto fs-sm mt-2', backet_icon_options: {height: 12, class: 'text-accent'}) %>
           </div>
         <% else %>
@@ -34,8 +35,10 @@
                       </div>
                     </div>
                     <% if awarded %>
-                      <div class="list-characters-compact w-auto list-characters-compact--dark flex-shrink-0">
-                        <%= awarded.characters&.first&.decorate&.link %>
+                      <div class="list-characters-compact list-characters-compact--dark flex-shrink-0">
+                        <% awarded.characters[0...3].each do |character| %>
+                          <%= character.decorate.link %>
+                        <% end %>
                       </div>
                     <% end %>
                     <% if awarded %>

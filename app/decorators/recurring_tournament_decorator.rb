@@ -122,7 +122,8 @@ class RecurringTournamentDecorator < BaseDecorator
   end
 
   def any_image_tag(options = {})
-    h.image_tag_with_max_size any_image_url, options.merge(class: 'avatar')
+    classes = ['avatar', options.delete(:class)]
+    h.image_tag_with_max_size any_image_url, options.merge(class: classes.join(' '))
   end
 
   def logo_image_tag(options = {})

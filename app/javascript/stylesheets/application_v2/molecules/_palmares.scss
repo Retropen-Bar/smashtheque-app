@@ -1,8 +1,4 @@
 .palmares {
-  & > *:not(:first-child) {
-    margin-top: 0.75rem;
-  }
-
   &-wrapper {
     &:not(:last-child) {
       .palmares-item {
@@ -32,7 +28,9 @@
     position: relative;
     z-index: 1;
 
-    &:not(:empty) {
+    &:not(.no-reward) {
+      margin-top: -0.75rem;
+      padding-top: 0.75rem;
       padding-bottom: 0.75rem;
     }
   }
