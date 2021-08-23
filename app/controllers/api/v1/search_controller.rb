@@ -12,7 +12,7 @@ class Api::V1::SearchController < Api::V1::BaseController
                        ))
                        .map do |document|
         model = document.searchable.decorate
-        if document.searchable_type == 'Player' && !document.searchable.is_accepted?
+        if document.searchable_type == 'Player' && !document.searchable.is_legit?
           nil
         elsif document.searchable_type == 'RecurringTournament' && document.searchable.is_hidden?
           nil
