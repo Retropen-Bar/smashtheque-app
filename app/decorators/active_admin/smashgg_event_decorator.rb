@@ -2,11 +2,6 @@ module ActiveAdmin
   class SmashggEventDecorator < SmashggEventDecorator
     include ActiveAdmin::BaseDecorator
 
-    ONLINE_STATUS_COLORS = {
-      true => :green,
-      false => :yellow
-    }.freeze
-
     decorates :smashgg_event
 
     def start_at_date
@@ -72,13 +67,6 @@ module ActiveAdmin
       #   end
       # end
       new_admin_duo_tournament_event_path(duo_tournament_event: attributes)
-    end
-
-    def online_status
-      arbre do
-        status_tag  (is_online? ? 'online' : 'offline'),
-                    class: ONLINE_STATUS_COLORS[is_online?]
-      end
     end
   end
 end

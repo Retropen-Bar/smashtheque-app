@@ -99,6 +99,11 @@ Metrics/MethodLength:
 Metrics/ParameterLists:
   Max: 5 # Default is 5
 
+# ===================================== Department Naming ===========================================
+
+Naming/PredicateName:
+  Enabled: false
+
 # ===================================== Department Style ===========================================
 
 Style/Documentation:

@@ -30,7 +30,7 @@ class UserDecorator < BaseDecorator
   end
 
   def link(options = {})
-    h.tag.div avatar_and_name(size: 32), **options
+    h.tag.span avatar_and_name(size: 32), **options
   end
 
   def created_players_count

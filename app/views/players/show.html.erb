@@ -1,10 +1,14 @@
 <% modal_id = "player-#{player.id}" %>
 
+<% if user_signed_in? && (current_user.is_admin? || current_user.is_charted_online_recurring_tournament_administrator?) %>
+  <%= render 'toolbar', player: player %>
+<% end %>
+
 <div class="container-lg">
   <article class="show-page">
     <section class="show-page-header card">
       <div class="show-page-header-bg"
-      
+
       style="<%=
           "background-color: #{@background_color};" if @background_color
         %><%=
@@ -48,7 +52,7 @@
             <% end %>
             <% if !player.user&.addresses&.empty? %>
               <div class="list-communities player-communities">
-                <%= svg_icon_tag(:lieu, class: "fs-xs") %> 
+                <%= svg_icon_tag(:lieu, class: "fs-xs") %>
                 <div class="d-inline-block">
                   <% player.user&.addresses&.each_with_index do |address, index| %>
                     <% if index != 0 %>&nbsp;<small>•</small>&nbsp;<% end %>
@@ -136,7 +140,7 @@
                   palmares << p
                   %>
                 <% end %>
-                    
+
                 <palmares-filters v-bind:palmares="<%= palmares.to_json %>" inline-template>
                   <section>
                     <div id="palmares-filters" class="mb-3">
@@ -177,7 +181,7 @@
                         @click="orderByRank = !orderByRank; orderByDate = null">
                         <%= svg_icon_tag(:médaille, class: 'fs-xs') %>&nbsp;Classement
                       </button>
-                      
+
                     </div>
                     <div class="palmares">
                       <div class="palmares-wrapper" v-for="p in filteredData" v-html="p.template"></div>
