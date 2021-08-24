@@ -1,51 +1,142 @@
-<div class="cards-list duos" style="margin-top: 50px;">
-  <div class="card-container">
-    <%= render 'duo', duo: duo %>
-  </div>
-</div>
-
-<%= render 'shared/rewards', awarded: duo %>
-
-<div class="row">
-
-  <div class="col bg-semi-transparent shadow p-5 m-3 rounded">
-    <h2 class="text-center mb-5">Palmarès complet</h2>
-
-    <% if @duo_tournament_events.count > 0 %>
-      <table class="table table-borderless table-striped table-responsive-md bg-light">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">Date</th>
-            <th scope="col">Série</th>
-            <th scope="col">Édition</th>
-            <th scope="col" class="text-center">Bracket</th>
-            <th scope="col" class="text-center">Participants</th>
-            <th scope="col" class="text-center">Résultat</th>
-            <th scope="col" class="text-center">Fragments</th>
-            <th scope="col" class="text-center">Badge</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @duo_tournament_events.each do |duo_tournament_event| %>
-            <% met_reward_condition = @met_reward_conditions_by_duo_tournament_event_id[duo_tournament_event.id]&.decorate %>
-            <tr>
-              <td class="align-middle"><%= l duo_tournament_event.date, format: :long %></td>
-              <td class="align-middle"><%= duo_tournament_event.recurring_tournament_link %></th>
-              <td class="align-middle"><%= duo_tournament_event.link(label: duo_tournament_event.name) %></th>
-              <td class="align-middle text-center"><%= duo_tournament_event.bracket_icon_link(class: 'text-decoration-none') %></td>
-              <td class="align-middle text-center"><%= duo_tournament_event.participants_count %></td>
-              <td class="align-middle text-center"><%= duo_tournament_event.duo_rank_name(@duo.id) %></td>
-              <td class="align-middle text-center"><%= met_reward_condition&.points %></td>
-              <td class="align-middle text-center"><%= met_reward_condition&.reward_badge %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    <% else %>
-      <div class="text-center">
-        Aucun résultat connu à ce jour
+<div class="container-lg">
+  <article class="show-page">
+    <section class="show-page-header card">
+      <div class="show-page-header-bg" style="background-color: #ee647d;"></div>
+      <div class="show-page-header-body card justify-content-start">
+        <div class="show-page-header-content card-body">
+          <div class="show-page-avatar">
+            <% if duo.is_legit? %>
+              <%= duo.avatars_tag(94) %>
+            <% end %>
+          </div>
+          <div class="show-page-main-info">
+            <h1 class="show-page-title card-title">
+              <% if duo.is_legit? %>
+                <%= link_to duo.name, duo %>
+              <% else %>
+                -
+              <% end %>
+            </h1>
+          </div>
+        </div>
       </div>
-    <% end %>
+    </section>
 
-  </div>
+    <nav class="show-page-nav section-nav players d-lg-none">
+      <div class="section-nav-wrapper">
+        <scrollactive
+          ref="scrollactive"
+          :active-class="'active'"
+          :offset="116"
+        >
+          <div class="section-nav-bg shadow-lg">
+          <%= link_to duo_path(duo, anchor: 'statistiques'), class: "section-nav-link scrollactive-item" do %>
+              <%= svg_icon_tag :duo %>
+              <span>Statistiques</span>
+            <% end %>
+            <%= link_to duo_path(duo, anchor: 'palmares'), class: "section-nav-link scrollactive-item" do %>
+              <%= svg_icon_tag :groupe %>
+              <span>Palmarès</span>
+            <% end %>
+          </div>
+        </scrollactive>
+      </div>
+    </nav>
+    <section class="show-page-body card">
+      <div class="show-page-content card-body">
+        <div class="row">
+          <section id="statistiques" class="show-page-section col-lg-6">
+            <div class="show-page-section-title">
+              <h2>Statistiques</h2>
+              <span class="show-page-section-title-separator"></span>
+            </div>
+            <div class="show-page-section-body d-block d-md-none">
+              <%= render 'shared/rewards/rewards', awarded: duo %>
+            </div>
+            <h3 class="show-page-section-subtitle h6 d-none d-md-inline-block px-2 py-1 bg-layout rounded-pill"><%= svg_icon_tag(:online) %>&nbsp;Online</h3>
+            <div class="show-page-section-body show-page-section-body--with-bg d-none d-md-block">
+              <%= render 'shared/rewards/reward_by_type', rewards_counts: @online_rewards_counts, awarded: duo, is_online: true, modal_id: 'online-rewards-modal-desktop' %>
+              <%= render 'shared/rewards/badges_modal', all_rewards: @all_online_rewards, rewards_counts: @online_rewards_counts, awarded: duo, is_online: true, modal_id: 'online-rewards-modal-desktop' %>
+            </div>
+            <h3 class="show-page-section-subtitle h6 d-none d-md-inline-block px-2 py-1 bg-layout rounded-pill mt-3"><%= svg_icon_tag(:offline) %>&nbsp;Offline</h3>
+            <div class="show-page-section-body show-page-section-body--with-bg d-none d-md-block">
+              <%= render 'shared/rewards/reward_by_type', rewards_counts: @offline_rewards_counts, awarded: duo, is_online: false, modal_id: 'offline-rewards-modal-desktop' %>
+              <%= render 'shared/rewards/badges_modal', all_rewards: @all_offline_rewards, rewards_counts: @offline_rewards_counts, awarded: duo, is_online: false, modal_id: 'offline-rewards-modal-desktop' %>
+            </div>
+          </section>
+          <section id="palmares" class="show-page-section col-lg-6 mt-4 mt-lg-0">
+            <div class="show-page-section-title">
+              <h2>Palmarès</h2>
+              <span class="show-page-section-title-separator"></span>
+            </div>
+            <div class="show-page-section-body">
+              <% if @duo_tournament_events.count > 0 %>
+                <% palmares = [] %>
+                <% @duo_tournament_events.each do |duo_tournament_event| %>
+                  <%
+                  met_reward_condition = @met_reward_conditions_by_duo_tournament_event_id[duo_tournament_event.id]&.decorate
+                  reward = @met_reward_conditions_by_duo_tournament_event_id[duo_tournament_event.id]&.decorate&.attributes || {}
+                  tournament = duo_tournament_event&.attributes || {}
+                  # template = render("players/palmares_item", met_reward_condition: met_reward_condition, tournament_event: duo_tournament_event)
+                  # p = reward.merge(tournament).merge({ points: met_reward_condition&.points, template: template, is_online: met_reward_condition&.reward&.online? })
+                  # palmares << p
+                  %>
+                <% end %>
+
+                <palmares-filters v-bind:palmares="<%= palmares.to_json %>" inline-template>
+                  <section>
+                    <div id="palmares-filters" class="mb-3">
+                      <div class="btn-group btn-group-sm" role="group" aria-label="Type de palmarès">
+                        <button
+                          type="button"
+                          class="btn btn-dark"
+                          :class='{ active: type === "all" }'
+                          @click="type = 'all'">
+                          Tous
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-dark"
+                          :class='{ active: type === "online" }'
+                          @click="type = 'online'">
+                          Online
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-dark"
+                          :class='{ active: type === "offline" }'
+                          @click="type = 'offline'">
+                          Offline
+                        </button>
+                      </div>
+                      <button
+                        type="button"
+                        class="btn btn-dark btn-sm rounded-pill"
+                        :class='{ active: orderByDate !== null }'
+                        @click="orderByDate = !orderByDate; orderByRank = null">
+                        <%= svg_icon_tag(:calendar, class: 'fs-xs') %>&nbsp;Date
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-dark btn-sm rounded-pill"
+                        :class='{ active: orderByRank !== null }'
+                        @click="orderByRank = !orderByRank; orderByDate = null">
+                        <%= svg_icon_tag(:médaille, class: 'fs-xs') %>&nbsp;Classement
+                      </button>
+
+                    </div>
+                    <div class="palmares">
+                      <div class="palmares-wrapper" v-for="p in filteredData" v-html="p.template"></div>
+                    </div>
+                  </section>
+                </palmares-filters>
+              <% else %>
+                <p>Aucun palmarès</p>
+              <% end %>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </article>
 </div>

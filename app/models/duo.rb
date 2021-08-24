@@ -161,6 +161,10 @@ class Duo < ApplicationRecord
     DuoTournamentEvent.with_duo(id)
   end
 
+  def is_legit?
+    player1.is_legit? && player2.is_legit?
+  end
+
   # ---------------------------------------------------------------------------
   # global search
   # ---------------------------------------------------------------------------

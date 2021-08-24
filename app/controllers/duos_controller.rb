@@ -5,10 +5,11 @@ class DuosController < PublicController
   has_scope :per
   has_scope :on_abc
 
+  layout 'application_v2'
+
   def index
     @duos = duos Duo
     @meta_title = 'Duos'
-    render layout: 'application_v2'
   end
 
   def show
@@ -76,6 +77,7 @@ class DuosController < PublicController
       @is_online ? 'Online' : 'Offline',
       @year
     ].compact.join(' ')
+    render layout: 'application'
   end
 
   def autocomplete
