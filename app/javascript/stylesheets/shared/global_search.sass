@@ -1,19 +1,20 @@
 .select2-results
 
-  .select2-results__group
-    cursor: pointer
+  #select2-global_search_input-results
+    .select2-results__group
+      cursor: pointer
 
-    span:before
-      content: '▶'
-      margin-right: 5px
-      vertical-align: 1px
-      font-family: monospace
+      span:before
+        content: '▶'
+        margin-right: 5px
+        vertical-align: 1px
+        font-family: monospace
 
-    &.unfold span:before
-      content: '▼'
+      &.unfold span:before
+        content: '▼'
 
-    &:not(.unfold) + .select2-results__options--nested
-      display: none
+      &:not(.unfold) + .select2-results__options--nested
+        display: none
 
   .select2-results__option
     .search-result

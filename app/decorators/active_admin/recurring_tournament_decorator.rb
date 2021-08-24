@@ -36,6 +36,29 @@ module ActiveAdmin
       end
     end
 
+    def charter_signer_user_admin_link(options = {})
+      charter_signer_user&.admin_decorate&.admin_link(options)
+    end
+
+    def charter_signature_status
+      if model.has_signed_charter?
+        title = [
+          'Signée par',
+          charter_signer_user&.name,
+          'le',
+          h.l(signed_charter_at, format: :default)
+        ].join(' ')
+        h.tag.span  'oui',
+                    class: 'status_tag yes',
+                    title: title,
+                    data: { tooltip: {} }
+      else
+        arbre do
+          status_tag :no
+        end
+      end
+    end
+
     def level_status
       arbre do
         status_tag level_text, class: LEVEL_COLORS[model.level.to_sym]

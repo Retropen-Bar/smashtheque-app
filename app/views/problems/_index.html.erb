@@ -1,0 +1,56 @@
+<table class="table table-bordered table-striped bg-light">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Date</th>
+      <th>Nature du problème</th>
+      <th>Série</th>
+      <th>Joueur</th>
+      <th>Duo</th>
+      <th>Signalé par</th>
+      <th>Signalé le</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% problems.decorate.each do |problem| %>
+      <tr>
+        <th>#<%= problem.id %></th>
+        <td>
+          <% if problem.recurring_tournament %>
+            <%= link_to [problem.recurring_tournament, problem] do %>
+              <%= l problem.occurred_at, format: :default %>
+            <% end %>
+          <% else %>
+            <%= l problem.occurred_at, format: :default %>
+          <% end %>
+        </td>
+        <td>
+          <% if problem.recurring_tournament %>
+            <%= link_to [problem.recurring_tournament, problem] do %>
+              <%= problem.nature %>
+            <% end %>
+          <% else %>
+            <%= problem.nature %>
+          <% end %>
+        </td>
+        <td>
+          <% if rc = problem.recurring_tournament %>
+            <%= link_to rc.decorate.name_with_logo(max_width: 32, max_height: 32), rc %>
+          <% end %>
+        </td>
+        <td>
+          <%= problem.player_link %>
+        </td>
+        <td>
+          <%= problem.duo_link %>
+        </td>
+        <td>
+          <%= problem.reporting_user_link %>
+        </td>
+        <td>
+          <%= l problem.created_at.to_date, format: :default %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

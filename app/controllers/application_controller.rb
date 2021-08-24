@@ -49,7 +49,7 @@ class ApplicationController < ActionController::Base
 
   def set_meta
     @meta_title = nil
-    @meta_description = 'La base de données de la communauté Super Smash Bros. Ultimate de France, fondée par le Rétropen-Bar et également administrée par red, Moon Key, Nixop et MIDZ.'
+    @meta_description = 'La base de données de la communauté Super Smash Bros. Ultimate de France, fondée par le Rétropen-Bar et également administrée par red et Moon Key.'
 
     @meta_properties = {
       # Shared

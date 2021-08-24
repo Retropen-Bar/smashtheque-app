@@ -17,6 +17,7 @@ fr:
       player: Joueur
       met_reward_condition: Récompense obtenue
       players_recurring_tournament: Certification
+      problem: Problème signalé
       recurring_tournament: Série
       reward: Récompense
       reward_condition: Condition de récompense
@@ -227,10 +228,52 @@ fr:
         has_good_network: Connexion valide
         player: Joueur
         recurring_tournament: Série
+      problem:
+        << : *SHARED
+        details: Détails
+        duo: Duo
+        nature: Nature du problème
+        occurred_at: Date
+        player: Joueur
+        proof: Justificatif
+        recurring_tournament: Série
+        reporting_user: Signalé par
+      problem/nature:
+        bad: Comportement grave
+        bad__discriminating_players: Propos discriminants contre des joueurs
+        bad__discriminating_admins: Propos discriminants contre des administrateurs
+        bad__harassing_players: Pression ou harcèlement contre des joueurs
+        bad__harassing_admins: Pression ou harcèlement contre des administrateurs
+        bad__social_lynching_players: "Lynchage public sur un réseau social d'un joueur"
+        bad__social_lynching_admins: "Lynchage public sur un réseau social d'un administrateur"
+        other: Comportement problématique avant, pendant ou après un match, un set, un tournoi
+        other__verbal_players: Violence verbale contre des joueurs
+        other__verbal_admins: Violence verbale contre des administrateurs
+        other__toxic_ingame: Comportement toxique à outrance ingame visant explicitement à manquer de respect
+        other__bashing_gameplay: Bashing de personnage ou de style de jeu
+        other__depressed_player: "Comportement dépressif d'un joueur avec menace publique de porter atteinte à sa santé"
+        other__forcing_clips: "Joueur qui ne retire pas les extraits d'un événement malgré une demande de retrait"
+        fake: Falsifications de comptes
+        fake__banned_and_doubling: Joueur banni qui utilise un double-compte
+        fake__doubling: Joueur non banni qui utilise un double-compte
+        fake__cheating: "Joueur qui utilise un faux compte et joue à la place de quelqu'un"
+        fake__usurping: "Joueur qui usurpe l'identité d'un autre joueur"
+        dq: Disqualifications intempestives, retards et abus de confiance
+        dq__frequently: Joueur régulièrement DQ par retard de 10min
+        dq__bad_checking_frequently: Joueur qui check-in régulièrement son match sans être présent pour jouer
+        dq__with_warning: Joueur qui DQ en prévenant
+        dq__without_warning: Joueur qui DQ sans prévenir
+        dq__multiple_tournaments: Joueur qui participe à plusieurs tournois en simultané
+        dq__dq_other_tournament: Joueur qui DQ un tournoi de la Charte pour participer à un autre tournoi de la Charte
+        lag: Connexion Internet
+        lag__test: Joueur ayant été soumis à un lagtest (indiquer le résultat du lagtest)
+        lag__toxic: Joueur soupçonné de réaliser des lags toxiques évidents et identifiés
+        lag__input: "Joueur sujet à de l'input-lag"
       recurring_tournament:
         << : *SHARED
         address: Adresse du lieu
         address_name: Nom du lieu
+        charter_signer_user: Charte signée par
         contacts: TOs
         countrycode: Pays
         date_description: Description de la date
@@ -247,6 +290,7 @@ fr:
         name: Nom
         recurring_type: Récurrence
         registration: Comment s'inscrire
+        signed_charter_at: Charte signée le
         size: Taille
         starts_at_hour: Heure
         starts_at_min: Minutes

@@ -14,6 +14,8 @@ fr:
       all: Tous
       archived: Stoppé
       banned: Bannis
+      by_duos: Concernant un duo
+      by_players: Concernant un joueur
       casters: Caster
       coahes: Coach
       draft: Brouillon
@@ -44,6 +46,7 @@ fr:
       with_user: Admin
       with_discord_user: Relié à Discord
       with_bad_network: Connexion invalide
+      with_charter: Avec charte
       with_good_network: Connexion valide
       with_missing_data: Info manquante
       with_missing_duos: Équipe manquante
@@ -55,6 +58,7 @@ fr:
       without_any_tournament_event: Sans édition
       without_background: Sans fond
       without_character: Sans perso
+      without_charter: Sans charte
       without_discord_user: Non relié à Discord
       without_player: Non lié à un joueur
       without_recurring_tournament: Sans série

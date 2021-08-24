@@ -411,7 +411,7 @@ class RetropenBot
 
   def update_member_roles(discord_id)
     discord_user = DiscordUser.find_by(discord_id: discord_id)
-    return false unless discord_user
+    return false unless discord_user&.user
 
     toggle_role(
       discord_id,
