@@ -61,6 +61,29 @@
       }
     }
   }
+
+  &-filter--order-by {
+    white-space: nowrap;
+
+    .icon--arrow_up {
+      display: none;
+    }
+  }
+
+  &.active {
+    &--asc,
+    &--desc {
+      .icon--arrow_up {
+        display: inline-block;
+      }
+    }
+
+    &--desc {
+      .icon--arrow_up {
+        transform: rotate(180deg);
+      }
+    }
+  }
 }
 
 .btn-see-more {

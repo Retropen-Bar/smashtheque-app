@@ -109,6 +109,7 @@
   }
 
   &-socials {
+    display: flex;
     background-color: $gray-deep;
     border-top-left-radius: $border-radius;
     padding: ($card-spacer-y * 0.5) $card-spacer-y;
@@ -188,7 +189,6 @@
   &-nav {
     margin-top: 0.75rem;
     position: sticky;
-    top: $header-height-mobile + 8px;
     z-index: $zindex-dropdown;
 
     @include media-breakpoint-down(md) {
@@ -198,6 +198,7 @@
 
     @include media-breakpoint-down(sm) {
       max-width: 450px;
+      top: $header-height-mobile + 8px;
     }
 
     @include media-breakpoint-up(sm) {
@@ -211,6 +212,13 @@
       @include media-breakpoint-down(md) {
         width: max-content;
       }
+    }
+  }
+
+  &-content {
+    @include media-breakpoint-down(md) {
+      padding-right: $grid-gutter-width / 2;
+      padding-left: $grid-gutter-width / 2;
     }
   }
 
@@ -236,6 +244,12 @@
     @include media-breakpoint-down(sm) {
       > .card-body {
         max-width: 450px;
+      }
+    }
+
+    @include media-breakpoint-down(xs) {
+      > .card-body {
+        max-width: 100%;
       }
     }
   }

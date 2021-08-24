@@ -143,45 +143,46 @@
 
                 <palmares-filters v-bind:palmares="<%= palmares.to_json %>" inline-template>
                   <section>
-                    <div id="palmares-filters" class="mb-3">
-                      <div class="btn-group btn-group-sm" role="group" aria-label="Type de palmarès">
+                    <div class="overflow-auto mb-3 mx-n3 mx-sm-0">
+                      <div id="palmares-filters" class="list-nowrap list-x list-x--lg py-1 px-3 px-sm-0">
+                        <div class="btn-group btn-group-sm btn-group-tab players align-items-stretch" role="group" aria-label="Type de palmarès">
+                          <button
+                            type="button"
+                            class="btn"
+                            :class='{ active: type === "all" }'
+                            @click="type = 'all'">
+                            Tout
+                          </button>
+                          <button
+                            type="button"
+                            class="btn"
+                            :class='{ active: type === "online" }'
+                            @click="type = 'online'">
+                            Online
+                          </button>
+                          <button
+                            type="button"
+                            class="btn"
+                            :class='{ active: type === "offline" }'
+                            @click="type = 'offline'">
+                            Offline
+                          </button>
+                        </div>
                         <button
                           type="button"
-                          class="btn btn-dark"
-                          :class='{ active: type === "all" }'
-                          @click="type = 'all'">
-                          Tous
+                          class="btn btn-filter--order-by btn-dark btn-sm rounded-pill border-0"
+                          :class="{ active: orderByDate !== null, 'active--desc': orderByDate === 'desc', 'active--asc': orderByDate === 'asc' }"
+                          @click="handleOrderByDate">
+                          <%= svg_icon_tag(:calendar, class: 'fs-xs') %>&nbsp;Date&nbsp;<%= svg_icon_tag(:arrow_up, class: 'fs-xs') %>
                         </button>
                         <button
                           type="button"
-                          class="btn btn-dark"
-                          :class='{ active: type === "online" }'
-                          @click="type = 'online'">
-                          Online
-                        </button>
-                        <button
-                          type="button"
-                          class="btn btn-dark"
-                          :class='{ active: type === "offline" }'
-                          @click="type = 'offline'">
-                          Offline
+                          class="btn btn-filter--order-by btn-dark btn-sm rounded-pill border-0"
+                          :class="{ active: orderByRank !== null, 'active--desc': orderByRank === 'desc', 'active--asc': orderByRank === 'asc' }"
+                          @click="handleOrderByRank">
+                          <%= svg_icon_tag(:médaille, class: 'fs-xs') %>&nbsp;Classement&nbsp;<%= svg_icon_tag(:arrow_up, class: 'fs-xs') %>
                         </button>
                       </div>
-                      <button
-                        type="button"
-                        class="btn btn-dark btn-sm rounded-pill"
-                        :class='{ active: orderByDate !== null }'
-                        @click="orderByDate = !orderByDate; orderByRank = null">
-                        <%= svg_icon_tag(:calendar, class: 'fs-xs') %>&nbsp;Date
-                      </button>
-                      <button
-                        type="button"
-                        class="btn btn-dark btn-sm rounded-pill"
-                        :class='{ active: orderByRank !== null }'
-                        @click="orderByRank = !orderByRank; orderByDate = null">
-                        <%= svg_icon_tag(:médaille, class: 'fs-xs') %>&nbsp;Classement
-                      </button>
-
                     </div>
                     <div class="palmares">
                       <div class="palmares-wrapper" v-for="p in filteredData" v-html="p.template"></div>
