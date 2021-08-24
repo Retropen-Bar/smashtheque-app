@@ -1,26 +1,26 @@
 .palmares {
-  & > *:not(:first-child) {
-    margin-top: 0.75rem;
+  &-wrapper {
+    &:not(:last-child) {
+      .palmares-item {
+        padding-bottom: 28px;
+
+        &:before {
+          content: "";
+          width: 2px;
+          height: 100%;
+          background-color: $body-color;
+          transform: translateX(-1px);
+          position: absolute;
+          left: 32px;
+          top: 0;
+        }
+      }
+    }
   }
 
   &-item {
     font-size: 0.75rem;
     position: relative;
-
-    &:not(:last-child) {
-      padding-bottom: 28px;
-
-      &:before {
-        content: "";
-        width: 2px;
-        height: 100%;
-        background-color: $body-color;
-        transform: translateX(-1px);
-        position: absolute;
-        left: 36px;
-        top: 0;
-      }
-    }
   }
 
   &-rewards {
@@ -28,7 +28,9 @@
     position: relative;
     z-index: 1;
 
-    &:not(:empty) {
+    &:not(.no-reward) {
+      margin-top: -0.75rem;
+      padding-top: 0.75rem;
       padding-bottom: 0.75rem;
     }
   }
@@ -37,9 +39,23 @@
     font-variant-numeric: oldstyle-nums;
   }
 
+  &-type {
+    background-color: rgba($body-color, 0.1);
+    line-height: 1;
+    font-size: 10px;
+    position: absolute;
+    top: 0.25rem;
+    right: 0.25rem;
+  }
+
   &-info {
+    background-color: rgba($gray-deep, 0.7);
     position: relative;
     z-index: 1;
+
+    .card-body {
+      background-color: transparent;
+    }
   }
 
   &-title {
@@ -51,15 +67,26 @@
     flex: 0 0 1.25rem;
   }
 
+  &-actions {
+    background-color: $gray-deep;
+  }
+
   &-action-link {
+    font-size: inherit;
+
     svg {
-      width: 1.75em;
-      height: 1.75em;
+      width: 2.5em;
+      height: 2.5em;
+    }
+
+    .icon--top3 {
+      width: 2em;
+      height: 2em;
     }
 
     img {
-      width: 1.5em;
-      height: 1.5em;
+      width: 2em;
+      height: 2em;
     }
   }
 }

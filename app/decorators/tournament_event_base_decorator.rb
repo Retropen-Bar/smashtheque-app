@@ -28,8 +28,11 @@ class TournamentEventBaseDecorator < BaseDecorator
   end
 
   def bracket_icon(options = {})
+    puts '====='
+    puts options.inspect
+    puts '====='
     height = 32 || options.delete(:height)
-    options.merge(height: height)
+    options&.merge(height: height)
     return h.image_tag('https://smash.gg/images/gg-app-icon.png', options) if is_on_smashgg?
     return h.image_tag('https://braacket.com/favicon.ico', options) if is_on_braacket?
 
@@ -46,7 +49,7 @@ class TournamentEventBaseDecorator < BaseDecorator
   def bracket_icon_link(options = {})
     return nil if bracket_url.blank?
 
-    link_content = bracket_icon(options.delete(:backet_icon_options))
+    link_content = bracket_icon(options.delete(:backet_icon_options) || {})
     link_text = options.delete(:text) || ''
 
     link_content = [

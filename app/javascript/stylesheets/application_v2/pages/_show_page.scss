@@ -1,10 +1,6 @@
 .show-page {
   &-header {
-    &-bg {
-      padding-top: 25%;
-    }
-
-    @include media-breakpoint-down(sm) {
+    @include media-breakpoint-down(md) {
       &.card,
       .card {
         border-radius: 0;
@@ -13,12 +9,44 @@
       margin-right: -$grid-gutter-width / 2;
     }
 
+    @include media-breakpoint-up(lg) {
+      margin-top: 30px;
+    }
+
+    &-bg {
+      padding-top: 15vh;
+      margin-bottom: -$border-radius;
+
+      &--lg {
+        padding-top: 25vh;
+      }
+
+      @include media-breakpoint-up(lg) {
+        border-radius: $border-radius $border-radius 0 0;
+        padding-top: calc(8vh + #{$border-radius});
+
+        &--lg {
+          padding-top: calc(18vh + #{$border-radius});
+        }
+      }
+    }
+
+    &-body {
+      border-top-right-radius: 0px;
+    }
+
     &-content {
       display: grid;
       grid-template-columns: auto 1fr;
       grid-template-rows: 1fr 1fr;
+      grid-auto-columns: 1fr;
       gap: 0.5rem 0;
       padding: $card-spacer-x / 1.5 $card-spacer-x;
+
+      @include media-breakpoint-up(lg) {
+        padding: $card-spacer-x $card-spacer-x $card-spacer-x
+          calc(#{$card-spacer-x} + #{$grid-gutter-width} / 2);
+      }
     }
   }
 
@@ -36,6 +64,17 @@
       position: absolute;
       top: 0;
     }
+
+    @include media-breakpoint-up(lg) {
+      height: 8.0625rem / 2 / 3 - $card-spacer-x;
+      width: 129px;
+
+      .avatar {
+        height: 129px !important;
+        width: 129px !important;
+        transform: translateY(-33%);
+      }
+    }
   }
 
   &-meta {
@@ -48,9 +87,14 @@
   &-main-info {
     padding-left: $card-spacer-x;
     grid-row: span 2;
+    min-width: 0;
 
     > * + * {
       margin-top: 0.25rem;
+    }
+
+    @include media-breakpoint-up(md) {
+      padding-left: calc(#{$card-spacer-x} + 10px);
     }
   }
 
@@ -58,15 +102,24 @@
     font-size: 1.25rem;
     margin-bottom: 0;
     font-weight: 600;
+
+    @include media-breakpoint-up(md) {
+      font-size: 1.5rem;
+    }
   }
 
   &-socials {
     background-color: $gray-deep;
     border-top-left-radius: $border-radius;
     padding: ($card-spacer-y * 0.5) $card-spacer-y;
+    min-width: 0;
     position: absolute;
     right: 0;
-    bottom: 100%;
+    bottom: calc(100% - 0.5px);
+
+    @include media-breakpoint-up(md) {
+      border-top-right-radius: $border-radius;
+    }
 
     svg {
       width: 1.125rem;
@@ -82,32 +135,186 @@
     margin-top: 0;
   }
 
-  &-body {
-    margin-top: 30px;
+  &-side {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    grid-column: 3;
+    grid-row: 1 / -1;
+    min-width: 0;
+    margin: (-$card-spacer-x / 1.5) (-$card-spacer-x) (-$card-spacer-x / 1.5) 0;
+    padding: ($card-spacer-x / 1.5) $card-spacer-x ($card-spacer-x / 1.5)
+      ($card-spacer-x / 1.5 * 2.5);
+    position: relative;
 
-    @include media-breakpoint-down(sm) {
-      margin-top: 0;
-      margin-left: -$grid-gutter-width / 2;
-      margin-right: -$grid-gutter-width / 2;
-      border-radius: 0;
-      background: transparent;
+    > * {
+      position: relative;
+    }
+
+    &::before {
+      content: "";
+      display: block;
+      background-color: $gray-dark;
+      clip-path: polygon(12% 0, 100% 0%, 100% 100%, 0% 100%);
+      border-bottom-right-radius: $border-radius;
+      position: absolute;
+      inset: 0;
+    }
+
+    @include media-breakpoint-up(md) {
+      display: flex;
+    }
+
+    @include media-breakpoint-up(lg) {
+      margin: (-$card-spacer-x) (-$card-spacer-x) (-$card-spacer-x) 0;
+      padding: $card-spacer-x $card-spacer-x $card-spacer-x $card-spacer-x * 2.5;
+    }
+
+    .list-characters-compact {
+      img {
+        filter: grayscale(1);
+      }
+
+      a:hover {
+        background: none;
+
+        img {
+          filter: none;
+        }
+      }
     }
   }
 
-  &-section-title {
-    display: flex;
-    align-items: center;
-    margin-bottom: 0.5em;
+  &-nav {
+    margin-top: 0.75rem;
+    position: sticky;
+    top: $header-height-mobile + 8px;
+    z-index: $zindex-dropdown;
 
-    h2 {
-      font-size: 1.25rem;
-      margin: 0;
+    @include media-breakpoint-down(md) {
+      max-width: 600px;
+      top: $header-height-tablet + 8px;
     }
 
-    &-separator {
-      flex-grow: 1;
-      border-bottom: 2px solid currentColor;
-      margin-left: 1rem;
+    @include media-breakpoint-down(sm) {
+      max-width: 450px;
+    }
+
+    @include media-breakpoint-up(sm) {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .section-nav-bg {
+      background-color: $gray-darker;
+
+      @include media-breakpoint-down(md) {
+        width: max-content;
+      }
+    }
+  }
+
+  &-body {
+    margin-top: 30px;
+    background-color: $gray-dark;
+
+    @include media-breakpoint-down(md) {
+      margin-top: -3rem;
+      padding-top: 2.5rem;
+      margin-left: -$grid-gutter-width / 2;
+      margin-right: -$grid-gutter-width / 2;
+      border-radius: 0;
+    }
+
+    @include media-breakpoint-down(md) {
+      > .card-body {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+    }
+
+    @include media-breakpoint-down(sm) {
+      > .card-body {
+        max-width: 450px;
+      }
+    }
+  }
+
+  .card-box--stat {
+    background-color: rgba($gray-deep, 0.7);
+
+    .card-body {
+      background-color: transparent;
+    }
+
+    .card-box-icon img {
+      height: 100%;
+    }
+
+    button.rounded-pill {
+      display: none;
+
+      @media screen and (min-width: 375px) {
+        display: block;
+      }
+    }
+
+    button.btn-see-more {
+      display: block;
+
+      @media screen and (min-width: 375px) {
+        display: none;
+      }
+    }
+  }
+
+  &-section {
+    scroll-margin-top: $header-height-mobile + 35px + 12px;
+
+    @include media-breakpoint-up(lg) {
+      padding-left: map-get($spacers, 4);
+      padding-right: map-get($spacers, 4);
+    }
+
+    &-body {
+      &--with-bg {
+        @include media-breakpoint-up(md) {
+          padding: 1.25rem;
+          border-radius: $border-radius;
+          background-color: rgba($gray-deep, 0.7);
+
+          .card-box--stat,
+          .list-row {
+            background-color: rgba($gray-dark, 0.7);
+          }
+        }
+      }
+    }
+
+    &-title {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5em;
+
+      h2 {
+        font-size: 1.25rem;
+        margin: 0;
+      }
+
+      &-separator {
+        flex-grow: 1;
+        border-bottom: 2px solid currentColor;
+        margin-left: 1rem;
+      }
+    }
+
+    &-subtitle {
+      .icon {
+        opacity: 0.7;
+        vertical-align: top;
+        width: 1em;
+        height: 1em;
+      }
     }
   }
 }

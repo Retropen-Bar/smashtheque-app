@@ -71,6 +71,25 @@
       }
     }
   }
+
+  &--xxl {
+    & > * + * {
+      margin-left: 0.2rem;
+    }
+
+    a {
+      .emoji {
+        width: 5rem;
+        height: auto;
+      }
+
+      &:not(:first-child) {
+        .emoji {
+          width: 3rem;
+        }
+      }
+    }
+  }
 }
 
 .list-badges {
@@ -113,5 +132,15 @@
       margin-right: 0.5ch;
       color: $body-color;
     }
+  }
+}
+
+.list-communities {
+  display: flex;
+
+  svg {
+    margin-top: 4px;
+    margin-right: 4px;
+    flex-shrink: 0;
   }
 }
