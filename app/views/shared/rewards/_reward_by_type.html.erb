@@ -47,14 +47,19 @@
 <section class="mt-4">
   <h3 class="fs-sm mb-3">Classement par années</h3>
   <ul class="list-y list-unstyled text-center mb-0">
-    <li class="list-row">
-      <span class="flex-grow-1">2021</span><span>&nbsp;•&nbsp;</span><span class="flex-grow-1 font-weight-bold text-players"><%= svg_icon_tag(:médaille, class: 'card-box-icon') %>&nbsp;#1</span><span>&nbsp;•&nbsp;</span><span class="flex-grow-1"><%= awarded.points_count(16, is_online: is_online, class: 'card-box-icon', delimiter: '&nbsp;') %></span>
-    </li>
-    <li class="list-row">
-      <span class="flex-grow-1">2021</span><span>&nbsp;•&nbsp;</span><span class="flex-grow-1 font-weight-bold text-players"><%= svg_icon_tag(:médaille, class: 'card-box-icon') %>&nbsp;#1</span><span>&nbsp;•&nbsp;</span><span class="flex-grow-1"><%= awarded.points_count(16, is_online: is_online, class: 'card-box-icon', delimiter: '&nbsp;') %></span>
-    </li>
-    <li class="list-row">
-      <span class="flex-grow-1">2021</span><span>&nbsp;•&nbsp;</span><span class="flex-grow-1 font-weight-bold text-players"><%= svg_icon_tag(:médaille, class: 'card-box-icon') %>&nbsp;#1</span><span>&nbsp;•&nbsp;</span><span class="flex-grow-1"><%= awarded.points_count(16, is_online: is_online, class: 'card-box-icon', delimiter: '&nbsp;') %></span>
-    </li>
+    <% TrackRecord.points_years.sort.reverse.each do |year| %>
+      <li class="list-row">
+        <span class="flex-grow-1"><%= year %></span>
+        <span>&nbsp;•&nbsp;</span>
+        <span class="flex-grow-1 font-weight-bold text-players"><%=
+          svg_icon_tag(:médaille, class: 'card-box-icon') %>&nbsp;<%=
+          (rank = awarded.rank(is_online: is_online, year: year)) ? "##{rank}" : '-'
+        %></span>
+        <span>&nbsp;•&nbsp;</span>
+        <span class="flex-grow-1"><%=
+          awarded.points_count(16, is_online: is_online, class: 'card-box-icon', delimiter: '&nbsp;')
+        %></span>
+      </li>
+    <% end %>
   </ul>
 </section>
