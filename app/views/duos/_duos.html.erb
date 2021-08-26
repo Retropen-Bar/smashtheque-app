@@ -10,13 +10,13 @@
           <section class="index-section my-2 my-md-3 py-1 py-md-2 pl-3 pr-1 pr-md-2 py-xl-0 d-flex d-xl-block flex-wrap align-items-center shadow-lg bg-bg rounded-pill">
             <small class="text-muted d-inline-block d-xl-none"><%= duos.total_count %> résultat(s)</small>
             <button @click="filtersVisible = true" type="button" class="btn btn-dark btn-sm btn-with-icon rounded-pill players ml-auto<%= ' active' if params[:on_abc] %> d-flex d-xl-none">
-              <%= svg_icon_tag :filtres %> Filtres<%= ' (1)' if params[:on_abc] %>
+              <%= svg_icon_tag :filtre %> Filtres<%= ' (1)' if params[:on_abc] %>
             </button>
             <slide-out dock="bottom" :visible.sync="filtersVisible" :size="[0]" :arrow-button="false" title="Filtres">
               <template #header>
                 <div class="d-flex align-items-center justify-content-between">
                   <p class="m-0">
-                    <%= svg_icon_tag :filtres %> Filtres<%= ' (1)' if params[:on_abc] %>
+                    <%= svg_icon_tag :filtre %> Filtres<%= ' (1)' if params[:on_abc] %>
                   </p>
                   <button @click="filtersVisible = false" type="button" class="btn btn-sm btn-icon rounded-circle ml-3">
                     <%= svg_icon_tag :croix %>
