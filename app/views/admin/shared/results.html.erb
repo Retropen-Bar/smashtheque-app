@@ -97,13 +97,7 @@
         <th class="text-center"><%= event.admin_link %></th>
         <td class="text-center"><%= event.date %></td>
         <td class="text-center"><%= event.participants_count %></td>
-        <td class="text-center">
-          <% if event.is_a?(TournamentEvent) %>
-            <%= event.player_rank_name(@resource.id) %>
-          <% else %>
-            <%= event.duo_rank_name(@resource.id) %>
-          <% end %>
-        </td>
+        <td class="text-center"><%= event.top_rank_name(@resource.id) %></td>
         <td class="text-center"><%= met_reward_condition&.reward_condition_admin_link %></td>
         <td class="text-center"><%= met_reward_condition&.reward_admin_link %></td>
         <td class="text-center"><%= met_reward_condition&.points %></td>

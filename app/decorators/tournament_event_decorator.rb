@@ -6,7 +6,7 @@ class TournamentEventDecorator < TournamentEventBaseDecorator
     nil
   end
 
-  def player_rank_name(player_id)
+  def top_rank_name(player_id)
     player_name = player_rank(player_id)
     TournamentEvent.human_attribute_name("rank.#{player_name}") if player_name
   end

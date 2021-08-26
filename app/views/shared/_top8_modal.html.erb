@@ -1,0 +1,54 @@
+<div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title"><%= tournament_event&.name %></h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <% if tournament_event.graph_image_tag %>
+        <div class="text-center">
+          <%= tournament_event.graph_image_tag max_width: '100%', max_height: 600, class: 'shadow mx-auto' %>
+          <br/>
+          <%= tournament_event.bracket_icon_link(text: 'Bracket', class: 'btn btn-sm btn-dark bg-layout-dark rounded-pill font-weight-bolder mx-auto fs-sm mt-2', backet_icon_options: {height: 12, class: 'text-accent'}) %>
+        </div>
+      <% else %>
+        <div class="list-y">
+          <% tournament_event.model.class::TOP_NAME_RANK.each do |top_name, rank| %>
+            <% awarded = tournament_event.send(top_name) %>
+            <article class="resource resource--dark player flex-grow-1">
+              <div class="resource-content card flex-grow-1 shadow-none">
+                <div class="card-body d-flex align-items-center">
+                  <div class="d-flex align-items-center flex-grow-1 min-w-0">
+                    <span class="h2 mb-0 font-weight-bold mr-3">#<%= rank %></span>
+                    <div class="min-w-0">
+                      <%= awarded&.decorate&.link(label: awarded&.name, class: 'font-weight-bolder text-truncate d-block') || '?' %>
+                      <% if awarded&.is_legit? && awarded.respond_to?(:teams) && awarded&.teams.present? %>
+                        <small class="list-teams fs-sm player-teams font-weight-bolder">
+                          <% awarded&.teams[0...2].each do |team| %>
+                            <div class="list-team"><%= team.short_name %></div>
+                          <% end %>
+                        </small>
+                      <% end %>
+                    </div>
+                  </div>
+                  <% if awarded&.respond_to?(:characters) %>
+                    <div class="list-characters-compact list-characters-compact--dark flex-shrink-0">
+                      <% awarded.characters[0...3].each do |character| %>
+                        <%= character.decorate.link %>
+                      <% end %>
+                    </div>
+                  <% end %>
+                  <% if awarded %>
+                    <%= awarded&.decorate&.link(label: content_tag(:span, 'Voir plus', class: 'sr-only'), class: 'resource-link') %>
+                  <% end %>
+                </div>
+              </div>
+            </article>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

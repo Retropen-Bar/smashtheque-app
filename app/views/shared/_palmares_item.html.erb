@@ -17,7 +17,7 @@
       <div class="list-y">
         <div>
           <time class="palmares-date" datetime="<%= tournament_event.date.to_s(:db) %>"><%= l tournament_event.date, format: :long %></time>
-          <h3 class="palmares-title"><%= tournament_event.player_rank_name(@player.id) %> - <%= tournament_event.participants_count %> participants</h3>
+          <h3 class="palmares-title"><%= tournament_event.top_rank_name(awarded.id) %> - <%= tournament_event.participants_count %> participants</h3>
         </div>
         <div class="palmares-tournament d-flex">
           <div class="palmares-tournament-logo mr-2">
@@ -34,8 +34,9 @@
       <div class="d-flex justify-content-around align-items-center">
         <button type="button"
                 class="palmares-action-link btn btn-sm btn-link btn-with-icon rounded-pill font-weight-bolder"
-                data-toggle="modal"
-                data-target="#top8-<%= tournament_event.id %>-modal">
+                data-toggle="modal-remote"
+                data-source="<%= url_for([:top8_modal, tournament_event]) %>"
+                data-target="#palmares-modal">
                 <%= svg_icon_tag(:top3, class: 'text-accent mr-0') %>&nbsp;Top 8</button>
 
         <%= tournament_event.bracket_icon_link(text: 'Bracket', class: ' palmares-action-link  font-weight-bolder', backet_icon_options: {height: 12, class: 'text-accent'}) %>
@@ -43,4 +44,3 @@
     </div>
   </div>
 </article>
-<%= render 'top8_modal', tournament_event: tournament_event, modal_id: "top8-#{tournament_event.id}-modal" %>

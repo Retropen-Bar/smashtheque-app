@@ -2,7 +2,7 @@ class TournamentEventsController < PublicController
   helper_method :user_recurring_tournament_admin?
 
   before_action :set_recurring_tournament, only: %w[new create]
-  before_action :set_tournament_event, only: %w[show edit update]
+  before_action :set_tournament_event, only: %w[show edit update top8_modal]
   decorates_assigned :tournament_event
 
   before_action :verify_tournament_event!, only: %w[new create edit update]
@@ -63,6 +63,10 @@ class TournamentEventsController < PublicController
     else
       render :edit
     end
+  end
+
+  def top8_modal
+    render 'top8_modal', layout: false
   end
 
   private

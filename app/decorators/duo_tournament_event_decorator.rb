@@ -6,7 +6,7 @@ class DuoTournamentEventDecorator < TournamentEventBaseDecorator
     nil
   end
 
-  def duo_rank_name(duo_id)
+  def top_rank_name(duo_id)
     duo_name = duo_rank(duo_id)
     DuoTournamentEvent.human_attribute_name("rank.#{duo_name}") if duo_name
   end

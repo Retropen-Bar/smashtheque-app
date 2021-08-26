@@ -98,8 +98,16 @@ Rails.application.routes.draw do
       get :modal
     end
   end
-  resources :tournament_events, only: [:index, :show, :edit, :update]
-  resources :duo_tournament_events, only: [:index, :show, :edit, :update]
+  resources :tournament_events, only: %i[index show edit update] do
+    member do
+      get :top8_modal
+    end
+  end
+  resources :duo_tournament_events, only: %i[index show edit update] do
+    member do
+      get :top8_modal
+    end
+  end
   get 'planning/online' => 'pages#planning_online', as: :planning
 
   resources :twitch_channels, only: [:index]

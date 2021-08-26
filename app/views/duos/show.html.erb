@@ -77,59 +77,16 @@
                   met_reward_condition = @met_reward_conditions_by_duo_tournament_event_id[duo_tournament_event.id]&.decorate
                   reward = @met_reward_conditions_by_duo_tournament_event_id[duo_tournament_event.id]&.decorate&.attributes || {}
                   tournament = duo_tournament_event&.attributes || {}
-                  # template = render("players/palmares_item", met_reward_condition: met_reward_condition, tournament_event: duo_tournament_event)
-                  # p = reward.merge(tournament).merge({ points: met_reward_condition&.points, template: template, is_online: met_reward_condition&.reward&.online? })
-                  # palmares << p
+                  template = render 'shared/palmares_item',
+                                    met_reward_condition: met_reward_condition,
+                                    tournament_event: duo_tournament_event,
+                                    awarded: @duo
+                  p = reward.merge(tournament).merge({ points: met_reward_condition&.points, template: template, is_online: met_reward_condition&.reward&.online? })
+                  palmares << p
                   %>
                 <% end %>
 
-                <palmares-filters v-bind:palmares="<%= palmares.to_json %>" inline-template>
-                  <section>
-                    <div id="palmares-filters" class="mb-3">
-                      <div class="btn-group btn-group-sm" role="group" aria-label="Type de palmarès">
-                        <button
-                          type="button"
-                          class="btn btn-dark"
-                          :class='{ active: type === "all" }'
-                          @click="type = 'all'">
-                          Tous
-                        </button>
-                        <button
-                          type="button"
-                          class="btn btn-dark"
-                          :class='{ active: type === "online" }'
-                          @click="type = 'online'">
-                          Online
-                        </button>
-                        <button
-                          type="button"
-                          class="btn btn-dark"
-                          :class='{ active: type === "offline" }'
-                          @click="type = 'offline'">
-                          Offline
-                        </button>
-                      </div>
-                      <button
-                        type="button"
-                        class="btn btn-dark btn-sm rounded-pill"
-                        :class='{ active: orderByDate !== null }'
-                        @click="orderByDate = !orderByDate; orderByRank = null">
-                        <%= svg_icon_tag(:calendar, class: 'fs-xs') %>&nbsp;Date
-                      </button>
-                      <button
-                        type="button"
-                        class="btn btn-dark btn-sm rounded-pill"
-                        :class='{ active: orderByRank !== null }'
-                        @click="orderByRank = !orderByRank; orderByDate = null">
-                        <%= svg_icon_tag(:médaille, class: 'fs-xs') %>&nbsp;Classement
-                      </button>
-
-                    </div>
-                    <div class="palmares">
-                      <div class="palmares-wrapper" v-for="p in filteredData" v-html="p.template"></div>
-                    </div>
-                  </section>
-                </palmares-filters>
+                <%= render 'shared/palmares_filters', palmares: palmares %>
               <% else %>
                 <p>Aucun palmarès</p>
               <% end %>
