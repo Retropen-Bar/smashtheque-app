@@ -14,6 +14,7 @@
     }
 
     &-bg {
+      min-height: 80px;
       padding-top: 15vh;
       margin-bottom: -$border-radius;
 
@@ -36,6 +37,7 @@
     }
 
     &-content {
+      min-height: 100px;
       display: grid;
       grid-template-columns: auto 1fr;
       grid-template-rows: 1fr 1fr;
@@ -55,6 +57,10 @@
     width: 94px;
     align-self: center;
 
+    &.duo {
+      width: 94px + 64px;
+    }
+
     .avatar {
       border-radius: 50%;
       box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.16);
@@ -63,16 +69,28 @@
       transform: translateY(-50%);
       position: absolute;
       top: 0;
+
+      & + .avatar {
+        transform: translate(64px, -50%);
+      }
     }
 
     @include media-breakpoint-up(lg) {
       height: 8.0625rem / 2 / 3 - $card-spacer-x;
       width: 129px;
 
+      &.duo {
+        width: 129px + 92px;
+      }
+
       .avatar {
         height: 129px !important;
         width: 129px !important;
         transform: translateY(-33%);
+
+        & + .avatar {
+          transform: translate(92px, -33%);
+        }
       }
     }
   }
@@ -132,7 +150,7 @@
     }
   }
 
-  .list-teams {
+  .list-teams, .list-players {
     margin-top: 0;
   }
 

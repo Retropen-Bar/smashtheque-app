@@ -1,12 +1,17 @@
+<% if user_signed_in? && (current_user.is_admin? || current_user.is_charted_online_recurring_tournament_administrator?) %>
+  <%= render 'toolbar', duo: duo %>
+<% end %>
+
 <div class="container-lg">
   <article class="show-page">
     <section class="show-page-header card">
       <div class="show-page-header-bg" style="background-color: #ee647d;"></div>
       <div class="show-page-header-body card justify-content-start">
         <div class="show-page-header-content card-body">
-          <div class="show-page-avatar">
+          <div class="show-page-avatar duo">
             <% if duo.is_legit? %>
-              <%= duo.avatars_tag(94) %>
+              <%= duo.player1.decorate.avatar_tag(94) %>
+              <%= duo.player2.decorate.avatar_tag(94) %>
             <% end %>
           </div>
           <div class="show-page-main-info">
@@ -17,6 +22,12 @@
                 -
               <% end %>
             </h1>
+            <% if duo.is_legit? %>
+              <small class="list-players duo-players">
+                <%= duo.player1.decorate.link(label: duo.player1.name, class: 'list-player') %>
+                <%= duo.player2.decorate.link(label: duo.player2.name, class: 'list-player') %>
+              </small>
+            <% end %>
           </div>
         </div>
       </div>

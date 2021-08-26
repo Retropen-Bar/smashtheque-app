@@ -135,6 +135,27 @@
   }
 }
 
+.list-players {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 1rem;
+  position: relative;
+
+  &--sm {
+    font-size: 0.6875rem;
+  }
+
+  .list-player {
+    & + *:before {
+      content: "•";
+      display: inline-block;
+      margin-left: 0.5ch;
+      margin-right: 0.5ch;
+      color: $body-color;
+    }
+  }
+}
+
 .list-communities {
   display: flex;
 

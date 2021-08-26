@@ -1,0 +1,36 @@
+<div class="container-fluid">
+  <div class="row py-2 bg-dark text-center">
+    <div class="col text-left fs-sm">
+      <% if duo.problems.any? %>
+        <%= link_to '#duo-problems', data: { toggle: :collapse } do %>
+          <%= problems_count(duo.problems.count) %>
+        <% end %>
+      <% else %>
+        Aucun problème signalé
+      <% end %>
+    </div>
+
+    <div class="col text-right">
+      <button class="btn btn-danger btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Signaler un problème sur
+      </button>
+      <div class="dropdown-menu">
+        <% current_user.administrated_charted_online_recurring_tournaments.each do |rc| %>
+          <%= link_to rc.decorate.name_with_logo(max_width: 32, max_height: 32),
+                      new_recurring_tournament_problem_path(
+                        rc,
+                        problem: { duo_id: duo.id }
+                      ),
+                      class: 'dropdown-item' %>
+        <% end %>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="collapse mt-3" id="duo-problems">
+        <div class="table-responsive">
+          <%= render 'problems/index', problems: duo.problems.order(occurred_at: :desc) %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
