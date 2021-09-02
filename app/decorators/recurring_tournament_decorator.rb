@@ -191,21 +191,7 @@ class RecurringTournamentDecorator < BaseDecorator
         h.tag.span  level_text,
                     class: 'badge',
                     style: "background-color: #{self.class.level_color(level)}; color: white"
-      ) + ' ' + (
-        if has_signed_charter?
-          text = [
-            h.fas_icon_tag(:handshake),
-            'Charte'
-          ].join('&nbsp;').html_safe
-          h.tag.span text, class: 'badge badge-secondary'
-        else
-          ''
-        end
       )
     ).html_safe
-  end
-
-  def charter_signer_user_link(options = {})
-    charter_signer_user&.decorate&.link(options)
   end
 end

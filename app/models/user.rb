@@ -106,10 +106,6 @@ class User < ApplicationRecord
            through: :team_admins,
            source: :team
 
-  has_many :reported_problems,
-           class_name: :Problem,
-           foreign_key: :reporting_user_id
-
   accepts_nested_attributes_for :player
 
   # ---------------------------------------------------------------------------
@@ -287,10 +283,6 @@ class User < ApplicationRecord
     where(main_countrycode: countrycode)
   end
 
-  def self.with_reported_problems
-    where(id: Problem.select(:reporting_user_id))
-  end
-
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------
@@ -338,14 +330,6 @@ class User < ApplicationRecord
 
   def is_admin?
     !admin_level.nil?
-  end
-
-  def administrated_charted_online_recurring_tournaments
-    administrated_recurring_tournaments.online.with_charter
-  end
-
-  def is_charted_online_recurring_tournament_administrator?
-    administrated_charted_online_recurring_tournaments.any?
   end
 
   # provides: @discord_user_id
