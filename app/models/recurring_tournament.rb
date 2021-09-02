@@ -2,42 +2,37 @@
 #
 # Table name: recurring_tournaments
 #
-#  id                     :bigint           not null, primary key
-#  address                :string
-#  address_name           :string
-#  countrycode            :string
-#  date_description       :string
-#  is_archived            :boolean          default(FALSE), not null
-#  is_hidden              :boolean          default(FALSE), not null
-#  is_online              :boolean          default(FALSE), not null
-#  latitude               :float
-#  level                  :string
-#  locality               :string
-#  longitude              :float
-#  misc                   :text
-#  name                   :string           not null
-#  recurring_type         :string           not null
-#  registration           :text
-#  signed_charter_at      :date
-#  size                   :integer
-#  starts_at_hour         :integer          not null
-#  starts_at_min          :integer          not null
-#  twitter_username       :string
-#  wday                   :integer
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  charter_signer_user_id :bigint
-#  discord_guild_id       :bigint
+#  id               :bigint           not null, primary key
+#  address          :string
+#  address_name     :string
+#  countrycode      :string
+#  date_description :string
+#  is_archived      :boolean          default(FALSE), not null
+#  is_hidden        :boolean          default(FALSE), not null
+#  is_online        :boolean          default(FALSE), not null
+#  latitude         :float
+#  level            :string
+#  locality         :string
+#  longitude        :float
+#  misc             :text
+#  name             :string           not null
+#  recurring_type   :string           not null
+#  registration     :text
+#  size             :integer
+#  starts_at_hour   :integer          not null
+#  starts_at_min    :integer          not null
+#  twitter_username :string
+#  wday             :integer
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  discord_guild_id :bigint
 #
 # Indexes
 #
-#  index_recurring_tournaments_on_charter_signer_user_id  (charter_signer_user_id)
-#  index_recurring_tournaments_on_discord_guild_id        (discord_guild_id)
-#  index_recurring_tournaments_on_signed_charter_at       (signed_charter_at)
+#  index_recurring_tournaments_on_discord_guild_id  (discord_guild_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (charter_signer_user_id => users.id)
 #  fk_rails_...  (discord_guild_id => discord_guilds.id)
 #
 class RecurringTournament < ApplicationRecord
@@ -95,9 +90,6 @@ class RecurringTournament < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   belongs_to :discord_guild, optional: true
-  belongs_to :charter_signer_user,
-             class_name: :User,
-             optional: true
 
   has_many :recurring_tournament_contacts,
            inverse_of: :recurring_tournament,
@@ -110,8 +102,6 @@ class RecurringTournament < ApplicationRecord
   has_many :tournament_events, dependent: :nullify
   has_many :duo_tournament_events, dependent: :nullify
 
-  has_many :problems
-
   # ---------------------------------------------------------------------------
   # validations
   # ---------------------------------------------------------------------------
@@ -119,8 +109,6 @@ class RecurringTournament < ApplicationRecord
   validates :level, presence: true, inclusion: { in: LEVELS }
   validates :recurring_type, presence: true, inclusion: { in: RECURRING_TYPES }
   validates :wday, presence: true
-  validates :charter_signer_user, presence: true, unless: -> { signed_charter_at.blank? }
-  validates :charter_signer_user, absence: true, if: -> { signed_charter_at.blank? }
 
   # ---------------------------------------------------------------------------
   # CALLBACKS
@@ -179,9 +167,6 @@ class RecurringTournament < ApplicationRecord
   scope :visible, -> { where(is_hidden: false) }
 
   scope :by_discord_guild_id, ->(v) { where(discord_guild_id: v) }
-
-  scope :with_charter, -> { where.not(signed_charter_at: nil) }
-  scope :without_charter, -> { where(signed_charter_at: nil) }
 
   def self.by_discord_guild_discord_id(discord_id)
     by_discord_guild_id(DiscordGuild.by_discord_id(discord_id).select(:id))
@@ -254,10 +239,6 @@ class RecurringTournament < ApplicationRecord
 
   def hidden?
     is_hidden?
-  end
-
-  def has_signed_charter?
-    !signed_charter_at.nil?
   end
 
   # ---------------------------------------------------------------------------
