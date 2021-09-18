@@ -4,11 +4,21 @@
   }
 }
 
+.list-nowrap {
+  min-width: max-content;
+}
+
 .list-x {
   display: flex;
 
   > *:not(:last-child) {
     margin-right: 0.25rem;
+  }
+
+  &--lg {
+    > *:not(:last-child) {
+      margin-right: 0.75rem;
+    }
   }
 }
 

@@ -34,7 +34,7 @@
 
     .page-item {
       &.active .page-link {
-        color: $white;
+        color: $gray-darker;
         background-color: $color;
       }
     }

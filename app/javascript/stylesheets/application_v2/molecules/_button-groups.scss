@@ -1,4 +1,5 @@
 .btn-group > .btn {
+  background-color: $gray-deep;
   border-radius: $border-radius * 1.5;
   padding-top: 0.25em;
   padding-bottom: 0.25em;
@@ -24,13 +25,33 @@
 @each $section_name, $color in $sections {
   $hover-background: darken($color, 7.5%);
 
-  .btn-group.#{$section_name} > .btn:not(.btn-outline) {
+  .btn-group.#{$section_name} > .active {
     background-color: $color;
-    color: $white;
+    color: $gray-darker;
 
     @include hover() {
-      color: rgba($white, 0.85);
-      background-color: $hover-background;
+      color: rgba($gray-darker, 0.85);
+    }
+  }
+}
+
+.btn-group-tab {
+  border-radius: $rounded-pill;
+  background-color: $gray-deep;
+
+  > .btn {
+    padding-left: 1em;
+    padding-right: 1em;
+    border-radius: $rounded-pill !important;
+    background-color: transparent;
+    border: 0;
+
+    &:not(.active) {
+      opacity: 0.6;
+
+      &:hover {
+        opacity: 1;
+      }
     }
   }
 }

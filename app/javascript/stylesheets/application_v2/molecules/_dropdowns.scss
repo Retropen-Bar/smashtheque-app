@@ -3,6 +3,14 @@
     background-color: $dropdown-bg;
     border-radius: $border-radius;
   }
+
+  &.btn-lg[aria-expanded="true"] {
+    border-radius: $border-radius-lg;
+  }
+
+  &.btn-sm[aria-expanded="true"] {
+    border-radius: $border-radius-sm;
+  }
 }
 
 .dropdown-menu {
