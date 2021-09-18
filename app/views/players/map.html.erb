@@ -9,7 +9,7 @@
         <div id="index-filters" class="col-12 col-xl-auto order-xl-1">
           <section class="index-section py-3 py-xl-0 d-flex d-xl-block flex-wrap align-items-center">
             <small class="text-muted d-inline-block d-xl-none"><%= @players.total_count %> résultat(s)</small>
-            <div role="group" class="ml-auto btn-group btn-group-sm players">
+            <div role="group" class="ml-auto btn-group btn-group-sm players d-xl-none">
               <%= link_to url_with(action: :index), class: "btn#{action_name.eql?('index') ? ' active' : ''}" do %>
                 <%= svg_icon_tag :liste %>
                 <span class="sr-only">Liste</span>
@@ -35,6 +35,8 @@
                 </div>
               </template>
               <section class="mb-n4">
+                <h5><%= svg_icon_tag :abcd %> Abécédaire</h5>
+                <%= render 'shared/letters' %>
                 <%= render 'filters' %>
               </section>
             </slide-out>

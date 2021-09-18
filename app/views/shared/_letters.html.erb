@@ -2,7 +2,7 @@
   <li class="nav-item">
     <%= link_to 'Tout',
                 url_with(on_abc: nil),
-                class: "nav-link #{'active' if !params[:on_abc]}" %>
+                class: "nav-link #{'active' if params[:on_abc].nil? || params[:on_abc].empty? }" %>
   </li>
   <% (('a'..'z').to_a+['$']).each do |letter| %>
     <li class="nav-item">

@@ -1,6 +1,18 @@
 @each $section-name, $color in $sections {
-  body.#{$section-name} .custom-control-input:checked ~ .custom-control-label::before {
+  body.#{$section-name}
+    .custom-control-input:checked
+    ~ .custom-control-label::before {
     border-color: $color;
     @include gradient-bg($color);
   }
+}
+
+.custom-control-label::before,
+.custom-control-label::after {
+  top: 0.1rem;
+}
+
+.custom-control-label::before {
+  background-color: $gray-medium;
+  border-color: $gray-medium-light;
 }

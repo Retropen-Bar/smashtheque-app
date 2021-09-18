@@ -7,16 +7,14 @@
     <div class="col">
       <div class="row flex-column flex-lg-row align-items-start">
         <div id="index-filters" class="col-12 col-xl-auto order-xl-1">
-          <section class="index-section my-2 my-md-3 py-1 py-md-2 pl-3 pr-1 pr-md-2 py-xl-0 d-flex d-xl-block flex-wrap align-items-center shadow-lg bg-bg rounded-pill">
+          <section class="index-section my-2 my-md-3 mt-xl-0 py-1 pl-3 pr-1 py-md-2 pr-md-2 pl-md-2 py-xl-0 px-xl-0 d-flex d-xl-block flex-wrap align-items-center shadow-lg bg-bg bg-lg-none rounded-pill">
             <small class="text-muted d-inline-block d-xl-none"><%= @players.total_count %> résultat(s)</small>
             <div role="group" class="ml-auto btn-group btn-group-sm players d-flex d-xl-none">
-              <%= params.inspect %>
-              <%= action_name.inspect %>
-              <%= link_to url_with(action: :index), class: "btn#action_name.eql?('index') ? ' active' : ''}" do %>
+              <%= link_to url_with(action: :index), class: "btn#{action_name.eql?('index') ? ' active' : ''}" do %>
                 <%= svg_icon_tag :liste %>
                 <span class="sr-only">Liste</span>
               <% end %>
-              <%= link_to url_with(action: :map), class: "btn#action_name.eql?('map') ? ' active' : ''}" do %>
+              <%= link_to url_with(action: :map), class: "btn#{action_name.eql?('map') ? ' active' : ''}" do %>
                 <%= svg_icon_tag :map %>
                 <span class="sr-only">Carte</span>
               <% end %>
