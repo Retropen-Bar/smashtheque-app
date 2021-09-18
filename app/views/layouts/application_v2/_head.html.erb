@@ -57,12 +57,9 @@
           <%= link_to 'Séries de tournois', recurring_tournaments_path, class: 'dropdown-item' %>
           <%= link_to 'Éditions 1v1', tournament_events_path, class: 'dropdown-item' %>
           <%= link_to 'Éditions 2v2', duo_tournament_events_path, class: 'dropdown-item' %>
-          <%= link_to 'Carte du offline', map_recurring_tournaments_path, class: 'dropdown-item' %>
           <div class="dropdown-divider"></div>
-          <%= link_to charter_path, class: 'dropdown-item', target: '_blank' do %>
-            Charte du Fair-Play
-            <%= fas_icon_tag 'external-link-alt', %w(ml-2 fa-sm) %>
-          <% end %>
+          <%= link_to 'Planning hebdo online', planning_path, class: 'dropdown-item' %>
+          <%= link_to 'Carte du offline', map_recurring_tournaments_path, class: 'dropdown-item' %>
         </div>
       </li>
 
@@ -213,7 +210,7 @@
   </slide-out>
 
   <div class="navbar-actions d-flex align-items-center ml-auto">
-    <button type="button" class="navbar-actions-search btn btn-link btn-icon rounded-circle" @click="mainNavVisible = false" data-toggle="modal" data-target="#search">
+    <button type="button" class="navbar-actions-search btn btn-link btn-icon rounded-circle" @click="mainNavVisible = false" data-toggle="modal" data-target="#global-search">
       <%= svg_icon_tag :loupe, class: 'fs-sm' %>
       <span class="sr-only">Recherche</span>
     </button>

@@ -1,6 +1,6 @@
-const DATA_KEY = 'data-global-search';
+const DATA_KEY = "data-global-search";
 
-let initInput = function(input) {
+let initInput = function (input) {
   // console.log('[global search] initInput', input);
 
   let $input = $(input);
@@ -8,16 +8,27 @@ let initInput = function(input) {
 
   $input.removeAttr(DATA_KEY);
 
-  window.GlobalSearch.configureInput(input, $.extend({
-    url: '/api/v1/search'
-  }, options));
+  window.GlobalSearch.configureInput(
+    input,
+    $.extend(
+      {
+        url: "/api/v1/search",
+      },
+      options
+    )
+  );
 };
 
-let init = function() {
+let init = function () {
   // console.log('[global search] init');
 
-  $('['+DATA_KEY+']').each(function() {
+  $("[" + DATA_KEY + "]").each(function () {
     initInput(this);
+  });
+
+  $(document).on("shown.bs.modal", "#global-search", function () {
+    $("#search").val(null).trigger("change");
+    $("#search").select2("open");
   });
 };
 

@@ -1,16 +1,25 @@
-<div id="search" class="modal fade mt-5" tabindex="-1">
+<div id="global-search" class="modal fade mt-5" tabindex="-1">
   <div class="modal-dialog modal-md modal-dialog-scrollable mh-75">
-    <div class="modal-content overflow-hidden">
+    <div class="modal-content">
       <div class="modal-body">
-        <form class="form-inline my-2 my-lg-0 d-inline-flex" id="main-global-search-form">
-          <%= select_tag :search, [],
-                class: 'form-control',
-                type: :search,
-                placeholder: 'Recherche globale',
-                'aria-label' => 'Recherche globale',
-                data: { global_search: {} } %>
-        </form>
+        <div class="d-flex">
+          <form id="main-global-search-form" class="flex-grow-1">
+            <%= select_tag :search, [],
+                  class: 'form-control',
+                  type: :search,
+                  placeholder: 'Recherche globale',
+                  'aria-label' => 'Recherche globale',
+                  multiple: true,
+                  data: { global_search: {
+                    allowClear: true,
+                  } } %>
+          </form>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
       </div>
     </div>
+   
   </div>
 </div>
