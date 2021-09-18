@@ -1,5 +1,3 @@
-import Vue from "vue/dist/vue.common";
-
 export const PalmaresFilters = {
   props: ["palmares"],
   data: function () {

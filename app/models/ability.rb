@@ -67,9 +67,6 @@ class Ability
     # PlayersRecurringTournament
     can manage_or_cru, PlayersRecurringTournament
 
-    # Problem
-    can manage_or_cru, Problem
-
     # Reward, RewardCondition & MetRewardCondition
     can manage_or_read, Reward
     can manage_or_read, RewardCondition

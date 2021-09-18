@@ -9,6 +9,7 @@
     color: $body-color;
     padding-left: $btn-padding-y;
     padding-right: $btn-padding-y;
+    line-height: 0;
 
     svg {
       width: 1.5em;
@@ -19,6 +20,8 @@
     &:focus {
       text-decoration: none;
       color: $white;
+      box-shadow: none;
+      background-color: $gray-medium;
     }
   }
 

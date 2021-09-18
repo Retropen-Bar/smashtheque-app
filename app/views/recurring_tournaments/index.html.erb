@@ -57,24 +57,6 @@
           </div>
         </div>
 
-        <div class="text-center my-3">
-          <div class="custom-control custom-switch">
-            <%= check_box_tag :with_charter,
-                              1,
-                              (params[:with_charter] == '1'),
-                              class: 'custom-control-input',
-                              id: 'charter-only' %>
-            <label class="custom-control-label" for="charter-only">
-              Voir uniquement les tournois signataires de la <%=
-                link_to charter_path, target: '_blank' do
-              %>
-                Charte du Fair-Play
-                <%= fas_icon_tag 'external-link-alt', %w(fa-sm) %>
-              <% end %>
-            </label>
-          </div>
-        </div>
-
       <% end %>
     </div>
 

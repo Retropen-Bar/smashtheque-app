@@ -9,7 +9,6 @@ class RecurringTournamentsController < PublicController
   has_scope :by_size_geq
   has_scope :by_size_leq
   has_scope :by_is_online
-  has_scope :with_charter, type: :boolean
   has_scope :administrated_by
   has_scope :page, default: 1
   has_scope :per
@@ -101,7 +100,7 @@ class RecurringTournamentsController < PublicController
 
   def current_page_params
     params.permit(
-      :by_size_geq, :by_size_leq, :by_is_online, :with_charter,
+      :by_size_geq, :by_size_leq, :by_is_online,
       :page, :per, :on_abc,
       by_level_in: []
     )
