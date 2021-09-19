@@ -1,7 +1,3 @@
-<% if user_signed_in? && (current_user.is_admin? || current_user.is_charted_online_recurring_tournament_administrator?) %>
-  <%= render 'toolbar', duo: duo %>
-<% end %>
-
 <div class="container-lg">
   <article class="show-page">
     <section class="show-page-header card">
