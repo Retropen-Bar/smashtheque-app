@@ -38,9 +38,6 @@ window.newPlanningCalendar = function(calendarEl, initialDate, levels, eventsDat
       }
       params.by_size_geq = $('form#filters select#size-min').val();
       params.by_size_leq = $('form#filters select#size-max').val();
-      if ($('form#filters input#charter-only').is(':checked')) {
-        params.with_charter = 1;
-      }
       params.per = 1000;
       $.ajax({
         dataType: "json",

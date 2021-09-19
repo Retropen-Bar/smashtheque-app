@@ -1,0 +1,131 @@
+#global-search {
+  .modal-content {
+    overflow: visible;
+    border-radius: $border-radius;
+  }
+  .modal-body {
+    padding: 0;
+  }
+
+  .close {
+    float: none;
+    padding: 0 0.75rem;
+  }
+}
+
+#search {
+  & + .select2 {
+    .select2-selection__choice {
+      display: none;
+    }
+  }
+}
+
+.select2-container,
+.select2-dropdown {
+  z-index: $zindex-modal + 1;
+  color: $body-color;
+}
+
+.select2-container {
+  width: 100% !important;
+}
+
+.select2-dropdown {
+  background-color: $gray-deep;
+  border-color: $gray-medium;
+}
+
+.select2-container--default.select2-container--focus .select2-selection {
+  border-color: $gray-medium;
+  background-color: $gray-medium;
+}
+
+.select2-container--default .select2-selection {
+  border-color: $gray-medium;
+  background-color: $gray-deep;
+  border-radius: $border-radius 0 0 $border-radius;
+}
+
+.select2-container .select2-search--inline .select2-search__field {
+  color: $body-color;
+}
+
+.select2-container--default
+  .select2-results__option--highlighted[aria-selected] {
+  background-color: $primary;
+  color: $gray-darker;
+}
+
+.select2-container--default .select2-results > .select2-results__options {
+  max-height: 70vh;
+}
+
+.select2-results__option {
+  .search-result {
+    position: relative;
+    padding-left: 30px;
+
+    .search-result-icon {
+      position: absolute;
+      left: 2px;
+      top: 3px;
+      font-size: 16px;
+    }
+    .search-result-avatar {
+      position: absolute;
+      left: 0;
+      top: 0;
+
+      .avatar {
+        display: block;
+        max-width: 24px;
+        max-height: 24px;
+      }
+      // .name
+      //   font-weight: bold
+    }
+    &.search-result-player {
+      .name {
+        .emoji {
+          vertical-align: -4px;
+        }
+      }
+    }
+    &.search-result-character {
+      padding-left: 0;
+
+      .search-result-icon {
+        display: none;
+      }
+      .emoji,
+      .name {
+        display: inline-block;
+        vertical-align: middle;
+      }
+      .emoji {
+        img {
+          max-width: 24px;
+        }
+      }
+      .name {
+        margin-left: 6px;
+      }
+    }
+    &.search-result-braackettournament,
+    &.search-result-challongetournament,
+    &.search-result-smashggevent {
+      padding-left: 0;
+
+      .search-result-icon {
+        display: none;
+      }
+      .name {
+        img {
+          margin-right: 8px;
+          margin-left: 4px;
+        }
+      }
+    }
+  }
+}

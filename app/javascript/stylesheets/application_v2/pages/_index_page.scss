@@ -9,7 +9,7 @@
 #index-filters {
   position: sticky;
   top: $header-height-mobile;
-  z-index: $zindex-modal;
+  z-index: $zindex-modal - 1;
 
   @include media-breakpoint-up(md) {
     top: $header-height-tablet;

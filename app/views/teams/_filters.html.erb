@@ -3,6 +3,8 @@
   <h5><%= svg_icon_tag :online %> Online</h5>
 
   <div class="my-4">
+    <%= text_field_tag :on_abc, params[:on_abc], hidden: true %>
+
     <div class="btn-group btn-group-toggle btn-group-sm players" data-toggle="buttons">
       <% [false, true, ''].each_with_index do |v, idx| %>
         <% is_active = (params[:by_is_online] || '') == v.to_s %>
