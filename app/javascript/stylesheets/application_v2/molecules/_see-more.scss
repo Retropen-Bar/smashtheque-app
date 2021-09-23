@@ -1,0 +1,42 @@
+.see-more {
+  &-content {
+    @include transition();
+    overflow: hidden;
+
+    &.collapsed {
+      position: relative;
+      max-height: calc(#{$line-height-base} * var(--line-clamp) * 1rem);
+      padding-right: 1rem;
+
+      &::before {
+        position: absolute;
+        content: "...";
+        inset-block-end: 0; /* "bottom" */
+        inset-inline-end: 0; /* "right" */
+      }
+      &::after {
+        content: "";
+        position: absolute;
+        inset-inline-end: 0; /* "right" */
+        width: 1rem;
+        height: 1rem;
+        background: $gray-dark;
+      }
+    }
+  }
+
+  &-button {
+    padding: 0;
+    margin-top: 0.5rem;
+    text-decoration: underline;
+    color: $gray-medium-light;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+}

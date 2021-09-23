@@ -1,5 +1,6 @@
 import Vue from "vue/dist/vue.common";
 import { PalmaresFilters } from "./palmares-filters";
+import { SeeMore } from "./see-more";
 
 new Vue({
   el: "#app",
@@ -11,5 +12,6 @@ new Vue({
   },
   components: {
     "palmares-filters": PalmaresFilters,
+    "see-more": SeeMore,
   },
 });

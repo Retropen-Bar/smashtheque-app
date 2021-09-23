@@ -1,14 +1,110 @@
-<% @title = @team.full_name_with_logo(max_width: 64, max_height: 64) + ('<div><small>' + @team.badges + '</small></div>').html_safe %>
-<% if user_team_admin? %>
-  <% @title += ('<div class="float-right">' + link_to('Modifier', [:edit, @team], class: 'btn btn-primary') + '</div>').html_safe %>
-<% end %>
+<div class="container-lg">
+  <article class="show-page">
+    <section class="show-page-header card">
+      <div class="show-page-header-bg"
+      ></div>
+      <div class="show-page-header-body card justify-content-start">
+        <div class="show-page-header-content card-body">
+          <div class="show-page-avatar">
+            <%= @team.avatar_tag(94) %>
+          </div>
+          <a href="#" class="show-page-meta badge badge-pill mx-auto">
+            <%= svg_icon_tag :site_web %>&nbsp;Site web
+          </a>
+          <div class="show-page-main-info">
+            <h1 class="show-page-title card-title">
+              <%= @team.full_name %>
+            </h1>
+            <p class="mt-0 mb-3"><%= @team.short_name %></p>
+            <div class="list-x mb-1">
+              <%= @team.badges %>
+            </div>
+            <small class="text-secondary">Créée le <%= l @team.created_at.to_date, format: :default %></small>
+          </div>
+          <div class="show-page-side">
 
-<h1 class="text-center">
-  <%= @title %>
-</h1>
-
-<% if @team.roster.attached? %>
-  <div class="text-center">
-    <%= @team.roster_image_tag(max_width: '100%') %>
-  </div>
-<% end %>
+          </div>
+          <div class="show-page-socials bg-layout bg-md-layout-dark">
+        
+          </div>
+        </div>
+      </div>
+    </section>
+    <nav class="show-page-nav section-nav players d-lg-none">
+      <div class="section-nav-wrapper">
+        <scrollactive
+          ref="scrollactive"
+          :active-class="'active'"
+          :offset="116"
+        >
+          <div class="section-nav-bg shadow-lg">
+          <%= link_to team_path(@team, anchor: 'description'), class: "section-nav-link scrollactive-item" do %>
+              <%= svg_icon_tag :joueur %>
+              <span>Description</span>
+            <% end %>
+            <%= link_to team_path(@team, anchor: 'recrutement'), class: "section-nav-link scrollactive-item" do %>
+              <%= svg_icon_tag :groupe %>
+              <span>Recrutement</span>
+            <% end %>
+            <%= link_to team_path(@team, anchor: 'statistiques'), class: "section-nav-link scrollactive-item" do %>
+              <%= svg_icon_tag :groupe %>
+              <span>Statistiques</span>
+            <% end %>
+            <%= link_to team_path(@team, anchor: 'joueurs'), class: "section-nav-link scrollactive-item" do %>
+              <%= svg_icon_tag :groupe %>
+              <span>Joueurs</span>
+            <% end %>
+          </div>
+        </scrollactive>
+      </div>
+    </nav>
+    <section class="show-page-body card">
+      <div class="show-page-content card-body">
+        <div class="row">
+          <div class="col-lg-6 list-y">
+            <section id="description" class="show-page-section">
+              <div class="show-page-section-title">
+                <h2>Description</h2>
+                <span class="show-page-section-title-separator"></span>
+              </div>
+              <div class="show-page-section-content">
+                <see-more>
+                  <p> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repellat laboriosam eligendi alias quo totam autem consequatur quisquam numquam omnis voluptas! Amet quod dolores doloremque expedita totam, molestias magni consequuntur iste. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dicta laboriosam non tenetur fugit est numquam eos accusantium cum nesciunt ut veritatis optio quam, illo totam laborum neque odio doloremque quis.</p>
+                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam ad, inventore dicta accusamus obcaecati suscipit, libero velit doloremque eius a necessitatibus aperiam ducimus, consectetur cupiditate laboriosam id. Est, labore quasi.</p>
+                </see-more>
+              </div>
+            </section>
+            <section id="recrutement" class="show-page-section">
+              <div class="show-page-section-title">
+                <h2>Recrutement</h2>
+                <span class="show-page-section-title-separator"></span>
+              </div>
+              <div class="show-page-section-content">
+                <see-more>
+                  <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repellat laboriosam eligendi alias quo totam autem consequatur <em>quisquam</em> numquam omnis voluptas! Amet quod dolores doloremque expedita totam, molestias magni consequuntur iste. Lorem ipsum dolor sit, <strong>amet consectetur</strong> adipisicing elit. Dicta laboriosam non tenetur fugit est numquam eos accusantium cum nesciunt ut veritatis optio quam, illo totam laborum neque odio doloremque quis.</p>
+                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam ad, inventore dicta accusamus obcaecati suscipit, libero velit doloremque eius a necessitatibus aperiam ducimus, consectetur cupiditate laboriosam id. Est, labore quasi.</p>
+                  <ul>
+                    <li>Règle 1</li>
+                    <li>Règle 2</li>
+                    <li>Règle 3</li>
+                    <li>Règle 4</li>
+                    <li>Règle 5</li>
+                  </ul>
+                </see-more>
+              </div>
+            </section>
+          </div>
+          <div class="col-lg-6">
+            <section id="description" class="show-page-section">
+              <div class="show-page-section-title">
+                <h2>Statistiques</h2>
+                <span class="show-page-section-title-separator"></span>
+              </div>
+        
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+  </article>
+</div>
