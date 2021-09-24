@@ -7,7 +7,7 @@ export const SeeMore = {
     };
   },
   mounted() {
-    this.$refs.content.style.setProperty("--line-clamp", this.lineClamp || 5);
+    this.$refs.content.style.setProperty("--line-clamp", this.lineClamp || 10);
     this.$nextTick(function () {
       this.collapsedHeight = this.$refs.content.clientHeight;
     });

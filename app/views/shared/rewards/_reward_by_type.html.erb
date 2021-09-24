@@ -2,23 +2,23 @@
   <div class="card card-box card-box--sm card-box--square card-box--stat flex-grow-1 mx-1">
     <h3 class="sr-only">Meilleurs badges</h2>
     <div class="card-body">
-    <div class="card-content">
-      <% if rewards_counts.any? %>
-        <%== awarded.best_rewards_badges(is_online: is_online, class: 'card-box-icon')&.first %>
-        <button type="button"
-                class="btn btn-dark btn-sm rounded-pill"
-                data-toggle="modal"
-                data-target="#<%= modal_id %>">
-          Voir tout
-        </button>
-        <button class="btn btn-sm btn-see-more btn-see-more--horizontal" data-toggle="modal" data-target="#<%= modal_id %>">
-          <span class="sr-only">Voir plus</span>
-          <%= svg_icon_tag(:suspension) %>
-        </button>
-      <% else %>
-        <small class="my-auto">Aucun badge obtenu</small>
-      <% end %>
-    </div>
+      <div class="card-content">
+        <% if rewards_counts.any? %>
+          <%== awarded.best_rewards_badges(is_online: is_online, class: 'card-box-icon')&.first %>
+          <button type="button"
+                  class="btn btn-dark btn-sm rounded-pill"
+                  data-toggle="modal"
+                  data-target="#<%= modal_id %>">
+            Voir tout
+          </button>
+          <button class="btn btn-sm btn-see-more btn-see-more--horizontal" data-toggle="modal" data-target="#<%= modal_id %>">
+            <span class="sr-only">Voir plus</span>
+            <%= svg_icon_tag(:suspension) %>
+          </button>
+        <% else %>
+          <small class="my-auto">Aucun badge obtenu</small>
+        <% end %>
+      </div>
     </div>
   </div>
   <div class="card card-box card-box--sm card-box--square card-box--stat flex-grow-1 mx-1">

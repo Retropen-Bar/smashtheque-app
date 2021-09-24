@@ -8,10 +8,6 @@
   transition-property: color, background;
   transition-timing-function: ease-in-out;
 
-  & + * {
-    margin-top: 1.25rem;
-  }
-
   &:hover {
     --bg-color: #{$gray-medium};
 
