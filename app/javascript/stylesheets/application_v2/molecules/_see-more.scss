@@ -23,6 +23,10 @@
         background: $gray-dark;
       }
     }
+
+    & > * + * {
+      margin-top: calc(#{$line-height-base} * 1rem);
+    }
   }
 
   &-button {
