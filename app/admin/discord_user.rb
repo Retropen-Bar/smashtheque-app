@@ -49,6 +49,7 @@ ActiveAdmin.register DiscordUser do
   # ---------------------------------------------------------------------------
 
   form do |f|
+    f.semantic_errors *f.object.errors.keys
     f.inputs do
       f.input :discord_id, input_html: { disabled: f.object.persisted? }
       user_input f
