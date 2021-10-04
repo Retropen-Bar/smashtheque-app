@@ -154,13 +154,36 @@ class Player < ApplicationRecord
     end
   end
 
-  def discord_id=(discord_id)
-    if discord_id
-      self.user = DiscordUser.where(discord_id: discord_id)
-                             .first_or_create!
-                             .return_or_create_user!
+  def smashgg_url=(smashgg_url)
+    return if smashgg_url.blank?
+
+    slug = SmashggUser.slug_from_url(smashgg_url)
+    return if slug.blank?
+
+    smashgg_user = SmashggUser.where(slug: slug).first_or_initialize
+    if smashgg_user.persisted?
+      # check if SmashggUser was already linked to another player
+      return if smashgg_user.player_id != id
     else
+      smashgg_user.fetch_smashgg_data
+      smashgg_user.save!
+    end
+
+    self.smashgg_user_ids = (
+      smashgg_user_ids + [smashgg_user.id]
+    ).uniq
+  end
+
+  def discord_id=(discord_id)
+    if discord_id.blank?
       self.user = nil
+    else
+      user = DiscordUser.where(discord_id: discord_id)
+                        .first_or_create!
+                        .return_or_create_user!
+      # check if User was already linked to another player
+      errors.add :base, 'Compte Discord déjà relié à un autre joueur' if user.player&.id != id
+      self.user = user
     end
   end
 

@@ -114,27 +114,54 @@ ActiveAdmin.register Player do
   end
 
   form do |f|
-    f.inputs do
-      f.input :name
-      user_input f
-      f.input :old_names,
-              multiple: true,
-              collection: f.object.old_names,
-              input_html: {
-                data: {
-                  select2: {
-                    tags: true,
-                    tokenSeparators: [',']
+    f.semantic_errors *f.object.errors.keys
+    columns do
+      column do
+        f.inputs 'Joueur' do
+          f.input :name
+          f.input :old_names,
+                  multiple: true,
+                  collection: f.object.old_names,
+                  input_html: {
+                    data: {
+                      select2: {
+                        tags: true,
+                        tokenSeparators: [',']
+                      }
+                    }
                   }
-                }
-              }
-      f.input :characters,
-              collection: player_characters_select_collection,
-              input_html: { multiple: true, data: { select2: { sortable: true, sortedValues: f.object.character_ids } } }
-      f.input :teams,
-              collection: player_teams_select_collection,
-              include_blank: 'Aucune',
-              input_html: { multiple: true, data: { select2: { sortable: true, sortedValues: f.object.team_ids } } }
+          f.input :characters,
+                  collection: player_characters_select_collection,
+                  input_html: { multiple: true, data: { select2: { sortable: true, sortedValues: f.object.character_ids } } }
+          f.input :teams,
+                  collection: player_teams_select_collection,
+                  include_blank: 'Aucune',
+                  input_html: { multiple: true, data: { select2: { sortable: true, sortedValues: f.object.team_ids } } }
+        end
+      end
+      column do
+        f.inputs 'Compte Discord' do
+          if f.object.discord_user
+            div class: 'existing-value' do
+              f.object.discord_user.admin_decorate.admin_link
+            end
+          end
+          f.input :discord_id,
+                  label: 'ID du compte'
+        end
+        f.inputs 'Compte(s) smash.gg' do
+          f.object.smashgg_users.each do |smashgg_user|
+            div class: 'existing-value' do
+              smashgg_user.admin_decorate.admin_link
+            end
+          end
+          f.input :smashgg_url,
+                  label: 'URL du profil à ajouter',
+                  input_html: { value: '' }
+        end
+      end
+    end
+    f.inputs 'Smashthèque' do
       f.input :is_accepted
       f.input :is_banned
       f.input :ban_details,
@@ -143,7 +170,7 @@ ActiveAdmin.register Player do
     f.actions
   end
 
-  permit_params :name, :is_accepted, :user_id,
+  permit_params :name, :is_accepted, :discord_id, :smashgg_url,
                 :is_banned, :ban_details,
                 old_names: [],
                 character_ids: [], team_ids: []

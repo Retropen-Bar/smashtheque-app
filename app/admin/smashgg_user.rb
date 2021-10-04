@@ -53,6 +53,7 @@ ActiveAdmin.register SmashggUser do
   # ---------------------------------------------------------------------------
 
   form do |f|
+    f.semantic_errors *f.object.errors.keys
     f.inputs do
       unless f.object.persisted?
         f.input :smashgg_url, placeholder: 'https://smash.gg/...'
@@ -64,9 +65,7 @@ ActiveAdmin.register SmashggUser do
 
   permit_params :smashgg_id, :smashgg_url, :player_id
 
-  before_create do |smashgg_user|
-    smashgg_user.fetch_smashgg_data
-  end
+  before_create(&:fetch_smashgg_data)
 
   # ---------------------------------------------------------------------------
   # SHOW
