@@ -91,19 +91,19 @@ class TeamDecorator < BaseDecorator
     [
       is_offline? && h.tag.span(class: 'badge badge-with-icon badge-primary') do
         [
-          h.svg_icon_tag(:offline),
+          h.svg_icon_tag(:offline, class: 'mr-0 mr-sm-1'),
           '<span class="d-none d-sm-inline">Offline</span>'
         ].join(' ').html_safe
       end,
       is_online? && h.tag.span(class: 'badge badge-with-icon badge-primary') do
         [
-          h.svg_icon_tag(:online),
+          h.svg_icon_tag(:online, class: 'mr-0 mr-sm-1'),
           '<span class="d-none d-sm-inline">Online</span>'
         ].join(' ').html_safe
       end,
       is_sponsor? && h.tag.span(class: 'badge badge-with-icon badge-primary') do
         [
-          h.svg_icon_tag(:sponsor),
+          h.svg_icon_tag(:sponsor, class: 'mr-0 mr-sm-1'),
           '<span class="d-none d-sm-inline">Sponsor</span>'
         ].join(' ').html_safe
       end

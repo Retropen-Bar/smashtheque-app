@@ -20,6 +20,7 @@
               <%= player.avatar_tag(94) %>
             <% end %>
           </div>
+          <% if player&.characters&.count > 0 %>
           <div class="show-page-meta badge badge-pill d-inline-flex d-md-none">
             <div class="list-characters-compact list-characters-compact--sm mx-auto">
               <% player.characters[0...3].each do |character| %>
@@ -31,6 +32,7 @@
               </button>
             </div>
           </div>
+          <% end %>
           <div class="show-page-main-info">
             <h1 class="show-page-title card-title">
               <% if player.is_legit? %>
@@ -61,6 +63,7 @@
             <% end %>
           </div>
           <div class="show-page-side">
+            <% if player&.characters&.count > 0 %>
             <div class="list-characters-compact list-characters-compact--xxl flex-shrink-0">
               <% player.characters[0...3].each do |character| %>
               <%= character.decorate.link %>
@@ -69,6 +72,7 @@
             <button class="btn btn-sm fs-xs btn-dark rounded-pill ml-3" data-toggle="modal" data-target="#<%= modal_id %>">
               <span>Voir plus</span>
             </button>
+            <% end %>
           </div>
           <div class="show-page-socials bg-layout bg-md-layout-dark">
             <%= render 'player_accounts_v2', player: player %>
