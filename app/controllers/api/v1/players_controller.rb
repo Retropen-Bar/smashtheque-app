@@ -1,5 +1,4 @@
 class Api::V1::PlayersController < Api::V1::BaseController
-
   has_scope :page, default: 1
   has_scope :per
   has_scope :on_abc
@@ -63,11 +62,17 @@ class Api::V1::PlayersController < Api::V1::BaseController
   private
 
   def player_create_params
-    params.require(:player).permit(:name, :name_confirmation, :discord_id, :creator_discord_id, character_ids: [], team_ids: [])
+    params.require(:player).permit(
+      :name, :name_confirmation, :discord_id, :smashgg_url,
+      :creator_discord_id,
+      character_ids: [], team_ids: []
+    )
   end
 
   def player_update_params
-    params.require(:player).permit(:name, :name_confirmation, :discord_id, character_ids: [], team_ids: [])
+    params.require(:player).permit(
+      :name, :name_confirmation, :discord_id, :smashgg_url,
+      character_ids: [], team_ids: []
+    )
   end
-
 end
