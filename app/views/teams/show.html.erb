@@ -6,18 +6,18 @@
       <div class="show-page-header-body card justify-content-start">
         <div class="show-page-header-content card-body">
           <div class="show-page-avatar">
-            <%= @team.avatar_tag(94) %>
+            <%= team.avatar_tag(94) %>
           </div>
           <a href="#" class="show-page-meta text-body font-weight-normal py-1 badge badge-pill mx-auto">
             <%= svg_icon_tag :site_web %>&nbsp;Site web
           </a>
           <div class="show-page-main-info">
             <h1 class="show-page-title card-title">
-              <%= @team.full_name %>
+              <%= team.full_name %>
             </h1>
-            <p class="mt-0 mb-3"><%= @team.short_name %></p>
+            <p class="mt-0 mb-3"><%= team.short_name %></p>
             <div class="list-x mb-1">
-              <%= @team.badges %>
+              <%= team.badges %>
             </div>
             <small class="text-secondary">Créée le <%= l @team.created_at.to_date, format: :default %></small>
           </div>
@@ -143,8 +143,8 @@
                             <h3 class="sr-only">Meilleurs badges</h2>
                             <div class="card-body">
                               <div class="card-content">
-                                <% if @team.players&.first&.decorate&.best_rewards_badges(is_online: true, class: 'card-box-icon')&.first %>
-                                  <%== @team.players&.first&.decorate&.best_rewards_badges(is_online: true, class: 'card-box-icon')&.first %>
+                                <% if badge = @team.players&.first&.decorate&.best_rewards_badges(is_online: true, class: 'card-box-icon')&.first %>
+                                  <%== badge %>
                                   <button type="button"
                                           class="btn btn-dark btn-sm rounded-pill"
                                           data-toggle="modal"
@@ -208,8 +208,8 @@
                             <h3 class="sr-only">Meilleurs badges</h2>
                             <div class="card-body">
                               <div class="card-content">
-                                <% if @team.players&.first&.decorate&.best_rewards_badges(is_online: false, class: 'card-box-icon')&.first %>
-                                  <%== @team.players&.first&.decorate&.best_rewards_badges(is_online: false, class: 'card-box-icon')&.first %>
+                                <% if badge = @team.players&.first&.decorate&.best_rewards_badges(is_online: false, class: 'card-box-icon')&.first %>
+                                  <%== badge %>
                                   <button type="button"
                                           class="btn btn-dark btn-sm rounded-pill"
                                           data-toggle="modal"
@@ -296,5 +296,5 @@
 </div>
 
 <% if !@map && @team.roster.attached? %>
-<%= render 'teams/roster_modal' %>
+<%= render 'teams/roster_modal', team: team %>
 <% end %>

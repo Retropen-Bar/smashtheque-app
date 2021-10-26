@@ -1,5 +1,5 @@
 class TeamsController < PublicController
-  before_action :set_team, only: %w[edit update]
+  before_action :set_team, only: %w[show edit update]
   before_action :verify_team!, only: %w[edit update]
   decorates_assigned :team
 
@@ -19,10 +19,9 @@ class TeamsController < PublicController
   end
 
   def show
-    @team = Team.find(params[:id]).decorate
     @meta_title = @team.name
     @meta_properties['og:type'] = 'profile'
-    @meta_properties['og:image'] = @team.any_image_url
+    @meta_properties['og:image'] = team.any_image_url
   end
 
   def edit; end
