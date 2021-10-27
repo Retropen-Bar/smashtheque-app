@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_02_150201) do
+ActiveRecord::Schema.define(version: 2021_10_26_174123) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -453,6 +453,11 @@ ActiveRecord::Schema.define(version: 2021_09_02_150201) do
     t.boolean "is_online"
     t.boolean "is_sponsor"
     t.string "twitter_username"
+    t.string "website_url"
+    t.integer "creation_year"
+    t.boolean "is_recruiting"
+    t.text "recruiting_details"
+    t.text "description"
   end
 
   create_table "tournament_events", force: :cascade do |t|

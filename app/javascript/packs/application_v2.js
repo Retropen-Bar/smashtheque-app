@@ -23,4 +23,8 @@ import "../src/application_v2/filters";
 import "../src/application_v2/modals";
 import "../src/application_v2/slideout";
 import "../src/application_v2/scrollactive";
+import "../src/application_v2/trix";
 import "../src/application_v2/vue";
+
+require("trix")
+require("@rails/actiontext")

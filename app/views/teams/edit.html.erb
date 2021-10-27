@@ -2,7 +2,7 @@
 
 <h1 class="page-title"><%= team.name %></h1>
 
-<div class="container">
+<div class="container-fluid">
 
   <%= simple_form_for(@team) do |f| %>
 
@@ -11,7 +11,7 @@
       <%= render 'shared/form_errors', f: f %>
 
       <div class="row">
-        <div class="col-6">
+        <div class="col-4">
           <h2>Infos clé</h2>
 
           <div class="p-3 mb-2 bg-light text-dark">
@@ -25,7 +25,7 @@
           </div>
         </div>
 
-        <div class="col-6">
+        <div class="col-4">
           <h2>Images</h2>
 
           <div class="p-3 mb-2 bg-light text-dark">
@@ -66,6 +66,17 @@
                             previewpanel: 'current-roster'
                           }
                         } %>
+          </div>
+        </div>
+        <div class="col-4">
+          <h2>Autres infos</h2>
+
+          <div class="p-3 mb-2 bg-light text-dark">
+            <%= f.input :website_url %>
+            <%= f.input :creation_year %>
+            <%= f.input :is_recruiting %>
+            <%= f.input :recruiting_details, as: :simple_action_text %>
+            <%= f.input :description, as: :simple_action_text %>
           </div>
         </div>
       </div>

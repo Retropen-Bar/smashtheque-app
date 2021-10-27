@@ -1,5 +1,4 @@
 class ActionTextInput < Formtastic::Inputs::StringInput
-
   def to_html
     input_wrapping do
       editor_tag_params = {
@@ -11,5 +10,4 @@ class ActionTextInput < Formtastic::Inputs::StringInput
       label_html + hidden_field + editor_tag
     end
   end
-
 end

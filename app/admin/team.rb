@@ -88,6 +88,11 @@ ActiveAdmin.register Team do
           f.input :is_sponsor
           users_input f, :admins
           f.input :twitter_username
+          f.input :website_url
+          f.input :creation_year
+          f.input :is_recruiting
+          f.input :recruiting_details, as: :action_text
+          f.input :description, as: :action_text
         end
         f.actions
       end
@@ -104,6 +109,7 @@ ActiveAdmin.register Team do
 
   permit_params :short_name, :name, :logo, :roster, :twitter_username,
                 :is_offline, :is_online, :is_sponsor,
+                :website_url, :creation_year, :is_recruiting, :recruiting_details, :description,
                 admin_ids: []
 
   # ---------------------------------------------------------------------------
@@ -132,6 +138,11 @@ ActiveAdmin.register Team do
             decorated.discord_guilds_admin_links
           end
           row :twitter_username, &:twitter_link
+          row :website_url, &:website_link
+          row :creation_year
+          row :is_recruiting
+          row :recruiting_details, &:formatted_recruiting_details
+          row :description, &:formatted_description
           row :created_at
           row :updated_at
         end

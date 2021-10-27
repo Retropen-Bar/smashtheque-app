@@ -19,6 +19,10 @@ class TeamsController < PublicController
   end
 
   def show
+    @online_rewards_counts = @team.rewards_counts(is_online: true)
+    @offline_rewards_counts = @team.rewards_counts(is_online: false)
+    @all_online_rewards = Reward.online_1v1.includes(image_attachment: :blob)
+    @all_offline_rewards = Reward.offline_1v1.includes(image_attachment: :blob)
     @meta_title = @team.name
     @meta_properties['og:type'] = 'profile'
     @meta_properties['og:image'] = team.any_image_url
@@ -53,6 +57,7 @@ class TeamsController < PublicController
     params.require(:team).permit(
       :short_name, :name, :logo, :roster, :twitter_username,
       :is_offline, :is_online, :is_sponsor,
+      :website_url, :creation_year, :is_recruiting, :recruiting_details, :description,
       player_ids: []
     )
   end

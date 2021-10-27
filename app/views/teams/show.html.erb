@@ -8,9 +8,14 @@
           <div class="show-page-avatar">
             <%= team.avatar_tag(94) %>
           </div>
-          <a href="#" class="show-page-meta text-body font-weight-normal py-1 badge badge-pill mx-auto">
-            <%= svg_icon_tag :site_web %>&nbsp;Site web
-          </a>
+          <% if team.website_url %>
+            <%= link_to team.website_url,
+                class: 'show-page-meta text-body font-weight-normal py-1 badge badge-pill mx-auto',
+                target: '_blank',
+                rel: :noopener do %>
+              <%= svg_icon_tag :site_web %>&nbsp;Site web
+            <% end %>
+          <% end %>
           <div class="show-page-main-info">
             <h1 class="show-page-title card-title">
               <%= team.full_name %>
@@ -19,7 +24,9 @@
             <div class="list-x mb-1">
               <%= team.badges %>
             </div>
-            <small class="text-secondary">Créée le <%= l @team.created_at.to_date, format: :default %></small>
+            <% if team.creation_year %>
+              <small class="text-secondary">Créée en <%= team.creation_year %></small>
+            <% end %>
           </div>
           <div class="show-page-side flex-column list-y">
             <a href="http://" class="btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold
@@ -85,27 +92,18 @@
               </div>
               <div class="show-page-section-content">
                 <see-more>
-                  <p> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repellat laboriosam eligendi alias quo totam autem consequatur quisquam numquam omnis voluptas! Amet quod dolores doloremque expedita totam, molestias magni consequuntur iste. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dicta laboriosam non tenetur fugit est numquam eos accusantium cum nesciunt ut veritatis optio quam, illo totam laborum neque odio doloremque quis.</p>
-                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam ad, inventore dicta accusamus obcaecati suscipit, libero velit doloremque eius a necessitatibus aperiam ducimus, consectetur cupiditate laboriosam id. Est, labore quasi.</p>
+                  <%== team.formatted_description %>
                 </see-more>
               </div>
             </section>
             <section id="recrutement" class="show-page-section flex-grow-1">
               <div class="show-page-section-title">
-                <h2>Recrutement</h2>
+                <h2>Recrutement (<%= team.is_recruiting? ? 'ouvert' : 'fermé' %>) </h2>
                 <span class="show-page-section-title-separator"></span>
               </div>
               <div class="show-page-section-content">
                 <see-more>
-                  <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repellat laboriosam eligendi alias quo totam autem consequatur <em>quisquam</em> numquam omnis voluptas! Amet quod dolores doloremque expedita totam, molestias magni consequuntur iste. Lorem ipsum dolor sit, <strong>amet consectetur</strong> adipisicing elit. Dicta laboriosam non tenetur fugit est numquam eos accusantium cum nesciunt ut veritatis optio quam, illo totam laborum neque odio doloremque quis.</p>
-                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam ad, inventore dicta accusamus obcaecati suscipit, libero velit doloremque eius a necessitatibus aperiam ducimus, consectetur cupiditate laboriosam id. Est, labore quasi.</p>
-                  <ul>
-                    <li>Règle 1</li>
-                    <li>Règle 2</li>
-                    <li>Règle 3</li>
-                    <li>Règle 4</li>
-                    <li>Règle 5</li>
-                  </ul>
+                  <%== team.formatted_recruiting_details %>
                 </see-more>
               </div>
             </section>
@@ -139,36 +137,20 @@
                   <div class="show-page-section-body show-page-section-body--with-bg">
                     <div class="list-x list-x--lg">
                       <section class="list-y justify-content-center text-center" style="flex: 0 0 33%">
-                        <div class="card card-box card-box--sm card-box--square card-box--stat flex-grow-1">
-                            <h3 class="sr-only">Meilleurs badges</h2>
-                            <div class="card-body">
-                              <div class="card-content">
-                                <% if badge = @team.players&.first&.decorate&.best_rewards_badges(is_online: true, class: 'card-box-icon')&.first %>
-                                  <%== badge %>
-                                  <button type="button"
-                                          class="btn btn-dark btn-sm rounded-pill"
-                                          data-toggle="modal"
-                                          data-target="#">
-                                    Voir tout
-                                  </button>
-                                  <button class="btn btn-sm btn-see-more btn-see-more--horizontal" data-toggle="modal" data-target="#">
-                                    <span class="sr-only">Voir plus</span>
-                                    <%= svg_icon_tag(:suspension) %>
-                                  </button>
-                                <% else %>
-                                  <small class="my-auto">Aucun badge obtenu</small>
-                                <% end %>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="card card-box card-box--sm card-box--square card-box--stat flex-grow-1">
-                            <h3 class="sr-only">Fragments d'étoiles</h3>
-                            <div class="card-body">
-                              <div class="card-content">
-                                <%= @team.players&.first&.decorate&.points_count(44, is_online: true, class: 'card-box-icon') %>
-                              </div>
-                            </div>
-                          </div>
+                        <%= render 'shared/rewards/best_badge_card',
+                                  rewards_counts: @online_rewards_counts,
+                                  awarded: team,
+                                  is_online: true,
+                                  modal_id: 'online-rewards-modal-desktop' %>
+                        <%= render 'shared/rewards/badges_modal', 
+                                   all_rewards: @all_online_rewards,
+                                   rewards_counts: @online_rewards_counts, 
+                                   awarded: team,
+                                   is_online: true, 
+                                   modal_id: 'online-rewards-modal-desktop' %>
+                        <%= render 'shared/rewards/points_count_card',
+                                  awarded: team,
+                                  is_online: true %>
                       </section>
 
                       <section class="flex-grow-1">
@@ -179,7 +161,7 @@
                               <span class="list-row-col flex-grow-1"><%= year %></span>
                               <span>&nbsp;•&nbsp;</span>
                               <span class="list-row-col flex-grow-1"><%=
-                                @team.players&.first&.decorate&.points_count(16, year: year, is_online: true, class: 'card-box-icon', delimiter: '&nbsp;')
+                                team.points_count(16, year: year, is_online: true, class: 'card-box-icon', delimiter: '&nbsp;')
                               %></span>
                             </li>
                           <% end %>
@@ -204,36 +186,20 @@
                   <div class="show-page-section-body show-page-section-body--with-bg">
                     <div class="list-x list-x--lg">
                       <section class="list-y justify-content-center text-center" style="flex: 0 0 33%">
-                        <div class="card card-box card-box--sm card-box--square card-box--stat flex-grow-1">
-                            <h3 class="sr-only">Meilleurs badges</h2>
-                            <div class="card-body">
-                              <div class="card-content">
-                                <% if badge = @team.players&.first&.decorate&.best_rewards_badges(is_online: false, class: 'card-box-icon')&.first %>
-                                  <%== badge %>
-                                  <button type="button"
-                                          class="btn btn-dark btn-sm rounded-pill"
-                                          data-toggle="modal"
-                                          data-target="#">
-                                    Voir tout
-                                  </button>
-                                  <button class="btn btn-sm btn-see-more btn-see-more--horizontal" data-toggle="modal" data-target="#">
-                                    <span class="sr-only">Voir plus</span>
-                                    <%= svg_icon_tag(:suspension) %>
-                                  </button>
-                                <% else %>
-                                  <small class="my-auto">Aucun badge obtenu</small>
-                                <% end %>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="card card-box card-box--sm card-box--square card-box--stat flex-grow-1">
-                            <h3 class="sr-only">Fragments d'étoiles</h3>
-                            <div class="card-body">
-                              <div class="card-content">
-                                <%= @team.players&.first&.decorate&.points_count(44, is_online: false, class: 'card-box-icon') %>
-                              </div>
-                            </div>
-                          </div>
+                        <%= render 'shared/rewards/best_badge_card',
+                                  rewards_counts: @offline_rewards_counts,
+                                  awarded: team,
+                                  is_online: false,
+                                  modal_id: 'offline-rewards-modal-desktop' %>
+                        <%= render 'shared/rewards/badges_modal', 
+                                   all_rewards: @all_offline_rewards,
+                                   rewards_counts: @offline_rewards_counts, 
+                                   awarded: team,
+                                   is_online: false, 
+                                   modal_id: 'offline-rewards-modal-desktop' %>
+                        <%= render 'shared/rewards/points_count_card',
+                                  awarded: team,
+                                  is_online: false %>
                       </section>
 
                       <section class="flex-grow-1">
@@ -244,7 +210,7 @@
                               <span class="list-row-col flex-grow-1"><%= year %></span>
                               <span>&nbsp;•&nbsp;</span>
                               <span class="list-row-col flex-grow-1"><%=
-                                @team.players&.first&.decorate&.points_count(16, year: year, is_online: false, class: 'card-box-icon', delimiter: '&nbsp;')
+                                team.points_count(16, year: year, is_online: false, class: 'card-box-icon', delimiter: '&nbsp;')
                               %></span>
                             </li>
                           <% end %>
