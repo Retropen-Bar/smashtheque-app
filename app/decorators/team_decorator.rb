@@ -1,4 +1,6 @@
 class TeamDecorator < BaseDecorator
+  include HasTrackRecordsDecorator
+
   def full_name
     "#{name} (#{short_name})"
   end

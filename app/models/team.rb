@@ -31,12 +31,20 @@ class Team < ApplicationRecord
 
   include HasTwitter
 
+  include HasTrackRecords
+
   # ---------------------------------------------------------------------------
   # RELATIONS
   # ---------------------------------------------------------------------------
 
   has_many :players_teams, dependent: :destroy
   has_many :players, through: :players_teams
+
+  has_many :met_reward_conditions, through: :players
+  has_many :reward_conditions, through: :met_reward_conditions
+  has_many :rewards, through: :met_reward_conditions
+
+  has_many :track_records, through: :players
 
   has_many :discord_guild_relateds, as: :related, dependent: :destroy
   has_many :discord_guilds, through: :discord_guild_relateds
@@ -128,6 +136,66 @@ class Team < ApplicationRecord
       )
     ))
   end
+
+  # ---------------------------------------------------------------------------
+  # HasTrackRecords overrides
+  # ---------------------------------------------------------------------------
+
+  # def self.with_track_records(is_online:, year: nil)
+  #   column_suffix = [
+  #     is_online ? 'online' : 'offline',
+  #     year ? "in_#{year}" : 'all_time'
+  #   ].join('_')
+  #   subquery = TrackRecord.by_tracked_type(self).by_is_online(is_online).on_year(year).select(
+  #     :tracked_id,
+  #     "points AS #{sanitize_sql("points_#{column_suffix}")}",
+  #     "rank AS #{sanitize_sql("rank_#{column_suffix}")}"
+  #   )
+  #   joins(
+  #     "LEFT OUTER JOIN (#{subquery.to_sql}) #{sanitize_sql("track_records_#{column_suffix}")}
+  #                   ON #{table_name}.id = #{sanitize_sql("track_records_#{column_suffix}")}.tracked_id"
+  #   )
+  # end
+    
+  # def self.ranked_online_in(year)
+  #   where(id: TrackRecord.online.on_year(year).by_tracked_type(self).select(:tracked_id))
+  # end
+
+  # def self.ranked_offline_in(year)
+  #   where(id: TrackRecord.offline.on_year(year).by_tracked_type(self).select(:tracked_id))
+  # end
+    
+  def points_online_all_time
+    track_records.online.all_time.sum(:points)
+  end
+
+  def points_online_in(year)
+    track_records.online.on_year(year).sum(:points)
+  end
+
+  def points_offline_all_time
+    track_records.offline.all_time.sum(:points)
+  end
+
+  def points_offline_in(year)
+    track_records.offline.on_year(year).sum(:points)
+  end
+
+  # def rank_online_all_time
+  #   track_records.online.all_time.first&.rank
+  # end
+
+  # def rank_online_in(year)
+  #   track_records.online.on_year(year).first&.rank
+  # end
+
+  # def rank_offline_all_time
+  #   track_records.offline.all_time.first&.rank
+  # end
+
+  # def rank_offline_in(year)
+  #   track_records.offline.on_year(year).first&.rank
+  # end
 
   # ---------------------------------------------------------------------------
   # global search

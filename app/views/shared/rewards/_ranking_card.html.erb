@@ -1,0 +1,13 @@
+<div class="card card-box card-box--sm card-box--square card-box--stat flex-grow-1 mx-1">
+  <h3 class="sr-only">Classement</h3>
+  <div class="card-body">
+    <div class="card-content">
+      <%= svg_icon_tag(:médaille, class: 'card-box-icon') %>
+      <% if rank = awarded.rank(is_online: is_online) %>
+        <p class="mb-0">#<%= rank %></p>
+      <% else %>
+        <small>Non classé</small>
+      <% end %>
+    </div>
+  </div>
+</div>
