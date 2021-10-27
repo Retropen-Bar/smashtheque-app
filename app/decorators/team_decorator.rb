@@ -109,4 +109,16 @@ class TeamDecorator < BaseDecorator
       end
     ].reject(&:blank?).join(' ').html_safe
   end
+
+  def website_link
+    h.link_to website_url, website_url, target: '_blank', rel: :noopener
+  end
+
+  def formatted_recruiting_details
+    recruiting_details.to_s
+  end
+
+  def formatted_description
+    description.to_s
+  end
 end

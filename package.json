@@ -32,7 +32,8 @@
     "toastr": "^2.1.4",
     "trix": "^1.2.0",
     "vue": "^2.6.12",
-    "vue-scrollactive": "^0.9.3"
+    "vue-scrollactive": "^0.9.3",
+    "vue-trix": "^1.2.0"
   },
   "devDependencies": {
     "webpack-dev-server": "^3.11.2"

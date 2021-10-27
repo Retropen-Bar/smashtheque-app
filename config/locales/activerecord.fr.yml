@@ -347,14 +347,19 @@ fr:
       team:
         << : *SHARED
         admins: Admins
+        creation_year: Année de création
+        description: Description
         is_offline: Team offline ?
         is_online: Team online ?
+        is_recruiting: Recrute ?
         is_sponsor: Sponso ?
         logo: Logo
         player_ids: Joueurs
         players: Joueurs
+        recruiting_details: Infos de recrutement
         short_name: Nom court
         twitter_username: Compte Twitter
+        website_url: Site web
       tournament_event:
         << : *SHARED
         << : *TOURNAMENT_EVENT

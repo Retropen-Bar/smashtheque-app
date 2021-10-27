@@ -8,9 +8,14 @@
           <div class="show-page-avatar">
             <%= team.avatar_tag(94) %>
           </div>
-          <a href="#" class="show-page-meta text-body font-weight-normal py-1 badge badge-pill mx-auto">
-            <%= svg_icon_tag :site_web %>&nbsp;Site web
-          </a>
+          <% if team.website_url %>
+            <%= link_to team.website_url,
+                class: 'show-page-meta text-body font-weight-normal py-1 badge badge-pill mx-auto',
+                target: '_blank',
+                rel: :noopener do %>
+              <%= svg_icon_tag :site_web %>&nbsp;Site web
+            <% end %>
+          <% end %>
           <div class="show-page-main-info">
             <h1 class="show-page-title card-title">
               <%= team.full_name %>
@@ -19,7 +24,9 @@
             <div class="list-x mb-1">
               <%= team.badges %>
             </div>
-            <small class="text-secondary">Créée le <%= l @team.created_at.to_date, format: :default %></small>
+            <% if team.creation_year %>
+              <small class="text-secondary">Créée en <%= team.creation_year %></small>
+            <% end %>
           </div>
           <div class="show-page-side flex-column list-y">
             <a href="http://" class="btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold
@@ -85,27 +92,18 @@
               </div>
               <div class="show-page-section-content">
                 <see-more>
-                  <p> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repellat laboriosam eligendi alias quo totam autem consequatur quisquam numquam omnis voluptas! Amet quod dolores doloremque expedita totam, molestias magni consequuntur iste. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dicta laboriosam non tenetur fugit est numquam eos accusantium cum nesciunt ut veritatis optio quam, illo totam laborum neque odio doloremque quis.</p>
-                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam ad, inventore dicta accusamus obcaecati suscipit, libero velit doloremque eius a necessitatibus aperiam ducimus, consectetur cupiditate laboriosam id. Est, labore quasi.</p>
+                  <%== team.formatted_description %>
                 </see-more>
               </div>
             </section>
             <section id="recrutement" class="show-page-section flex-grow-1">
               <div class="show-page-section-title">
-                <h2>Recrutement</h2>
+                <h2>Recrutement (<%= team.is_recruiting? ? 'ouvert' : 'fermé' %>) </h2>
                 <span class="show-page-section-title-separator"></span>
               </div>
               <div class="show-page-section-content">
                 <see-more>
-                  <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repellat laboriosam eligendi alias quo totam autem consequatur <em>quisquam</em> numquam omnis voluptas! Amet quod dolores doloremque expedita totam, molestias magni consequuntur iste. Lorem ipsum dolor sit, <strong>amet consectetur</strong> adipisicing elit. Dicta laboriosam non tenetur fugit est numquam eos accusantium cum nesciunt ut veritatis optio quam, illo totam laborum neque odio doloremque quis.</p>
-                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam ad, inventore dicta accusamus obcaecati suscipit, libero velit doloremque eius a necessitatibus aperiam ducimus, consectetur cupiditate laboriosam id. Est, labore quasi.</p>
-                  <ul>
-                    <li>Règle 1</li>
-                    <li>Règle 2</li>
-                    <li>Règle 3</li>
-                    <li>Règle 4</li>
-                    <li>Règle 5</li>
-                  </ul>
+                  <%== team.formatted_recruiting_details %>
                 </see-more>
               </div>
             </section>

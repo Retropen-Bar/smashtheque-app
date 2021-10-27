@@ -80,12 +80,8 @@ ActiveAdmin.register Page do
       row :is_draft
       row :in_header
       row :in_footer
-      row :parent do |decorated|
-        decorated.parent_admin_link
-      end
-      row :content do |decorated|
-        decorated.formatted_content
-      end
+      row :parent, &:parent_admin_link
+      row :content, &:formatted_content
       row :children do |decorated|
         decorated.children_admin_links.join('<br/>').html_safe
       end

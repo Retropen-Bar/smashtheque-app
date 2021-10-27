@@ -53,6 +53,7 @@ class TeamsController < PublicController
     params.require(:team).permit(
       :short_name, :name, :logo, :roster, :twitter_username,
       :is_offline, :is_online, :is_sponsor,
+      :website_url, :creation_year, :is_recruiting, :recruiting_details, :description,
       player_ids: []
     )
   end
