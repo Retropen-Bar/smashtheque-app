@@ -29,26 +29,38 @@
             <% end %>
           </div>
           <div class="show-page-side flex-column list-y">
-            <a href="http://" class="btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold
-            " target="_blank" rel="noopener noreferrer">
-              <%= svg_icon_tag :twitter %>
-              Twitter
-            </a>
-            <a href="http://" class="btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold
-            " target="_blank" rel="noopener noreferrer">
-              <%= svg_icon_tag :discord %>
-              Discord
-            </a>
+            <% if team.twitter_url %>
+              <%= link_to team.twitter_url,
+                  class: "btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold",
+                  target: "_blank",
+                  rel: "noopener noreferrer" do %>
+                <%= svg_icon_tag :twitter %>
+                Twitter
+              <% end %>
+            <% end %>
+            <% if team.discord_url %>
+              <%= link_to team.discord_url,
+                  class: "btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold",
+                  target: "_blank",
+                  rel: "noopener noreferrer" do %>
+                <%= svg_icon_tag :discord %>
+                Discord
+              <% end %>
+            <% end %>
           </div>
           <div class="show-page-socials bg-layout bg-md-layout-dark d-md-none">
-            <a href="http://" target="_blank" rel="noopener noreferrer">
-              <%= svg_icon_tag :twitter %>
-              <span class="sr-only">Twitter</span>
-            </a>
-            <a href="http://" target="_blank" rel="noopener noreferrer">
-              <%= svg_icon_tag :discord %>
-              <span class="sr-only">Discord</span>
-            </a>
+            <% if team.twitter_url %>
+              <%= link_to team.twitter_url, target: "_blank", rel: "noopener noreferrer" do %>
+                <%= svg_icon_tag :twitter %>
+                <span class="sr-only">Twitter</span>
+              <% end %>
+            <% end %>
+            <% if team.discord_url %>
+              <%= link_to team.discord_url, target: "_blank", rel: "noopener noreferrer" do %>
+                <%= svg_icon_tag :discord %>
+                <span class="sr-only">Discord</span>
+              <% end %>
+            <% end %>
           </div>
         </div>
       </div>

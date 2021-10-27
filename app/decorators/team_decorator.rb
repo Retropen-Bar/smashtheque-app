@@ -77,6 +77,10 @@ class TeamDecorator < BaseDecorator
     h.image_tag_with_max_size url, options
   end
 
+  def discord_url
+    model.first_discord_guild&.invitation_url
+  end
+
   def as_autocomplete_result
     h.tag.div class: 'team' do
       h.tag.div class: :name do
