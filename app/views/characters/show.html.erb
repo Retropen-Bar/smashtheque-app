@@ -1,0 +1,178 @@
+<div class="container-lg">
+  <article class="show-page">
+    <section class="show-page-header card">
+      <div class="show-page-header-bg" 
+            style="<%=
+                "background-color: #{@character.background_color};" unless @character.background_color.blank?
+              %><%=
+                "background-image: url(\"#{@character.background_image_data_url.gsub('"', "\"")}\");background-size: 240px;" unless @character.background_image.blank?
+              %>"
+      ></div>
+      <div class="show-page-header-body card justify-content-start">
+        <div class="show-page-header-content card-body">
+          <div class="show-page-avatar" style="<%=
+                "--bg-color: #{@character.background_color};" unless @character.background_color.blank?
+              %>">
+            <%= @character.emoji_image_tag(max_width: 94) %>
+          </div>
+          <div class="show-page-main-info">
+            <h1 class="show-page-title card-title">
+              <%= @character.name.titleize  %>
+            </h1>
+            <p class="mt-0 mb-0">&lt;Univers du personnage&gt;</p>
+          </div>
+          <div class="show-page-side flex-column list-y">
+            <a href="http://" class="btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold" target="_blank" rel="noopener noreferrer">
+              <%= svg_icon_tag :discord %>
+              Discord
+            </a>
+          </div>
+          <div class="show-page-socials bg-layout bg-md-layout-dark d-md-none">
+            <a href="http://" target="_blank" rel="noopener noreferrer">
+              <%= svg_icon_tag :discord %>
+              <span class="sr-only">Discord</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <nav class="show-page-nav section-nav players d-lg-none">
+      <div class="section-nav-wrapper">
+        <scrollactive
+          ref="scrollactive"
+          :active-class="'active'"
+          :offset="116"
+        >
+          <div class="section-nav-bg shadow-lg">
+            <%= link_to character_path(@character, anchor: 'liens-utiles'), class: "section-nav-link scrollactive-item" do %>
+              <%= svg_icon_tag :groupe %>
+              <span>Liens utiles</span>
+            <% end %>
+            <%= link_to character_path(@character, anchor: 'top-5'), class: "section-nav-link scrollactive-item" do %>
+              <%= svg_icon_tag :joueur %>
+              <span>Top 5</span>
+            <% end %>
+            <%= link_to character_path(@character, anchor: 'youtube'), class: "section-nav-link scrollactive-item" do %>
+              <%= svg_icon_tag :groupe %>
+              <span>Youtube</span>
+            <% end %>
+            <%= link_to character_path(@character, anchor: 'twitch'), class: "section-nav-link scrollactive-item" do %>
+              <%= svg_icon_tag :groupe %>
+              <span>Twitch</span>
+            <% end %>
+          </div>
+        </scrollactive>
+      </div>
+    </nav>
+    <section class="show-page-body card">
+      <div class="show-page-content card-body">
+        <div class="row">
+          <div class="col-lg-6">
+            <section id="liens-utiles" class="show-page-section d-block d-lg-none mt-2 mb-4">
+              <div class="show-page-section-title sr-only">
+                <h2 class="sr-only">Liens utiles</h2>
+                <span class="show-page-section-title-separator"></span>
+              </div>
+              <div class="show-page-section-body">
+                <%= render 'characters/useful_links' %>
+              </div>
+            </section>
+            <section id="top-5" class="show-page-section">
+              <div class="show-page-section-title flex-wrap">
+                <h2>Top 5</h2>
+                <span class="show-page-section-title-separator mr-3"></span>
+                <ul class="nav nav-pills nav-tabs mb-0" id="top-5-tablist" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="online-top-5-tab"
+                        data-toggle="tab" href="#online-top-5"
+                        role="tab" aria-controls="online-top-5" aria-selected="true">
+                      Online
+                    </a>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="offline-top-5-tab"
+                        data-toggle="tab" href="#offline-top-5"
+                        role="tab" aria-controls="offline-top-5" aria-selected="false">
+                      Offline
+                    </a>
+                  </li>
+                </ul>
+              </div>
+             
+              <div class="tab-content p-0 mt-3">
+                <div class="tab-pane active" id="online-top-5"
+                      role="tabpanel" aria-labelledby="online-top-5-tab">
+                  <div class="list">
+                    <% @online_top_5_players&.each do |player| %>
+                      <%= render 'players/player_v2',
+                                player: player.decorate,
+                                is_online: true,
+                                with_points: true,
+                                with_rank: true %>
+                    <% end %>
+                  </div>
+                </div>
+                <div class="tab-pane" id="offline-top-5"
+                      role="tabpanel" aria-labelledby="offline-top-5-tab">
+                  <div class="list">
+                    <% @offline_top_5_players&.each do |player| %>
+                      <%= render 'players/player_v2',
+                                player: player.decorate,
+                                with_points: true,
+                                with_rank: true %>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+          <div class="col-lg-6">
+            <section id="liens-utiles" class="show-page-section d-none d-lg-block">
+              <div class="show-page-section-title sr-only">
+                <h2 class="sr-only">Liens utiles</h2>
+                <span class="show-page-section-title-separator"></span>
+              </div>
+              <div class="show-page-section-body">
+                <%= render 'characters/useful_links' %>
+              </div>
+            </section>
+            <section id="youtube" class="show-page-section mt-4">
+              <div class="show-page-section-title">
+                <h2><%= svg_icon_tag :yt %> Youtube</h2>
+                <span class="show-page-section-title-separator"></span>
+              </div>
+              <div class="show-page-section-body">
+                <ul class="list-y list-unstyled text-center mb-0">
+                  <% ['Chaîne 1', 'Chaîne 2'].each do |you_tube| %>
+                    <li>
+                      <%= link_to 'https://youtube.com', class: 'list-row' do %>
+                        <%= you_tube %>
+                      <% end %>
+                    </li>
+                  <% end %>
+                </ul>
+              </div>
+            </section>
+            <section id="twitch" class="show-page-section mt-4">
+              <div class="show-page-section-title">
+                <h2><%= svg_icon_tag :twitch %> Twitch</h2>
+                <span class="show-page-section-title-separator"></span>
+              </div>
+              <div class="show-page-section-body">
+                <ul class="list-y list-unstyled text-center mb-0">
+                  <% ['Chaîne 1', 'Chaîne 2'].each do |twitch| %>
+                    <li>
+                      <%= link_to 'https://twitch.tv', class: 'list-row' do %>
+                        <%= twitch %>
+                      <% end %>
+                    </li>
+                  <% end %>
+                </ul>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+  </article>
+</div>

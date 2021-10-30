@@ -50,7 +50,7 @@ Rails.application.routes.draw do
 
   # PUBLIC
 
-  resources :characters, only: :index
+  resources :characters, only: [:index, :show]
 
   resources :discord_guilds, only: [:index] do
     collection do

@@ -38,7 +38,6 @@
     }
 
     &-content {
-      min-height: 100px;
       display: grid;
       grid-template-columns: auto 1fr;
       grid-template-rows: auto 1fr;
@@ -54,45 +53,64 @@
   }
 
   &-avatar {
-    height: 5.875rem / 2 - $card-spacer-x / 1.5;
-    width: 94px;
-    align-self: center;
+    --avatar-width: 80px;
+    --avatar-duo-x-shift: calc(var(--avatar-width) - 30px);
+    --avatar-y-shift: 0.33;
+    --avatar-min-width: 0px;
+    --avatar-x-shift: 0;
 
-    &.duo {
-      width: 94px + 64px;
+    height: calc(
+      var(--avatar-width) * calc(1 - var(--avatar-y-shift)) - #{$card-spacer-x} /
+        1.5
+    );
+    min-width: #{"max(var(--avatar-width), var(--avatar-min-width))"};
+    width: 100%;
+
+    &.with-meta {
+      --avatar-min-width: 100px;
+      --avatar-y-shift: 0.5;
+      --avatar-x-shift: 0.5;
+
+      @include media-breakpoint-up(lg) {
+        --avatar-y-shift: 0.33;
+      }
     }
 
-    .avatar {
+    &.duo {
+      width: calc(var(--avatar-width) + var(--avatar-duo-x-shift));
+    }
+
+    .avatar,
+    .emoji {
+      height: var(--avatar-width) !important;
+      width: var(--avatar-width) !important;
+      max-width: var(--avatar-width) !important;
+      max-height: var(--avatar-width) !important;
       border-radius: 50%;
       box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.16);
       border: 3px solid $white;
-      background-color: $gray-light;
-      transform: translateY(-50%);
+      background-color: var(--bg-color, #{$gray-light});
+      transform: translate(
+        calc(var(--avatar-min-width) / 2 - var(--avatar-x-shift) * 100%),
+        calc(-1 * var(--avatar-y-shift) * 100%)
+      );
       position: absolute;
       top: 0;
 
       & + .avatar {
-        transform: translate(64px, -50%);
+        transform: translate(
+          var(--avatar-duo-x-shift),
+          calc(-1 * var(--avatar-y-shift) * 100%)
+        );
       }
     }
 
+    @include media-breakpoint-up(md) {
+      --avatar-width: 94px;
+    }
+
     @include media-breakpoint-up(lg) {
-      height: 8.0625rem * (2 / 3) - $card-spacer-x;
-      width: 129px;
-
-      &.duo {
-        width: 129px + 92px;
-      }
-
-      .avatar {
-        height: 129px !important;
-        width: 129px !important;
-        transform: translateY(-33%);
-
-        & + .avatar {
-          transform: translate(92px, -33%);
-        }
-      }
+      --avatar-y-shift: 0.33;
     }
   }
 
@@ -306,8 +324,8 @@
     scroll-margin-top: $header-height-mobile + 35px + 12px;
 
     @include media-breakpoint-up(lg) {
-      padding-left: map-get($spacers, 4);
-      padding-right: map-get($spacers, 4);
+      padding-left: map-get($spacers, 3);
+      padding-right: map-get($spacers, 3);
     }
 
     &-body {

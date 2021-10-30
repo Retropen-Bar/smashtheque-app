@@ -2,6 +2,8 @@
   > *:not(:last-child) {
     margin-bottom: 1.25rem;
   }
+
+ 
 }
 
 .list-nowrap {
@@ -10,7 +12,7 @@
 
 .list-x {
   display: flex;
-
+  
   > *:not(:last-child) {
     margin-right: 0.25rem;
   }
@@ -18,6 +20,12 @@
   &--lg {
     > *:not(:last-child) {
       margin-right: 0.75rem;
+    }
+  }
+
+  &--row {
+    > * {
+      flex-grow: 1;
     }
   }
 }
@@ -38,9 +46,18 @@
   border-radius: $rounded-pill;
   padding: map-get($spacers, 1) map-get($spacers, 3);
 
+  
+
   &--3 {
     .list-row-col {
       width: 30%;
     }
+  }
+}
+
+a.list-row {
+  transition: 0.2s;
+  &:hover {
+    background-color: map-get($layout, accent-dark);
   }
 }

@@ -29,7 +29,7 @@ module ApplicationHelper
   def current_section?(section_name)
     case section_name
     when :players
-      return true if controller_name.match(/(players|teams|duos|communities)/)
+      return true if controller_name.match(/(players|teams|duos|communities|characters)/)
     else
       return false
     end

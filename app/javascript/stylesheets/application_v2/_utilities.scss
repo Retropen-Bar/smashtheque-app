@@ -24,15 +24,18 @@
 
 @each $section_name, $color in $sections {
   .section-#{$section_name} {
-    .text-accent {
-      color: $color !important;
-    }
-
-    .bg-accent {
-      background-color: $color !important;
-      color: $gray-darker !important;
-    }
+    --text-color-accent: #{$color};
+    --text-color-accent-100: #{rgba($color, 0.1)};
   }
+}
+
+.text-accent {
+  color: var(--text-color-accent) !important;
+}
+
+.bg-accent {
+  background-color: var(--text-color-accent) !important;
+  color: $gray-darker !important;
 }
 
 @each $breakpoint in map-keys($grid-breakpoints) {

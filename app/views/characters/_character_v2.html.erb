@@ -5,12 +5,12 @@
     "background-image: url(\"#{character.background_image_data_url.gsub('"', "\"")}\");background-size: 240px;" unless character.background_image.blank?
   %>">
     <%= link_to character.emoji_image_tag,
-                players_path(by_character_id: character.id) %>
+                character %>
   </div>
   <div class="character-name">
     <%= character.name.titleize %>
   </div>
-  <%= link_to players_path(by_character_id: character.id),
+  <%= link_to character,
               class: 'resource-link' do %>
     <span class="sr-only">Voir plus</span>
   <% end %>
