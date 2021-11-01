@@ -3,6 +3,7 @@
   overflow: hidden;
 
   .card-header {
+    color: var(--text-color-accent);
     background-color: $gray-darker;
     font-size: 0.938rem;
     font-weight: 600;
@@ -36,13 +37,13 @@
     }
 
     &:after {
-      content: '';
+      content: "";
       position: absolute;
       transition: inherit;
       inset: 0;
       z-index: 10;
     }
-    
+
     &:hover {
       &:after {
         background-color: rgba($body-color, 0.05);
@@ -96,7 +97,7 @@
       font-size: 0.875rem;
     }
   }
- 
+
   &--link {
     font-size: calc(0.625rem + 0.6vw);
     line-height: 1.15;
@@ -125,9 +126,9 @@
       align-items: center;
       text-align: center;
       min-height: calc(2em * 1.15);
-      
+
       @include media-breakpoint-up(sm) {
-        min-height: calc(2em * #{$line-height-base}); 
+        min-height: calc(2em * #{$line-height-base});
       }
     }
 
@@ -137,16 +138,6 @@
 
     &:hover {
       color: $link-hover-color;
-    }
-  }
-}
-
-@each $section_name, $color in $sections {
-  .#{$section_name} {
-    .card-box {
-      .card-header {
-        color: $color;
-      }
     }
   }
 }

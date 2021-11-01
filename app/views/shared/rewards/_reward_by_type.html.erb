@@ -19,7 +19,7 @@
       <li class="list-row list-row--3">
         <span class="list-row-col flex-grow-1"><%= year %></span>
         <span>&nbsp;•&nbsp;</span>
-        <span class="list-row-col flex-grow-1 font-weight-bold text-players"><%=
+        <span class="list-row-col flex-grow-1 font-weight-bold text-accent"><%=
           svg_icon_tag(:médaille, class: 'card-box-icon') %>&nbsp;<%=
           (rank = awarded.rank(is_online: is_online, year: year)) ? "##{rank}" : '-'
         %></span>

@@ -11,9 +11,7 @@
   }
 }
 
-@each $section_name, $color in $sections {
-  .section-#{$section_name} .badge-primary {
-    color: $color;
-    background-color: rgba($color, 0.1);
-  }
+.badge-primary {
+  color: var(--text-color-accent);
+  background-color: var(--text-color-accent-100);
 }

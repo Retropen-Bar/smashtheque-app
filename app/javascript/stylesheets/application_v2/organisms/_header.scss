@@ -137,6 +137,17 @@
     .vue-slideout-header {
       display: none;
     }
+
+    &-nav {
+      &:hover {
+        .dropdown-toggle,
+        .nav-link {
+          &:not(:hover):not([aria-expanded="true"]):not(:active) {
+            opacity: 0.65;
+          }
+        }
+      }
+    }
   }
 
   .dropdown-menu {
@@ -362,7 +373,7 @@
       .dropdown-menu {
         position: absolute;
       }
-      
+
       .dropdown-toggle .current-user-name {
         padding-left: map-get($spacers, 2);
         display: none;
@@ -403,17 +414,16 @@
   }
 }
 
-
-
 @include media-breakpoint-up(xxl) {
   @each $section_name, $color in $sections {
     .dropdown.#{$section_name} {
       .dropdown-toggle,
       .navbar-nav .nav-link {
         &:not(.admin) {
-          &:hover, &[aria-expanded="true"] {
-            border-color: rgba($color, 0.5);
-            color: rgba($color, 0.5);
+          &:hover,
+          &[aria-expanded="true"] {
+            border-color: $color;
+            color: $color;
           }
           &.active {
             border-color: $color;

@@ -17,7 +17,7 @@
       min-height: 80px;
       padding-top: 15vh;
       margin-bottom: -$border-radius;
-      background-color: $players;
+      background-color: var(--text-color-accent);
 
       &--lg {
         padding-top: 25vh;
@@ -347,6 +347,7 @@
       display: flex;
       align-items: center;
       margin-bottom: 0.5em;
+      color: var(--text-color-accent);
 
       h2 {
         font-size: 1.25rem;
@@ -366,16 +367,6 @@
         vertical-align: top;
         width: 1em;
         height: 1em;
-      }
-    }
-  }
-}
-
-@each $section_name, $color in $sections {
-  .section-#{$section_name} {
-    .show-page {
-      &-section-title {
-        color: $color;
       }
     }
   }

@@ -50,6 +50,7 @@ $border-radius-sm: 0.5rem;
 $border-radius-lg: 0.75rem;
 
 $link-color: $body-color;
+$link-hover-color: lighten($body-color, 15);
 $link-hover-decoration: none;
 
 $component-active-color: $gray-dark;

@@ -205,7 +205,7 @@
   }
 
   .list-team {
-    color: $players;
+    color: var(--text-color-accent);
   }
 }
 
@@ -235,15 +235,38 @@
   .resource-avatar {
     align-items: center;
     justify-content: center;
+    background-position: center;
+    background-repeat: repeat;
     margin-right: 0;
     width: 100%;
     flex-grow: 1;
     @include border-bottom-radius(0);
+    @include transition();
+
+    .emoji {
+      @include transition();
+    }
   }
   .character-name {
     padding: 10px;
     @include border-bottom-radius($card-border-radius);
     background-color: $gray-dark;
     text-align: center;
+    transition: 0.2s;
+  }
+
+  &:hover {
+    .resource-avatar {
+      background-size: 120px !important;
+
+      .emoji {
+        transform: scale(1.2);
+      }
+    }
+
+    .character-name {
+      color: white;
+      background-color: $gray-deep;
+    }
   }
 }

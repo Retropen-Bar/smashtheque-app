@@ -1,9 +1,21 @@
-<div class="container-lg">
+<%
+color = @character.background_color
+
+unless color.blank?
+  lightened_color = lighten_color(color, 0.3)
+
+  accent_color =
+    convert_to_brightness_value(lightened_color) > 500 ? color : lightened_color
+
+  accent_color_100 = hex_color_to_rgba(accent_color, 0.1)
+end
+%>
+<div class="container-lg" style="<%= "--text-color-accent: #{ accent_color }; --text-color-accent-100: #{ accent_color_100 };" unless color.blank? %>">
   <article class="show-page">
     <section class="show-page-header card">
       <div class="show-page-header-bg" 
             style="<%=
-                "background-color: #{@character.background_color};" unless @character.background_color.blank?
+                "background-color: #{@character.background_color};" unless color.blank?
               %><%=
                 "background-image: url(\"#{@character.background_image_data_url.gsub('"', "\"")}\");background-size: 240px;" unless @character.background_image.blank?
               %>"
@@ -11,7 +23,7 @@
       <div class="show-page-header-body card justify-content-start">
         <div class="show-page-header-content card-body">
           <div class="show-page-avatar" style="<%=
-                "--bg-color: #{@character.background_color};" unless @character.background_color.blank?
+                "--bg-color: #{@character.background_color};" unless color.blank?
               %>">
             <%= @character.emoji_image_tag(max_width: 94) %>
           </div>

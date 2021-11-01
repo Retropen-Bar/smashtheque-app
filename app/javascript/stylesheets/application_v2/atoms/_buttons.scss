@@ -50,17 +50,13 @@
       @include gradient-bg($hover-background);
     }
 
-    @each $section_name, $color in $sections {
-      $hover-background: darken($color, 7.5%);
+    &:not(:disabled):not(.disabled).active {
+      background-color: var(--text-color-accent);
+      color: theme-color("dark");
 
-      &.#{$section_name}:not(:disabled):not(.disabled).active {
-        background-color: $color;
-        color: theme-color("dark");
-
-        @include hover() {
-          color: color-yiq($hover-background, $light: $white);
-          background-color: $hover-background;
-        }
+      @include hover() {
+        color: var(--hover-text-color-accent);
+        background-color: var(--hover-bg-color-accent);
       }
     }
   }

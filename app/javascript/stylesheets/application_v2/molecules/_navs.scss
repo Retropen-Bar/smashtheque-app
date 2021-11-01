@@ -49,6 +49,8 @@
     &.active {
       font-weight: bold;
       opacity: 1;
+      color: var(--text-color-accent);
+      background-color: var(--text-color-accent-100);
     }
 
     &:hover {
@@ -86,17 +88,6 @@
 
       & + * {
         margin-top: 0.5em;
-      }
-    }
-  }
-
-  @each $section, $color in $sections {
-    &.#{$section} {
-      .section-nav-link {
-        &.active {
-          color: $color;
-          background-color: rgba($color, 0.1);
-        }
       }
     }
   }
@@ -140,24 +131,12 @@
   }
 }
 
-@each $section_name, $color in $sections {
-  .section-#{$section_name} .nav-tabs {
-    .nav-link.active,
-    .show > .nav-link {
-      color: $gray-deep;
-      background-color: $color;
-      font-weight: 600;
-    }
-  }
-}
-
-@each $section_name, $color in $sections {
-  .section-#{$section_name} .nav-letters {
-    .nav-link.active,
-    .show > .nav-link {
-      color: $color;
-      background-color: rgba($color, 0.1);
-      font-weight: 600;
-    }
+.nav-letters,
+.nav-tabs {
+  .show > .nav-link,
+  .nav-link.active {
+    color: $gray-deep;
+    background-color: var(--text-color-accent);
+    font-weight: 600;
   }
 }

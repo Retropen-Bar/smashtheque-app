@@ -3,4 +3,9 @@
   text-shadow: none;
   font-weight: 300;
   font-size: 30px;
+  color: $gray-dark;
+
+  &:hover {
+    color: $gray-dark;
+  }
 }

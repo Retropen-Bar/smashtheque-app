@@ -2,6 +2,16 @@
   .page-link {
     padding-left: 0.7rem;
     padding-right: 0.7rem;
+
+    &:focus {
+      outline: $pagination-focus-outline;
+      box-shadow: $pagination-focus-box-shadow;
+    }
+  }
+
+  &.active .page-link {
+    color: $gray-darker;
+    background-color: var(--text-color-accent);
   }
 }
 
@@ -18,24 +28,6 @@
       .page-link {
         border-top-right-radius: $border-radius * 1.5;
         border-bottom-right-radius: $border-radius * 1.5;
-      }
-    }
-  }
-}
-
-@each $section_name, $color in $sections {
-  .section-#{$section_name} {
-    .page-link {
-      &:focus {
-        outline: $pagination-focus-outline;
-        box-shadow: $pagination-focus-box-shadow;
-      }
-    }
-
-    .page-item {
-      &.active .page-link {
-        color: $gray-darker;
-        background-color: $color;
       }
     }
   }
