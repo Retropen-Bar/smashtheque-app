@@ -34,13 +34,20 @@
     }
 
     &-body {
-      border-top-right-radius: 0px;
+      &:not(.without-desktop-socials) {
+        border-top-right-radius: 0px;
+
+        .show-page-side {
+          &::before {
+            border-top-right-radius: 0;
+          }
+        }
+      }
     }
 
     &-content {
       display: grid;
       grid-template-columns: auto 1fr;
-      grid-template-rows: auto 1fr;
       grid-auto-columns: 1fr;
       gap: 0.5rem 0;
       padding: $card-spacer-x / 1.5 $card-spacer-x;
@@ -65,16 +72,6 @@
     );
     min-width: #{"max(var(--avatar-width), var(--avatar-min-width))"};
     width: 100%;
-
-    &.with-meta {
-      --avatar-min-width: 100px;
-      --avatar-y-shift: 0.5;
-      --avatar-x-shift: 0.5;
-
-      @include media-breakpoint-up(lg) {
-        --avatar-y-shift: 0.33;
-      }
-    }
 
     &.duo {
       width: calc(var(--avatar-width) + var(--avatar-duo-x-shift));
@@ -110,6 +107,7 @@
     }
 
     @include media-breakpoint-up(lg) {
+      --avatar-width: 129px;
       --avatar-y-shift: 0.33;
     }
   }
@@ -119,11 +117,28 @@
     grid-column: 1;
     align-self: flex-start;
     @include badge-variant($gray-dark);
+
+    & ~ .show-page-main-info {
+      grid-row: span 2;
+
+      @include media-breakpoint-up(md) {
+        grid-row: span 1;
+      }
+    }
+
+    & ~ .show-page-avatar {
+      --avatar-min-width: 100px;
+      --avatar-y-shift: 0.5;
+      --avatar-x-shift: 0.5;
+
+      @include media-breakpoint-up(lg) {
+        --avatar-y-shift: 0.33;
+      }
+    }
   }
 
   &-main-info {
     padding-left: $card-spacer-x;
-    grid-row: span 2;
     min-width: 0;
 
     > * + * {
@@ -196,6 +211,7 @@
       background-color: $gray-dark;
       clip-path: polygon(12% 0, 100% 0%, 100% 100%, 0% 100%);
       border-bottom-right-radius: $border-radius;
+      border-top-right-radius: $border-radius;
       position: absolute;
       inset: 0;
     }

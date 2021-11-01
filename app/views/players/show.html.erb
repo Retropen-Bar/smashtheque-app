@@ -15,11 +15,6 @@
       ></div>
       <div class="show-page-header-body card justify-content-start">
         <div class="show-page-header-content card-body">
-          <div class="show-page-avatar with-meta">
-            <% if player.is_legit? %>
-              <%= player.avatar_tag(94) %>
-            <% end %>
-          </div>
           <% if player&.characters&.count > 0 %>
           <div class="show-page-meta badge badge-pill d-inline-flex d-md-none">
             <div class="list-characters-compact list-characters-compact--sm mx-auto">
@@ -33,6 +28,11 @@
             </div>
           </div>
           <% end %>
+          <div class="show-page-avatar">
+            <% if player.is_legit? %>
+              <%= player.avatar_tag(94) %>
+            <% end %>
+          </div>
           <div class="show-page-main-info">
             <h1 class="show-page-title card-title">
               <% if player.is_legit? %>

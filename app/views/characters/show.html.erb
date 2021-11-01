@@ -12,7 +12,7 @@ end
 %>
 <div class="container-lg" style="<%= "--text-color-accent: #{ accent_color }; --text-color-accent-100: #{ accent_color_100 };" unless color.blank? %>">
   <article class="show-page">
-    <section class="show-page-header card">
+    <section class="show-page-header card ">
       <div class="show-page-header-bg" 
             style="<%=
                 "background-color: #{@character.background_color};" unless color.blank?
@@ -20,7 +20,7 @@ end
                 "background-image: url(\"#{@character.background_image_data_url.gsub('"', "\"")}\");background-size: 240px;" unless @character.background_image.blank?
               %>"
       ></div>
-      <div class="show-page-header-body card justify-content-start">
+      <div class="show-page-header-body card justify-content-start without-desktop-socials">
         <div class="show-page-header-content card-body">
           <div class="show-page-avatar" style="<%=
                 "--bg-color: #{@character.background_color};" unless color.blank?
@@ -157,7 +157,7 @@ end
                 <ul class="list-y list-unstyled text-center mb-0">
                   <% ['Chaîne 1', 'Chaîne 2'].each do |you_tube| %>
                     <li>
-                      <%= link_to 'https://youtube.com', class: 'list-row' do %>
+                      <%= link_to 'https://youtube.com', target: '_blank', class: 'list-row' do %>
                         <%= you_tube %>
                       <% end %>
                     </li>
@@ -174,7 +174,7 @@ end
                 <ul class="list-y list-unstyled text-center mb-0">
                   <% ['Chaîne 1', 'Chaîne 2'].each do |twitch| %>
                     <li>
-                      <%= link_to 'https://twitch.tv', class: 'list-row' do %>
+                      <%= link_to 'https://twitch.tv', target: '_blank', class: 'list-row' do %>
                         <%= twitch %>
                       <% end %>
                     </li>
