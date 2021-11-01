@@ -3,7 +3,6 @@
   $hover-background: lighten($background, 7.5%);
 
   background-color: $background;
-  color: rgba($body-color, 0.7);
   border-radius: $border-radius * 1.5;
   padding-top: 0.25em;
   padding-bottom: 0.25em;
@@ -20,11 +19,18 @@
 
 .btn-group-sm > .btn {
   font-size: $font-size-base * 0.8;
+
+  &.dropdown-toggle {
+    &[aria-expanded="true"] {
+      border-radius: 0 $rounded-pill $rounded-pill 0;
+    }
+  }
 }
 
 .btn-group-tab {
   border-radius: $rounded-pill;
   background-color: $gray-deep;
+  color: rgba($body-color, 0.7);
 
   > .btn {
     padding-left: 1em;

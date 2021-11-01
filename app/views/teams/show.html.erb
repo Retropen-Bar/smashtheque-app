@@ -31,19 +31,19 @@
           <div class="show-page-side flex-column list-y">
             <% if team.twitter_url %>
               <%= link_to team.twitter_url,
-                  class: "btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold",
+                  class: "btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold pl-4 text-left",
                   target: "_blank",
                   rel: "noopener noreferrer" do %>
-                <%= svg_icon_tag :twitter %>
+                <%= svg_icon_tag :twitter, class: 'mr-4' %>
                 Twitter
               <% end %>
             <% end %>
             <% if team.discord_url %>
               <%= link_to team.discord_url,
-                  class: "btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold",
+                  class: "btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold pl-4 text-left",
                   target: "_blank",
                   rel: "noopener noreferrer" do %>
-                <%= svg_icon_tag :discord %>
+                <%= svg_icon_tag :discord, class: 'mr-4' %>
                 Discord
               <% end %>
             <% end %>

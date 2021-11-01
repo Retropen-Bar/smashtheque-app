@@ -182,6 +182,10 @@
     > * + * {
       margin-left: 0.5rem;
     }
+
+    .dropdown-menu {
+      z-index: $zindex-dropdown + 1;
+    }
   }
 
   .list-teams,

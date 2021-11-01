@@ -90,13 +90,16 @@
 
 .resource-avatar {
   background-color: var(--bg-color);
-  overflow: hidden;
   margin-right: 0.875rem;
   transition: inherit;
   flex-shrink: 0;
   box-shadow: var(--shadow);
   width: 76px;
   height: 76px;
+
+  .avatar {
+    border-radius: $card-border-radius;
+  }
 }
 
 .resource-content {

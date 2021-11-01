@@ -1,0 +1,27 @@
+.level {
+  --color: currentColor;
+  border-radius: 50%;
+  display: block;
+  width: 1rem;
+  height: 1rem;
+  background-color: var(--color);
+  border: 1px solid $gray-dark;
+  transform: translate(33%, 33%);
+  box-shadow: var(--shadow);
+  position: absolute;
+  bottom: 0;
+  right: 0;
+
+  &--l1_playground {
+    --color: #{$level_3};
+  }
+  &--l2_anything {
+    --color: #{$level_3};
+  }
+  &--l3_glory {
+    --color: #{$level_3};
+  }
+  &--l4_experts {
+    --color: #{$level_3};
+  }
+}
