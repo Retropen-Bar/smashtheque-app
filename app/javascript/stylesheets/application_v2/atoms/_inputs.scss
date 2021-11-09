@@ -1,10 +1,5 @@
-@each $section-name, $color in $sections {
-  body.#{$section-name}
-    .custom-control-input:checked
-    ~ .custom-control-label::before {
-    border-color: $color;
-    @include gradient-bg($color);
-  }
+.custom-control-label {
+  --color: var(--text-color-accent);
 }
 
 .custom-control-label::before,
@@ -15,6 +10,20 @@
 .custom-control-label::before {
   background-color: $gray-medium;
   border-color: $gray-medium-light;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+  color: $dark;
+  border-color: var(--color);
+  background-color: var(--color);
+}
+
+.custom-switch .custom-control-label::after {
+  top: calc(0.1rem + 2px);
+}
+
+.custom-switch .custom-control-input:checked ~ .custom-control-label::after {
+  background-color: $dark;
 }
 
 trix-editor.form-control {

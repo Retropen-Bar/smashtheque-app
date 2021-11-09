@@ -4,7 +4,7 @@
     <%= svg_icon_tag :groupe %>
     <span class="mt-n2">Joueurs <br/>& Cie</span>
   <% end %>
-  <%= link_to players_path, class: "shortcuts-link championship#{' active' if current_section?(:championship)}" do %>
+  <%= link_to players_path, class: "shortcuts-link championship#{' active' if current_section?(:tournaments)}" do %>
     <%= svg_icon_tag :trophee %>
     <span>Tournois</span>
   <% end %>

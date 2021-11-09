@@ -1,0 +1,27 @@
+<div id="index-nav" class="col-12 col-lg-auto">
+  <section class="index-section">
+    <nav class="section-nav mt-3 mt-lg-0">
+      <div class="section-nav-wrapper">
+        <div class="section-nav-bg">
+          <%= link_to recurring_tournaments_path, class: "section-nav-link#{current_class?(recurring_tournaments_path)}" do %>
+            <%= svg_icon_tag :trophee %>
+            <span>Séries</span>
+          <% end %>
+          <%= link_to tournament_events_path, class: "section-nav-link#{current_class?(tournament_events_path)}" do %>
+            <%= svg_icon_tag :_1v1 %>
+            <span>Éditions 1v1</span>
+          <% end %>
+          <%= link_to duo_tournament_events_path, class: "section-nav-link#{current_class?(duo_tournament_events_path)}" do %>
+            <%= svg_icon_tag :_2v2 %>
+            <span>Éditions 2v2</span>
+          <% end %>
+          <div class="dropdown-divider mx-0"></div>
+          <%= link_to map_recurring_tournaments_path, class: "section-nav-link#{current_class?(map_recurring_tournaments_path)}" do %>
+            <%= svg_icon_tag :map %>
+            <span>Carte du offline</span>
+          <% end %>
+        </div>
+      </div>
+    </nav>
+  </section>
+</div>

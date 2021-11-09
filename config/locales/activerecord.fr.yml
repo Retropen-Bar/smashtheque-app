@@ -254,10 +254,10 @@ fr:
         twitter_username: Compte Twitter
         wday: Jour de la semaine
       recurring_tournament/level:
-        l1_playground: 1 - Cour de récréation
-        l2_anything: 2 - Tout peut arriver
-        l3_glory: 3 - Gloire et honneur
-        l4_experts: 4 - Combattants aguerris
+        l1_playground: Cour de récréation
+        l2_anything: Tout peut arriver
+        l3_glory: Gloire et honneur
+        l4_experts: Combattants aguerris
       recurring_tournament/recurring_type:
         bimonthly: Toutes les 2 semaines
         irregular: Irrégulier

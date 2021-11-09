@@ -1,76 +1,57 @@
-<div class="text-center">
-  <div id="list-toolbar">
-    <h1 class="page-title">Toutes les séries</h1>
-    <div id="filters-wrapper" class="text-left">
+<h1 class="page-title index-title sr-only">Joueurs</h1>
+<div class="container-xl mt-lg-5">
+  <div class="row flex-nowrap align-items-start flex-column flex-lg-row">
 
-      <%= form_tag nil, method: :get, id: "index-filters" do %>
+    <%= render 'layouts/application_v2/recurring_tournaments/index_nav' %>
 
-        <%= hidden_field_tag :on_abc, params[:on_abc] %>
-
-        <div class="form-row">
-          <div class="col-3 offset-1">
-            <strong>Niveau</strong>
-            <% RecurringTournament::LEVELS.each do |level| %>
-              <% id = "level-#{level}" %>
-              <div class="custom-control custom-switch">
-                <%= check_box_tag 'by_level_in[]',
-                                  level,
-                                  (params[:by_level_in] || []).include?(level),
-                                  class: 'custom-control-input',
-                                  id: id %>
-                <% color = RecurringTournamentDecorator.level_color(level) %>
-                <label class="custom-control-label text-<%= color %>" for="<%= id %>">
-                  <%= RecurringTournament.human_attribute_name("level.#{level}") %>
-                </label>
-              </div>
-            <% end %>
-          </div>
-
-          <div class="col-3">
-            <strong>Type</strong>
-            <% [false, true, ''].each_with_index do |v, idx| %>
-              <div class="custom-control custom-radio">
-                <%= radio_button_tag :by_is_online,
-                                     v,
-                                     (params[:by_is_online] || '') == v.to_s,
-                                     id: "radio-is-online-#{idx}",
-                                     class: 'custom-control-input' %>
-                <label class="custom-control-label" for="radio-is-online-<%= idx %>">
-                  <%  case v
-                      when true %>Online
-                  <%  when false %>Offline
-                  <%  else %>Les 2
-                  <% end %>
-                </label>
-              </div>
-            <% end %>
-          </div>
-
-          <div class="col-3">
-            <strong>Taille</strong>
-            <div class="form-row align-items-center">
-              <div class="col-auto">Entre</div>
-              <div class="col-auto"><%= select_tag :by_size_geq, options_for_select(planning_size_select_collection, params[:by_size_geq]), class: 'custom-select' %></div>
-              <div class="col-auto">et</div>
-              <div class="col-auto"><%= select_tag :by_size_leq, options_for_select(planning_size_select_collection, params[:by_size_leq] || RecurringTournament::SIZES.last), class: 'custom-select' %></div>
+    <div class="col">
+      <div class="row flex-column flex-lg-row align-items-start">
+        <div id="index-filters" class="col-12 col-xl-auto order-xl-1">
+          <section class="index-section my-2 my-md-3 mt-xl-0 py-1 pl-3 pr-1 py-md-2 pr-md-2 pl-md-2 py-xl-0 px-xl-0 d-flex d-xl-block flex-wrap align-items-center shadow-lg bg-bg bg-lg-none rounded-pill">
+            <small class="text-muted d-inline-block d-xl-none"><%= @recurring_tournaments.total_count %> résultat(s)</small>
+            <button @click="filtersVisible = true" type="button" class="btn btn-dark btn-sm btn-with-icon rounded-pill players ml-3<%= ' active' if params[:on_abc] %> d-flex d-xl-none ml-auto">
+              <%= svg_icon_tag :filtre %> Filtres<%= ' (1)' if params[:on_abc] %>
+            </button>
+            <slide-out dock="bottom" :visible.sync="filtersVisible" :size="[0]" :arrow-button="false" title="Filtres">
+              <template #header>
+                <div class="d-flex align-items-center justify-content-between">
+                  <p class="m-0">
+                    <%= svg_icon_tag :filtre %> Filtres<%= ' (1)' if params[:on_abc] %>
+                  </p>
+                  <button @click="filtersVisible = false" type="button" class="btn btn-sm btn-icon rounded-circle ml-3">
+                    <%= svg_icon_tag :croix %>
+                    <span class="sr-only">Fermer</span>
+                  </button>
+                </div>
+              </template>
+              <section class="mb-n4">
+                <h5><%= svg_icon_tag :abcd %> Abécédaire</h5>
+                <%= render 'shared/letters' %>
+                <%= render 'filters' %>
+              </section>
+            </slide-out>
+          </section>
+        </div>
+        <div class="col">
+          <section class="py-3 d-none d-xl-flex flex-wrap align-items-center">
+            <small class="text-muted"><%= @recurring_tournaments.total_count %> résultat(s)</small>
+            <div class="ml-auto">
+              <%= render 'shared/pagination_v2', collection: @recurring_tournaments %>
             </div>
+          </section>
+
+          <div class="recurring-tournamentss list row">
+            <% @recurring_tournaments.each do |recurring_tournament| %>
+              <div class="col-12 col-lg-6">
+                <%= render 'recurring_tournament_v2', recurring_tournament: recurring_tournament.decorate %>
+              </div>
+            <% end %>
+          </div>
+          <div class='my-4'>
+            <%= render 'shared/pagination_v2', collection: @recurring_tournaments %>
           </div>
         </div>
-
-      <% end %>
+      </div>
     </div>
-
-    <%= render 'shared/letters' %>
-    <%= render 'shared/pagination', collection: @recurring_tournaments %>
   </div>
 </div>
-
-<div class="cards-list recurring-tournaments">
-  <% @recurring_tournaments.each do |recurring_tournament| %>
-    <div class="card-container">
-      <%= render 'recurring_tournament', recurring_tournament: recurring_tournament.decorate %>
-    </div>
-  <% end %>
-</div>
-
-<%= render 'shared/pagination', collection: @recurring_tournaments %>

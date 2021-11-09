@@ -14,6 +14,8 @@ class RecurringTournamentsController < PublicController
   has_scope :per
   has_scope :on_abc
 
+  layout 'application_v2'
+
   def index
     respond_to do |format|
       format.html do

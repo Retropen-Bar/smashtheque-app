@@ -13,15 +13,19 @@
   right: 0;
 
   &--l1_playground {
-    --color: #{$level_3};
+    --color: #{$level_1};
   }
   &--l2_anything {
-    --color: #{$level_3};
+    --color: #{$level_2};
   }
   &--l3_glory {
     --color: #{$level_3};
   }
   &--l4_experts {
-    --color: #{$level_3};
+    --color: #{$level_4};
   }
+}
+
+[class*="level--"] {
+  color: var(--color) !important;
 }

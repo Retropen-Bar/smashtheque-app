@@ -30,6 +30,8 @@ module ApplicationHelper
     case section_name
     when :players
       return true if controller_name.match(/(players|teams|duos|communities|characters)/)
+    when :tournaments
+      return true if controller_name.match(/(recurring_tournaments|tournament_events)/)
     else
       return false
     end
@@ -37,6 +39,7 @@ module ApplicationHelper
   
   def current_section_name
     return :players if current_section?(:players)
+    return :tournaments if current_section?(:tournaments)
   end
 
   def url_with(changes)

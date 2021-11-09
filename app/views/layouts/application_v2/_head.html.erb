@@ -45,8 +45,8 @@
         </div>
       </li>
 
-      <li class="nav-item dropdown championship">
-        <%= link_to recurring_tournaments_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
+      <li class="nav-item dropdown tournaments">
+        <%= link_to recurring_tournaments_path, class: "nav-link dropdown-toggle#{' active' if current_section?(:tournaments)}", data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
           <span>Tournois</span>
         <% end %>
 

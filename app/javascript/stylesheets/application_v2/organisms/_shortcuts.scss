@@ -48,7 +48,7 @@
       opacity: 1;
     }
 
-    @each $section in ("players", "championship", "smashtheque-tv", "rosalina") {
+    @each $section in ("players", "tournaments", "smashtheque-tv", "rosalina") {
       &.#{$section} {
         &:after {
           background-color: map-get($sections, $section);
