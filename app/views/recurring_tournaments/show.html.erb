@@ -1,30 +1,229 @@
-<%= admin_edit_link(recurring_tournament) %>
+<div class="container-lg">
+  <div class="text-right my-3">
+    <%= admin_edit_link(recurring_tournament) %>
+    <% if user_recurring_tournament_admin? %>
+        <%= link_to 'Modifier', [:edit, recurring_tournament], class: 'btn btn-sm btn-primary mx-2' %>
+        <%= form_for(recurring_tournament, html: { class: 'd-inline-block' }) do |f| %>
+          <%= f.hidden_field :is_archived, value: !recurring_tournament.is_archived? %>
+          <% if recurring_tournament.is_archived? %>
+            <%= f.button type: :submit, class: 'btn btn-sm btn-success' do %>
+              <%= fas_icon_tag :play, %w(mr-2) %>
+              Relancer
+            <% end %>
+          <% else %>
+            <%= f.button type: :submit, class: 'btn btn-sm btn-danger' do %>
+              <%= fas_icon_tag :pause, %w(mr-2) %>
+              Mettre en pause
+            <% end %>
+          <% end %>
+        <% end %>
 
-<h1 class="page-title">
+    <% end %>
+  </div>
+  <article class="show-page">
+    <section class="show-page-header card">
+      <div class="show-page-header-bg show-page-header-bg--lg"
+
+      style="<%=
+          "background-color: #{@background_color};" if @background_color
+        %><%=
+          "background-image: url(\"#{@background_image_url.gsub('"', "\"")}\");" if @background_image_url
+        %><%=
+          "background-image: url(\"#{image_url('static-bg.png').gsub('"', "\"")}\");" if @static
+        %>"
+      ></div>
+      <div class="show-page-header-body card justify-content-start without-desktop-socials">
+        <div class="show-page-header-content card-body">
+          <div class="show-page-meta badge badge-pill d-inline-block">
+            <%= recurring_tournament.size %>
+            <%= svg_icon_tag :groupe %>
+          </div>
+          <div class="show-page-avatar">
+            <%= recurring_tournament.any_image_tag(max_width: 94) %>
+          </div>
+          <div class="show-page-main-info">
+            <h1 class="show-page-title card-title">
+              <%= link_to recurring_tournament.name, recurring_tournament %>
+            </h1>
+            <div class="list-x">
+              <%= recurring_tournament.badges_v2(with_level: true) %>
+            </div>
+            <small class="list-x flex-wrap mt-3">
+              <% if recurring_tournament.recurring_type.to_sym == :weekly %>
+                <span>
+                  <%= recurring_tournament.wday_text %>
+                </span>
+                <span>&nbsp;•&nbsp;</span>
+              <% end %>
+              <span>
+                <%= recurring_tournament.recurring_type_text %>
+              </span>
+              <span>&nbsp;•&nbsp;</span>
+              <span>
+                <%= recurring_tournament.starts_at %>
+              </span>
+            </small>
+            <small class="list-x mt-3">
+              <%= svg_icon_tag(:lieu, class: 'fs-xs') %>
+              <% if recurring_tournament.is_online? %>
+                Online
+              <% else %>
+                <%== recurring_tournament.full_address.presence || 'Offline' %>
+              <% end %>
+            </small>
+          </div>
+          <div class="show-page-side flex-column list-y">
+            <div class="btn-group btn-group-sm w-50">
+              <a href="http://" class="btn btn-sm btn-dark btn--with-icon font-weight-bold pl-4 text-left" target="_blank" rel="noopener noreferrer">
+                <%= svg_icon_tag :discord, class: 'mr-4' %>
+                Discord
+              </a>
+              <div class="btn-group btn-group-sm" role="group">
+                <button id="socials-desktop" type="button" class="btn btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
+                </button>
+                <div class="dropdown-menu" aria-labelledby="socials-desktop">
+                  <a class="dropdown-item" href="#">Dropdown link</a>
+                  <a class="dropdown-item" href="#">Dropdown link</a>
+                </div>
+              </div>
+            </div>
+            <a href="http://" class="btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold pl-4 text-left" target="_blank" rel="noopener noreferrer">
+              <%= svg_icon_tag :twitter, class: 'mr-4' %>
+              Twitter
+            </a>
+          </div>
+          <div class="show-page-socials bg-layout bg-md-layout-dark d-flex d-md-none align-items-center">
+            <div class="btn-group dropleft">
+              <a href="#" id="socials-mobile" type="button" class="btn btn-sm btn-dark rounded-pill dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <%= svg_icon_tag :discord, class: "ml-1" %>
+                <span class="sr-only">Discord</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="socials-mobile">
+                <a class="dropdown-item" href="#">Dropdown link</a>
+                <a class="dropdown-item" href="#">Dropdown link</a>
+                <a class="dropdown-item" href="#">Dropdown link</a>
+              </div>
+            </div>
+            <a href="http://" target="_blank" rel="noopener noreferrer">
+              <%= svg_icon_tag :twitter %>
+              <span class="sr-only">Twitter</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <nav class="show-page-nav section-nav players d-lg-none">
+      <div class="section-nav-wrapper">
+        <scrollactive
+          ref="scrollactive"
+          :active-class="'active'"
+          :offset="116"
+        >
+          <div class="section-nav-bg shadow-lg">
+          <%= link_to recurring_tournament_path(recurring_tournament, anchor: 'statistiques'), class: "section-nav-link scrollactive-item" do %>
+              <%= svg_icon_tag :joueur %>
+              <span>Statistiques</span>
+            <% end %>
+            <%= link_to recurring_tournament_path(recurring_tournament, anchor: 'palmares'), class: "section-nav-link scrollactive-item" do %>
+              <%= svg_icon_tag :groupe %>
+              <span>Palmarès</span>
+            <% end %>
+          </div>
+        </scrollactive>
+      </div>
+    </nav>
+    <section class="show-page-body card">
+      <div class="show-page-content card-body">
+        <div class="row">
+          <div class="col-lg-6 d-flex flex-column justify-content-between">
+            <section id="statistiques" class="show-page-section">
+              <div class="show-page-section-title">
+                <h2>Comment s'inscrire</h2>
+                <span class="show-page-section-title-separator"></span>
+              </div>
+              <div class="show-page-section-body d-block d-md-none">
+                <%= recurring_tournament.registration %>
+              </div>
+            </section>
+            <section id="statistiques" class="show-page-section">
+              <div class="show-page-section-title">
+                <h2>Ruleset</h2>
+                <span class="show-page-section-title-separator"></span>
+              </div>
+              <div class="show-page-section-body d-block d-md-none">
+              </div>
+            </section>
+            <section id="statistiques" class="show-page-section">
+              <div class="show-page-section-title">
+                <h2>Lagtest</h2>
+                <span class="show-page-section-title-separator"></span>
+              </div>
+              <div class="show-page-section-body d-block d-md-none">
+              </div>
+            </section>
+          </div>
+          <div class="col-lg-6 d-flex flex-column justify-content-between">
+            <section id="statistiques" class="show-page-section">
+              <div class="show-page-section-title">
+                <h2>Les TOs</h2>
+                <span class="show-page-section-title-separator"></span>
+              </div>
+              <div class="show-page-section-body d-block d-md-none">
+              </div>
+            </section>
+            <section id="statistiques" class="show-page-section">
+              <div class="show-page-section-title">
+                <h2>Power Rankings</h2>
+                <span class="show-page-section-title-separator"></span>
+              </div>
+              <div class="show-page-section-body d-block d-md-none">
+              </div>
+            </section>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <section id="statistiques" class="show-page-section">
+              <div class="show-page-section-title">
+                <h2>Autres informations</h2>
+                <span class="show-page-section-title-separator"></span>
+              </div>
+              <div class="show-page-section-body">
+                <%= recurring_tournament.misc %>
+              </div>
+            </section>
+          </div>
+          <% if recurring_tournament.geocoded? %>
+          <div class="col-12">
+            <section id="statistiques" class="show-page-section">
+              <div class="show-page-section-title">
+                <h2>Statistiques</h2>
+                <span class="show-page-section-title-separator"></span>
+              </div>
+              <div class="show-page-section-body">
+                  <div class="shadow p-5 m-3 rounded">
+                    <%= single_address_map({
+                          name: recurring_tournament.full_address.html_safe,
+                          latitude: recurring_tournament.latitude,
+                          longitude: recurring_tournament.longitude
+                        }) %>
+                  </div>
+              </div>
+            </section>
+          </div>
+          <% end %>
+        </div>
+      </div>
+    </section>
+  </article>
+</div>
+
+<!-- <h1 class="page-title">
   <%= recurring_tournament.name_with_logo(max_width: 64, max_height: 64) %>
   <div><small><%= recurring_tournament.badges %></small></div>
 </h1>
 
-<% if user_recurring_tournament_admin? %>
-  <div class="m-3 text-center">
-    <%= link_to 'Modifier', [:edit, recurring_tournament], class: 'btn btn-primary mr-2' %>
-    <%= form_for(recurring_tournament, html: { class: 'd-inline-block' }) do |f| %>
-      <%= f.hidden_field :is_archived, value: !recurring_tournament.is_archived? %>
-      <% if recurring_tournament.is_archived? %>
-        <%= f.button type: :submit, class: 'btn btn-success' do %>
-          <%= fas_icon_tag :play, %w(mr-2) %>
-          Relancer
-        <% end %>
-      <% else %>
-        <%= f.button type: :submit, class: 'btn btn-danger' do %>
-          <%= fas_icon_tag :pause, %w(mr-2) %>
-          Mettre en pause
-        <% end %>
-      <% end %>
-    <% end %>
-  </div>
 
-<% end %>
 
 <div class="row">
   <div class="col border bg-light shadow p-5 m-3 rounded">
@@ -97,3 +296,4 @@
   </div>
 </div>
 
+-->

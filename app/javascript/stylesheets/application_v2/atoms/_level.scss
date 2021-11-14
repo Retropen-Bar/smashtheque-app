@@ -1,3 +1,7 @@
+[class*="level--"] {
+  color: var(--color);
+}
+
 .level {
   --color: currentColor;
   border-radius: 50%;
@@ -14,18 +18,18 @@
 
   &--l1_playground {
     --color: #{$level_1};
+    --bg-color: #{rgba($level_1, 0.1)};
   }
   &--l2_anything {
     --color: #{$level_2};
+    --bg-color: #{rgba($level_2, 0.1)};
   }
   &--l3_glory {
     --color: #{$level_3};
+    --bg-color: #{rgba($level_3, 0.1)};
   }
   &--l4_experts {
     --color: #{$level_4};
+    --bg-color: #{rgba($level_4, 0.1)};
   }
-}
-
-[class*="level--"] {
-  color: var(--color) !important;
 }

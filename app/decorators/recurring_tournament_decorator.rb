@@ -196,7 +196,7 @@ class RecurringTournamentDecorator < BaseDecorator
     ).html_safe
   end
   
-  def badges_v2
+  def badges_v2(with_level: false)
     [
       !is_online? && h.tag.span(class: 'badge badge-with-icon badge-primary') do
         [
@@ -209,6 +209,9 @@ class RecurringTournamentDecorator < BaseDecorator
           h.svg_icon_tag(:online, class: 'mr-0 mr-sm-1'),
           '<span class="d-none d-sm-inline">Online</span>'
         ].join(' ').html_safe
+      end,
+      with_level && h.tag.span(class: "badge level--#{model.level}") do
+        RecurringTournament.human_attribute_name("level.#{model.level}")
       end
     ].reject(&:blank?).join(' ').html_safe
   end

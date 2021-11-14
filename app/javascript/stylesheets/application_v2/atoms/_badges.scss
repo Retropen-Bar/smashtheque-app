@@ -2,6 +2,8 @@
   display: inline-flex;
   align-items: center;
   font-weight: 500;
+  color: var(--color, var(--text-color-accent));
+  background-color: var(--bg-color, var(--text-color-accent-100));
 
   &-with-icon {
     svg {
