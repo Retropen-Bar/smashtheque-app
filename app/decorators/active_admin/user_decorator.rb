@@ -49,5 +49,11 @@ module ActiveAdmin
         recurring_tournament.admin_decorate.admin_link(options)
       end
     end
+
+    def administrated_communities_admin_links(options = {})
+      model.administrated_communities.map do |community|
+        community.admin_decorate.admin_link(options)
+      end
+    end
   end
 end

@@ -19,5 +19,23 @@ module ActiveAdmin
         end
       end
     end
+
+    def admins_admin_links(options = {})
+      model.admins.map do |user|
+        user.admin_decorate.admin_link(options)
+      end
+    end
+
+    def ranking_link(options = {})
+      return nil if ranking_url.blank?
+
+      h.link_to ranking_url, { target: '_blank', rel: :noopener }.merge(options) do
+        (
+          h.fas_icon_tag 'link'
+        ) + ' ' + (
+          ranking_url
+        )
+      end
+    end
   end
 end

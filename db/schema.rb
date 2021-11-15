@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_14_171053) do
+ActiveRecord::Schema.define(version: 2021_11_15_090730) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -151,6 +151,18 @@ ActiveRecord::Schema.define(version: 2021_11_14_171053) do
     t.float "latitude", null: false
     t.float "longitude", null: false
     t.string "address", null: false
+    t.string "ranking_url"
+    t.string "twitter_username"
+  end
+
+  create_table "community_admins", force: :cascade do |t|
+    t.bigint "community_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["community_id", "user_id"], name: "index_community_admins_on_community_id_and_user_id", unique: true
+    t.index ["community_id"], name: "index_community_admins_on_community_id"
+    t.index ["user_id"], name: "index_community_admins_on_user_id"
   end
 
   create_table "discord_guild_admins", force: :cascade do |t|

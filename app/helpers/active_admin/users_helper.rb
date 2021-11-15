@@ -17,6 +17,10 @@ module ActiveAdmin::UsersHelper
     RecurringTournament.order(:name).decorate
   end
 
+  def user_administrated_communities_select_collection
+    Community.order(:name).decorate
+  end
+
   def user_input(form, name = :user, options = {})
     form.input  name,
                 {

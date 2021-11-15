@@ -86,6 +86,9 @@ ActiveAdmin.register User do
       f.input :administrated_recurring_tournaments,
               collection: user_administrated_recurring_tournaments_select_collection,
               input_html: { multiple: true, data: { select2: {} } }
+      f.input :administrated_communities,
+              collection: user_administrated_communities_select_collection,
+              input_html: { multiple: true, data: { select2: {} } }
       address_input f, prefix: 'main_'
       address_input f, prefix: 'secondary_'
 
@@ -111,7 +114,8 @@ ActiveAdmin.register User do
       secondary_locality secondary_countrycode
     ] + [
       administrated_team_ids: [],
-      administrated_recurring_tournament_ids: []
+      administrated_recurring_tournament_ids: [],
+      administrated_community_ids: []
     ]
     # resource is not defined here so we cheat with current_user
     parameters.push :admin_level if can? :admin_level, current_user
@@ -137,6 +141,9 @@ ActiveAdmin.register User do
           end
           row :administrated_recurring_tournaments do |decorated|
             decorated.administrated_recurring_tournaments_admin_links(size: 32).join('<br/>').html_safe
+          end
+          row :administrated_communities do |decorated|
+            decorated.administrated_communities_admin_links(size: 32).join('<br/>').html_safe
           end
           row :main_address, &:main_address_with_coordinates
           row :main_locality
