@@ -31,19 +31,28 @@ end
             <h1 class="show-page-title card-title">
               <%= @character.name.titleize  %>
             </h1>
-            <p class="mt-0 mb-0">&lt;Univers du personnage&gt;</p>
+            <% if character.origin %>
+              <p class="mt-0 mb-0"><%= character.origin %></p>
+            <% end %>
           </div>
           <div class="show-page-side flex-column list-y">
-            <a href="http://" class="btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold pl-4 text-left" target="_blank" rel="noopener noreferrer">
-              <%= svg_icon_tag :discord, class: 'mr-4' %>
-              Discord
-            </a>
+            <% character.discord_guilds.each do |discord_guild| %>
+              <%= link_to discord_guild.invitation_url,
+                          class: 'btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold pl-4 text-left',
+                          target: '_blank',
+                          rel: 'noopener noreferrer' do %>
+                <%= svg_icon_tag :discord, class: 'mr-4' %>
+                Discord
+              <% end %>
+            <% end %>
           </div>
           <div class="show-page-socials bg-layout bg-md-layout-dark d-md-none">
-            <a href="http://" target="_blank" rel="noopener noreferrer">
-              <%= svg_icon_tag :discord %>
-              <span class="sr-only">Discord</span>
-            </a>
+            <% character.discord_guilds.each do |discord_guild| %>
+              <%= link_to discord_guild.invitation_url, target: '_blank', rel: 'noopener noreferrer' do %>
+                <%= svg_icon_tag :discord %>
+                <span class="sr-only">Discord</span>
+              <% end %>
+            <% end %>
           </div>
         </div>
       </div>
@@ -155,11 +164,13 @@ end
               </div>
               <div class="show-page-section-body">
                 <ul class="list-y list-unstyled text-center mb-0">
-                  <% ['Chaîne 1', 'Chaîne 2'].each do |you_tube| %>
+                  <% character.you_tube_channels.each do |you_tube_channel| %>
                     <li>
-                      <%= link_to 'https://youtube.com', target: '_blank', class: 'list-row' do %>
-                        <%= you_tube %>
-                      <% end %>
+                      <%= link_to you_tube_channel.name,
+                                  you_tube_channel.decorate.channel_url,
+                                  class: 'list-row',
+                                  target: '_blank',
+                                  rel: 'noopener noreferrer' %>
                     </li>
                   <% end %>
                 </ul>
@@ -172,11 +183,13 @@ end
               </div>
               <div class="show-page-section-body">
                 <ul class="list-y list-unstyled text-center mb-0">
-                  <% ['Chaîne 1', 'Chaîne 2'].each do |twitch| %>
+                  <% character.twitch_channels.each do |twitch_channel| %>
                     <li>
-                      <%= link_to 'https://twitch.tv', target: '_blank', class: 'list-row' do %>
-                        <%= twitch %>
-                      <% end %>
+                      <%= link_to twitch_channel.name,
+                                  twitch_channel.decorate.channel_url,
+                                  class: 'list-row',
+                                  target: '_blank',
+                                  rel: 'noopener noreferrer' %>
                     </li>
                   <% end %>
                 </ul>
