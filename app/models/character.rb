@@ -9,6 +9,9 @@
 #  emoji                 :string
 #  icon                  :string
 #  name                  :string
+#  nintendo_url          :string
+#  origin                :string
+#  other_names           :string           default([]), is an Array
 #  smashprotips_url      :string
 #  ultimateframedata_url :string
 #  created_at            :datetime         not null
@@ -47,6 +50,14 @@ class Character < ApplicationRecord
   validates :emoji, presence: true, uniqueness: true
 
   # ---------------------------------------------------------------------------
+  # CALLBACKS
+  # ---------------------------------------------------------------------------
+
+  def other_names=(values)
+    super values.reject(&:blank?)
+  end
+
+  # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
 
@@ -67,7 +78,7 @@ class Character < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   include PgSearch::Model
-  multisearchable against: %i(name)
+  multisearchable against: %i[name other_names]
 
   # ---------------------------------------------------------------------------
   # VERSIONS
