@@ -2,13 +2,15 @@
 #
 # Table name: communities
 #
-#  id         :bigint           not null, primary key
-#  address    :string           not null
-#  latitude   :float            not null
-#  longitude  :float            not null
-#  name       :string           not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id               :bigint           not null, primary key
+#  address          :string           not null
+#  latitude         :float            not null
+#  longitude        :float            not null
+#  name             :string           not null
+#  ranking_url      :string
+#  twitter_username :string
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #
 class Community < ApplicationRecord
   # ---------------------------------------------------------------------------
@@ -16,6 +18,8 @@ class Community < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   geocoded_by :address
+
+  include HasTwitter
 
   # ---------------------------------------------------------------------------
   # CONCERNS
@@ -39,6 +43,13 @@ class Community < ApplicationRecord
 
   has_many :twitch_channels, as: :related, dependent: :nullify
 
+  has_many :community_admins,
+           inverse_of: :community,
+           dependent: :destroy
+  has_many :admins,
+           through: :community_admins,
+           source: :user
+
   # ---------------------------------------------------------------------------
   # VALIDATIONS
   # ---------------------------------------------------------------------------
@@ -56,12 +67,20 @@ class Community < ApplicationRecord
     where('unaccent(name) ILIKE unaccent(?)', name)
   end
 
+  def self.administrated_by(user_id)
+    where(id: CommunityAdmin.where(user_id: user_id).select(:community_id))
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------
 
   def first_discord_guild
     discord_guilds.first
+  end
+
+  def admin_discord_ids
+    admins.map(&:discord_id)
   end
 
   def users(radius: 50)
@@ -84,5 +103,4 @@ class Community < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   has_paper_trail unless: Proc.new { ENV['NO_PAPERTRAIL'] }
-
 end

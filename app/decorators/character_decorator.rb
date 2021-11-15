@@ -78,6 +78,18 @@ class CharacterDecorator < BaseDecorator
     }.merge(options))
   end
 
+  def nintendo_link(options = {})
+    return nil if nintendo_url.blank?
+
+    h.link_to nintendo_url, { target: '_blank', rel: :noopener }.merge(options) do
+      (
+        h.image_tag 'switch-64.png', height: 32, class: :logo
+      ) + ' ' + (
+        nintendo_url
+      )
+    end
+  end
+
   def ultimateframedata_link(options = {})
     return nil if ultimateframedata_url.blank?
 

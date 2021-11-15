@@ -50,6 +50,18 @@ ActiveAdmin.register Character do
       f.input :emoji
       f.input :icon
       f.input :name
+      f.input :other_names,
+              multiple: true,
+              collection: f.object.other_names,
+              input_html: {
+                data: {
+                  select2: {
+                    tags: true,
+                    tokenSeparators: [',']
+                  }
+                }
+              }
+      f.input :origin
       f.input :background_color,
               as: :string,
               input_html: {
@@ -58,6 +70,7 @@ ActiveAdmin.register Character do
               }
       f.input :background_image
       f.input :background_size
+      f.input :nintendo_url
       f.input :ultimateframedata_url
       f.input :smashprotips_url
     end
@@ -65,8 +78,9 @@ ActiveAdmin.register Character do
   end
 
   permit_params :icon, :name, :emoji,
-                :background_color, :background_image, :background_size,
-                :ultimateframedata_url, :smashprotips_url
+                :origin, :background_color, :background_image, :background_size,
+                :nintendo_url, :ultimateframedata_url, :smashprotips_url,
+                other_names: []
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -74,32 +88,21 @@ ActiveAdmin.register Character do
 
   show do
     attributes_table do
-      row :emoji do |decorated|
-        decorated.emoji_image_tag
-      end
+      row :emoji, &:emoji_image_tag
       row :icon
       row :name
-      row :background_color do |decorated|
-        decorated.colored_background_color
-      end
+      row :other_names
+      row :origin
+      row :background_color, &:colored_background_color
       row :background_image do |decorated|
         decorated.background_image_tag(max_width: 64, max_height: 64)
       end
-      row :background_size do |decorated|
-        decorated.background_size_display
-      end
-      row :players do |decorated|
-        decorated.players_admin_link
-      end
-      row :discord_guilds do |decorated|
-        decorated.discord_guilds_admin_links
-      end
-      row :ultimateframedata_url do |decorated|
-        decorated.ultimateframedata_link
-      end
-      row :smashprotips_url do |decorated|
-        decorated.smashprotips_link
-      end
+      row :background_size, &:background_size_display
+      row :players, &:players_admin_link
+      row :discord_guilds, &:discord_guilds_admin_links
+      row :nintendo_url, &:nintendo_link
+      row :ultimateframedata_url, &:ultimateframedata_link
+      row :smashprotips_url, &:smashprotips_link
       row :created_at
       row :updated_at
     end
