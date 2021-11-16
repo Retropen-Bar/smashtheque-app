@@ -11,49 +11,37 @@
             <h1 class="show-page-title card-title">
               <%= @community.name.titleize  %>
             </h1>
-            <%= link_to 'http://',
-                class: 'show-page-meta text-body font-weight-normal py-1 badge badge-pill mt-2',
-                target: '_blank',
-                rel: :noopener do %>
-              <%= svg_icon_tag :link, class: 'mr-1' %>&nbsp;Power Ranking
+            <% unless community.ranking_url.blank? %>
+              <%= link_to community.ranking_url,
+                          class: 'show-page-meta text-body font-weight-normal py-1 badge badge-pill mt-2',
+                          target: '_blank',
+                          rel: :noopener do %>
+                <%= svg_icon_tag :link, class: 'mr-2' %>Power Ranking
+              <% end %>
             <% end %>
           </div>
           <div class="show-page-side flex-column list-y">
-            <div class="btn-group btn-group-sm w-50">
-              <a href="http://" class="btn btn-sm btn-dark btn--with-icon font-weight-bold pl-4 text-left" target="_blank" rel="noopener noreferrer">
-                <%= svg_icon_tag :discord, class: 'mr-4' %>
-                Discord
-              </a>
-              <div class="btn-group btn-group-sm" role="group">
-                <button id="socials-desktop" type="button" class="btn btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
-                </button>
-                <div class="dropdown-menu" aria-labelledby="socials-desktop">
-                  <a class="dropdown-item" href="#">Dropdown link</a>
-                  <a class="dropdown-item" href="#">Dropdown link</a>
-                </div>
-              </div>
-            </div>
-            <a href="http://" class="btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold pl-4 text-left" target="_blank" rel="noopener noreferrer">
-              <%= svg_icon_tag :twitter, class: 'mr-4' %>
-              Twitter
-            </a>
+            <%= render 'shared/page_side_discord_guilds', discord_guilds: community.discord_guilds %>
+            <% unless community.twitter_username.blank? %>
+              <%= link_to community.twitter_url,
+                          class: 'btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold pl-4 text-left',
+                          target: '_blank',
+                          rel: 'noopener noreferrer' do %>
+                <%= svg_icon_tag :twitter, class: 'mr-4' %>
+                <%= community.twitter_name %>
+              <% end %>
+            <% end %>
           </div>
           <div class="show-page-socials bg-layout bg-md-layout-dark d-flex d-md-none align-items-center">
-            <div class="btn-group dropleft">
-              <a href="#" id="socials-mobile" type="button" class="btn btn-sm btn-dark rounded-pill dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                <%= svg_icon_tag :discord, class: "ml-1" %>
-                <span class="sr-only">Discord</span>
-              </a>
-              <div class="dropdown-menu" aria-labelledby="socials-mobile">
-                <a class="dropdown-item" href="#">Dropdown link</a>
-                <a class="dropdown-item" href="#">Dropdown link</a>
-                <a class="dropdown-item" href="#">Dropdown link</a>
-              </div>
-            </div>
-            <a href="http://" target="_blank" rel="noopener noreferrer">
-              <%= svg_icon_tag :twitter %>
-              <span class="sr-only">Twitter</span>
-            </a>
+            <%= render 'shared/page_socials_discord_guilds', discord_guilds: community.discord_guilds %>
+            <% unless community.twitter_username.blank? %>
+              <%= link_to community.twitter_url,
+                          target: '_blank',
+                          rel: 'noopener noreferrer' do %>
+                <%= svg_icon_tag :twitter %>
+                <span class="sr-only">Twitter</span>
+              <% end %>
+            <% end %>
           </div>
         </div>
       </div>
@@ -78,9 +66,9 @@
               <%= svg_icon_tag :joueur %>
               <span>TOs</span>
             <% end %>
-            <%= link_to community_path(@community, anchor: 'grandes-equipes'), class: "section-nav-link scrollactive-item" do %>
+            <%= link_to community_path(@community, anchor: 'admins-locaux'), class: "section-nav-link scrollactive-item" do %>
               <%= svg_icon_tag :groupe %>
-              <span>Le plus grandes équipes</span>
+              <span>Représentants locaux</span>
             <% end %>
           </div>
         </scrollactive>
@@ -98,11 +86,11 @@
               <div class="show-page-section-body mt-3">
                 <div class="list">
                   <% @offline_top_8_players&.each do |player| %>
-                    <%= render 'players/player_v2',
-                              player: player.decorate,
-                              is_online: true,
-                              with_points: true,
-                              with_rank: true %>
+                    <%= render  'players/player_v2',
+                                player: player.decorate,
+                                is_online: false,
+                                with_points: true,
+                                with_rank: true %>
                   <% end %>
                 </div>
               </div>
@@ -116,11 +104,18 @@
               </div>
               <div class="show-page-section-body mt-3">
                 <div class="list">
-                  <% @community_recurring_tournaments&.each do |recurring_tournament| %>
-                    <%= render 'recurring_tournaments/recurring_tournament_v2',
-                          recurring_tournament: recurring_tournament.decorate %>
+                  <% @community_recurring_tournaments.first(3).each do |recurring_tournament| %>
+                    <%= render  'recurring_tournaments/recurring_tournament_v2',
+                                recurring_tournament: recurring_tournament.decorate %>
                   <% end %>
                 </div>
+                <% if @community_recurring_tournaments.count > 3 %>
+                  <div class="text-right mt-3">
+                    <%= link_to 'Voir plus',
+                                recurring_tournaments_path(by_community_id: community.id),
+                                class: 'btn btn-sm bg-layout rounded-pill' %>
+                  </div>
+                <% end %>
               </div>
             </section>
             <section id="TO" class="show-page-section mt-4">
@@ -130,24 +125,36 @@
               </div>
               <div class="show-page-section-body mt-3">
                 <div class="list">
-                  <% @community_to&.each do |to| %>
-                    <%= render 'players/player_v2',
-                              player: to.decorate,
-                              with_roles: true %>
+                  <% @community_tos.first(3).each do |user| %>
+                    <% if player = user.player %>
+                      <%= render 'players/player_v2', player: player.decorate, with_roles: true %>
+                    <% else %>
+                      <%= render 'users/user', user: user.decorate %>
+                    <% end %>
                   <% end %>
                 </div>
+                <% if @community_tos.count > 3 %>
+                  <div class="text-right mt-3">
+                    <%= link_to 'Voir plus',
+                                contacts_recurring_tournaments_path(by_community_id: community.id),
+                                class: 'btn btn-sm bg-layout rounded-pill' %>
+                  </div>
+                <% end %>
               </div>
             </section>
-            <section id="grandes-equipes" class="show-page-section mt-4">
+            <section id="admins-locaux" class="show-page-section mt-4">
               <div class="show-page-section-title">
-                <h2>Les plus grandes équipes</h2>
+                <h2>Les représentants locaux</h2>
                 <span class="show-page-section-title-separator"></span>
               </div>
               <div class="show-page-section-body mt-3">
                 <div class="list">
-                  <% @community_biggest_teams[0..2]&.each do |team| %>
-                    <%= render 'teams/team_v2',
-                                team: team.decorate %>
+                  <% community.admins.each do |user| %>
+                    <% if player = user.player %>
+                      <%= render 'players/player_v2', player: player.decorate, with_roles: true %>
+                    <% else %>
+                      <%= render 'users/user', user: user.decorate %>
+                    <% end %>
                   <% end %>
                 </div>
               </div>

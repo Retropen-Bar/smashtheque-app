@@ -6,6 +6,8 @@ class CommunitiesController < PublicController
 
   layout 'application_v2'
 
+  decorates_assigned :community
+
   def index
     @communities = apply_scopes(Community.order('LOWER(name)')).all
     @meta_title = 'Communautés'
@@ -18,15 +20,15 @@ class CommunitiesController < PublicController
     @meta_properties['og:image'] = @community.decorate.any_image_url
 
     @offline_top_8_players =
-      Player.ranked_offline.with_track_records_offline_all_time.by_community_id(@community.id).order(
+      Player.legit.ranked_offline.with_track_records_offline_all_time.by_community_id(@community.id).order(
         :rank_offline_all_time
       ).limit(8)
-        
-    @community_recurring_tournaments = RecurringTournament.visible.recurring.not_archived.limit(3)
-    @community_to = Player.recurring_tournament_contacts.by_community_id(@community.id).limit(3)
-    community_players = Player.by_community_id(@community.id)
-    @community_biggest_teams = community_players.map do |player|
-                                  Team.find_by(id: player.teams)
-                                end.compact.sort_by{ |team| team.players.count }.reverse!
+
+    # we cannot directly get a sorted relation here (yet), so we sort it manually
+    @community_recurring_tournaments = RecurringTournament.visible.recurring.not_archived.offline
+      .by_community_id(@community.id).includes(:tournament_events, :duo_tournament_events).to_a
+    @community_recurring_tournaments.sort_by! { |recurring_tournament| recurring_tournament.all_events.count }
+
+    @community_tos = @community_recurring_tournaments.map(&:contacts).flatten.uniq
   end
 end

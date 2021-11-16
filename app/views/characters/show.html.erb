@@ -31,28 +31,15 @@ end
             <h1 class="show-page-title card-title">
               <%= @character.name.titleize  %>
             </h1>
-            <% if character.origin %>
+            <% unless character.origin.blank? %>
               <p class="mt-0 mb-0"><%= character.origin %></p>
             <% end %>
           </div>
           <div class="show-page-side flex-column list-y">
-            <% character.discord_guilds.each do |discord_guild| %>
-              <%= link_to discord_guild.invitation_url,
-                          class: 'btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold pl-4 text-left',
-                          target: '_blank',
-                          rel: 'noopener noreferrer' do %>
-                <%= svg_icon_tag :discord, class: 'mr-4' %>
-                Discord
-              <% end %>
-            <% end %>
+            <%= render 'shared/page_side_discord_guilds', discord_guilds: character.discord_guilds %>
           </div>
           <div class="show-page-socials bg-layout bg-md-layout-dark d-md-none">
-            <% character.discord_guilds.each do |discord_guild| %>
-              <%= link_to discord_guild.invitation_url, target: '_blank', rel: 'noopener noreferrer' do %>
-                <%= svg_icon_tag :discord %>
-                <span class="sr-only">Discord</span>
-              <% end %>
-            <% end %>
+            <%= render 'shared/page_socials_discord_guilds', discord_guilds: character.discord_guilds %>
           </div>
         </div>
       </div>
@@ -125,11 +112,11 @@ end
                       role="tabpanel" aria-labelledby="online-top-5-tab">
                   <div class="list">
                     <% @online_top_5_players&.each do |player| %>
-                      <%= render 'players/player_v2',
-                                player: player.decorate,
-                                is_online: true,
-                                with_points: true,
-                                with_rank: true %>
+                      <%= render  'players/player_v2',
+                                  player: player.decorate,
+                                  is_online: true,
+                                  with_points: true,
+                                  with_rank: true %>
                     <% end %>
                   </div>
                 </div>
@@ -137,10 +124,10 @@ end
                       role="tabpanel" aria-labelledby="offline-top-5-tab">
                   <div class="list">
                     <% @offline_top_5_players&.each do |player| %>
-                      <%= render 'players/player_v2',
-                                player: player.decorate,
-                                with_points: true,
-                                with_rank: true %>
+                      <%= render  'players/player_v2',
+                                  player: player.decorate,
+                                  with_points: true,
+                                  with_rank: true %>
                     <% end %>
                   </div>
                 </div>

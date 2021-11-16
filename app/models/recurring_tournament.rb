@@ -203,6 +203,10 @@ class RecurringTournament < ApplicationRecord
     result
   end
 
+  def self.by_community_id(community_id)
+    near_community(Community.find(community_id))
+  end
+
   # ---------------------------------------------------------------------------
   # RANSACK
   # ---------------------------------------------------------------------------
@@ -239,6 +243,10 @@ class RecurringTournament < ApplicationRecord
 
   def hidden?
     is_hidden?
+  end
+
+  def all_events
+    tournament_events + duo_tournament_events
   end
 
   # ---------------------------------------------------------------------------
