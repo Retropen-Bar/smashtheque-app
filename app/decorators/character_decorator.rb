@@ -58,7 +58,7 @@ class CharacterDecorator < BaseDecorator
   end
 
   def as_autocomplete_result
-    h.tag.div class: 'character' do
+    h.tag.div do
       (
         h.tag.div class: :emoji do
           emoji_image_tag
