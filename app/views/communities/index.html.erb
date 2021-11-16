@@ -9,7 +9,17 @@
         <div id="index-filters" class="col-12 col-xl-auto order-xl-1">
           <section class="index-section my-2 my-md-3 mt-xl-0 py-1 pl-3 pr-1 py-md-2 pr-md-2 pl-md-2 py-xl-0 px-xl-0 d-flex d-xl-block flex-wrap align-items-center shadow-lg bg-bg bg-lg-none rounded-pill">
             <small class="text-muted d-inline-block d-xl-none"><%= @communities.total_count %> résultat(s)</small>
-            <button @click="filtersVisible = true" type="button" class="btn btn-dark btn-sm btn-with-icon rounded-pill players  ml-auto<%= ' active' if params[:on_abc] %> d-flex d-xl-none">
+            <div role="group" class="ml-auto btn-group btn-group-sm players d-flex d-xl-none">
+              <%= link_to url_with(action: :index), class: "btn#{action_name.eql?('index') ? ' active' : ''}" do %>
+                <%= svg_icon_tag :liste %>
+                <span class="sr-only">Liste</span>
+              <% end %>
+              <%= link_to url_with(action: :map), class: "btn#{action_name.eql?('map') ? ' active' : ''}" do %>
+                <%= svg_icon_tag :map %>
+                <span class="sr-only">Carte</span>
+              <% end %>
+            </div>
+            <button @click="filtersVisible = true" type="button" class="btn btn-dark btn-sm btn-with-icon rounded-pill players ml-3<%= ' active' if params[:on_abc] %> d-flex d-xl-none">
               <%= svg_icon_tag :filtre %> Filtres<%= ' (1)' if params[:on_abc] %>
             </button>
             <slide-out dock="bottom" :visible.sync="filtersVisible" :size="[0]" :arrow-button="false" title="Filtres">
@@ -34,7 +44,17 @@
         <div class="col">
           <section class="py-3 d-none d-xl-flex flex-wrap align-items-center">
             <small class="text-muted"><%= @communities.total_count %> résultat(s)</small>
-            <div class="ml-auto">
+            <div role="group" class="ml-auto btn-group btn-group-sm players">
+              <%= link_to url_with(action: :index), class: "btn#{action_name.eql?('index') ? ' active' : ''}" do %>
+                <%= svg_icon_tag :liste %>
+                <span class="sr-only">Liste</span>
+              <% end %>
+              <%= link_to url_with(action: :map), class: "btn#{action_name.eql?('map') ? ' active' : ''}" do %>
+                <%= svg_icon_tag :map %>
+                <span class="sr-only">Carte</span>
+              <% end %>
+            </div>
+            <div class="ml-3">
               <%= render 'shared/pagination_v2', collection: @communities %>
             </div>
           </section>

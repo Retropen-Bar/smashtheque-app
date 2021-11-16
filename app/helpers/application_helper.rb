@@ -21,8 +21,8 @@ module ApplicationHelper
     end
   end
 
-  def current_class?(path)
-    return ' active' if request.path == path
+  def current_class?(path_prefix)
+    return ' active' if request.path.starts_with?(path_prefix)
     ''
   end
 

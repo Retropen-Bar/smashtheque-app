@@ -42,19 +42,30 @@ module MapsHelper
 
   def communities_map(communities, map_options: {})
     markers = { all: [] }
+    icons = {}
     communities.geocoded.each do |community|
+      icons[community.id.to_s] ||= {
+        icon_url: community.decorate.any_image_url,
+        icon_size: 32,
+        icon_anchor: [16, 16],
+        class_name: 'avatar-icon'
+      }
       marker = {
+        icon: community.id.to_s,
         latlng: [
           community.latitude,
           community.longitude
         ],
-        popup: link_to(community.name, [:admin, community])
+        popup: link_to(community.name, community)
       }
       markers[:all] << marker
     end
 
     france_map  markers: markers,
-                options: map_options || {}
+                icons: icons,
+                options: {
+                  cluster_markers: false
+                }.merge(map_options || {})
   end
 
   def recurring_tournaments_map(recurring_tournaments, map_options: {}, &block)
@@ -137,6 +148,7 @@ module MapsHelper
     max_zoom = options.delete(:max_zoom)
     container_id = options.delete(:container_id)
     center = options.delete(:center)
+    cluster_markers = options.delete(:cluster_markers)
 
     html_content = block_given? && capture(&block)
 
@@ -149,6 +161,7 @@ module MapsHelper
                 max_zoom: max_zoom,
                 container_id: container_id,
                 center: center,
+                cluster_markers: cluster_markers,
                 html_content: html_content
   end
 

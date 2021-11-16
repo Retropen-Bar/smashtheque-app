@@ -13,6 +13,11 @@ class CommunitiesController < PublicController
     @meta_title = 'Communautés'
   end
 
+  def map
+    @communities = apply_scopes(Community)
+    @meta_title = 'Carte des communautés'
+  end
+
   def show
     @community = Community.find(params[:id]).decorate
     @meta_title = @community.name

@@ -69,7 +69,11 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :communities, only: %i[index show]
+  resources :communities, only: %i[index show] do
+    collection do
+      get :map
+    end
+  end
 
   resources :players, only: [:index, :show] do
     resources :smashgg_users, only: [:new, :create]
