@@ -39,7 +39,7 @@ class CommunityDecorator < BaseDecorator
     h.image_tag 's.gif',
                 class: 'avatar',
                 style: [
-                  "background-image: url(\"#{any_non_default_image_url}\"), url(\"#{default_logo_image_url}\")",
+                  "background-image: url(\"#{any_image_url}\")",
                   'background-size: cover',
                   "width: #{size}px",
                   "height: #{size}px"
