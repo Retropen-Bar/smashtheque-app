@@ -36,10 +36,14 @@ end
             <% end %>
           </div>
           <div class="show-page-side flex-column list-y">
-            <%= render 'shared/page_side_discord_guilds', discord_guilds: character.discord_guilds %>
+            <%= render  'shared/page_side_links',
+                        record: character,
+                        discord_guilds: character.discord_guilds %>
           </div>
           <div class="show-page-socials bg-layout bg-md-layout-dark d-md-none">
-            <%= render 'shared/page_socials_discord_guilds', discord_guilds: character.discord_guilds %>
+            <%= render  'shared/page_socials_links',
+                        record: character,
+                        discord_guilds: character.discord_guilds %>
           </div>
         </div>
       </div>

@@ -21,27 +21,14 @@
             <% end %>
           </div>
           <div class="show-page-side flex-column list-y">
-            <%= render 'shared/page_side_discord_guilds', discord_guilds: community.discord_guilds %>
-            <% unless community.twitter_username.blank? %>
-              <%= link_to community.twitter_url,
-                          class: 'btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold pl-4 text-left',
-                          target: '_blank',
-                          rel: 'noopener noreferrer' do %>
-                <%= svg_icon_tag :twitter, class: 'mr-4' %>
-                <%= community.twitter_name %>
-              <% end %>
-            <% end %>
+            <%= render  'shared/page_side_links',
+                        record: community,
+                        discord_guilds: community.discord_guilds %>
           </div>
           <div class="show-page-socials bg-layout bg-md-layout-dark d-flex d-md-none align-items-center">
-            <%= render 'shared/page_socials_discord_guilds', discord_guilds: community.discord_guilds %>
-            <% unless community.twitter_username.blank? %>
-              <%= link_to community.twitter_url,
-                          target: '_blank',
-                          rel: 'noopener noreferrer' do %>
-                <%= svg_icon_tag :twitter %>
-                <span class="sr-only">Twitter</span>
-              <% end %>
-            <% end %>
+            <%= render  'shared/page_socials_links', 
+                        record: community,
+                        discord_guilds: community.discord_guilds %>
           </div>
         </div>
       </div>

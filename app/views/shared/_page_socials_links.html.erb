@@ -29,3 +29,12 @@
   <% end %>
 
 <% end %>
+
+<% if record.respond_to?(:twitter_username) && !record.twitter_username.blank? %>
+  <%= link_to record.twitter_url,
+              target: '_blank',
+              rel: 'noopener noreferrer' do %>
+    <%= svg_icon_tag :twitter %>
+    <span class="sr-only">Twitter</span>
+  <% end %>
+<% end %>
