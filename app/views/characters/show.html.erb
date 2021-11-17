@@ -124,6 +124,15 @@ end
                                     with_rank: true %>
                       <% end %>
                     </div>
+                    <div class="text-right mt-3">
+                      <%= link_to 'Voir tout',
+                                  ranking_players_path(
+                                    is_online: 1,
+                                    by_character_id: character.id,
+                                    by_character_id_mains_only: 1                                    
+                                  ),
+                                  class: 'btn btn-sm bg-layout rounded-pill' %>
+                    </div>
                   <% else %>
                     -
                   <% end %>
@@ -138,6 +147,15 @@ end
                                     with_points: true,
                                     with_rank: true %>
                       <% end %>
+                    </div>
+                    <div class="text-right mt-3">
+                      <%= link_to 'Voir tout',
+                                  ranking_players_path(
+                                    is_online: 0,
+                                    by_character_id: character.id,
+                                    by_character_id_mains_only: 1                                    
+                                  ),
+                                  class: 'btn btn-sm bg-layout rounded-pill' %>
                     </div>
                   <% else %>
                     -
