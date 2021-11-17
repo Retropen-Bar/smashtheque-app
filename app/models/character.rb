@@ -53,6 +53,7 @@ class Character < ApplicationRecord
   validates :name, presence: true, uniqueness: true
   validates :icon, presence: true
   validates :emoji, presence: true, uniqueness: true
+  validates :official_number, presence: true, uniqueness: true
 
   # ---------------------------------------------------------------------------
   # CALLBACKS
