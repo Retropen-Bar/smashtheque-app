@@ -119,6 +119,38 @@ module HasTrackRecords
       end
     end
 
+    def best_met_reward_condition_online_all_time
+      track_records.online.all_time.first&.best_met_reward_condition
+    end
+
+    def best_met_reward_condition_online_in(year)
+      track_records.online.on_year(year).first&.best_met_reward_condition
+    end
+
+    def best_met_reward_condition_offline_all_time
+      track_records.offline.all_time.first&.best_met_reward_condition
+    end
+
+    def best_met_reward_condition_offline_in(year)
+      track_records.offline.on_year(year).first&.best_met_reward_condition
+    end
+
+    def best_met_reward_condition(is_online:, year: nil)
+      if is_online
+        year ? best_met_reward_condition_online_in(year) : best_met_reward_condition_online_all_time
+      else
+        year ? best_met_reward_condition_offline_in(year) : best_met_reward_condition_offline_all_time
+      end
+    end
+
+    def best_reward_condition(is_online:, year: nil)
+      best_met_reward_condition(is_online: is_online, year: year).reward_condition
+    end
+
+    def best_reward(is_online:, year: nil)
+      best_reward_condition(is_online: is_online, year: year).reward
+    end
+
     def update_track_record!(is_online:, year:)
       mrcs = met_reward_conditions.by_is_online(is_online)
       mrcs = mrcs.on_year(year) if year
@@ -153,37 +185,6 @@ module HasTrackRecords
     # returns a hash { reward_id => count }
     def rewards_counts(is_online:)
       all_rewards(is_online: is_online).ordered_by_level.group(:id).count
-    end
-
-    def unique_rewards(is_online:)
-      Reward.where(id: all_rewards(is_online: is_online).select(:id))
-    end
-
-    def best_rewards(is_online:)
-      all_rewards(is_online: is_online).order(:level1).group(:level1).pluck(
-        :level1,
-        'MAX(level2)'
-      ).to_h.map do |level1, level2|
-        all_rewards(is_online: is_online).by_level(level1, level2).first
-      end.sort_by(&:level2)
-    end
-
-    def reward_best_reward_condition(reward)
-      reward.reward_conditions.where(
-        id: met_reward_conditions.select(:reward_condition_id)
-      ).order(:points).last
-    end
-
-    def unique_reward_conditions(is_online:)
-      unique_rewards(is_online: is_online).ordered_by_level.map do |reward|
-        reward_best_reward_condition(reward)
-      end
-    end
-
-    def best_reward_conditions(is_online:)
-      best_rewards(is_online: is_online).map do |reward|
-        reward_best_reward_condition(reward)
-      end
     end
   end
 end
