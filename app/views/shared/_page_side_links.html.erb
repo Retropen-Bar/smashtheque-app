@@ -1,134 +1,142 @@
 <%# DISCORD %>
 
-<% if discord_guilds.count > 1 %>
+<% if defined?(discord_guilds) %>
+  <% if discord_guilds.count > 1 %>
 
-  <div class="btn-group btn-group-sm w-50">
+    <div class="btn-group btn-group-sm w-50">
+      <% discord_guild = discord_guilds.first.decorate %>
+      <%= link_to discord_guild.invitation_url,
+                  class: 'btn btn-sm btn-dark btn--with-icon font-weight-bold pl-2 text-left',
+                  target: '_blank',
+                  rel: 'noopener noreferrer' do %>
+        <%= svg_icon_tag :discord, class: 'mr-1' %>
+        Discord
+      <% end %>
+      <div class="btn-group btn-group-sm" role="group">
+        <button id="socials-desktop" type="button" class="btn btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
+        </button>
+        <div class="dropdown-menu" aria-labelledby="socials-desktop">
+          <% discord_guilds.decorate.each do |discord_guild| %>
+            <%= link_to discord_guild.name_or_id,
+                        discord_guild.invitation_url,
+                        class: 'dropdown-item',
+                        target: '_blank',
+                        rel: 'noopener noreferrer' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+  <% elsif discord_guilds.count > 0 %>
+
     <% discord_guild = discord_guilds.first.decorate %>
     <%= link_to discord_guild.invitation_url,
-                class: 'btn btn-sm btn-dark btn--with-icon font-weight-bold pl-2 text-left',
+                class: 'btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold pl-2 text-left text-truncate',
                 target: '_blank',
                 rel: 'noopener noreferrer' do %>
       <%= svg_icon_tag :discord, class: 'mr-1' %>
-      Discord
+      <%= discord_guild.name_or_id %>
     <% end %>
-    <div class="btn-group btn-group-sm" role="group">
-      <button id="socials-desktop" type="button" class="btn btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
-      </button>
-      <div class="dropdown-menu" aria-labelledby="socials-desktop">
-        <% discord_guilds.decorate.each do |discord_guild| %>
-          <%= link_to discord_guild.name_or_id,
-                      discord_guild.invitation_url,
-                      class: 'dropdown-item',
-                      target: '_blank',
-                      rel: 'noopener noreferrer' %>
-        <% end %>
-      </div>
-    </div>
-  </div>
 
-<% elsif discord_guilds.count > 0 %>
-
-  <% discord_guild = discord_guilds.first.decorate %>
-  <%= link_to discord_guild.invitation_url,
-              class: 'btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold pl-2 text-left text-truncate',
-              target: '_blank',
-              rel: 'noopener noreferrer' do %>
-    <%= svg_icon_tag :discord, class: 'mr-1' %>
-    <%= discord_guild.name_or_id %>
   <% end %>
-
 <% end %>
 
 <%# TWITTER %>
 
-<% if record.respond_to?(:twitter_username) && !record.twitter_username.blank? %>
-  <%= link_to record.twitter_url,
-              class: 'btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold pl-2 text-left text-truncate',
-              target: '_blank',
-              rel: 'noopener noreferrer' do %>
-    <%= svg_icon_tag :twitter, class: 'mr-1' %>
-    <%= record.twitter_name %>
+<% if defined?(record) %>
+  <% if record.respond_to?(:twitter_username) && !record.twitter_username.blank? %>
+    <%= link_to record.twitter_url,
+                class: 'btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold pl-2 text-left text-truncate',
+                target: '_blank',
+                rel: 'noopener noreferrer' do %>
+      <%= svg_icon_tag :twitter, class: 'mr-1' %>
+      <%= record.twitter_name %>
+    <% end %>
   <% end %>
 <% end %>
 
 <%# TWITCH %>
 
-<% if twitch_channels.count > 1 %>
+<% if defined?(twitch_channels) %>
+  <% if twitch_channels.count > 1 %>
 
-  <div class="btn-group btn-group-sm w-50">
+    <div class="btn-group btn-group-sm w-50">
+      <% twitch_channel = twitch_channels.first.decorate %>
+      <%= link_to twitch_channel.channel_url,
+                  class: 'btn btn-sm btn-dark btn--with-icon font-weight-bold pl-2 text-left',
+                  target: '_blank',
+                  rel: 'noopener noreferrer' do %>
+        <%= svg_icon_tag :twitch, class: 'mr-1' %>
+        Twitch
+      <% end %>
+      <div class="btn-group btn-group-sm" role="group">
+        <button id="socials-desktop" type="button" class="btn btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
+        </button>
+        <div class="dropdown-menu" aria-labelledby="socials-desktop">
+          <% twitch_channels.decorate.each do |twitch_channel| %>
+            <%= link_to twitch_channel.name,
+                        twitch_channel.channel_url,
+                        class: 'dropdown-item',
+                        target: '_blank',
+                        rel: 'noopener noreferrer' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+  <% elsif twitch_channels.count > 0 %>
+
     <% twitch_channel = twitch_channels.first.decorate %>
     <%= link_to twitch_channel.channel_url,
-                class: 'btn btn-sm btn-dark btn--with-icon font-weight-bold pl-2 text-left',
+                class: 'btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold pl-2 text-left text-truncate',
                 target: '_blank',
                 rel: 'noopener noreferrer' do %>
       <%= svg_icon_tag :twitch, class: 'mr-1' %>
-      Twitch
+      <%= twitch_channel.name %>
     <% end %>
-    <div class="btn-group btn-group-sm" role="group">
-      <button id="socials-desktop" type="button" class="btn btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
-      </button>
-      <div class="dropdown-menu" aria-labelledby="socials-desktop">
-        <% twitch_channels.decorate.each do |twitch_channel| %>
-          <%= link_to twitch_channel.name,
-                      twitch_channel.channel_url,
-                      class: 'dropdown-item',
-                      target: '_blank',
-                      rel: 'noopener noreferrer' %>
-        <% end %>
-      </div>
-    </div>
-  </div>
 
-<% elsif twitch_channels.count > 0 %>
-
-  <% twitch_channel = twitch_channels.first.decorate %>
-  <%= link_to twitch_channel.channel_url,
-              class: 'btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold pl-2 text-left text-truncate',
-              target: '_blank',
-              rel: 'noopener noreferrer' do %>
-    <%= svg_icon_tag :twitch, class: 'mr-1' %>
-    <%= twitch_channel.name %>
   <% end %>
-
 <% end %>
 
 <%# YOUTUBE %>
 
-<% if you_tube_channels.count > 1 %>
+<% if defined?(you_tube_channels) %>
+  <% if you_tube_channels.count > 1 %>
 
-  <div class="btn-group btn-group-sm w-50">
+    <div class="btn-group btn-group-sm w-50">
+      <% you_tube_channel = you_tube_channels.first.decorate %>
+      <%= link_to you_tube_channel.channel_url,
+                  class: 'btn btn-sm btn-dark btn--with-icon font-weight-bold pl-2 text-left',
+                  target: '_blank',
+                  rel: 'noopener noreferrer' do %>
+        <%= svg_icon_tag :yt, class: 'mr-1' %>
+        YouTube
+      <% end %>
+      <div class="btn-group btn-group-sm" role="group">
+        <button id="socials-desktop" type="button" class="btn btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
+        </button>
+        <div class="dropdown-menu" aria-labelledby="socials-desktop">
+          <% you_tube_channels.decorate.each do |you_tube_channel| %>
+            <%= link_to you_tube_channel.name,
+                        you_tube_channel.channel_url,
+                        class: 'dropdown-item',
+                        target: '_blank',
+                        rel: 'noopener noreferrer' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+  <% elsif you_tube_channels.count > 0 %>
+
     <% you_tube_channel = you_tube_channels.first.decorate %>
     <%= link_to you_tube_channel.channel_url,
-                class: 'btn btn-sm btn-dark btn--with-icon font-weight-bold pl-2 text-left',
+                class: 'btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold pl-2 text-left text-truncate',
                 target: '_blank',
                 rel: 'noopener noreferrer' do %>
       <%= svg_icon_tag :yt, class: 'mr-1' %>
-      YouTube
+      <%= you_tube_channel.name %>
     <% end %>
-    <div class="btn-group btn-group-sm" role="group">
-      <button id="socials-desktop" type="button" class="btn btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
-      </button>
-      <div class="dropdown-menu" aria-labelledby="socials-desktop">
-        <% you_tube_channels.decorate.each do |you_tube_channel| %>
-          <%= link_to you_tube_channel.name,
-                      you_tube_channel.channel_url,
-                      class: 'dropdown-item',
-                      target: '_blank',
-                      rel: 'noopener noreferrer' %>
-        <% end %>
-      </div>
-    </div>
-  </div>
 
-<% elsif you_tube_channels.count > 0 %>
-
-  <% you_tube_channel = you_tube_channels.first.decorate %>
-  <%= link_to you_tube_channel.channel_url,
-              class: 'btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold pl-2 text-left text-truncate',
-              target: '_blank',
-              rel: 'noopener noreferrer' do %>
-    <%= svg_icon_tag :yt, class: 'mr-1' %>
-    <%= you_tube_channel.name %>
   <% end %>
-
 <% end %>

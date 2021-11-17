@@ -382,14 +382,16 @@ class User < ApplicationRecord
       result << {
         name: main_locality,
         latitude: main_latitude,
-        longitude: main_longitude
+        longitude: main_longitude,
+        countrycode: main_countrycode
       }
     end
     if secondary_latitude
       result << {
         name: secondary_locality,
         latitude: secondary_latitude,
-        longitude: secondary_longitude
+        longitude: secondary_longitude,
+        countrycode: secondary_countrycode
       }
     end
     result
