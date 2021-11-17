@@ -383,6 +383,14 @@
         display: block;
       }
 
+      @include media-breakpoint-down(sm) {
+        .nav-item:not(.dropdown) {
+          span {
+            @include sr-only();
+          }
+        }
+      }
+
       @include media-breakpoint-up(sm) {
         .dropdown-item-text.current-user-name {
           display: none;
