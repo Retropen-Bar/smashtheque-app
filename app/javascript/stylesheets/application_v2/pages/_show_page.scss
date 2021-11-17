@@ -48,7 +48,9 @@
     &-content {
       display: grid;
       grid-template-columns: auto 1fr;
+      grid-template-rows: auto;
       grid-auto-columns: 1fr;
+      grid-auto-rows: 1fr;
       gap: 0.5rem 0;
       padding: $card-spacer-x / 1.5 $card-spacer-x;
 
@@ -118,16 +120,15 @@
     align-self: flex-start;
     @include badge-variant($gray-dark);
 
-    & ~ .show-page-main-info {
-      grid-row: span 2;
-
-      @include media-breakpoint-up(md) {
-        grid-row: span 1;
+    & ~ {
+      .show-page-main-info,
+      .show-page-side {
+        grid-row: span 2;
       }
     }
 
     & ~ .show-page-avatar {
-      --avatar-min-width: 100px;
+      --avatar-min-width: var(--avatar-width);
       --avatar-y-shift: 0.5;
       --avatar-x-shift: 0.5;
 
@@ -227,6 +228,19 @@
     @include media-breakpoint-up(lg) {
       margin: (-$card-spacer-x) (-$card-spacer-x) (-$card-spacer-x) 0;
       padding: $card-spacer-x $card-spacer-x $card-spacer-x $card-spacer-x * 2.5;
+    }
+
+    &-links {
+      max-width: calc(100% - #{$card-spacer-x} - #{$card-spacer-x * 2.5});
+    }
+
+    &-link {
+      max-width: 100%;
+      min-width: 200px;
+
+      .dropdown-toggle-split {
+        border-left: 1px solid;
+      }
     }
 
     .list-characters-compact {
