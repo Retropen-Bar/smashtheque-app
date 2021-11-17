@@ -168,6 +168,16 @@ class RecurringTournament < ApplicationRecord
 
   scope :by_discord_guild_id, ->(v) { where(discord_guild_id: v) }
 
+  def self.by_events_count_geq(val)
+    where(
+      id: left_joins(
+        :tournament_events, :duo_tournament_events
+      ).group(:id).having(
+        'COUNT(*) >= ?', val
+      ).select(:id)
+    )
+  end
+
   def self.by_discord_guild_discord_id(discord_id)
     by_discord_guild_id(DiscordGuild.by_discord_id(discord_id).select(:id))
   end
