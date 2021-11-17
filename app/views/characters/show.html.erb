@@ -39,12 +39,16 @@ end
             <div class="show-page-side-links list-y flex-column">
               <%= render  'shared/page_side_links',
                           record: character,
+                          twitch_channels: character.twitch_channels,
+                          you_tube_channels: character.you_tube_channels,
                           discord_guilds: character.discord_guilds %>
             </div>
           </div>
           <div class="show-page-socials bg-layout bg-md-layout-dark d-md-none">
             <%= render  'shared/page_socials_links',
                         record: character,
+                        twitch_channels: character.twitch_channels,
+                        you_tube_channels: character.you_tube_channels,
                         discord_guilds: character.discord_guilds %>
           </div>
         </div>
