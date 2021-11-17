@@ -164,7 +164,7 @@ class Team < ApplicationRecord
   # def self.ranked_offline_in(year)
   #   where(id: TrackRecord.offline.on_year(year).by_tracked_type(self).select(:tracked_id))
   # end
-    
+
   def points_online_all_time
     track_records.online.all_time.sum(:points)
   end
@@ -196,6 +196,22 @@ class Team < ApplicationRecord
   # def rank_offline_in(year)
   #   track_records.offline.on_year(year).first&.rank
   # end
+
+  def best_met_reward_condition_online_all_time
+    track_records.online.all_time.order(:best_reward_level1, :best_reward_level2).last&.best_met_reward_condition
+  end
+
+  def best_met_reward_condition_online_in(year)
+    track_records.online.on_year(year).order(:best_reward_level1, :best_reward_level2).last&.best_met_reward_condition
+  end
+
+  def best_met_reward_condition_offline_all_time
+    track_records.offline.all_time.order(:best_reward_level1, :best_reward_level2).last&.best_met_reward_condition
+  end
+
+  def best_met_reward_condition_offline_in(year)
+    track_records.offline.on_year(year).order(:best_reward_level1, :best_reward_level2).last&.best_met_reward_condition
+  end
 
   # ---------------------------------------------------------------------------
   # global search
