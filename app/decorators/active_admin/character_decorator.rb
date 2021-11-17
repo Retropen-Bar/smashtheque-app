@@ -38,5 +38,40 @@ module ActiveAdmin
 
       h.tag.span model.background_color, style: "color: #{model.background_color}"
     end
+
+    def first_character_admin_link(options = {})
+      character_admin_link Character.first_character, options
+    end
+
+    def previous_character_admin_link(options = {})
+      character_admin_link previous_character, options
+    end
+
+    def next_character_admin_link(options = {})
+      character_admin_link next_character, options
+    end
+
+    def last_character_admin_link(options = {})
+      character_admin_link Character.last_character, options
+    end
+
+    def characters_nav_links(options = {})
+      [
+        first_character_admin_link({ label: '⇤' }.merge(options)),
+        previous_character_admin_link({ label: '←' }.merge(options)),
+        next_character_admin_link({ label: '→' }.merge(options)),
+        last_character_admin_link({ label: '⇥' }.merge(options))
+      ].join(' ').html_safe
+    end
+
+    private
+
+    def character_admin_link(character, options = {})
+      if character
+        character.admin_decorate.admin_link(options)
+      else
+        h.link_to options[:label], '#', class: 'disabled'
+      end
+    end
   end
 end

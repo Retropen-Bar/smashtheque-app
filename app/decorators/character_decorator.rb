@@ -110,4 +110,34 @@ class CharacterDecorator < BaseDecorator
       )
     end
   end
+
+  def first_character_link(options = {})
+    character_link Character.first_character, options
+  end
+
+  def previous_character_link(options = {})
+    character_link previous_character, options
+  end
+
+  def next_character_link(options = {})
+    character_link next_character, options
+  end
+
+  def last_character_link(options = {})
+    character_link Character.last_character, options
+  end
+
+  private
+
+  def character_link(character, options = {})
+    if character
+      character.decorate.link(options)
+    else
+      options[:class] = [
+        options[:class],
+        :disabled
+      ].reject(&:blank?).join(' ')
+      h.link_to options[:label], '#', options
+    end
+  end
 end
