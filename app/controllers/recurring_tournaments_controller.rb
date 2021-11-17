@@ -5,10 +5,12 @@ class RecurringTournamentsController < PublicController
   before_action :verify_recurring_tournament!, only: %w[edit update]
   decorates_assigned :recurring_tournament
 
+  has_scope :by_community_id
   has_scope :by_level_in, type: :array
   has_scope :by_size_geq
   has_scope :by_size_leq
   has_scope :by_is_online
+  has_scope :by_events_count_geq
   has_scope :administrated_by
   has_scope :page, default: 1
   has_scope :per
@@ -31,7 +33,9 @@ class RecurringTournamentsController < PublicController
   def index_html
     @recurring_tournaments = apply_scopes(
       RecurringTournament.visible.order('lower(name)')
-    ).includes(:discord_guild).all
+    )
+    @recurring_tournaments = @recurring_tournaments.recurring.not_archived if @map
+    @recurring_tournaments = @recurring_tournaments.includes(:discord_guild).all
     @meta_title = 'Tournois'
   end
 

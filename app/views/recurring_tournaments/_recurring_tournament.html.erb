@@ -2,7 +2,7 @@
   <div class="card-body">
     <div class="recurring-tournament-tournament-events-count">
       <%= fas_icon_tag :chess %>
-      <%= recurring_tournament.tournament_events_count %>
+      <%= recurring_tournament.all_events_count %>
     </div>
     <%= link_to(recurring_tournament, class: 'recurring-tournament-link') do %>
       <%= recurring_tournament.any_image_tag(max_width: 64, max_height: 64) %>

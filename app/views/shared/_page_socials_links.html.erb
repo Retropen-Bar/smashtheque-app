@@ -1,0 +1,40 @@
+<% if discord_guilds.count > 1 %>
+
+  <div class="btn-group dropleft">
+    <%= link_to '#',
+                class: 'btn btn-sm btn-dark rounded-pill dropdown-toggle',
+                id: 'socials-mobile',
+                data: { toggle: :dropdown },
+                aria: { expanded: :false } do %>
+      <%= svg_icon_tag :discord, class: "ml-1" %>
+      <span class="sr-only">Discord</span>
+    <% end %>
+    <div class="dropdown-menu" aria-labelledby="socials-mobile">
+      <% discord_guilds.decorate.each do |discord_guild| %>
+        <%= link_to discord_guild.name_or_id,
+                    discord_guild.invitation_url,
+                    class: 'dropdown-item',
+                    target: '_blank',
+                    rel: 'noopener noreferrer' %>
+      <% end %>
+    </div>
+  </div>
+
+<% elsif discord_guilds.count > 0 %>
+
+  <% discord_guild = discord_guilds.first.decorate %>
+  <%= link_to discord_guild.invitation_url, target: '_blank', rel: 'noopener noreferrer' do %>
+    <%= svg_icon_tag :discord %>
+    <span class="sr-only">Discord</span>
+  <% end %>
+
+<% end %>
+
+<% if record.respond_to?(:twitter_username) && !record.twitter_username.blank? %>
+  <%= link_to record.twitter_url,
+              target: '_blank',
+              rel: 'noopener noreferrer' do %>
+    <%= svg_icon_tag :twitter %>
+    <span class="sr-only">Twitter</span>
+  <% end %>
+<% end %>

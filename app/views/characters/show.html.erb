@@ -31,28 +31,19 @@ end
             <h1 class="show-page-title card-title">
               <%= @character.name.titleize  %>
             </h1>
-            <% if character.origin %>
+            <% unless character.origin.blank? %>
               <p class="mt-0 mb-0"><%= character.origin %></p>
             <% end %>
           </div>
           <div class="show-page-side flex-column list-y">
-            <% character.discord_guilds.each do |discord_guild| %>
-              <%= link_to discord_guild.invitation_url,
-                          class: 'btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold pl-4 text-left',
-                          target: '_blank',
-                          rel: 'noopener noreferrer' do %>
-                <%= svg_icon_tag :discord, class: 'mr-4' %>
-                Discord
-              <% end %>
-            <% end %>
+            <%= render  'shared/page_side_links',
+                        record: character,
+                        discord_guilds: character.discord_guilds %>
           </div>
           <div class="show-page-socials bg-layout bg-md-layout-dark d-md-none">
-            <% character.discord_guilds.each do |discord_guild| %>
-              <%= link_to discord_guild.invitation_url, target: '_blank', rel: 'noopener noreferrer' do %>
-                <%= svg_icon_tag :discord %>
-                <span class="sr-only">Discord</span>
-              <% end %>
-            <% end %>
+            <%= render  'shared/page_socials_links',
+                        record: character,
+                        discord_guilds: character.discord_guilds %>
           </div>
         </div>
       </div>
@@ -100,7 +91,7 @@ end
             </section>
             <section id="top-5" class="show-page-section">
               <div class="show-page-section-title flex-wrap">
-                <h2>Top 5</h2>
+                <h2>Top 5 francophone</h2>
                 <span class="show-page-section-title-separator mr-3"></span>
                 <ul class="nav nav-pills nav-tabs mb-0" id="top-5-tablist" role="tablist">
                   <li class="nav-item" role="presentation">
@@ -123,26 +114,52 @@ end
               <div class="tab-content p-0 mt-3">
                 <div class="tab-pane active" id="online-top-5"
                       role="tabpanel" aria-labelledby="online-top-5-tab">
-                  <div class="list">
-                    <% @online_top_5_players&.each do |player| %>
-                      <%= render 'players/player_v2',
-                                player: player.decorate,
-                                is_online: true,
-                                with_points: true,
-                                with_rank: true %>
-                    <% end %>
-                  </div>
+                  <% if @online_top_5_players.any? %>
+                    <div class="list">
+                      <% @online_top_5_players.each do |player| %>
+                        <%= render  'players/player_v2',
+                                    player: player.decorate,
+                                    is_online: true,
+                                    with_points: true,
+                                    with_rank: true %>
+                      <% end %>
+                    </div>
+                    <div class="text-right mt-3">
+                      <%= link_to 'Voir tout',
+                                  ranking_players_path(
+                                    is_online: 1,
+                                    by_character_id: character.id,
+                                    by_character_id_mains_only: 1                                    
+                                  ),
+                                  class: 'btn btn-sm bg-layout rounded-pill' %>
+                    </div>
+                  <% else %>
+                    -
+                  <% end %>
                 </div>
                 <div class="tab-pane" id="offline-top-5"
                       role="tabpanel" aria-labelledby="offline-top-5-tab">
-                  <div class="list">
-                    <% @offline_top_5_players&.each do |player| %>
-                      <%= render 'players/player_v2',
-                                player: player.decorate,
-                                with_points: true,
-                                with_rank: true %>
-                    <% end %>
-                  </div>
+                  <% if @offline_top_5_players.any? %>
+                    <div class="list">
+                      <% @offline_top_5_players.each do |player| %>
+                        <%= render  'players/player_v2',
+                                    player: player.decorate,
+                                    with_points: true,
+                                    with_rank: true %>
+                      <% end %>
+                    </div>
+                    <div class="text-right mt-3">
+                      <%= link_to 'Voir tout',
+                                  ranking_players_path(
+                                    is_online: 0,
+                                    by_character_id: character.id,
+                                    by_character_id_mains_only: 1                                    
+                                  ),
+                                  class: 'btn btn-sm bg-layout rounded-pill' %>
+                    </div>
+                  <% else %>
+                    -
+                  <% end %>
                 </div>
               </div>
             </section>
@@ -157,23 +174,27 @@ end
                 <%= render 'characters/useful_links' %>
               </div>
             </section>
-            <section id="youtube" class="show-page-section mt-4">
+            <section id="youtube" class="show-page-section <%= 'mt-4' if @has_usesul_links %>">
               <div class="show-page-section-title">
                 <h2><%= svg_icon_tag :yt %> Youtube</h2>
                 <span class="show-page-section-title-separator"></span>
               </div>
               <div class="show-page-section-body">
-                <ul class="list-y list-unstyled text-center mb-0">
-                  <% character.you_tube_channels.each do |you_tube_channel| %>
-                    <li>
-                      <%= link_to you_tube_channel.name,
-                                  you_tube_channel.decorate.channel_url,
-                                  class: 'list-row',
-                                  target: '_blank',
-                                  rel: 'noopener noreferrer' %>
-                    </li>
-                  <% end %>
-                </ul>
+                <% if @you_tube_channels.any? %>
+                  <ul class="list-y list-unstyled text-center mb-0">
+                    <% @you_tube_channels.each do |you_tube_channel| %>
+                      <li>
+                        <%= link_to you_tube_channel.name,
+                                    you_tube_channel.decorate.channel_url,
+                                    class: 'list-row',
+                                    target: '_blank',
+                                    rel: 'noopener noreferrer' %>
+                      </li>
+                    <% end %>
+                  </ul>
+                <% else %>
+                  -
+                <% end %>
               </div>
             </section>
             <section id="twitch" class="show-page-section mt-4">
@@ -182,17 +203,21 @@ end
                 <span class="show-page-section-title-separator"></span>
               </div>
               <div class="show-page-section-body">
-                <ul class="list-y list-unstyled text-center mb-0">
-                  <% character.twitch_channels.each do |twitch_channel| %>
-                    <li>
-                      <%= link_to twitch_channel.name,
-                                  twitch_channel.decorate.channel_url,
-                                  class: 'list-row',
-                                  target: '_blank',
-                                  rel: 'noopener noreferrer' %>
-                    </li>
-                  <% end %>
-                </ul>
+                <% if @twitch_channels.any? %>
+                  <ul class="list-y list-unstyled text-center mb-0">
+                    <% @twitch_channels.each do |twitch_channel| %>
+                      <li>
+                        <%= link_to twitch_channel.name,
+                                    twitch_channel.decorate.channel_url,
+                                    class: 'list-row',
+                                    target: '_blank',
+                                    rel: 'noopener noreferrer' %>
+                      </li>
+                    <% end %>
+                  </ul>
+                <% else %>
+                  -
+                <% end %>
               </div>
             </section>
           </div>

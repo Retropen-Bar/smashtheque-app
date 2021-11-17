@@ -1,5 +1,5 @@
 <div class="list-x list-x--row list-x--lg">
-  <% if character.nintendo_url %>
+  <% unless character.nintendo_url.blank? %>
     <div class="card card-box card-box--square card-box--link">
       <div class="card-body bg-dark">
         <div class="card-content">
@@ -12,7 +12,7 @@
       </div>
     </div>
   <% end %>
-  <% if character.ultimateframedata_url %>
+  <% unless character.ultimateframedata_url.blank? %>
     <div class="card card-box card-box--square card-box--link">
       <div class="card-body bg-dark">
         <div class="card-content">
@@ -25,7 +25,7 @@
       </div>
     </div>
   <% end %>
-  <% if character.smashprotips_url %>
+  <% unless character.smashprotips_url.blank? %>
     <div class="card card-box card-box--square card-box--link">
       <div class="card-body bg-dark">
         <div class="card-content">

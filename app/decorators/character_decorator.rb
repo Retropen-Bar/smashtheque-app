@@ -58,7 +58,7 @@ class CharacterDecorator < BaseDecorator
   end
 
   def as_autocomplete_result
-    h.tag.div class: 'character' do
+    h.tag.div do
       (
         h.tag.div class: :emoji do
           emoji_image_tag
@@ -72,10 +72,7 @@ class CharacterDecorator < BaseDecorator
   end
 
   def link(options = {})
-    super({
-      url: players_path(by_character_id: id),
-      label: emoji_image_tag
-    }.merge(options))
+    super({ label: emoji_image_tag }.merge(options))
   end
 
   def nintendo_link(options = {})
@@ -111,6 +108,36 @@ class CharacterDecorator < BaseDecorator
       ) + ' ' + (
         smashprotips_url
       )
+    end
+  end
+
+  def first_character_link(options = {})
+    character_link Character.first_character, options
+  end
+
+  def previous_character_link(options = {})
+    character_link previous_character, options
+  end
+
+  def next_character_link(options = {})
+    character_link next_character, options
+  end
+
+  def last_character_link(options = {})
+    character_link Character.last_character, options
+  end
+
+  private
+
+  def character_link(character, options = {})
+    if character
+      character.decorate.link(options)
+    else
+      options[:class] = [
+        options[:class],
+        :disabled
+      ].reject(&:blank?).join(' ')
+      h.link_to options[:label], '#', options
     end
   end
 end

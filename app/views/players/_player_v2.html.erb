@@ -40,7 +40,7 @@
       <% if player.characters.present? %>
         <div class="list-characters-compact flex-shrink-0">
           <% player.characters[0...3].each do |character| %>
-          <%= character.decorate.link %>
+            <%= character.decorate.link %>
           <% end %>
         </div>
       <% end %>

@@ -1,6 +1,12 @@
 ActiveAdmin.register Character do
   decorate_with ActiveAdmin::CharacterDecorator
 
+  sidebar 'Autres persos', only: :show do
+    div class: 'characters-nav-links' do
+      resource.characters_nav_links
+    end
+  end
+
   has_paper_trail
 
   menu label: '<i class="fas fa-fw fa-gamepad"></i>Persos'.html_safe,
@@ -12,9 +18,12 @@ ActiveAdmin.register Character do
 
   includes :discord_guilds
 
+  config.sort_order = 'official_number_asc'
+
   index do
     selectable_column
     id_column
+    column :official_number
     column :name do |decorated|
       decorated.admin_link
     end
@@ -49,6 +58,7 @@ ActiveAdmin.register Character do
     f.inputs do
       f.input :emoji
       f.input :icon
+      f.input :official_number
       f.input :name
       f.input :other_names,
               multiple: true,
@@ -77,7 +87,7 @@ ActiveAdmin.register Character do
     f.actions
   end
 
-  permit_params :icon, :name, :emoji,
+  permit_params :icon, :name, :emoji, :official_number,
                 :origin, :background_color, :background_image, :background_size,
                 :nintendo_url, :ultimateframedata_url, :smashprotips_url,
                 other_names: []
@@ -90,6 +100,7 @@ ActiveAdmin.register Character do
     attributes_table do
       row :emoji, &:emoji_image_tag
       row :icon
+      row :official_number
       row :name
       row :other_names
       row :origin

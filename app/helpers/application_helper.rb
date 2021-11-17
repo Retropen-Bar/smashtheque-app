@@ -21,8 +21,8 @@ module ApplicationHelper
     end
   end
 
-  def current_class?(path)
-    return ' active' if request.path == path
+  def current_class?(path_prefix)
+    return ' active' if request.path.starts_with?(path_prefix)
     ''
   end
 
@@ -40,7 +40,8 @@ module ApplicationHelper
   end
 
   def url_with(changes)
-    url_for(current_page_params.merge(changes))
+    page_params = defined?(current_page_params) ? current_page_params : {}
+    url_for(page_params.merge(changes))
   end
 
   def hex_color_to_rgba(hex, opacity)

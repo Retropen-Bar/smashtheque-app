@@ -1,0 +1,48 @@
+<% if discord_guilds.count > 1 %>
+
+  <div class="btn-group btn-group-sm w-50">
+    <% discord_guild = discord_guilds.first.decorate %>
+    <%= link_to discord_guild.invitation_url,
+                class: 'btn btn-sm btn-dark btn--with-icon font-weight-bold pl-2 text-left',
+                target: '_blank',
+                rel: 'noopener noreferrer' do %>
+      <%= svg_icon_tag :discord, class: 'mr-1' %>
+      Discord
+    <% end %>
+    <div class="btn-group btn-group-sm" role="group">
+      <button id="socials-desktop" type="button" class="btn btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
+      </button>
+      <div class="dropdown-menu" aria-labelledby="socials-desktop">
+        <% discord_guilds.decorate.each do |discord_guild| %>
+          <%= link_to discord_guild.name_or_id,
+                      discord_guild.invitation_url,
+                      class: 'dropdown-item',
+                      target: '_blank',
+                      rel: 'noopener noreferrer' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+<% elsif discord_guilds.count > 0 %>
+
+  <% discord_guild = discord_guilds.first.decorate %>
+  <%= link_to discord_guild.invitation_url,
+              class: 'btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold pl-2 text-left text-truncate',
+              target: '_blank',
+              rel: 'noopener noreferrer' do %>
+    <%= svg_icon_tag :discord, class: 'mr-1' %>
+    <%= discord_guild.name_or_id %>
+  <% end %>
+
+<% end %>
+
+<% if record.respond_to?(:twitter_username) && !record.twitter_username.blank? %>
+  <%= link_to record.twitter_url,
+              class: 'btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold pl-2 text-left text-truncate',
+              target: '_blank',
+              rel: 'noopener noreferrer' do %>
+    <%= svg_icon_tag :twitter, class: 'mr-1' %>
+    <%= record.twitter_name %>
+  <% end %>
+<% end %>
