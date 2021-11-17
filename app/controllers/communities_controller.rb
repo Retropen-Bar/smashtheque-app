@@ -35,5 +35,7 @@ class CommunitiesController < PublicController
     @community_recurring_tournaments.sort_by! { |recurring_tournament| recurring_tournament.all_events.count }
 
     @community_tos = @community_recurring_tournaments.map(&:contacts).flatten.uniq
+
+    @community_admins = @community.admins.to_a
   end
 end

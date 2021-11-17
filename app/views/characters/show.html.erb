@@ -114,26 +114,34 @@ end
               <div class="tab-content p-0 mt-3">
                 <div class="tab-pane active" id="online-top-5"
                       role="tabpanel" aria-labelledby="online-top-5-tab">
-                  <div class="list">
-                    <% @online_top_5_players&.each do |player| %>
-                      <%= render  'players/player_v2',
-                                  player: player.decorate,
-                                  is_online: true,
-                                  with_points: true,
-                                  with_rank: true %>
-                    <% end %>
-                  </div>
+                  <% if @online_top_5_players.any? %>
+                    <div class="list">
+                      <% @online_top_5_players.each do |player| %>
+                        <%= render  'players/player_v2',
+                                    player: player.decorate,
+                                    is_online: true,
+                                    with_points: true,
+                                    with_rank: true %>
+                      <% end %>
+                    </div>
+                  <% else %>
+                    -
+                  <% end %>
                 </div>
                 <div class="tab-pane" id="offline-top-5"
                       role="tabpanel" aria-labelledby="offline-top-5-tab">
-                  <div class="list">
-                    <% @offline_top_5_players&.each do |player| %>
-                      <%= render  'players/player_v2',
-                                  player: player.decorate,
-                                  with_points: true,
-                                  with_rank: true %>
-                    <% end %>
-                  </div>
+                  <% if @offline_top_5_players.any? %>
+                    <div class="list">
+                      <% @offline_top_5_players.each do |player| %>
+                        <%= render  'players/player_v2',
+                                    player: player.decorate,
+                                    with_points: true,
+                                    with_rank: true %>
+                      <% end %>
+                    </div>
+                  <% else %>
+                    -
+                  <% end %>
                 </div>
               </div>
             </section>
@@ -148,23 +156,27 @@ end
                 <%= render 'characters/useful_links' %>
               </div>
             </section>
-            <section id="youtube" class="show-page-section mt-4">
+            <section id="youtube" class="show-page-section <%= 'mt-4' if @has_usesul_links %>">
               <div class="show-page-section-title">
                 <h2><%= svg_icon_tag :yt %> Youtube</h2>
                 <span class="show-page-section-title-separator"></span>
               </div>
               <div class="show-page-section-body">
-                <ul class="list-y list-unstyled text-center mb-0">
-                  <% character.you_tube_channels.each do |you_tube_channel| %>
-                    <li>
-                      <%= link_to you_tube_channel.name,
-                                  you_tube_channel.decorate.channel_url,
-                                  class: 'list-row',
-                                  target: '_blank',
-                                  rel: 'noopener noreferrer' %>
-                    </li>
-                  <% end %>
-                </ul>
+                <% if @you_tube_channels.any? %>
+                  <ul class="list-y list-unstyled text-center mb-0">
+                    <% @you_tube_channels.each do |you_tube_channel| %>
+                      <li>
+                        <%= link_to you_tube_channel.name,
+                                    you_tube_channel.decorate.channel_url,
+                                    class: 'list-row',
+                                    target: '_blank',
+                                    rel: 'noopener noreferrer' %>
+                      </li>
+                    <% end %>
+                  </ul>
+                <% else %>
+                  -
+                <% end %>
               </div>
             </section>
             <section id="twitch" class="show-page-section mt-4">
@@ -173,17 +185,21 @@ end
                 <span class="show-page-section-title-separator"></span>
               </div>
               <div class="show-page-section-body">
-                <ul class="list-y list-unstyled text-center mb-0">
-                  <% character.twitch_channels.each do |twitch_channel| %>
-                    <li>
-                      <%= link_to twitch_channel.name,
-                                  twitch_channel.decorate.channel_url,
-                                  class: 'list-row',
-                                  target: '_blank',
-                                  rel: 'noopener noreferrer' %>
-                    </li>
-                  <% end %>
-                </ul>
+                <% if @twitch_channels.any? %>
+                  <ul class="list-y list-unstyled text-center mb-0">
+                    <% @twitch_channels.each do |twitch_channel| %>
+                      <li>
+                        <%= link_to twitch_channel.name,
+                                    twitch_channel.decorate.channel_url,
+                                    class: 'list-row',
+                                    target: '_blank',
+                                    rel: 'noopener noreferrer' %>
+                      </li>
+                    <% end %>
+                  </ul>
+                <% else %>
+                  -
+                <% end %>
               </div>
             </section>
           </div>

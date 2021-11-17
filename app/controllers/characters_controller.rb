@@ -23,5 +23,12 @@ class CharactersController < PublicController
       Player.ranked_offline.with_track_records_offline_all_time.by_main_character_id(@character.id).order(
         :rank_offline_all_time
       ).limit(5)
+
+    @has_usesul_links = (
+      @character.nintendo_url || @character.ultimateframedata_url || @character.smashprotips_url
+    ).present?
+
+    @you_tube_channels = @character.you_tube_channels.to_a
+    @twitch_channels = @character.twitch_channels.to_a
   end
 end

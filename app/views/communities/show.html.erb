@@ -71,79 +71,95 @@
                 <span class="show-page-section-title-separator mr-3"></span>
               </div>
               <div class="show-page-section-body mt-3">
-                <div class="list">
-                  <% @offline_top_8_players&.each do |player| %>
-                    <%= render  'players/player_v2',
-                                player: player.decorate,
-                                is_online: false,
-                                with_points: true,
-                                with_rank: true %>
-                  <% end %>
-                </div>
+                <% if @offline_top_8_players.any? %>
+                  <div class="list">
+                    <% @offline_top_8_players.each do |player| %>
+                      <%= render  'players/player_v2',
+                                  player: player.decorate,
+                                  is_online: false,
+                                  with_points: true,
+                                  with_rank: true %>
+                    <% end %>
+                  </div>
+                <% else %>
+                  -
+                <% end %>
               </div>
             </section>
           </div>
           <div class="col-lg-6">
             <section id="tournois-reguliers" class="show-page-section mt-4 mt-md-0">
               <div class="show-page-section-title">
-                <h2>Séries de tournois réguliers</h2>
+                <h2>Tournois réguliers</h2>
                 <span class="show-page-section-title-separator"></span>
               </div>
               <div class="show-page-section-body mt-3">
-                <div class="list">
-                  <% @community_recurring_tournaments.first(3).each do |recurring_tournament| %>
-                    <%= render  'recurring_tournaments/recurring_tournament_v2',
-                                recurring_tournament: recurring_tournament.decorate %>
-                  <% end %>
-                </div>
-                <% if @community_recurring_tournaments.count > 3 %>
-                  <div class="text-right mt-3">
-                    <%= link_to 'Voir plus',
-                                recurring_tournaments_path(by_community_id: community.id),
-                                class: 'btn btn-sm bg-layout rounded-pill' %>
+                <% if @community_recurring_tournaments.any? %>
+                  <div class="list">
+                    <% @community_recurring_tournaments.first(3).each do |recurring_tournament| %>
+                      <%= render  'recurring_tournaments/recurring_tournament_v2',
+                                  recurring_tournament: recurring_tournament.decorate %>
+                    <% end %>
                   </div>
+                  <% if @community_recurring_tournaments.count > 3 %>
+                    <div class="text-right mt-3">
+                      <%= link_to 'Voir plus',
+                                  recurring_tournaments_path(by_community_id: community.id),
+                                  class: 'btn btn-sm bg-layout rounded-pill' %>
+                    </div>
+                  <% end %>
+                <% else %>
+                  -
                 <% end %>
               </div>
             </section>
             <section id="TO" class="show-page-section mt-4">
               <div class="show-page-section-title">
-                <h2>Les TOs</h2>
+                <h2>TOs</h2>
                 <span class="show-page-section-title-separator"></span>
               </div>
               <div class="show-page-section-body mt-3">
-                <div class="list">
-                  <% @community_tos.first(3).each do |user| %>
-                    <% if player = user.player %>
-                      <%= render 'players/player_v2', player: player.decorate, with_roles: true %>
-                    <% else %>
-                      <%= render 'users/user', user: user.decorate %>
+                <% if @community_tos.any? %>
+                  <div class="list">
+                    <% @community_tos.first(3).each do |user| %>
+                      <% if player = user.player %>
+                        <%= render 'players/player_v2', player: player.decorate, with_roles: true %>
+                      <% else %>
+                        <%= render 'users/user', user: user.decorate %>
+                      <% end %>
                     <% end %>
-                  <% end %>
-                </div>
-                <% if @community_tos.count > 3 %>
-                  <div class="text-right mt-3">
-                    <%= link_to 'Voir plus',
-                                contacts_recurring_tournaments_path(by_community_id: community.id),
-                                class: 'btn btn-sm bg-layout rounded-pill' %>
                   </div>
+                  <% if @community_tos.count > 3 %>
+                    <div class="text-right mt-3">
+                      <%= link_to 'Voir plus',
+                                  contacts_recurring_tournaments_path(by_community_id: community.id),
+                                  class: 'btn btn-sm bg-layout rounded-pill' %>
+                    </div>
+                  <% end %>
+                <% else %>
+                  -
                 <% end %>
               </div>
             </section>
             <section id="admins-locaux" class="show-page-section mt-4">
               <div class="show-page-section-title">
-                <h2>Les représentants locaux</h2>
+                <h2>Représentants locaux</h2>
                 <span class="show-page-section-title-separator"></span>
               </div>
               <div class="show-page-section-body mt-3">
-                <div class="list">
-                  <% community.admins.each do |user| %>
-                    <% if player = user.player %>
-                      <%= render 'players/player_v2', player: player.decorate, with_roles: true %>
-                    <% else %>
-                      <%= render 'users/user', user: user.decorate %>
+                <% if @community_admins.any? %>
+                  <div class="list">
+                    <% community.admins.each do |user| %>
+                      <% if player = user.player %>
+                        <%= render 'players/player_v2', player: player.decorate, with_roles: true %>
+                      <% else %>
+                        <%= render 'users/user', user: user.decorate %>
+                      <% end %>
                     <% end %>
-                  <% end %>
-                </div>
+                  </div>
+                <% else %>
+                  -
+                <% end %>
               </div>
             </section>
           </div>
