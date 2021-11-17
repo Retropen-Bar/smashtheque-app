@@ -9,7 +9,7 @@
       </div>
       <div class="modal-body">
         <ul class="list-inline list-socials">
-          <% if player.twitter_url %>
+          <% unless player.twitter_url.blank? %>
             <% 5.times do %>
               <li class="list-inline-item m-3">
                 <%= player.twitter_link label: fab_icon_tag(:twitter, %w[fa-2x]) %>

@@ -5,7 +5,7 @@
       ></div>
       <div class="show-page-header-body card justify-content-start">
         <div class="show-page-header-content card-body">
-          <% if team.website_url %>
+          <% unless team.website_url.blank? %>
             <%= link_to team.website_url,
                 class: 'show-page-meta text-body font-weight-normal py-1 badge badge-pill mx-auto',
                 target: '_blank',
@@ -24,12 +24,12 @@
             <div class="list-x mb-1">
               <%= team.badges %>
             </div>
-            <% if team.creation_year %>
+            <% unless team.creation_year.blank? %>
               <small class="text-secondary">Créée en <%= team.creation_year %></small>
             <% end %>
           </div>
           <div class="show-page-side flex-column list-y">
-            <% if team.twitter_url %>
+            <% unless team.twitter_url.blank? %>
               <%= link_to team.twitter_url,
                   class: "btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold pl-4 text-left",
                   target: "_blank",
@@ -38,7 +38,7 @@
                 Twitter
               <% end %>
             <% end %>
-            <% if team.discord_url %>
+            <% unless team.discord_url.blank? %>
               <%= link_to team.discord_url,
                   class: "btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold pl-4 text-left",
                   target: "_blank",
@@ -49,13 +49,13 @@
             <% end %>
           </div>
           <div class="show-page-socials bg-layout bg-md-layout-dark d-md-none">
-            <% if team.twitter_url %>
+            <% unless team.twitter_url.blank? %>
               <%= link_to team.twitter_url, target: "_blank", rel: "noopener noreferrer" do %>
                 <%= svg_icon_tag :twitter %>
                 <span class="sr-only">Twitter</span>
               <% end %>
             <% end %>
-            <% if team.discord_url %>
+            <% unless team.discord_url.blank? %>
               <%= link_to team.discord_url, target: "_blank", rel: "noopener noreferrer" do %>
                 <%= svg_icon_tag :discord %>
                 <span class="sr-only">Discord</span>
