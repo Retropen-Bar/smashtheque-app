@@ -10,12 +10,17 @@
 #  icon                  :string
 #  name                  :string
 #  nintendo_url          :string
+#  official_number       :string           default(""), not null
 #  origin                :string
 #  other_names           :string           default([]), is an Array
 #  smashprotips_url      :string
 #  ultimateframedata_url :string
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
+#
+# Indexes
+#
+#  index_characters_on_official_number  (official_number) UNIQUE
 #
 class Character < ApplicationRecord
   # ---------------------------------------------------------------------------
@@ -61,6 +66,8 @@ class Character < ApplicationRecord
   # SCOPES
   # ---------------------------------------------------------------------------
 
+  scope :ordered_by_official_number, -> { order(:official_number) }
+
   def self.by_emoji(emoji)
     where(emoji: emoji)
   end
@@ -71,6 +78,26 @@ class Character < ApplicationRecord
 
   def self.with_discord_guild
     where(id: DiscordGuildRelated.by_related_type(Character.to_s).select(:related_id))
+  end
+
+  # ---------------------------------------------------------------------------
+  # HELPERS
+  # ---------------------------------------------------------------------------
+
+  def self.first_character
+    ordered_by_official_number.first
+  end
+
+  def previous_character
+    self.class.where('official_number < ?', official_number).ordered_by_official_number.last
+  end
+
+  def next_character
+    self.class.where('official_number > ?', official_number).ordered_by_official_number.first
+  end
+
+  def self.last_character
+    ordered_by_official_number.last
   end
 
   # ---------------------------------------------------------------------------

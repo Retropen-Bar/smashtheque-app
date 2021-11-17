@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_15_090730) do
+ActiveRecord::Schema.define(version: 2021_11_17_162007) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -133,6 +133,8 @@ ActiveRecord::Schema.define(version: 2021_11_15_090730) do
     t.string "origin"
     t.string "nintendo_url"
     t.string "other_names", default: [], array: true
+    t.string "official_number", default: "", null: false
+    t.index ["official_number"], name: "index_characters_on_official_number", unique: true
   end
 
   create_table "characters_players", force: :cascade do |t|
