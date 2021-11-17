@@ -33,7 +33,7 @@
                       <% end %>
                     </div>
                   </div>
-                  <% if awarded&.characters&.count > 0 %>
+                  <% if awarded&.characters&.count&.positive? %>
                     <div class="list-characters-compact list-characters-compact--dark flex-shrink-0">
                       <% awarded.characters[0...3].each do |character| %>
                         <%= character.decorate.link %>
