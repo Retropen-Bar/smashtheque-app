@@ -29,38 +29,18 @@
             <% end %>
           </div>
           <div class="show-page-side flex-column list-y">
-            <% unless team.twitter_url.blank? %>
-              <%= link_to team.twitter_url,
-                  class: "btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold pl-4 text-left",
-                  target: "_blank",
-                  rel: "noopener noreferrer" do %>
-                <%= svg_icon_tag :twitter, class: 'mr-4' %>
-                Twitter
-              <% end %>
-            <% end %>
-            <% unless team.discord_url.blank? %>
-              <%= link_to team.discord_url,
-                  class: "btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold pl-4 text-left",
-                  target: "_blank",
-                  rel: "noopener noreferrer" do %>
-                <%= svg_icon_tag :discord, class: 'mr-4' %>
-                Discord
-              <% end %>
-            <% end %>
+            <%= render  'shared/page_side_links',
+                        record: team,
+                        twitch_channels: team.twitch_channels,
+                        you_tube_channels: team.you_tube_channels,
+                        discord_guilds: team.discord_guilds %>
           </div>
           <div class="show-page-socials bg-layout bg-md-layout-dark d-md-none">
-            <% unless team.twitter_url.blank? %>
-              <%= link_to team.twitter_url, target: "_blank", rel: "noopener noreferrer" do %>
-                <%= svg_icon_tag :twitter %>
-                <span class="sr-only">Twitter</span>
-              <% end %>
-            <% end %>
-            <% unless team.discord_url.blank? %>
-              <%= link_to team.discord_url, target: "_blank", rel: "noopener noreferrer" do %>
-                <%= svg_icon_tag :discord %>
-                <span class="sr-only">Discord</span>
-              <% end %>
-            <% end %>
+            <%= render  'shared/page_socials_links', 
+                        record: team,
+                        twitch_channels: team.twitch_channels,
+                        you_tube_channels: team.you_tube_channels,
+                        discord_guilds: team.discord_guilds %>
           </div>
         </div>
       </div>
