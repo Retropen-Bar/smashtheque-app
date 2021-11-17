@@ -34,7 +34,9 @@ class RecurringTournamentsController < PublicController
     @map = params[:map].to_i == 1
     @recurring_tournaments = apply_scopes(
       RecurringTournament.visible.order('lower(name)')
-    ).includes(:discord_guild).all
+    )
+    @recurring_tournaments = @recurring_tournaments.recurring.not_archived if @map
+    @recurring_tournaments = @recurring_tournaments.includes(:discord_guild).all
     @meta_title = 'Tournois'
   end
 
