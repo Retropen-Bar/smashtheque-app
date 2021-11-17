@@ -31,7 +31,7 @@
           <div class="show-page-side flex-column list-y">
             <% unless team.twitter_url.blank? %>
               <%= link_to team.twitter_url,
-                  class: "btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold pl-4 text-left",
+                  class: "show-page-side-action btn btn-sm btn-dark btn--with-icon rounded-pill font-weight-bold pl-4",
                   target: "_blank",
                   rel: "noopener noreferrer" do %>
                 <%= svg_icon_tag :twitter, class: 'mr-4' %>
@@ -40,7 +40,7 @@
             <% end %>
             <% unless team.discord_url.blank? %>
               <%= link_to team.discord_url,
-                  class: "btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold pl-4 text-left",
+                  class: "show-page-side-action btn btn-sm btn-dark btn--with-icon rounded-pill font-weight-bold pl-4",
                   target: "_blank",
                   rel: "noopener noreferrer" do %>
                 <%= svg_icon_tag :discord, class: 'mr-4' %>

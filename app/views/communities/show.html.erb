@@ -20,10 +20,12 @@
               <% end %>
             <% end %>
           </div>
-          <div class="show-page-side flex-column list-y">
-            <%= render  'shared/page_side_links',
-                        record: community,
-                        discord_guilds: community.discord_guilds %>
+          <div class="show-page-side">
+            <div class="show-page-side-links list-y flex-column">
+              <%= render  'shared/page_side_links',
+                          record: community,
+                          discord_guilds: community.discord_guilds %>
+            </div>
           </div>
           <div class="show-page-socials bg-layout bg-md-layout-dark d-flex d-md-none align-items-center">
             <%= render  'shared/page_socials_links', 

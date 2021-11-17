@@ -230,6 +230,19 @@
       padding: $card-spacer-x $card-spacer-x $card-spacer-x $card-spacer-x * 2.5;
     }
 
+    &-links {
+      max-width: calc(100% - #{$card-spacer-x} - #{$card-spacer-x * 2.5});
+    }
+
+    &-link {
+      max-width: 100%;
+      min-width: 200px;
+
+      .dropdown-toggle-split {
+        border-left: 1px solid;
+      }
+    }
+
     .list-characters-compact {
       img {
         filter: grayscale(1);
