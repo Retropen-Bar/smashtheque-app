@@ -191,7 +191,7 @@ module HasTrackRecords
       if is_online
         if year
           ranked_online_in(year).with_track_records_online_in(year).order(
-            "rank_online_in_#{year}"
+            "rank_online_in_#{year}".to_sym
           )
         else
           ranked_online.with_track_records_online_all_time.order(
@@ -200,7 +200,7 @@ module HasTrackRecords
         end
       elsif year
         ranked_offline_in(year).with_track_records_offline_in(year).order(
-          "rank_offline_in_#{year}"
+          "rank_offline_in_#{year}".to_sym
         )
       else
         ranked_offline.with_track_records_offline_all_time.order(
