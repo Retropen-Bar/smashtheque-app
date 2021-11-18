@@ -144,11 +144,11 @@ module HasTrackRecords
     end
 
     def best_reward_condition(is_online:, year: nil)
-      best_met_reward_condition(is_online: is_online, year: year).reward_condition
+      best_met_reward_condition(is_online: is_online, year: year)&.reward_condition
     end
 
     def best_reward(is_online:, year: nil)
-      best_reward_condition(is_online: is_online, year: year).reward
+      best_reward_condition(is_online: is_online, year: year)&.reward
     end
 
     def update_track_record!(is_online:, year:)
@@ -174,6 +174,11 @@ module HasTrackRecords
       end
     end
 
+    def self.update_all_track_records!
+      find_each(&:update_track_records!)
+      TrackRecord.update_all_ranks!
+    end
+
     def all_rewards(is_online:)
       if is_online
         rewards.online
@@ -185,6 +190,28 @@ module HasTrackRecords
     # returns a hash { reward_id => count }
     def rewards_counts(is_online:)
       all_rewards(is_online: is_online).ordered_by_level.group(:id).count
+    end
+
+    def self.ranking(is_online:, year: nil)
+      if is_online
+        if year
+          ranked_online_in(year).with_track_records_online_in(year).order(
+            "rank_online_in_#{year}"
+          )
+        else
+          ranked_online.with_track_records_online_all_time.order(
+            :rank_online_all_time
+          )
+        end
+      elsif year
+        ranked_offline_in(year).with_track_records_offline_in(year).order(
+          "rank_offline_in_#{year}"
+        )
+      else
+        ranked_offline.with_track_records_offline_all_time.order(
+          :rank_offline_all_time
+        )
+      end
     end
   end
 end

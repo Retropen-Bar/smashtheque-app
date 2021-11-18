@@ -1,6 +1,6 @@
 <div class="text-center">
   <div id="list-toolbar">
-    <h1 class="page-title">Observatoire d'Harmonie 2v2</h1>
+    <h1 class="page-title">Observatoire d'Harmonie des équipes</h1>
 
     <div id="filters-wrapper" class="text-left">
 
@@ -9,12 +9,9 @@
         <div class="form-row">
 
           <div class="col-md-2"></div>
-          
-          <div class="col-8 col-md-6">
+
+          <div class="col-12 col-md-9">
             <%= render 'shared/ranking_filters' %>
-          </div>
-          <div class="col-4 col-md-3">
-            <%= render 'shared/ranking_filters_location' %>
           </div>
 
         </div>
@@ -22,15 +19,15 @@
       <% end %>
     </div>
 
-    <%= render 'shared/pagination', collection: @duos %>
+    <%= render 'shared/pagination', collection: @teams %>
   </div>
 </div>
 
-<div class="cards-list duos">
-  <% @duos.each_with_index do |duo, idx| %>
+<div class="cards-list teams">
+  <% @teams.each_with_index do |team, idx| %>
     <div class="card-container">
-      <%= render 'duos/duo',
-                 duo: duo.decorate,
+      <%= render 'teams/team',
+                 team: team.decorate,
                  with_rank: true,
                  with_points: true,
                  is_online: defined?(@is_online) && @is_online,
@@ -39,4 +36,4 @@
   <% end %>
 </div>
 
-<%= render 'shared/pagination', collection: @duos %>
+<%= render 'shared/pagination', collection: @teams %>

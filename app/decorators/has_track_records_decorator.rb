@@ -17,6 +17,6 @@ module HasTrackRecordsDecorator
 
   def best_reward_badge(opt = {})
     options = opt.clone
-    best_reward_condition(is_online: options.delete(:is_online)).decorate.reward_badge(options)
+    best_reward_condition(is_online: options.delete(:is_online))&.decorate&.reward_badge(options)
   end
 end

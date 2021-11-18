@@ -30,7 +30,7 @@ class TrackRecord < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   POINTS_FIRST_YEAR = 2019
-  TRACKED_TYPES = %w[Duo Player].freeze
+  TRACKED_TYPES = %w[Duo Player Team].freeze
 
   # ---------------------------------------------------------------------------
   # RELATIONS

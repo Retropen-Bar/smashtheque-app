@@ -44,7 +44,10 @@ class MetRewardCondition < ApplicationRecord
 
   after_commit :update_awarded_track_records
   def update_awarded_track_records
-    awarded.update_track_records! unless awarded.destroyed?
+    unless awarded.destroyed?
+      awarded.update_track_records!
+      awarded.teams.each(&:update_track_records!) if awarded.is_a?(Player)
+    end
     TrackRecord.update_all_ranks!
   end
 

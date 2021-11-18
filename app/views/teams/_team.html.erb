@@ -1,5 +1,12 @@
-<div class="card team shadow-sm">
+<div class="card team shadow-sm <%= 'with-rank' if defined?(with_rank) && with_rank %>">
   <div class="card-body">
+    <% if defined?(with_rank) && with_rank %>
+      <div class="rank">
+        #<%= team.rank(
+          is_online: defined?(is_online) && is_online,
+          year: defined?(year) && year) %>
+      </div>
+    <% end %>
     <div class="team-players-count">
       <i class="fas fa-users"></i>
       <%= team.players.count %>
@@ -13,6 +20,14 @@
         <div>
           <%= team.badges %>
         </div>
+      </div>
+    <% end %>
+    <% if defined?(with_points) && with_points %>
+      <div class="team-points">
+        <%= team.points_count(
+          32,
+          is_online: defined?(is_online) && is_online,
+          year: defined?(year) && year) %>
       </div>
     <% end %>
   </div>

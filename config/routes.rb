@@ -88,7 +88,11 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :teams, only: %i[index show edit update]
+  resources :teams, only: %i[index show edit update] do
+    collection do
+      get :ranking
+    end
+  end
 
   resources :recurring_tournaments, only: %i[index show edit update] do
     resources :tournament_events, only: %i[new create]
