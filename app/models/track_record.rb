@@ -70,7 +70,7 @@ class TrackRecord < ApplicationRecord
   # SCOPES
   # ---------------------------------------------------------------------------
 
-  scope :by_tracked_type, ->(v) { where(tracked_type: v.to_s) }
+  scope :by_tracked_type, ->(v) { where(tracked_type: v.to_s.classify) }
 
   scope :all_time, -> { where(year: nil) }
   scope :on_year, ->(v) { where(year: v) }
@@ -119,8 +119,8 @@ class TrackRecord < ApplicationRecord
     ")
   end
 
-  def self.update_all_ranks!
-    TRACKED_TYPES.each do |tracked_type|
+  def self.update_all_ranks!(tracked_types = TRACKED_TYPES)
+    [tracked_types].flatten.each do |tracked_type|
       [false, true].each do |is_online|
         ([nil] + points_years).each do |year|
           update_ranks!(tracked_type: tracked_type, is_online: is_online, year: year)

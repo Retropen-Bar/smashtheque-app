@@ -67,7 +67,8 @@ class Player < ApplicationRecord
            inverse_of: :player,
            dependent: :destroy
   has_many :teams,
-           through: :players_teams
+           through: :players_teams,
+           after_remove: :after_remove_team
 
   has_many :tournament_events_as_top1_player,
            class_name: :TournamentEvent,
@@ -195,6 +196,10 @@ class Player < ApplicationRecord
     self.creator_user = DiscordUser.where(discord_id: discord_id)
                                    .first_or_create!
                                    .return_or_create_user!
+  end
+
+  def after_remove_team(team)
+    UpdateTeamTrackRecordsJob.perform_later(team)
   end
 
   # ---------------------------------------------------------------------------

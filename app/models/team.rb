@@ -38,7 +38,7 @@ class Team < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   has_many :players_teams, dependent: :destroy
-  has_many :players, through: :players_teams
+  has_many :players, through: :players_teams, after_remove: :after_remove_player
 
   has_many :discord_guild_relateds, as: :related, dependent: :destroy
   has_many :discord_guilds, through: :discord_guild_relateds
@@ -71,6 +71,14 @@ class Team < ApplicationRecord
   validates :short_name, presence: true
   validates :name, presence: true
   validates :roster, content_type: /\Aimage\/.*\z/
+
+  # ---------------------------------------------------------------------------
+  # CALLBACKS
+  # ---------------------------------------------------------------------------
+
+  def after_remove_player(_player)
+    UpdateTeamTrackRecordsJob.perform_later(self)
+  end
 
   # ---------------------------------------------------------------------------
   # SCOPES

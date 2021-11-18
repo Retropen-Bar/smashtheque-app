@@ -174,11 +174,6 @@ module HasTrackRecords
       end
     end
 
-    def self.update_all_track_records!
-      find_each(&:update_track_records!)
-      TrackRecord.update_all_ranks!
-    end
-
     def all_rewards(is_online:)
       if is_online
         rewards.online
