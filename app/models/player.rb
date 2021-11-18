@@ -206,7 +206,8 @@ class Player < ApplicationRecord
                   using: {
                     tsearch: {
                       prefix: true
-                    }
+                    },
+                    trigram: {}
                   },
                   ignoring: :accents
 
