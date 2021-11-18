@@ -31,6 +31,8 @@ class Team < ApplicationRecord
 
   include HasTwitter
 
+  include PgSearch::Model
+
   # ---------------------------------------------------------------------------
   # RELATIONS
   # ---------------------------------------------------------------------------
@@ -66,8 +68,30 @@ class Team < ApplicationRecord
   # SCOPES
   # ---------------------------------------------------------------------------
 
+  pg_search_scope :by_pg_search,
+                  against: :name,
+                  using: {
+                    tsearch: {
+                      prefix: true
+                    },
+                    trigram: {}
+                  },
+                  ignoring: :accents
+
   def self.by_short_name_like(short_name)
     where('short_name ILIKE ?', short_name)
+  end
+
+  def self.by_name_contains_like(term)
+    where('unaccent(name) ILIKE unaccent(?)', "%#{term}%")
+  end
+
+  def self.by_keyword(term)
+    by_name_contains_like(term).or(
+      by_short_name_like(term)
+    ).or(
+      where(id: by_pg_search(term).select(:id))
+    )
   end
 
   def self.administrated_by(user_id)
