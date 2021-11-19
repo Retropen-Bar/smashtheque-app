@@ -4,6 +4,7 @@ class Api::V1::TeamsController < Api::V1::BaseController
   has_scope :per
   has_scope :on_abc
   has_scope :by_short_name_like
+  has_scope :by_keyword
 
   def index
     teams = apply_scopes(Team).all
