@@ -56,6 +56,10 @@ class PlayerDecorator < BaseDecorator
     h.image_tag 'default-avatar.svg', width: size, class: :avatar
   end
 
+  def country_flag(options = {})
+    user&.decorate&.country_flag(options)
+  end
+
   def ban_status
     if model.is_banned?
       h.tag.span  'oui',

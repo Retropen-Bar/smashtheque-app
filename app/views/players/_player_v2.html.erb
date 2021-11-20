@@ -21,12 +21,22 @@
             -
           <% end %>
         </h5>
-        <% if player.is_legit? && player.teams.present? %>
-          <small class="list-teams list-teams--sm player-teams">
-            <% player.teams[0...2].each do |team| %>
-              <div class="list-team"><%= team.short_name %></div>
+        <% if player.is_legit? %>
+          <div class="d-flex">
+            <% if country_flag = player.country_flag(class: 'country-flag') %>
+              <%= country_flag %>
+              <% if player.teams.present? %>
+                <small class="mx-1">/</small>
+              <% end %>
+            <% end%>
+            <% if player.teams.present? %>
+              <small class="list-teams list-teams--sm player-teams">
+                <% player.teams[0...2].each do |team| %>
+                  <div class="list-team"><%= team.short_name %></div>
+                <% end %>
+              </small>
             <% end %>
-          </small>
+          </div>
         <% end %>
         <% if defined?(with_points) && with_points %>
           <div class="player-points">
