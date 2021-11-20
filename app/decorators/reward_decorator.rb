@@ -26,8 +26,8 @@ class RewardDecorator < BaseDecorator
     count = options.delete(:count)
 
     wrapper_options = { class: classes }
-    if options[:tooltip]
-      wrapper_options[:title] = options[:tooltip]
+    if (tooltip = options[:tooltip] || badge_tooltip)
+      wrapper_options[:title] = tooltip
       wrapper_options[:data] = { tooltip: {} }
     end
 
@@ -84,5 +84,9 @@ class RewardDecorator < BaseDecorator
 
   def name
     [category_name, level].join(' ')
+  end
+
+  def badge_tooltip
+    reward_conditions.first&.decorate&.badge_tooltip
   end
 end
