@@ -1,9 +1,16 @@
 export const SeeMore = {
-  props: ["line-clamp"],
+  props: {
+    "line-clamp": String,
+    emptyText: {
+      type: String,
+      default: "Aucune information disponible",
+    },
+  },
   data: function () {
     return {
       seeMoreActivated: false,
       collapsedHeight: 0,
+      hasSeeMore: false,
     };
   },
   mounted() {
@@ -21,6 +28,9 @@ export const SeeMore = {
         this.$refs.content.style.maxHeight = this.collapsedHeight + "px";
       }
     },
+    collapsedHeight: function (val) {
+      this.hasSeeMore = val <= this.$refs.content?.scrollHeight;
+    },
   },
   methods: {
     toggleSeeMore() {
@@ -30,11 +40,12 @@ export const SeeMore = {
 
   template: `
     <div class="see-more">
-      <div :class="{'see-more-content': true, 'collapsed': !seeMoreActivated}" ref="content">
+      <div :class="{'see-more-content': true, 'collapsed': !seeMoreActivated}" ref="content" v-if="!!$slots.default && !!$slots.default[0]">
         <slot></slot>
       </div>
-      <div class="text-right">
-        <button class="see-more-button btn btn-link" type="button" @click="toggleSeeMore" v-html="seeMoreActivated ? 'Voir moins' : 'Voir plus'"  />
+      <p v-if="!$slots.default || !$slots.default[0]">{{ emptyText }}</p>
+      <div class="text-right" v-if="hasSeeMore">
+        <button class="see-more-button btn btn-link px-2 py-1 mr-n2" type="button" @click="toggleSeeMore" v-html="seeMoreActivated ? 'Voir moins' : 'Voir plus'"  />
       </div>
     </div>
   `,

@@ -24,6 +24,15 @@
       }
     }
 
+    &:not(.collapsed) ~ * {
+      position: sticky;
+      bottom: 5vh;
+
+      > * {
+        background-color: $gray-deep;
+      }
+    }
+
     & > * + * {
       margin-top: calc(#{$line-height-base} * 1rem);
     }
