@@ -11,12 +11,20 @@ class RecurringTournamentsController < PublicController
   has_scope :by_size_leq
   has_scope :by_is_online
   has_scope :by_events_count_geq
+  has_scope :by_is_not_archived, type: :boolean, default: false, allow_blank: true do |_, scope, value|
+    if value
+      scope.not_archived
+    else
+      scope
+    end
+  end
   has_scope :administrated_by
   has_scope :page, default: 1
   has_scope :per
   has_scope :on_abc
 
   def index
+    @not_archived_only = params[:by_is_not_archived]&.to_i == 1
     respond_to do |format|
       format.html do
         index_html

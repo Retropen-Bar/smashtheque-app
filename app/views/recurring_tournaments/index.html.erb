@@ -28,31 +28,23 @@
 
           <div class="col-3">
             <strong>Type</strong>
-            <% [false, true, ''].each_with_index do |v, idx| %>
-              <div class="custom-control custom-radio">
-                <%= radio_button_tag :by_is_online,
-                                     v,
-                                     (params[:by_is_online] || '') == v.to_s,
-                                     id: "radio-is-online-#{idx}",
-                                     class: 'custom-control-input' %>
-                <label class="custom-control-label" for="radio-is-online-<%= idx %>">
-                  <%  case v
-                      when true %>Online
-                  <%  when false %>Offline
-                  <%  else %>Les 2
-                  <% end %>
-                </label>
-              </div>
-            <% end %>
-          </div>
-
-          <div class="col-3">
-            <strong>Taille</strong>
-            <div class="form-row align-items-center mb-3">
-              <div class="col-auto">Entre</div>
-              <div class="col-auto"><%= select_tag :by_size_geq, options_for_select(planning_size_select_collection, params[:by_size_geq]), class: 'custom-select' %></div>
-              <div class="col-auto">et</div>
-              <div class="col-auto"><%= select_tag :by_size_leq, options_for_select(planning_size_select_collection, params[:by_size_leq] || RecurringTournament::SIZES.last), class: 'custom-select' %></div>
+            <div class="mb-3">
+              <% [false, true, ''].each_with_index do |v, idx| %>
+                <div class="custom-control custom-radio">
+                  <%= radio_button_tag :by_is_online,
+                                      v,
+                                      (params[:by_is_online] || '') == v.to_s,
+                                      id: "radio-is-online-#{idx}",
+                                      class: 'custom-control-input' %>
+                  <label class="custom-control-label" for="radio-is-online-<%= idx %>">
+                    <%  case v
+                        when true %>Online
+                    <%  when false %>Offline
+                    <%  else %>Les 2
+                    <% end %>
+                  </label>
+                </div>
+              <% end %>
             </div>
           
             <strong>Communautés</strong>
@@ -69,6 +61,38 @@
                               ),
                               prompt: 'Toutes',
                               class: 'custom-select custom-select-sm mb-1' %>
+            </div>
+          </div>
+
+          <div class="col-3 offset-1">
+            <strong>Taille</strong>
+            <div class="form-row align-items-center mb-3">
+              <div class="col-auto">Entre</div>
+              <div class="col-auto"><%= select_tag :by_size_geq, options_for_select(planning_size_select_collection, params[:by_size_geq]), class: 'custom-select' %></div>
+              <div class="col-auto">et</div>
+              <div class="col-auto"><%= select_tag :by_size_leq, options_for_select(planning_size_select_collection, params[:by_size_leq] || RecurringTournament::SIZES.last), class: 'custom-select' %></div>
+            </div>
+
+            <strong>Pause</strong>
+            <div class="custom-control custom-radio">
+              <%= radio_button_tag :by_is_not_archived,
+                                    0,
+                                    !@not_archived_only,
+                                    id: "filter-archived-or-not",
+                                    class: 'custom-control-input' %>
+              <label class="custom-control-label" for="filter-archived-or-not">
+                Voir toutes les séries
+              </label>
+            </div>
+            <div class="custom-control custom-radio">
+              <%= radio_button_tag :by_is_not_archived,
+                                    1,
+                                    @not_archived_only,
+                                    id: "filter-not-archived",
+                                    class: 'custom-control-input' %>
+              <label class="custom-control-label" for="filter-not-archived">
+                Masquer les séries en pause
+              </label>
             </div>
           </div>
         </div>
