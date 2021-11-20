@@ -31,9 +31,9 @@ end
             <h1 class="show-page-title card-title">
               <%= @character.name.titleize  %>
             </h1>
-            <% unless character.origin.blank? %>
-              <p class="mt-0 mb-0"><%= character.origin %></p>
-            <% end %>
+            <p class="mt-0 mb-0">
+              #<%= character.official_number %><% unless character.origin.blank? %> - <%= character.origin %><% end %>
+            </p>
           </div>
           <div class="show-page-side">
             <div class="show-page-side-links list-y flex-column">
