@@ -72,7 +72,11 @@ class CharacterDecorator < BaseDecorator
   end
 
   def link(options = {})
-    super({ label: emoji_image_tag }.merge(options))
+    super({
+      label: emoji_image_tag,
+      title: pretty_name,
+      data: { tooltip: {} }
+    }.merge(options))
   end
 
   def nintendo_link(options = {})
