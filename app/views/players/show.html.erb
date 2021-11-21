@@ -50,13 +50,13 @@
             <% end %>
             <% if !player.user&.addresses&.empty? %>
               <div class="list-communities player-communities">
-                <% countrycode = player.user&.addresses&.first&.fetch(:countrycode) %>
-                <% if countrycode %>
-                  <%= flag_icon_tag(countrycode) %>
-                <% else %>
-                  <%= svg_icon_tag(:lieu, class: "fs-xs") %>
-                <% end %>
                 <div class="d-inline-block">
+                  <% countrycode = player.user&.addresses&.first&.fetch(:countrycode) %>
+                  <% if countrycode %>
+                    <small class="align-middle mr-1"><%= flag_icon_tag(countrycode) %></small>
+                  <% else %>
+                    <%= svg_icon_tag(:lieu, class: "fs-xs") %>
+                  <% end %>
                   <% player.user&.addresses&.each_with_index do |address, index| %>
                     <% if index != 0 %>&nbsp;<small>•</small>&nbsp;<% end %>
                     <small class="player-community">
