@@ -156,6 +156,3 @@ gem 'rack-cors'
 
 # download images
 gem 'down'
-
-# flags
-gem 'unicode_country_flags'

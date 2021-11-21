@@ -21,12 +21,19 @@ module IconsHelper
     ).html_safe
   end
 
+  def emoji_flag(countrycode)
+    cc = countrycode.to_s.upcase
+    return unless cc.match?(/\A[A-Z]{2}\z/)
+
+    cc.codepoints.map { |c| (c + 127_397).chr(Encoding::UTF_8) }.join
+  end
+
   def flag_icon_tag(countrycode, options = {})
     return nil if countrycode.blank?
 
     classes = ['icon', 'icon--flag']
     classes << options.delete(:class)
 
-    tag.i unicode_country_flag_of(countrycode.to_s.downcase.to_sym), **options.merge(class: classes.join(' '))
+    tag.i emoji_flag(countrycode), **options.merge(class: classes.join(' '))
   end
 end
