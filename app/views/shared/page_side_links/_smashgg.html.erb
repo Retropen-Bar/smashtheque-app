@@ -1,0 +1,42 @@
+<%# DISCORD %>
+
+<% if defined?(smashgg_users) %>
+  <% if smashgg_users.count > 1 %>
+
+    <div class="show-page-side-link btn-group btn-group-sm">
+      <% smashgg_user = smashgg_users.first.decorate %>
+      <%= link_to smashgg_user.invitation_url,
+                  class: 'btn btn-sm btn-dark btn--with-icon font-weight-bold pl-2 text-truncate',
+                  target: '_blank',
+                  rel: 'noopener noreferrer' do %>
+        <%= svg_icon_tag :discord, class: 'mr-1' %>
+        Discord
+      <% end %>
+      <div class="btn-group btn-group-sm" role="group">
+        <button id="socials-desktop" type="button" class="btn btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
+        </button>
+        <div class="dropdown-menu" aria-labelledby="socials-desktop">
+          <% smashgg_users.decorate.each do |smashgg_user| %>
+            <%= link_to smashgg_user.name_or_id,
+                        smashgg_user.invitation_url,
+                        class: 'dropdown-item',
+                        target: '_blank',
+                        rel: 'noopener noreferrer' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+  <% elsif smashgg_users.count > 0 %>
+
+    <% smashgg_user = smashgg_users.first.decorate %>
+    <%= link_to smashgg_user.invitation_url,
+                class: 'show-page-side-link btn btn-sm btn-dark btn--with-icon rounded-pill font-weight-bold pl-2 text-truncate',
+                target: '_blank',
+                rel: 'noopener noreferrer' do %>
+      <%= svg_icon_tag :discord, class: 'mr-1' %>
+      <%= smashgg_user.name_or_id %>
+    <% end %>
+
+  <% end %>
+<% end %>

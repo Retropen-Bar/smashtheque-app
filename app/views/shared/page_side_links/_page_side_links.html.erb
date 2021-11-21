@@ -1,0 +1,74 @@
+<%
+modal_id = :social_modal
+sns_labels = [:discord_guilds, :twitter, :smashgg_users, :twitch_channels, :you_tube_channels] 
+sns_long = []
+sns_short = []
+
+sns_labels.map do | sns_label |
+  case sns_label
+  when :twitter
+    if defined?(record) && record.respond_to?(:twitter_username) && !record.twitter_username.blank?
+      sns_long << render('shared/page_side_links/twitter', record: record)
+      sns_short << record.twitter_link(label: svg_icon_tag(:twitter))
+    end
+  when :smashgg_users
+    if defined?(smashgg_users)
+      sns_long << smashgg_users
+    end
+  when :discord_guilds
+    if defined?(discord_guilds)
+      sns_long << render('shared/page_side_links/discord', discord_guilds: discord_guilds)
+      sns_short << render('shared/page_side_links/discord', short: true, discord_guilds: discord_guilds)
+    end
+  when :twitch_channels
+    if defined?(twitch_channels)
+      sns_long << render('shared/page_side_links/twitch', twitch_channels: twitch_channels)
+      sns_short << render('shared/page_side_links/twitch', short: true, twitch_channels: twitch_channels)
+    end
+  when :you_tube_channels
+    if defined?(you_tube_channels)
+      sns_long << render('shared/page_side_links/you_tube', you_tube_channels: you_tube_channels)
+      sns_short << render('shared/page_side_links/you_tube', short: true, you_tube_channels: you_tube_channels)
+    end
+  else
+  end
+end
+
+sns_to_display = defined?(short) && short ? sns_short : sns_long
+
+
+%>
+
+<% sns_to_display[0...3].map do | sns_render | %>
+  <%= sns_render %>
+<% end %>
+
+<% if sns_long.size > 3 %>
+
+  <button class="btn btn-sm btn-see-more btn-see-more--horizontal<%=  "mx-auto" unless defined?(short) && short %>" data-toggle="modal" data-target="#<%= modal_id %>">
+    <span class="sr-only">Voir plus</span>
+    <%= svg_icon_tag(:suspension) %>
+  </button>
+
+  <div id="<%= modal_id %>" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content bg-layout-dark">
+        <div class="modal-header">
+          <h5 class="modal-title">Réseaux sociaux</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="list-y">
+            <% sns_long.map do | sns_long_render | %>
+              <%= sns_long_render %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<% end %>
+

@@ -3,7 +3,7 @@
     <section class="show-page-header card">
       <div class="show-page-header-bg show-page-header-bg--lg"
       ></div>
-      <div class="show-page-header-body card justify-content-start">
+      <div class="show-page-header-body without-desktop-socials card justify-content-start">
         <div class="show-page-header-content card-body">
           <% unless team.website_url.blank? %>
             <%= link_to team.website_url,
@@ -28,19 +28,24 @@
               <small class="text-secondary">Créée en <%= team.creation_year %></small>
             <% end %>
           </div>
-          <div class="show-page-side flex-column list-y">
-            <%= render  'shared/page_side_links',
-                        record: team,
-                        twitch_channels: team.twitch_channels,
-                        you_tube_channels: team.you_tube_channels,
-                        discord_guilds: team.discord_guilds %>
+          <div class="show-page-side">
+            <div class="list-x list-x--lg fs-lg align-items-center justify-content-around w-50">
+              <%= render  'shared/page_side_links/page_side_links',
+                          short: true,
+                          record: team,
+                          twitch_channels: team.twitch_channels,
+                          you_tube_channels: team.you_tube_channels,
+                          discord_guilds: team.discord_guilds %>
+            </div>
           </div>
           <div class="show-page-socials bg-layout bg-md-layout-dark d-md-none">
-            <%= render  'shared/page_socials_links', 
-                        record: team,
-                        twitch_channels: team.twitch_channels,
-                        you_tube_channels: team.you_tube_channels,
-                        discord_guilds: team.discord_guilds %>
+            <div class="list-x list-x--lg align-items-center">
+              <%= render  'shared/page_socials_links', 
+                          record: team,
+                          twitch_channels: team.twitch_channels,
+                          you_tube_channels: team.you_tube_channels,
+                          discord_guilds: team.discord_guilds %>
+            </div>
           </div>
         </div>
       </div>
@@ -100,7 +105,7 @@
               </div>
             </section>
           </div>
-          <div class="col-lg-6">
+          <div class="col-lg-6 mt-3 mt-md-0">
             <section id="statistiques" class="show-page-section">
               <div class="show-page-section-title">
                 <h2>Statistiques</h2>

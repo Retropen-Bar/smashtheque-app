@@ -1,0 +1,76 @@
+<%# YOUTUBE %>
+
+
+<% if defined?(you_tube_channels) %>
+  <% if defined?(short) && short %>
+    <% if you_tube_channels.count > 1 %>
+
+      <div class="btn-group dropleft">
+        <%= link_to '#',
+                    class: 'btn btn-sm btn-dark rounded-pill dropdown-toggle',
+                    id: 'socials-mobile',
+                    data: { toggle: :dropdown },
+                    aria: { expanded: :false } do %>
+          <%= svg_icon_tag :yt, class: "ml-1" %>
+          <span class="sr-only">YouTube</span>
+        <% end %>
+        <div class="dropdown-menu" aria-labelledby="socials-mobile">
+          <% you_tube_channels.decorate.each do |you_tube_channel| %>
+            <%= link_to you_tube_channel.name,
+                        you_tube_channel.channel_url,
+                        class: 'dropdown-item',
+                        target: '_blank',
+                        rel: 'noopener noreferrer' %>
+          <% end %>
+        </div>
+      </div>
+
+    <% elsif you_tube_channels.count > 0 %>
+
+      <% you_tube_channel = you_tube_channels.first.decorate %>
+      <%= link_to you_tube_channel.channel_url, target: '_blank', rel: 'noopener noreferrer' do %>
+        <%= svg_icon_tag :yt %>
+        <span class="sr-only">YouTube</span>
+      <% end %>
+
+    <% end %>
+  <% else %>
+    <% if you_tube_channels.count > 1 %>
+      <div class="show-page-side-link btn-group btn-group-sm">
+        <% you_tube_channel = you_tube_channels.first.decorate %>
+        <%= link_to you_tube_channel.channel_url,
+                    class: 'btn btn-sm btn-dark btn--with-icon font-weight-bold pl-2',
+                    target: '_blank',
+                    rel: 'noopener noreferrer' do %>
+          <%= svg_icon_tag :yt, class: 'mr-1' %>
+          YouTube
+        <% end %>
+        <div class="btn-group btn-group-sm" role="group">
+          <button id="socials-desktop" type="button" class="btn btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
+          </button>
+          <div class="dropdown-menu" aria-labelledby="socials-desktop">
+            <% you_tube_channels.decorate.each do |you_tube_channel| %>
+              <%= link_to you_tube_channel.name,
+                          you_tube_channel.channel_url,
+                          class: 'dropdown-item',
+                          target: '_blank',
+                          rel: 'noopener noreferrer' %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+    <% elsif you_tube_channels.count > 0 %>
+
+      <% you_tube_channel = you_tube_channels.first.decorate %>
+      <%= link_to you_tube_channel.channel_url,
+                  class: 'show-page-side-link btn btn-sm btn-dark btn--with-icon rounded-pill font-weight-bold pl-2 text-truncate',
+                  target: '_blank',
+                  rel: 'noopener noreferrer' do %>
+        <%= svg_icon_tag :yt, class: 'mr-1' %>
+        <%= you_tube_channel.name %>
+      <% end %>
+
+    <% end %>
+  <% end %>
+<% end %>

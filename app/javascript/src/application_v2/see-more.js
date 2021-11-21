@@ -14,18 +14,20 @@ export const SeeMore = {
     };
   },
   mounted() {
-    this.$refs.content.style.setProperty("--line-clamp", this.lineClamp || 10);
+    this.$refs.content?.style.setProperty("--line-clamp", this.lineClamp || 10);
     this.$nextTick(function () {
       this.collapsedHeight = this.$refs.content.clientHeight;
     });
   },
   watch: {
     seeMoreActivated: function (val, oldVal) {
-      if (val) {
-        this.$refs.content.style.maxHeight =
-          this.$refs.content.scrollHeight + "px";
-      } else {
-        this.$refs.content.style.maxHeight = this.collapsedHeight + "px";
+      if (this.$refs.content) {
+        if (val) {
+          this.$refs.content.style.maxHeight =
+            this.$refs.content.scrollHeight + "px";
+        } else {
+          this.$refs.content.style.maxHeight = this.collapsedHeight + "px";
+        }
       }
     },
     collapsedHeight: function (val) {
