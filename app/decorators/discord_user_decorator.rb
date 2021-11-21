@@ -32,7 +32,7 @@ class DiscordUserDecorator < BaseDecorator
     @@default_avatar_url ||= h.image_url('default-avatar.svg')
   end
 
-  def avatar_tag(size = nil)
+  def avatar_tag(size = 32)
     return nil if avatar.blank?
 
     h.image_tag 's.gif',
