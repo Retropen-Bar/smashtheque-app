@@ -29,7 +29,8 @@ export const SeeMore = {
       }
     },
     collapsedHeight: function (val) {
-      this.hasSeeMore = val <= this.$refs.content?.scrollHeight;
+      const delta = 1.5 * 16;
+      this.hasSeeMore = val < this.$refs.content?.scrollHeight - delta;
     },
   },
   methods: {
@@ -40,7 +41,7 @@ export const SeeMore = {
 
   template: `
     <div class="see-more">
-      <div :class="{'see-more-content': true, 'collapsed': !seeMoreActivated}" ref="content" v-if="!!$slots.default && !!$slots.default[0]">
+      <div :class="{'see-more-content': true, 'collapsed': !seeMoreActivated, 'has-see-more': hasSeeMore}" ref="content" v-if="!!$slots.default && !!$slots.default[0]">
         <slot></slot>
       </div>
       <p v-if="!$slots.default || !$slots.default[0]">{{ emptyText }}</p>
