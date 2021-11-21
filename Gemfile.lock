@@ -459,6 +459,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.7)
+    unicode_country_flags (0.1.2)
     uniform_notifier (1.14.2)
     warden (1.2.9)
       rack (>= 2.0.9)
@@ -552,6 +553,7 @@ DEPENDENCIES
   sprockets (= 3.7.2)
   stackprof
   twitch-api!
+  unicode_country_flags
   web-console (>= 3.3.0)
   webdrivers
   webpacker

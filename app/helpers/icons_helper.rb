@@ -21,38 +21,12 @@ module IconsHelper
     ).html_safe
   end
 
-  KNOWN_FLAGS = {
-    fr: '🇫🇷', # France
-
-    gf: '🇬🇫', # Guyane
-    gp: '🇬🇵', # Guadeloupe
-    mq: '🇲🇶', # Martinique
-    nc: '🇳🇨', # Nouvelle-Caledonie
-    pf: '🇵🇫', # Polynesie
-    re: '🇷🇪', # Reunion
-    yt: '🇾🇹', # Mayotte
-
-    be: '🇧🇪', # Belgique
-    ca: '🇨🇦', # Canada
-    ch: '🇨🇭', # Suisse
-    ma: '🇲🇦', # Maroc
-    mc: '🇲🇨'  # Monaco
-  }.freeze
-
-  def flag_key(countrycode)
-    countrycode.to_s.downcase.to_sym
-  end
-
-  def flag_is_known?(countrycode)
-    KNOWN_FLAGS.key?(flag_key(countrycode))
-  end
-
   def flag_icon_tag(countrycode, options = {})
-    return nil unless flag_is_known?(countrycode)
+    return nil if countrycode.blank?
 
     classes = ['icon', 'icon--flag']
     classes << options.delete(:class)
 
-    tag.i KNOWN_FLAGS[flag_key(countrycode)], **options.merge(class: classes.join(' '))
+    tag.i unicode_country_flag_of(countrycode.to_s.downcase.to_sym), **options.merge(class: classes.join(' '))
   end
 end

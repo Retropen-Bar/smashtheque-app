@@ -27,7 +27,7 @@ class UserDecorator < BaseDecorator
 
   def country_flag(options = {})
     countrycode = addresses&.first&.fetch(:countrycode)
-    return nil unless h.flag_is_known?(countrycode)
+    return nil if countrycode.blank?
 
     h.flag_icon_tag(countrycode, options)
   end

@@ -51,7 +51,7 @@
             <% if !player.user&.addresses&.empty? %>
               <div class="list-communities player-communities">
                 <% countrycode = player.user&.addresses&.first&.fetch(:countrycode) %>
-                <% if flag_is_known?(countrycode) %>
+                <% if countrycode %>
                   <%= flag_icon_tag(countrycode) %>
                 <% else %>
                   <%= svg_icon_tag(:lieu, class: "fs-xs") %>
