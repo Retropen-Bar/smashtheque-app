@@ -1,5 +1,6 @@
 <%
-modal_id = :social_modal
+is_short = defined?(short) && short
+modal_id = "social_modal_#{rand(100)}"
 sns_labels = [:discord_guilds, :twitter, :smashgg_users, :twitch_channels, :you_tube_channels] 
 sns_long = []
 sns_short = []
@@ -34,7 +35,7 @@ sns_labels.map do | sns_label |
   end
 end
 
-sns_to_display = defined?(short) && short ? sns_short : sns_long
+sns_to_display = is_short ? sns_short : sns_long
 
 
 %>
@@ -45,13 +46,13 @@ sns_to_display = defined?(short) && short ? sns_short : sns_long
 
 <% if sns_long.size > 3 %>
 
-  <button class="btn btn-sm btn-see-more btn-see-more--horizontal<%=  "mx-auto" unless defined?(short) && short %>" data-toggle="modal" data-target="#<%= modal_id %>">
+  <button class="btn btn-sm btn-see-more btn-see-more--horizontal" data-toggle="modal" data-target="#<%= modal_id %>">
     <span class="sr-only">Voir plus</span>
     <%= svg_icon_tag(:suspension) %>
   </button>
 
   <div id="<%= modal_id %>" class="modal fade" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-auto modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content bg-layout-dark">
         <div class="modal-header">
           <h5 class="modal-title">Réseaux sociaux</h5>

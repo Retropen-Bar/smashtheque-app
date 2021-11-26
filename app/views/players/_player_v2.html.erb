@@ -21,7 +21,7 @@
             -
           <% end %>
         </h5>
-        <% if player.is_legit? %>
+        <% if player.is_legit? && (player.country_flag || player.teams.present?) %>
           <small class="list-teams list-teams--sm player-teams align-items-center">
             <% if country_flag = player.country_flag %>
               <%= country_flag %>
