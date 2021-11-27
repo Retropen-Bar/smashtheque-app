@@ -13,15 +13,25 @@
     }
 
     img {
-      width: 150px;
+      width: 125px;
+
+      @media screen and (min-width: 350px) {
+        width: 150px;
+      }
 
       @include media-breakpoint-up(md) {
-        width: 250px;
+        width: 200px;
       }
 
-      @include media-breakpoint-up(xl) {
+      @media screen and (min-width: 1500px) {
         width: 290px;
       }
+    }
+  }
+
+  &-nav {
+    @include media-breakpoint-up(xl) {
+      align-items: center;
     }
   }
 
@@ -305,7 +315,7 @@
       .navbar-nav .nav-link:not(.admin) {
         font-size: $font-size-sm;
         border-radius: $btn-padding-x-lg * 2;
-        padding: $btn-padding-y $btn-padding-x !important;
+        padding: $btn-padding-y $btn-padding-x ($btn-padding-y - 0.05rem) !important;
         font-weight: 600;
         border: 2px solid transparent;
         color: rgba($gray-light, 0.7);
@@ -343,7 +353,7 @@
       }
     }
 
-    @media screen and (min-width: 1550px) {
+    @include media-breakpoint-up(xl) {
       margin-left: 2rem;
     }
   }
