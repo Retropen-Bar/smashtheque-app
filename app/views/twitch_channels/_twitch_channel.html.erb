@@ -10,7 +10,7 @@
         <% when :Character %>
           <%= twitch_channel.related.decorate.emoji_image_tag %>
         <% when :Community %>
-          <%= twitch_channel.related.decorate.any_image_tag %>
+          <%= twitch_channel.related.decorate.avatar_tag(32) %>
         <% when :Player %>
           <%= twitch_channel.related.decorate.avatar_tag(32) %>
         <% when :Team %>
