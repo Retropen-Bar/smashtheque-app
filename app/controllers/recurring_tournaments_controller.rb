@@ -86,11 +86,18 @@ class RecurringTournamentsController < PublicController
   def show
     redirect_to root_path and return if @recurring_tournament.hidden?
 
-    @tournament_events = @recurring_tournament.tournament_events.order(date: :desc)
-    @duo_tournament_events = @recurring_tournament.duo_tournament_events.order(date: :desc)
-    @meta_title = @recurring_tournament.name
-    @meta_properties['og:type'] = 'profile'
-    @meta_properties['og:image'] = @recurring_tournament.decorate.discord_guild_icon_image_url
+    respond_to do |format|
+      format.html do
+        @tournament_events = @recurring_tournament.tournament_events.order(date: :desc)
+        @duo_tournament_events = @recurring_tournament.duo_tournament_events.order(date: :desc)
+        @meta_title = @recurring_tournament.name
+        @meta_properties['og:type'] = 'profile'
+        @meta_properties['og:image'] = @recurring_tournament.decorate.discord_guild_icon_image_url
+      end
+      format.json do
+        render json: {}
+      end
+    end
   end
 
   def modal
