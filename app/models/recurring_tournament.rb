@@ -42,6 +42,8 @@ class RecurringTournament < ApplicationRecord
 
   geocoded_by :address
 
+  include PgSearch::Model
+
   # ---------------------------------------------------------------------------
   # CONCERNS
   # ---------------------------------------------------------------------------
@@ -215,6 +217,32 @@ class RecurringTournament < ApplicationRecord
 
   def self.by_community_id(community_id)
     near_community(Community.find(community_id))
+  end
+
+  pg_search_scope :by_pg_search,
+                  against: :name,
+                  using: {
+                    tsearch: {
+                      prefix: true
+                    },
+                    trigram: {}
+                  },
+                  ignoring: :accents
+
+  def self.by_keyword(term)
+    where(id: by_pg_search(term).select(:id))
+  end
+
+  def self.by_name(name)
+    where(name: name)
+  end
+
+  def self.by_name_like(name)
+    where('unaccent(name) ILIKE unaccent(?)', name)
+  end
+
+  def self.by_name_contains_like(term)
+    where('unaccent(name) ILIKE unaccent(?)', "%#{term}%")
   end
 
   # ---------------------------------------------------------------------------

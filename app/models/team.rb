@@ -100,6 +100,14 @@ class Team < ApplicationRecord
     where('short_name ILIKE ?', short_name)
   end
 
+  def self.by_name(name)
+    where(name: name)
+  end
+
+  def self.by_name_like(name)
+    where('unaccent(name) ILIKE unaccent(?)', name)
+  end
+
   def self.by_name_contains_like(term)
     where('unaccent(name) ILIKE unaccent(?)', "%#{term}%")
   end
