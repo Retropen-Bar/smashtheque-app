@@ -2,13 +2,15 @@
 #
 # Table name: communities
 #
-#  id         :bigint           not null, primary key
-#  address    :string           not null
-#  latitude   :float            not null
-#  longitude  :float            not null
-#  name       :string           not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id               :bigint           not null, primary key
+#  address          :string           not null
+#  latitude         :float            not null
+#  longitude        :float            not null
+#  name             :string           not null
+#  ranking_url      :string
+#  twitter_username :string
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #
 require 'rails_helper'
 

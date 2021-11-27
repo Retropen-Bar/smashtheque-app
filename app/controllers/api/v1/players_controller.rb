@@ -5,6 +5,7 @@ class Api::V1::PlayersController < Api::V1::BaseController
   has_scope :by_discord_id, allow_blank: true
   has_scope :by_name
   has_scope :by_name_like
+  has_scope :by_keyword
 
   def index
     players = apply_scopes(Player.order(:name)).includes(

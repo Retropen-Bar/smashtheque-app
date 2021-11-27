@@ -101,6 +101,7 @@ window.openMapModal = openMapModal;
 
 var createMap = function(options) {
   // console.log('createMap', options);
+
   var container_id = options.container_id,
       map_options = options.map_options,
       center = options.center,
@@ -109,7 +110,8 @@ var createMap = function(options) {
       tile_layer = options.tile_layer,
       attribution = options.attribution,
       max_zoom = options.max_zoom,
-      tile_options = options.tile_options;
+      tile_options = options.tile_options,
+      cluster_markers = options.cluster_markers != false;
 
   var map = L.map(container_id, map_options);
   window.maps[container_id] = { map: map };
@@ -126,11 +128,16 @@ var createMap = function(options) {
     });
   });
 
-  var markers = L.markerClusterGroup({
-    showCoverageOnHover: false,
-    zoomToBoundsOnClick: true,
-    removeOutsideVisibleBounds: true
-  });
+  var markers;
+  if(cluster_markers) {
+    markers = L.markerClusterGroup({
+      showCoverageOnHover: false,
+      zoomToBoundsOnClick: true,
+      removeOutsideVisibleBounds: true
+    });
+  } else {
+    markers = L.layerGroup();
+  }
   var layers = {};
   var marker;
 

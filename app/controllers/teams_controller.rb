@@ -38,6 +38,25 @@ class TeamsController < PublicController
       render :edit
     end
   end
+  
+  def ranking
+    @year = params[:year]&.to_i
+    @year = nil unless @year&.positive?
+    @is_online = params[:is_online]&.to_i != 0
+
+    @teams = apply_scopes(
+      Team.ranking(is_online: @is_online, year: @year)
+    ).includes(
+      logo_attachment: :blob
+    )
+
+    @meta_title = [
+      "Observatoire d'Harmonie des équipes",
+      @is_online ? 'Online' : 'Offline',
+      @year
+    ].compact.join(' ')
+    render layout: 'application'
+  end
 
   private
 

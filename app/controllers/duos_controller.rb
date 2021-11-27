@@ -46,28 +46,9 @@ class DuosController < PublicController
     @year = nil unless @year&.positive?
     @is_online = params[:is_online]&.to_i != 0
 
-    duos =
-      if @is_online
-        if @year
-          Duo.ranked_online_in(@year).with_track_records_online_in(@year).order(
-            "rank_online_in_#{@year}"
-          )
-        else
-          Duo.ranked_online.with_track_records_online_all_time.order(
-            :rank_online_all_time
-          )
-        end
-      elsif @year
-        Duo.ranked_offline_in(@year).with_track_records_offline_in(@year).order(
-          "rank_offline_in_#{@year}"
-        )
-      else
-        Duo.ranked_offline.with_track_records_offline_all_time.order(
-          :rank_offline_all_time
-        )
-      end
-
-    @duos = apply_scopes(duos).includes(
+    @duos = apply_scopes(
+      Duo.ranking(is_online: @is_online, year: @year)
+    ).includes(
       player1: { user: :discord_user },
       player2: { user: :discord_user }
     )

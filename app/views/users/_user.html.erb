@@ -1,0 +1,15 @@
+<article class="resource player d-flex">
+  <div class="resource-avatar card">
+    <%= user.avatar_tag(76) %>
+  </div>
+  <div class="resource-content card flex-grow-1">
+    <div class="card-body d-flex">
+      <div class="resource-meta flex-grow-1">
+        <h5 class="resource-title card-title text-truncate">
+          <%= user.name %>
+        </h5>
+      </div>
+    </div>
+    <%= admin_edit_link(user) %>
+  </div>
+</article>

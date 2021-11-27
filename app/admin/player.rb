@@ -207,16 +207,6 @@ ActiveAdmin.register Player do
       row :rank_offline_all_time
       row :points_online_all_time
       row :points_offline_all_time
-
-      # row :best_reward do |decorated|
-      #   decorated.best_reward_admin_link
-      # end
-      # row :best_rewards do |decorated|
-      #   decorated.best_rewards_admin_links({}, class: 'reward-badge-32').join(' ').html_safe
-      # end
-      # row :unique_rewards do |decorated|
-      #   decorated.unique_rewards_admin_links({}, class: 'reward-badge-32').join(' ').html_safe
-      # end
       row :created_at
       row :updated_at
     end

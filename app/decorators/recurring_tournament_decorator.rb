@@ -101,6 +101,10 @@ class RecurringTournamentDecorator < BaseDecorator
     model.duo_tournament_events.count
   end
 
+  def all_events_count
+    tournament_events_count + duo_tournament_events_count
+  end
+
   def icon_class
     'chess'
   end

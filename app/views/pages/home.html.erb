@@ -25,7 +25,7 @@
     <% end %>
   </section>
   <section class="home-nav-item home-nav-item--center home-nav-item--community">
-    <%= link_to communities_path, class: 'home-nav-item-link' do %>
+    <%= link_to discord_guilds_path, class: 'home-nav-item-link' do %>
       <%= image_tag 'icons/liens.svg' %>
       <h2>Communauté</h2>
     <% end %>
@@ -34,7 +34,7 @@
 
 <div class="guides text-center">
   <h2 class='guides-link'>
-    <%= link_to page_path(slug: 'guides') do %>
+    <%= link_to page_path(slug: 'liens-utiles') do %>
       <%= image_tag 'icons/panneau.svg' %>
       <span>Guides</span>
     <% end %>

@@ -3,9 +3,9 @@
     <section class="show-page-header card">
       <div class="show-page-header-bg show-page-header-bg--lg"
       ></div>
-      <div class="show-page-header-body card justify-content-start">
+      <div class="show-page-header-body without-desktop-socials card justify-content-start">
         <div class="show-page-header-content card-body">
-          <% if team.website_url %>
+          <% unless team.website_url.blank? %>
             <%= link_to team.website_url,
                 class: 'show-page-meta text-body font-weight-normal py-1 badge badge-pill mx-auto',
                 target: '_blank',
@@ -24,43 +24,28 @@
             <div class="list-x mb-1">
               <%= team.badges %>
             </div>
-            <% if team.creation_year %>
+            <% unless team.creation_year.blank? %>
               <small class="text-secondary">Créée en <%= team.creation_year %></small>
             <% end %>
           </div>
-          <div class="show-page-side flex-column list-y">
-            <% if team.twitter_url %>
-              <%= link_to team.twitter_url,
-                  class: "btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold pl-4 text-left",
-                  target: "_blank",
-                  rel: "noopener noreferrer" do %>
-                <%= svg_icon_tag :twitter, class: 'mr-4' %>
-                Twitter
-              <% end %>
-            <% end %>
-            <% if team.discord_url %>
-              <%= link_to team.discord_url,
-                  class: "btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold pl-4 text-left",
-                  target: "_blank",
-                  rel: "noopener noreferrer" do %>
-                <%= svg_icon_tag :discord, class: 'mr-4' %>
-                Discord
-              <% end %>
-            <% end %>
+          <div class="show-page-side">
+            <div class="list-x list-x--lg fs-lg align-items-center justify-content-around w-50">
+              <%= render  'shared/page_side_links/page_side_links',
+                          short: true,
+                          record: team,
+                          twitch_channels: team.twitch_channels,
+                          you_tube_channels: team.you_tube_channels,
+                          discord_guilds: team.discord_guilds %>
+            </div>
           </div>
           <div class="show-page-socials bg-layout bg-md-layout-dark d-md-none">
-            <% if team.twitter_url %>
-              <%= link_to team.twitter_url, target: "_blank", rel: "noopener noreferrer" do %>
-                <%= svg_icon_tag :twitter %>
-                <span class="sr-only">Twitter</span>
-              <% end %>
-            <% end %>
-            <% if team.discord_url %>
-              <%= link_to team.discord_url, target: "_blank", rel: "noopener noreferrer" do %>
-                <%= svg_icon_tag :discord %>
-                <span class="sr-only">Discord</span>
-              <% end %>
-            <% end %>
+            <div class="list-x list-x--lg align-items-center">
+              <%= render  'shared/page_socials_links', 
+                          record: team,
+                          twitch_channels: team.twitch_channels,
+                          you_tube_channels: team.you_tube_channels,
+                          discord_guilds: team.discord_guilds %>
+            </div>
           </div>
         </div>
       </div>
@@ -96,8 +81,8 @@
     <section class="show-page-body card">
       <div class="show-page-content card-body">
         <div class="row">
-          <div class="col-lg-6 list-y">
-            <section id="description" class="show-page-section flex-grow-1">
+          <div class="col-lg-6">
+            <section id="description" class="show-page-section">
               <div class="show-page-section-title">
                 <h2>Description</h2>
                 <span class="show-page-section-title-separator"></span>
@@ -108,7 +93,7 @@
                 </see-more>
               </div>
             </section>
-            <section id="recrutement" class="show-page-section flex-grow-1">
+            <section id="recrutement" class="show-page-section mt-3">
               <div class="show-page-section-title">
                 <h2>Recrutement (<%= team.is_recruiting? ? 'ouvert' : 'fermé' %>) </h2>
                 <span class="show-page-section-title-separator"></span>
@@ -120,7 +105,7 @@
               </div>
             </section>
           </div>
-          <div class="col-lg-6">
+          <div class="col-lg-6 mt-3 mt-md-0">
             <section id="statistiques" class="show-page-section">
               <div class="show-page-section-title">
                 <h2>Statistiques</h2>
@@ -244,7 +229,7 @@
             </section>
           </div>
         </div>
-        <div class="row mt-2">
+        <div class="row mt-3">
           <div class="col-lg-12">
             <section id="joueurs" class="show-page-section">
               <div class="show-page-section-title">

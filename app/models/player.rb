@@ -67,7 +67,8 @@ class Player < ApplicationRecord
            inverse_of: :player,
            dependent: :destroy
   has_many :teams,
-           through: :players_teams
+           through: :players_teams,
+           after_remove: :after_remove_team
 
   has_many :tournament_events_as_top1_player,
            class_name: :TournamentEvent,
@@ -197,6 +198,10 @@ class Player < ApplicationRecord
                                    .return_or_create_user!
   end
 
+  def after_remove_team(team)
+    UpdateTeamTrackRecordsJob.perform_later(team)
+  end
+
   # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
@@ -206,7 +211,8 @@ class Player < ApplicationRecord
                   using: {
                     tsearch: {
                       prefix: true
-                    }
+                    },
+                    trigram: {}
                   },
                   ignoring: :accents
 
@@ -333,6 +339,14 @@ class Player < ApplicationRecord
     else
       from_users
     end
+  end
+
+  def self.by_main_countrycode_unknown_or_fr
+    by_main_countrycode(['', 'FR'])
+  end
+
+  def self.by_main_countrycode_unknown_or_french_speaking
+    by_main_countrycode(['', 'FR'] + User::FRENCH_SPEAKING_COUNTRIES)
   end
 
   # ---------------------------------------------------------------------------

@@ -15,21 +15,8 @@ module HasTrackRecordsDecorator
     ].join(delimiter).html_safe
   end
 
-  def best_rewards_badges(opt = {})
+  def best_reward_badge(opt = {})
     options = opt.clone
-    best_reward_conditions(
-      is_online: options.delete(:is_online)
-    ).map do |reward_condition|
-      reward_condition.decorate.reward_badge(options)
-    end
-  end
-
-  def unique_rewards_badges(opt = {})
-    options = opt.clone
-    unique_reward_conditions(
-      is_online: options.delete(:is_online)
-    ).map do |reward_condition|
-      reward_condition.decorate.reward_badge(options)
-    end
+    best_reward_condition(is_online: options.delete(:is_online))&.decorate&.reward_badge(options)
   end
 end

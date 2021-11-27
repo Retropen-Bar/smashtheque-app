@@ -14,9 +14,9 @@ class PlayersController < PublicController
   end
   has_scope :by_fr_only, type: :boolean, default: false, allow_blank: true do |_, scope, value|
     if value
-      scope.by_main_countrycode(['', 'FR'])
+      scope.by_main_countrycode_unknown_or_fr
     else
-      scope.by_main_countrycode(['', 'FR'] + User::FRENCH_SPEAKING_COUNTRIES)
+      scope.by_main_countrycode_unknown_or_french_speaking
     end
   end
   has_scope :by_team_id
@@ -93,29 +93,8 @@ class PlayersController < PublicController
     @mains_only = params[:by_character_id_mains_only]&.to_i == 1
     @fr_only = params[:by_fr_only]&.to_i == 1
 
-    players =
-      if @is_online
-        if @year
-          Player.ranked_online_in(@year).with_track_records_online_in(@year).order(
-            "rank_online_in_#{@year}"
-          )
-        else
-          Player.ranked_online.with_track_records_online_all_time.order(
-            :rank_online_all_time
-          )
-        end
-      elsif @year
-        Player.ranked_offline_in(@year).with_track_records_offline_in(@year).order(
-          "rank_offline_in_#{@year}"
-        )
-      else
-        Player.ranked_offline.with_track_records_offline_all_time.order(
-          :rank_offline_all_time
-        )
-      end
-
     @players = apply_scopes(
-      players.legit
+      Player.ranking(is_online: @is_online, year: @year).legit
     ).includes(
       :user, :discord_user,
       :characters, :smashgg_users,

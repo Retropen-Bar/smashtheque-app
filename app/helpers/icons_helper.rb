@@ -20,4 +20,16 @@ module IconsHelper
       "class=\"#{classes.join(' ')}\" fill=\"currentColor\" width='1em' height='1em' viewBox="
     ).html_safe
   end
+
+  def flag_icon_tag(countrycode, options = {})
+    return nil if countrycode.blank?
+
+    cc = countrycode.to_s.downcase
+    return nil unless cc.match?(/\A[a-z]{2}\z/)
+
+    classes = ['flag-icon', "flag-icon-#{cc}"]
+    classes << options.delete(:class)
+
+    tag.span '', **options.merge(class: classes.join(' '))
+  end
 end

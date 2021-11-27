@@ -1,0 +1,21 @@
+<strong>Localisation</strong>
+<div class="custom-control custom-radio">
+  <%= radio_button_tag :by_fr_only,
+                        0,
+                        !@fr_only,
+                        id: "filter-french",
+                        class: 'custom-control-input' %>
+  <label class="custom-control-label" for="filter-french">
+    Pays francophones
+  </label>
+</div>
+<div class="custom-control custom-radio">
+  <%= radio_button_tag :by_fr_only,
+                        1,
+                        @fr_only,
+                        id: "filter-france",
+                        class: 'custom-control-input' %>
+  <label class="custom-control-label" for="filter-france">
+    France uniquement
+  </label>
+</div>

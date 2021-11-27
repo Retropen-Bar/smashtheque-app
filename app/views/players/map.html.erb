@@ -1,5 +1,5 @@
 <h1 class="page-title index-title sr-only">Carte des joueurs</h1>
-<div class="container-xl mt-lg-5">
+<div class="container-xl mt-md-3 mt-xxl-4">
   <div class="row flex-nowrap align-items-start flex-column flex-lg-row">
 
     <%= render 'layouts/application_v2/players/index_nav' %>
@@ -20,13 +20,13 @@
               <% end %>
             </div>
             <button @click="filtersVisible = true" type="button" class="btn btn-dark btn-sm btn-with-icon rounded-pill players ml-3<%= ' active' if params[:on_abc] %> d-flex d-xl-none">
-              <%= svg_icon_tag :filtre %> Filtres<%= ' (1)' if params[:on_abc] %>
+              <%= svg_icon_tag :filtre %> Filtres
             </button>
             <slide-out dock="bottom" :visible.sync="filtersVisible" :size="[0]" :arrow-button="false" title="Filtres">
               <template #header>
                 <div class="d-flex align-items-center justify-content-between">
                   <p class="m-0">
-                    <%= svg_icon_tag :filtre %> Filtres<%= ' (1)' if params[:on_abc] %>
+                    <%= svg_icon_tag :filtre %> Filtres
                   </p>
                   <button @click="filtersVisible = false" type="button" class="btn btn-sm btn-icon rounded-circle ml-3">
                     <%= svg_icon_tag :croix %>

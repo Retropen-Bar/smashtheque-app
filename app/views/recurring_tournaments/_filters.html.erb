@@ -42,7 +42,7 @@
     <% end %>
   </div>
 
-  
+
   <h5><%= svg_icon_tag :filtre %> Taille</h5>
 
   <div class="my-4">
@@ -53,6 +53,45 @@
 
       <div class="col-3">et</div>
       <div class="col-auto"><%= select_tag :by_size_leq, options_for_select(planning_size_select_collection, params[:by_size_leq] || RecurringTournament::SIZES.last), class: 'custom-select custom-select-sm' %></div>
+    </div>
+  </div>
+
+
+  <h5><%= svg_icon_tag :lieu %> Communautés</h5>
+
+  <div class="my-4">
+    <%= select_tag  :by_community_id,
+                    options_for_select(
+                      Community.order(:name).pluck(:name, :id),
+                      params[:by_community_id]
+                    ),
+                    prompt: 'Toutes',
+                    class: 'custom-select custom-select-sm mb-2' %>
+  </div>
+
+
+  <h5><%= svg_icon_tag :filtre %> Pause</h5>
+
+  <div class="my-4">
+    <div class="custom-control custom-radio">
+      <%= radio_button_tag :by_is_not_archived,
+                            0,
+                            !@not_archived_only,
+                            id: "filter-archived-or-not",
+                            class: 'custom-control-input' %>
+      <label class="custom-control-label" for="filter-archived-or-not">
+        Toutes les séries
+      </label>
+    </div>
+    <div class="custom-control custom-radio">
+      <%= radio_button_tag :by_is_not_archived,
+                            1,
+                            @not_archived_only,
+                            id: "filter-not-archived",
+                            class: 'custom-control-input' %>
+      <label class="custom-control-label" for="filter-not-archived">
+        Masquer les séries en pause
+      </label>
     </div>
   </div>
 

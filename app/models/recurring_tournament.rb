@@ -42,6 +42,8 @@ class RecurringTournament < ApplicationRecord
 
   geocoded_by :address
 
+  include PgSearch::Model
+
   # ---------------------------------------------------------------------------
   # CONCERNS
   # ---------------------------------------------------------------------------
@@ -168,6 +170,16 @@ class RecurringTournament < ApplicationRecord
 
   scope :by_discord_guild_id, ->(v) { where(discord_guild_id: v) }
 
+  def self.by_events_count_geq(val)
+    where(
+      id: left_joins(
+        :tournament_events, :duo_tournament_events
+      ).group(:id).having(
+        'COUNT(*) >= ?', val
+      ).select(:id)
+    )
+  end
+
   def self.by_discord_guild_discord_id(discord_id)
     by_discord_guild_id(DiscordGuild.by_discord_id(discord_id).select(:id))
   end
@@ -201,6 +213,36 @@ class RecurringTournament < ApplicationRecord
       result = result.or(near_community(other_community))
     end
     result
+  end
+
+  def self.by_community_id(community_id)
+    near_community(Community.find(community_id))
+  end
+
+  pg_search_scope :by_pg_search,
+                  against: :name,
+                  using: {
+                    tsearch: {
+                      prefix: true
+                    },
+                    trigram: {}
+                  },
+                  ignoring: :accents
+
+  def self.by_keyword(term)
+    where(id: by_pg_search(term).select(:id))
+  end
+
+  def self.by_name(name)
+    where(name: name)
+  end
+
+  def self.by_name_like(name)
+    where('unaccent(name) ILIKE unaccent(?)', name)
+  end
+
+  def self.by_name_contains_like(term)
+    where('unaccent(name) ILIKE unaccent(?)', "%#{term}%")
   end
 
   # ---------------------------------------------------------------------------
@@ -239,6 +281,10 @@ class RecurringTournament < ApplicationRecord
 
   def hidden?
     is_hidden?
+  end
+
+  def all_events
+    tournament_events + duo_tournament_events
   end
 
   # ---------------------------------------------------------------------------

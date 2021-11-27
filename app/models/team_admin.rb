@@ -20,7 +20,6 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class TeamAdmin < ApplicationRecord
-
   # ---------------------------------------------------------------------------
   # RELATIONS
   # ---------------------------------------------------------------------------
@@ -36,5 +35,4 @@ class TeamAdmin < ApplicationRecord
   def update_discord
     RetropenBotScheduler.rebuild_team_admins_list
   end
-
 end

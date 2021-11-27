@@ -4,6 +4,7 @@ let handleClick = function(trigger) {
         source = $trigger.attr('data-source');
   $.get(source, function(html) {
     $target.html(html).modal();
+    window.initTooltips($target[0]);
   });
 };
 

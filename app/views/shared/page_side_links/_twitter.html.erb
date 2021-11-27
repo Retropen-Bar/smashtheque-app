@@ -1,0 +1,14 @@
+
+<%# TWITTER %>
+
+<% if defined?(record) %>
+  <% if record.respond_to?(:twitter_username) && !record.twitter_username.blank? %>
+    <%= link_to record.twitter_url,
+                class: 'show-page-side-link btn btn-sm btn-dark btn--with-icon rounded-pill font-weight-bold pl-2 text-truncate',
+                target: '_blank',
+                rel: 'noopener noreferrer' do %>
+      <%= svg_icon_tag :twitter, class: 'mr-1' %>
+      <%= record.twitter_name %>
+    <% end %>
+  <% end %>
+<% end %>
