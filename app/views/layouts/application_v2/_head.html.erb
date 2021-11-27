@@ -13,7 +13,7 @@
 
     <ul class="navbar-nav">
 
-      <li class="nav-item dropdown players">
+      <li class="nav-item dropdown players ml-xxl-auto">
         <%= link_to players_path, class: "nav-link dropdown-toggle#{' active' if current_section?(:players)}", data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
           <span>Joueurs & Cie</span>
         <% end %>
@@ -111,7 +111,7 @@
         </div>
       </li>
 
-      <li class="nav-item dropdown guides">
+      <li class="nav-item dropdown guides <%= "mr-xxl-auto" unless admin_user_signed_in? %>">
         <%= link_to '#', class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
           <span>Guides</span>
         <% end %>

@@ -30,7 +30,7 @@
   }
 
   &-nav {
-    @include media-breakpoint-up(xl) {
+    @include media-breakpoint-up(xxl) {
       align-items: center;
     }
   }
@@ -351,10 +351,6 @@
           }
         }
       }
-    }
-
-    @include media-breakpoint-up(xl) {
-      margin-left: 2rem;
     }
   }
 
