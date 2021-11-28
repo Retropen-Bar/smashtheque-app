@@ -8,8 +8,8 @@
     </div>
     <div class="modal-body">
       <% if tournament_event.graph_image_tag %>
-        <div class="text-center">
-          <%= tournament_event.graph_image_tag max_width: '100%', max_height: 600, class: 'shadow mx-auto' %>
+        <div class="text-center h-100">
+          <%= tournament_event.graph_image_tag max_width: '100%', max_height: 'calc(100% - 40px)', class: 'shadow mx-auto h-100' %>
           <br/>
           <%= tournament_event.bracket_icon_link(text: 'Bracket', class: 'btn btn-sm btn-dark bg-layout-dark rounded-pill font-weight-bolder mx-auto fs-sm mt-2', backet_icon_options: {height: 12, class: 'text-accent'}) %>
         </div>
