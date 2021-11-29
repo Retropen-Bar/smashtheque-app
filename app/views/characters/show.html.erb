@@ -11,6 +11,11 @@ unless color.blank?
 end
 %>
 <div class="container-lg" style="<%= "--text-color-accent: #{ accent_color }; --text-color-accent-100: #{ accent_color_100 };" unless color.blank? %>">
+  <% if admin_user_signed_in? %>
+    <div class="text-right my-3 mb-n3">
+      <%= admin_edit_link(@character, label: 'Admin', class: 'btn btn-sm btn-light rounded-pill') %>
+    </div>
+  <% end %>
   <article class="show-page">
     <section class="show-page-header card ">
       <div class="show-page-header-bg" 

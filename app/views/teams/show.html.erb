@@ -1,10 +1,12 @@
 <div class="container-lg">
-  <div class="text-right my-3">
-    <%= admin_edit_link(team, label: 'Admin', class: 'btn btn-sm btn-light') %>
-    <% if user_signed_in? && (current_user.is_admin? || user_team_admin?) %>
-      <%= link_to 'Modifier', [:edit, team], class: 'btn btn-sm btn-primary mx-2' %>
-    <% end %>
-  </div>
+  <% if admin_user_signed_in? || user_team_admin? %>
+    <div class="text-right my-3 mb-n3">
+      <% if admin_user_signed_in? %>
+        <%= admin_edit_link(team, label: 'Admin', class: 'btn btn-sm btn-light rounded-pill mx-2') %>
+      <% end %>
+      <%= link_to 'Modifier', [:edit, team], class: 'btn btn-sm btn-primary rounded-pill' %>
+    </div>
+  <% end %>
   <article class="show-page">
     <section class="show-page-header card">
       <div class="show-page-header-bg show-page-header-bg--lg"

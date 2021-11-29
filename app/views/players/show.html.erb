@@ -1,6 +1,11 @@
 <% modal_id = "player-#{player.id}" %>
 
 <div class="container-lg">
+  <% if admin_user_signed_in? %>
+    <div class="text-right my-3 mb-n3">
+      <%= admin_edit_link(player, label: 'Admin', class: 'btn btn-sm btn-light rounded-pill') %>
+    </div>
+  <% end %>
   <article class="show-page">
     <section class="show-page-header card">
       <div class="show-page-header-bg"
