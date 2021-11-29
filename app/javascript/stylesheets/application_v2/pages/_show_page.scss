@@ -374,8 +374,17 @@
     }
   }
 
+  [class*="row"] + [class*="row"],
+  [class*="col-12"] + [class*="col-12"] {
+    margin-top: map-get($map: $spacers, $key: 3);
+  }
+
   &-section {
     scroll-margin-top: $header-height-mobile + 35px + 12px;
+
+    & + * {
+      margin-top: map-get($map: $spacers, $key: 3);
+    }
 
     @include media-breakpoint-up(lg) {
       padding-left: map-get($spacers, 3);
