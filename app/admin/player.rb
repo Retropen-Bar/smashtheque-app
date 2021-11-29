@@ -172,6 +172,7 @@ ActiveAdmin.register Player do
 
   permit_params :name, :is_accepted, :discord_id, :smashgg_url,
                 :is_banned, :ban_details,
+                :user_id, # for the "link" button
                 old_names: [],
                 character_ids: [], team_ids: []
 

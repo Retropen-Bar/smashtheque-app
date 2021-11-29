@@ -1,4 +1,12 @@
 <div class="container-lg">
+  <% if admin_user_signed_in? || user_team_admin? %>
+    <div class="text-right my-3 mb-n3">
+      <% if admin_user_signed_in? %>
+        <%= admin_edit_link(team, label: 'Admin', class: 'btn btn-sm btn-light rounded-pill mx-2') %>
+      <% end %>
+      <%= link_to 'Modifier', [:edit, team], class: 'btn btn-sm btn-primary rounded-pill' %>
+    </div>
+  <% end %>
   <article class="show-page">
     <section class="show-page-header card">
       <div class="show-page-header-bg show-page-header-bg--lg"
@@ -40,7 +48,7 @@
           </div>
           <div class="show-page-socials bg-layout bg-md-layout-dark d-md-none">
             <div class="list-x list-x--lg align-items-center">
-              <%= render  'shared/page_socials_links', 
+              <%= render  'shared/page_socials_links',
                           record: team,
                           twitch_channels: team.twitch_channels,
                           you_tube_channels: team.you_tube_channels,
@@ -139,11 +147,11 @@
                                   awarded: team,
                                   is_online: true,
                                   modal_id: 'online-rewards-modal-desktop' %>
-                        <%= render 'shared/rewards/badges_modal', 
+                        <%= render 'shared/rewards/badges_modal',
                                    all_rewards: @all_online_rewards,
-                                   rewards_counts: @online_rewards_counts, 
+                                   rewards_counts: @online_rewards_counts,
                                    awarded: team,
-                                   is_online: true, 
+                                   is_online: true,
                                    modal_id: 'online-rewards-modal-desktop' %>
                         <%= render 'shared/rewards/points_count_card',
                                   awarded: team,
@@ -188,11 +196,11 @@
                                   awarded: team,
                                   is_online: false,
                                   modal_id: 'offline-rewards-modal-desktop' %>
-                        <%= render 'shared/rewards/badges_modal', 
+                        <%= render 'shared/rewards/badges_modal',
                                    all_rewards: @all_offline_rewards,
-                                   rewards_counts: @offline_rewards_counts, 
+                                   rewards_counts: @offline_rewards_counts,
                                    awarded: team,
-                                   is_online: false, 
+                                   is_online: false,
                                    modal_id: 'offline-rewards-modal-desktop' %>
                         <%= render 'shared/rewards/points_count_card',
                                   awarded: team,
