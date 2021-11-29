@@ -55,7 +55,9 @@
     </div>
   <% end %>
 
-  <div class="pt-history-link">
-    <%= link_to t('active_admin.paper_trail.sidebar.history_link'), [:history, :admin, resource], class: 'button' %>
-  </div>
+  <% if can? :history, resource %>
+    <div class="pt-history-link">
+      <%= link_to t('active_admin.paper_trail.sidebar.history_link'), [:history, :admin, resource], class: 'button' %>
+    </div>
+  <% end %>
 </div>
