@@ -8,56 +8,8 @@
     </div>
   <% end %>
   <article class="show-page">
-    <section class="show-page-header card">
-      <div class="show-page-header-bg show-page-header-bg--lg"
-      ></div>
-      <div class="show-page-header-body without-desktop-socials card justify-content-start">
-        <div class="show-page-header-content card-body">
-          <% unless team.website_url.blank? %>
-            <%= link_to team.website_url,
-                class: 'show-page-meta text-body font-weight-normal py-1 badge badge-pill mx-auto',
-                target: '_blank',
-                rel: :noopener do %>
-              <%= svg_icon_tag :site_web %>&nbsp;Site web
-            <% end %>
-          <% end %>
-          <div class="show-page-avatar">
-            <%= team.avatar_tag(94) %>
-          </div>
-          <div class="show-page-main-info">
-            <h1 class="show-page-title card-title">
-              <%= team.full_name %>
-            </h1>
-            <p class="mt-0 mb-3"><%= team.short_name %></p>
-            <div class="list-x mb-1">
-              <%= team.badges %>
-            </div>
-            <% unless team.creation_year.blank? %>
-              <small class="text-secondary">Créée en <%= team.creation_year %></small>
-            <% end %>
-          </div>
-          <div class="show-page-side">
-            <div class="list-x list-x--lg fs-lg align-items-center justify-content-around w-50">
-              <%= render  'shared/page_side_links/page_side_links',
-                          short: true,
-                          record: team,
-                          twitch_channels: team.twitch_channels,
-                          you_tube_channels: team.you_tube_channels,
-                          discord_guilds: team.discord_guilds %>
-            </div>
-          </div>
-          <div class="show-page-socials bg-layout bg-md-layout-dark d-md-none">
-            <div class="list-x list-x--lg align-items-center">
-              <%= render  'shared/page_socials_links',
-                          record: team,
-                          twitch_channels: team.twitch_channels,
-                          you_tube_channels: team.you_tube_channels,
-                          discord_guilds: team.discord_guilds %>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <%= render 'header', team: team %>
+
     <nav class="show-page-nav section-nav players d-lg-none">
       <div class="section-nav-wrapper">
         <scrollactive

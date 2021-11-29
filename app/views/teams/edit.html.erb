@@ -1,92 +1,110 @@
-<h1 class="page-title"><%= team.name %></h1>
+<div class="container-lg">
+  <article class="show-page">
+    <%= render 'header', team: team %>
 
-<div class="container-fluid">
+    <section class="show-page-body card">
+      <div class="show-page-content card-body">
 
-  <%= simple_form_for(@team) do |f| %>
+        <%= simple_form_for(@team) do |f| %>
 
-    <div class="form-inputs">
+          <%= render 'shared/form_errors', f: f %>
 
-      <%= render 'shared/form_errors', f: f %>
+          <div class="row">
+            <div class="col-8">
 
-      <div class="row">
-        <div class="col-4">
-          <h2>Infos clé</h2>
+              <section class="show-page-section">
+                <div class="show-page-section-title">
+                  <h2>Infos clé</h2>
+                  <span class="show-page-section-title-separator"></span>
+                </div>
+                <div class="show-page-section-content">
+                  <%= f.input :short_name %>
+                  <%= f.input :name %>
+                  <%= f.input :is_offline %>
+                  <%= f.input :is_online %>
+                  <%= f.input :is_sponsor %>
+                  <%= f.input :twitter_username %>
+                  <%= players_input f, name: :player_ids, value: f.object.players %>
+                </div>
+              </section>
 
-          <div class="p-3 mb-2 bg-light text-dark">
-            <%= f.input :short_name %>
-            <%= f.input :name %>
-            <%= f.input :is_offline %>
-            <%= f.input :is_online %>
-            <%= f.input :is_sponsor %>
-            <%= f.input :twitter_username %>
-            <%= players_input f, name: :player_ids, value: f.object.players %>
-          </div>
-        </div>
+              <section class="show-page-section mt-5">
+                <div class="show-page-section-title">
+                  <h2>Autres infos</h2>
+                  <span class="show-page-section-title-separator"></span>
+                </div>
+                <div class="show-page-section-content">
+                  <%= f.input :website_url %>
+                  <%= f.input :creation_year %>
+                  <%= f.input :is_recruiting %>
+                  <%= f.input :recruiting_details, as: :simple_action_text %>
+                  <%= f.input :description, as: :simple_action_text %>
+                </div>
+              </section>
 
-        <div class="col-4">
-          <h2>Images</h2>
+            </div>
 
-          <div class="p-3 mb-2 bg-light text-dark">
-            <div class="panel current-image" id="current-logo">
-              <div class="panel_contents">
-                <%= f.object.decorate.logo_image_tag %>
-              </div>
+            <div class="col-4">
+
+              <section class="show-page-section">
+                <div class="show-page-section-title">
+                  <h2>Logo</h2>
+                  <span class="show-page-section-title-separator"></span>
+                </div>
+                <div class="show-page-section-content">
+                  <div class="panel current-image my-3" id="current-logo">
+                    <div class="panel_contents img-fluid-container">
+                      <%= f.object.decorate.logo_image_tag %>
+                    </div>
+                  </div>
+                  <%= f.input :logo,
+                              as: :file,
+                              label: false,
+                              hint: 'Laissez vide pour ne pas changer',
+                              input_html: {
+                                accept: 'image/*',
+                                data: {
+                                  previewpanel: 'current-logo'
+                                }
+                              } %>
+                </div>
+              </section>
+
+              <section class="show-page-section mt-5">
+                <div class="show-page-section-title">
+                  <h2>Roster</h2>
+                  <span class="show-page-section-title-separator"></span>
+                </div>
+                <div class="show-page-section-content">
+                  <div class="panel current-image my-3" id="current-roster">
+                    <div class="panel_contents img-fluid-container">
+                      <%= f.object.decorate.roster_image_tag %>
+                    </div>
+                  </div>
+                  <%= f.input :roster,
+                              as: :file,
+                              label: false,
+                              hint: 'Laissez vide pour ne pas changer',
+                              input_html: {
+                                accept: 'image/*',
+                                data: {
+                                  previewpanel: 'current-roster'
+                                }
+                              } %>
+                </div>
+              </section>
+
             </div>
           </div>
 
-          <div class="p-3 mb-2 bg-light text-dark">
-            <%= f.input :logo,
-                        as: :file,
-                        hint: 'Laissez vide pour ne pas changer',
-                        input_html: {
-                          accept: 'image/*',
-                          data: {
-                            previewpanel: 'current-logo'
-                          }
-                        } %>
+          <div class="form-actions text-center my-5">
+            <%= link_to 'Annuler', @team, class: 'btn btn-secondary mr-3' %>
+            <%= f.button :submit, 'Valider', class: 'btn btn-primary' %>
           </div>
 
-          <div class="p-3 mb-2 bg-light text-dark">
-            <div class="panel current-image" id="current-roster">
-              <div class="panel_contents">
-                <%= f.object.decorate.roster_image_tag %>
-              </div>
-            </div>
-          </div>
+        <% end %>
 
-          <div class="p-3 mb-2 bg-light text-dark">
-            <%= f.input :roster,
-                        as: :file,
-                        hint: 'Laissez vide pour ne pas changer',
-                        input_html: {
-                          accept: 'image/*',
-                          data: {
-                            previewpanel: 'current-roster'
-                          }
-                        } %>
-          </div>
-        </div>
-        <div class="col-4">
-          <h2>Autres infos</h2>
-
-          <div class="p-3 mb-2 bg-light text-dark">
-            <%= f.input :website_url %>
-            <%= f.input :creation_year %>
-            <%= f.input :is_recruiting %>
-            <%= f.input :recruiting_details, as: :simple_action_text %>
-            <%= f.input :description, as: :simple_action_text %>
-          </div>
-        </div>
       </div>
-
-    </div>
-
-    <div class="form-actions text-center my-5">
-      <%= link_to 'Annuler', @team, class: 'btn btn-secondary mr-3' %>
-      <%= f.button :submit, 'Valider', class: 'btn btn-primary' %>
-    </div>
-
-  <% end %>
-
+    </section>
+  </article>
 </div>
-
