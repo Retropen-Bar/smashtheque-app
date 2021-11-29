@@ -1,7 +1,7 @@
 <div class="container-lg">
   <div class="text-right my-3">
     <%= admin_edit_link(team, label: 'Admin', class: 'btn btn-sm btn-light') %>
-    <% if current_user.is_admin? || user_team_admin? %>
+    <% if user_signed_in? && (current_user.is_admin? || user_team_admin?) %>
       <%= link_to 'Modifier', [:edit, team], class: 'btn btn-sm btn-primary mx-2' %>
     <% end %>
   </div>

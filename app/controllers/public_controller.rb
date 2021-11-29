@@ -3,6 +3,7 @@ class PublicController < ApplicationController
   helper_method :user_team_admin?
 
   before_action :check_access! if ENV['HIDE_WEBSITE']
+  before_action :set_paper_trail_whodunnit
 
   protected
 
