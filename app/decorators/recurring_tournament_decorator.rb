@@ -195,7 +195,7 @@ class RecurringTournamentDecorator < BaseDecorator
       ) + ' ' + (
         h.tag.span  level_text,
                     class: 'badge',
-                    style: "background-color: #{self.class.level_color(level)}; color: white"
+                    style: "background-color: #{self.class.level_color(model.level)}; color: white"
       )
     ).html_safe
   end
