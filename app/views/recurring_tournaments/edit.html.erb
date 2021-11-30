@@ -1,118 +1,135 @@
-<%= admin_edit_link(@recurring_tournament) %>
+<div class="container-lg">
+  <article class="show-page">
+    <%= render 'header', recurring_tournament: recurring_tournament %>
 
-<h1 class="page-title">
-  <%= recurring_tournament.name %>
-</h1>
+    <section class="show-page-body card">
+      <div class="show-page-content card-body">
 
-<div class="container">
+        <%= simple_form_for(@recurring_tournament) do |f| %>
 
-  <%= simple_form_for(@recurring_tournament) do |f| %>
+          <%= render 'shared/form_errors', f: f %>
 
-    <div class="form-inputs">
+          <div class="row">
+            <div class="col-8">
 
-      <%= render 'shared/form_errors', f: f %>
+              <section class="show-page-section">
+                <div class="show-page-section-title">
+                  <h2>La série</h2>
+                  <span class="show-page-section-title-separator"></span>
+                </div>
+                <div class="show-page-section-content">
+                  <%= f.input :name,
+                              required: true %>
+                  <%= f.input :level,
+                              collection: recurring_tournament_level_select_collection,
+                              input_html: { data: { select2: {} } },
+                              include_blank: false %>
+                  <%= f.input :size,
+                              as: :select,
+                              collection: recurring_tournament_size_select_collection,
+                              required: true %>
+                  <%= f.input :is_archived %>
+                </div>
+              </section>
 
-      <div class="row">
-        <div class="col-6">
-          <h2>La série</h2>
+              <section class="show-page-section mt-5">
+                <div class="show-page-section-title">
+                  <h2>Contacts</h2>
+                  <span class="show-page-section-title-separator"></span>
+                </div>
+                <div class="show-page-section-content">
+                  <%= f.input :twitter_username %>
+                  <%= f.input :discord_guild_id,
+                              label: 'Serveur Discord',
+                              collection: recurring_tournament_discord_guild_select_collection,
+                              input_html: { data: { select2: {} } } %>
+                  <%= f.input :registration,
+                              input_html: { rows: 5 } %>
+                </div>
+              </section>
 
-          <div class="p-3 mb-2 bg-light text-dark">
-            <%= f.input :name,
-                        required: true %>
-            <%= f.input :level,
-                        collection: recurring_tournament_level_select_collection,
-                        input_html: { data: { select2: {} } },
-                        include_blank: false %>
-            <%= f.input :size,
-                        as: :select,
-                        collection: recurring_tournament_size_select_collection,
-                        required: true %>
-            <%= f.input :is_archived %>
-          </div>
+              <section class="show-page-section mt-5">
+                <div class="show-page-section-title">
+                  <h2>Localisation</h2>
+                  <span class="show-page-section-title-separator"></span>
+                </div>
+                <div class="show-page-section-content">
+                  <%= f.input :is_online,
+                              input_html: {
+                                data: {
+                                  toggle: '.online-fields',
+                                  untoggle: '.offline-fields'
+                                }
+                              } %>
+                  <%= f.input :address_name, wrapper_html: { class: 'offline-fields' } %>
+                  <div class="offline-fields">
+                    <%= address_input f %>
+                  </div>
+                  <%= f.input :misc, input_html: { rows: 5 } %>
+                </div>
+              </section>
 
-          <h2>Contacts</h2>
+              <section class="show-page-section mt-5">
+                <div class="show-page-section-title">
+                  <h2>Temporalité</h2>
+                  <span class="show-page-section-title-separator"></span>
+                </div>
+                <div class="show-page-section-content">
+                  <%= f.input :date_description,
+                              hint: 'À remplir pour les tournois non réguliers' %>
+                  <%= f.input :recurring_type,
+                              collection: recurring_tournament_recurring_type_select_collection,
+                              input_html: { data: { select2: {} } },
+                              include_blank: false %>
+                  <%= f.input :wday,
+                              as: :select,
+                              collection: recurring_tournament_wday_select_collection,
+                              input_html: { data: { select2: {} } },
+                              include_blank: false %>
+                  <%= f.input :starts_at_hour %>
+                  <%= f.input :starts_at_min %>
+                </div>
+              </section>
 
-          <div class="p-3 mb-2 bg-light text-dark">
-            <%= f.input :twitter_username %>
-            <%= f.input :discord_guild_id,
-                        label: 'Serveur Discord',
-                        collection: recurring_tournament_discord_guild_select_collection,
-                        input_html: { data: { select2: {} } } %>
-            <%= f.input :registration,
-                        input_html: { rows: 5 } %>
-          </div>
-        </div>
-        <div class="col-6">
-          <h2>Localisation</h2>
-
-          <div class="p-3 mb-2 bg-light text-dark">
-            <%= f.input :is_online,
-                        input_html: {
-                          data: {
-                            toggle: '.online-fields',
-                            untoggle: '.offline-fields'
-                          }
-                        } %>
-            <%= f.input :address_name, wrapper_html: { class: 'offline-fields' } %>
-            <div class="offline-fields">
-              <%= address_input f %>
             </div>
-            <%= f.input :misc, input_html: { rows: 5 } %>
-          </div>
 
-          <h2>Temporalité</h2>
+            <div class="col-4">
 
-          <div class="p-3 mb-2 bg-light text-dark">
-            <%= f.input :date_description,
-                        hint: 'À remplir pour les tournois non réguliers' %>
-            <%= f.input :recurring_type,
-                        collection: recurring_tournament_recurring_type_select_collection,
-                        input_html: { data: { select2: {} } },
-                        include_blank: false %>
-            <%= f.input :wday,
-                        as: :select,
-                        collection: recurring_tournament_wday_select_collection,
-                        input_html: { data: { select2: {} } },
-                        include_blank: false %>
-            <%= f.input :starts_at_hour %>
-            <%= f.input :starts_at_min %>
-          </div>
-        </div>
-      </div>
+              <section class="show-page-section">
+                <div class="show-page-section-title">
+                  <h2>Logo</h2>
+                  <span class="show-page-section-title-separator"></span>
+                </div>
+                <div class="show-page-section-content">
+                  <div class="panel current-image my-3" id="current-logo">
+                    <div class="panel_contents img-fluid-container">
+                      <%= f.object.decorate.logo_image_tag %>
+                    </div>
+                  </div>
+                  <%= f.input :logo,
+                              as: :file,
+                              label: false,
+                              hint: 'Laissez vide pour ne pas changer',
+                              input_html: {
+                                accept: 'image/*',
+                                data: {
+                                  previewpanel: 'current-logo'
+                                }
+                              } %>
+                </div>
+              </section>
 
-      <h2>Logo</h2>
-      <div class="row">
-        <div class="col-6">
-          <div class="p-3 mb-2 bg-light text-dark">
-            <div class="panel current-image" id="current-logo">
-              <div class="panel_contents">
-                <%= f.object.decorate.logo_image_tag %>
-              </div>
             </div>
           </div>
-        </div>
-        <div class="col-6">
-          <div class="p-3 mb-2 bg-light text-dark">
-            <%= f.input :logo,
-                        as: :file,
-                        hint: 'Laissez vide pour ne pas changer',
-                        input_html: {
-                          accept: 'image/*',
-                          data: {
-                            previewpanel: 'current-logo'
-                          }
-                        } %>
+
+          <div class="form-actions text-center my-5">
+            <%= link_to 'Annuler', @recurring_tournament, class: 'btn btn-secondary mr-3' %>
+            <%= f.button :submit, 'Valider', class: 'btn btn-primary' %>
           </div>
-        </div>
+
+        <% end %>
+
       </div>
-
-    </div>
-
-    <div class="form-actions text-center my-5">
-      <%= link_to 'Annuler', @recurring_tournament, class: 'btn btn-secondary mr-3' %>
-      <%= f.button :submit, 'Valider', class: 'btn btn-primary' %>
-    </div>
-
-  <% end %>
-
+    </section>
+  </article>
 </div>
