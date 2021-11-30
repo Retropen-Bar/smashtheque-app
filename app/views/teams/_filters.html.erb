@@ -56,4 +56,22 @@
     </div>
   </div>
 
+  <h5><%= svg_icon_tag :joueur %> Recrute</h5>
+
+  <div class="my-4">
+    <div class="btn-group btn-group-toggle btn-group-sm players" data-toggle="buttons">
+      <% [false, true, ''].each_with_index do |v, idx| %>
+        <% is_active = (params[:by_is_recruiting] || '') == v.to_s %>
+        <label class="btn <%= 'btn-outline' unless is_active %>">
+          <%= radio_button_tag :by_is_recruiting, v, is_active %>
+          <%  case v
+              when true %>Oui
+          <%  when false %>Non
+          <%  else %>Tout
+          <% end %>
+        </label>
+      <% end %>
+    </div>
+  </div>
+
 <% end %>

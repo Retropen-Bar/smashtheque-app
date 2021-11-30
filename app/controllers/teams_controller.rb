@@ -6,6 +6,7 @@ class TeamsController < PublicController
   has_scope :by_is_online
   has_scope :by_is_offline
   has_scope :by_is_sponsor
+  has_scope :by_is_recruiting
   has_scope :administrated_by
   has_scope :page, default: 1
   has_scope :per
@@ -38,7 +39,7 @@ class TeamsController < PublicController
       render :edit
     end
   end
-  
+
   def ranking
     @year = params[:year]&.to_i
     @year = nil unless @year&.positive?
@@ -83,7 +84,7 @@ class TeamsController < PublicController
 
   def current_page_params
     params.permit(
-      :by_is_online, :by_is_offline, :by_is_sponsor,
+      :by_is_online, :by_is_offline, :by_is_sponsor, :by_is_recruiting,
       :administrated_by,
       :page, :per, :on_abc
     )

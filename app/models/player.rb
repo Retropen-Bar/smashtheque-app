@@ -334,7 +334,7 @@ class Player < ApplicationRecord
 
   def self.by_main_countrycode(countrycode)
     from_users = where(user_id: User.by_main_countrycode(countrycode))
-    if [countrycode].flatten.include?(nil)
+    if [countrycode].flatten.include?('')
       without_user.or(from_users)
     else
       from_users
