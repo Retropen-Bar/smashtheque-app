@@ -3,7 +3,7 @@
     <nav class="section-nav mt-3 mt-lg-0">
       <div class="section-nav-wrapper">
         <div class="section-nav-bg">
-          <%= link_to recurring_tournaments_path, class: "section-nav-link#{current_class?(recurring_tournaments_path)}" do %>
+          <%= link_to recurring_tournaments_path, class: "section-nav-link#{current_class?(recurring_tournaments_path, params[:action].to_sym == :index)}" do %>
             <%= svg_icon_tag :trophee %>
             <span>Séries</span>
           <% end %>

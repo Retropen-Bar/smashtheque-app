@@ -28,8 +28,8 @@ module ApplicationHelper
             { target: '_blank', rel: :noopener, class: classes }.merge(options)
   end
 
-  def current_class?(path_prefix)
-    return ' active' if request.path.starts_with?(path_prefix)
+  def current_class?(path_prefix, condition = true)
+    return ' active' if request.path.starts_with?(path_prefix) && condition
 
     ''
   end

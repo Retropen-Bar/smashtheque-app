@@ -1,6 +1,9 @@
 <%= form_tag nil, method: :get, id: "index-filters" do %>
 
-  <%= hidden_field_tag :on_abc, params[:on_abc] %>
+  <% unless is_map %>
+    <%= hidden_field_tag :on_abc, params[:on_abc] %>
+  <% end %>
+
 
   <h5><%= svg_icon_tag :filtre %> Niveau</h5>
 
@@ -21,26 +24,29 @@
     <% end %>
   </div>
 
-  <h5><%= svg_icon_tag :filtre %> Type</h5>
 
-  <div class="my-4">
-    <% [false, true, ''].each_with_index do |v, idx| %>
-      <div class="custom-control custom-radio">
-        <%= radio_button_tag :by_is_online,
-                              v,
-                              (params[:by_is_online] || '') == v.to_s,
-                              id: "radio-is-online-#{idx}",
-                              class: 'custom-control-input' %>
-        <label class="custom-control-label" for="radio-is-online-<%= idx %>">
-          <%  case v
-              when true %>Online
-          <%  when false %>Offline
-          <%  else %>Les 2
-          <% end %>
-        </label>
-      </div>
-    <% end %>
-  </div>
+  <% unless is_map %>
+    <h5><%= svg_icon_tag :filtre %> Type</h5>
+
+    <div class="my-4">
+      <% [false, true, ''].each_with_index do |v, idx| %>
+        <div class="custom-control custom-radio">
+          <%= radio_button_tag :by_is_online,
+                                v,
+                                (params[:by_is_online] || '') == v.to_s,
+                                id: "radio-is-online-#{idx}",
+                                class: 'custom-control-input' %>
+          <label class="custom-control-label" for="radio-is-online-<%= idx %>">
+            <%  case v
+                when true %>Online
+            <%  when false %>Offline
+            <%  else %>Les 2
+            <% end %>
+          </label>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
 
 
   <h5><%= svg_icon_tag :filtre %> Taille</h5>
@@ -57,17 +63,19 @@
   </div>
 
 
-  <h5><%= svg_icon_tag :lieu %> Communautés</h5>
+  <% unless is_map %>
+    <h5><%= svg_icon_tag :lieu %> Communautés</h5>
 
-  <div class="my-4">
-    <%= select_tag  :by_community_id,
-                    options_for_select(
-                      Community.order(:name).pluck(:name, :id),
-                      params[:by_community_id]
-                    ),
-                    prompt: 'Toutes',
-                    class: 'custom-select custom-select-sm mb-2' %>
-  </div>
+    <div class="my-4">
+      <%= select_tag  :by_community_id,
+                      options_for_select(
+                        Community.order(:name).pluck(:name, :id),
+                        params[:by_community_id]
+                      ),
+                      prompt: 'Toutes',
+                      class: 'custom-select custom-select-sm mb-2' %>
+    </div>
+  <% end %>
 
 
   <h5><%= svg_icon_tag :filtre %> Pause</h5>

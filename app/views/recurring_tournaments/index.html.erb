@@ -1,4 +1,4 @@
-<h1 class="page-title index-title sr-only">Joueurs</h1>
+<h1 class="page-title index-title sr-only">Séries</h1>
 <div class="container-xl mt-lg-5">
   <div class="row flex-nowrap align-items-start flex-column flex-lg-row">
 
@@ -27,7 +27,7 @@
               <section class="mb-n4">
                 <h5><%= svg_icon_tag :abcd %> Abécédaire</h5>
                 <%= render 'shared/letters' %>
-                <%= render 'filters' %>
+                <%= render 'filters', is_map: false %>
               </section>
             </slide-out>
           </section>

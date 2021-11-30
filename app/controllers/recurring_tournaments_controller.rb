@@ -82,7 +82,6 @@ class RecurringTournamentsController < PublicController
       RecurringTournament.visible.order('LOWER(name)')
     ).includes(:discord_guild).all
     @meta_title = 'Carte des tournois'
-    render layout: 'map'
   end
 
   def show
