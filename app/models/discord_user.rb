@@ -56,6 +56,11 @@ class DiscordUser < ApplicationRecord
   # CALLBACKS
   # ---------------------------------------------------------------------------
 
+  before_validation :clean_discord_id
+  def clean_discord_id
+    self.discord_id.strip!
+  end
+
   after_create_commit :fetch_discord_data_later
   def fetch_discord_data_later
     FetchDiscordUserDataJob.perform_later(self)
