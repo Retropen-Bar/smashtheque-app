@@ -83,10 +83,17 @@ class Ability
 
     # Tournaments
     can manage_or_cru, RecurringTournament
-    can manage_or_cru, TournamentEvent
-    can :convert_to_duo_tournament_event, TournamentEvent
-    can manage_or_cru, DuoTournamentEvent
-    can :convert_to_tournament_event, DuoTournamentEvent
+    [
+      TournamentEvent,
+      DuoTournamentEvent
+    ].each do |klass|
+      can manage_or_cru, klass
+      can :complete_with_bracket, klass
+      can :compute_rewards, klass
+      can :convert_to_duo_tournament_event, klass
+      can :convert_to_tournament_event, klass
+      can :purge_graph, klass
+    end
 
     # Team
     can manage_or_cru, Team
