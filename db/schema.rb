@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_17_162007) do
+ActiveRecord::Schema.define(version: 2021_11_30_213154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -466,13 +466,13 @@ ActiveRecord::Schema.define(version: 2021_11_17_162007) do
     t.string "short_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "is_offline"
-    t.boolean "is_online"
-    t.boolean "is_sponsor"
+    t.boolean "is_offline", default: false, null: false
+    t.boolean "is_online", default: false, null: false
+    t.boolean "is_sponsor", default: false, null: false
     t.string "twitter_username"
     t.string "website_url"
     t.integer "creation_year"
-    t.boolean "is_recruiting"
+    t.boolean "is_recruiting", default: false, null: false
     t.text "recruiting_details"
     t.text "description"
   end

@@ -5,10 +5,10 @@
 #  id                 :bigint           not null, primary key
 #  creation_year      :integer
 #  description        :text
-#  is_offline         :boolean
-#  is_online          :boolean
-#  is_recruiting      :boolean
-#  is_sponsor         :boolean
+#  is_offline         :boolean          default(FALSE), not null
+#  is_online          :boolean          default(FALSE), not null
+#  is_recruiting      :boolean          default(FALSE), not null
+#  is_sponsor         :boolean          default(FALSE), not null
 #  name               :string
 #  recruiting_details :text
 #  short_name         :string
@@ -124,9 +124,10 @@ class Team < ApplicationRecord
     where(id: TeamAdmin.where(user_id: user_id).select(:team_id))
   end
 
-  scope :by_is_online, -> v { where(is_online: v) }
-  scope :by_is_offline, -> v { where(is_offline: v) }
-  scope :by_is_sponsor, -> v { where(is_sponsor: v) }
+  scope :by_is_online, ->(v) { where(is_online: v) }
+  scope :by_is_offline, ->(v) { where(is_offline: v) }
+  scope :by_is_sponsor, ->(v) { where(is_sponsor: v) }
+  scope :by_is_recruiting, ->(v) { where(is_recruiting: v) }
 
   # ---------------------------------------------------------------------------
   # HELPERS
