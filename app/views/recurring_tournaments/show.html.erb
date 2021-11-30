@@ -1,25 +1,26 @@
 <div class="container-lg">
-  <div class="text-right my-3">
-    <%= admin_edit_link(recurring_tournament) %>
-    <% if user_recurring_tournament_admin? %>
-        <%= link_to 'Modifier', [:edit, recurring_tournament], class: 'btn btn-sm btn-primary mx-2' %>
-        <%= form_for(recurring_tournament, html: { class: 'd-inline-block' }) do |f| %>
-          <%= f.hidden_field :is_archived, value: !recurring_tournament.is_archived? %>
-          <% if recurring_tournament.is_archived? %>
-            <%= f.button type: :submit, class: 'btn btn-sm btn-success' do %>
-              <%= fas_icon_tag :play, %w(mr-2) %>
-              Relancer
-            <% end %>
-          <% else %>
-            <%= f.button type: :submit, class: 'btn btn-sm btn-danger' do %>
-              <%= fas_icon_tag :pause, %w(mr-2) %>
-              Mettre en pause
-            <% end %>
+  <% if admin_user_signed_in? || user_recurring_tournament_admin? %>
+    <div class="text-right my-3 mb-n3">
+      <% if admin_user_signed_in? %>
+        <%= admin_edit_link(recurring_tournament, label: 'Admin', class: 'btn btn-sm btn-light rounded-pill') %>
+      <% end %>
+      <%= link_to 'Modifier', [:edit, recurring_tournament], class: 'btn btn-sm btn-primary rounded-pill ml-2' %>
+      <%= form_for(recurring_tournament, html: { class: 'd-inline-block' }) do |f| %>
+        <%= f.hidden_field :is_archived, value: !recurring_tournament.is_archived? %>
+        <% if recurring_tournament.is_archived? %>
+          <%= f.button type: :submit, class: 'btn btn-sm btn-success rounded-pill ml-2' do %>
+            <%= fas_icon_tag :play, %w(mr-2) %>
+            Relancer
+          <% end %>
+        <% else %>
+          <%= f.button type: :submit, class: 'btn btn-sm btn-danger rounded-pill ml-2' do %>
+            <%= fas_icon_tag :pause, %w(mr-2) %>
+            Mettre en pause
           <% end %>
         <% end %>
-
-    <% end %>
-  </div>
+      <% end %>
+    </div>
+  <% end %>
   <article class="show-page">
     <section class="show-page-header card">
       <div class="show-page-header-bg show-page-header-bg--lg"
