@@ -5,3 +5,7 @@
 <% player.smashgg_users.each do |smashgg_user| %>
   <%= smashgg_user.decorate.smashgg_badge_logo_only %>
 <% end %>
+
+<% if !player.twitter_username.blank? %>
+  <%= player.twitter_link(label: svg_icon_tag(:twitter)) %>
+<% end %>
