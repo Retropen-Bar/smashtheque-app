@@ -35,6 +35,7 @@ class Player < ApplicationRecord
     :name
   end
 
+  has_many :met_reward_conditions, as: :awarded, dependent: :destroy
   include HasTrackRecords
 
   include PgSearch::Model

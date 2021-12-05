@@ -31,6 +31,7 @@ class Team < ApplicationRecord
 
   include HasTwitter
 
+  has_many :met_reward_conditions, through: :players, dependent: nil
   include HasTrackRecords
 
   include PgSearch::Model
@@ -60,11 +61,6 @@ class Team < ApplicationRecord
 
   has_rich_text :description
   has_rich_text :recruiting_details
-
-  # HasTrackRecords overrides
-  has_many :met_reward_conditions, through: :players
-  has_many :reward_conditions, through: :met_reward_conditions
-  has_many :rewards, through: :met_reward_conditions
 
   # ---------------------------------------------------------------------------
   # VALIDATIONS
