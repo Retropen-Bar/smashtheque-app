@@ -31,6 +31,8 @@ class Team < ApplicationRecord
 
   include HasTwitter
 
+  has_many :players_teams, dependent: :destroy
+  has_many :players, through: :players_teams, after_remove: :after_remove_player
   has_many :met_reward_conditions, through: :players, dependent: nil
   include HasTrackRecords
 
@@ -39,9 +41,6 @@ class Team < ApplicationRecord
   # ---------------------------------------------------------------------------
   # RELATIONS
   # ---------------------------------------------------------------------------
-
-  has_many :players_teams, dependent: :destroy
-  has_many :players, through: :players_teams, after_remove: :after_remove_player
 
   has_many :discord_guild_relateds, as: :related, dependent: :destroy
   has_many :discord_guilds, through: :discord_guild_relateds
