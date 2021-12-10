@@ -36,6 +36,11 @@ class Community < ApplicationRecord
   # RELATIONS
   # ---------------------------------------------------------------------------
 
+  has_many :recurring_tournaments,
+           foreign_key: :closest_community_id,
+           inverse_of: :closest_community,
+           dependent: :nullify
+
   has_many :discord_guild_relateds, as: :related, dependent: :destroy
   has_many :discord_guilds, through: :discord_guild_relateds
 
@@ -58,6 +63,23 @@ class Community < ApplicationRecord
   validates :address, presence: true
   validates :latitude, presence: true
   validates :longitude, presence: true
+
+  # ---------------------------------------------------------------------------
+  # CALLBACKS
+  # ---------------------------------------------------------------------------
+
+  after_destroy :update_recurring_tournaments_after_destroy
+  def update_recurring_tournaments_after_destroy
+    RecurringTournament.update_all_closest_communities!
+  end
+
+  after_commit :update_recurring_tournaments
+  def update_recurring_tournaments
+    # only if record is new or location has changed
+    return true unless previous_changes.key?('latitude') || previous_changes.key?('longitude')
+
+    RecurringTournament.update_all_closest_communities!
+  end
 
   # ---------------------------------------------------------------------------
   # SCOPES

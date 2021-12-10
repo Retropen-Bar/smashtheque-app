@@ -240,6 +240,7 @@ fr:
         << : *SHARED
         address: Adresse du lieu
         address_name: Nom du lieu
+        closest_community: Communauté
         contacts: TOs
         countrycode: Pays
         date_description: Description de la date

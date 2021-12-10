@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_30_213154) do
+ActiveRecord::Schema.define(version: 2021_12_10_085508) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -365,6 +365,8 @@ ActiveRecord::Schema.define(version: 2021_11_30_213154) do
     t.boolean "is_hidden", default: false, null: false
     t.string "locality"
     t.string "countrycode"
+    t.bigint "closest_community_id"
+    t.index ["closest_community_id"], name: "index_recurring_tournaments_on_closest_community_id"
     t.index ["discord_guild_id"], name: "index_recurring_tournaments_on_discord_guild_id"
   end
 
@@ -629,6 +631,7 @@ ActiveRecord::Schema.define(version: 2021_11_30_213154) do
   add_foreign_key "players_teams", "teams"
   add_foreign_key "recurring_tournament_contacts", "recurring_tournaments"
   add_foreign_key "recurring_tournament_contacts", "users"
+  add_foreign_key "recurring_tournaments", "communities", column: "closest_community_id"
   add_foreign_key "recurring_tournaments", "discord_guilds"
   add_foreign_key "reward_conditions", "rewards"
   add_foreign_key "smashgg_events", "smashgg_users", column: "top1_smashgg_user_id"

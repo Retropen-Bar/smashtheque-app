@@ -46,10 +46,10 @@
                 </div>
               <% end %>
             </div>
-          
+
             <strong>Communautés</strong>
             <div>
-              <%= select_tag  :by_community_id,
+              <%= select_tag  :by_closest_community_id,
                               options_for_select(
                                 Community.order(:name).map do |community|
                                   [
@@ -57,7 +57,7 @@
                                     community.id
                                   ]
                                 end,
-                                params[:by_community_id]
+                                params[:by_closest_community_id]
                               ),
                               prompt: 'Toutes',
                               class: 'custom-select custom-select-sm mb-1' %>
