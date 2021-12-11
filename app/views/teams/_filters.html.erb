@@ -58,7 +58,7 @@
 
   <h5><%= svg_icon_tag :joueur %> Recrute</h5>
 
-  <div class="my-4">
+  <div class="mt-4">
     <div class="btn-group btn-group-toggle btn-group-sm players" data-toggle="buttons">
       <% [false, true, ''].each_with_index do |v, idx| %>
         <% is_active = (params[:by_is_recruiting] || '') == v.to_s %>

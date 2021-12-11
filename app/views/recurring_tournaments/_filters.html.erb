@@ -49,7 +49,7 @@
   <% end %>
 
 
-  <h5><%= svg_icon_tag :map %> Communautés</h5>
+  <h5><%= svg_icon_tag :lieu %> Communautés</h5>
   <div class="my-4">
     <%= select_tag  :by_closest_community_id,
                     options_for_select(
@@ -80,7 +80,7 @@
   </div>
 
   <h5><%= svg_icon_tag :filtre %> Pause</h5>
-  <div class="my-4">
+  <div class="mt-4">
     <div class="custom-control custom-radio">
       <%= radio_button_tag :by_is_not_archived,
                             0,

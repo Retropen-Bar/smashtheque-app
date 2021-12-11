@@ -49,7 +49,7 @@
 
   <h5><%= svg_icon_tag :lieu %> Communautés</h5>
 
-  <div class="my-4">
+  <div class="mt-4">
     <%= select_tag  :by_community_id,
                     options_for_select(
                       Community.order(:name).map do |community|
