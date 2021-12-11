@@ -31,6 +31,9 @@ class Team < ApplicationRecord
 
   include HasTwitter
 
+  has_many :players_teams, dependent: :destroy
+  has_many :players, through: :players_teams, after_remove: :after_remove_player
+  has_many :met_reward_conditions, through: :players, dependent: nil
   include HasTrackRecords
 
   include PgSearch::Model
@@ -38,9 +41,6 @@ class Team < ApplicationRecord
   # ---------------------------------------------------------------------------
   # RELATIONS
   # ---------------------------------------------------------------------------
-
-  has_many :players_teams, dependent: :destroy
-  has_many :players, through: :players_teams, after_remove: :after_remove_player
 
   has_many :discord_guild_relateds, as: :related, dependent: :destroy
   has_many :discord_guilds, through: :discord_guild_relateds
@@ -60,11 +60,6 @@ class Team < ApplicationRecord
 
   has_rich_text :description
   has_rich_text :recruiting_details
-
-  # HasTrackRecords overrides
-  has_many :met_reward_conditions, through: :players
-  has_many :reward_conditions, through: :met_reward_conditions
-  has_many :rewards, through: :met_reward_conditions
 
   # ---------------------------------------------------------------------------
   # VALIDATIONS

@@ -5,7 +5,7 @@ class RecurringTournamentsController < PublicController
   before_action :verify_recurring_tournament!, only: %w[edit update]
   decorates_assigned :recurring_tournament
 
-  has_scope :by_community_id
+  has_scope :by_closest_community_id
   has_scope :by_level_in, type: :array
   has_scope :by_size_geq
   has_scope :by_size_leq

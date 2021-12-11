@@ -6,7 +6,8 @@ module HasTrackRecords
     # RELATIONS
     # ---------------------------------------------------------------------------
 
-    has_many :met_reward_conditions, as: :awarded, dependent: :destroy
+    # each model is responsible for declaring how :met_reward_conditions are computed
+    # e.g. has_many :met_reward_conditions, as: :awarded, dependent: :destroy
     has_many :reward_conditions, through: :met_reward_conditions
     has_many :rewards, through: :met_reward_conditions
 

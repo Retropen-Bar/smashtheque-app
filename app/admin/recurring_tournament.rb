@@ -63,7 +63,7 @@ ActiveAdmin.register RecurringTournament do
   filter :is_archived
   filter :is_hidden
   filter :is_online
-  filter :by_community_id,
+  filter :by_closest_community_id,
          as: :select,
          label: 'Communauté',
          collection: proc { recurring_tournament_community_select_collection },
@@ -204,6 +204,7 @@ ActiveAdmin.register RecurringTournament do
           row :address, &:address_with_coordinates
           row :locality
           row :countrycode, &:country_name
+          row :closest_community, &:closest_community_admin_link
           row :twitter_username, &:twitter_link
           row :misc, &:formatted_misc
           row :is_archived

@@ -35,6 +35,7 @@ class Player < ApplicationRecord
     :name
   end
 
+  has_many :met_reward_conditions, as: :awarded, dependent: :destroy
   include HasTrackRecords
 
   include PgSearch::Model
@@ -341,12 +342,24 @@ class Player < ApplicationRecord
     end
   end
 
+  def self.by_main_countrycode_in(*countrycode)
+    by_main_countrycode(countrycode)
+  end
+
   def self.by_main_countrycode_unknown_or_fr
     by_main_countrycode(['', 'FR'])
   end
 
   def self.by_main_countrycode_unknown_or_french_speaking
     by_main_countrycode(['', 'FR'] + User::FRENCH_SPEAKING_COUNTRIES)
+  end
+
+  # ---------------------------------------------------------------------------
+  # RANSACK
+  # ---------------------------------------------------------------------------
+
+  def self.ransackable_scopes(auth_object = nil)
+    super + %i[by_main_countrycode_in]
   end
 
   # ---------------------------------------------------------------------------

@@ -49,6 +49,23 @@
   <% end %>
 
 
+  <h5><%= svg_icon_tag :map %> Communautés</h5>
+  <div class="my-4">
+    <%= select_tag  :by_closest_community_id,
+                    options_for_select(
+                      Community.order(:name).map do |community|
+                        [
+                          community.name,
+                          community.id
+                        ]
+                      end,
+                      params[:by_closest_community_id]
+                    ),
+                    prompt: 'Toutes',
+                    class: 'custom-select custom-select-sm mb-1' %>
+  </div>
+
+  
   <h5><%= svg_icon_tag :filtre %> Taille</h5>
 
   <div class="my-4">
@@ -62,24 +79,7 @@
     </div>
   </div>
 
-
-  <% unless is_map %>
-    <h5><%= svg_icon_tag :lieu %> Communautés</h5>
-
-    <div class="my-4">
-      <%= select_tag  :by_community_id,
-                      options_for_select(
-                        Community.order(:name).pluck(:name, :id),
-                        params[:by_community_id]
-                      ),
-                      prompt: 'Toutes',
-                      class: 'custom-select custom-select-sm mb-2' %>
-    </div>
-  <% end %>
-
-
   <h5><%= svg_icon_tag :filtre %> Pause</h5>
-
   <div class="my-4">
     <div class="custom-control custom-radio">
       <%= radio_button_tag :by_is_not_archived,
@@ -88,7 +88,7 @@
                             id: "filter-archived-or-not",
                             class: 'custom-control-input' %>
       <label class="custom-control-label" for="filter-archived-or-not">
-        Toutes les séries
+        Voir toutes les séries
       </label>
     </div>
     <div class="custom-control custom-radio">

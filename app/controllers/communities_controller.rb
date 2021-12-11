@@ -31,7 +31,7 @@ class CommunitiesController < PublicController
 
     # we cannot directly get a sorted relation here (yet), so we sort it manually
     @community_recurring_tournaments = RecurringTournament.visible.recurring.not_archived.offline
-      .by_community_id(@community.id).includes(:tournament_events, :duo_tournament_events).to_a
+      .by_closest_community_id(@community.id).includes(:tournament_events, :duo_tournament_events).to_a
     @community_recurring_tournaments.sort_by! { |recurring_tournament| recurring_tournament.all_events.count }
 
     @community_tos = @community_recurring_tournaments.map(&:contacts).flatten.uniq

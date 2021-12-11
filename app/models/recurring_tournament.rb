@@ -2,37 +2,40 @@
 #
 # Table name: recurring_tournaments
 #
-#  id               :bigint           not null, primary key
-#  address          :string
-#  address_name     :string
-#  countrycode      :string
-#  date_description :string
-#  is_archived      :boolean          default(FALSE), not null
-#  is_hidden        :boolean          default(FALSE), not null
-#  is_online        :boolean          default(FALSE), not null
-#  latitude         :float
-#  level            :string
-#  locality         :string
-#  longitude        :float
-#  misc             :text
-#  name             :string           not null
-#  recurring_type   :string           not null
-#  registration     :text
-#  size             :integer
-#  starts_at_hour   :integer          not null
-#  starts_at_min    :integer          not null
-#  twitter_username :string
-#  wday             :integer
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  discord_guild_id :bigint
+#  id                   :bigint           not null, primary key
+#  address              :string
+#  address_name         :string
+#  countrycode          :string
+#  date_description     :string
+#  is_archived          :boolean          default(FALSE), not null
+#  is_hidden            :boolean          default(FALSE), not null
+#  is_online            :boolean          default(FALSE), not null
+#  latitude             :float
+#  level                :string
+#  locality             :string
+#  longitude            :float
+#  misc                 :text
+#  name                 :string           not null
+#  recurring_type       :string           not null
+#  registration         :text
+#  size                 :integer
+#  starts_at_hour       :integer          not null
+#  starts_at_min        :integer          not null
+#  twitter_username     :string
+#  wday                 :integer
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  closest_community_id :bigint
+#  discord_guild_id     :bigint
 #
 # Indexes
 #
-#  index_recurring_tournaments_on_discord_guild_id  (discord_guild_id)
+#  index_recurring_tournaments_on_closest_community_id  (closest_community_id)
+#  index_recurring_tournaments_on_discord_guild_id      (discord_guild_id)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (closest_community_id => communities.id)
 #  fk_rails_...  (discord_guild_id => discord_guilds.id)
 #
 class RecurringTournament < ApplicationRecord
@@ -92,6 +95,7 @@ class RecurringTournament < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   belongs_to :discord_guild, optional: true
+  belongs_to :closest_community, class_name: :Community, optional: true
 
   has_many :recurring_tournament_contacts,
            inverse_of: :recurring_tournament,
@@ -120,6 +124,11 @@ class RecurringTournament < ApplicationRecord
   def set_starts_at
     self.starts_at_hour ||= 0
     self.starts_at_min ||= 0
+  end
+
+  before_validation :set_closest_community
+  def set_closest_community
+    self.closest_community = geocoded? && Community.near([latitude, longitude]).first
   end
 
   after_commit :update_discord, unless: proc { ENV['NO_DISCORD'] }
@@ -170,6 +179,9 @@ class RecurringTournament < ApplicationRecord
 
   scope :by_discord_guild_id, ->(v) { where(discord_guild_id: v) }
 
+  scope :by_closest_community_id, ->(v) { where(closest_community_id: v) }
+  scope :by_closest_community_id_in, ->(v) { where(closest_community_id: v) }
+
   def self.by_events_count_geq(val)
     where(
       id: left_joins(
@@ -190,33 +202,6 @@ class RecurringTournament < ApplicationRecord
 
   def is_recurring?
     %i[weekly bimonthly monthly].include?(recurring_type.to_sym)
-  end
-
-  def self.near_community(community, radius: 50)
-    near(
-      [community.latitude, community.longitude],
-      radius,
-      units: :km,
-      select: 'id',
-      select_distance: false,
-      select_bearing: false
-    ).except(
-      :select
-    )
-  end
-
-  def self.by_community_id_in(*community_ids)
-    communities = Community.where(id: community_ids).to_a
-    first_community = communities.shift
-    result = near_community(first_community)
-    communities.each do |other_community|
-      result = result.or(near_community(other_community))
-    end
-    result
-  end
-
-  def self.by_community_id(community_id)
-    near_community(Community.find(community_id))
   end
 
   pg_search_scope :by_pg_search,
@@ -250,7 +235,7 @@ class RecurringTournament < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   def self.ransackable_scopes(auth_object = nil)
-    super + %i[by_community_id_in]
+    super + %i[by_closest_community_id_in]
   end
 
   # ---------------------------------------------------------------------------
@@ -285,6 +270,10 @@ class RecurringTournament < ApplicationRecord
 
   def all_events
     tournament_events + duo_tournament_events
+  end
+
+  def self.update_all_closest_communities!
+    geocoded.each(&:save!)
   end
 
   # ---------------------------------------------------------------------------

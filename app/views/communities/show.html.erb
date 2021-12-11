@@ -35,7 +35,7 @@
             </div>
           </div>
           <div class="show-page-socials bg-layout bg-md-layout-dark d-flex d-md-none align-items-center">
-            <%= render  'shared/page_socials_links', 
+            <%= render  'shared/page_socials_links',
                         record: community,
                         twitch_channels: community.twitch_channels,
                         you_tube_channels: community.you_tube_channels,
@@ -115,7 +115,7 @@
                   <% if @community_recurring_tournaments.count > 3 %>
                     <div class="text-right mt-3">
                       <%= link_to 'Voir plus',
-                                  recurring_tournaments_path(by_community_id: community.id),
+                                  recurring_tournaments_path(by_closest_community_id: community.id),
                                   class: 'btn btn-sm bg-layout rounded-pill' %>
                     </div>
                   <% end %>

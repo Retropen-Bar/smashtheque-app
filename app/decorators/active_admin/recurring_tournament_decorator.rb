@@ -8,6 +8,10 @@ module ActiveAdmin
       super({ label: name_with_logo(max_width: 32, max_height: 32) }.merge(options))
     end
 
+    def closest_community_admin_link(options = {})
+      closest_community&.admin_decorate&.admin_link(options)
+    end
+
     def tournament_events_admin_link
       h.link_to(
         tournament_events_count,

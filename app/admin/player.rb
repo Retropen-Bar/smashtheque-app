@@ -100,6 +100,10 @@ ActiveAdmin.register Player do
          input_html: { multiple: true, data: { select2: {} } }
   filter :is_accepted
   filter :is_banned
+  filter :by_main_countrycode,
+         as: :select,
+         collection: proc { user_country_codes_select_collection },
+         input_html: { multiple: true, data: { select2: {} } }
 
   # ---------------------------------------------------------------------------
   # FORM
