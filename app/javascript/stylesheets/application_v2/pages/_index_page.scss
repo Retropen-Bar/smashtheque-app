@@ -91,7 +91,11 @@
 #index-nav,
 #index-filters {
   @include media-breakpoint-up(xl) {
-    top: $header-height-desktop + $grid-gutter-width / 2;
+    top: $header-height-desktop + $grid-gutter-width;
+  }
+
+  @media screen and (min-width: 1500px) {
+    top: $header-height-desktop-xl + $grid-gutter-width;
   }
 }
 

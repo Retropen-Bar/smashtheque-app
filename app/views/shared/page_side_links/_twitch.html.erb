@@ -1,0 +1,77 @@
+<%# TWITCH %>
+
+<% if defined?(twitch_channels) %>
+  <% if  defined?(short) && short %>
+    <% if twitch_channels.count > 1 %>
+
+      <div class="btn-group dropleft">
+        <%= link_to '#',
+                    class: 'btn btn-sm btn-dark rounded-pill dropdown-toggle',
+                    id: 'socials-mobile',
+                    data: { toggle: :dropdown },
+                    aria: { expanded: :false } do %>
+          <%= svg_icon_tag :twitch, class: "ml-1" %>
+          <span class="sr-only">Twitch</span>
+        <% end %>
+        <div class="dropdown-menu" aria-labelledby="socials-mobile">
+          <% twitch_channels.decorate.each do |twitch_channel| %>
+            <%= link_to twitch_channel.name,
+                        twitch_channel.channel_url,
+                        class: 'dropdown-item',
+                        target: '_blank',
+                        rel: 'noopener noreferrer' %>
+          <% end %>
+        </div>
+      </div>
+
+    <% elsif twitch_channels.count > 0 %>
+
+      <% twitch_channel = twitch_channels.first.decorate %>
+      <%= link_to twitch_channel.channel_url, target: '_blank', rel: 'noopener noreferrer' do %>
+        <%= svg_icon_tag :twitch %>
+        <span class="sr-only">Twitch</span>
+      <% end %>
+
+    <% end %>
+  <% else %>
+    <% if twitch_channels.count > 1 %>
+
+      <div class="show-page-side-link btn-group btn-group-sm">
+        <% twitch_channel = twitch_channels.first.decorate %>
+        <%= link_to twitch_channel.channel_url,
+                    class: 'btn btn-sm btn-dark btn--with-icon font-weight-bold pl-2',
+                    target: '_blank',
+                    rel: 'noopener noreferrer' do %>
+          <%= svg_icon_tag :twitch, class: 'mr-1' %>
+          Twitch
+        <% end %>
+        <div class="btn-group btn-group-sm" role="group">
+          <button id="socials-desktop" type="button" class="btn btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
+          </button>
+          <div class="dropdown-menu" aria-labelledby="socials-desktop">
+            <% twitch_channels.decorate.each do |twitch_channel| %>
+              <%= link_to twitch_channel.name,
+                          twitch_channel.channel_url,
+                          class: 'dropdown-item',
+                          target: '_blank',
+                          rel: 'noopener noreferrer' %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+    <% elsif twitch_channels.count > 0 %>
+
+      <% twitch_channel = twitch_channels.first.decorate %>
+      <%= link_to twitch_channel.channel_url,
+                  class: 'show-page-side-link btn btn-sm btn-dark btn--with-icon rounded-pill font-weight-bold pl-2 text-truncate',
+                  target: '_blank',
+                  rel: 'noopener noreferrer' do %>
+        <%= svg_icon_tag :twitch, class: 'mr-1' %>
+        <%= twitch_channel.name %>
+      <% end %>
+
+    <% end %>
+  <% end %>
+<% end %>
+

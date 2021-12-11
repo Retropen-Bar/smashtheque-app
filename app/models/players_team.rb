@@ -33,6 +33,15 @@ class PlayersTeam < ApplicationRecord
   validates :team_id, uniqueness: { scope: :player_id }
 
   # ---------------------------------------------------------------------------
+  # CALLBACKS
+  # ---------------------------------------------------------------------------
+
+  after_commit :update_team_track_records
+  def update_team_track_records
+    UpdateTeamTrackRecordsJob.perform_later(team)
+  end
+
+  # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
 

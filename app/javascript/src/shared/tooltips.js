@@ -8,10 +8,15 @@ let initElement = function(element) {
   $element.tooltip($.extend({ html: true }, options));
 };
 
-let init = function() {
-  $('['+DATA_KEY+']').each(function() {
+let initContainer = function(container) {
+  $(container).find('['+DATA_KEY+']').each(function() {
     initElement(this);
   });
 };
 
+let init = function() {
+  initContainer('body');
+};
+
 $(document).ready(init);
+window.initTooltips = initContainer;

@@ -5,10 +5,10 @@
 #  id                 :bigint           not null, primary key
 #  creation_year      :integer
 #  description        :text
-#  is_offline         :boolean
-#  is_online          :boolean
-#  is_recruiting      :boolean
-#  is_sponsor         :boolean
+#  is_offline         :boolean          default(FALSE), not null
+#  is_online          :boolean          default(FALSE), not null
+#  is_recruiting      :boolean          default(FALSE), not null
+#  is_sponsor         :boolean          default(FALSE), not null
 #  name               :string
 #  recruiting_details :text
 #  short_name         :string
@@ -31,20 +31,16 @@ class Team < ApplicationRecord
 
   include HasTwitter
 
+  has_many :players_teams, dependent: :destroy
+  has_many :players, through: :players_teams, after_remove: :after_remove_player
+  has_many :met_reward_conditions, through: :players, dependent: nil
   include HasTrackRecords
+
+  include PgSearch::Model
 
   # ---------------------------------------------------------------------------
   # RELATIONS
   # ---------------------------------------------------------------------------
-
-  has_many :players_teams, dependent: :destroy
-  has_many :players, through: :players_teams
-
-  has_many :met_reward_conditions, through: :players
-  has_many :reward_conditions, through: :met_reward_conditions
-  has_many :rewards, through: :met_reward_conditions
-
-  has_many :track_records, through: :players
 
   has_many :discord_guild_relateds, as: :related, dependent: :destroy
   has_many :discord_guilds, through: :discord_guild_relateds
@@ -74,20 +70,59 @@ class Team < ApplicationRecord
   validates :roster, content_type: /\Aimage\/.*\z/
 
   # ---------------------------------------------------------------------------
+  # CALLBACKS
+  # ---------------------------------------------------------------------------
+
+  def after_remove_player(_player)
+    UpdateTeamTrackRecordsJob.perform_later(self)
+  end
+
+  # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
 
+  pg_search_scope :by_pg_search,
+                  against: :name,
+                  using: {
+                    tsearch: {
+                      prefix: true
+                    },
+                    trigram: {}
+                  },
+                  ignoring: :accents
+
   def self.by_short_name_like(short_name)
     where('short_name ILIKE ?', short_name)
+  end
+
+  def self.by_name(name)
+    where(name: name)
+  end
+
+  def self.by_name_like(name)
+    where('unaccent(name) ILIKE unaccent(?)', name)
+  end
+
+  def self.by_name_contains_like(term)
+    where('unaccent(name) ILIKE unaccent(?)', "%#{term}%")
+  end
+
+  def self.by_keyword(term)
+    by_name_contains_like(term).or(
+      by_short_name_like(term)
+    ).or(
+      where(id: by_pg_search(term).select(:id))
+    )
   end
 
   def self.administrated_by(user_id)
     where(id: TeamAdmin.where(user_id: user_id).select(:team_id))
   end
 
-  scope :by_is_online, -> v { where(is_online: v) }
-  scope :by_is_offline, -> v { where(is_offline: v) }
-  scope :by_is_sponsor, -> v { where(is_sponsor: v) }
+  scope :by_is_online, ->(v) { where(is_online: v) }
+  scope :by_is_offline, ->(v) { where(is_offline: v) }
+  scope :by_is_sponsor, ->(v) { where(is_sponsor: v) }
+  scope :by_is_recruiting, ->(v) { where(is_recruiting: v) }
 
   # ---------------------------------------------------------------------------
   # HELPERS
@@ -136,66 +171,6 @@ class Team < ApplicationRecord
       )
     ))
   end
-
-  # ---------------------------------------------------------------------------
-  # HasTrackRecords overrides
-  # ---------------------------------------------------------------------------
-
-  # def self.with_track_records(is_online:, year: nil)
-  #   column_suffix = [
-  #     is_online ? 'online' : 'offline',
-  #     year ? "in_#{year}" : 'all_time'
-  #   ].join('_')
-  #   subquery = TrackRecord.by_tracked_type(self).by_is_online(is_online).on_year(year).select(
-  #     :tracked_id,
-  #     "points AS #{sanitize_sql("points_#{column_suffix}")}",
-  #     "rank AS #{sanitize_sql("rank_#{column_suffix}")}"
-  #   )
-  #   joins(
-  #     "LEFT OUTER JOIN (#{subquery.to_sql}) #{sanitize_sql("track_records_#{column_suffix}")}
-  #                   ON #{table_name}.id = #{sanitize_sql("track_records_#{column_suffix}")}.tracked_id"
-  #   )
-  # end
-    
-  # def self.ranked_online_in(year)
-  #   where(id: TrackRecord.online.on_year(year).by_tracked_type(self).select(:tracked_id))
-  # end
-
-  # def self.ranked_offline_in(year)
-  #   where(id: TrackRecord.offline.on_year(year).by_tracked_type(self).select(:tracked_id))
-  # end
-    
-  def points_online_all_time
-    track_records.online.all_time.sum(:points)
-  end
-
-  def points_online_in(year)
-    track_records.online.on_year(year).sum(:points)
-  end
-
-  def points_offline_all_time
-    track_records.offline.all_time.sum(:points)
-  end
-
-  def points_offline_in(year)
-    track_records.offline.on_year(year).sum(:points)
-  end
-
-  # def rank_online_all_time
-  #   track_records.online.all_time.first&.rank
-  # end
-
-  # def rank_online_in(year)
-  #   track_records.online.on_year(year).first&.rank
-  # end
-
-  # def rank_offline_all_time
-  #   track_records.offline.all_time.first&.rank
-  # end
-
-  # def rank_offline_in(year)
-  #   track_records.offline.on_year(year).first&.rank
-  # end
 
   # ---------------------------------------------------------------------------
   # global search

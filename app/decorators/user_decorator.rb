@@ -25,6 +25,13 @@ class UserDecorator < BaseDecorator
     name_and_tag_string
   end
 
+  def country_flag(options = {})
+    countrycode = addresses&.first&.fetch(:countrycode)
+    return nil if countrycode.blank?
+
+    h.flag_icon_tag(countrycode, options)
+  end
+
   def player_link(options = {})
     model.player.decorate.link(options)
   end

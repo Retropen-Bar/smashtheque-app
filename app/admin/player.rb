@@ -100,6 +100,10 @@ ActiveAdmin.register Player do
          input_html: { multiple: true, data: { select2: {} } }
   filter :is_accepted
   filter :is_banned
+  filter :by_main_countrycode,
+         as: :select,
+         collection: proc { user_country_codes_select_collection },
+         input_html: { multiple: true, data: { select2: {} } }
 
   # ---------------------------------------------------------------------------
   # FORM
@@ -172,6 +176,7 @@ ActiveAdmin.register Player do
 
   permit_params :name, :is_accepted, :discord_id, :smashgg_url,
                 :is_banned, :ban_details,
+                :user_id, # for the "link" button
                 old_names: [],
                 character_ids: [], team_ids: []
 
@@ -207,16 +212,6 @@ ActiveAdmin.register Player do
       row :rank_offline_all_time
       row :points_online_all_time
       row :points_offline_all_time
-
-      # row :best_reward do |decorated|
-      #   decorated.best_reward_admin_link
-      # end
-      # row :best_rewards do |decorated|
-      #   decorated.best_rewards_admin_links({}, class: 'reward-badge-32').join(' ').html_safe
-      # end
-      # row :unique_rewards do |decorated|
-      #   decorated.unique_rewards_admin_links({}, class: 'reward-badge-32').join(' ').html_safe
-      # end
       row :created_at
       row :updated_at
     end

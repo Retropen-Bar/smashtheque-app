@@ -5,10 +5,19 @@ class RecurringTournamentsController < PublicController
   before_action :verify_recurring_tournament!, only: %w[edit update]
   decorates_assigned :recurring_tournament
 
+  has_scope :by_closest_community_id
   has_scope :by_level_in, type: :array
   has_scope :by_size_geq
   has_scope :by_size_leq
   has_scope :by_is_online
+  has_scope :by_events_count_geq
+  has_scope :by_is_not_archived, type: :boolean, default: false, allow_blank: true do |_, scope, value|
+    if value
+      scope.not_archived
+    else
+      scope
+    end
+  end
   has_scope :administrated_by
   has_scope :page, default: 1
   has_scope :per
@@ -17,6 +26,7 @@ class RecurringTournamentsController < PublicController
   layout 'application_v2'
 
   def index
+    @not_archived_only = params[:by_is_not_archived]&.to_i == 1
     respond_to do |format|
       format.html do
         index_html
@@ -33,7 +43,9 @@ class RecurringTournamentsController < PublicController
   def index_html
     @recurring_tournaments = apply_scopes(
       RecurringTournament.visible.order('lower(name)')
-    ).includes(:discord_guild).all
+    )
+    @recurring_tournaments = @recurring_tournaments.recurring.not_archived if @map
+    @recurring_tournaments = @recurring_tournaments.includes(:discord_guild).all
     @meta_title = 'Tournois'
   end
 
@@ -76,11 +88,18 @@ class RecurringTournamentsController < PublicController
   def show
     redirect_to root_path and return if @recurring_tournament.hidden?
 
-    @tournament_events = @recurring_tournament.tournament_events.order(date: :desc)
-    @duo_tournament_events = @recurring_tournament.duo_tournament_events.order(date: :desc)
-    @meta_title = @recurring_tournament.name
-    @meta_properties['og:type'] = 'profile'
-    @meta_properties['og:image'] = @recurring_tournament.decorate.discord_guild_icon_image_url
+    respond_to do |format|
+      format.html do
+        @tournament_events = @recurring_tournament.tournament_events.order(date: :desc)
+        @duo_tournament_events = @recurring_tournament.duo_tournament_events.order(date: :desc)
+        @meta_title = @recurring_tournament.name
+        @meta_properties['og:type'] = 'profile'
+        @meta_properties['og:image'] = @recurring_tournament.decorate.discord_guild_icon_image_url
+      end
+      format.json do
+        render json: {}
+      end
+    end
   end
 
   def modal

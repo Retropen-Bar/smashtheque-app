@@ -42,6 +42,12 @@ jobs:
         with:
           bundler-cache: true
 
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: 'yarn'
+
       - name: Compile assets
         run: RAILS_ENV=production bundle exec rails assets:precompile
 

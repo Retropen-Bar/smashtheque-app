@@ -67,6 +67,9 @@ ActiveAdmin.register Community do
                     }
                   }
           address_input f
+          users_input f, :admins
+          f.input :ranking_url
+          f.input :twitter_username
         end
         f.actions
       end
@@ -78,7 +81,9 @@ ActiveAdmin.register Community do
     end
   end
 
-  permit_params :logo, :name, :address, :latitude, :longitude
+  permit_params :logo, :name, :address, :latitude, :longitude,
+                :ranking_url, :twitter_username,
+                admin_ids: []
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -93,8 +98,11 @@ ActiveAdmin.register Community do
       row :address
       row :latitude
       row :longitude
-      row :discord_guilds do |decorated|
-        decorated.discord_guilds_admin_links
+      row :ranking_url, &:ranking_link
+      row :twitter_username, &:twitter_link
+      row :discord_guilds, &:discord_guilds_admin_links
+      row :admins do |decorated|
+        decorated.admins_admin_links(size: 32).join('<br/>').html_safe
       end
       row :created_at
       row :updated_at

@@ -52,8 +52,8 @@
         </div>
       <% end %>
     <% end %>
-    <% player.characters.each do |character| %>
-      <%= character.decorate.link %>
+    <% player.characters.decorate.each do |character| %>
+      <%= character.link(label: character.emoji_image_tag(max_height: 32)) %>
     <% end %>
   </div>
   <%= admin_edit_link(player) %>

@@ -106,6 +106,13 @@ class User < ApplicationRecord
            through: :team_admins,
            source: :team
 
+  has_many :community_admins,
+           inverse_of: :user,
+           dependent: :destroy
+  has_many :administrated_communities,
+           through: :community_admins,
+           source: :community
+
   accepts_nested_attributes_for :player
 
   # ---------------------------------------------------------------------------
@@ -208,12 +215,19 @@ class User < ApplicationRecord
     )
   end
 
+  def self.without_administrated_community
+    where.not(
+      id: CommunityAdmin.where.not(user_id: nil).select(:user_id)
+    )
+  end
+
   def self.without_any_link
     self.without_discord_user
         .without_player
         .without_created_player
         .without_administrated_recurring_tournament
         .without_administrated_team
+        .without_administrated_community
   end
 
   def self.recurring_tournament_contacts
@@ -222,6 +236,10 @@ class User < ApplicationRecord
 
   def self.team_admins
     where(id: TeamAdmin.select(:user_id))
+  end
+
+  def self.community_admins
+    where(id: CommunityAdmin.select(:user_id))
   end
 
   def self.casters
@@ -364,14 +382,16 @@ class User < ApplicationRecord
       result << {
         name: main_locality,
         latitude: main_latitude,
-        longitude: main_longitude
+        longitude: main_longitude,
+        countrycode: main_countrycode
       }
     end
     if secondary_latitude
       result << {
         name: secondary_locality,
         latitude: secondary_latitude,
-        longitude: secondary_longitude
+        longitude: secondary_longitude,
+        countrycode: secondary_countrycode
       }
     end
     result

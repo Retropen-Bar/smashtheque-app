@@ -3286,6 +3286,11 @@ findup-sync@^3.0.0:
     micromatch "^3.0.4"
     resolve-dir "^1.0.1"
 
+flag-icons-svg@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/flag-icons-svg/-/flag-icons-svg-0.0.3.tgz#c60fd8edccf59f02e0eb630ddc3d6a5af72d696b"
+  integrity sha512-+BSaAXij0vh4uVhNNUZlyM01GCVLUJpZuhv4rgP5Tj6cnWF2KQg2I5o36V0jfKOA0mLlHrW5GN8gYQFJJAb9rA==
+
 flatted@^3.0.4:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.2.2.tgz#64bfed5cb68fe3ca78b3eb214ad97b63bedce561"

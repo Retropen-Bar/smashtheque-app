@@ -69,7 +69,11 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :communities, only: %i[index show]
+  resources :communities, only: %i[index show] do
+    collection do
+      get :map
+    end
+  end
 
   resources :players, only: [:index, :show] do
     resources :smashgg_users, only: [:new, :create]
@@ -84,7 +88,11 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :teams, only: %i[index show edit update]
+  resources :teams, only: %i[index show edit update] do
+    collection do
+      get :ranking
+    end
+  end
 
   resources :recurring_tournaments, only: %i[index show edit update] do
     resources :tournament_events, only: %i[new create]

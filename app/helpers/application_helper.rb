@@ -15,35 +15,44 @@ module ApplicationHelper
     count == 1 ? noun : noun.pluralize
   end
 
-  def admin_edit_link(resource)
-    if admin_user_signed_in?
-      link_to fas_icon_tag('cog'), [:admin, resource], target: '_blank', class: 'admin-edit-link'
-    end
+  def admin_edit_link(resource, options = {})
+    return unless admin_user_signed_in?
+
+    classes = [
+      'admin-edit-link',
+      options.delete(:class)
+    ].join(' ')
+    text = options.delete(:label) || fas_icon_tag('cog')
+    link_to text,
+            [:admin, resource],
+            { target: '_blank', rel: :noopener, class: classes }.merge(options)
   end
 
-  def current_class?(path)
-    return ' active' if request.path == path
+  def current_class?(path_prefix)
+    return ' active' if request.path.starts_with?(path_prefix)
+
     ''
   end
 
   def current_section?(section_name)
     case section_name
     when :players
-      return true if controller_name.match(/(players|teams|duos|communities|characters)/)
+      return controller_name =~ /(players|teams|duos|communities|characters)/
     when :tournaments
-      return true if controller_name.match(/(recurring_tournaments|tournament_events)/)
+      return controller_name =~ /(recurring_tournaments|tournament_events)/
     else
-      return false
+      false
     end
   end
-  
+
   def current_section_name
     return :players if current_section?(:players)
     return :tournaments if current_section?(:tournaments)
   end
 
   def url_with(changes)
-    url_for(current_page_params.merge(changes))
+    page_params = defined?(current_page_params) ? current_page_params : {}
+    url_for(page_params.merge(changes))
   end
 
   def hex_color_to_rgba(hex, opacity)
@@ -59,7 +68,7 @@ module ApplicationHelper
     rgb[2] = (rgb[2].to_i * amount).round
     "#%02x%02x%02x" % rgb
   end
-    
+
   # Amount should be a decimal between 0 and 1. Higher means lighter
   def lighten_color(hex_color, amount=0.6)
     hex_color = hex_color.gsub('#','')
@@ -74,7 +83,7 @@ module ApplicationHelper
     color = hex_color.gsub('#','')
     convert_to_brightness_value(color) > 382.5 ? darken_color(color) : lighten_color(color)
   end
-  
+
   def convert_to_brightness_value(hex_color)
     (hex_color.scan(/../).map {|color| color.hex}).sum
   end

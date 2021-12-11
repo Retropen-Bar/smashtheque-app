@@ -3,7 +3,7 @@
   <div class="card-body">
     <div class="card-content">
       <% if rewards_counts.any? %>
-        <%== awarded.best_rewards_badges(is_online: is_online, class: 'card-box-icon')&.first %>
+        <%== awarded.best_reward_badge(is_online: is_online, class: 'card-box-icon') %>
         <button type="button"
                 class="btn btn-dark btn-sm rounded-pill"
                 data-toggle="modal"

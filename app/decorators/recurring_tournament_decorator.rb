@@ -101,6 +101,10 @@ class RecurringTournamentDecorator < BaseDecorator
     model.duo_tournament_events.count
   end
 
+  def all_events_count
+    tournament_events_count + duo_tournament_events_count
+  end
+
   def icon_class
     'chess'
   end
@@ -191,7 +195,7 @@ class RecurringTournamentDecorator < BaseDecorator
       ) + ' ' + (
         h.tag.span  level_text,
                     class: 'badge',
-                    style: "background-color: #{self.class.level_color(level)}; color: white"
+                    style: "background-color: #{self.class.level_color(model.level)}; color: white"
       )
     ).html_safe
   end

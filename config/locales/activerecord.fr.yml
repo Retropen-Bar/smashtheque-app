@@ -86,7 +86,13 @@ fr:
         background_size: Taille du pattern
         emoji: Emoji
         icon: Icône
+        nintendo_url: Lien officiel
+        official_number: Numéro officiel
+        origin: Univers
+        other_names: Autres noms
         players: Joueurs
+        smashprotips_url: Lien Smashprotips
+        ultimateframedata_url: Lien Ultimate Frame Data
       duo:
         << : *SHARED
         best_reward: Meilleure récompense
@@ -145,9 +151,12 @@ fr:
         top7b_duo: Top 7
       community:
         << : *SHARED
+        admins: Admins
         address: Adresse
         name: Nom
         players: Joueurs
+        ranking_url: Power ranking
+        twitter_username: Compte Twitter
         users: Utilisateurs
       comment:
         << : *SHARED
@@ -231,6 +240,7 @@ fr:
         << : *SHARED
         address: Adresse du lieu
         address_name: Nom du lieu
+        closest_community: Communauté
         contacts: TOs
         countrycode: Pays
         date_description: Description de la date
@@ -403,6 +413,7 @@ fr:
       user:
         << : *SHARED
         admin_level: Rôle
+        administrated_communities: Communautés locales gérées
         administrated_teams: Équipes gérées
         administrated_recurring_tournaments: Tournois gérés
         coaching_details: Description du coaching

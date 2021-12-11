@@ -7,5 +7,6 @@
   tile_layer: tile_layer,
   attribution: attribution,
   max_zoom: max_zoom,
-  tile_options: options.transform_keys { |key| key.to_s.camelize(:lower) }
+  tile_options: options.transform_keys { |key| key.to_s.camelize(:lower) },
+  cluster_markers: cluster_markers
 }.to_json.html_safe %>

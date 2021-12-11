@@ -1,35 +1,41 @@
 <div class="list-x list-x--row list-x--lg">
-  <div class="card card-box card-box--square card-box--link">
-    <div class="card-body bg-dark">
-      <div class="card-content">
-        <%= svg_icon_tag :smash, class: 'card-box-icon' %>
-        <%= link_to 'https://www.smashbros.com/fr_FR/fighter/index.html', target: '_blank', class: 'card-box-link card-box-label flex-grow-sm-1 flex-grow-0' do %>
-          <span class="">Site officiel</span>
-          <%= svg_icon_tag :link, class: 'card-box-link-icon' %>
-        <% end %>
+  <% unless character.nintendo_url.blank? %>
+    <div class="card card-box card-box--square card-box--link">
+      <div class="card-body bg-dark">
+        <div class="card-content">
+          <%= svg_icon_tag :smash, class: 'card-box-icon' %>
+          <%= link_to character.nintendo_url, target: '_blank', class: 'card-box-link card-box-label flex-grow-sm-1 flex-grow-0' do %>
+            <span class="">Site officiel</span>
+            <%= svg_icon_tag :link, class: 'card-box-link-icon' %>
+          <% end %>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="card card-box card-box--square card-box--link">
-    <div class="card-body bg-dark">
-      <div class="card-content">
-        <%= svg_icon_tag :stat, class: 'card-box-icon' %>
-        <%= link_to 'https://ultimateframedata.com/', target: '_blank', class: 'card-box-link card-box-label flex-grow-sm-1 flex-grow-0' do %>
-          <span class="">Ultra Frame Data</span>
-          <%= svg_icon_tag :link, class: 'card-box-link-icon' %>
-        <% end %>
+  <% end %>
+  <% unless character.ultimateframedata_url.blank? %>
+    <div class="card card-box card-box--square card-box--link">
+      <div class="card-body bg-dark">
+        <div class="card-content">
+          <%= svg_icon_tag :stat, class: 'card-box-icon' %>
+          <%= link_to character.ultimateframedata_url, target: '_blank', class: 'card-box-link card-box-label flex-grow-sm-1 flex-grow-0' do %>
+            <span class="">Ultimate Frame Data</span>
+            <%= svg_icon_tag :link, class: 'card-box-link-icon' %>
+          <% end %>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="card card-box card-box--square card-box--link">
-    <div class="card-body bg-dark">
-      <div class="card-content">
-        <%= svg_icon_tag :smashpro, class: 'card-box-icon' %>
-        <%= link_to 'https://smashpro.tips/', target: '_blank', class: 'card-box-link card-box-label' do %>
-          <span class="">Smash Pro Tips</span>
-          <%= svg_icon_tag :link, class: 'card-box-link-icon' %>
-        <% end %>
+  <% end %>
+  <% unless character.smashprotips_url.blank? %>
+    <div class="card card-box card-box--square card-box--link">
+      <div class="card-body bg-dark">
+        <div class="card-content">
+          <%= svg_icon_tag :smashpro, class: 'card-box-icon' %>
+          <%= link_to character.smashprotips_url, target: '_blank', class: 'card-box-link card-box-label' do %>
+            <span class="">Smash Pro Tips</span>
+            <%= svg_icon_tag :link, class: 'card-box-link-icon' %>
+          <% end %>
+        </div>
       </div>
     </div>
-  </div>
+  <% end %>
 </div>

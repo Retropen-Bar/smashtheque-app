@@ -255,12 +255,20 @@ ActiveAdmin.register DuoTournamentEvent do
 
   action_item :other_actions, only: :show do
     dropdown_menu 'Autres actions' do
-      item 'Compléter avec smash.gg', action: :complete_with_bracket if resource.is_on_smashgg?
-      item 'Compléter avec Braacket', action: :complete_with_bracket if resource.is_on_braacket?
-      item 'Compléter avec Challonge', action: :complete_with_bracket if resource.is_on_challonge?
-      item 'Recalculer les récompenses', action: :compute_rewards
-      item 'Supprimer le graph', action: :purge_graph if resource.graph.attached?
-      item 'Convertir en édition 1v1', action: :convert_to_tournament_event
+      if can?(:complete_with_bracket, resource)
+        item 'Compléter avec smash.gg', action: :complete_with_bracket if resource.is_on_smashgg?
+        item 'Compléter avec Braacket', action: :complete_with_bracket if resource.is_on_braacket?
+        item 'Compléter avec Challonge', action: :complete_with_bracket if resource.is_on_challonge?
+      end
+      if can?(:compute_rewards, resource)
+        item 'Recalculer les récompenses', action: :compute_rewards
+      end
+      if resource.graph.attached? && can?(:purge_graph, resource)
+        item 'Supprimer le graph', action: :purge_graph
+      end
+      if can?(:convert_to_tournament_event, resource)
+        item 'Convertir en édition 1v1', action: :convert_to_tournament_event
+      end
     end
   end
 

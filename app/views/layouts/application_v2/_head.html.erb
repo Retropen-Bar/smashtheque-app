@@ -2,18 +2,18 @@
      id="main-nav">
 
   <%= link_to root_path, class: 'navbar-brand' do %>
-    <%= image_tag 'logo.png', width: '290', srcset: { "logo@2x.png" => "2x", "logo@3x.png" => "3x" } %>
+    <%= image_pack_tag 'smashtheque-light.svg', width: '152' %>
   <% end %>
 
   <slide-out dock="right" :visible.sync="mainNavVisible" :arrow-button="false" size="273px" title="Menu" class="collapse navbar-collapse" id="navbarSupportedContent">
-    <%= link_to page_path(slug: 'guides'), class: 'btn btn-gradient-pink rounded w-100 d-flex d-xxl-none align-items-center mb-4 border-0 py-2' do %>
+    <%= link_to page_path(slug: 'liens-utiles'), class: 'btn btn-gradient-pink rounded w-100 d-flex d-xxl-none align-items-center mb-4 border-0 py-2' do %>
       <%= svg_icon_tag :panneau %>
       <span class="pl-2">Besoin d'aide ?</span>
     <% end %>
 
     <ul class="navbar-nav">
 
-      <li class="nav-item dropdown players">
+      <li class="nav-item dropdown players ml-xxl-auto">
         <%= link_to players_path, class: "nav-link dropdown-toggle#{' active' if current_section?(:players)}", data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
           <span>Joueurs & Cie</span>
         <% end %>
@@ -86,8 +86,9 @@
             <span>Observatoire</span>
           </button>
 
-          <%= link_to "Observatoire d'Harmonie 1v1", ranking_players_path, class: 'dropdown-item' %>
-          <%= link_to "Observatoire d'Harmonie 2v2", ranking_duos_path, class: 'dropdown-item' %>
+          <%= link_to "Observatoire 1v1", ranking_players_path, class: 'dropdown-item' %>
+          <%= link_to "Observatoire 2v2", ranking_duos_path, class: 'dropdown-item' %>
+          <%= link_to "Observatoire des équipes", ranking_teams_path, class: 'dropdown-item' %>
         </div>
       </li>
 
@@ -110,7 +111,7 @@
         </div>
       </li>
 
-      <li class="nav-item dropdown guides">
+      <li class="nav-item dropdown guides <%= "mr-xxl-auto" unless admin_user_signed_in? %>">
         <%= link_to '#', class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
           <span>Guides</span>
         <% end %>

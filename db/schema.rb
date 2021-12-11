@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_26_174123) do
+ActiveRecord::Schema.define(version: 2021_12_10_085508) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -130,6 +130,11 @@ ActiveRecord::Schema.define(version: 2021_10_26_174123) do
     t.integer "background_size"
     t.string "ultimateframedata_url"
     t.string "smashprotips_url"
+    t.string "origin"
+    t.string "nintendo_url"
+    t.string "other_names", default: [], array: true
+    t.string "official_number", default: "", null: false
+    t.index ["official_number"], name: "index_characters_on_official_number", unique: true
   end
 
   create_table "characters_players", force: :cascade do |t|
@@ -148,6 +153,18 @@ ActiveRecord::Schema.define(version: 2021_10_26_174123) do
     t.float "latitude", null: false
     t.float "longitude", null: false
     t.string "address", null: false
+    t.string "ranking_url"
+    t.string "twitter_username"
+  end
+
+  create_table "community_admins", force: :cascade do |t|
+    t.bigint "community_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["community_id", "user_id"], name: "index_community_admins_on_community_id_and_user_id", unique: true
+    t.index ["community_id"], name: "index_community_admins_on_community_id"
+    t.index ["user_id"], name: "index_community_admins_on_user_id"
   end
 
   create_table "discord_guild_admins", force: :cascade do |t|
@@ -348,6 +365,8 @@ ActiveRecord::Schema.define(version: 2021_10_26_174123) do
     t.boolean "is_hidden", default: false, null: false
     t.string "locality"
     t.string "countrycode"
+    t.bigint "closest_community_id"
+    t.index ["closest_community_id"], name: "index_recurring_tournaments_on_closest_community_id"
     t.index ["discord_guild_id"], name: "index_recurring_tournaments_on_discord_guild_id"
   end
 
@@ -449,13 +468,13 @@ ActiveRecord::Schema.define(version: 2021_10_26_174123) do
     t.string "short_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "is_offline"
-    t.boolean "is_online"
-    t.boolean "is_sponsor"
+    t.boolean "is_offline", default: false, null: false
+    t.boolean "is_online", default: false, null: false
+    t.boolean "is_sponsor", default: false, null: false
     t.string "twitter_username"
     t.string "website_url"
     t.integer "creation_year"
-    t.boolean "is_recruiting"
+    t.boolean "is_recruiting", default: false, null: false
     t.text "recruiting_details"
     t.text "description"
   end
@@ -612,6 +631,7 @@ ActiveRecord::Schema.define(version: 2021_10_26_174123) do
   add_foreign_key "players_teams", "teams"
   add_foreign_key "recurring_tournament_contacts", "recurring_tournaments"
   add_foreign_key "recurring_tournament_contacts", "users"
+  add_foreign_key "recurring_tournaments", "communities", column: "closest_community_id"
   add_foreign_key "recurring_tournaments", "discord_guilds"
   add_foreign_key "reward_conditions", "rewards"
   add_foreign_key "smashgg_events", "smashgg_users", column: "top1_smashgg_user_id"

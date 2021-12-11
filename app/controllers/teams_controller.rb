@@ -6,6 +6,7 @@ class TeamsController < PublicController
   has_scope :by_is_online
   has_scope :by_is_offline
   has_scope :by_is_sponsor
+  has_scope :by_is_recruiting
   has_scope :administrated_by
   has_scope :page, default: 1
   has_scope :per
@@ -39,6 +40,25 @@ class TeamsController < PublicController
     end
   end
 
+  def ranking
+    @year = params[:year]&.to_i
+    @year = nil unless @year&.positive?
+    @is_online = params[:is_online]&.to_i != 0
+
+    @teams = apply_scopes(
+      Team.ranking(is_online: @is_online, year: @year)
+    ).includes(
+      logo_attachment: :blob
+    )
+
+    @meta_title = [
+      "Observatoire d'Harmonie des équipes",
+      @is_online ? 'Online' : 'Offline',
+      @year
+    ].compact.join(' ')
+    render layout: 'application'
+  end
+
   private
 
   def set_team
@@ -64,7 +84,7 @@ class TeamsController < PublicController
 
   def current_page_params
     params.permit(
-      :by_is_online, :by_is_offline, :by_is_sponsor,
+      :by_is_online, :by_is_offline, :by_is_sponsor, :by_is_recruiting,
       :administrated_by,
       :page, :per, :on_abc
     )

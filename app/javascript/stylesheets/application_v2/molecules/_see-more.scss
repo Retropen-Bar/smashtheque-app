@@ -8,19 +8,30 @@
       max-height: calc(#{$line-height-base} * var(--line-clamp) * 1rem);
       padding-right: 1rem;
 
-      &::before {
-        position: absolute;
-        content: "...";
-        inset-block-end: 0; /* "bottom" */
-        inset-inline-end: 0; /* "right" */
+      &.has-see-more {
+        &::before {
+          position: absolute;
+          content: "...";
+          inset-block-end: 0; /* "bottom" */
+          inset-inline-end: 0; /* "right" */
+        }
+        &::after {
+          content: "";
+          position: absolute;
+          inset-inline-end: 0; /* "right" */
+          width: 1rem;
+          height: 1rem;
+          background: $gray-dark;
+        }
       }
-      &::after {
-        content: "";
-        position: absolute;
-        inset-inline-end: 0; /* "right" */
-        width: 1rem;
-        height: 1rem;
-        background: $gray-dark;
+    }
+
+    &:not(.collapsed) ~ * {
+      position: sticky;
+      bottom: 5vh;
+
+      > * {
+        background-color: $gray-deep;
       }
     }
 

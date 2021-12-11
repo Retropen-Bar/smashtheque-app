@@ -35,6 +35,7 @@ class Player < ApplicationRecord
     :name
   end
 
+  has_many :met_reward_conditions, as: :awarded, dependent: :destroy
   include HasTrackRecords
 
   include PgSearch::Model
@@ -67,7 +68,8 @@ class Player < ApplicationRecord
            inverse_of: :player,
            dependent: :destroy
   has_many :teams,
-           through: :players_teams
+           through: :players_teams,
+           after_remove: :after_remove_team
 
   has_many :tournament_events_as_top1_player,
            class_name: :TournamentEvent,
@@ -197,6 +199,10 @@ class Player < ApplicationRecord
                                    .return_or_create_user!
   end
 
+  def after_remove_team(team)
+    UpdateTeamTrackRecordsJob.perform_later(team)
+  end
+
   # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
@@ -206,7 +212,8 @@ class Player < ApplicationRecord
                   using: {
                     tsearch: {
                       prefix: true
-                    }
+                    },
+                    trigram: {}
                   },
                   ignoring: :accents
 
@@ -328,11 +335,31 @@ class Player < ApplicationRecord
 
   def self.by_main_countrycode(countrycode)
     from_users = where(user_id: User.by_main_countrycode(countrycode))
-    if [countrycode].flatten.include?(nil)
+    if [countrycode].flatten.include?('')
       without_user.or(from_users)
     else
       from_users
     end
+  end
+
+  def self.by_main_countrycode_in(*countrycode)
+    by_main_countrycode(countrycode)
+  end
+
+  def self.by_main_countrycode_unknown_or_fr
+    by_main_countrycode(['', 'FR'])
+  end
+
+  def self.by_main_countrycode_unknown_or_french_speaking
+    by_main_countrycode(['', 'FR'] + User::FRENCH_SPEAKING_COUNTRIES)
+  end
+
+  # ---------------------------------------------------------------------------
+  # RANSACK
+  # ---------------------------------------------------------------------------
+
+  def self.ransackable_scopes(auth_object = nil)
+    super + %i[by_main_countrycode_in]
   end
 
   # ---------------------------------------------------------------------------

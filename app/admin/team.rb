@@ -158,10 +158,10 @@ ActiveAdmin.register Team do
 
   action_item :other_actions, only: :show do
     dropdown_menu 'Autres actions' do
-      if resource.logo.attached?
+      if resource.logo.attached? && can?(:purge_logo, resource)
         item 'Supprimer le logo', action: :purge_logo
       end
-      if resource.roster.attached?
+      if resource.roster.attached? && can?(:purge_roster, resource)
         item 'Supprimer le roster', action: :purge_roster
       end
     end
