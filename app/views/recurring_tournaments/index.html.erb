@@ -1,5 +1,5 @@
 <h1 class="page-title index-title sr-only">Joueurs</h1>
-<div class="container-xl mt-lg-5">
+<div class="container-xl mt-md-3 mt-xxl-4 mt-xxl-4">
   <div class="row flex-nowrap align-items-start flex-column flex-lg-row">
 
     <%= render 'layouts/application_v2/recurring_tournaments/index_nav' %>
@@ -10,13 +10,13 @@
           <section class="index-section my-2 my-md-3 mt-xl-0 py-1 pl-3 pr-1 py-md-2 pr-md-2 pl-md-2 py-xl-0 px-xl-0 d-flex d-xl-block flex-wrap align-items-center shadow-lg bg-bg bg-lg-none rounded-pill">
             <small class="text-muted d-inline-block d-xl-none"><%= @recurring_tournaments.total_count %> résultat(s)</small>
             <button @click="filtersVisible = true" type="button" class="btn btn-dark btn-sm btn-with-icon rounded-pill players ml-3<%= ' active' if params[:on_abc] %> d-flex d-xl-none ml-auto">
-              <%= svg_icon_tag :filtre %> Filtres<%= ' (1)' if params[:on_abc] %>
+              <%= svg_icon_tag :filtre %> Filtres
             </button>
             <slide-out dock="bottom" :visible.sync="filtersVisible" :size="[0]" :arrow-button="false" title="Filtres">
               <template #header>
                 <div class="d-flex align-items-center justify-content-between">
                   <p class="m-0">
-                    <%= svg_icon_tag :filtre %> Filtres<%= ' (1)' if params[:on_abc] %>
+                    <%= svg_icon_tag :filtre %> Filtres
                   </p>
                   <button @click="filtersVisible = false" type="button" class="btn btn-sm btn-icon rounded-circle ml-3">
                     <%= svg_icon_tag :croix %>
@@ -24,7 +24,7 @@
                   </button>
                 </div>
               </template>
-              <section class="mb-n4">
+              <section>
                 <h5><%= svg_icon_tag :abcd %> Abécédaire</h5>
                 <%= render 'shared/letters' %>
                 <%= render 'filters' %>
