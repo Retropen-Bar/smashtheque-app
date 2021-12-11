@@ -15,8 +15,8 @@
         <% end %>
         <div class="dropdown-menu" aria-labelledby="socials-mobile">
           <% discord_guilds.decorate.each do |discord_guild| %>
-            <%= link_to discord_guild.name_or_id,
-                        discord_guild.invitation_url,
+            <%= link_to discord_guild&.name_or_id,
+                        discord_guild&.invitation_url,
                         class: 'dropdown-item',
                         target: '_blank',
                         rel: 'noopener noreferrer' %>
@@ -24,7 +24,7 @@
         </div>
       </div>
 
-    <% elsif discord_guilds.count > 0 %>
+    <% elsif discord_guilds.count > 0 && discord_guilds.first %>
 
       <% discord_guild = discord_guilds.first.decorate %>
       <%= link_to discord_guild.invitation_url, target: '_blank', rel: 'noopener noreferrer' do %>
@@ -50,8 +50,8 @@
           </button>
           <div class="dropdown-menu" aria-labelledby="socials-desktop">
             <% discord_guilds.decorate.each do |discord_guild| %>
-              <%= link_to discord_guild.name_or_id,
-                          discord_guild.invitation_url,
+              <%= link_to discord_guild&.name_or_id,
+                          discord_guild&.invitation_url,
                           class: 'dropdown-item',
                           target: '_blank',
                           rel: 'noopener noreferrer' %>
@@ -60,7 +60,7 @@
         </div>
       </div>
 
-    <% elsif discord_guilds.count > 0 %>
+    <% elsif discord_guilds.count > 0 && discord_guilds.first %>
 
       <% discord_guild = discord_guilds.first.decorate %>
       <%= link_to discord_guild.invitation_url,
@@ -68,7 +68,7 @@
                   target: '_blank',
                   rel: 'noopener noreferrer' do %>
         <%= svg_icon_tag :discord, class: 'mr-1' %>
-        <%= discord_guild.name_or_id %>
+        <%= discord_guild&.name_or_id %>
       <% end %>
 
     <% end %>

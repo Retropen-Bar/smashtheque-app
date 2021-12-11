@@ -96,6 +96,8 @@ class RecurringTournament < ApplicationRecord
 
   belongs_to :discord_guild, optional: true
   belongs_to :closest_community, class_name: :Community, optional: true
+  has_many :you_tube_channels
+  has_many :twitch_channels
 
   has_many :recurring_tournament_contacts,
            inverse_of: :recurring_tournament,

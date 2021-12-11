@@ -1,6 +1,6 @@
 <div class="container-lg">
   <% if admin_user_signed_in? || user_recurring_tournament_admin? %>
-    <div class="text-right my-3 mb-n3">
+    <div class="actions">
       <% if admin_user_signed_in? %>
         <%= admin_edit_link(recurring_tournament, label: 'Admin', class: 'btn btn-sm btn-light rounded-pill') %>
       <% end %>
@@ -32,13 +32,26 @@
           :offset="116"
         >
           <div class="section-nav-bg shadow-lg">
-          <%= link_to recurring_tournament_path(recurring_tournament, anchor: 'statistiques'), class: "section-nav-link scrollactive-item" do %>
-              <%= svg_icon_tag :joueur %>
-              <span>Statistiques</span>
+          <%= link_to recurring_tournament_path(recurring_tournament, anchor: 'inscription'), class: "section-nav-link scrollactive-item" do %>
+              <span>Comment s'inscrire</span>
             <% end %>
-            <%= link_to recurring_tournament_path(recurring_tournament, anchor: 'palmares'), class: "section-nav-link scrollactive-item" do %>
-              <%= svg_icon_tag :groupe %>
-              <span>Palmarès</span>
+            <%= link_to recurring_tournament_path(recurring_tournament, anchor: 'ruleset'), class: "section-nav-link scrollactive-item" do %>
+              <span>Ruleset</span>
+            <% end %>
+            <%= link_to recurring_tournament_path(recurring_tournament, anchor: 'lagtest'), class: "section-nav-link scrollactive-item" do %>
+              <span>Lagtest</span>
+            <% end %>
+            <%= link_to recurring_tournament_path(recurring_tournament, anchor: 'contacts'), class: "section-nav-link scrollactive-item" do %>
+              <span>TOs</span>
+            <% end %>
+            <%= link_to recurring_tournament_path(recurring_tournament, anchor: 'power-rankings'), class: "section-nav-link scrollactive-item" do %>
+              <span>Power rankings</span>
+            <% end %>
+            <%= link_to recurring_tournament_path(recurring_tournament, anchor: 'other-informations'), class: "section-nav-link scrollactive-item" do %>
+              <span>Autres informations</span>
+            <% end %>
+            <%= link_to recurring_tournament_path(recurring_tournament, anchor: 'location'), class: "section-nav-link scrollactive-item" do %>
+              <span>Localisation</span>
             <% end %>
           </div>
         </scrollactive>
@@ -47,69 +60,115 @@
     <section class="show-page-body card">
       <div class="show-page-content card-body">
         <div class="row">
-          <div class="col-lg-6 d-flex flex-column justify-content-between">
-            <section id="statistiques" class="show-page-section">
+          <div class="col-lg-6 d-flex flex-column">
+            <section id="inscription" class="show-page-section">
               <div class="show-page-section-title">
                 <h2>Comment s'inscrire</h2>
                 <span class="show-page-section-title-separator"></span>
               </div>
-              <div class="show-page-section-body d-block d-md-none">
-                <%= recurring_tournament.registration %>
+              <div class="show-page-section-body">
+                <see-more  :line-clamp="4">
+                  <%= recurring_tournament.registration %>
+                </see-more>
               </div>
             </section>
-            <section id="statistiques" class="show-page-section">
+            <section id="ruleset" class="show-page-section">
               <div class="show-page-section-title">
                 <h2>Ruleset</h2>
                 <span class="show-page-section-title-separator"></span>
               </div>
-              <div class="show-page-section-body d-block d-md-none">
+              <div class="show-page-section-body">
+                <see-more>
+                  <%= recurring_tournament.registration %>
+                </see-more>
               </div>
             </section>
-            <section id="statistiques" class="show-page-section">
+            <section id="lagtest" class="show-page-section">
               <div class="show-page-section-title">
                 <h2>Lagtest</h2>
                 <span class="show-page-section-title-separator"></span>
               </div>
-              <div class="show-page-section-body d-block d-md-none">
+              <div class="show-page-section-body">
+                <see-more  :line-clamp="4">
+                  <%= recurring_tournament.registration %>
+                </see-more>
               </div>
             </section>
           </div>
-          <div class="col-lg-6 d-flex flex-column justify-content-between">
-            <section id="statistiques" class="show-page-section">
+          <div class="col-lg-6 d-flex flex-column">
+            <section id="contacts" class="show-page-section">
               <div class="show-page-section-title">
                 <h2>Les TOs</h2>
                 <span class="show-page-section-title-separator"></span>
               </div>
-              <div class="show-page-section-body d-block d-md-none">
+              <div class="show-page-section-body">
+                <% if recurring_tournament.contacts.any? %>
+                  <div class="list">
+                    <% recurring_tournament.contacts.first(3).each do |user| %>
+                      <% if player = user.player %>
+                        <%= render 'players/player_v2', player: player.decorate, with_roles: true %>
+                      <% else %>
+                        <%= render 'users/user', user: user.decorate %>
+                      <% end %>
+                    <% end %>
+                  </div>
+                  <% if recurring_tournament.contacts.count > 3 %>
+                    <div class="text-right mt-3">
+                      <%= link_to 'Voir plus',
+                                  contacts_recurring_tournaments_path(by_community_id: community.id),
+                                  class: 'btn btn-sm bg-layout rounded-pill' %>
+                    </div>
+                  <% end %>
+                <% else %>
+                  -
+                <% end %>
               </div>
             </section>
-            <section id="statistiques" class="show-page-section">
+            <section id="power-rankings" class="show-page-section">
               <div class="show-page-section-title">
                 <h2>Power Rankings</h2>
                 <span class="show-page-section-title-separator"></span>
               </div>
-              <div class="show-page-section-body d-block d-md-none">
+              <div class="show-page-section-body">
+                <ul class="list-y list-unstyled text-center mb-0">
+                  <% Array.new(5).each_with_index do |_, index| %>
+                    <li>
+                      <%= link_to "https://power-ranking-#{index + 1}",
+                                  class: 'list-row',
+                                  target: '_blank',
+                                  rel: 'noopener noreferrer' do %>
+                        <span class="list-row-col flex-grow-1 text-truncate">Power ranking <%= index + 1 %></span>
+                        <span>&nbsp;•&nbsp;</span>
+                        <span class="list-row-col w-25">2021</span>
+                      <% end %>
+                    </li>
+                  <% end %>
+                </ul>
               </div>
             </section>
           </div>
         </div>
         <div class="row">
           <div class="col-12">
-            <section id="statistiques" class="show-page-section">
+            <section id="other-informations" class="show-page-section">
               <div class="show-page-section-title">
                 <h2>Autres informations</h2>
                 <span class="show-page-section-title-separator"></span>
               </div>
               <div class="show-page-section-body">
-                <%= recurring_tournament.misc %>
+                <% if recurring_tournament.misc.blank? %>
+                  <p>Aucune information supplémentaire</p>
+                <% else %>
+                  <%= recurring_tournament.misc %>
+                <% end %>
               </div>
             </section>
           </div>
           <% if recurring_tournament.geocoded? %>
           <div class="col-12">
-            <section id="statistiques" class="show-page-section">
+            <section id="location" class="show-page-section">
               <div class="show-page-section-title">
-                <h2>Statistiques</h2>
+                <h2>Localisation</h2>
                 <span class="show-page-section-title-separator"></span>
               </div>
               <div class="show-page-section-body">

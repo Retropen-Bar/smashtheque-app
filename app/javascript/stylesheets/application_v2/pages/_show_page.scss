@@ -1,3 +1,22 @@
+.show {
+  .actions {
+    transform: translateY(50%);
+    position: absolute;
+    top: 0;
+    right: $grid-gutter-width / 2;
+    z-index: 1;
+
+    a,
+    button {
+      box-shadow: $toast-box-shadow;
+    }
+
+    @include media-breakpoint-up(lg) {
+      right: $grid-gutter-width;
+    }
+  }
+}
+
 .show-page {
   &-header {
     @include media-breakpoint-down(md) {
@@ -118,6 +137,7 @@
     grid-row: 2;
     grid-column: 1;
     align-self: flex-start;
+    padding: $btn-padding-y-sm $btn-padding-x;
     @include badge-variant($gray-dark);
 
     & ~ {
@@ -376,14 +396,14 @@
 
   [class*="row"] + [class*="row"],
   [class*="col-12"] + [class*="col-12"] {
-    margin-top: map-get($map: $spacers, $key: 3);
+    margin-top: map-get($map: $spacers, $key: 4);
   }
 
   &-section {
     scroll-margin-top: $header-height-mobile + 35px + 12px;
 
     & + * {
-      margin-top: map-get($map: $spacers, $key: 3);
+      margin-top: map-get($map: $spacers, $key: 4);
     }
 
     @include media-breakpoint-up(lg) {
@@ -431,6 +451,14 @@
         width: 1em;
         height: 1em;
       }
+    }
+  }
+}
+
+.recurring_tournaments {
+  .show-page {
+    &-meta {
+      justify-self: center;
     }
   }
 }

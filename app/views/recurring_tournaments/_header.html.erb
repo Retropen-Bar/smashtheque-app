@@ -22,10 +22,10 @@
         <h1 class="show-page-title card-title">
           <%= link_to recurring_tournament.name, recurring_tournament %>
         </h1>
-        <div class="list-x">
+        <div class="list-x mt-3">
           <%= recurring_tournament.badges_v2(with_level: true) %>
         </div>
-        <small class="list-x flex-wrap mt-3">
+        <small class="list-x flex-wrap">
           <% if recurring_tournament.recurring_type.to_sym == :weekly %>
             <span>
               <%= recurring_tournament.wday_text %>
@@ -40,7 +40,7 @@
             <%= recurring_tournament.starts_at %>
           </span>
         </small>
-        <small class="list-x mt-3">
+        <small class="list-x">
           <%= svg_icon_tag(:lieu, class: 'fs-xs') %>
           <% if recurring_tournament.is_online? %>
             Online
@@ -49,42 +49,24 @@
           <% end %>
         </small>
       </div>
-      <div class="show-page-side flex-column list-y">
-        <div class="btn-group btn-group-sm w-50">
-          <a href="http://" class="btn btn-sm btn-dark btn--with-icon font-weight-bold pl-4 text-left" target="_blank" rel="noopener noreferrer">
-            <%= svg_icon_tag :discord, class: 'mr-4' %>
-            Discord
-          </a>
-          <div class="btn-group btn-group-sm" role="group">
-            <button id="socials-desktop" type="button" class="btn btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false">
-            </button>
-            <div class="dropdown-menu" aria-labelledby="socials-desktop">
-              <a class="dropdown-item" href="#">Dropdown link</a>
-              <a class="dropdown-item" href="#">Dropdown link</a>
-            </div>
-          </div>
+     <div class="show-page-side">
+        <div class="list-y align-items-center justify-content-around">
+          <%= render  'shared/page_side_links/page_side_links',
+                      record: recurring_tournament,
+                      # twitch_channels: recurring_tournament.twitch_channels,
+                      # you_tube_channels: recurring_tournament.you_tube_channels,
+                      discord_guilds: [recurring_tournament.discord_guild] %>
         </div>
-        <a href="http://" class="btn btn-sm w-50 btn-dark btn--with-icon rounded-pill font-weight-bold pl-4 text-left" target="_blank" rel="noopener noreferrer">
-          <%= svg_icon_tag :twitter, class: 'mr-4' %>
-          Twitter
-        </a>
       </div>
-      <div class="show-page-socials bg-layout bg-md-layout-dark d-flex d-md-none align-items-center">
-        <div class="btn-group dropleft">
-          <a href="#" id="socials-mobile" type="button" class="btn btn-sm btn-dark rounded-pill dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-            <%= svg_icon_tag :discord, class: "ml-1" %>
-            <span class="sr-only">Discord</span>
-          </a>
-          <div class="dropdown-menu" aria-labelledby="socials-mobile">
-            <a class="dropdown-item" href="#">Dropdown link</a>
-            <a class="dropdown-item" href="#">Dropdown link</a>
-            <a class="dropdown-item" href="#">Dropdown link</a>
-          </div>
+      <div class="show-page-socials bg-layout bg-md-layout-dark d-md-none">
+        <div class="list-x list-x--lg align-items-center">
+          <%= render  'shared/page_socials_links',
+                      short: true,
+                      record: recurring_tournament,
+                      # twitch_channels: recurring_tournament.twitch_channels,
+                      # you_tube_channels: recurring_tournament.you_tube_channels,
+                      discord_guilds: [recurring_tournament.discord_guild] %>
         </div>
-        <a href="http://" target="_blank" rel="noopener noreferrer">
-          <%= svg_icon_tag :twitter %>
-          <span class="sr-only">Twitter</span>
-        </a>
       </div>
     </div>
   </div>
