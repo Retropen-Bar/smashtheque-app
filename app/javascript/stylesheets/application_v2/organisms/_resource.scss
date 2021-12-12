@@ -142,6 +142,10 @@
   inset: 0;
 }
 
+.resource-badges {
+  line-height: 1;
+}
+
 .resource.player {
   min-height: 64px;
 
@@ -270,6 +274,14 @@
     .character-name {
       color: white;
       background-color: $gray-deep;
+    }
+  }
+}
+
+.tournament-event {
+  .resource-meta {
+    * + * {
+      margin-top: 0.125rem;
     }
   }
 }

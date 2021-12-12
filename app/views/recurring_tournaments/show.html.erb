@@ -50,8 +50,16 @@
             <%= link_to recurring_tournament_path(recurring_tournament, anchor: 'other-informations'), class: "section-nav-link scrollactive-item" do %>
               <span>Autres informations</span>
             <% end %>
-            <%= link_to recurring_tournament_path(recurring_tournament, anchor: 'location'), class: "section-nav-link scrollactive-item" do %>
-              <span>Localisation</span>
+            <% if recurring_tournament.geocoded? %>
+              <%= link_to recurring_tournament_path(recurring_tournament, anchor: 'location'), class: "section-nav-link scrollactive-item" do %>
+                <span>Localisation</span>
+              <% end %>
+            <% end %>
+            <%= link_to recurring_tournament_path(recurring_tournament, anchor: '1v1-editions'), class: "section-nav-link scrollactive-item" do %>
+              <span>Editions 1v1</span>
+            <% end %>
+            <%= link_to recurring_tournament_path(recurring_tournament, anchor: '2v2-editions'), class: "section-nav-link scrollactive-item" do %>
+              <span>Editions 2v2</span>
             <% end %>
           </div>
         </scrollactive>
@@ -183,6 +191,60 @@
             </section>
           </div>
           <% end %>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <section id="1v1-editions" class="show-page-section">
+              <div class="show-page-section-title">
+                <h2>Editions 1v1</h2>
+                <span class="show-page-section-title-separator"></span>
+              </div>
+              <div class="show-page-section-body">
+                <% if  @tournament_events.count < 1 %>
+                  <p>Aucune édition 1v1</p>
+                <% else %>
+                  <div class="list">
+                    <% @tournament_events[0...5].each do |tournament_event| %>
+                      <%= render 'tournament_events/tournament_event_v2', tournament_event: tournament_event.decorate %>
+                    <% end %>
+                  </div>
+                  <% if @tournament_events.count > 5 %>
+                    <div class="text-right mt-3">
+                      <%= link_to 'Voir plus',
+                                  recurring_tournament_tournament_events_path(recurring_tournament),
+                                  class: 'btn btn-sm bg-layout rounded-pill' %>
+                    </div>
+                  <% end %>
+                <% end %>
+              </div>
+            </section>
+          </div>
+          <div class="col-md-6">
+            <section id="2v2-editions" class="show-page-section">
+              <div class="show-page-section-title">
+                <h2>Editions 2v2</h2>
+                <span class="show-page-section-title-separator"></span>
+              </div>
+              <div class="show-page-section-body">
+                <% if  @duo_tournament_events.count < 1 %>
+                  <p>Aucune édition 2v2</p>
+                <% else %>
+                  <div class="list">
+                    <% @duo_tournament_events[0...5].each do |duo_tournament_event| %>
+                      <%= render 'duo_tournament_events/duo_tournament_event_v2', duo_tournament_event: duo_tournament_event.decorate %>
+                    <% end %>
+                  </div>
+                  <% if @duo_tournament_events.count > 5 %>
+                    <div class="text-right mt-3">
+                      <%= link_to 'Voir plus',
+                                  recurring_tournament_duo_tournament_events_path(recurring_tournament),
+                                  class: 'btn btn-sm bg-layout rounded-pill' %>
+                    </div>
+                  <% end %>
+                <% end %>
+              </div>
+            </section>
+          </div>
         </div>
       </div>
     </section>

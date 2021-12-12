@@ -30,6 +30,10 @@
       position: sticky;
       bottom: 5vh;
 
+      @include media-breakpoint-down(sm) {
+        bottom: 15vh;
+      }
+
       > * {
         background-color: $gray-deep;
       }
