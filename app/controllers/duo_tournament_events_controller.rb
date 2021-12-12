@@ -55,6 +55,7 @@ class DuoTournamentEventsController < PublicController
     if @recurring_tournament
       @meta_properties['og:image'] = @recurring_tournament.decorate.discord_guild_icon_image_url
     end
+    render layout: 'application_v2'
   end
 
   def edit; end

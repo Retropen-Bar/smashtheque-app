@@ -75,6 +75,32 @@
     }
   }
 
+  .rank {
+    background-color: $gray-deep;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    border-radius: $rounded-pill;
+    line-height: 1.15;
+    border: 1px solid $gray-dark;
+    box-shadow: 2px 2px 10px 0 rgba(0, 0, 0, 0.3);
+    color: var(--text-color-accent);
+    font-weight: 600;
+    position: absolute;
+    left: -0.5rem;
+    top: -0.5rem;
+    z-index: 1;
+  }
+
+  .player-points {
+    font-size: 0.75rem;
+    color: rgba($body-color, 0.5);
+
+    img {
+      height: 1.25em;
+      margin-right: 0.5em;
+    }
+  }
+
   &--dark {
     .card {
       background-color: $gray-dark;
@@ -149,37 +175,11 @@
 .resource.player {
   min-height: 64px;
 
-  .rank {
-    background-color: $gray-deep;
-    padding: 0.25rem 0.5rem;
-    font-size: 0.75rem;
-    border-radius: $rounded-pill;
-    line-height: 1.15;
-    border: 1px solid $gray-dark;
-    box-shadow: 2px 2px 10px 0 rgba(0, 0, 0, 0.3);
-    color: var(--text-color-accent);
-    font-weight: 600;
-    position: absolute;
-    left: -0.5rem;
-    top: -0.5rem;
-    z-index: 1;
-  }
-
   .reward-badge {
     transform: translate(50%, 50%);
     position: absolute;
     bottom: 0;
     right: 0;
-  }
-
-  .player-points {
-    font-size: 0.75rem;
-    color: rgba($body-color, 0.5);
-
-    img {
-      height: 1.25em;
-      margin-right: 0.5em;
-    }
   }
 
   .list-characters-compact {

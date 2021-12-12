@@ -1,7 +1,7 @@
 <article class="resource player d-flex">
   <% if defined?(with_rank) && with_rank %>
     <div class="rank">
-      #<%= player.rank(
+      #<%= defined?(rank) ? rank : player.rank(
         is_online: defined?(is_online) && is_online,
         year: defined?(year) && year) %>
     </div>

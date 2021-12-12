@@ -171,6 +171,17 @@
     }
   }
 
+  &-subtitle {
+    font-size: 0.875rem;
+    margin-bottom: 0;
+    font-weight: 400;
+    opacity: 0.6;
+
+    // @include media-breakpoint-up(md) {
+    //   font-size: 1.5rem;
+    // }
+  }
+
   &-title {
     font-size: 1.25rem;
     margin-bottom: 0;
@@ -195,7 +206,7 @@
       border-top-right-radius: $border-radius;
     }
 
-    svg {
+    .icon {
       width: 1.125rem;
       height: auto;
     }
@@ -461,10 +472,35 @@
   }
 }
 
-.recurring_tournaments {
+.recurring_tournaments,
+[class*="tournament_events"] {
   .show-page {
     &-meta {
       justify-self: center;
+    }
+  }
+}
+
+.actions + * .tournament_events-nav {
+  top: 4rem;
+
+  @include media-breakpoint-up(lg) {
+    top: 1rem;
+  }
+}
+
+.tournament_events-nav {
+  width: 100%;
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  top: 1rem;
+  transform: translateX(-50%);
+
+  .btn-group > :nth-child(2),
+  .btn-group > :first-child {
+    svg {
+      transform: rotate(180deg);
     }
   }
 }
