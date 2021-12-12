@@ -15,6 +15,7 @@ class TournamentEventsController < PublicController
     respond_to do |format|
       format.html do
         @meta_title = 'Éditions passées'
+        render layout: 'application_v2'
       end
       format.ics do
         render plain: ics_cal.to_ical
