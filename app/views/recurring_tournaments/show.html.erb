@@ -198,6 +198,11 @@
               <div class="show-page-section-title">
                 <h2>Editions 1v1</h2>
                 <span class="show-page-section-title-separator"></span>
+                <% if user_recurring_tournament_admin? %>
+                  <%= link_to 'Ajouter',
+                        [:new, recurring_tournament, :tournament_event],
+                        class: 'btn btn-sm btn-light rounded-pill ml-3' %>
+                <% end %>
               </div>
               <div class="show-page-section-body">
                 <% if  @tournament_events.count < 1 %>
@@ -224,6 +229,11 @@
               <div class="show-page-section-title">
                 <h2>Editions 2v2</h2>
                 <span class="show-page-section-title-separator"></span>
+                <% if user_recurring_tournament_admin? %>
+                  <%= link_to 'Ajouter',
+                        [:new, recurring_tournament, :duo_tournament_event],
+                        class: 'btn btn-sm btn-light rounded-pill ml-3' %>
+                <% end %>
               </div>
               <div class="show-page-section-body">
                 <% if  @duo_tournament_events.count < 1 %>
