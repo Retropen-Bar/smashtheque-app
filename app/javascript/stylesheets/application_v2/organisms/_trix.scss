@@ -4,4 +4,9 @@ body {
       background: $gray-light;
     }
   }
+  .trix-content {
+    li {
+      margin-left: 1.2em;
+    }
+  }
 }

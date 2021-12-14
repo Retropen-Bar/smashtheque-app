@@ -104,6 +104,8 @@ ActiveAdmin.register RecurringTournament do
                   collection: recurring_tournament_size_select_collection
           f.input :is_archived
           f.input :is_hidden
+          f.input :ruleset, as: :action_text
+          f.input :lagtest, as: :action_text
         end
         f.inputs 'Contacts' do
           users_input f, :contacts
@@ -111,8 +113,7 @@ ActiveAdmin.register RecurringTournament do
           f.input :discord_guild,
                   collection: recurring_tournament_discord_guild_select_collection,
                   input_html: { data: { select2: {} } }
-          f.input :registration,
-                  input_html: { rows: 5 }
+          f.input :registration, as: :action_text
         end
       end
       column do
@@ -128,8 +129,7 @@ ActiveAdmin.register RecurringTournament do
           div class: 'offline-fields' do
             address_input f
           end
-          f.input :misc,
-                  input_html: { rows: 5 }
+          f.input :misc, as: :action_text
         end
         f.inputs 'Temporalité' do
           f.input :date_description
@@ -174,6 +174,7 @@ ActiveAdmin.register RecurringTournament do
                 :address_name, :address, :latitude, :longitude,
                 :locality, :countrycode,
                 :twitter_username, :misc,
+                :ruleset, :lagtest,
                 :is_archived, :is_hidden, contact_ids: []
 
   # ---------------------------------------------------------------------------
@@ -197,6 +198,8 @@ ActiveAdmin.register RecurringTournament do
           row :level, &:level_status
           row :size
           row :registration, &:formatted_registration
+          row :ruleset, &:formatted_ruleset
+          row :lagtest, &:formatted_lagtest
           row :contacts do |decorated|
             decorated.contacts_admin_links(size: 32).join('<br/>').html_safe
           end

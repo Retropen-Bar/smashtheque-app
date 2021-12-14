@@ -249,6 +249,7 @@ fr:
         is_archived: Stoppé ?
         is_hidden: Masqué ?
         is_online: Online ?
+        lagtest: Lagtest
         latitude: Latitude
         level: Difficulté
         locality: Ville
@@ -257,6 +258,7 @@ fr:
         name: Nom
         recurring_type: Récurrence
         registration: Comment s'inscrire
+        ruleset: Ruleset
         size: Taille
         starts_at_hour: Heure
         starts_at_min: Minutes

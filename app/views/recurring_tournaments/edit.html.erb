@@ -29,6 +29,8 @@
                               collection: recurring_tournament_size_select_collection,
                               required: true %>
                   <%= f.input :is_archived %>
+                  <%= f.input :ruleset, as: :simple_action_text %>
+                  <%= f.input :lagtest, as: :simple_action_text %>
                 </div>
               </section>
 
@@ -43,8 +45,7 @@
                               label: 'Serveur Discord',
                               collection: recurring_tournament_discord_guild_select_collection,
                               input_html: { data: { select2: {} } } %>
-                  <%= f.input :registration,
-                              input_html: { rows: 5 } %>
+                  <%= f.input :registration, as: :simple_action_text %>
                 </div>
               </section>
 
@@ -65,7 +66,7 @@
                   <div class="offline-fields">
                     <%= address_input f %>
                   </div>
-                  <%= f.input :misc, input_html: { rows: 5 } %>
+                  <%= f.input :misc, as: :simple_action_text %>
                 </div>
               </section>
 

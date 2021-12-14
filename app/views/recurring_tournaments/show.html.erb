@@ -76,7 +76,7 @@
               </div>
               <div class="show-page-section-body">
                 <see-more  :line-clamp="4">
-                  <%= recurring_tournament.registration %>
+                  <%== recurring_tournament.formatted_registration %>
                 </see-more>
               </div>
             </section>
@@ -87,7 +87,7 @@
               </div>
               <div class="show-page-section-body">
                 <see-more>
-                  <%= recurring_tournament.registration %>
+                  <%== recurring_tournament.formatted_ruleset %>
                 </see-more>
               </div>
             </section>
@@ -98,7 +98,7 @@
               </div>
               <div class="show-page-section-body">
                 <see-more  :line-clamp="4">
-                  <%= recurring_tournament.registration %>
+                  <%== recurring_tournament.formatted_lagtest %>
                 </see-more>
               </div>
             </section>
@@ -167,7 +167,9 @@
                 <% if recurring_tournament.misc.blank? %>
                   <p>Aucune information supplémentaire</p>
                 <% else %>
-                  <%= recurring_tournament.misc %>
+                  <see-more  :line-clamp="4">
+                    <%== recurring_tournament.formatted_misc %>
+                  </see-more>
                 <% end %>
               </div>
             </section>

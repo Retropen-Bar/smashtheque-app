@@ -157,7 +157,8 @@ class RecurringTournamentsController < PublicController
       :address_name, :address, :latitude, :longitude,
       :locality, :countrycode,
       :twitter_username, :misc,
-      :is_archived
+      :is_archived,
+      :lagtest, :ruleset
     )
   end
 end

@@ -243,4 +243,20 @@ class RecurringTournamentDecorator < BaseDecorator
       end
     end
   end
+
+  def formatted_registration
+    registration.to_s
+  end
+
+  def formatted_misc
+    misc.to_s
+  end
+
+  def formatted_lagtest
+    lagtest.to_s
+  end
+
+  def formatted_ruleset
+    ruleset.to_s
+  end
 end

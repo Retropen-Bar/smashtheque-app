@@ -14,10 +14,8 @@
 #  level                :string
 #  locality             :string
 #  longitude            :float
-#  misc                 :text
 #  name                 :string           not null
 #  recurring_type       :string           not null
-#  registration         :text
 #  size                 :integer
 #  starts_at_hour       :integer          not null
 #  starts_at_min        :integer          not null
@@ -109,6 +107,11 @@ class RecurringTournament < ApplicationRecord
 
   has_many :tournament_events, dependent: :nullify
   has_many :duo_tournament_events, dependent: :nullify
+
+  has_rich_text :lagtest
+  has_rich_text :misc
+  has_rich_text :registration
+  has_rich_text :ruleset
 
   # ---------------------------------------------------------------------------
   # validations

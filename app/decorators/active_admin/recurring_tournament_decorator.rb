@@ -55,13 +55,5 @@ module ActiveAdmin
     def discord_guild_admin_link(options = {})
       model.discord_guild&.admin_decorate&.admin_link(options)
     end
-
-    def formatted_registration
-      h.tag.div model.registration, class: 'free-text'
-    end
-
-    def formatted_misc
-      h.tag.div misc, class: 'free-text'
-    end
   end
 end
