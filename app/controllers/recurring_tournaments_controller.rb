@@ -96,7 +96,7 @@ class RecurringTournamentsController < PublicController
         @meta_properties['og:image'] = @recurring_tournament.decorate.discord_guild_icon_image_url
       end
       format.json do
-        render json: {}
+        # nothing special, simply render the template
       end
     end
   end
