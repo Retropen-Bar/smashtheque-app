@@ -62,10 +62,14 @@
                                   untoggle: '.offline-fields'
                                 }
                               } %>
-                  <%= f.input :address_name, wrapper_html: { class: 'offline-fields' } %>
                   <div class="offline-fields">
-                    <%= address_input f %>
+                    <%= f.label 'Adresse du lieu' %>
                   </div>
+                  <div class="online-fields">
+                    <%= f.label 'Pays organisateur' %>
+                  </div>
+                  <%= address_input f, label: false %>
+                  <%= f.input :address_name, wrapper_html: { class: 'offline-fields' } %>
                   <%= f.input :misc, as: :simple_action_text %>
                 </div>
               </section>

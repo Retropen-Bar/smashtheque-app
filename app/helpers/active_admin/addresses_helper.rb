@@ -17,19 +17,21 @@ module ActiveAdmin
 
     def address_address_input(form, prefix, options)
       form.input  "#{prefix}address".to_sym,
-                  as: :string,
-                  input_html: {
-                    data: {
-                      maps_autocomplete: {
-                        target: {
-                          latitude: "#address-#{prefix}latitude",
-                          longitude: "#address-#{prefix}longitude",
-                          locality: "#address-#{prefix}locality",
-                          countrycode: "#address-#{prefix}countrycode"
+                  {
+                    as: :string,
+                    input_html: {
+                      data: {
+                        maps_autocomplete: {
+                          target: {
+                            latitude: "#address-#{prefix}latitude",
+                            longitude: "#address-#{prefix}longitude",
+                            locality: "#address-#{prefix}locality",
+                            countrycode: "#address-#{prefix}countrycode"
+                          }
                         }
-                      }.merge(options)
+                      }
                     }
-                  }
+                  }.deep_merge(options)
     end
 
     def address_latitude_input(form, prefix)

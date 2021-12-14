@@ -259,4 +259,10 @@ class RecurringTournamentDecorator < BaseDecorator
   def formatted_ruleset
     ruleset.to_s
   end
+
+  def country_flag(options = {})
+    return nil if countrycode.blank?
+
+    h.flag_icon_tag(countrycode, options)
+  end
 end

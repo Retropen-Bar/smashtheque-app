@@ -125,10 +125,10 @@ ActiveAdmin.register RecurringTournament do
                       untoggle: '.offline-fields'
                     }
                   }
+          address_input f,
+                        label: '<span class="offline-fields">Adresse du lieu</span>
+                                <span class="online-fields">Pays organisateur</span>'.html_safe
           f.input :address_name, wrapper_html: { class: 'offline-fields' }
-          div class: 'offline-fields' do
-            address_input f
-          end
           f.input :misc, as: :action_text
         end
         f.inputs 'Temporalité' do

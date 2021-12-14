@@ -41,7 +41,11 @@
           </span>
         </small>
         <small class="list-x">
-          <%= svg_icon_tag(:lieu, class: 'fs-xs') %>
+          <% if recurring_tournament.countrycode %>
+            <small class="align-middle mr-1"><%= flag_icon_tag(recurring_tournament.countrycode) %></small>
+          <% else %>
+            <%= svg_icon_tag(:lieu, class: "fs-xs") %>
+          <% end %>
           <% if recurring_tournament.is_online? %>
             Online
           <% else %>
