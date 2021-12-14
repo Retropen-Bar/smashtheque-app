@@ -22,6 +22,14 @@ class RecurringTournamentDecorator < BaseDecorator
     size && (size > 128 ? '128+' : size)
   end
 
+  def size_or_real_size
+    tournament_events_count > 4 ? real_size : size
+  end
+
+  def real_size
+    "~ #{tournament_events.order(date: :desc).limit(5).average(:participants_count).round(0)}"
+  end
+
   def recurring_type_text
     RecurringTournament.human_attribute_name("recurring_type.#{model.recurring_type}")
   end
@@ -199,7 +207,7 @@ class RecurringTournamentDecorator < BaseDecorator
       )
     ).html_safe
   end
-  
+
   def badges_v2(with_level: false)
     [
       !is_online? && h.tag.span(class: 'badge badge-with-icon badge-primary') do
