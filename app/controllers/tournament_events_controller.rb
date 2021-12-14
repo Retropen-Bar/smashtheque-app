@@ -7,6 +7,7 @@ class TournamentEventsController < PublicController
 
   before_action :verify_tournament_event!, only: %w[new create edit update]
 
+  has_scope :by_recurring_tournament_id
   has_scope :page, default: 1
   has_scope :per
 

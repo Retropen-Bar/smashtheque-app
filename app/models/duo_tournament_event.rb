@@ -121,6 +121,8 @@ class DuoTournamentEvent < ApplicationRecord
   # SCOPES
   # ---------------------------------------------------------------------------
 
+  scope :by_recurring_tournament_id, ->(v) { where(recurring_tournament_id: v) }
+
   def self.with_missing_duos
     where(
       is_complete: false

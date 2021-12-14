@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="players-count flex-shrink-0">
-        <%= link_to recurring_tournament_tournament_events_path(recurring_tournament) do %>
+        <%= link_to recurring_tournament.tournament_events_path do %>
           <%= recurring_tournament.tournament_events_count %>
           <%= svg_icon_tag(:médaille) %>
         <% end %>

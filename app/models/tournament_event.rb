@@ -122,6 +122,8 @@ class TournamentEvent < ApplicationRecord
   # SCOPES
   # ---------------------------------------------------------------------------
 
+  scope :by_recurring_tournament_id, ->(v) { where(recurring_tournament_id: v) }
+
   def self.with_missing_players
     where(
       is_complete: false

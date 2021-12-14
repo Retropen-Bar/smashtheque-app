@@ -129,6 +129,14 @@ class RecurringTournamentDecorator < BaseDecorator
     super({ label: name_with_logo(max_width: 64, max_height: 64) }.merge(options))
   end
 
+  def tournament_events_path
+    h.tournament_events_path(by_recurring_tournament_id: model.id)
+  end
+
+  def duo_tournament_events_path
+    h.duo_tournament_events_path(by_recurring_tournament_id: model.id)
+  end
+
   def any_image_url
     logo_url.presence || discord_guild_icon_image_url || default_logo_image_url
   end

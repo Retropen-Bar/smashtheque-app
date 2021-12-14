@@ -215,9 +215,7 @@
                   </div>
                   <% if @tournament_events.count > 5 %>
                     <div class="text-right mt-3">
-                      <%= link_to 'Voir plus',
-                                  recurring_tournament_tournament_events_path(recurring_tournament),
-                                  class: 'btn btn-sm bg-layout rounded-pill' %>
+                      <%= link_to 'Voir plus', recurring_tournament.tournament_events_path, class: 'btn btn-sm bg-layout rounded-pill' %>
                     </div>
                   <% end %>
                 <% end %>
@@ -246,9 +244,7 @@
                   </div>
                   <% if @duo_tournament_events.count > 5 %>
                     <div class="text-right mt-3">
-                      <%= link_to 'Voir plus',
-                                  recurring_tournament_duo_tournament_events_path(recurring_tournament),
-                                  class: 'btn btn-sm bg-layout rounded-pill' %>
+                      <%= link_to 'Voir plus', recurring_tournament.duo_tournament_events_path, class: 'btn btn-sm bg-layout rounded-pill' %>
                     </div>
                   <% end %>
                 <% end %>
