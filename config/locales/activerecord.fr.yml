@@ -18,6 +18,7 @@ fr:
       met_reward_condition: Récompense obtenue
       players_recurring_tournament: Certification
       recurring_tournament: Série
+      recurring_tournament_power_ranking: Power Ranking
       reward: Récompense
       reward_condition: Condition de récompense
       smashgg_event: Tournoi smash.gg
@@ -276,6 +277,10 @@ fr:
         monthly: Tous les mois
         oneshot: One-shot
         weekly: Toutes les semaines
+      recurring_tournament_power_ranking:
+        name: Nom
+        url: URL
+        year: Année
       reward:
         << : *SHARED
         awardeds: Récompensés

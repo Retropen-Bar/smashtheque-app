@@ -97,6 +97,11 @@ class RecurringTournament < ApplicationRecord
   has_many :you_tube_channels
   has_many :twitch_channels
 
+  has_many  :power_rankings,
+            class_name: :RecurringTournamentPowerRanking,
+            inverse_of: :recurring_tournament,
+            dependent: :destroy
+
   has_many :recurring_tournament_contacts,
            inverse_of: :recurring_tournament,
            dependent: :destroy
@@ -112,6 +117,8 @@ class RecurringTournament < ApplicationRecord
   has_rich_text :misc
   has_rich_text :registration
   has_rich_text :ruleset
+
+  accepts_nested_attributes_for :power_rankings, allow_destroy: true
 
   # ---------------------------------------------------------------------------
   # validations

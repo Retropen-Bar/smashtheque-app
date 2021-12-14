@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_14_203841) do
+ActiveRecord::Schema.define(version: 2021_12_14_211932) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -341,6 +341,16 @@ ActiveRecord::Schema.define(version: 2021_12_14_203841) do
     t.index ["user_id"], name: "index_recurring_tournament_contacts_on_user_id"
   end
 
+  create_table "recurring_tournament_power_rankings", force: :cascade do |t|
+    t.bigint "recurring_tournament_id", null: false
+    t.string "name", null: false
+    t.string "year"
+    t.string "url", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["recurring_tournament_id"], name: "index_rtpr_rt_id"
+  end
+
   create_table "recurring_tournaments", force: :cascade do |t|
     t.string "name", null: false
     t.string "recurring_type", null: false
@@ -629,6 +639,7 @@ ActiveRecord::Schema.define(version: 2021_12_14_203841) do
   add_foreign_key "players_teams", "teams"
   add_foreign_key "recurring_tournament_contacts", "recurring_tournaments"
   add_foreign_key "recurring_tournament_contacts", "users"
+  add_foreign_key "recurring_tournament_power_rankings", "recurring_tournaments"
   add_foreign_key "recurring_tournaments", "communities", column: "closest_community_id"
   add_foreign_key "recurring_tournaments", "discord_guilds"
   add_foreign_key "reward_conditions", "rewards"

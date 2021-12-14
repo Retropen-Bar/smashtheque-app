@@ -55,5 +55,19 @@ module ActiveAdmin
     def discord_guild_admin_link(options = {})
       model.discord_guild&.admin_decorate&.admin_link(options)
     end
+
+    def power_rankings_list
+      arbre do
+        ul do
+          power_rankings.each do |power_ranking|
+            li do
+              text = power_ranking.name
+              text += " (#{power_ranking.year})" if power_ranking.year.present?
+              a text, href: power_ranking.url, target: '_blank', rel: :noopener
+            end
+          end
+        end
+      end
+    end
   end
 end

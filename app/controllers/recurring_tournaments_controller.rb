@@ -89,6 +89,7 @@ class RecurringTournamentsController < PublicController
 
     respond_to do |format|
       format.html do
+        @power_rankings = @recurring_tournament.power_rankings.to_a
         @tournament_events = @recurring_tournament.tournament_events.order(date: :desc)
         @duo_tournament_events = @recurring_tournament.duo_tournament_events.order(date: :desc)
         @meta_title = @recurring_tournament.name
@@ -158,7 +159,8 @@ class RecurringTournamentsController < PublicController
       :locality, :countrycode,
       :twitter_username, :misc,
       :is_archived,
-      :lagtest, :ruleset
+      :lagtest, :ruleset,
+      power_rankings_attributes: %i[id name year url _destroy]
     )
   end
 end

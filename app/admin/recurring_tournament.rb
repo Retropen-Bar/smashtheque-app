@@ -145,6 +145,17 @@ ActiveAdmin.register RecurringTournament do
           f.input :starts_at_hour
           f.input :starts_at_min
         end
+        f.inputs 'Power rankings' do
+          f.has_many  :power_rankings,
+                      new_record: 'Ajouter',
+                      remove_record: 'Supprimer',
+                      heading: false,
+                      allow_destroy: true do |pr|
+            pr.input :name
+            pr.input :year
+            pr.input :url
+          end
+        end
       end
     end
     columns do
@@ -175,7 +186,8 @@ ActiveAdmin.register RecurringTournament do
                 :locality, :countrycode,
                 :twitter_username, :misc,
                 :ruleset, :lagtest,
-                :is_archived, :is_hidden, contact_ids: []
+                :is_archived, :is_hidden, contact_ids: [],
+                power_rankings_attributes: %i[id name year url _destroy]
 
   # ---------------------------------------------------------------------------
   # SHOW
@@ -210,6 +222,7 @@ ActiveAdmin.register RecurringTournament do
           row :closest_community, &:closest_community_admin_link
           row :twitter_username, &:twitter_link
           row :misc, &:formatted_misc
+          row :power_rankings, &:power_rankings_list
           row :is_archived
           row :is_hidden
           row :created_at

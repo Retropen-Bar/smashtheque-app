@@ -1,0 +1,9 @@
+<div class="nested-fields pb-3 border-bottom border-light mb-3">
+  <%= f.input :_destroy, as: :hidden %>
+  <%= f.input :name %>
+  <%= f.input :year %>
+  <%= f.input :url %>
+  <div>
+    <%= link_to_rm_fields 'Supprimer ce PR', class: 'btn btn-secondary btn-sm' %>
+  </div>
+</div>

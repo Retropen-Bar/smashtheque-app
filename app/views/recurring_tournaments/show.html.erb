@@ -138,20 +138,24 @@
                 <span class="show-page-section-title-separator"></span>
               </div>
               <div class="show-page-section-body">
-                <ul class="list-y list-unstyled text-center mb-0">
-                  <% Array.new(5).each_with_index do |_, index| %>
-                    <li>
-                      <%= link_to "https://power-ranking-#{index + 1}",
-                                  class: 'list-row',
-                                  target: '_blank',
-                                  rel: 'noopener noreferrer' do %>
-                        <span class="list-row-col flex-grow-1 text-truncate">Power ranking <%= index + 1 %></span>
-                        <span>&nbsp;•&nbsp;</span>
-                        <span class="list-row-col w-25">2021</span>
-                      <% end %>
-                    </li>
-                  <% end %>
-                </ul>
+                <% if @power_rankings.none? %>
+                  <p>Aucun PR</p>
+                <% else %>
+                  <ul class="list-y list-unstyled text-center mb-0">
+                    <% @power_rankings.each do |power_ranking| %>
+                      <li>
+                        <%= link_to power_ranking.url,
+                                    class: 'list-row',
+                                    target: '_blank',
+                                    rel: 'noopener noreferrer' do %>
+                          <span class="list-row-col flex-grow-1 text-truncate"><%= power_ranking.name %></span>
+                          <span>&nbsp;•&nbsp;</span>
+                          <span class="list-row-col w-25"><%= power_ranking.year %></span>
+                        <% end %>
+                      </li>
+                    <% end %>
+                  </ul>
+                <% end %>
               </div>
             </section>
           </div>

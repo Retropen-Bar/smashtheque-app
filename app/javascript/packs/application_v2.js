@@ -21,6 +21,7 @@ import "../src/shared/tooltips";
 import "../src/application_v2/global_search";
 import "../src/application_v2/filters";
 import "../src/application_v2/modals";
+import "../src/application_v2/nested_forms";
 import "../src/application_v2/slideout";
 import "../src/application_v2/scrollactive";
 import "../src/application_v2/trix";

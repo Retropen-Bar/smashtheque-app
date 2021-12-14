@@ -87,4 +87,20 @@ module ApplicationHelper
   def convert_to_brightness_value(hex_color)
     (hex_color.scan(/../).map {|color| color.hex}).sum
   end
+
+  def simple_link_to_add_fields(name, form, association, options = {})
+    new_object = form.object.send(association).klass.new
+    id = new_object.object_id
+    fields = form.simple_fields_for(association, new_object, child_index: id) do |builder|
+      render("#{association.to_s.singularize}_fields", f: builder)
+    end
+
+    options[:class] = "add-nested-fields #{options[:class]}"
+    link_to name, '#', { data: { id: id, fields: fields.delete("\n") } }.merge(options)
+  end
+
+  def link_to_rm_fields(name, options = {})
+    options[:class] = "rm-nested-fields #{options[:class]}"
+    link_to name, '#', options
+  end
 end

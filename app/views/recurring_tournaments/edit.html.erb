@@ -120,6 +120,19 @@
                 </div>
               </section>
 
+              <section class="show-page-section mt-5">
+                <div class="show-page-section-title">
+                  <h2>Power Rankings</h2>
+                  <span class="show-page-section-title-separator"></span>
+                </div>
+                <div class="show-page-section-content">
+                  <%= f.simple_fields_for :power_rankings do |prf| %>
+                    <%= render 'power_ranking_fields', f: prf %>
+                  <% end %>
+                  <%= simple_link_to_add_fields 'Ajouter un PR', f, :power_rankings, class: 'btn btn-primary btn-sm' %>
+                </div>
+              </section>
+
             </div>
           </div>
 
