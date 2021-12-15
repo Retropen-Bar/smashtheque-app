@@ -1,6 +1,6 @@
 <article class="resource tournament-event d-flex">
   <div class="resource-avatar card">
-    <%= link_to tournament_event.recurring_tournament&.decorate&.any_image_tag(max_width: 76, max_height: 76), tournament_event %>
+    <%= link_to tournament_event.any_image_tag(max_width: 76, max_height: 76), tournament_event %>
     <%= tournament_event.recurring_tournament&.decorate&.level  %>
   </div>
   <div class="resource-content card flex-grow-1">
@@ -15,6 +15,7 @@
           <%= link_to tournament_event.name, tournament_event %>
         </h5>
         <div class="resource-badges fs-sm">
+          <%= tournament_event.recurring_tournament&.decorate&.country_flag(class: 'mr-1') %>
           <%= tournament_event.recurring_tournament&.decorate&.badges_v2 %>
         </div>
       </div>
@@ -23,7 +24,6 @@
           <%= tournament_event.participants_count %>
           <%= svg_icon_tag(:groupe) %>
         <p>
-        
       </div>
       <%= link_to tournament_event, class: 'resource-link' do %>
         <span class="sr-only">Voir plus</span>

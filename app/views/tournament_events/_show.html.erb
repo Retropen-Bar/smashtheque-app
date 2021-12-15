@@ -5,17 +5,19 @@
         <%= admin_edit_link(tournament_event, label: 'Admin', class: 'btn btn-sm btn-light rounded-pill') %>
       <% end %>
       <%= link_to 'Modifier', [:edit, tournament_event], class: 'btn btn-sm btn-primary rounded-pill ml-2' %>
-      <%= form_for(tournament_event.recurring_tournament.decorate, html: { class: 'd-inline-block' }) do |f| %>
-        <%= f.hidden_field :is_archived, value: !tournament_event.recurring_tournament.decorate.is_archived? %>
-        <% if tournament_event.recurring_tournament.decorate.is_archived? %>
-          <%= f.button type: :submit, class: 'btn btn-sm btn-success rounded-pill ml-2' do %>
-            <%= fas_icon_tag :play, %w(mr-2) %>
-            Relancer
-          <% end %>
-        <% else %>
-          <%= f.button type: :submit, class: 'btn btn-sm btn-danger rounded-pill ml-2' do %>
-            <%= fas_icon_tag :pause, %w(mr-2) %>
-            Mettre en pause
+      <% if tournament_event.recurring_tournament %>
+        <%= form_for(tournament_event.recurring_tournament.decorate, html: { class: 'd-inline-block' }) do |f| %>
+          <%= f.hidden_field :is_archived, value: !tournament_event.recurring_tournament.decorate.is_archived? %>
+          <% if tournament_event.recurring_tournament.decorate.is_archived? %>
+            <%= f.button type: :submit, class: 'btn btn-sm btn-success rounded-pill ml-2' do %>
+              <%= fas_icon_tag :play, %w(mr-2) %>
+              Relancer
+            <% end %>
+          <% else %>
+            <%= f.button type: :submit, class: 'btn btn-sm btn-danger rounded-pill ml-2' do %>
+              <%= fas_icon_tag :pause, %w(mr-2) %>
+              Mettre en pause
+            <% end %>
           <% end %>
         <% end %>
       <% end %>
@@ -59,7 +61,7 @@
                     <% type = tournament_event.class.name =~ /duo/i ? 'duo' : 'player' %>
                     <% if awarded %>
                       <%= render "#{type}s/#{type}_v2", "#{type}": awarded&.decorate,
-                                                      is_online: tournament_event.recurring_tournament.decorate.is_online?,
+                                                      is_online: tournament_event.online?,
                                                       with_points: true,
                                                       with_rank: true,
                                                       rank: rank %>
@@ -68,7 +70,7 @@
                 </div>
               </div>
             </section>
-          
+
           </div>
           <% if tournament_event.graph_image_tag %>
           <div class="col-lg-6">

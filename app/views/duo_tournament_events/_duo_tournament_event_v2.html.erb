@@ -15,6 +15,7 @@
           <%= link_to duo_tournament_event.name, duo_tournament_event %>
         </h5>
         <div class="resource-badges fs-sm">
+          <%= duo_tournament_event.recurring_tournament&.decorate&.country_flag(class: 'mr-1') %>
           <%= duo_tournament_event.recurring_tournament&.decorate&.badges_v2 %>
         </div>
       </div>
@@ -23,7 +24,6 @@
           <%= duo_tournament_event.participants_count %>
           <%= svg_icon_tag(:groupe) %>
         <p>
-        
       </div>
       <%= link_to duo_tournament_event, class: 'resource-link' do %>
         <span class="sr-only">Voir plus</span>

@@ -1,7 +1,20 @@
 class TournamentEventBaseDecorator < BaseDecorator
+  def default_logo_image_url
+    @@default_logo_image_url ||= h.image_url('smash.svg')
+  end
+
+  def any_image_url
+    recurring_tournament&.decorate&.any_image_url || default_logo_image_url
+  end
+
+  def any_image_tag(options = {})
+    classes = ['avatar', options.delete(:class)]
+    h.image_tag_with_max_size any_image_url, options.merge(class: classes.join(' '))
+  end
+
   def name_with_logo(options = {})
     [
-      recurring_tournament&.decorate&.any_image_tag(options),
+      any_image_tag(options),
       name
     ].compact.join('&nbsp;').html_safe
   end
