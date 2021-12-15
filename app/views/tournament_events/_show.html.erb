@@ -60,11 +60,13 @@
                     <% awarded = tournament_event.send(top_name) %>
                     <% type = tournament_event.class.name =~ /duo/i ? 'duo' : 'player' %>
                     <% if awarded %>
-                      <%= render "#{type}s/#{type}_v2", "#{type}": awarded&.decorate,
-                                                      is_online: tournament_event.online?,
-                                                      with_points: true,
-                                                      with_rank: true,
-                                                      rank: rank %>
+                      <%= render  "#{type}s/#{type}_v2",
+                                  "#{type}": awarded.decorate,
+                                  reward_condition: @reward_conditions[awarded.id]&.decorate,
+                                  is_online: tournament_event.online?,
+                                  with_points: true,
+                                  with_rank: true,
+                                  rank: rank %>
                     <% end %>
                   <% end %>
                 </div>
