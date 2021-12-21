@@ -24,6 +24,9 @@
               32,
               is_online: defined?(is_online) && is_online,
               year: defined?(year) && year) %>
+            <% if defined?(reward_condition) && reward_condition %>
+              <span class="text-light">(+<%= reward_condition.points %>)</span>
+            <% end %>
           </div>
         <% end %>
       </div>
@@ -33,4 +36,7 @@
     </div>
     <%= admin_edit_link(duo) %>
   </div>
+  <% if defined?(reward_condition) && reward_condition %>
+    <%= reward_condition.reward_badge %>
+  <% end %>
 </article>

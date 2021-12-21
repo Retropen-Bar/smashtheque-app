@@ -43,7 +43,7 @@
               is_online: defined?(is_online) && is_online,
               year: defined?(year) && year) %>
             <% if defined?(reward_condition) && reward_condition %>
-              (<%= reward_condition.points %>)
+              <span class="text-light">(+<%= reward_condition.points %>)</span>
             <% end %>
           </div>
         <% end %>

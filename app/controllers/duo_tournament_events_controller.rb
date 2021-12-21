@@ -51,6 +51,10 @@ class DuoTournamentEventsController < PublicController
   def show
     redirect_to root_path and return if @duo_tournament_event.hidden?
 
+    met_reward_conditions = @duo_tournament_event.met_reward_conditions.includes(:reward_condition)
+    @reward_conditions = met_reward_conditions.map do |met_reward_condition|
+      [met_reward_condition.awarded_id, met_reward_condition.reward_condition]
+    end.to_h
     @meta_title = @duo_tournament_event.name
     @meta_properties['og:type'] = 'profile'
     if @recurring_tournament
