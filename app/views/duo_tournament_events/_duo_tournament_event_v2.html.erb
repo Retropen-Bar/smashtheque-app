@@ -1,6 +1,6 @@
 <article class="resource tournament-event d-flex">
   <div class="resource-avatar card">
-    <%= link_to duo_tournament_event.recurring_tournament&.decorate&.any_image_tag(max_width: 76, max_height: 76), duo_tournament_event %>
+    <%= link_to duo_tournament_event.any_image_tag(max_width: 76, max_height: 76), duo_tournament_event %>
     <%= duo_tournament_event.recurring_tournament&.decorate&.level  %>
   </div>
   <div class="resource-content card flex-grow-1">
