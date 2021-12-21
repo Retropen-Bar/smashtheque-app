@@ -375,6 +375,17 @@
         max-width: 100%;
       }
     }
+
+    .row + .row,
+    [class*="col-12"] + [class*="col-12"] {
+      margin-top: map-get($map: $spacers, $key: 4);
+    }
+
+    @include media-breakpoint-down(md) {
+      [class*="col"] + [class*="col"] {
+        margin-top: map-get($map: $spacers, $key: 4);
+      }
+    }
   }
 
   .card-box--stat {
@@ -402,17 +413,6 @@
       @media screen and (min-width: 375px) {
         display: none;
       }
-    }
-  }
-
-  .row + .row,
-  [class*="col-12"] + [class*="col-12"] {
-    margin-top: map-get($map: $spacers, $key: 4);
-  }
-
-  @include media-breakpoint-down(md) {
-    [class*="col"] + [class*="col"] {
-      margin-top: map-get($map: $spacers, $key: 4);
     }
   }
 

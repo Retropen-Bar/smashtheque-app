@@ -15,6 +15,8 @@ class PagesController < PublicController
     @monday = Date.today.beginning_of_week
     @ics_url = recurring_tournaments_url(protocol: :webcal, format: :ics)
     @meta_title = 'Planning des tournois réguliers online'
+
+    render layout: 'application_v2'
   end
 
   def show

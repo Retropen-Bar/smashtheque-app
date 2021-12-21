@@ -1,6 +1,6 @@
 export const SeeMore = {
   props: {
-    "line-clamp": String,
+    "line-clamp": Number,
     emptyText: {
       type: String,
       default: "Aucune information disponible",

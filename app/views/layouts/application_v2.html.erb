@@ -15,8 +15,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <%= stylesheet_pack_tag 'application_v2', media: 'all' %>
-
-    <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?libraries=places&key=#{ENV['GOOGLE_MAPS_API_KEY']}" %>
+    
+    <%= google_places_api_tag %>
   </head>
   <body class="<%= controller.controller_name %> <%= controller.action_name %> <%= "section-#{current_section_name}" %><% if @static %> static<% end %>">
     <div id="app">
@@ -39,5 +39,6 @@
       <%= render partial: 'layouts/application_v2/footer' %>
     </div>
     <%= javascript_pack_tag 'application_v2' %>
+    <%= yield :script %>
   </body>
 </html>

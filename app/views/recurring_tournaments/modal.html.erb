@@ -1,15 +1,10 @@
-<div class="modal-dialog modal-lg">
+
+<%  @power_rankings = @recurring_tournament.power_rankings.to_a %>
+<div class="modal-dialog modal-lg modal-recurring-tournament">
   <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title">
-        <%= link_to recurring_tournament.name, recurring_tournament %>
-      </h5>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <%= render 'modal_content', recurring_tournament: recurring_tournament %>
-    </div>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <%= render 'modal_content', recurring_tournament: recurring_tournament %>
   </div>
 </div>

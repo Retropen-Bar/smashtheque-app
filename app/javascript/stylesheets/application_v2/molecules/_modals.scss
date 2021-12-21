@@ -22,3 +22,43 @@
     min-width: 300px;
   }
 }
+
+.modal-recurring-tournament {
+  @include media-breakpoint-down(lg) {
+    margin-left: 0;
+    margin-right: ($grid-gutter-width / 2);
+  }
+
+  @include media-breakpoint-up(sm) {
+    max-width: 949px + 2 * ($grid-gutter-width / 2);
+  }
+
+  .close {
+    color: currentColor;
+    opacity: 1;
+    margin-left: auto;
+
+    @include media-breakpoint-down(lg) {
+      margin-right: -($grid-gutter-width / 4);
+    }
+  }
+
+  .modal-content {
+    background-color: transparent;
+  }
+
+  .show-page-header-bg {
+    display: none;
+  }
+
+  .show-page-header {
+    margin-top: 2.5rem;
+  }
+
+  .show-page-body {
+    @include media-breakpoint-down(lg) {
+      margin-top: 0;
+      padding-top: 0.75rem;
+    }
+  }
+}

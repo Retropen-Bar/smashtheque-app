@@ -1,0 +1,83 @@
+<div class="row">
+  <div class="col-lg-6 d-flex flex-column">
+    <section id="inscription" class="show-page-section">
+      <div class="show-page-section-title">
+        <h2>Comment s'inscrire</h2>
+        <span class="show-page-section-title-separator"></span>
+      </div>
+      <div class="show-page-section-body">
+        <see-more  :line-clamp="4">
+          <%= recurring_tournament.formatted_registration  %>
+        </see-more>
+      </div>
+    </section>
+  </div>
+  <div class="col-lg-6 d-flex flex-column">
+    <section id="contacts" class="show-page-section">
+      <div class="show-page-section-title">
+        <h2>Les TOs</h2>
+        <span class="show-page-section-title-separator"></span>
+      </div>
+      <div class="show-page-section-body">
+        <% if recurring_tournament.contacts.any? %>
+          <div class="list">
+            <% recurring_tournament.contacts.first(3).each do |user| %>
+              <% if player = user.player %>
+                <%= render 'players/player_v2', player: player.decorate, with_roles: true %>
+              <% else %>
+                <%= render 'users/user', user: user.decorate %>
+              <% end %>
+            <% end %>
+          </div>
+          <% if recurring_tournament.contacts.count > 3 %>
+            <div class="text-right mt-3">
+              <%= link_to 'Voir plus',
+                          contacts_recurring_tournaments_path(by_community_id: recurring_tournament.closest_community&.id),
+                          class: 'btn btn-sm bg-layout rounded-pill' %>
+            </div>
+          <% end %>
+        <% else %>
+          -
+        <% end %>
+      </div>
+    </section>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <section id="other-informations" class="show-page-section">
+      <div class="show-page-section-title">
+        <h2>Autres informations</h2>
+        <span class="show-page-section-title-separator"></span>
+      </div>
+      <div class="show-page-section-body">
+        <% if recurring_tournament.misc.blank? %>
+          <p>Aucune information supplémentaire</p>
+        <% else %>
+          <see-more  :line-clamp="4">
+            <%== recurring_tournament.formatted_misc %>
+          </see-more>
+        <% end %>
+      </div>
+    </section>
+  </div>
+  <% if recurring_tournament.geocoded? %>
+  <div class="col-12">
+    <section id="location" class="show-page-section">
+      <div class="show-page-section-title">
+        <h2>Localisation</h2>
+        <span class="show-page-section-title-separator"></span>
+      </div>
+      <div class="show-page-section-body">
+          <div class="shadow p-5 m-3 rounded">
+            <%= single_address_map({
+                  name: recurring_tournament.full_address.html_safe,
+                  latitude: recurring_tournament.latitude,
+                  longitude: recurring_tournament.longitude
+                }) %>
+          </div>
+      </div>
+    </section>
+  </div>
+  <% end %>
+</div>

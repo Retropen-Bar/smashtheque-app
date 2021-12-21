@@ -1,10 +1,10 @@
 @import "~bootstrap/scss/functions";
 
-@import "./application_v2/variables";
+@import "../stylesheets/application_v2/variables";
 
 @import "~bootstrap/scss/variables";
 
-@import "./application_v2/variables_components";
+@import "../stylesheets/application_v2/variables_components";
 
 @import "~bootstrap/scss/mixins";
 
@@ -51,9 +51,9 @@
 @import "@hyjiacan/vue-slideout/lib/slideout.css";
 @import "~flag-icons-svg/sass/flag-icons";
 
-@import "application_v2/transitions";
-@import "application_v2/atoms/index";
-@import "application_v2/molecules/index";
-@import "application_v2/organisms/index";
-@import "application_v2/pages/index";
-@import "application_v2/utilities";
+@import "../stylesheets/application_v2/transitions";
+@import "../stylesheets/application_v2/atoms/index";
+@import "../stylesheets/application_v2/molecules/index";
+@import "../stylesheets/application_v2/organisms/index";
+@import "../stylesheets/application_v2/pages/index";
+@import "../stylesheets/application_v2/utilities";

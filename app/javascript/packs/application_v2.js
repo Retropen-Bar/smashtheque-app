@@ -1,5 +1,4 @@
-import "../stylesheets/application_v2";
-import 'trix/dist/trix.css'
+import "trix/dist/trix.css";
 
 require("@rails/ujs").start();
 require("@rails/activestorage").start();
@@ -21,11 +20,12 @@ import "../src/shared/toggles";
 import "../src/shared/tooltips";
 import "../src/application_v2/global_search";
 import "../src/application_v2/filters";
+import "../src/application/fullcalendar";
 import "../src/application_v2/modals";
 import "../src/application_v2/nested_forms";
 import "../src/application_v2/slideout";
 import "../src/application_v2/scrollactive";
 import "../src/application_v2/vue";
 
-require("trix")
-require("@rails/actiontext")
+require("trix");
+require("@rails/actiontext");

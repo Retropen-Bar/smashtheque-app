@@ -1,0 +1,68 @@
+.fc {
+  --fc-page-bg-color: #{$gray-deep};
+  --fc-border-color: #{$gray-medium};
+  --fc-today-bg-color: #{rgba($gray-medium-light, 0.1)};
+  --fc-event-bg-color: #{$gray-dark};
+  --fc-event-border-color: #{$body-color};
+  --fc-small-font-size: 0.75em;
+}
+
+.fc {
+  .fc-scrollgrid {
+    border: 0;
+  }
+
+  .fc-scrollgrid-section-body > td {
+    background-color: var(--fc-page-bg-color);
+    border-radius: 0 0 $border-radius $border-radius;
+  }
+
+  .fc-scrollgrid-section-header > th {
+    background-color: var(--text-color-accent);
+    border-radius: $border-radius $border-radius 0 0;
+    a {
+      color: var(--hover-text-color-accent);
+    }
+  }
+
+  .fc-scrollgrid-section-header > th,
+  .fc-scrollgrid-section-body > td {
+    border: 0;
+  }
+
+  .fc-timegrid-axis,
+  .fc-col-header-cell {
+    border-right-color: transparent;
+  }
+
+  .fc-col-header-cell {
+    border-left-color: transparent;
+  }
+
+  .fc-col-header-cell-cushion {
+    padding: 0.5rem 1.25rem;
+    text-transform: uppercase;
+  }
+
+  .fc-timegrid-slot-label-cushion {
+    padding: 0.25rem 1.25rem;
+  }
+
+  .fc-v-event {
+    border-left-width: 4px;
+    border-radius: 0 $border-radius $border-radius 0;
+
+    &[class*="level"] {
+      --fc-event-border-color: var(--color);
+    }
+  }
+
+  .fc-event-main {
+    padding: 0.25rem 0.5rem;
+  }
+
+  .fc-event-time {
+    --fc-small-font-size: 0.9em;
+    opacity: 0.7;
+  }
+}

@@ -1,5 +1,13 @@
+html {
+  height: 100%;
+}
+
+body {
+  display: grid;
+  min-height: 100%;
+}
+
 #app {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
 

@@ -39,7 +39,7 @@ module ApplicationHelper
     when :players
       controller_name =~ /(players|teams|duos|communities|characters)/
     when :tournaments
-      controller_name =~ /(tournament)/
+      controller_name =~ /(tournament)/ || action_name =~ /(planning)/
     else
       false
     end
