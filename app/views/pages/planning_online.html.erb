@@ -1,33 +1,44 @@
 <div class="container-fluid">
   <div class="text-center">
     <div id="list-toolbar">
-      <h1 class="page-title">Planning des tournois réguliers online</h1>
       <div id="filters-wrapper" class="text-left">
-
         <%= form_tag nil, method: :get, id: "filters" do %>
+          <h1 class="page-title">Planning des tournois réguliers online</h1>
 
-          <div class="form-row">
-            <div class="col-5 offset-1">
-              <strong>Niveau</strong>
-              <% RecurringTournament::LEVELS.each do |level| %>
-                <% id = "level-#{level}" %>
-                <div class="custom-control custom-switch">
-                  <input class="custom-control-input" type="checkbox" value="<%= level %>" id="<%= id %>">
-                  <% color = RecurringTournamentDecorator.level_color(level) %>
-                  <label class="custom-control-label text-<%= color %>" for="<%= id %>">
-                    <%= RecurringTournament.human_attribute_name("level.#{level}") %>
-                  </label>
+          <div class="list-x">
+            <div class="dropdown">
+              <button class="btn btn-dark rounded-pill dropdown-toggle" type="button" id="filter-level" data-toggle="dropdown" aria-expanded="false">
+                <span>Niveau</span>&nbsp;<span class="dropdown-selected"></span>
+              </button>
+              <div class="dropdown-menu" onclick="event.stopPropagation()" aria-labelledby="filter-level">
+                <div class="px-3 py-2 list-y">
+                  <% RecurringTournament::LEVELS.each do |level| %>
+                    <% id = "level-#{level}" %>
+                      <div class="custom-control custom-switch custom-switch-sm level--<%= level %>">
+                        <input class="custom-control-input" type="checkbox" value="<%= level %>" id="<%= id %>">
+                        <% color = RecurringTournamentDecorator.level_color(level) %>
+                        <label class="custom-control-label fs-sm " for="<%= id %>">
+                          <%= RecurringTournament.human_attribute_name("level.#{level}") %>
+                        </label>
+                      </div>
+                  <% end %>
                 </div>
-              <% end %>
+              </div>
             </div>
+            
+            <div class="dropdown">
+              <button class="btn btn-dark rounded-pill dropdown-toggle<%= 'active' if params[:by_size_geq] || params[:by_size_geq] %>" type="button" id="filter-size" data-toggle="dropdown" aria-expanded="false">
+                <span>Taille</span>&nbsp;<span class="dropdown-selected"></span>
+              </button>
+              <div class="dropdown-menu" onclick="event.stopPropagation()" aria-labelledby="filter-size">
+                <div class="form-row align-items-center px-3 py-2">
+                  <div class="col-5">Entre</div>
+                  <div class="ml-auto col-auto"><%= select_tag 'size-min', options_for_select(planning_size_select_collection), include_blank: 'min.', class: 'custom-select custom-select-sm bg-dark' %></div>
+                  <div class="col-12 my-1"></div>
 
-            <div class="col-5">
-              <strong>Taille</strong>
-              <div class="form-row align-items-center">
-                <div class="col-auto">Entre</div>
-                <div class="col-auto"><%= select_tag 'size_min', options_for_select(planning_size_select_collection), class: 'custom-select', id: 'size-min' %></div>
-                <div class="col-auto">et</div>
-                <div class="col-auto"><%= select_tag 'size_max', options_for_select(planning_size_select_collection, RecurringTournament::SIZES.last), class: 'custom-select', id: 'size-max' %></div>
+                  <div class="col-5">et</div>
+                  <div class="ml-auto col-auto"><%= select_tag 'size-max', options_for_select(planning_size_select_collection), include_blank: 'max.', class: 'custom-select custom-select-sm bg-dark' %></div>
+                </div>
               </div>
             </div>
           </div>

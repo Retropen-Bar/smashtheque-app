@@ -64,7 +64,28 @@ window.newPlanningCalendar = function (
     },
   });
   calendar.render();
-  $("form#filters").on("change", "input, select", function () {
+  $("form#filters").on("change", "input, select", function (e) {
     calendar.refetchEvents();
+
+    if ($("form#filters input[id*=level-]").is(":checked")) {
+      $("#filter-level").addClass("active");
+    } else {
+      $("#filter-level").removeClass("active");
+    }
+
+    if (
+      $("form#filters select#size-min").val() ||
+      $("form#filters select#size-max").val()
+    ) {
+      $("#filter-size").addClass("active");
+      $("#filter-size .dropdown-selected").html(
+        $("form#filters select#size-min").find(":selected").text() +
+          " - " +
+          $("form#filters select#size-max").find(":selected").text()
+      );
+    } else {
+      $("#filter-size").removeClass("active");
+      $("#filter-size .dropdown-selected").html("");
+    }
   });
 };
