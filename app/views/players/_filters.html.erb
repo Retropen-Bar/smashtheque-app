@@ -47,12 +47,12 @@
                     class: 'custom-select custom-select-sm' %>
   </div>
 
-  <h5><%= svg_icon_tag :lieu %> Communautés</h5>
+  <h5><%= svg_icon_tag :lieu %> Communautés FR</h5>
 
   <div class="mt-4">
     <%= select_tag  :by_community_id,
                     options_for_select(
-                      Community.order(:name).map do |community|
+                      Community.french.order(:name).map do |community|
                         [
                           community.name,
                           community.id

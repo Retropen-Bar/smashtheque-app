@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_14_211932) do
+ActiveRecord::Schema.define(version: 2021_12_23_085226) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -155,6 +155,8 @@ ActiveRecord::Schema.define(version: 2021_12_14_211932) do
     t.string "address", null: false
     t.string "ranking_url"
     t.string "twitter_username"
+    t.string "countrycode"
+    t.index ["countrycode"], name: "index_communities_on_countrycode"
   end
 
   create_table "community_admins", force: :cascade do |t|

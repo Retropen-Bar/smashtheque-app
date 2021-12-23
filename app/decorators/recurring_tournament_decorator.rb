@@ -181,18 +181,6 @@ class RecurringTournamentDecorator < BaseDecorator
     ].join('&nbsp;').html_safe
   end
 
-  def address_with_coordinates
-    return nil if address.blank?
-
-    "#{address} (#{latitude}, #{longitude})"
-  end
-
-  def country_name
-    return nil if countrycode.blank?
-
-    ISO3166::Country.new(countrycode)&.translation('fr')
-  end
-
   def full_address
     [
       address_name,

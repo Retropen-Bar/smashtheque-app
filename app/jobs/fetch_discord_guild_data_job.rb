@@ -3,7 +3,7 @@ class FetchDiscordGuildDataJob < ApplicationJob
 
   def perform(discord_guild)
     discord_guild.fetch_discord_data
-    discord_guild.save!
+    discord_guild.save
     sleep 1
   end
 end

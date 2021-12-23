@@ -154,6 +154,7 @@ fr:
         << : *SHARED
         admins: Admins
         address: Adresse
+        countrycode: Pays
         name: Nom
         players: Joueurs
         ranking_url: Power ranking
