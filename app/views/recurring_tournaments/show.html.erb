@@ -204,7 +204,7 @@
               <div class="show-page-section-title">
                 <h2>Editions 1v1</h2>
                 <span class="show-page-section-title-separator"></span>
-                <% if user_recurring_tournament_admin? %>
+                <% if admin_user_signed_in? || user_recurring_tournament_admin? %>
                   <%= link_to 'Ajouter',
                         [:new, recurring_tournament, :tournament_event],
                         class: 'btn btn-sm btn-light rounded-pill ml-3' %>
@@ -216,7 +216,7 @@
                 <% else %>
                   <div class="list">
                     <% @tournament_events[0...5].each do |tournament_event| %>
-                      <%= render 'tournament_events/tournament_event_v2', tournament_event: tournament_event.decorate %>
+                      <%= render 'tournament_events/tournament_event_v2', event: tournament_event.decorate %>
                     <% end %>
                   </div>
                   <% if @tournament_events.count > 5 %>
@@ -227,13 +227,11 @@
                 <% end %>
               </div>
             </section>
-          </div>
-          <div class="col-md-6">
             <section id="2v2-editions" class="show-page-section">
               <div class="show-page-section-title">
                 <h2>Editions 2v2</h2>
                 <span class="show-page-section-title-separator"></span>
-                <% if user_recurring_tournament_admin? %>
+                <% if admin_user_signed_in? || user_recurring_tournament_admin? %>
                   <%= link_to 'Ajouter',
                         [:new, recurring_tournament, :duo_tournament_event],
                         class: 'btn btn-sm btn-light rounded-pill ml-3' %>
@@ -245,7 +243,7 @@
                 <% else %>
                   <div class="list">
                     <% @duo_tournament_events[0...5].each do |duo_tournament_event| %>
-                      <%= render 'duo_tournament_events/duo_tournament_event_v2', duo_tournament_event: duo_tournament_event.decorate %>
+                      <%= render 'tournament_events/tournament_event_v2', event: duo_tournament_event.decorate %>
                     <% end %>
                   </div>
                   <% if @duo_tournament_events.count > 5 %>
@@ -253,6 +251,31 @@
                       <%= link_to 'Voir plus', recurring_tournament.duo_tournament_events_path, class: 'btn btn-sm bg-layout rounded-pill' %>
                     </div>
                   <% end %>
+                <% end %>
+              </div>
+            </section>
+          </div>
+          <div class="col-md-6">
+            <section id="2v2-editions" class="show-page-section">
+              <div class="show-page-section-title">
+                <h2>Top 8 général 1v1 <%= recurring_tournament.is_online? ? 'online' : 'offline' %></h2>
+                <span class="show-page-section-title-separator"></span>
+              </div>
+              <div class="show-page-section-body">
+                <% if @ranked_players.count < 1 %>
+                  <p>Aucun joueur pour l'instant</p>
+                <% else %>
+                  <div class="list">
+                    <% @ranked_players.each_with_index do |(player, points), idx| %>
+                      <%= render  'players/player_v2',
+                                  player: player.decorate,
+                                  with_points: true,
+                                  is_online: recurring_tournament.is_online?,
+                                  points: points,
+                                  with_rank: true,
+                                  rank: 1 + idx %>
+                    <% end %>
+                  </div>
                 <% end %>
               </div>
             </section>

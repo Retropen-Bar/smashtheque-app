@@ -27,7 +27,7 @@
               <section>
                 <h5><%= svg_icon_tag :abcd %> Abécédaire</h5>
                 <%= render 'shared/letters' %>
-                <%= render 'filters' %>
+                <%= render 'tournament_events/filters' %>
               </section>
             </slide-out>
           </section>
@@ -43,7 +43,7 @@
           <div class="recurring-tournamentss list row">
             <% @duo_tournament_events.each do |duo_tournament_event| %>
               <div class="col-12 col-lg-6">
-                <%= render 'duo_tournament_event_v2', duo_tournament_event: duo_tournament_event.decorate %>
+                <%= render 'tournament_events/tournament_event_v2', event: duo_tournament_event.decorate %>
               </div>
             <% end %>
           </div>

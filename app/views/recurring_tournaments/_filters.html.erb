@@ -49,23 +49,18 @@
   <% end %>
 
 
-  <h5><%= svg_icon_tag :lieu %> Communautés</h5>
+  <h5><%= svg_icon_tag :lieu %> Communauté</h5>
   <div class="my-4">
     <%= select_tag  :by_closest_community_id,
                     options_for_select(
-                      Community.order(:name).map do |community|
-                        [
-                          community.name,
-                          community.id
-                        ]
-                      end,
+                      community_select_collection,
                       params[:by_closest_community_id]
                     ),
                     prompt: 'Toutes',
                     class: 'custom-select custom-select-sm mb-1' %>
   </div>
 
-  
+
   <h5><%= svg_icon_tag :filtre %> Taille</h5>
 
   <div class="my-4">

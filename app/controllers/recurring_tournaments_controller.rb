@@ -92,6 +92,7 @@ class RecurringTournamentsController < PublicController
         @power_rankings = @recurring_tournament.power_rankings.to_a
         @tournament_events = @recurring_tournament.tournament_events.order(date: :desc)
         @duo_tournament_events = @recurring_tournament.duo_tournament_events.order(date: :desc)
+        @ranked_players = @recurring_tournament.ranked_players(limit: 8)
         @meta_title = @recurring_tournament.name
         @meta_properties['og:type'] = 'profile'
         @meta_properties['og:image'] = @recurring_tournament.decorate.discord_guild_icon_image_url

@@ -174,7 +174,7 @@ ActiveAdmin.register TournamentEvent do
         panel 'Informations' do
           f.inputs do
             f.input :recurring_tournament,
-                    collection: tournament_event_recurring_tournament_select_collection,
+                    collection: recurring_tournament_select_collection,
                     input_html: {
                       data: {
                         select2: {

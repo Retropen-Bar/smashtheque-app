@@ -11,12 +11,13 @@ class TournamentEventsController < PublicController
   has_scope :page, default: 1
   has_scope :per
 
+  layout 'application_v2'
+
   def index
     @tournament_events = apply_scopes(TournamentEvent.visible.order(date: :desc)).all
     respond_to do |format|
       format.html do
         @meta_title = 'Éditions passées'
-        render layout: 'application_v2'
       end
       format.ics do
         render plain: ics_cal.to_ical
@@ -58,7 +59,6 @@ class TournamentEventsController < PublicController
     if @recurring_tournament
       @meta_properties['og:image'] = @recurring_tournament.decorate.discord_guild_icon_image_url
     end
-    render layout: 'application_v2'
   end
 
   def edit; end

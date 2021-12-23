@@ -288,6 +288,32 @@ class RecurringTournament < ApplicationRecord
     geocoded.each(&:save!)
   end
 
+  def ranked_players(limit: nil)
+    results = MetRewardCondition.where(
+      event_type: :TournamentEvent,
+      event_id: tournament_events.select(:id)
+    ).joins(
+      :reward_condition
+    ).group(
+      :awarded_type,
+      :awarded_id
+    ).select(
+      :awarded_type,
+      :awarded_id,
+      'SUM(points) AS total_points'
+    ).order(
+      'total_points DESC'
+    ).includes(
+      :awarded
+    )
+
+    results.limit!(limit) if limit
+
+    results.map do |result|
+      [result.awarded, result.total_points]
+    end
+  end
+
   # ---------------------------------------------------------------------------
   # global search
   # ---------------------------------------------------------------------------

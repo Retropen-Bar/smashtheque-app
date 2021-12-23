@@ -8,5 +8,9 @@ module ActiveAdmin
         ]
       end
     end
+
+    def community_select_collection
+      Community.order('LOWER(name)').pluck(:name, :id)
+    end
   end
 end

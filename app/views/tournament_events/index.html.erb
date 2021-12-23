@@ -43,7 +43,7 @@
           <div class="recurring-tournamentss list row">
             <% @tournament_events.each do |tournament_event| %>
               <div class="col-12 col-lg-6">
-                <%= render 'tournament_event_v2', tournament_event: tournament_event.decorate %>
+                <%= render 'tournament_event_v2', event: tournament_event.decorate %>
               </div>
             <% end %>
           </div>

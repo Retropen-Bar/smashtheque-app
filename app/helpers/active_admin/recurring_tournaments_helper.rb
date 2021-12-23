@@ -52,5 +52,9 @@ module ActiveAdmin
     def recurring_tournament_community_select_collection
       Community.order('LOWER(name)').pluck(:name, :id)
     end
+
+    def recurring_tournament_select_collection
+      RecurringTournament.order('LOWER(name)').pluck(:name, :id)
+    end
   end
 end

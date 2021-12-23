@@ -1,0 +1,73 @@
+<div class="container-lg">
+  <article class="show-page">
+    <%= render 'tournament_events/header', event: event, with_event_links: false %>
+
+    <section class="show-page-body card">
+      <div class="show-page-content card-body">
+
+        <%= simple_form_for(event.model) do |f| %>
+
+          <%= render 'shared/form_errors', f: f %>
+
+          <div class="row">
+            <div class="col-6">
+
+              <section class="show-page-section">
+                <div class="show-page-section-title">
+                  <h2>Bracket et graph</h2>
+                  <span class="show-page-section-title-separator"></span>
+                </div>
+                <div class="show-page-section-content">
+                  <%= f.input :bracket_url %>
+                  <div class="panel current-image" id="current-graph">
+                    <div class="panel_contents img-fluid-container">
+                      <%= f.object.decorate.graph_image_tag %>
+                    </div>
+                  </div>
+                  <%= f.input :graph,
+                              as: :file,
+                              label: 'Nouveau graph',
+                              hint: 'Laissez vide pour ne pas changer',
+                              input_html: {
+                                accept: 'image/*',
+                                data: {
+                                  previewpanel: 'current-graph'
+                                }
+                              } %>
+                </div>
+              </section>
+            </div>
+            <div class="col-6">
+              <section class="show-page-section">
+                <div class="show-page-section-title">
+                  <h2>Autres infos</h2>
+                  <span class="show-page-section-title-separator"></span>
+                </div>
+                <div class="show-page-section-content">
+                  <%= f.input :name %>
+                  <%= f.input :date %>
+                  <%= f.input :participants_count %>
+                  <% event.model.class::TOP_NAMES.each do |participant_name| %>
+                    <% hint = f.object.decorate.send("#{participant_name}_bracket_suggestion") %>
+                    <% input_method_name = event.model.is_a?(TournamentEvent) ? :player_input : :duo_input %>
+                    <%= send input_method_name, f,
+                                                name: "#{participant_name}_id",
+                                                value: f.object.send(participant_name),
+                                                hint: hint %>
+                  <% end %>
+                </div>
+              </section>
+            </div>
+          </div>
+
+          <div class="form-actions text-center my-5">
+            <%= link_to 'Annuler', event.model, class: 'btn btn-secondary mr-3' %>
+            <%= f.button :submit, 'Valider', class: 'btn btn-primary' %>
+          </div>
+
+        <% end %>
+
+      </div>
+    </section>
+  </article>
+</div>

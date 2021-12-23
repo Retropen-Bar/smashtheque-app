@@ -1,0 +1,40 @@
+<div class="container-lg">
+  <article class="show-page">
+    <%= render 'recurring_tournaments/header', recurring_tournament: event.recurring_tournament.decorate %>
+
+    <section class="show-page-body card">
+      <div class="show-page-content card-body">
+
+        <%= simple_form_for([event.recurring_tournament, event.model]) do |f| %>
+
+          <%= render 'shared/form_errors', f: f %>
+
+          <section class="show-page-section">
+            <div class="show-page-section-title">
+              <h2>Nouvelle édition <%= event.model.class.name =~ /duo/i ? '2v2' : '1v1' %></h2>
+              <span class="show-page-section-title-separator"></span>
+            </div>
+            <div class="show-page-section-content">
+              <div class="row">
+                <div class="col-6">
+                  <%= f.input :bracket_url %>
+                </div>
+                <div class="col-6">
+                  <%= f.input :name, required: false, hint: "Laissez vide si smash.gg ou Challonge" %>
+                  <%= f.input :date, required: false, hint: "Laissez vide si smash.gg ou Challonge" %>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="form-actions text-center my-5">
+            <%= link_to 'Annuler', event.recurring_tournament, class: 'btn btn-secondary mr-3' %>
+            <%= f.button :submit, 'Valider', class: 'btn btn-primary' %>
+          </div>
+
+        <% end %>
+
+      </div>
+    </section>
+  </article>
+</div>
