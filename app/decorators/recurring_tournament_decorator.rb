@@ -165,18 +165,6 @@ class RecurringTournamentDecorator < BaseDecorator
     ].join('&nbsp;').html_safe
   end
 
-  def address_with_coordinates
-    return nil if address.blank?
-
-    "#{address} (#{latitude}, #{longitude})"
-  end
-
-  def country_name
-    return nil if countrycode.blank?
-
-    ISO3166::Country.new(countrycode)&.translation('fr')
-  end
-
   def full_address
     [
       address_name,
@@ -199,7 +187,7 @@ class RecurringTournamentDecorator < BaseDecorator
       )
     ).html_safe
   end
-  
+
   def badges_v2(with_level: false)
     [
       !is_online? && h.tag.span(class: 'badge badge-with-icon badge-primary') do

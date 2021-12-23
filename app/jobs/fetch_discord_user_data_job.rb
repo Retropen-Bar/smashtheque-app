@@ -3,7 +3,7 @@ class FetchDiscordUserDataJob < ApplicationJob
 
   def perform(discord_user)
     discord_user.fetch_discord_data
-    discord_user.save!
+    discord_user.save
     sleep 1
   end
 end

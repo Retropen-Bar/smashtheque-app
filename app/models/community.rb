@@ -4,6 +4,7 @@
 #
 #  id               :bigint           not null, primary key
 #  address          :string           not null
+#  countrycode      :string
 #  latitude         :float            not null
 #  longitude        :float            not null
 #  name             :string           not null
@@ -11,6 +12,10 @@
 #  twitter_username :string
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#
+# Indexes
+#
+#  index_communities_on_countrycode  (countrycode)
 #
 class Community < ApplicationRecord
   # ---------------------------------------------------------------------------
@@ -84,6 +89,8 @@ class Community < ApplicationRecord
   # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
+
+  scope :french, -> { where(countrycode: 'FR') }
 
   def self.by_name_like(name)
     where('unaccent(name) ILIKE unaccent(?)', name)
