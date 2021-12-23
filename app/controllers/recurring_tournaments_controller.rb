@@ -1,5 +1,6 @@
 class RecurringTournamentsController < PublicController
   helper_method :user_recurring_tournament_admin?
+  helper_method :default_planning_offline_community_id
 
   before_action :set_recurring_tournament, only: %w[show modal edit update]
   before_action :verify_recurring_tournament!, only: %w[edit update]
@@ -149,8 +150,9 @@ class RecurringTournamentsController < PublicController
   end
 
   def planning
-    # TODO: make this smart
-    redirect_to action: :planning_online
+    redirect_to action: :planning_online and return if default_planning_is_online?
+
+    redirect_to action: :planning_offline, community_id: default_planning_offline_community_id
   end
 
   def planning_online
@@ -161,6 +163,7 @@ class RecurringTournamentsController < PublicController
 
   def planning_offline
     @is_online = false
+    @community = Community.find(params[:community_id])
     @meta_title = 'Planning des tournois réguliers offline'
     render_planning
   end
@@ -210,6 +213,24 @@ class RecurringTournamentsController < PublicController
       :lagtest, :ruleset,
       power_rankings_attributes: %i[id name year url _destroy]
     )
+  end
+
+  def default_planning_is_online?
+    # TODO: make this smart
+    true
+  end
+
+  def default_planning_offline_community_id
+    if user_signed_in? && (community_id = current_user.closest_communities.first&.id)
+      return community_id
+    end
+
+    RecurringTournament.where.not(closest_community_id: nil)
+                       .group(:closest_community_id)
+                       .order('COUNT(*)')
+                       .select(:closest_community_id, 'COUNT(*)')
+                       .last
+                       .closest_community_id
   end
 
   def render_planning

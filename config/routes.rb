@@ -100,8 +100,8 @@ Rails.application.routes.draw do
     collection do
       get :map
       get :planning
-      get :planning_offline
-      get :planning_online
+      get 'planning/offline/:community_id', action: :planning_offline, as: :planning_offline
+      get 'planning/online', action: :planning_online, as: :planning_online
       get 'contacts' => 'players#recurring_tournament_contacts_index'
       get :modal, action: :group_modal
     end

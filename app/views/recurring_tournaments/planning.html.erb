@@ -2,9 +2,30 @@
   <div class="text-center">
     <div id="list-toolbar">
       <div id="filters-wrapper" class="text-left">
-        <%= form_tag nil, method: :get, id: "filters" do %>
-          <h1 class="page-title">Planning des tournois réguliers <%= @is_online ? 'online' : 'offline' %></h1>
+        <h1 class="page-title">
+          Planning des tournois réguliers
+          <% if @is_online %>
+            online
+          <% else %>
+            de
+            <div class="dropdown d-inline-block">
+              <button class="btn btn-dark dropdown-toggle" data-toggle="dropdown" type="button" id="community-id" data-bs-toggle="dropdown" aria-expanded="false">
+                <%= @community.name %>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="community-id">
+                <% Community.french.order('LOWER(name)').each do |community| %>
+                  <li>
+                    <%= link_to community.name,
+                                planning_offline_recurring_tournaments_path(community_id: community.id),
+                                class: 'dropdown-item' %>
+                  </li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+        </h1>
 
+        <%= form_tag nil, method: :get, id: "filters" do %>
           <div class="list-x">
             <% if @is_online %>
               <div class="dropdown">
@@ -49,7 +70,7 @@
 
         <div class="text-center mt-3">
           <div class="btn-group">
-            <%= link_to 'Offline', { action: :planning_offline }, class: "btn btn#{'-ouline' if @is_online}-primary" %>
+            <%= link_to 'Offline', { action: :planning_offline, community_id: default_planning_offline_community_id }, class: "btn btn#{'-ouline' if @is_online}-primary" %>
             <%= link_to 'Online', { action: :planning_online }, class: "btn btn#{'-ouline' if !@is_online}-primary" %>
           </div>
         </div>
@@ -68,7 +89,12 @@
       var calendarEl = document.getElementById("planning");
       var initialDate = '<%= @monday %>';
       var levels = <%= RecurringTournament::LEVELS.to_json.html_safe %>;
-      var eventsDataUrl = '<%= recurring_tournaments_path(by_is_online: @is_online, by_events_count_geq: (@is_online ? 3 : 0), format: :json) %>';
+      var eventsDataUrl = '<%= recurring_tournaments_path(
+        by_is_online: @is_online,
+        by_events_count_geq: (@is_online ? 3 : 0),
+        by_closest_community_id: (@is_online ? nil : @community.id),
+        format: :json
+      ) %>';
       window.newPlanningCalendar(calendarEl, initialDate, levels, eventsDataUrl);
     });
   </script>
