@@ -216,7 +216,7 @@
                 <% else %>
                   <div class="list">
                     <% @tournament_events[0...5].each do |tournament_event| %>
-                      <%= render 'tournament_events/tournament_event_v2', tournament_event: tournament_event.decorate %>
+                      <%= render 'tournament_events/tournament_event_v2', event: tournament_event.decorate %>
                     <% end %>
                   </div>
                   <% if @tournament_events.count > 5 %>
@@ -245,7 +245,7 @@
                 <% else %>
                   <div class="list">
                     <% @duo_tournament_events[0...5].each do |duo_tournament_event| %>
-                      <%= render 'duo_tournament_events/duo_tournament_event_v2', duo_tournament_event: duo_tournament_event.decorate %>
+                      <%= render 'tournament_events/tournament_event_v2', event: duo_tournament_event.decorate %>
                     <% end %>
                   </div>
                   <% if @duo_tournament_events.count > 5 %>

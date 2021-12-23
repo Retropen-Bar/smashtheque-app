@@ -2,13 +2,13 @@
   <% if admin_user_signed_in? || user_recurring_tournament_admin? %>
     <div class="actions">
       <% if admin_user_signed_in? %>
-        <%= admin_edit_link(tournament_event, label: 'Admin', class: 'btn btn-sm btn-light rounded-pill') %>
+        <%= admin_edit_link(event, label: 'Admin', class: 'btn btn-sm btn-light rounded-pill') %>
       <% end %>
-      <%= link_to 'Modifier', [:edit, tournament_event], class: 'btn btn-sm btn-primary rounded-pill ml-2' %>
-      <% if tournament_event.recurring_tournament %>
-        <%= form_for(tournament_event.recurring_tournament.decorate, html: { class: 'd-inline-block' }) do |f| %>
-          <%= f.hidden_field :is_archived, value: !tournament_event.recurring_tournament.decorate.is_archived? %>
-          <% if tournament_event.recurring_tournament.decorate.is_archived? %>
+      <%= link_to 'Modifier', [:edit, event], class: 'btn btn-sm btn-primary rounded-pill ml-2' %>
+      <% if event.recurring_tournament %>
+        <%= form_for(event.recurring_tournament.decorate, html: { class: 'd-inline-block' }) do |f| %>
+          <%= f.hidden_field :is_archived, value: !event.recurring_tournament.decorate.is_archived? %>
+          <% if event.recurring_tournament.decorate.is_archived? %>
             <%= f.button type: :submit, class: 'btn btn-sm btn-success rounded-pill ml-2' do %>
               <%= fas_icon_tag :play, %w(mr-2) %>
               Relancer
@@ -24,7 +24,7 @@
     </div>
   <% end %>
   <article class="show-page">
-    <%= render 'tournament_events/header', tournament_event: tournament_event %>
+    <%= render 'tournament_events/header', event: event %>
 
     <nav class="show-page-nav section-nav players d-lg-none">
       <div class="section-nav-wrapper">
@@ -34,10 +34,10 @@
           :offset="116"
         >
           <div class="section-nav-bg shadow-lg">
-          <%= link_to tournament_event_path(tournament_event, anchor: 'inscription'), class: "section-nav-link scrollactive-item" do %>
+          <%= link_to tournament_event_path(event, anchor: 'inscription'), class: "section-nav-link scrollactive-item" do %>
               <span>Top 8</span>
             <% end %>
-            <%= link_to tournament_event_path(tournament_event, anchor: 'graph'), class: "section-nav-link scrollactive-item" do %>
+            <%= link_to tournament_event_path(event, anchor: 'graph'), class: "section-nav-link scrollactive-item" do %>
               <span>Graph</span>
             <% end %>
           </div>
@@ -56,14 +56,14 @@
               <div class="show-page-section-body">
                 <div class="list">
 
-                  <% tournament_event.model.class::TOP_NAME_RANK.each do |top_name, rank| %>
-                    <% awarded = tournament_event.send(top_name) %>
-                    <% type = tournament_event.class.name =~ /duo/i ? 'duo' : 'player' %>
+                  <% event.model.class::TOP_NAME_RANK.each do |top_name, rank| %>
+                    <% awarded = event.send(top_name) %>
+                    <% type = event.class.name =~ /duo/i ? 'duo' : 'player' %>
                     <% if awarded %>
                       <%= render  "#{type}s/#{type}_v2",
                                   "#{type}": awarded.decorate,
                                   reward_condition: @reward_conditions[awarded.id]&.decorate,
-                                  is_online: tournament_event.online?,
+                                  is_online: event.online?,
                                   with_points: true,
                                   with_rank: true,
                                   rank: rank %>
@@ -74,7 +74,7 @@
             </section>
 
           </div>
-          <% if tournament_event.graph_image_tag %>
+          <% if event.graph_image_tag %>
           <div class="col-lg-6">
             <section id="graph" class="show-page-section">
               <div class="show-page-section-title">
@@ -82,7 +82,7 @@
                 <span class="show-page-section-title-separator"></span>
               </div>
               <div class="show-page-section-body">
-                <%= tournament_event.graph_image_tag max_width: '100%', class: 'shadow' %>
+                <%= event.graph_image_tag max_width: '100%', class: 'shadow' %>
               </div>
             </section>
           </div>

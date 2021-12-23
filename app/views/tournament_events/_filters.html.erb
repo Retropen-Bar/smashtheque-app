@@ -6,7 +6,7 @@
     <%= text_field_tag :on_abc, params[:on_abc], hidden: true %>
     <%= select_tag  :by_recurring_tournament_id,
                     options_for_select(
-                      tournament_event_recurring_tournament_select_collection,
+                      recurring_tournament_select_collection,
                       params[:by_recurring_tournament_id]
                     ),
                     prompt: 'Toutes',

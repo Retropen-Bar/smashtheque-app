@@ -9,13 +9,13 @@
       "background-image: url(\"#{image_url('static-bg.png').gsub('"', "\"")}\");" if @static
     %>"
   >
-    <% if tournament_event.recurring_tournament && (!defined?(with_event_links) || with_event_links) %>
+    <% if event.recurring_tournament && (!defined?(with_event_links) || with_event_links) %>
       <div class="tournament_events-nav">
         <div class="btn-group btn-group-sm">
-          <%= tournament_event.first_event_link label: svg_icon_tag(:double_flèche, class: 'fs-xs'), class: 'btn' %>
-          <%= tournament_event.previous_event_link label: "#{svg_icon_tag(:flèche, class: 'fs-xs mr-1')}<span class='d-none d-sm-inline'>Edition précédente</span>".html_safe, class: 'btn' %>
-          <%= tournament_event.next_event_link label: "<span class='d-none d-sm-inline'>Edition suivante</span>#{svg_icon_tag(:flèche, class: 'fs-xs ml-1')}".html_safe, class: 'btn' %>
-          <%= tournament_event.last_event_link label: svg_icon_tag(:double_flèche, class: 'fs-xs'), class: 'btn' %>
+          <%= event.first_event_link label: svg_icon_tag(:double_flèche, class: 'fs-xs'), class: 'btn' %>
+          <%= event.previous_event_link label: "#{svg_icon_tag(:flèche, class: 'fs-xs mr-1')}<span class='d-none d-sm-inline'>Edition précédente</span>".html_safe, class: 'btn' %>
+          <%= event.next_event_link label: "<span class='d-none d-sm-inline'>Edition suivante</span>#{svg_icon_tag(:flèche, class: 'fs-xs ml-1')}".html_safe, class: 'btn' %>
+          <%= event.last_event_link label: svg_icon_tag(:double_flèche, class: 'fs-xs'), class: 'btn' %>
         </div>
       </div>
     <% end %>
@@ -23,68 +23,68 @@
   <div class="show-page-header-body card justify-content-start without-desktop-socials">
     <div class="show-page-header-content card-body">
       <div class="show-page-meta badge badge-pill d-inline-block">
-        <%= tournament_event.participants_count %>
+        <%= event.participants_count %>
         <%= svg_icon_tag :groupe %>
       </div>
       <div class="show-page-avatar">
-        <%= tournament_event.any_image_tag(max_width: 94) %>
+        <%= event.any_image_tag(max_width: 94) %>
       </div>
       <div class="show-page-main-info">
         <div class="d-flex align-items-center">
-          <span class="px-2 bg-accent fs-xs text-accent-hover rounded-pill mr-1"><%= tournament_event.class.name =~ /duo/i ? '2v2' : '1v1' %></span>
-          <% if tournament_event.recurring_tournament %>
-            <small class="show-page-subtitle"><%= link_to tournament_event.recurring_tournament_name, tournament_event.recurring_tournament.decorate %></small>
+          <span class="px-2 bg-accent fs-xs text-accent-hover rounded-pill mr-1"><%= event.class.name =~ /duo/i ? '2v2' : '1v1' %></span>
+          <% if event.recurring_tournament %>
+            <small class="show-page-subtitle"><%= link_to event.recurring_tournament_name, event.recurring_tournament.decorate %></small>
           <% end %>
         </div>
         <h1 class="show-page-title card-title">
-          <%= tournament_event.name %>
+          <%= event.name %>
         </h1>
         <p class="mt-2">
           <%= svg_icon_tag :calendar, class: "mr-1" %>
           <time class="resource-badges">
-            <%= l tournament_event.date, format: :long %>
+            <%= l event.date, format: :long %>
           </time>
         </p>
-        <% if tournament_event.recurring_tournament %>
+        <% if event.recurring_tournament %>
           <div class="list-x mt-3">
-            <%= tournament_event.recurring_tournament.decorate.badges_v2(with_level: true) %>
+            <%= event.recurring_tournament.decorate.badges_v2(with_level: true) %>
           </div>
         <% end %>
         <small class="list-x">
-          <% if tournament_event.recurring_tournament&.countrycode&.present? %>
-            <small class="align-middle mr-1"><%= flag_icon_tag(tournament_event.recurring_tournament.countrycode) %></small>
+          <% if event.recurring_tournament&.countrycode&.present? %>
+            <small class="align-middle mr-1"><%= flag_icon_tag(event.recurring_tournament.countrycode) %></small>
           <% else %>
             <%= svg_icon_tag(:lieu, class: "fs-xs") %>
           <% end %>
-          <% if tournament_event.online? %>
+          <% if event.online? %>
             Online
           <% else %>
-            <%== tournament_event.recurring_tournament&.decorate&.full_address&.presence || 'Offline' %>
+            <%== event.recurring_tournament&.decorate&.full_address&.presence || 'Offline' %>
           <% end %>
         </small>
       </div>
      <div class="show-page-side">
         <div class="list-y align-items-center justify-content-around">
-          <%= tournament_event.bracket_icon_link(text: 'Bracket', class: 'show-page-side-link btn btn-sm btn-dark btn--with-icon rounded-pill font-weight-bold pl-2 text-truncate', backet_icon_options: {height: 12, class: 'text-accent icon mr-1'}) %>
-          <% if tournament_event.recurring_tournament %>
+          <%= event.bracket_icon_link(text: 'Bracket', class: 'show-page-side-link btn btn-sm btn-dark btn--with-icon rounded-pill font-weight-bold pl-2 text-truncate', backet_icon_options: {height: 12, class: 'text-accent icon mr-1'}) %>
+          <% if event.recurring_tournament %>
             <%= render  'shared/page_side_links/page_side_links',
-                        record: tournament_event.recurring_tournament.decorate,
-                        # twitch_channels: tournament_event.twitch_channels,
-                        # you_tube_channels: tournament_event.you_tube_channels,
-                        discord_guilds: [tournament_event.recurring_tournament.decorate.discord_guild] %>
+                        record: event.recurring_tournament.decorate,
+                        # twitch_channels: event.twitch_channels,
+                        # you_tube_channels: event.you_tube_channels,
+                        discord_guilds: [event.recurring_tournament.decorate.discord_guild] %>
           <% end %>
         </div>
       </div>
       <div class="show-page-socials bg-layout bg-md-layout-dark d-md-none">
         <div class="list-x list-x--lg align-items-center">
-          <%= tournament_event.bracket_icon_link(text: 'Bracket', class: 'fs-sm', backet_icon_options: {height: 12, class: 'text-accent icon mr-1'}) %>
-          <% if tournament_event.recurring_tournament %>
+          <%= event.bracket_icon_link(text: 'Bracket', class: 'fs-sm', backet_icon_options: {height: 12, class: 'text-accent icon mr-1'}) %>
+          <% if event.recurring_tournament %>
             <%= render  'shared/page_socials_links',
                         short: true,
-                        record: tournament_event.recurring_tournament.decorate,
-                        # twitch_channels: tournament_event.twitch_channels,
-                        # you_tube_channels: tournament_event.you_tube_channels,
-                        discord_guilds: [tournament_event.recurring_tournament.decorate.discord_guild] %>
+                        record: event.recurring_tournament.decorate,
+                        # twitch_channels: event.twitch_channels,
+                        # you_tube_channels: event.you_tube_channels,
+                        discord_guilds: [event.recurring_tournament.decorate.discord_guild] %>
           <% end %>
         </div>
       </div>
