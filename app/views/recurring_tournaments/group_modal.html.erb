@@ -1,0 +1,10 @@
+<div class="modal-dialog modal-lg modal-recurring-tournament">
+  <div class="modal-content">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <% @recurring_tournaments.each do |recurring_tournament| %>
+      <%= render 'recurring_tournament_v2', recurring_tournament: recurring_tournament.decorate %>
+    <% end %>
+  </div>
+</div>

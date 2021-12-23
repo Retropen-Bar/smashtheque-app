@@ -163,6 +163,8 @@ class RecurringTournament < ApplicationRecord
   # SCOPES
   # ---------------------------------------------------------------------------
 
+  scope :by_id_in, ->(v) { where(id: v) }
+
   scope :by_is_online, ->(v) { where(is_online: v) }
   scope :online, -> { where(is_online: true) }
   scope :offline, -> { where(is_online: false) }

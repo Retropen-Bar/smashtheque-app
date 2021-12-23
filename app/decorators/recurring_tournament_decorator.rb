@@ -60,8 +60,7 @@ class RecurringTournamentDecorator < BaseDecorator
   end
 
   def duration
-    # TODO: improve this
-    3.hours
+    1.hour
   end
 
   def as_event(week_start:)
@@ -70,6 +69,7 @@ class RecurringTournamentDecorator < BaseDecorator
       "level--#{model.level}"
     ]
     {
+      id: model.id,
       title: model.name + " (#{model.size})",
       start: start,
       end: start + duration,

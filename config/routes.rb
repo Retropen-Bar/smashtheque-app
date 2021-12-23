@@ -100,6 +100,7 @@ Rails.application.routes.draw do
     collection do
       get :map
       get 'contacts' => 'players#recurring_tournament_contacts_index'
+      get :modal, action: :group_modal
     end
     member do
       get :modal

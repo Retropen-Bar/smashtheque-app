@@ -5,6 +5,7 @@ class RecurringTournamentsController < PublicController
   before_action :verify_recurring_tournament!, only: %w[edit update]
   decorates_assigned :recurring_tournament
 
+  has_scope :by_id_in, type: :array
   has_scope :by_closest_community_id
   has_scope :by_level_in, type: :array
   has_scope :by_size_geq
@@ -51,13 +52,35 @@ class RecurringTournamentsController < PublicController
 
   def index_json
     start = params[:startStr] ? Date.parse(params[:startStr]) : Time.now
-    render json: apply_scopes(
+
+    grouped_events = {}
+    apply_scopes(
       RecurringTournament.visible.recurring.not_archived
-    ).all.decorate.map { |rc|
-      rc.as_event(week_start: start).merge(
-        url: recurring_tournament_path(rc)
+    ).each do |recurring_tournament|
+      event = recurring_tournament.decorate.as_event(week_start: start).merge(
+        url: recurring_tournament_path(recurring_tournament)
       )
-    }
+      key = event[:start].beginning_of_hour.to_s
+      grouped_events[key] ||= []
+      grouped_events[key] << event
+    end
+
+    events = []
+    grouped_events.each_value do |slot_events|
+      events <<
+        if slot_events.count == 1
+          slot_events.first
+        else
+          {
+            title: "#{slot_events.count} tournois",
+            start: slot_events.first[:start].beginning_of_hour,
+            end: slot_events.first[:start].beginning_of_hour + 1.hour,
+            modal_url: modal_recurring_tournaments_path(by_id_in: slot_events.pluck(:id))
+          }
+        end
+    end
+
+    render json: events
   end
 
   def index_ical
@@ -105,6 +128,13 @@ class RecurringTournamentsController < PublicController
 
   def modal
     render :modal, layout: false
+  end
+
+  def group_modal
+    @recurring_tournaments = apply_scopes(
+      RecurringTournament.visible.order('lower(name)')
+    ).includes(:discord_guild).all
+    render :group_modal, layout: false
   end
 
   def edit; end
