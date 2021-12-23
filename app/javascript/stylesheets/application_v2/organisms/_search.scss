@@ -46,15 +46,19 @@
   background-color: $gray-deep;
   border-radius: $border-radius 0 0 $border-radius;
 }
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  color: $body-color;
+}
 
 .select2-container .select2-search--inline .select2-search__field {
   color: $body-color;
 }
 
-.select2-container--default
+.select2-container--default {
   .select2-results__option--highlighted[aria-selected] {
-  background-color: $primary;
-  color: $gray-darker;
+    background-color: $primary;
+    color: $gray-darker;
+  }
 }
 
 .select2-container--default .select2-results > .select2-results__options {
