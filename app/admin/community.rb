@@ -22,14 +22,9 @@ ActiveAdmin.register Community do
     end
     column :name
     column :address
-    column :latitude
-    column :longitude
-    column :discord_guilds do |decorated|
-      decorated.discord_guilds_admin_links
-    end
-    column :created_at do |decorated|
-      decorated.created_at_date
-    end
+    column :countrycode, &:country_name_with_flag
+    column :discord_guilds, &:discord_guilds_admin_links
+    column :created_at, &:created_at_date
     actions
   end
 
@@ -37,6 +32,10 @@ ActiveAdmin.register Community do
   filter :address
   filter :latitude
   filter :longitude
+  filter :countrycode,
+         as: :select,
+         collection: proc { community_countrycodes_select_collection },
+         input_html: { multiple: true, data: { select2: {} } }
 
   action_item :map, only: :index do
     link_to 'Carte', action: :map
@@ -81,7 +80,7 @@ ActiveAdmin.register Community do
     end
   end
 
-  permit_params :logo, :name, :address, :latitude, :longitude,
+  permit_params :logo, :name, :address, :latitude, :longitude, :countrycode,
                 :ranking_url, :twitter_username,
                 admin_ids: []
 
@@ -95,9 +94,8 @@ ActiveAdmin.register Community do
       row :logo do |decorated|
         decorated.logo_image_tag(max_height: 64)
       end
-      row :address
-      row :latitude
-      row :longitude
+      row :address, &:address_with_coordinates
+      row :countrycode, &:country_name_with_flag
       row :ranking_url, &:ranking_link
       row :twitter_username, &:twitter_link
       row :discord_guilds, &:discord_guilds_admin_links
