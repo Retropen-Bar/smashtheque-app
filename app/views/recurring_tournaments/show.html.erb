@@ -227,8 +227,6 @@
                 <% end %>
               </div>
             </section>
-          </div>
-          <div class="col-md-6">
             <section id="2v2-editions" class="show-page-section">
               <div class="show-page-section-title">
                 <h2>Editions 2v2</h2>
@@ -253,6 +251,31 @@
                       <%= link_to 'Voir plus', recurring_tournament.duo_tournament_events_path, class: 'btn btn-sm bg-layout rounded-pill' %>
                     </div>
                   <% end %>
+                <% end %>
+              </div>
+            </section>
+          </div>
+          <div class="col-md-6">
+            <section id="2v2-editions" class="show-page-section">
+              <div class="show-page-section-title">
+                <h2>Top 8 général 1v1 <%= recurring_tournament.is_online? ? 'online' : 'offline' %></h2>
+                <span class="show-page-section-title-separator"></span>
+              </div>
+              <div class="show-page-section-body">
+                <% if @ranked_players.count < 1 %>
+                  <p>Aucun joueur pour l'instant</p>
+                <% else %>
+                  <div class="list">
+                    <% @ranked_players.each_with_index do |(player, points), idx| %>
+                      <%= render  'players/player_v2',
+                                  player: player.decorate,
+                                  with_points: true,
+                                  is_online: recurring_tournament.is_online?,
+                                  points: points,
+                                  with_rank: true,
+                                  rank: 1 + idx %>
+                    <% end %>
+                  </div>
                 <% end %>
               </div>
             </section>
