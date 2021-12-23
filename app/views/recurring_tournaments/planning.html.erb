@@ -66,7 +66,7 @@
       var calendarEl = document.getElementById("planning");
       var initialDate = '<%= @monday %>';
       var levels = <%= RecurringTournament::LEVELS.to_json.html_safe %>;
-      var eventsDataUrl = '<%= recurring_tournaments_path(by_is_online: @is_online, by_events_count_geq: 3, format: :json) %>';
+      var eventsDataUrl = '<%= recurring_tournaments_path(by_is_online: @is_online, by_events_count_geq: (@is_online ? 3 : 0), format: :json) %>';
       window.newPlanningCalendar(calendarEl, initialDate, levels, eventsDataUrl);
     });
   </script>
