@@ -3,7 +3,7 @@ class FetchSmashggUserDataJob < ApplicationJob
 
   def perform(smashgg_user)
     smashgg_user.fetch_smashgg_data
-    smashgg_user.save!
+    smashgg_user.save
     sleep 1
   end
 end
