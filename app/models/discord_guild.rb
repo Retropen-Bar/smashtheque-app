@@ -172,7 +172,7 @@ class DiscordGuild < ApplicationRecord
         if discord_guild.needs_fetching?
           Rails.logger.debug "Guild ##{discord_guild.id} needs fetching"
           discord_guild.fetch_discord_data
-          discord_guild.save!
+          discord_guild.save
           # we need to wait a bit between each request,
           # otherwise Discord returns empty results
           sleep 1
