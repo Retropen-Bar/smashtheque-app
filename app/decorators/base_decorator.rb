@@ -43,4 +43,31 @@ class BaseDecorator < Draper::Decorator
     url = options.delete(:url) || path
     h.link_to txt, url, options
   end
+
+  def address_with_coordinates
+    return nil if address.blank?
+
+    "#{address} (#{latitude}, #{longitude})"
+  end
+
+  def country_name
+    return nil if countrycode.blank?
+
+    ISO3166::Country.new(countrycode)&.translation('fr')
+  end
+
+  def country_flag(options = {})
+    return nil if countrycode.blank?
+
+    h.flag_icon_tag(countrycode, options)
+  end
+
+  def country_name_with_flag(options = {})
+    return nil if countrycode.blank?
+
+    [
+      country_flag(options),
+      country_name
+    ].join('&nbsp;').html_safe
+  end
 end

@@ -140,7 +140,7 @@ class RecurringTournament < ApplicationRecord
 
   before_validation :set_closest_community
   def set_closest_community
-    self.closest_community = geocoded? && Community.near([latitude, longitude]).first
+    self.closest_community = geocoded? && Community.near([latitude, longitude], 100, units: :km).first
   end
 
   after_commit :update_discord, unless: proc { ENV['NO_DISCORD'] }
