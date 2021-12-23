@@ -99,6 +99,9 @@ Rails.application.routes.draw do
     resources :duo_tournament_events, only: %i[new create]
     collection do
       get :map
+      get :planning
+      get :planning_offline
+      get :planning_online
       get 'contacts' => 'players#recurring_tournament_contacts_index'
       get :modal, action: :group_modal
     end
@@ -116,7 +119,6 @@ Rails.application.routes.draw do
       get :top8_modal
     end
   end
-  get 'planning/online' => 'pages#planning_online', as: :planning
 
   resources :twitch_channels, only: [:index]
   resources :you_tube_channels, only: [:index]

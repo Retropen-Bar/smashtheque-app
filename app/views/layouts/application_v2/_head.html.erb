@@ -17,7 +17,7 @@
         <%= link_to players_path, class: "nav-link dropdown-toggle#{' active' if current_section?(:players)}", data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
           <span>Joueurs & Cie</span>
         <% end %>
-        
+
         <div class="dropdown-menu">
           <button type="button" class="btn btn-back btn-sm">
             <span>Joueurs & Cie</span>
@@ -58,22 +58,15 @@
           <%= link_to 'Éditions 1v1', tournament_events_path, class: 'dropdown-item' %>
           <%= link_to 'Éditions 2v2', duo_tournament_events_path, class: 'dropdown-item' %>
           <div class="dropdown-divider"></div>
-          <%= link_to 'Planning hebdo online', planning_path, class: 'dropdown-item' %>
+          <%= link_to 'Planning hebdo', planning_recurring_tournaments_path, class: 'dropdown-item' %>
           <%= link_to 'Carte du offline', map_recurring_tournaments_path, class: 'dropdown-item' %>
         </div>
       </li>
 
       <li class="nav-item dropdown smashtheque-tv">
-        <%= link_to planning_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
+        <%= link_to '#', class: 'nav-link' do %>
           <span>Smashthèque TV</span>
         <% end %>
-
-        <div class="dropdown-menu">
-          <button type="button" class="btn btn-back btn-sm">
-            <span>Smashthèque TV</span>
-          </button>
-          <%= link_to 'Planning hebdo online', planning_path, class: 'dropdown-item' %>
-        </div>
       </li>
 
       <li class="nav-item dropdown rosalina">
@@ -215,7 +208,7 @@
       <%= svg_icon_tag :loupe, class: 'fs-sm' %>
       <span class="sr-only">Recherche</span>
     </button>
-    
+
     <hr class="navbar-actions-separator d-none d-xxl-block" />
 
     <ul class="navbar-actions-login navbar-nav text-center text-lg-right">

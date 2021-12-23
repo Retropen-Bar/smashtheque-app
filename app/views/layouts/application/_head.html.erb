@@ -40,19 +40,16 @@
           <%= link_to 'Éditions 1v1', tournament_events_path, class: 'dropdown-item' %>
           <%= link_to 'Éditions 2v2', duo_tournament_events_path, class: 'dropdown-item' %>
           <div class="dropdown-divider"></div>
-          <%= link_to 'Planning hebdo online', planning_path, class: 'dropdown-item' %>
+          <%= link_to 'Planning hebdo', planning_recurring_tournaments_path, class: 'dropdown-item' %>
           <%= link_to 'Carte du offline', map_recurring_tournaments_path, class: 'dropdown-item' %>
         </div>
       </li>
 
       <li class="nav-item dropdown">
-        <%= link_to planning_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
+        <%= link_to '#', class: 'nav-link' do %>
           <%= fas_icon_tag :tv %>
           <span>Smashthèque TV</span>
         <% end %>
-        <div class="dropdown-menu">
-          <%= link_to 'Planning hebdo online', planning_path, class: 'dropdown-item' %>
-        </div>
       </li>
 
       <li class="nav-item dropdown">

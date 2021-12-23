@@ -3,7 +3,7 @@
     <div id="list-toolbar">
       <div id="filters-wrapper" class="text-left">
         <%= form_tag nil, method: :get, id: "filters" do %>
-          <h1 class="page-title">Planning des tournois réguliers online</h1>
+          <h1 class="page-title">Planning des tournois réguliers <%= @is_online ? 'online' : 'offline' %></h1>
 
           <div class="list-x">
             <div class="dropdown">
@@ -46,10 +46,10 @@
         <% end %>
 
         <div class="text-center mt-3">
-          <%= link_to @ics_url, class: 'btn btn-dark', target: '_blank' do %>
-            <%= fas_icon_tag 'calendar-alt', %w(mr-2) %>
-            Je veux ça dans mon agenda&nbsp;!
-          <% end %>
+          <div class="btn-group">
+            <%= link_to 'Offline', { action: :planning_offline }, class: "btn btn#{'-ouline' if @is_online}-primary" %>
+            <%= link_to 'Online', { action: :planning_online }, class: "btn btn#{'-ouline' if !@is_online}-primary" %>
+          </div>
         </div>
 
       </div>
@@ -66,7 +66,7 @@
       var calendarEl = document.getElementById("planning");
       var initialDate = '<%= @monday %>';
       var levels = <%= RecurringTournament::LEVELS.to_json.html_safe %>;
-      var eventsDataUrl = '<%= recurring_tournaments_path(by_is_online: true, by_events_count_geq: 3, format: :json) %>';
+      var eventsDataUrl = '<%= recurring_tournaments_path(by_is_online: @is_online, by_events_count_geq: 3, format: :json) %>';
       window.newPlanningCalendar(calendarEl, initialDate, levels, eventsDataUrl);
     });
   </script>

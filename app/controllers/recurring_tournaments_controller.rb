@@ -148,6 +148,23 @@ class RecurringTournamentsController < PublicController
     end
   end
 
+  def planning
+    # TODO: make this smart
+    redirect_to action: :planning_online
+  end
+
+  def planning_online
+    @is_online = true
+    @meta_title = 'Planning des tournois réguliers online'
+    render_planning
+  end
+
+  def planning_offline
+    @is_online = false
+    @meta_title = 'Planning des tournois réguliers offline'
+    render_planning
+  end
+
   protected
 
   def current_page_params
@@ -193,5 +210,10 @@ class RecurringTournamentsController < PublicController
       :lagtest, :ruleset,
       power_rankings_attributes: %i[id name year url _destroy]
     )
+  end
+
+  def render_planning
+    @monday = Time.zone.today.beginning_of_week
+    render 'planning'
   end
 end

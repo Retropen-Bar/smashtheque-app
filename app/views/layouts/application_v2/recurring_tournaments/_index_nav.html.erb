@@ -16,9 +16,9 @@
             <span>Éditions 2v2</span>
           <% end %>
           <div class="dropdown-divider mx-0"></div>
-          <%= link_to planning_path, class: "section-nav-link#{current_class?(planning_path)}" do %>
+          <%= link_to planning_recurring_tournaments_path, class: "section-nav-link#{current_class?(planning_recurring_tournaments_path)}" do %>
             <%= svg_icon_tag :calendar %>
-            <span>Planning hebdo online</span>
+            <span>Planning hebdo</span>
           <% end %>
           <%= link_to map_recurring_tournaments_path, class: "section-nav-link#{current_class?(map_recurring_tournaments_path)}" do %>
             <%= svg_icon_tag :map %>
