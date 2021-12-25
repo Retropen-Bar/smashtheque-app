@@ -1,15 +1,58 @@
 .fc {
+  --fc-neutral-bg-color: #{$gray-dark};
   --fc-page-bg-color: #{$gray-deep};
   --fc-border-color: #{$gray-medium};
   --fc-today-bg-color: #{rgba($gray-medium-light, 0.1)};
+  --fc-list-event-hover-bg-color: var(--fc-today-bg-color);
   --fc-event-bg-color: #{$gray-dark};
   --fc-event-border-color: #{$body-color};
   --fc-small-font-size: 0.75em;
+  --fc-button-bg-color: #{$gray-deep};
+  --fc-button-text-color: #{$body-color};
+  --fc-button-hover-bg-color: #{$gray-medium};
+  --fc-button-border-color: #{$gray-darker};
 }
 
 .fc {
   .fc-scrollgrid {
     border: 0;
+  }
+
+  .fc-button {
+    font-size: 0.75rem;
+    border-radius: 1.5em;
+
+    &:hover {
+      --fc-button-text-color: #{$white};
+    }
+
+    @include media-breakpoint-up(sm) {
+      font-size: 1rem;
+    }
+  }
+
+  .fc-toolbar.fc-header-toolbar {
+    align-items: center;
+    margin-bottom: 0.75rem;
+
+    .fc-toolbar-chunk {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    h2 {
+      font-size: 0.875rem;
+      font-weight: 600;
+
+      @include media-breakpoint-up(sm) {
+        line-height: 2;
+      }
+
+      @include media-breakpoint-up(md) {
+        font-size: 1rem;
+      }
+    }
   }
 
   .fc-scrollgrid-section-body > td {
@@ -44,12 +87,51 @@
     text-transform: uppercase;
   }
 
+  .fc-list {
+    background-color: var(--fc-page-bg-color);
+    font-size: $font-size-sm;
+  }
+
+  .fc-list-day {
+    --fc-neutral-bg-color: #{$gray-dark};
+
+    a {
+      // color: var(--hover-text-color-accent);
+    }
+  }
+
+  .fc-list-event-time {
+    color: #{$body-color};
+  }
+
+  .fc-list-event-dot {
+    --fc-event-border-color: currentColor;
+  }
+
+  .fc-list-event-time,
   .fc-timegrid-slot-label-cushion {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fc-timegrid-slot-label-cushion {
+    font-weight: 600;
+    color: var(--text-color-accent);
     padding: 0.25rem 1.25rem;
   }
 
   .fc-timegrid-event-harness.with-real-inset {
     inset-inline-start: 20% !important; // override default 50%
+  }
+
+  .fc-timegrid-event-harness {
+    &:hover {
+      --fc-event-bg-color: #{$gray-deep};
+      z-index: 20 !important;
+    }
+  }
+
+  .fc-event {
+    cursor: pointer;
   }
 
   .fc-v-event {
@@ -63,10 +145,22 @@
 
   .fc-event-main-frame {
     flex-direction: row;
+    align-items: baseline;
+    line-height: 1.7;
+  }
+
+  .fc-v-event .fc-event-title-container {
+    min-width: 0;
   }
 
   .fc-event-main {
     padding: 0.25rem 0.5rem;
+  }
+
+  .fc-event-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .fc-event-time {

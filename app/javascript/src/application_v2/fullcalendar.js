@@ -1,5 +1,6 @@
 import { Calendar } from "@fullcalendar/core";
 import timeGridPlugin from "@fullcalendar/timegrid";
+import listPlugin from "@fullcalendar/list";
 
 window.newPlanningCalendar = function (
   calendarEl,
@@ -7,15 +8,43 @@ window.newPlanningCalendar = function (
   levels,
   eventsDataUrl
 ) {
+  function mobileCheck() {
+    if (window.innerWidth >= 1200) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   let calendar = new Calendar(calendarEl, {
-    plugins: [timeGridPlugin],
+    plugins: [listPlugin, timeGridPlugin],
     themeSystem: "bootstrap",
-    initialView: "customTimeGrid",
+    initialView: mobileCheck() ? "customListWeek" : "customTimeGrid",
     initialDate: initialDate,
     locale: "fr",
     firstDay: 1,
     height: "auto",
-    headerToolbar: false,
+    headerToolbar: {
+      start: "prev,next title",
+      center: "",
+      end: "",
+    },
+    validRange: function (nowDate) {
+      const d = new Date();
+      const day = d.getDay(),
+        diff = d.getDate() - day + (day == 0 ? -6 : 1);
+      const startDate = new Date(d.setDate(diff));
+      const endDate = new Date();
+
+      return {
+        start: startDate,
+        end: new Date(endDate.setDate(startDate.getDate() + 13)),
+      };
+    },
+    viewDidMount: function (view) {
+      var title = view.title;
+      $(".fc-toolbar-chunk:first-child").prepend($(".planning-filters"));
+    },
     views: {
       customTimeGrid: {
         type: "timeGrid",
@@ -35,12 +64,28 @@ window.newPlanningCalendar = function (
         },
         eventDidMount: function (arg) {
           const eventParent = arg.el.parentElement;
-          const hasNonZeroPercentages = eventParent.style.inset.match(/(\d+)%/g)?.filter(match => match !== '0%').length > 0;
+          const hasNonZeroPercentages =
+            eventParent.style.inset
+              .match(/(\d+)%/g)
+              ?.filter((match) => match !== "0%").length > 0;
           if (hasNonZeroPercentages) {
-            eventParent.classList.add('with-real-inset')
+            eventParent.classList.add("with-real-inset");
           }
-        }
+        },
       },
+      customListWeek: {
+        type: "listWeek",
+        duration: { days: 7 },
+        displayEventEnd: false,
+        allDaySlot: false,
+      },
+    },
+    windowResize: function (view) {
+      if (window.innerWidth >= 1200) {
+        calendar.changeView("customTimeGrid");
+      } else {
+        calendar.changeView("customListWeek");
+      }
     },
     events: function (fetchInfo, successCallback, failureCallback) {
       var params = fetchInfo;
@@ -79,6 +124,19 @@ window.newPlanningCalendar = function (
       $("#filter-level").addClass("active");
     } else {
       $("#filter-level").removeClass("active");
+    }
+
+    for (var level of levels) {
+      if (
+        $("form#filters input#level-" + level).is(":checked") &&
+        $(".dropdown-selected .level--" + level).length === 0
+      ) {
+        $("#filter-level .dropdown-selected").append(
+          "<span class='level level--" + level + "'></span>"
+        );
+      } else if (!$("form#filters input#level-" + level).is(":checked")) {
+        $(".dropdown-selected .level--" + level).remove();
+      }
     }
 
     if (

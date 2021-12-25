@@ -23,3 +23,27 @@
   margin-right: $dropdown-item-padding-x;
   opacity: 0.1;
 }
+
+.dropdown-selected {
+  display: inline-flex;
+  vertical-align: middle;
+
+  > * + * {
+    margin-left: 0.25rem;
+  }
+}
+
+.active {
+  .dropdown-selected {
+    padding-right: 0.25rem;
+  }
+
+  .dropdown-label {
+    display: inline-block;
+    font-weight: 600;
+
+    &::after {
+      content: " : ";
+    }
+  }
+}

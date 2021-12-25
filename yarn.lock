@@ -906,7 +906,7 @@
   dependencies:
     tslib "^2.1.0"
 
-"@fullcalendar/core@^5.6.0":
+"@fullcalendar/core@5.10.0":
   version "5.10.0"
   resolved "https://registry.yarnpkg.com/@fullcalendar/core/-/core-5.10.0.tgz#5e8f46618bf45ddfb16827e68fe11dbd655d529f"
   integrity sha512-9KFdWgLJ2+HWH0mq6whGv6oRCVNiBSkOxLiW9qiTZzhcYbJx2+PRT7DORTui/nYgBAo1KZ6Jd+qslJ6C1ZwExw==
@@ -915,10 +915,18 @@
     preact "^10.0.5"
     tslib "^2.1.0"
 
-"@fullcalendar/daygrid@~5.10.0":
+"@fullcalendar/daygrid@5.10.0", "@fullcalendar/daygrid@~5.10.0":
   version "5.10.0"
   resolved "https://registry.yarnpkg.com/@fullcalendar/daygrid/-/daygrid-5.10.0.tgz#1dffcb6884859f0048755a428ff911906150a1af"
   integrity sha512-KsPwyV6JF5zmcv0XVTbhTsDRbH7PQ9F7Jj2UuqS+rVh2gkpTZqkxKgFEUcRAwVQBymrRPTXzZXh04pvb6/FXIQ==
+  dependencies:
+    "@fullcalendar/common" "~5.10.0"
+    tslib "^2.1.0"
+
+"@fullcalendar/list@5.10.0":
+  version "5.10.0"
+  resolved "https://registry.yarnpkg.com/@fullcalendar/list/-/list-5.10.0.tgz#db12f91fe94650722e5d32c018399ee3a6da8ee1"
+  integrity sha512-8HwQJHDo8ZFT/6eeGxEkjP9SL2fuJ2VFqQoFuPXbgYNF21hCo0h1i16WR6ZnFji4kxH/pWH3NxVrGKdXGAsY0A==
   dependencies:
     "@fullcalendar/common" "~5.10.0"
     tslib "^2.1.0"
@@ -7593,7 +7601,7 @@ trim-newlines@^1.0.0:
   resolved "https://registry.yarnpkg.com/trim-newlines/-/trim-newlines-1.0.0.tgz#5887966bb582a4503a41eb524f7d35011815a613"
   integrity sha1-WIeWa7WCpFA6QetST301ARgVphM=
 
-trix@^1.2.0, trix@^1.3.0:
+trix@^1.2.0:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/trix/-/trix-1.3.1.tgz#ccce8d9e72bf0fe70c8c019ff558c70266f8d857"
   integrity sha512-BbH6mb6gk+AV4f2as38mP6Ucc1LE3OD6XxkZnAgPIduWXYtvg2mI3cZhIZSLqmMh9OITEpOBCCk88IVmyjU7bA==
@@ -7860,13 +7868,6 @@ vue-scrollactive@^0.9.3:
   integrity sha512-W7Z2EQGDjnvgZ4h+/bpRVjiVU3bKWQDmT9f0bUL+zq3C/VSZaQiQ+qzWlMYDEpJbm13wJ6KIE6ry3HKLVyU4cQ==
   dependencies:
     bezier-easing "^2.0.3"
-
-vue-trix@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/vue-trix/-/vue-trix-1.2.0.tgz#d94d86d7628917e94086bc8d6b1424e5fd6cea2a"
-  integrity sha512-AWqPGa4ZsNdo2B+vkS3zI0uTDFDNqXUvOqZRPB+BoE0/LXj+SCiUH3lx6qDdDanPGzSf0QNWp3fDutba6Z7Z9A==
-  dependencies:
-    trix "^1.3.0"
 
 vue@^2.6.12:
   version "2.6.14"

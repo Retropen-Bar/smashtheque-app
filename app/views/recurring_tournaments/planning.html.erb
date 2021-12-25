@@ -1,36 +1,40 @@
 <div class="container-fluid">
-  <div class="text-center">
-    <div id="list-toolbar">
-      <div id="filters-wrapper" class="text-left">
-        <h1 class="page-title">
-          Planning des tournois réguliers
-          <% if @is_online %>
-            online
-          <% else %>
-            de
-            <div class="dropdown d-inline-block">
-              <button class="btn btn-dark dropdown-toggle" data-toggle="dropdown" type="button" id="community-id" data-bs-toggle="dropdown" aria-expanded="false">
-                <%= @community.name %>
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="community-id">
-                <% Community.french.order('LOWER(name)').each do |community| %>
-                  <li>
-                    <%= link_to community.name,
-                                planning_offline_recurring_tournaments_path(community_id: community.id),
-                                class: 'dropdown-item' %>
-                  </li>
-                <% end %>
-              </ul>
-            </div>
-          <% end %>
-        </h1>
+  <div id="list-toolbar">
+    <div id="filters-wrapper" class="text-left">
+      <h1 class="page-title mt-4">
+        Planning des tournois réguliers
+        <% if @is_online %>
+          online
+        <% else %>
+          de
+          <div class="dropdown d-inline-block">
+            <button class="btn btn-dark rounded-pill dropdown-toggle" data-toggle="dropdown" type="button" id="community-id" data-bs-toggle="dropdown" aria-expanded="false">
+              <%= @community.name %>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="community-id">
+              <% Community.french.order('LOWER(name)').each do |community| %>
+                <li>
+                  <%= link_to community.name,
+                              planning_offline_recurring_tournaments_path(community_id: community.id),
+                              class: 'dropdown-item' %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+      </h1>
 
+      <div class="planning-filters list-x align-items-center flex-wrap">
+        <div class="btn-group">
+          <%= link_to 'Offline', { action: :planning_offline, community_id: default_planning_offline_community_id }, class: "btn #{' active' if !@is_online}" %>
+          <%= link_to 'Online', { action: :planning_online }, class: "btn #{'active' if @is_online}" %>
+        </div>
         <%= form_tag nil, method: :get, id: "filters" do %>
           <div class="list-x">
             <% if @is_online %>
               <div class="dropdown">
                 <button class="btn btn-dark rounded-pill dropdown-toggle" type="button" id="filter-level" data-toggle="dropdown" aria-expanded="false">
-                  <span>Niveau</span>&nbsp;<span class="dropdown-selected"></span>
+                  <span class="dropdown-label">Niveau</span>&nbsp;<span class="dropdown-selected"></span>
                 </button>
                 <div class="dropdown-menu" onclick="event.stopPropagation()" aria-labelledby="filter-level">
                   <div class="px-3 py-2 list-y">
@@ -51,7 +55,7 @@
 
             <div class="dropdown">
               <button class="btn btn-dark rounded-pill dropdown-toggle<%= 'active' if params[:by_size_geq] || params[:by_size_geq] %>" type="button" id="filter-size" data-toggle="dropdown" aria-expanded="false">
-                <span>Taille</span>&nbsp;<span class="dropdown-selected"></span>
+                <span class="dropdown-label">Taille</span>&nbsp;<span class="dropdown-selected"></span>
               </button>
               <div class="dropdown-menu" onclick="event.stopPropagation()" aria-labelledby="filter-size">
                 <div class="form-row align-items-center px-3 py-2">
@@ -67,19 +71,12 @@
           </div>
 
         <% end %>
-
-        <div class="text-center mt-3">
-          <div class="btn-group">
-            <%= link_to 'Offline', { action: :planning_offline, community_id: default_planning_offline_community_id }, class: "btn btn#{'-ouline' if @is_online}-primary" %>
-            <%= link_to 'Online', { action: :planning_online }, class: "btn btn#{'-ouline' if !@is_online}-primary" %>
-          </div>
-        </div>
-
       </div>
+
     </div>
   </div>
 
-  <div id="planning" class="mt-5"></div>
+  <div id="planning" class="mt-3 mt-xl-4"></div>
   <div id="planning-modal" class="modal fade" tabindex="-1" aria-hidden="true"></div>
 </div>
 

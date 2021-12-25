@@ -204,15 +204,15 @@ class RecurringTournamentDecorator < BaseDecorator
     ).html_safe
   end
 
-  def badges_v2(with_level: false)
+  def badges_v2(with_level: false, with_online: true)
     [
-      !is_online? && h.tag.span(class: 'badge badge-with-icon badge-primary') do
+      with_online && !is_online? && h.tag.span(class: 'badge badge-with-icon badge-primary') do
         [
           h.svg_icon_tag(:offline, class: 'mr-0 mr-sm-1'),
           '<span class="d-none d-sm-inline">Offline</span>'
         ].join(' ').html_safe
       end,
-      is_online? && h.tag.span(class: 'badge badge-with-icon badge-primary') do
+      with_online && is_online? && h.tag.span(class: 'badge badge-with-icon badge-primary') do
         [
           h.svg_icon_tag(:online, class: 'mr-0 mr-sm-1'),
           '<span class="d-none d-sm-inline">Online</span>'
