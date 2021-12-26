@@ -5,22 +5,6 @@
         <%= admin_edit_link(event, label: 'Admin', class: 'btn btn-sm btn-light rounded-pill') %>
       <% end %>
       <%= link_to 'Modifier', [:edit, event], class: 'btn btn-sm btn-primary rounded-pill ml-2' %>
-      <% if event.recurring_tournament %>
-        <%= form_for(event.recurring_tournament.decorate, html: { class: 'd-inline-block' }) do |f| %>
-          <%= f.hidden_field :is_archived, value: !event.recurring_tournament.decorate.is_archived? %>
-          <% if event.recurring_tournament.decorate.is_archived? %>
-            <%= f.button type: :submit, class: 'btn btn-sm btn-success rounded-pill ml-2' do %>
-              <%= fas_icon_tag :play, %w(mr-2) %>
-              Relancer
-            <% end %>
-          <% else %>
-            <%= f.button type: :submit, class: 'btn btn-sm btn-danger rounded-pill ml-2' do %>
-              <%= fas_icon_tag :pause, %w(mr-2) %>
-              Mettre en pause
-            <% end %>
-          <% end %>
-        <% end %>
-      <% end %>
     </div>
   <% end %>
   <article class="show-page">
