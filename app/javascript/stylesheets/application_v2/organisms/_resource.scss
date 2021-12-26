@@ -85,10 +85,6 @@
     box-shadow: 2px 2px 10px 0 rgba(0, 0, 0, 0.3);
     color: var(--text-color-accent);
     font-weight: 600;
-    position: absolute;
-    left: -0.5rem;
-    top: -0.5rem;
-    z-index: 1;
   }
 
   .player-points {
@@ -111,6 +107,19 @@
         background-color: $gray-medium;
       }
     }
+  }
+}
+
+.resource-top-left {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  left: -0.5rem;
+  top: -0.5rem;
+  z-index: 1;
+
+  * + * {
+    margin-left: 0.25rem;
   }
 }
 
@@ -172,17 +181,13 @@
   line-height: 1;
 }
 
-.resource.player, .resource.duo {
+.resource.player,
+.resource.duo {
   min-height: 64px;
 
   .reward-badge {
-    transform: translate(50%, 50%);
-    position: absolute;
-    bottom: 0;
-    right: 0;
-
     img {
-      width: 32px;
+      width: 24px;
     }
   }
 

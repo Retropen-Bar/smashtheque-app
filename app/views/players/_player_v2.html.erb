@@ -1,15 +1,22 @@
 <article class="resource player d-flex">
-  <% if defined?(with_rank) && with_rank %>
+  <div class="resource-top-left">
     <div class="rank">
-      #<%= defined?(rank) ? rank : player.rank(
-        is_online: defined?(is_online) && is_online,
-        year: defined?(year) && year) %>
+      <% if defined?(with_rank) && with_rank %>
+          #<%= defined?(rank) ? rank : player.rank(
+            is_online: defined?(is_online) && is_online,
+            year: defined?(year) && year) %>
+      <% end %>
     </div>
-  <% end %>
+    <% if defined?(reward_condition) && reward_condition %>
+      <%= reward_condition.reward_badge %>
+    <% end %>
+  </div>
+
   <div class="resource-avatar card">
     <% if player.is_legit? %>
       <%= link_to player.avatar_tag(76), player %>
     <% end %>
+      
   </div>
   <div class="resource-content card flex-grow-1<%= ' with-rank' if defined?(with_rank) && with_rank %>">
     <div class="card-body d-flex">
@@ -64,7 +71,5 @@
     </div>
     <%= admin_edit_link(player) %>
   </div>
-  <% if defined?(reward_condition) && reward_condition %>
-    <%= reward_condition.reward_badge %>
-  <% end %>
+ 
 </article>
