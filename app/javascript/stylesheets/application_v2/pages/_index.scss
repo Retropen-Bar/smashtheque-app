@@ -10,6 +10,7 @@ body {
 #app {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 
   main {
     flex-grow: 1;
