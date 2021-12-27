@@ -59,9 +59,6 @@ window.newPlanningCalendar = function (
           omitZeroMinute: true,
           meridiem: "short",
         },
-        dayHeaderContent: function (arg) {
-          return calendar.formatDate(arg.date, { weekday: "long" });
-        },
         eventDidMount: function (arg) {
           const eventParent = arg.el.parentElement;
           const hasNonZeroPercentages =
