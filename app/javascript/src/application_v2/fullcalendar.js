@@ -51,6 +51,7 @@ window.newPlanningCalendar = function (
         duration: { days: 7 },
         allDaySlot: false,
         slotMinTime: "08:00:00",
+        slotMaxTime: "26:00:00",
         slotDuration: "01:00:00",
         displayEventEnd: false,
         slotLabelFormat: {
