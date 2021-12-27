@@ -53,6 +53,7 @@ class RecurringTournamentsController < PublicController
 
   def index_json
     start = params[:startStr] ? Date.parse(params[:startStr]) : Time.now
+    grouped_by = (params[:grouped_by] || 1).to_i
 
     grouped_events = {}
     apply_scopes(
@@ -68,17 +69,16 @@ class RecurringTournamentsController < PublicController
 
     events = []
     grouped_events.each_value do |slot_events|
-      events <<
-        if slot_events.count == 1
-          slot_events.first
-        else
-          {
-            title: "#{slot_events.count} tournois",
-            start: slot_events.first[:start].beginning_of_hour,
-            end: slot_events.first[:start].beginning_of_hour + 1.hour,
-            modal_url: modal_recurring_tournaments_path(by_id_in: slot_events.pluck(:id))
-          }
-        end
+      if slot_events.count > grouped_by
+        events << {
+          title: "#{slot_events.count} tournois",
+          start: slot_events.first[:start].beginning_of_hour,
+          end: slot_events.first[:start].beginning_of_hour + 1.hour,
+          modal_url: modal_recurring_tournaments_path(by_id_in: slot_events.pluck(:id))
+        }
+      else
+        events += slot_events
+      end
     end
 
     render json: events

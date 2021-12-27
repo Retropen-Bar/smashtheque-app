@@ -78,11 +78,12 @@ window.newPlanningCalendar = function (
         allDaySlot: false,
       },
     },
-    windowResize: function (view) {
-      if (window.innerWidth >= 1200) {
-        calendar.changeView("customTimeGrid");
-      } else {
-        calendar.changeView("customListWeek");
+    windowResize: function (arg) {
+      var currentView = arg.view.type,
+          newView = mobileCheck() ? "customListWeek" : "customTimeGrid";
+      if (currentView != newView) {
+        calendar.changeView(newView);
+        calendar.refetchEvents();
       }
     },
     events: function (fetchInfo, successCallback, failureCallback) {
@@ -99,6 +100,7 @@ window.newPlanningCalendar = function (
       params.by_size_geq = $("form#filters select#size-min").val();
       params.by_size_leq = $("form#filters select#size-max").val();
       params.per = 1000;
+      params.grouped_by = mobileCheck() ? 100 : 1;
       $.ajax({
         dataType: "json",
         url: eventsDataUrl,
