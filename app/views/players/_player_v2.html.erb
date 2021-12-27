@@ -1,12 +1,12 @@
 <article class="resource player d-flex">
   <div class="resource-top-left">
-    <div class="rank">
-      <% if defined?(with_rank) && with_rank %>
-          #<%= defined?(rank) ? rank : player.rank(
-            is_online: defined?(is_online) && is_online,
-            year: defined?(year) && year) %>
+    <% if defined?(with_rank) && with_rank %>
+      <div class="rank">
+        #<%= defined?(rank) ? rank : player.rank(
+          is_online: defined?(is_online) && is_online,
+          year: defined?(year) && year) %>
+      </div>
       <% end %>
-    </div>
     <% if defined?(reward_condition) && reward_condition %>
       <%= reward_condition.reward_badge %>
     <% end %>
