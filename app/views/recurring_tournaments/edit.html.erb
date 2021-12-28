@@ -44,7 +44,7 @@
                   <%= f.input :discord_guild_id,
                               label: 'Serveur Discord',
                               collection: recurring_tournament_discord_guild_select_collection,
-                              input_html: { data: { select2: {} } } %>
+                              input_html: { data: { select2: { placeholder: 'Serveur discord' } },  'aria-label' => 'Recherche globale', } %>
                   <%= f.input :registration, as: :simple_action_text %>
                 </div>
               </section>

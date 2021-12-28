@@ -2,7 +2,7 @@
 
   <h5><%= svg_icon_tag :trophee %> Série</h5>
 
-  <div class="my-4">
+  <div class="mt-4">
     <%= text_field_tag :on_abc, params[:on_abc], hidden: true %>
     <%= select_tag  :by_recurring_tournament_id,
                     options_for_select(
@@ -10,7 +10,7 @@
                       params[:by_recurring_tournament_id]
                     ),
                     prompt: 'Toutes',
-                    class: 'custom-select custom-select-sm mb-2' %>
+                    class: 'custom-select custom-select-sm' %>
   </div>
 
 <% end %>
