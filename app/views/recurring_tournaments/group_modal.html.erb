@@ -7,7 +7,7 @@
       <ul class="nav nav-pills" id="group" role="tablist">
         <% @recurring_tournaments.each_with_index do |recurring_tournament, index| %>
           <li class="nav-item" role="presentation">
-            <a class="nav-link btn-dark<%= ' active' if index === 0 %>" id="home-tab" data-toggle="tab" href="#<%= recurring_tournament.decorate.name.parameterize %>" role="tab" aria-controls="<%= recurring_tournament.decorate.name.parameterize %>" <%= 'aria-selected="true"' if index === 0 %>>
+            <a class="nav-link btn-dark<%= ' active' if index === 0 %>" id="<%= recurring_tournament.decorate.name.parameterize %>-tab" data-toggle="tab" href="#tab-<%= recurring_tournament.decorate.name.parameterize %>" role="tab" aria-controls="tab-<%= recurring_tournament.decorate.name.parameterize %>" <%= 'aria-selected="true"' if index === 0 %>>
               <time class="fs-sm d-block"><%= recurring_tournament.decorate.starts_at %></time>
               <p class="mt-1 mb-2"><strong><%= recurring_tournament.decorate.name %></strong></p>
               <div class="list-x"><%= recurring_tournament.decorate.badges_v2(with_level: true, with_online: false) %></div>
@@ -18,7 +18,7 @@
     </div>
     <div class="tab-content" id="group-content">
       <% @recurring_tournaments.each_with_index do |recurring_tournament, index| %>
-        <div class="tab-pane fade show<%= ' active' if index === 0 %>" id="<%= recurring_tournament.decorate.name.parameterize %>" role="tabpanel" aria-labelledby="<%= recurring_tournament.decorate.name.parameterize %>-tab">
+        <div class="tab-pane fade show<%= ' active' if index === 0 %>" id="tab-<%= recurring_tournament.decorate.name.parameterize %>" role="tabpanel" aria-labelledby="<%= recurring_tournament.decorate.name.parameterize %>-tab">
           <%= render 'modal_content', recurring_tournament: recurring_tournament.decorate %>
         </div>
       <% end %>

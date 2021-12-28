@@ -26,8 +26,8 @@
 
       <div class="planning-filters list-x align-items-center flex-wrap">
         <div class="btn-group">
-          <%= link_to 'Offline', { action: :planning_offline, community_id: default_planning_offline_community_id }, class: "btn #{' active' if !@is_online}" %>
-          <%= link_to 'Online', { action: :planning_online }, class: "btn #{'active' if @is_online}" %>
+          <%= link_to 'Offline', { action: :planning_offline, community_id: default_planning_offline_community_id }, class: "btn#{' active' if !@is_online}" %>
+          <%= link_to 'Online', { action: :planning_online }, class: "btn#{' active' if @is_online}" %>
         </div>
         <%= form_tag nil, method: :get, id: "filters" do %>
           <div class="list-x">
