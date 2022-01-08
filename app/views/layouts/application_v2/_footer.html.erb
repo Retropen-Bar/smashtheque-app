@@ -4,7 +4,9 @@
       <% Page.published.footer.order("LOWER(name)").each do |page| %>
         <li><%= link_to page.name, page_path(slug: page.slug), class: 'nav-link' %></li>
       <% end %>
-      <li><a class="nav-link" href="/admin">Admin</a></li>
+      <% if admin_user_signed_in? %>
+        <li><a class="nav-link" href="/admin">Admin</a></li>
+      <% end %>
     </ul>
     <ul class="nav ml-auto justify-content-end">
       <li>
