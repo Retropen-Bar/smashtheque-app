@@ -202,6 +202,9 @@ ActiveAdmin.register Player do
       row :teams do |decorated|
         decorated.teams_admin_links.join('<br/>').html_safe
       end
+      row :duos do |decorated|
+        decorated.duos_admin_links.join('<br/>').html_safe
+      end
       row :creator_user do |decorated|
         decorated.creator_user_admin_link(size: 32)
       end

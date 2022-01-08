@@ -177,12 +177,10 @@ class Player < ApplicationRecord
   end
 
   def discord_id=(discord_id)
-    if discord_id.blank?
-      self.user = nil
-    else
-      user = DiscordUser.where(discord_id: discord_id)
-                        .first_or_create!
-                        .return_or_create_user!
+    if user
+      user.discord_id = discord_id
+    elsif discord_id.present?
+      user = DiscordUser.where(discord_id: discord_id).first_or_create!.return_or_create_user!
       # check if User was already linked to another player
       errors.add :base, 'Compte Discord déjà relié à un autre joueur' if user.player&.id != id
       self.user = user
@@ -457,6 +455,10 @@ class Player < ApplicationRecord
         tournament_event.save!
       end
     end
+  end
+
+  def duos
+    Duo.by_player(id)
   end
 
   # ---------------------------------------------------------------------------

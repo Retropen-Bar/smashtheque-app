@@ -46,6 +46,12 @@ module ActiveAdmin
       end
     end
 
+    def duos_admin_links
+      model.duos.map do |duo|
+        duo.admin_decorate.admin_link
+      end
+    end
+
     def teams_admin_short_links
       model.teams.admin_decorate.map do |team|
         team.admin_link(label: team.short_name_with_logo(max_width: 32, max_height: 32))

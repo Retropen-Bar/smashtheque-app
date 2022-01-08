@@ -7,3 +7,8 @@ fetch_broken_discord_guilds:
   cron: '0 4 * * * Europe/Paris'
   queue: :discord
   class: 'FetchBrokenDiscordGuildsJob'
+
+import_latest_smashgg_events:
+  cron: '0 5 * * * Europe/Paris'
+  queue: :smashgg
+  class: 'ImportLatestSmashggEventsJob'

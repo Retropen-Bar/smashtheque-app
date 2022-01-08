@@ -336,6 +336,14 @@ class SmashggEvent < ApplicationRecord
     end
   end
 
+  def self.import_all(name:, from:, to:, country:)
+    lookup(name: name, from: from, to: to, country: country).each do |smashgg_event|
+      sleep 1
+      smashgg_event.fetch_smashgg_data
+      smashgg_event.save
+    end
+  end
+
   def smashgg_user_rank(smashgg_user_id)
     USER_NAMES.each do |user_name|
       return user_name if send("#{user_name}_id") == smashgg_user_id
