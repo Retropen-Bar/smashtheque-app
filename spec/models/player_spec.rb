@@ -113,6 +113,192 @@ RSpec.describe Player, type: :model do
     end
   end
 
+  context 'discord_id=' do
+    context 'with a User' do
+      context 'giving an unknown Discord ID' do
+        it 'creates and links a DiscordUser to the existing User' do
+          user = FactoryBot.create(:user)
+          player = FactoryBot.create(:player, creator_user: @creator, user: user)
+          discord_id = FactoryBot.attributes_for(:discord_user)[:discord_id]
+
+          expect(user.discord_user).to be_nil
+
+          expect do
+            player.discord_id = discord_id
+            player.save
+          end.to change { DiscordUser.count }.by(1)
+          player.reload
+
+          expect(DiscordUser.last.discord_id).to eq(discord_id)
+          expect(player.user).to eq(user)
+        end
+      end
+      context 'giving a known Discord ID without a User' do
+        it 'links the DiscordUser to the existing User' do
+          user = FactoryBot.create(:user)
+          player = FactoryBot.create(:player, creator_user: @creator, user: user)
+          discord_user = FactoryBot.create(:discord_user)
+          users_count = User.count
+          discord_users_count = DiscordUser.count
+
+          expect(user.discord_user).to be_nil
+
+          player.discord_id = discord_user.discord_id
+          player.save
+          player.reload
+
+          expect(User.count).to eq(users_count)
+          expect(DiscordUser.count).to eq(discord_users_count)
+          expect(player.user).to eq(user)
+          expect(player.user.discord_user).to eq(discord_user)
+        end
+      end
+      context 'giving a known Discord ID linked to a User' do
+        it 'links the DiscordUser to the existing User and unlinks the other User' do
+          user = FactoryBot.create(:user)
+          player = FactoryBot.create(:player, creator_user: @creator, user: user)
+          other_discord_user = FactoryBot.create(:discord_user)
+          other_user = other_discord_user.return_or_create_user!
+          users_count = User.count
+          discord_users_count = DiscordUser.count
+
+          expect(user.discord_user).to be_nil
+
+          player.discord_id = other_discord_user.discord_id
+          player.save
+          player.reload
+          other_user.reload
+
+          expect(User.count).to eq(users_count)
+          expect(DiscordUser.count).to eq(discord_users_count)
+          expect(player.user).to eq(user) # keeps the same user
+          expect(player.user.discord_user).to eq(other_discord_user) # but links
+          expect(other_user.discord_user).to be_nil
+        end
+      end
+      context 'giving nil' do
+        it 'unlinks the DiscordUser' do
+          discord_user = FactoryBot.create(:discord_user)
+          user = discord_user.return_or_create_user!
+          player = FactoryBot.create(:player, creator_user: @creator, user: user)
+          users_count = User.count
+          discord_users_count = DiscordUser.count
+
+          expect(player.user.discord_user).to eq(discord_user)
+
+          player.discord_id = nil
+          player.save
+          player.reload
+
+          expect(User.count).to eq(users_count)
+          expect(DiscordUser.count).to eq(discord_users_count)
+          expect(player.user).to eq(user) # keeps the same user
+          expect(player.user.discord_user).to be_nil # but unlinks
+        end
+      end
+    end
+    context 'without a user' do
+      context 'giving an unknown Discord ID' do
+        it 'creates and links a User with a DiscordUser' do
+          player = FactoryBot.create(:player, creator_user: @creator)
+          expect(player.user).to be_nil
+          discord_id = FactoryBot.attributes_for(:discord_user)[:discord_id]
+          users_count = User.count
+          discord_users_count = DiscordUser.count
+
+          player.discord_id = discord_id
+          player.save
+          player.reload
+
+          expect(User.count).to eq(users_count + 1)
+          expect(player.user).to eq(User.last)
+          expect(DiscordUser.count).to eq(discord_users_count + 1)
+          expect(player.user.discord_user).to eq(DiscordUser.last)
+          expect(DiscordUser.last.discord_id).to eq(discord_id)
+        end
+      end
+      context 'giving a known Discord ID without a User' do
+        it 'creates a User and links the DiscordUser to it' do
+          player = FactoryBot.create(:player, creator_user: @creator)
+          discord_user = FactoryBot.create(:discord_user)
+          users_count = User.count
+          discord_users_count = DiscordUser.count
+
+          expect(player.user).to be_nil
+          expect(discord_user.user).to be_nil
+
+          player.discord_id = discord_user.discord_id
+          player.save
+          player.reload
+
+          expect(User.count).to eq(users_count + 1)
+          expect(player.user).to eq(User.last)
+          expect(DiscordUser.count).to eq(discord_users_count)
+          expect(player.user.discord_user).to eq(discord_user)
+        end
+      end
+      context 'giving a known Discord ID linked to a User' do
+        context 'if the existing User has no player' do
+          it 'links the existing User' do
+            player = FactoryBot.create(:player, creator_user: @creator)
+            discord_user = FactoryBot.create(:discord_user)
+            user = discord_user.return_or_create_user!
+            users_count = User.count
+            discord_users_count = DiscordUser.count
+
+            expect(player.user).to be_nil
+            expect(user.player).to be_nil
+
+            player.discord_id = discord_user.discord_id
+            player.save
+            player.reload
+
+            expect(User.count).to eq(users_count)
+            expect(DiscordUser.count).to eq(discord_users_count)
+            expect(player.user).to eq(user) # links the existing user
+            expect(player.user.discord_user).to eq(discord_user) # and it is still linked to the Discord User
+          end
+        end
+        context 'if the existing User has its own other Player' do
+          it 'refuses to link the existing User' do
+            player = FactoryBot.create(:player, creator_user: @creator)
+            discord_user = FactoryBot.create(:discord_user)
+            user = discord_user.return_or_create_user!
+            other_player = FactoryBot.create(:player, creator_user: @creator, user: user)
+            users_count = User.count
+            discord_users_count = DiscordUser.count
+
+            expect(player.user).to be_nil
+
+            player.discord_id = discord_user.discord_id
+            expect(player).to_not be_valid
+            expect(player.save).to be_falsy
+            player.reload
+
+            expect(User.count).to eq(users_count)
+            expect(DiscordUser.count).to eq(discord_users_count)
+            expect(user.player).to eq(other_player) # keeps the existing link
+          end
+        end
+      end
+      context 'giving nil' do
+        it 'does nothing' do
+          player = FactoryBot.create(:player, creator_user: @creator)
+          users_count = User.count
+
+          expect(player.user).to be_nil
+
+          player.discord_id = nil
+          player.save
+          player.reload
+
+          expect(User.count).to eq(users_count)
+          expect(player.user).to be_nil # still no user
+        end
+      end
+    end
+  end
+
   context 'character_ids=' do
     it 'creates with positions' do
       character_ids = @characters.map(&:id)

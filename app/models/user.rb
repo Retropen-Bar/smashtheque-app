@@ -366,6 +366,15 @@ class User < ApplicationRecord
            to: :discord_user,
            prefix: true
 
+  def discord_id=(discord_id)
+    self.discord_user =
+      if discord_id.blank?
+        nil
+      else
+        DiscordUser.where(discord_id: discord_id).first_or_create!
+      end
+  end
+
   def potential_discord_user
     return nil unless discord_user.nil?
 
