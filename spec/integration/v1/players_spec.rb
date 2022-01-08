@@ -353,9 +353,9 @@ describe 'Players API', swagger_doc: 'v1/swagger.json' do
             }
           end
 
-          run_test! do |response|
+          run_test! do
             player.reload
-            expect(player.user).to be_nil
+            expect(player.user.discord_user).to be_nil
           end
         end
       end
