@@ -273,6 +273,12 @@ class SmashggEvent < ApplicationRecord
       tournament_slug: data.tournament.slug,
       tournament_name: data.tournament.name
     }
+    # sometimes data.standings is nil
+    if data.standings.nil?
+      Rails.logger.debug 'standings not available (Hash)'
+      Rollbar.log('debug', 'Standings not available (Hash)', slug: data.slug)
+      return result
+    end
     begin
       data.standings.nodes.each do |standing|
         smashgg_id = standing&.entrant&.participants&.first&.user&.id
@@ -297,7 +303,8 @@ class SmashggEvent < ApplicationRecord
         result["top#{idx}_smashgg_user".to_sym] = smashgg_user
       end
     rescue GraphQL::Client::UnfetchedFieldError
-      Rails.logger.debug 'standings not available'
+      Rails.logger.debug 'standings not available (GraphQL)'
+      Rollbar.log('debug', 'Standings not available (GraphQL)', slug: data.slug)
     end
     result
   end
