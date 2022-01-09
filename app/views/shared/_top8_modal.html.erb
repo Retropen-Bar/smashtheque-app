@@ -33,15 +33,15 @@
                       <% end %>
                     </div>
                   </div>
-                  <% if awarded&.characters&.count&.positive? %>
-                    <div class="list-characters-compact list-characters-compact--dark flex-shrink-0">
-                      <% awarded.characters[0...3].each do |character| %>
-                        <%= character.decorate.link %>
-                      <% end %>
-                    </div>
-                  <% end %>
-                  <% if awarded %>
-                    <%= awarded&.decorate&.link(label: content_tag(:span, 'Voir plus', class: 'sr-only'), class: 'resource-link') %>
+                  <% if awarded&.is_legit? %>
+                    <% if awarded.is_a?(Player) && awarded.characters.count.positive? %>
+                      <div class="list-characters-compact list-characters-compact--dark flex-shrink-0">
+                        <% awarded.characters[0...3].each do |character| %>
+                          <%= character.decorate.link %>
+                        <% end %>
+                      </div>
+                    <% end %>
+                    <%= awarded.decorate.link(label: content_tag(:span, 'Voir plus', class: 'sr-only'), class: 'resource-link') %>
                   <% end %>
                 </div>
               </div>
