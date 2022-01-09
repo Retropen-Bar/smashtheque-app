@@ -28,7 +28,7 @@ class ChallongeClient
   end
 
   def web_get(slug:)
-    url = "https://challonge.com/fr/#{slug}/standings"
+    url = "https://challonge.com/fr/#{slug.strip}/standings"
     doc = Nokogiri::HTML(URI.parse(url).open.read, nil, 'UTF-8')
 
     data = parse_web_data(doc)
