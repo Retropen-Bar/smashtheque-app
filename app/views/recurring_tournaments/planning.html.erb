@@ -71,6 +71,14 @@
           </div>
 
         <% end %>
+
+        <% unless @is_online %>
+          <% @closest_communities.each do |community| %>
+            <%= link_to community.name,
+                        planning_offline_recurring_tournaments_path(community_id: community.id),
+                        class: 'btn btn-secondary' %>
+          <% end %>
+        <% end %>
       </div>
 
     </div>

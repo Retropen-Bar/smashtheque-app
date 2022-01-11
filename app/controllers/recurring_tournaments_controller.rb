@@ -164,6 +164,7 @@ class RecurringTournamentsController < PublicController
   def planning_offline
     @is_online = false
     @community = Community.find(params[:community_id])
+    @closest_communities = @community.closest_communities.limit(3)
     @meta_title = 'Planning des tournois réguliers offline'
     render_planning
   end

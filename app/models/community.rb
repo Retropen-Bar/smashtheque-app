@@ -120,6 +120,12 @@ class Community < ApplicationRecord
     Player.near_community(self, radius: radius)
   end
 
+  def closest_communities(radius: 1000)
+    return self.class.none unless geocoded?
+
+    self.class.where.not(id: id).near([latitude, longitude], radius, units: :km)
+  end
+
   # ---------------------------------------------------------------------------
   # GLOBAL SEARCH
   # ---------------------------------------------------------------------------
