@@ -12,7 +12,7 @@ class BraacketClient
   end
 
   def parse_web_data(slug:)
-    url = "https://braacket.com/tournament/#{slug}"
+    url = "https://braacket.com/tournament/#{slug.strip}"
     doc = Nokogiri::HTML(URI.parse(url).open.read, nil, 'UTF-8')
 
     participants_count_tag = doc.css('div#content_header i.fa-users').first&.parent&.next_element
@@ -26,7 +26,7 @@ class BraacketClient
   end
 
   def parse_csv_ranking(slug:)
-    url = "https://braacket.com/tournament/#{slug}/ranking?rows=20&cols=&page=1&page_cols=1&game_character=&country=&search=&export=csv"
+    url = "https://braacket.com/tournament/#{slug.strip}/ranking?rows=20&cols=&page=1&page_cols=1&game_character=&country=&search=&export=csv"
 
     CSV.parse(URI.parse(url).open.read, headers: true).map do |row|
       {
