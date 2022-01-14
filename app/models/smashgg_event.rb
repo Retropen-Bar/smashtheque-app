@@ -273,13 +273,14 @@ class SmashggEvent < ApplicationRecord
       tournament_slug: data.tournament.slug,
       tournament_name: data.tournament.name
     }
-    # sometimes data.standings is nil
-    if data.standings.nil?
-      Rails.logger.debug 'standings not available (Hash)'
-      Rollbar.log('debug', 'Standings not available (Hash)', slug: data.slug)
-      return result
-    end
     begin
+      # sometimes data.standings is nil
+      if data.standings.nil?
+        Rails.logger.debug 'standings not available (Hash)'
+        Rollbar.log('debug', 'Standings not available (Hash)', slug: data.slug)
+        return result
+      end
+
       data.standings.nodes.each do |standing|
         smashgg_id = standing&.entrant&.participants&.first&.user&.id
         next unless smashgg_id
