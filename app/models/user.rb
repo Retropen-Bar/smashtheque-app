@@ -306,8 +306,6 @@ class User < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   def self.from_discord_omniauth(auth)
-    puts "User#from_omniauth(#{auth.inspect})"
-
     # make sure auth comes from Discord
     return false unless auth.provider.to_sym == :discord
 
