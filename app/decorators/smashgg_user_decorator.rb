@@ -74,30 +74,6 @@ class SmashggUserDecorator < BaseDecorator
     end
   end
 
-  def twitch_link
-    return nil if model.twitch_username.blank?
-
-    h.link_to "https://www.twitch.tv/#{model.twitch_username}", target: '_blank', rel: :noopener do
-      (
-        h.fab_icon_tag :twitch
-      ) + ' ' + (
-        h.tag.span model.twitch_username
-      )
-    end
-  end
-
-  def twitter_link
-    return nil if model.twitter_username.blank?
-
-    h.link_to "https://twitter.com/#{model.twitter_username}", target: '_blank', rel: :noopener do
-      (
-        h.fab_icon_tag 'twitter-square'
-      ) + ' ' + (
-        h.tag.span model.twitter_username
-      )
-    end
-  end
-
   def discord_link
     return nil if model.discord_discriminated_username.blank?
 

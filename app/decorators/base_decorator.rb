@@ -34,6 +34,30 @@ class BaseDecorator < Draper::Decorator
     "@#{twitter_username}"
   end
 
+  def twitch_link
+    return nil if model.twitch_username.blank?
+
+    h.link_to "https://www.twitch.tv/#{model.twitch_username}", target: '_blank', rel: :noopener do
+      (
+        h.fab_icon_tag :twitch
+      ) + ' ' + (
+        h.tag.span model.twitch_username
+      )
+    end
+  end
+
+  def youtube_link
+    return nil if model.youtube_username.blank?
+
+    h.link_to '#' do
+      (
+        h.fab_icon_tag :youtube
+      ) + ' ' + (
+        h.tag.span model.youtube_username
+      )
+    end
+  end
+
   def path
     model
   end

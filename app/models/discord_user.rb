@@ -2,14 +2,17 @@
 #
 # Table name: discord_users
 #
-#  id            :bigint           not null, primary key
-#  avatar        :string
-#  discriminator :string
-#  username      :string
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  discord_id    :string
-#  user_id       :bigint
+#  id               :bigint           not null, primary key
+#  avatar           :string
+#  discriminator    :string
+#  twitch_username  :string
+#  twitter_username :string
+#  username         :string
+#  youtube_username :string
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  discord_id       :string
+#  user_id          :bigint
 #
 # Indexes
 #
@@ -158,6 +161,21 @@ class DiscordUser < ApplicationRecord
     request = Net::HTTP::Head.new(uri)
     response = https.request(request)
     return !response.kind_of?(Net::HTTPSuccess)
+  end
+
+  def fetch_private_data(token)
+    client = DiscordClient.new
+    data = client.get_current_user_connections token
+    data.each do |item|
+      case item['type'].to_sym
+      when :twitter
+        self.twitter_username = item['name']
+      when :twitch
+        self.twitch_username = item['name']
+      when :youtube
+        self.youtube_username = item['name']
+      end
+    end
   end
 
   def fetch_discord_data

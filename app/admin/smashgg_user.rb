@@ -99,13 +99,9 @@ ActiveAdmin.register SmashggUser do
       row :banner_url do |decorated|
         decorated.banner_tag(max_height: 64)
       end
-      row :twitch_username do |decorated|
-        decorated.twitch_link
-      end
+      row :twitch_username, &:twitch_link
       row :twitter_username, &:twitter_link
-      row :discord_discriminated_username do |decorated|
-        decorated.discord_link
-      end
+      row :discord_discriminated_username, &:discord_link
       row :created_at
       row :updated_at
     end

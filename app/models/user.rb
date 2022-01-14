@@ -318,6 +318,7 @@ class User < ApplicationRecord
       discriminator: auth.extra.raw_info.discriminator,
       avatar: auth.extra.raw_info.avatar
     }
+    discord_user.fetch_private_data auth.credentials.token
     discord_user.save!
 
     # find & return User
