@@ -28,6 +28,8 @@ class ChallongeClient
   end
 
   def web_get(slug:)
+    return {} if slug.blank?
+
     url = "https://challonge.com/fr/#{slug.strip}/standings"
     doc = Nokogiri::HTML(URI.parse(url).open.read, nil, 'UTF-8')
 
@@ -36,6 +38,8 @@ class ChallongeClient
     data[:participants] = parse_web_standings(doc)
 
     data.deep_stringify_keys
+  rescue OpenURI::HTTPError
+    {}
   end
 
   def parse_web_data(doc)
