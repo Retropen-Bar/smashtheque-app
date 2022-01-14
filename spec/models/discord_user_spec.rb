@@ -2,14 +2,17 @@
 #
 # Table name: discord_users
 #
-#  id            :bigint           not null, primary key
-#  avatar        :string
-#  discriminator :string
-#  username      :string
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  discord_id    :string
-#  user_id       :bigint
+#  id               :bigint           not null, primary key
+#  avatar           :string
+#  discriminator    :string
+#  twitch_username  :string
+#  twitter_username :string
+#  username         :string
+#  youtube_username :string
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  discord_id       :string
+#  user_id          :bigint
 #
 # Indexes
 #

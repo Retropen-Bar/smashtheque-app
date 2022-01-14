@@ -2,14 +2,17 @@
 #
 # Table name: discord_users
 #
-#  id            :bigint           not null, primary key
-#  avatar        :string
-#  discriminator :string
-#  username      :string
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  discord_id    :string
-#  user_id       :bigint
+#  id               :bigint           not null, primary key
+#  avatar           :string
+#  discriminator    :string
+#  twitch_username  :string
+#  twitter_username :string
+#  username         :string
+#  youtube_username :string
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  discord_id       :string
+#  user_id          :bigint
 #
 # Indexes
 #
@@ -144,7 +147,11 @@ class DiscordUser < ApplicationRecord
 
   def return_or_create_user!
     if user.nil?
-      self.user = User.create!(name: username || "##{discord_id}")
+      fetch_discord_data if username.blank?
+      self.user = User.create!(
+        name: username || "##{discord_id}",
+        twitter_username: twitter_username
+      )
       save!
     end
     user
@@ -152,12 +159,28 @@ class DiscordUser < ApplicationRecord
 
   def needs_fetching?
     return true if avatar.blank?
+
     uri = URI(decorate.avatar_url(32))
     https = Net::HTTP.new(uri.host, uri.port)
     https.use_ssl = true
     request = Net::HTTP::Head.new(uri)
     response = https.request(request)
-    return !response.kind_of?(Net::HTTPSuccess)
+    !response.is_a?(Net::HTTPSuccess)
+  end
+
+  def fetch_private_data(token)
+    client = DiscordClient.new
+    data = client.get_current_user_connections token
+    data.each do |item|
+      case item['type'].to_sym
+      when :twitter
+        self.twitter_username = item['name']
+      when :twitch
+        self.twitch_username = item['name']
+      when :youtube
+        self.youtube_username = item['name']
+      end
+    end
   end
 
   def fetch_discord_data

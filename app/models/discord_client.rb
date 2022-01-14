@@ -7,6 +7,10 @@ class DiscordClient
     @token = token || ENV['DISCORD_BOT_TOKEN']
   end
 
+  def get_current_user_connections(user_token)
+    api_get '/users/@me/connections', auth: "Bearer #{user_token}"
+  end
+
   def get_user(user_id)
     api_get "/users/#{user_id}"
   end
@@ -264,8 +268,8 @@ class DiscordClient
 
   private
 
-  def api_get(path)
-    Rails.logger.debug "=== API REQUEST ==="
+  def api_get(path, auth: "Bot #{@token}")
+    Rails.logger.debug '=== API REQUEST ==='
     url = URI("#{Discordrb::API::APIBASE}#{path}")
     Rails.logger.debug "GET #{url}"
 
@@ -273,7 +277,7 @@ class DiscordClient
     https.use_ssl = true
 
     request = Net::HTTP::Get.new(url)
-    request["Authorization"] = "Bot #{@token}"
+    request['Authorization'] = auth
 
     response = https.request(request)
 
@@ -281,7 +285,7 @@ class DiscordClient
   end
 
   def api_post(path, params)
-    Rails.logger.debug "=== API REQUEST ==="
+    Rails.logger.debug '=== API REQUEST ==='
     url = URI("#{Discordrb::API::APIBASE}#{path}")
     Rails.logger.debug "POST #{url} #{params.to_json}"
 
@@ -289,8 +293,8 @@ class DiscordClient
     https.use_ssl = true
 
     request = Net::HTTP::Post.new(url)
-    request["Authorization"] = "Bot #{@token}"
-    request["Content-Type"] = 'application/json'
+    request['Authorization'] = "Bot #{@token}"
+    request['Content-Type'] = 'application/json'
     request.body = params.to_json
 
     response = https.request(request)
@@ -299,7 +303,7 @@ class DiscordClient
   end
 
   def api_patch(path, params)
-    Rails.logger.debug "=== API REQUEST ==="
+    Rails.logger.debug '=== API REQUEST ==='
     url = URI("#{Discordrb::API::APIBASE}#{path}")
     Rails.logger.debug "PATCH #{url} #{params.to_json}"
 
@@ -307,13 +311,13 @@ class DiscordClient
     https.use_ssl = true
 
     request = Net::HTTP::Patch.new(url)
-    request["Authorization"] = "Bot #{@token}"
-    request["Content-Type"] = 'application/json'
+    request['Authorization'] = "Bot #{@token}"
+    request['Content-Type'] = 'application/json'
     request.body = params.to_json
 
     response = https.request(request)
 
-    Rails.logger.debug "=== API RESPONSE ==="
+    Rails.logger.debug '=== API RESPONSE ==='
     Rails.logger.debug response.inspect
 
     if response.is_a?(Net::HTTPTooManyRequests)
@@ -326,7 +330,7 @@ class DiscordClient
   end
 
   def api_delete(path)
-    Rails.logger.debug "=== API REQUEST ==="
+    Rails.logger.debug '=== API REQUEST ==='
     url = URI("#{Discordrb::API::APIBASE}#{path}")
     Rails.logger.debug "DELETE #{url}"
 
@@ -334,7 +338,7 @@ class DiscordClient
     https.use_ssl = true
 
     request = Net::HTTP::Delete.new(url)
-    request["Authorization"] = "Bot #{@token}"
+    request['Authorization'] = "Bot #{@token}"
 
     response = https.request(request)
 
@@ -353,7 +357,7 @@ class DiscordClient
 
   def split_messages(lines)
     messages = []
-    current_message = ""
+    current_message = ''
     current_message_size = 0
 
     lines.split(MESSAGE_LINE_SEPARATOR).each do |line|
@@ -361,13 +365,12 @@ class DiscordClient
         # ok to be added
         current_message += MESSAGE_LINE_SEPARATOR unless current_message_size.zero?
         current_message += line
-        current_message_size = current_message.size
       else
         # too long
         messages << current_message
         current_message = line
-        current_message_size = current_message.size
       end
+      current_message_size = current_message.size
     end
     messages << current_message
 
@@ -383,10 +386,10 @@ class DiscordClient
   end
 
   def bot
-    @bot ||= (
+    @bot ||= begin
       b = Discordrb::Bot.new token: @token
       b.run true
       b
-    )
+    end
   end
 end

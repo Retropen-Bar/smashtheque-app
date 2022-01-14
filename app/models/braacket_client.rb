@@ -12,6 +12,8 @@ class BraacketClient
   end
 
   def parse_web_data(slug:)
+    return {} if slug.blank?
+
     url = "https://braacket.com/tournament/#{slug.strip}"
     doc = Nokogiri::HTML(URI.parse(url).open.read, nil, 'UTF-8')
 

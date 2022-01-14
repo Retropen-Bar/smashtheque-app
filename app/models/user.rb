@@ -306,8 +306,6 @@ class User < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   def self.from_discord_omniauth(auth)
-    puts "User#from_omniauth(#{auth.inspect})"
-
     # make sure auth comes from Discord
     return false unless auth.provider.to_sym == :discord
 
@@ -318,6 +316,7 @@ class User < ApplicationRecord
       discriminator: auth.extra.raw_info.discriminator,
       avatar: auth.extra.raw_info.avatar
     }
+    discord_user.fetch_private_data auth.credentials.token
     discord_user.save!
 
     # find & return User

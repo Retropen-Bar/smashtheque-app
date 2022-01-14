@@ -75,6 +75,9 @@ ActiveAdmin.register DiscordUser do
       row :administrated_discord_guilds do |decorated|
         decorated.administrated_discord_guilds_admin_links(size: 32).join('<br/>').html_safe
       end
+      row :twitter_username, &:twitter_link
+      row :twitch_username, &:twitch_link
+      row :youtube_username, &:youtube_link
       row :created_at
       row :updated_at
     end

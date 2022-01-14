@@ -186,7 +186,10 @@ fr:
         discord_id: ID
         discriminator: Discriminant
         player: Joueur
+        twitch_username: Compte Twitch
+        twitter_username: Compte Twitter
         username: Pseudo
+        youtube_username: Compte YouTube
       page:
         << : *SHARED
         children: Sous-pages

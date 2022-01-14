@@ -56,6 +56,18 @@ class SmashggUser < ApplicationRecord
   # CALLBACKS
   # ---------------------------------------------------------------------------
 
+  after_commit :update_player
+  def update_player
+    # only if record has new player and twitter_username
+    return true unless previous_changes.key?('player_id') && player
+    return true if twitter_username.blank?
+
+    # only if user does not have a twitter_username yet
+    return true if player.user&.twitter_username.present?
+
+    player.return_or_create_user!.update(twitter_username: twitter_username)
+  end
+
   # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
