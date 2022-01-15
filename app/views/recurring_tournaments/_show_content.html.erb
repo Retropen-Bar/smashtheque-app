@@ -6,7 +6,7 @@
         <span class="show-page-section-title-separator"></span>
       </div>
       <div class="show-page-section-body">
-        <see-more  :line-clamp="4">
+        <see-more :line-clamp="4">
           <%= recurring_tournament.formatted_registration  %>
         </see-more>
       </div>
@@ -62,13 +62,13 @@
     </section>
   </div>
   <% if recurring_tournament.geocoded? %>
-  <div class="col-12">
-    <section id="location" class="show-page-section">
-      <div class="show-page-section-title">
-        <h2>Localisation</h2>
-        <span class="show-page-section-title-separator"></span>
-      </div>
-      <div class="show-page-section-body">
+    <div class="col-12">
+      <section id="location" class="show-page-section">
+        <div class="show-page-section-title">
+          <h2>Localisation</h2>
+          <span class="show-page-section-title-separator"></span>
+        </div>
+        <div class="show-page-section-body">
           <div class="shadow p-5 m-3 rounded">
             <%= single_address_map({
                   name: recurring_tournament.full_address.html_safe,
@@ -76,8 +76,8 @@
                   longitude: recurring_tournament.longitude
                 }) %>
           </div>
-      </div>
-    </section>
-  </div>
+        </div>
+      </section>
+    </div>
   <% end %>
 </div>

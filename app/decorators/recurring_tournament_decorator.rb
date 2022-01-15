@@ -233,7 +233,7 @@ class RecurringTournamentDecorator < BaseDecorator
   end
 
   def formatted_registration
-    registration.to_s
+    registration&.to_s
   end
 
   def formatted_misc
