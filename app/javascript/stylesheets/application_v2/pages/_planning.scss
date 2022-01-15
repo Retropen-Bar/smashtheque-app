@@ -22,6 +22,12 @@
     }
   }
 
+  .fc-header-toolbar {
+    > :first-child {
+      flex-grow: 1;
+    }
+  }
+
   #filters {
     .dropdown-menu {
       min-width: 13rem;
@@ -31,14 +37,12 @@
       width: 100%;
       margin-top: 0.75rem;
     }
-
-    @include media-breakpoint-up(sm) {
-      padding-left: 1rem;
-    }
   }
 }
 
 .planning-filters {
+  gap: 0.5rem 1rem;
+
   .level {
     position: relative;
     transform: none;
@@ -52,6 +56,11 @@
       margin-left: 0 !important;
     }
   }
+}
+
+.planning-closest-communities {
+  flex-wrap: wrap;
+  gap: 0.25rem;
 }
 
 .group-tab-scroll {

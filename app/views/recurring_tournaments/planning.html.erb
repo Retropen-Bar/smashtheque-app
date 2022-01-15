@@ -11,7 +11,7 @@
             <button class="btn btn-dark rounded-pill dropdown-toggle" data-toggle="dropdown" type="button" id="community-id" data-bs-toggle="dropdown" aria-expanded="false">
               <%= @community.name %>
             </button>
-            <ul class="dropdown-menu" aria-labelledby="community-id">
+            <ul class="dropdown-menu" aria-labelledby="community-id" style="max-height: 50vh; overflow: auto">
               <% Community.french.order('LOWER(name)').each do |community| %>
                 <li>
                   <%= link_to community.name,
@@ -24,7 +24,7 @@
         <% end %>
       </h1>
 
-      <div class="planning-filters list-x align-items-center flex-wrap">
+      <div class="planning-filters list-x align-items-center flex-wrap mr-auto">
         <div class="btn-group">
           <%= link_to 'Offline', { action: :planning_offline, community_id: default_planning_offline_community_id }, class: "btn#{' active' if !@is_online}" %>
           <%= link_to 'Online', { action: :planning_online }, class: "btn#{' active' if @is_online}" %>
@@ -73,11 +73,14 @@
         <% end %>
 
         <% unless @is_online %>
-          <% @closest_communities.each do |community| %>
-            <%= link_to community.name,
-                        planning_offline_recurring_tournaments_path(community_id: community.id),
-                        class: 'btn btn-secondary' %>
-          <% end %>
+          <div class="planning-closest-communities list-x align-items-center">
+            <span>A proximité&nbsp;:&nbsp;</span>
+            <% @closest_communities.each do |community| %>
+              <%= link_to community.name,
+                          planning_offline_recurring_tournaments_path(community_id: community.id),
+                          class: 'btn btn-dark rounded-pill' %>
+            <% end %>
+          </div>
         <% end %>
       </div>
 

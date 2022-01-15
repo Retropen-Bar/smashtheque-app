@@ -39,6 +39,7 @@
       display: flex;
       align-items: center;
       flex-wrap: wrap;
+      gap: 0.5rem 1rem;
     }
 
     h2 {
@@ -52,6 +53,10 @@
       @include media-breakpoint-up(md) {
         font-size: 1rem;
       }
+    }
+
+    & > * > :not(:first-child) {
+      margin: 0;
     }
   }
 
