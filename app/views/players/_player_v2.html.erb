@@ -6,29 +6,29 @@
           is_online: defined?(is_online) && is_online,
           year: defined?(year) && year) %>
       </div>
+    <% end %>
+    <% if player %>
+      <% if defined?(reward_condition) && reward_condition %>
+        <%= reward_condition.reward_badge %>
       <% end %>
-    <% if defined?(reward_condition) && reward_condition %>
-      <%= reward_condition.reward_badge %>
     <% end %>
   </div>
-
   <div class="resource-avatar card">
-    <% if player.is_legit? %>
+    <% if player && player.is_legit? %>
       <%= link_to player.avatar_tag(76), player %>
     <% end %>
-      
   </div>
   <div class="resource-content card flex-grow-1<%= ' with-rank' if defined?(with_rank) && with_rank %>">
     <div class="card-body d-flex">
       <div class="resource-meta flex-grow-1">
         <h5 class="resource-title card-title text-truncate">
-          <% if player.is_legit? %>
+          <% if player && player.is_legit? %>
             <%= link_to player.name, player %>
           <% else %>
-            -
+            ?
           <% end %>
         </h5>
-        <% if player.is_legit? && (player.country_flag || player.teams.present?) %>
+        <% if player && player.is_legit? && (player.country_flag || player.teams.present?) %>
           <small class="list-teams list-teams--sm player-teams align-items-center">
             <% if country_flag = player.country_flag %>
               <%= country_flag %>
@@ -43,33 +43,36 @@
             <% end %>
           </small>
         <% end %>
-        <% if defined?(with_points) && with_points %>
-          <div class="player-points">
-            <%= player.points_count(
+        <% if player %>
+          <% if defined?(with_points) && with_points %>
+            <div class="player-points">
+              <%= player.points_count(
               32,
               is_online: defined?(is_online) && is_online,
               year: defined?(year) && year,
               value: defined?(points) && points) %>
-            <% if defined?(reward_condition) && reward_condition %>
-              <span class="text-light">(+<%= reward_condition.points %>)</span>
-            <% end %>
-          </div>
-        <% end %>
+              <% if defined?(reward_condition) && reward_condition %>
+                <span class="text-light">(+<%= reward_condition.points %>)</span>
+              <% end %>
+            </div>
+          <% end %>
+        <% end%>
       </div>
-      <% if player.characters.present? %>
+      <% if player && player.characters.present? %>
         <div class="list-characters-compact flex-shrink-0">
           <% player.characters[0...3].each do |character| %>
             <%= character.decorate.link %>
           <% end %>
         </div>
       <% end %>
-      <% if player.is_legit? %>
+      <% if player && player.is_legit? %>
         <%= link_to player, class: 'resource-link' do %>
           <span class="sr-only">Voir plus</span>
         <% end %>
       <% end %>
     </div>
-    <%= admin_edit_link(player) %>
+    <% if player %>
+      <%= admin_edit_link(player) %>
+    <%end%>
   </div>
- 
 </article>

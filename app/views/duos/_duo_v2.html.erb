@@ -1,42 +1,60 @@
 <article class="resource duo d-flex">
-  <% if defined?(with_rank) && with_rank %>
-    <div class="rank">
-      #<%= defined?(rank) ? rank : player.rank(
-        is_online: defined?(is_online) && is_online,
-        year: defined?(year) && year) %>
-    </div>
-  <% end %>
-  <div class="resource-avatar card">
-    <%= link_to duo.player1.decorate.avatar_tag(76), duo.player1 %>
+  <div class="resource-top-left">
+    <% if defined?(with_rank) && with_rank %>
+      <div class="rank">
+        #<%= defined?(rank) ? rank : player.rank(
+            is_online: defined?(is_online) && is_online,
+            year: defined?(year) && year) %>
+      </div>
+    <% end %>
+    <% if duo %>
+      <% if defined?(reward_condition) && reward_condition %>
+        <%= reward_condition.reward_badge %>
+      <% end %>
+    <% end %>
   </div>
   <div class="resource-avatar card">
-    <%= link_to duo.player2.decorate.avatar_tag(76), duo.player2 %>
+    <% if duo %>
+      <%= link_to duo.player1.decorate.avatar_tag(76), duo.player1 %>
+    <% end %>
+  </div>
+  <div class="resource-avatar card">
+    <% if duo %>
+      <%= link_to duo.player2.decorate.avatar_tag(76), duo.player2 %>
+    <% end %>
   </div>
   <div class="resource-content card flex-grow-1<%= ' with-rank' if defined?(with_rank) && with_rank %>">
     <div class="card-body d-flex">
       <div class="resource-meta flex-grow-1">
         <h5 class="resource-title card-title text-truncate">
-          <%= link_to duo.name, duo %>
+          <% if duo %>
+            <%= link_to duo.name, duo %>
+          <% else %>
+            ?
+          <% end %>
         </h5>
-        <% if defined?(with_points) && with_points %>
-          <div class="player-points">
-            <%= duo.points_count(
-              32,
-              is_online: defined?(is_online) && is_online,
-              year: defined?(year) && year) %>
-            <% if defined?(reward_condition) && reward_condition %>
-              <span class="text-light">(+<%= reward_condition.points %>)</span>
-            <% end %>
-          </div>
+        <% if duo %>
+          <% if defined?(with_points) && with_points %>
+            <div class="player-points">
+              <%= duo.points_count(
+                32,
+                is_online: defined?(is_online) && is_online,
+                year: defined?(year) && year) %>
+              <% if defined?(reward_condition) && reward_condition %>
+                <span class="text-light">(+<%= reward_condition.points %>)</span>
+              <% end %>
+            </div>
+          <% end %>
         <% end %>
       </div>
-      <%= link_to duo, class: 'resource-link' do %>
-        <span class="sr-only">Voir plus</span>
+      <% if duo %>
+        <%= link_to duo, class: 'resource-link' do %>
+          <span class="sr-only">Voir plus</span>
+        <% end %>
       <% end %>
     </div>
-    <%= admin_edit_link(duo) %>
+    <% if duo %>
+      <%= admin_edit_link(duo) %>
+    <% end %>
   </div>
-  <% if defined?(reward_condition) && reward_condition %>
-    <%= reward_condition.reward_badge %>
-  <% end %>
 </article>
