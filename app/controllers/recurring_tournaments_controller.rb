@@ -217,8 +217,7 @@ class RecurringTournamentsController < PublicController
   end
 
   def default_planning_is_online?
-    # TODO: make this smart
-    true
+    !user_signed_in? || current_user.closest_communities.first&.id.nil?
   end
 
   def default_planning_offline_community_id
