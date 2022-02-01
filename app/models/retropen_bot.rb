@@ -13,24 +13,11 @@ class RetropenBot
   CHANNEL_TWITCH_WORLD = 'twitch-channels-world'.freeze
   CHANNEL_YOUTUBE_FR = 'youtube-channels-fr'.freeze
   CHANNEL_YOUTUBE_WORLD = 'youtube-channels-world'.freeze
-  CATEGORY_ONLINE_TOURNAMENTS = 'COMPETITION ONLINE'.freeze
-  CHANNEL_ONLINE_TOURNAMENTS_IRREGULAR = 'irrégulier'.freeze
-  CHANNEL_ONLINE_TOURNAMENTS_ONESHOT = 'one-shot'.freeze
-  CHANNEL_ONLINE_TOURNAMENTS_DAYS = %w(
-    dimanche
-    lundi
-    mardi
-    mercredi
-    jeudi
-    vendredi
-    samedi
-  ).freeze
 
   EMOJI_GUILD_ADMIN = '746006429156245536'.freeze
   EMOJI_TEAM_ADMIN = '745255339364057119'.freeze
   EMOJI_TWITCH = '862611411024085012'.freeze
   EMOJI_YOUTUBE = '743601431499767899'.freeze
-  EMOJI_TOURNAMENT = '743286485930868827'.freeze
   EMOJI_POINTS_ONLINE = '795277209715212298'.freeze
   EMOJI_POINTS_OFFLINE = '847205931958927371'.freeze
   EMOJI_GRAPHIC_DESIGNER = '752212651421204560'.freeze
@@ -295,108 +282,6 @@ class RetropenBot
   end
 
   # ---------------------------------------------------------------------------
-  # TOURNAMENTS
-  # ---------------------------------------------------------------------------
-
-  def online_tournaments_category
-    client.find_or_create_guild_category @guild_id, name: CATEGORY_ONLINE_TOURNAMENTS
-  end
-
-  def online_tournaments_irregular_channel(_online_tournaments_category_id = nil)
-    online_tournaments_category_id = _online_tournaments_category_id || online_tournaments_category['id']
-    find_or_create_readonly_channel @guild_id,
-                                    name: CHANNEL_ONLINE_TOURNAMENTS_IRREGULAR,
-                                    parent_id: online_tournaments_category_id
-  end
-
-  def online_tournaments_oneshot_channel(_online_tournaments_category_id = nil)
-    online_tournaments_category_id = _online_tournaments_category_id || online_tournaments_category['id']
-    find_or_create_readonly_channel @guild_id,
-                                    name: CHANNEL_ONLINE_TOURNAMENTS_ONESHOT,
-                                    parent_id: online_tournaments_category_id
-  end
-
-  def online_tournaments_wday_channel(wday, _online_tournaments_category_id = nil)
-    online_tournaments_category_id = _online_tournaments_category_id || online_tournaments_category['id']
-    find_or_create_readonly_channel @guild_id,
-                                    name: CHANNEL_ONLINE_TOURNAMENTS_DAYS[wday],
-                                    parent_id: online_tournaments_category_id
-  end
-
-  def rebuild_online_tournaments_channel(recurring_tournaments, channel_id)
-    messages = []
-    recurring_tournaments.online
-                         .visible
-                         .not_archived
-                         .by_events_count_geq(3)
-                         .order(:starts_at_hour, :starts_at_min)
-                         .decorate
-                         .each do |recurring_tournament|
-      messages << DiscordClient::EMPTY_LINE
-      messages << emoji_tag(EMOJI_TOURNAMENT) * 3
-      messages << [
-        "**#{recurring_tournament.name}**",
-        "\tFréquence : #{recurring_tournament.recurring_type_text}",
-        "\tDate : #{recurring_tournament.full_date}",
-        "\tServeur : #{recurring_tournament.discord_guild_invitation_url}",
-        "\tDifficulté : #{recurring_tournament.level_text}",
-        "\tDisponibilité : Ouvert à tous",
-        "\tTaille : #{RecurringTournamentDecorator.size_name(recurring_tournament.size)}",
-        "\tComment s'inscrire :",
-        "\t\t" + recurring_tournament.registration.gsub(
-          /\R+/,
-          DiscordClient::MESSAGE_LINE_SEPARATOR + "\t\t"
-        ),
-        "\tContacts :",
-        recurring_tournament.contacts.map do |user|
-          "\t\t- #{user.player&.name || user.name}"
-        end.join(DiscordClient::MESSAGE_LINE_SEPARATOR),
-        DiscordClient::EMPTY_LINE
-      ].join(DiscordClient::MESSAGE_LINE_SEPARATOR)
-    end
-    client.replace_channel_messages(
-      channel_id,
-      messages
-    )
-  end
-
-  def rebuild_online_tournaments_wday(wday, _online_tournaments_category_id = nil)
-    rebuild_online_tournaments_channel(
-      RecurringTournament.recurring.on_wday(wday),
-      online_tournaments_wday_channel(wday, _online_tournaments_category_id)['id']
-    )
-  end
-
-  def rebuild_online_tournaments_irregular(_online_tournaments_category_id = nil)
-    rebuild_online_tournaments_channel(
-      RecurringTournament.irregular,
-      online_tournaments_irregular_channel(_online_tournaments_category_id)['id']
-    )
-  end
-
-  def rebuild_online_tournaments_oneshot(_online_tournaments_category_id = nil)
-    rebuild_online_tournaments_channel(
-      RecurringTournament.oneshot,
-      online_tournaments_oneshot_channel(_online_tournaments_category_id)['id']
-    )
-  end
-
-  def rebuild_online_tournaments(_online_tournaments_category_id = nil)
-    online_tournaments_category_id = _online_tournaments_category_id || online_tournaments_category['id']
-
-    (0..6).each do |wday|
-      rebuild_online_tournaments_wday wday, online_tournaments_category_id
-    end
-    rebuild_online_tournaments_irregular online_tournaments_category_id
-    rebuild_online_tournaments_oneshot online_tournaments_category_id
-  end
-
-  def self.name_letter(name)
-    return nil if name.blank?
-    I18n.transliterate(name.first).downcase
-  end
-
-  # ---------------------------------------------------------------------------
   # ROLES
   # ---------------------------------------------------------------------------
 
@@ -428,6 +313,15 @@ class RetropenBot
   end
 
   # ---------------------------------------------------------------------------
+  # MISC
+  # ---------------------------------------------------------------------------
+
+  def self.name_letter(name)
+    return nil if name.blank?
+    I18n.transliterate(name.first).downcase
+  end
+
+  # ---------------------------------------------------------------------------
   # PRIVATE
   # ---------------------------------------------------------------------------
 
@@ -450,48 +344,6 @@ class RetropenBot
 
   def escape_message_content(content)
     content.gsub('_','\_').gsub('*','\*')
-  end
-
-  def player_abc(player, options = {})
-    line = player.name
-    unless options[:with_teams] == false
-      player.teams.each do |team|
-        line += " [#{team.short_name}]"
-      end
-    end
-    unless options[:with_characters] == false
-      if player.characters.any?
-        line += " :"
-        player.characters.each do |character|
-          line += " #{character_emoji_tag(character)}"
-        end
-      end
-    end
-    escape_message_content line.strip
-  end
-
-  def players_lines(players, options = {})
-    players.legit.includes(
-      :teams, :characters
-    ).to_a.sort_by do |player|
-      I18n.transliterate(player.name).downcase
-    end.map do |player|
-      player_abc player, options
-    end.join(DiscordClient::MESSAGE_LINE_SEPARATOR)
-  end
-
-  def team_line(team)
-    line = [
-      team.short_name,
-      team.name
-    ].join(' : ')
-    if team.admins.any?
-      line += ' ' + emoji_tag(EMOJI_TEAM_ADMIN) + ' '
-      line += team.admins.map do |user|
-        user.player&.name || user.name
-      end.join(', ')
-    end
-    escape_message_content line
   end
 
   def video_channel_line(model, emoji_id)
@@ -539,10 +391,6 @@ class RetropenBot
       messages += named_lines[letter] || []
     end
     client.replace_channel_messages channel_id, messages
-  end
-
-  def rebuild_channel_with_players(channel_id, players)
-    client.replace_channel_content channel_id, players_lines(players)
   end
 
   def find_or_create_readonly_channel(guild_id, find_params, create_params = {})

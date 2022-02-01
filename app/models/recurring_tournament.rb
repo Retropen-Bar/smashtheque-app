@@ -145,7 +145,6 @@ class RecurringTournament < ApplicationRecord
 
   after_commit :update_discord, unless: proc { ENV['NO_DISCORD'] }
   def update_discord
-    RetropenBotScheduler.rebuild_online_tournaments
     return true unless previous_changes.has_key?('is_online')
 
     contacts.each do |user|
