@@ -338,13 +338,6 @@
     }
   }
 
-  &-content {
-    @include media-breakpoint-down(md) {
-      padding-right: $grid-gutter-width / 2;
-      padding-left: $grid-gutter-width / 2;
-    }
-  }
-
   &-body {
     margin-top: 30px;
     background-color: $gray-dark;
@@ -375,14 +368,21 @@
         max-width: 100%;
       }
     }
+  }
 
-    .row + .row,
-    [class*="col-12"] + [class*="col-12"] {
+  &-content {
+    @include media-breakpoint-down(md) {
+      padding-right: $grid-gutter-width / 2;
+      padding-left: $grid-gutter-width / 2;
+    }
+
+    > .row + .row,
+    > .row > [class*="col-12"] + [class*="col-12"] {
       margin-top: map-get($map: $spacers, $key: 4);
     }
 
     @include media-breakpoint-down(md) {
-      [class*="col"] + [class*="col"] {
+      > .row > [class*="col"] + [class*="col"] {
         margin-top: map-get($map: $spacers, $key: 4);
       }
     }
