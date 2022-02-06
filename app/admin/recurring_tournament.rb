@@ -132,7 +132,8 @@ ActiveAdmin.register RecurringTournament do
                   collection: recurring_tournament_wday_select_collection,
                   input_html: { data: { select2: {} } },
                   include_blank: false
-          f.input :starts_at_hour
+          f.input :starts_at_hour,
+                  hint: "Laissez 0 pour ne pas afficher d'horaire"
           f.input :starts_at_min
         end
         f.inputs 'Power rankings' do

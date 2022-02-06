@@ -35,10 +35,12 @@
           <span>
             <%= recurring_tournament.recurring_type_text %>
           </span>
-          <span>&nbsp;•&nbsp;</span>
-          <span>
-            <%= recurring_tournament.starts_at %>
-          </span>
+          <% if recurring_tournament.is_recurring? && !(@recurring_tournament.starts_at_hour || 0).to_i.zero? %>
+            <span>&nbsp;•&nbsp;</span>
+            <span>
+              <%= recurring_tournament.starts_at %>
+            </span>
+          <% end %>
         </small>
         <small class="list-x">
           <% if recurring_tournament.countrycode %>

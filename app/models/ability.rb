@@ -6,14 +6,14 @@ class Ability
   ADMIN_LEVELS = [ADMIN_LEVEL_HELP, ADMIN_LEVEL_ADMIN]
 
   def initialize(_user)
-    alias_action :create, :read, :update, :history, to: :cruh
+    alias_action :create, :read, :update, :history, :batch_action, to: :cruhb
     alias_action :read, :history, to: :rh
 
     @user = _user || User.new
 
     admin_level = user.admin_level || ADMIN_LEVEL_HELP
 
-    manage_or_cru = admin_level >= ADMIN_LEVEL_ADMIN ? :manage : :cruh
+    manage_or_cru = admin_level >= ADMIN_LEVEL_ADMIN ? :manage : :cruhb
     manage_or_read = admin_level >= ADMIN_LEVEL_ADMIN ? :manage : :rh
 
     # User
