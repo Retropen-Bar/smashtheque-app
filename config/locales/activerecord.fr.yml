@@ -154,8 +154,10 @@ fr:
         << : *SHARED
         admins: Admins
         address: Adresse
+        children: Communautés enfant
         countrycode: Pays
         name: Nom
+        parent: Communauté parente
         players: Joueurs
         ranking_url: Power ranking
         twitter_username: Compte Twitter

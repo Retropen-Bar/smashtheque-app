@@ -59,7 +59,7 @@ ActiveAdmin.register Page do
                   }
                 }
               },
-              include_blank: "Aucune"
+              include_blank: 'Aucune'
       f.input :content, as: :action_text
     end
     f.actions

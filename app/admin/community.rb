@@ -21,6 +21,7 @@ ActiveAdmin.register Community do
       decorated.logo_image_tag(max_height: 32)
     end
     column :name
+    column :parent, &:parent_admin_link
     column :address
     column :countrycode, &:country_name_with_flag
     column :discord_guilds, &:discord_guilds_admin_links
@@ -36,6 +37,7 @@ ActiveAdmin.register Community do
          as: :select,
          collection: proc { community_countrycodes_select_collection },
          input_html: { multiple: true, data: { select2: {} } }
+  filter :parent
 
   action_item :map, only: :index do
     link_to 'Carte', action: :map
@@ -56,6 +58,17 @@ ActiveAdmin.register Community do
       column do
         f.inputs do
           f.input :name
+          f.input :parent,
+                  collection: community_parent_select_collection,
+                  input_html: {
+                    data: {
+                      select2: {
+                        placeholder: 'Communauté parente',
+                        allowClear: true
+                      }
+                    }
+                  },
+                  include_blank: 'Aucune'
           f.input :logo,
                   as: :file,
                   hint: 'Laissez vide pour ne pas changer',
@@ -82,6 +95,7 @@ ActiveAdmin.register Community do
 
   permit_params :logo, :name, :address, :latitude, :longitude, :countrycode,
                 :ranking_url, :twitter_username,
+                :parent_id,
                 admin_ids: []
 
   # ---------------------------------------------------------------------------
@@ -101,6 +115,10 @@ ActiveAdmin.register Community do
       row :discord_guilds, &:discord_guilds_admin_links
       row :admins do |decorated|
         decorated.admins_admin_links(size: 32).join('<br/>').html_safe
+      end
+      row :parent, &:parent_admin_link
+      row :children do |decorated|
+        decorated.children_admin_links.join('<br/>').html_safe
       end
       row :created_at
       row :updated_at

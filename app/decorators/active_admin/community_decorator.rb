@@ -5,7 +5,7 @@ module ActiveAdmin
     decorates :community
 
     def admin_link(options = {})
-      super(options.merge(label: name_with_logo(size: 32)))
+      super(options.merge(label: name_with_logo(max_height: 32)))
     end
 
     def discord_guilds_admin_links(options = {})
@@ -35,6 +35,16 @@ module ActiveAdmin
         ) + ' ' + (
           ranking_url
         )
+      end
+    end
+
+    def parent_admin_link(options = {})
+      parent&.admin_decorate&.admin_link(options)
+    end
+
+    def children_admin_links(options = {})
+      children.map do |community|
+        community.admin_decorate.admin_link(options.clone)
       end
     end
   end

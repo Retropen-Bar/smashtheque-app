@@ -1,5 +1,9 @@
 module ActiveAdmin
   module CommunitiesHelper
+    def community_parent_select_collection
+      Community.order('LOWER(name)').pluck(:name, :id)
+    end
+
     def community_countrycodes_select_collection
       Community.pluck('DISTINCT countrycode').reject(&:blank?).sort.map do |code|
         [
