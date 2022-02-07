@@ -35,7 +35,7 @@
           <span>
             <%= recurring_tournament.recurring_type_text %>
           </span>
-          <% if recurring_tournament.is_recurring? && !(@recurring_tournament.starts_at_hour || 0).to_i.zero? %>
+          <% if recurring_tournament.has_starts_at? %>
             <span>&nbsp;•&nbsp;</span>
             <span>
               <%= recurring_tournament.starts_at %>

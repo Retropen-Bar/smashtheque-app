@@ -38,6 +38,10 @@ class RecurringTournamentDecorator < BaseDecorator
     I18n.t('date.day_names')[model.wday].titlecase
   end
 
+  def has_starts_at?
+    model.is_recurring? && !(model.starts_at_hour || 0).zero?
+  end
+
   def starts_at
     "#{starts_at_hour}h#{(starts_at_min || '').to_s.rjust(2, '0')}"
   end
