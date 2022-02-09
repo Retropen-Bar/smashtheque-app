@@ -100,6 +100,7 @@ class Ability
 
     # TwitchChannel
     can manage_or_cru, TwitchChannel
+    can :fetch_twitch_data, TwitchChannel
 
     # YouTubeChannel
     can manage_or_cru, YouTubeChannel
