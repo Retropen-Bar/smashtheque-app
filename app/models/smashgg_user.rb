@@ -50,6 +50,7 @@ class SmashggUser < ApplicationRecord
   # VALIDATIONS
   # ---------------------------------------------------------------------------
 
+  validates :slug, presence: true, uniqueness: true
   validates :smashgg_id, presence: true, uniqueness: true
 
   # ---------------------------------------------------------------------------
