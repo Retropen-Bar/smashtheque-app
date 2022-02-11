@@ -23,11 +23,14 @@ class RecurringTournamentDecorator < BaseDecorator
   end
 
   def size_or_real_size
-    tournament_events_count > 4 ? real_size : size
+    tournament_events_count > 4 ? (real_size || size) : size
   end
 
   def real_size
-    "~ #{tournament_events.order(date: :desc).limit(5).average(:participants_count).round(0)}"
+    counts = tournament_events.order(date: :desc).limit(5).pluck(:participants_count).compact
+    return nil if counts.empty?
+
+    "~ #{(counts.sum / counts.size.to_f).round(0)}"
   end
 
   def recurring_type_text
