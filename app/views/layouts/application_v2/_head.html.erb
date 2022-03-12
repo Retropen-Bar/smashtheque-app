@@ -30,13 +30,14 @@
             <%= svg_icon_tag :groupe %>
             <span>Équipes</span>
           <% end %>
-          <%= link_to characters_path, class: 'dropdown-item' do %>
-            <%= svg_icon_tag :mario %>
-            <span>Personnages</span>
-          <% end %>
           <%= link_to duos_path, class: 'dropdown-item' do %>
             <%= svg_icon_tag :duo %>
             <span>Duos</span>
+          <% end %>
+          <div class="dropdown-divider"></div>
+          <%= link_to characters_path, class: 'dropdown-item' do %>
+            <%= svg_icon_tag :mario %>
+            <span>Personnages</span>
           <% end %>
           <%= link_to communities_path, class: 'dropdown-item' do %>
             <%= svg_icon_tag :lieu %>
@@ -54,12 +55,27 @@
           <button type="button" class="btn btn-back btn-sm">
             <span>Tournois</span>
           </button>
-          <%= link_to 'Séries de tournois', recurring_tournaments_path, class: 'dropdown-item' %>
-          <%= link_to 'Éditions 1v1', tournament_events_path, class: 'dropdown-item' %>
-          <%= link_to 'Éditions 2v2', duo_tournament_events_path, class: 'dropdown-item' %>
+          <%= link_to recurring_tournaments_path, class: 'dropdown-item' do %>
+            <%= svg_icon_tag :trophee %>
+            Séries de tournois
+          <% end %>
+          <%= link_to tournament_events_path, class: 'dropdown-item' do %>
+            <%= svg_icon_tag :_1v1 %>
+            Éditions 1v1
+          <% end %>
+          <%= link_to duo_tournament_events_path, class: 'dropdown-item' do %>
+            <%= svg_icon_tag :_2v2 %>
+            Éditions 2v2
+          <% end %>
           <div class="dropdown-divider"></div>
-          <%= link_to 'Planning hebdo', planning_recurring_tournaments_path, class: 'dropdown-item' %>
-          <%= link_to 'Carte du offline', map_recurring_tournaments_path, class: 'dropdown-item' %>
+          <%= link_to planning_recurring_tournaments_path, class: 'dropdown-item' do %>
+            <%= svg_icon_tag :calendar %>
+            Planning hebdo
+          <% end %>
+          <%= link_to map_recurring_tournaments_path, class: 'dropdown-item' do %>
+            <%= svg_icon_tag :map %>
+            Carte du offline
+          <% end %>
         </div>
       </li>
 

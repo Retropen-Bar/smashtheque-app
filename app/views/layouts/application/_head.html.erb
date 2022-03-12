@@ -16,7 +16,7 @@
   <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto text-center text-lg-left">
 
-      <li class="nav-item dropdown newpill">
+      <li class="nav-item dropdown">
         <%= link_to players_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
           <%= fas_icon_tag :user %>
           <span>Joueurs & Cie</span>
@@ -24,13 +24,14 @@
         <div class="dropdown-menu">
           <%= link_to 'Abécédaire', players_path, class: 'dropdown-item' %>
           <%= link_to 'Équipes', teams_path, class: 'dropdown-item' %>
-          <%= link_to 'Personnages', characters_path, class: 'dropdown-item' %>
           <%= link_to 'Duos', duos_path, class: 'dropdown-item' %>
+          <div class="dropdown-divider"></div>
+          <%= link_to 'Personnages', characters_path, class: 'dropdown-item' %>
           <%= link_to 'Communautés locales', communities_path, class: 'dropdown-item' %>
         </div>
       </li>
 
-      <li class="nav-item dropdown">
+      <li class="nav-item dropdown newpill">
         <%= link_to recurring_tournaments_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
           <%= fas_icon_tag :chess %>
           <span>Tournois</span>
