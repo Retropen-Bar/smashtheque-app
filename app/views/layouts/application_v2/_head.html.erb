@@ -7,7 +7,7 @@
 
   <slide-out dock="right" :visible.sync="mainNavVisible" :arrow-button="false" size="273px" title="Menu" class="collapse navbar-collapse" id="navbarSupportedContent">
     <%= link_to page_path(slug: 'liens-utiles'), class: 'btn btn-gradient-pink rounded w-100 d-flex d-xxl-none align-items-center mb-4 border-0 py-2' do %>
-      <%= svg_icon_tag :panneau %>
+      <%= svg_icon_tag :guide %>
       <span class="pl-2">Besoin d'aide ?</span>
     <% end %>
 
@@ -15,12 +15,12 @@
 
       <li class="nav-item dropdown players ml-xxl-auto">
         <%= link_to players_path, class: "nav-link dropdown-toggle#{' active' if current_section?(:players)}", data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
-          <span>Joueurs & Cie</span>
+          <span>Joueurs</span>
         <% end %>
 
         <div class="dropdown-menu">
           <button type="button" class="btn btn-back btn-sm">
-            <span>Joueurs & Cie</span>
+            <span>Joueurs</span>
           </button>
           <%= link_to players_path, class: 'dropdown-item' do %>
             <%= svg_icon_tag :joueur %>

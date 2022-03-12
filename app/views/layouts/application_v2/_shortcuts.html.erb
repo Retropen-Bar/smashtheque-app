@@ -1,19 +1,19 @@
 <% if !action_name.eql?('home') %>
 <nav class="shortcuts d-flex d-md-none justify-content-between">
   <%= link_to players_path, class: "shortcuts-link players#{' active' if current_section?(:players)}" do %>
-    <%= svg_icon_tag :groupe %>
-    <span class="mt-n2">Joueurs <br/>& Cie</span>
+    <%= svg_icon_tag :joueurs %>
+    <span>Joueurs</span>
   <% end %>
   <%= link_to tournament_events_path, class: "shortcuts-link tournaments#{' active' if current_section?(:tournaments)}" do %>
-    <%= svg_icon_tag :trophee %>
+    <%= svg_icon_tag :trophee2 %>
     <span>Tournois</span>
   <% end %>
   <%= link_to '#', class: "shortcuts-link smashtheque-tv#{' active' if current_section?(:smashtheque_tv)}" do %>
-    <%= svg_icon_tag :tv %>
+    <%= svg_icon_tag :smashthequetv %>
     <span>ST<sup>TV</sup></span>
   <% end %>
   <%= link_to ranking_players_path, class: "shortcuts-link rosalina#{' active' if current_section?(:rosalina)}" do %>
-    <%= svg_icon_tag :telescope %>
+    <%= svg_icon_tag :observatory %>
     <span>Observatoire</sup></span>
   <% end %>
 </nav>
