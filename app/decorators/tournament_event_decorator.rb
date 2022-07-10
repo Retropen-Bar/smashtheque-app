@@ -27,7 +27,7 @@ class TournamentEventDecorator < TournamentEventBaseDecorator
       case bracket_type.to_sym
       when :SmashggEvent
         [
-          'Bracket smash.gg',
+          'Bracket start.gg',
           bracket.send("top#{rank}_smashgg_user".to_sym)&.gamer_tag
         ].join(' : ')
       when :BraacketTournament

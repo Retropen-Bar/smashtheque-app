@@ -176,8 +176,8 @@
               Un bracket Challonge
             <% end %>
             <%= link_to new_admin_smashgg_event_path, class: 'dropdown-item' do %>
-              <img src="https://smash.gg/images/gg-app-icon.png" height="16" class="fa-fw mr-2"/>
-              Un bracket smash.gg
+              <img src="<%= SmashggEvent::ICON_URL %>" height="16" class="fa-fw mr-2"/>
+              Un bracket start.gg
             <% end %>
             <div class="dropdown-divider"></div>
             <%= link_to new_admin_discord_user_path, class: 'dropdown-item' do %>

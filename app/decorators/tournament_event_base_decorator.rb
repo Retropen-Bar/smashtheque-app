@@ -46,7 +46,7 @@ class TournamentEventBaseDecorator < BaseDecorator
     puts '====='
     height = 32 || options.delete(:height)
     options&.merge(height: height)
-    return h.image_tag('https://smash.gg/images/gg-app-icon.png', options) if is_on_smashgg?
+    return h.image_tag(SmashggEvent::ICON_URL, options) if is_on_smashgg?
     return h.image_tag('https://braacket.com/favicon.ico', options) if is_on_braacket?
 
     if is_on_challonge?

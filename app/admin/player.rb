@@ -153,7 +153,7 @@ ActiveAdmin.register Player do
           f.input :discord_id,
                   label: 'ID du compte'
         end
-        f.inputs 'Compte(s) smash.gg' do
+        f.inputs 'Compte(s) start.gg' do
           f.object.smashgg_users.each do |smashgg_user|
             div class: 'existing-value' do
               smashgg_user.admin_decorate.admin_link

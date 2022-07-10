@@ -7,7 +7,7 @@ class CreateSmashggUsers < ActiveRecord::Migration[6.0]
       # relations
       t.belongs_to :player
 
-      # smash.gg profile
+      # profile
       t.text :bio
       t.string :birthday
       t.string :gender_pronoun

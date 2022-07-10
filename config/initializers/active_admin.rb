@@ -281,7 +281,7 @@ ActiveAdmin.setup do |config|
                priority: 20
 
       menu.add parent: '<i class="fas fa-fw fa-plus"></i>Ajouter'.html_safe,
-               label: '<img src="https://smash.gg/images/gg-app-icon.png" height="16" class="logo"/>Un bracket smash.gg'.html_safe,
+               label: "<img src='#{SmashggEvent::ICON_URL}' height='16' class='logo'/>Un bracket start.gg".html_safe,
                url: '/admin/smashgg_events/new',
                priority: 21
 

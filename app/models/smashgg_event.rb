@@ -72,9 +72,10 @@ class SmashggEvent < ApplicationRecord
       end
     ]
   end.to_h.freeze
-  SHORT_URL_REGEXP = %r{\Ahttps://smash.gg/[^/]+\z}
+  SHORT_URL_REGEXP = %r{\Ahttps://(smash|start).gg/[^/]+\z}
   EVENT_URL_REGEXP = %r{tournament/[^/]+/event/[^/]+}
   TOURNAMENT_URL_REGEXP = %r{tournament/[^/]+}
+  ICON_URL = 'https://developer.start.gg/img/favicon/favicon.ico'.freeze
 
   # ---------------------------------------------------------------------------
   # RELATIONS
@@ -221,18 +222,24 @@ class SmashggEvent < ApplicationRecord
     ''
   end
 
+  def self.is_short_url?(url)
+    SHORT_URL_REGEXP =~ url
+  end
+
   def self.slug_from_url(url)
-    url = long_url_from_short_url(url) if SHORT_URL_REGEXP =~ url
+    return nil if url.blank?
+
+    url = long_url_from_short_url(url) if is_short_url?(url)
     url.slice(EVENT_URL_REGEXP)
   end
 
   def self.tournament_slug_from_url(url)
-    url = long_url_from_short_url(url) if SHORT_URL_REGEXP =~ url
+    url = long_url_from_short_url(url) if is_short_url?(url)
     url.slice(TOURNAMENT_URL_REGEXP)
   end
 
   def smashgg_url=(url)
-    url = self.class.long_url_from_short_url(url) if SHORT_URL_REGEXP =~ url
+    url = self.class.long_url_from_short_url(url) if is_short_url?(url)
     self.slug = self.class.slug_from_url(url)
     self.tournament_slug = self.class.tournament_slug_from_url(url)
   end
@@ -322,11 +329,11 @@ class SmashggEvent < ApplicationRecord
   alias_method :fetch_provider_data, :fetch_smashgg_data
 
   def tournament_smashgg_url
-    tournament_slug && "https://smash.gg/#{tournament_slug}/details"
+    tournament_slug && "https://www.start.gg/#{tournament_slug}/details"
   end
 
   def smashgg_url
-    slug && "https://smash.gg/#{slug}"
+    slug && "https://www.start.gg/#{slug}"
   end
 
   def self.lookup(name:, from:, to:, country:)

@@ -54,9 +54,23 @@ module IsTournamentEvent
       )
     end
 
-    scope :on_smashgg, -> { where("bracket_url LIKE 'https://smash.gg/%'") }
-    scope :on_braacket, -> { where("bracket_url LIKE 'https://braacket.com/%'") }
-    scope :on_challonge, -> { where("bracket_url LIKE 'https://challonge.com/%'") }
+    def self.on_smashgg
+      where("bracket_url LIKE 'https://smash.gg/%'
+          OR bracket_url LIKE 'https://www.smash.gg/%'
+          OR bracket_url LIKE 'https://start.gg/%'
+          OR bracket_url LIKE 'https://www.start.gg/%'")
+    end
+
+    def self.on_braacket
+      where("bracket_url LIKE 'https://braacket.com/%'
+          OR bracket_url LIKE 'https://www.braacket.com/%'")
+    end
+
+    def self.on_challonge
+      where("bracket_url LIKE 'https://challonge.com/%'
+          OR bracket_url LIKE 'https://www.challonge.com/%'")
+    end
+
     scope :on_platform, -> { on_smashgg.or(on_braacket).or(on_challonge) }
     scope :with_available_bracket, -> { on_platform.where(bracket: nil) }
 
@@ -234,22 +248,31 @@ module IsTournamentEvent
              allow_nil: true
 
     def is_on_smashgg?
-      if !bracket_type.nil?
-        bracket_type.to_sym == :SmashggEvent
+      if bracket_type.nil?
+        bracket_url&.starts_with?('https://smash.gg/',
+                                  'https://www.smash.gg/',
+                                  'https://start.gg/',
+                                  'https://www.start.gg/')
       else
-        bracket_url&.starts_with?('https://smash.gg/')
+        bracket_type.to_sym == :SmashggEvent
       end
     end
 
     def is_on_braacket?
-      bracket_type.nil? && bracket_url&.starts_with?('https://braacket.com/')
+      if bracket_type.nil?
+        bracket_url&.starts_with?('https://braacket.com/',
+                                  'https://www.braacket.com/')
+      else
+        bracket_type.to_sym == :BraacketTournament
+      end
     end
 
     def is_on_challonge?
-      if !bracket_type.nil?
-        bracket_type.to_sym == :ChallongeTournament
+      if bracket_type.nil?
+        bracket_url&.starts_with?('https://challonge.com/',
+                                  'https://www.challonge.com/')
       else
-        bracket_url&.starts_with?('https://challonge.com/')
+        bracket_type.to_sym == :ChallongeTournament
       end
     end
 

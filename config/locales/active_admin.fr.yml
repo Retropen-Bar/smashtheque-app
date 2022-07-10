@@ -31,7 +31,7 @@ fr:
       online: Online
       online_1v1: Online 1v1
       online_2v2: Online 2v2
-      on_smashgg: smash.gg
+      on_smashgg: start.gg
       on_braacket: Braacket
       on_challonge: Challonge
       published: Publié
@@ -60,7 +60,7 @@ fr:
       without_discord_user: Non relié à Discord
       without_player: Non lié à un joueur
       without_recurring_tournament: Sans série
-      without_smashgg_user: Sans smash.gg
+      without_smashgg_user: Sans start.gg
       without_tournament_event: Sans édition 1v1
       without_user: Sans utilisateur
     new_model: Créer
