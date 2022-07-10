@@ -44,7 +44,7 @@ class TournamentEventBaseDecorator < BaseDecorator
     height = 32 || options.delete(:height)
     options&.merge!(height: height)
     return h.image_tag(SmashggEvent::ICON_URL, options) if is_on_smashgg?
-    return h.image_tag(BraacketTournament::BraacketTournament, options) if is_on_braacket?
+    return h.image_tag(BraacketTournament::ICON_URL, options) if is_on_braacket?
     return h.image_tag(ChallongeTournament::ICON_URL, options) if is_on_challonge?
 
     h.svg_icon_tag(:bracket, options)
