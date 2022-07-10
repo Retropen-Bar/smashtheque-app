@@ -87,7 +87,7 @@ class ChallongeTournament < ApplicationRecord
       participants_count: data['participants_count']
     }
     result[:start_at] = DateTime.parse(data['start_at']) if data['start_at']
-    data['participants'].each do |_participant|
+    (data['participants'] || []).each do |_participant|
       if participant = _participant['participant']
         placement = participant['final_rank']
         if (placement || 0) > 0 && placement < 8
