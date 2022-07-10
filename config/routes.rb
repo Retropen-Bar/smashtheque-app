@@ -123,7 +123,7 @@ Rails.application.routes.draw do
   resources :twitch_channels, only: [:index]
   resources :you_tube_channels, only: [:index]
   resources :caster_users, only: [:index], path: :casters
-  resources :coach_users, only: [:index], path: :coaches
+  resources :coach_users, only: [:index], path: :coachs
   resources :graphic_designer_users, only: [:index], path: :graphic_designers
 
   resources :users, only: %i(show edit update) do
