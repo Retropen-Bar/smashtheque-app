@@ -2,7 +2,7 @@ class BraacketTournamentDecorator < BaseDecorator
   def name_with_icon(size: 32)
     [
       h.image_tag(
-        'https://braacket.com/favicon.ico',
+        BraacketTournament::ICON_URL,
         height: size,
         style: 'vertical-align: middle'
       ),
@@ -15,7 +15,7 @@ class BraacketTournamentDecorator < BaseDecorator
 
     h.link_to braacket_url, target: '_blank', rel: :noopener do
       (
-        h.image_tag 'https://braacket.com/favicon.ico', height: 16, class: 'logo'
+        h.image_tag BraacketTournament::ICON_URL, height: 16, class: 'logo'
       ) + ' ' + (
         h.tag.span model.name
       )

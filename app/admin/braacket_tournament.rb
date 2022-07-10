@@ -3,7 +3,7 @@ ActiveAdmin.register BraacketTournament do
 
   is_bracket
 
-  menu parent: '<img src="https://braacket.com/favicon.ico" height="16" class="logo"/>Braacket'.html_safe,
+  menu parent: "<img src='#{BraacketTournament::ICON_URL}' height='16' class='logo'/>Braacket".html_safe,
        label: '<i class="fas fa-fw fa-chess"></i>Tournois'.html_safe
 
   # ---------------------------------------------------------------------------

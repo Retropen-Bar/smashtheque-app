@@ -39,6 +39,7 @@ class ChallongeTournament < ApplicationRecord
   PARTICIPANT_NAMES = TournamentEvent::TOP_RANKS.map do |rank|
     "top#{rank}_participant_name".to_sym
   end.freeze
+  ICON_URL = 'https://assets.challonge.com/assets/challonge_fireball_orange-a973ff3b12c34c780fc21313ec71aada3b9b779cbd3a62769e9199ce08395692.svg'.freeze
 
   # ---------------------------------------------------------------------------
   # VALIDATIONS
