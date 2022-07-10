@@ -260,7 +260,7 @@ ActiveAdmin.register TournamentEvent do
   action_item :other_actions, only: :show do
     dropdown_menu 'Autres actions' do
       if can?(:complete_with_bracket, resource)
-        item 'Compléter avec smash.gg', action: :complete_with_bracket if resource.is_on_smashgg?
+        item 'Compléter avec start.gg', action: :complete_with_bracket if resource.is_on_smashgg?
         item 'Compléter avec Braacket', action: :complete_with_bracket if resource.is_on_braacket?
         item 'Compléter avec Challonge', action: :complete_with_bracket if resource.is_on_challonge?
       end

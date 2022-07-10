@@ -14,7 +14,7 @@ class SmashggUserDecorator < BaseDecorator
   end
 
   def any_image_url
-    avatar_url.presence || 'https://smash.gg/images/gg-app-icon.png'
+    avatar_url.presence || SmashggEvent::ICON_URL
   end
 
   def any_image_tag(size: 32)
@@ -42,7 +42,7 @@ class SmashggUserDecorator < BaseDecorator
 
     h.link_to smashgg_url, class: 'account-badge', target: '_blank', rel: :noopener do
       (
-        h.image_tag 'https://smash.gg/images/gg-app-icon.png', height: 24, class: 'logo'
+        h.image_tag SmashggEvent::ICON_URL, height: 24, class: 'logo'
       ) + ' ' + (
         avatar_and_name(**options)
       )
@@ -54,7 +54,7 @@ class SmashggUserDecorator < BaseDecorator
 
     h.link_to smashgg_url, target: '_blank', rel: :noopener do
       (
-        h.content_tag :span, "Profil smash.gg de #{prefixed_gamer_tag || slug}", class: 'sr-only'
+        h.content_tag :span, "Profil start.gg de #{prefixed_gamer_tag || slug}", class: 'sr-only'
       ) + ' ' + (
         h.svg_icon_tag(:smashgg)
       )
@@ -67,7 +67,7 @@ class SmashggUserDecorator < BaseDecorator
     h.link_to smashgg_url, target: '_blank', rel: :noopener do
 
       (
-        h.image_tag 'https://smash.gg/images/gg-app-icon.png', height: 16, class: 'logo'
+        h.image_tag SmashggEvent::ICON_URL, height: 16, class: 'logo'
       ) + ' ' + (
         h.tag.span model.slug
       )

@@ -237,7 +237,7 @@ class SmashggClient
       }
     )
     if response.data.nil?
-      puts "Smash.gg error: #{response.inspect}"
+      puts "Start.gg error: #{response.inspect}"
       return nil
     end
     result = []

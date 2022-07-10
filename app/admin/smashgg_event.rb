@@ -3,7 +3,7 @@ ActiveAdmin.register SmashggEvent do
 
   is_bracket
 
-  menu parent: '<img src="https://smash.gg/images/gg-app-icon.png" height="16" class="logo"/>smash.gg'.html_safe,
+  menu parent: "<img src='#{SmashggEvent::ICON_URL}' height='16' class='logo'/>start.gg".html_safe,
        label: '<i class="fas fa-fw fa-chess"></i>Tournois'.html_safe
 
   # ---------------------------------------------------------------------------
@@ -64,7 +64,7 @@ ActiveAdmin.register SmashggEvent do
 
   form do |f|
     f.inputs do
-      f.input :smashgg_url, placeholder: 'https://smash.gg/...'
+      f.input :smashgg_url, placeholder: 'https://www.start.gg/...'
     end
     f.actions
   end
@@ -138,7 +138,7 @@ ActiveAdmin.register SmashggEvent do
   # ---------------------------------------------------------------------------
 
   action_item :lookup, only: :index do
-    link_to 'Rechercher sur smash.gg', { action: :lookup }, class: :orange
+    link_to 'Rechercher sur start.gg', { action: :lookup }, class: :orange
   end
 
   collection_action :lookup do
