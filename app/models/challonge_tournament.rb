@@ -57,7 +57,7 @@ class ChallongeTournament < ApplicationRecord
     return nil if url.starts_with?('http') && !url.starts_with?('https://challonge.com')
 
     url += '/' unless url.ends_with?('/')
-    url.gsub(%r{https://challonge.com/}, '').gsub(%r{(fr|en)/}, '').gsub(%r{/.*}, '').presence
+    url.gsub(%r{\Ahttps://challonge.com/}, '').gsub(%r{\A(fr|en)/}, '').gsub(%r{/.*}, '').presence
   end
 
   def challonge_url=(url)
