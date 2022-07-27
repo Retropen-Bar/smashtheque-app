@@ -1,0 +1,72 @@
+.ranking {
+  --grid-template-columns: 12ch 1fr repeat(4, 12ch);
+
+  &-header {
+    display: grid;
+    grid-template-columns: var(--grid-template-columns);
+    gap: 1rem;
+    min-width: 0;
+    margin-bottom: 1rem;
+    align-items: center;
+    text-transform: uppercase;
+    background-color: $card-bg;
+    padding: $card-spacer-x;
+    border-radius: $border-radius-lg;
+
+    & > * {
+      font-size: 0.75rem;
+    }
+  }
+
+  &-list {
+    & > *:not(:last-child) {
+      margin-bottom: 0.625rem;
+    }
+  }
+
+  &-item {
+    display: grid;
+    grid-template-columns: var(--grid-template-columns);
+    gap: 1rem;
+    align-items: center;
+    background-color: rgba($card-bg, 0.7);
+    border-radius: $border-radius-lg;
+    padding: 0.25rem $card-spacer-x;
+    transition: transform 0.2s;
+    position: relative;
+    backface-visibility: hidden;
+
+    .admin-edit-link {
+      position: absolute;
+      top: 0.25rem;
+      right: 0.25rem;
+    }
+
+    &:hover {
+      transform: scale(1.02);
+      background-color: rgba($rosalina, 0.2);
+    }
+  }
+
+  &-player {
+    display: flex;
+    align-items: center;
+
+    h5 {
+      font-size: 1.125rem;
+      margin-bottom: 0;
+    }
+
+    .flag-icon {
+      font-size: 0.75rem;
+    }
+  }
+
+  &-points {
+    img {
+      width: 1.25rem;
+      height: auto;
+      margin-right: 0.5ch;
+    }
+  }
+}

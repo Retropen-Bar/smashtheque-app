@@ -1,5 +1,4 @@
 module ApplicationHelper
-
   def toastr_method_for_flash(flash_type)
     case flash_type
     when 'success', 'error'
@@ -37,9 +36,11 @@ module ApplicationHelper
   def current_section?(section_name)
     case section_name
     when :players
-      controller_name =~ /(players|teams|duos|communities|characters)/
+      controller_name =~ /(players|teams|duos|communities|characters)/ && action_name !~ /(ranking)/
     when :tournaments
       controller_name =~ /(tournament)/ || action_name =~ /(planning)/
+    when :rosalina
+      action_name =~ /(ranking)/
     else
       false
     end
@@ -48,6 +49,7 @@ module ApplicationHelper
   def current_section_name
     return :players if current_section?(:players)
     return :tournaments if current_section?(:tournaments)
+    return :rosalina if current_section?(:rosalina)
   end
 
   def url_with(changes)
@@ -57,35 +59,35 @@ module ApplicationHelper
 
   def hex_color_to_rgba(hex, opacity)
     rgb = hex.match(/^#(..)(..)(..)$/).captures.map(&:hex)
-    "rgba(#{rgb.join(", ")}, #{opacity})"
+    "rgba(#{rgb.join(', ')}, #{opacity})"
   end
 
-  def darken_color(hex_color, amount=0.4)
-    hex_color = hex_color.gsub('#','')
-    rgb = hex_color.scan(/../).map {|color| color.hex}
+  def darken_color(hex_color, amount = 0.4)
+    hex_color = hex_color.delete('#')
+    rgb = hex_color.scan(/../).map { |color| color.hex }
     rgb[0] = (rgb[0].to_i * amount).round
     rgb[1] = (rgb[1].to_i * amount).round
     rgb[2] = (rgb[2].to_i * amount).round
-    "#%02x%02x%02x" % rgb
+    '#%02x%02x%02x' % rgb
   end
 
   # Amount should be a decimal between 0 and 1. Higher means lighter
-  def lighten_color(hex_color, amount=0.6)
-    hex_color = hex_color.gsub('#','')
-    rgb = hex_color.scan(/../).map {|color| color.hex}
-    rgb[0] = [(rgb[0].to_i + 255 * amount).round, 255].min
-    rgb[1] = [(rgb[1].to_i + 255 * amount).round, 255].min
-    rgb[2] = [(rgb[2].to_i + 255 * amount).round, 255].min
-    "#%02x%02x%02x" % rgb
+  def lighten_color(hex_color, amount = 0.6)
+    hex_color = hex_color.delete('#')
+    rgb = hex_color.scan(/../).map { |color| color.hex }
+    rgb[0] = [(rgb[0].to_i + (255 * amount)).round, 255].min
+    rgb[1] = [(rgb[1].to_i + (255 * amount)).round, 255].min
+    rgb[2] = [(rgb[2].to_i + (255 * amount)).round, 255].min
+    '#%02x%02x%02x' % rgb
   end
 
   def contrasting_text_color(hex_color)
-    color = hex_color.gsub('#','')
+    color = hex_color.delete('#')
     convert_to_brightness_value(color) > 382.5 ? darken_color(color) : lighten_color(color)
   end
 
   def convert_to_brightness_value(hex_color)
-    (hex_color.scan(/../).map {|color| color.hex}).sum
+    (hex_color.scan(/../).map { |color| color.hex }).sum
   end
 
   def simple_link_to_add_fields(name, form, association, options = {})

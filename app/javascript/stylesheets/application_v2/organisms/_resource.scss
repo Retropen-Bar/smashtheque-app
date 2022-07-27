@@ -134,6 +134,13 @@
 
   .avatar {
     border-radius: $card-border-radius;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  &-sm {
+    width: 42px;
+    height: 42px;
   }
 }
 

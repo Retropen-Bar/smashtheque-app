@@ -1,0 +1,84 @@
+<article class="ranking-item">
+  <div class="ranking-rank">
+    #<%= defined?(rank) ? rank : player.rank(
+      is_online: defined?(is_online) && is_online,
+      year: defined?(year) && year) %>
+  </div>
+
+  <div class="ranking-player">
+    <div class="resource-avatar resource-avatar-sm card">
+      <% if player && player.is_legit? %>
+        <%= link_to player.avatar_tag(76), player %>
+      <% end %>
+    </div>
+
+    <div>
+      <h5 class="text-truncate">
+        <% if player && player.is_legit? %>
+          <%= link_to player.name, player %>
+        <% else %>
+          ?
+        <% end %>
+      </h5>
+      <% if country_flag = player.country_flag %>
+        <%= country_flag %>
+      <% end%>
+    </div>
+  </div>
+
+  <div class="ranking-teams">
+    <% if player && player.is_legit? && (player.country_flag || player.teams.present?) %>
+        <small class="list-teams player-teams align-items-center">
+          <% if player.teams.present? %>
+            <% player.teams[0...2].each do |team| %>
+              <span class="list-team"><%= team.short_name %></span>
+            <% end %>
+          <% end %>
+        </small>
+      <% end %>
+  </div>
+
+  
+  <div class="ranking-reward text-center">
+    <% if player %>
+      <%== player.best_reward_badge(is_online: is_online, class: 'card-box-icon') %>
+    <% end %>
+  </div>
+
+
+  <div class="ranking-points">
+    <% if player %>
+      <% if defined?(with_points) && with_points %>
+        <div class="player-points">
+          <%= player.points_count(
+          32,
+          is_online: defined?(is_online) && is_online,
+          year: defined?(year) && year,
+          value: defined?(points) && points) %>
+          <% if defined?(reward_condition) && reward_condition %>
+            <span class="text-light">(+<%= reward_condition.points %>)</span>
+          <% end %>
+        </div>
+      <% end %>
+    <% end%>
+  </div>
+
+
+  <div class="ranking-players">
+    <% if player && player.characters.present? %>
+      <div class="list-characters-compact flex-shrink-0">
+        <% player.characters[0...3].each do |character| %>
+          <%= character.decorate.link %>
+        <% end %>
+      </div>
+    <% end %>
+    <% if player && player.is_legit? %>
+      <%= link_to player, class: 'resource-link' do %>
+        <span class="sr-only">Voir plus</span>
+      <% end %>
+    <% end %>
+    <% if player %>
+      <%= admin_edit_link(player) %>
+    <%end%>
+  </div>
+</article>

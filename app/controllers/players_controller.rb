@@ -57,22 +57,22 @@ class PlayersController < PublicController
     @player = Player.legit.find(params[:id])
     @online_rewards_counts = @player.rewards_counts(is_online: true)
     @offline_rewards_counts = @player.rewards_counts(is_online: false)
-    @tournament_events = @player.tournament_events
-                                .visible
-                                .order(date: :desc)
-                                .includes(
-                                  recurring_tournament: :discord_guild
-                                ).decorate
-    @met_reward_conditions_by_tournament_event_id = Hash[
-      @player.met_reward_conditions
-             .includes(
-               reward: {
-                 image_attachment: :blob
-               }
-             ).map do |met_reward_condition|
-        [met_reward_condition.event_id, met_reward_condition]
+    @tournament_events = @player.tournament_events.
+      visible.
+      order(date: :desc).
+      includes(
+        recurring_tournament: :discord_guild
+      ).decorate
+    @met_reward_conditions_by_tournament_event_id =
+      @player.met_reward_conditions.
+        includes(
+          reward: {
+            image_attachment: :blob
+          }
+        ).index_by do |met_reward_condition|
+        met_reward_condition.event_id
       end
-    ]
+
     @all_online_rewards = Reward.online_1v1.includes(image_attachment: :blob)
     @all_offline_rewards = Reward.offline_1v1.includes(image_attachment: :blob)
     main_character = @player.characters.first&.decorate
@@ -113,27 +113,26 @@ class PlayersController < PublicController
       @is_online ? 'Online' : 'Offline',
       @year
     ].compact.join(' ')
-    render layout: 'application'
   end
 
   def autocomplete
     render json: {
-      results: Player.by_keyword(params[:term])
-                     .includes(
-                       :smashgg_users, :teams, :characters,
-                       user: :discord_user
-                     )
-                     .limit(10)
-                     .decorate
-                     .map do |player|
-        {
-          id: player.id,
-          type: :player,
-          avatar: player.avatar_tag(32),
-          html: player.as_autocomplete_result,
-          text: player.name_and_old_names
-        }
-      end
+      results: Player.by_keyword(params[:term]).
+        includes(
+          :smashgg_users, :teams, :characters,
+          user: :discord_user
+        ).
+        limit(10).
+        decorate.
+        map do |player|
+                 {
+                   id: player.id,
+                   type: :player,
+                   avatar: player.avatar_tag(32),
+                   html: player.as_autocomplete_result,
+                   text: player.name_and_old_names
+                 }
+               end
     }
   end
 
