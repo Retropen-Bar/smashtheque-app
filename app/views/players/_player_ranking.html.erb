@@ -41,7 +41,7 @@
   
   <div class="ranking-reward text-center">
     <% if player %>
-      <%== player.best_reward_badge(is_online: is_online, class: 'card-box-icon') %>
+      <%== player.best_reward_badge(is_online: is_online) %>
     <% end %>
   </div>
 
@@ -64,7 +64,7 @@
   </div>
 
 
-  <div class="ranking-players">
+  <div class="ranking-characters">
     <% if player && player.characters.present? %>
       <div class="list-characters-compact flex-shrink-0">
         <% player.characters[0...3].each do |character| %>
