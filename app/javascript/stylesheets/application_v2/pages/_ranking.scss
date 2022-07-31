@@ -16,6 +16,29 @@
       minmax(10ch, 0.3fr) minmax(10ch, 0.3fr);
   }
 
+  &-banners {
+    position: sticky;
+    top: 86px;
+  }
+
+  &-banner {
+    height: 100vh;
+    width: 36vh;
+    opacity: 0.2;
+    object-fit: contain;
+    object-position: bottom;
+    position: absolute;
+    top: -86px;
+
+    &-left {
+      right: 90%;
+    }
+
+    &-right {
+      left: 90%;
+    }
+  }
+
   &-header {
     display: none;
     grid-template-columns: var(--grid-template-columns);

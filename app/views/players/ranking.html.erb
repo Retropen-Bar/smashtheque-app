@@ -31,6 +31,10 @@
           </section>
         </div>
         <div class="col mt-2 mt-xl-0">
+          <div class="ranking-banners d-none d-xl-block">
+            <%= image_tag 'banniere_g.svg', class: 'ranking-banner ranking-banner-left' %>
+            <%= image_tag 'banniere_d.svg', class: 'ranking-banner ranking-banner-right' %>
+          </div>
           <h1 class="page-title index-title d-none d-xl-block">Observatoire d'Harmonie 1v1</h1>
           <section class="py-3 d-none d-xl-flex flex-wrap align-items-center">
             <small class="text-muted"><%= @players.total_count %> résultat(s)</small>
