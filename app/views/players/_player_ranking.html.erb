@@ -1,8 +1,9 @@
 <article class="ranking-item">
-  <div class="ranking-rank">
-    #<%= defined?(rank) ? rank : player.rank(
-      is_online: defined?(is_online) && is_online,
-      year: defined?(year) && year) %>
+  <% player_rank = defined?(rank) ? rank : player.rank(
+                                            is_online: defined?(is_online) && is_online,
+                                            year: defined?(year) && year) %>
+  <div class="ranking-rank" data-rank="<%= player_rank %>">
+    <span>#<%= player_rank %></span>
   </div>
 
   <div class="ranking-player">
@@ -30,9 +31,9 @@
     <% if player && player.is_legit? && (player.country_flag || player.teams.present?) %>
         <small class="list-teams player-teams align-items-center">
           <% if player.teams.present? %>
-            <% player.teams[0...2].each do |team| %>
-              <span class="list-team"><%= team.short_name %></span>
-            <% end %>
+             <% player.teams[0..1].each do |team| %>
+                <%= team.decorate.link(label: team.short_name, class: 'list-team') %>
+              <% end %>
           <% end %>
         </small>
       <% end %>
