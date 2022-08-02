@@ -1,3 +1,8 @@
+<% has_alt_rank = params[:by_community_id].present? ||
+                  params[:by_team_id].present? ||
+                  params[:by_character_id].present? ||
+                  @fr_only %>
+
 <div class="container-xl mt-md-3 mt-xxl-4 mt-xxl-4">
   <div class="row flex-nowrap align-items-start flex-column flex-lg-row">
     <%= render 'layouts/application_v2/rankings/index_nav' %>
@@ -7,7 +12,7 @@
           <h1 class="page-title index-title mt-2 mt-sm-4">Observatoire d'Harmonie 1v1</h1>
         </div>
         <div id="index-filters" class="col-12 col-xl-auto order-xl-1">
-          <section class="index-section my-2 my-md-3 mt-xl-0 py-1 pl-3 pr-1 py-md-2 pr-md-2 pl-md-2 py-xl-0 px-xl-0 d-flex d-xl-block align-items-center shadow-lg bg-bg bg-lg-none rounded-pill">
+          <section class="index-section my-1 my-sm-2 my-md-3 mt-xl-0 py-1 pl-3 pr-1 py-md-2 pr-md-2 pl-md-2 py-xl-0 px-xl-0 d-flex d-xl-block align-items-center shadow-lg bg-bg bg-lg-none rounded-pill">
             <small class="text-muted d-inline-block d-xl-none"><%= @players.total_count %> résultat(s)</small>
             <button @click="filtersVisible = true" type="button" class="btn btn-dark btn-sm btn-with-icon rounded-pill players ml-auto<%= ' active' if params[:on_abc] %> d-flex d-xl-none">
               <%= svg_icon_tag :filtre %> Filtres
@@ -30,7 +35,7 @@
             </slide-out>
           </section>
         </div>
-        <div class="col mt-2 mt-xl-0">
+        <div class="col mt-4 mt-sm-2 mt-xl-0" has-alt-rank="<%= has_alt_rank %>">
           <div class="ranking-banners d-none d-xl-block">
             <%= image_tag 'banniere_g.svg', class: 'ranking-banner ranking-banner-left' %>
             <%= image_tag 'banniere_d.svg', class: 'ranking-banner ranking-banner-right' %>
@@ -51,14 +56,13 @@
             <span class="text-center">Personnages</span>
           </div>
           <div class="ranking-list list">
-            <% @players.each do |player| %>
+            <% @players.each_with_index do |player, index| %>
               <%= render  'players/player_ranking',
                           player: player.decorate,
                           year: @year,
                           is_online: @is_online,
                           with_points: true,
-                          with_addresses: defined?(with_addresses) && with_addresses,
-                          with_communities: defined?(with_communities) && with_communities %>
+                          rank: has_alt_rank ? index + 1 + ((params[:page] || 1).to_i - 1) * 25 : nil %>
             <% end %>
           </div>
           <div class='my-4'>

@@ -107,6 +107,12 @@
       }
     }
   }
+
+  .index-section {
+    @include media-breakpoint-down(xl) {
+      border: 1px solid $gray-deep;
+    }
+  }
 }
 
 #index-nav,

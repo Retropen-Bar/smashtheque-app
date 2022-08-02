@@ -2,12 +2,17 @@
   --grid-template-columns: 1fr 5.6ch 3ch;
 
   @media (min-width: 360px) {
-    --grid-template-columns: 1fr minmax(2.5ch, 0.3fr) minmax(5.6ch, 0.5fr)
+    --grid-template-columns: 1.25fr minmax(2.5ch, 0.3fr) minmax(5.6ch, 0.5fr)
       minmax(3ch, 0.1fr);
   }
 
   @media (min-width: 600px) {
-    --grid-template-columns: 1fr minmax(7ch, 0.7fr) minmax(12ch, 0.5fr)
+    --grid-template-columns: 10ch 1.5fr minmax(5ch, 0.7fr) minmax(6ch, 0.5fr)
+      minmax(9ch, 0.3fr);
+  }
+
+  @media (min-width: 768px) {
+    --grid-template-columns: 10ch 1.25fr minmax(7ch, 0.7fr) minmax(8ch, 0.5fr)
       minmax(12ch, 0.3fr);
   }
 
@@ -59,7 +64,7 @@
     & > :nth-child(1) {
       display: none;
 
-      @media (min-width: 1440px) {
+      @media (min-width: 600px) {
         display: inline;
         padding-left: 1.75rem;
       }
@@ -80,9 +85,9 @@
 
   &-list {
     & > *:not(:last-child) {
-      margin-bottom: 1.125rem;
+      margin-bottom: 1.75rem;
 
-      @media (min-width: 1440px) {
+      @media (min-width: 600px) {
         margin-bottom: 0.625rem;
       }
     }
@@ -100,12 +105,16 @@
     position: relative;
     backface-visibility: hidden;
 
+    @media screen and (max-width: 599.98px) {
+      border-top-left-radius: 0;
+    }
+
     .admin-edit-link {
       position: absolute;
       top: -0.5rem;
       right: -0.5rem;
 
-      @media screen and (max-width: 1439.98px) {
+      @media screen and (max-width: 599.98px) {
         display: grid;
         place-items: center;
         width: 24px;
@@ -114,7 +123,7 @@
         background-color: $gray-deep;
       }
 
-      @media screen and (min-width: 1440px) {
+      @media screen and (min-width: 600px) {
         top: 0.25rem;
         right: 0.25rem;
       }
@@ -127,35 +136,15 @@
 
     @media (min-width: 600px) {
       gap: 0 1rem;
+      padding: 0.25rem $card-spacer-x;
+      overflow: hidden;
     }
 
     @media (min-width: 1440px) {
-      overflow: hidden;
-      padding: 0.25rem $card-spacer-x;
     }
 
     & > * {
       min-width: 0;
-    }
-
-    & > :nth-child(1) {
-      grid-row: 1;
-      grid-column: 1;
-
-      @media (min-width: 1440px) {
-        grid-row: auto;
-        grid-column: auto;
-      }
-    }
-
-    & > :nth-child(2) {
-      grid-row: 1;
-      grid-column: 1;
-
-      @media (min-width: 1440px) {
-        grid-row: auto;
-        grid-column: auto;
-      }
     }
 
     & > :nth-child(3) {
@@ -174,16 +163,24 @@
     position: relative;
     align-self: stretch;
 
+    .rank-alt {
+      opacity: 0.8;
+
+      @media screen and (min-width: 600px) {
+        font-size: 0.875em;
+      }
+    }
+
     &[data-rank="1"],
     &[data-rank="2"],
     &[data-rank="3"] {
       --rank-color: #{$gray-dark};
 
-      span {
+      .rank {
         font-weight: 700;
 
-        @media screen and (min-width: 1440px) {
-          font-size: 1.625rem;
+        @media screen and (min-width: 600px) {
+          font-size: 1.625em;
         }
       }
     }
@@ -200,33 +197,37 @@
       --rank-bg: #{$bronze};
     }
 
-    @media (max-width: 1439.98px) {
+    @media (max-width: 600px) {
       font-size: 0.75rem;
       background: var(--rank-bg);
       color: var(--rank-color);
       border: 1px solid $gray-deep;
       box-shadow: $box-shadow;
-      padding: 0.25rem 0.5rem;
-      line-height: 1.15;
+      padding: 0.125rem 0.5rem;
+      line-height: 1;
       text-align: center;
-      border-radius: 50em;
+      border-radius: 0.5em 0.5em 0 0;
       font-weight: 600;
       position: absolute;
-      left: -16px;
-      top: -16px;
+      left: 0;
+      top: 0;
+      transform: translateY(-100%);
       z-index: 2;
     }
 
-    @media (min-width: 1440px) {
+    @media (min-width: 600px) {
       display: flex;
       align-items: center;
       color: var(--rank-color);
+      font-size: 0.875rem;
 
       span {
         z-index: 1;
-        font-size: 1.25rem;
+      }
+
+      .rank {
         font-weight: 600;
-        padding-left: 1.75rem;
+        padding-left: 0.75rem;
       }
 
       &:before {
@@ -236,6 +237,13 @@
         clip-path: polygon(0 0, 100% 0%, 88% 100%, 0% 100%);
         position: absolute;
         inset: -0.25rem 1rem -0.25rem (-$card-spacer-x);
+      }
+    }
+
+    @media screen and (min-width: 1440px) {
+      .rank {
+        padding-left: 1.75rem;
+        font-size: 1.25em;
       }
     }
   }
@@ -330,6 +338,15 @@
         a:not(:first-child) {
           display: none;
         }
+      }
+    }
+  }
+
+  [has-alt-rank="true"] {
+    @media (min-width: 600px) {
+      .ranking-header > :first-child,
+      .ranking-rank .rank {
+        padding-left: 0rem;
       }
     }
   }
