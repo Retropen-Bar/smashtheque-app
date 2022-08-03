@@ -56,7 +56,6 @@ class TeamsController < PublicController
       @is_online ? 'Online' : 'Offline',
       @year
     ].compact.join(' ')
-    render layout: 'application'
   end
 
   private

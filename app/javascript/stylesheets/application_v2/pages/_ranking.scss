@@ -39,6 +39,19 @@
       min-width: 0;
     }
 
+    & > :nth-child(1) {
+      display: none;
+
+      @media (min-width: 600px) {
+        display: inline;
+        padding-left: 0.75rem;
+      }
+
+      @media (min-width: 1440px) {
+        padding-left: 1.75rem;
+      }
+    }
+
     @media (min-width: 600px) {
       display: grid;
     }
@@ -226,15 +239,6 @@
     }
   }
 
-  [has-alt-rank="true"] {
-    @media (min-width: 600px) {
-      .ranking-header > :first-child,
-      .ranking-rank .rank {
-        padding-left: 0rem;
-      }
-    }
-  }
-
   &.players {
     --grid-template-columns: 1fr 5.6ch 3ch;
 
@@ -260,15 +264,6 @@
 
     .ranking {
       &-header {
-        & > :nth-child(1) {
-          display: none;
-
-          @media (min-width: 600px) {
-            display: inline;
-            padding-left: 1.75rem;
-          }
-        }
-
         & > :nth-child(3) {
           display: none;
 
@@ -371,17 +366,6 @@
     }
 
     .ranking {
-      &-header {
-        & > :nth-child(1) {
-          display: none;
-
-          @media (min-width: 600px) {
-            display: inline;
-            padding-left: 1.75rem;
-          }
-        }
-      }
-
       &-item {
         & > :nth-child(3) {
           display: none;
@@ -422,6 +406,64 @@
         .resource-avatar:nth-child(2) {
           margin-left: -26px;
         }
+      }
+    }
+  }
+
+  &.teams {
+    --grid-template-columns: 1.25fr minmax(6ch, 0.3fr);
+
+    @media (min-width: 360px) {
+      --grid-template-columns: 1.25fr minmax(5ch, 0.3fr) minmax(6ch, 0.3fr);
+    }
+
+    @media (min-width: 600px) {
+      --grid-template-columns: 12ch 1.25fr minmax(5ch, 0.3fr)
+        minmax(10ch, 0.3fr);
+    }
+
+    .ranking {
+      &-item {
+        & > :nth-child(3) {
+          display: none;
+
+          @media (min-width: 360px) {
+            display: block;
+          }
+        }
+      }
+
+      &-team {
+        display: flex;
+        align-items: center;
+
+        > div {
+          min-width: 0;
+
+          &:last-child {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+          }
+        }
+
+        h5 {
+          font-size: 0.875rem;
+          margin-bottom: 0.25rem;
+
+          @media (min-width: 768px) {
+            font-size: 1.125rem;
+          }
+        }
+      }
+    }
+  }
+
+  [has-alt-rank="true"] {
+    @media (min-width: 600px) {
+      .ranking-header > :first-child,
+      .ranking-rank .rank {
+        padding-left: 0rem;
       }
     }
   }

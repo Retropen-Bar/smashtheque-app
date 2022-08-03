@@ -5,15 +5,15 @@
         <div class="section-nav-bg">
           <%= link_to ranking_players_path, class: "section-nav-link#{current_class?(ranking_players_path)}" do %>
             <%= svg_icon_tag :telescope %>
-            <span>Observatoire d'Harmonie 1v1</span>
+            <span>Observatoire d'Harmonie <strong class="text-white">1v1</strong></span>
           <% end %>
           <%= link_to ranking_duos_path, class: "section-nav-link#{current_class?(ranking_duos_path)}" do %>
             <%= svg_icon_tag :telescope %>
-            <span>Observatoire d'Harmonie 2v2</span>
+            <span>Observatoire d'Harmonie <strong class="text-white">2v2</strong></span>
           <% end %>
           <%= link_to ranking_teams_path, class: "section-nav-link#{current_class?(ranking_teams_path)}" do %>
             <%= svg_icon_tag :telescope %>
-            <span>Observatoire d'Harmonie équipe</span>
+            <span>Observatoire d'Harmonie <strong class="text-white">équipe</strong></span>
           <% end %>
         </div>
       </div>
