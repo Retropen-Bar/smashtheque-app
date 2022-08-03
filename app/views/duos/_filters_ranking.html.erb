@@ -1,0 +1,6 @@
+<%= form_tag "?on_abc=#{params[:on_abc]}", method: :get do %>
+
+  <%= render 'shared/ranking_filters' %>
+
+  <%= render 'shared/ranking_filters_location' %>
+<% end %>

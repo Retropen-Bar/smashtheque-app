@@ -1,0 +1,67 @@
+<article class="ranking-item">
+  <% duo_rank = duo.rank(is_online: defined?(is_online) && is_online,
+                                year: defined?(year) && year) %>
+  <div class="ranking-rank" data-rank="<%= defined?(rank) && rank.present? ? rank : duo_rank  %>">
+    <% if defined?(rank) && rank.present? %>
+      <span class="rank">#<%= rank %></span>&nbsp;
+      <span class="rank-alt">(#<%= duo_rank %>)</span>
+    <% else %>
+      <span class="rank">#<%= duo_rank %></span>
+    <% end %>
+  </div>
+
+  <div class="ranking-duo">
+    <div class="resource-avatar resource-avatar-sm card">
+      <% if duo && duo.is_legit? %>
+        <%= link_to duo.player1.decorate.avatar_tag(76), duo %>
+      <% end %>
+    </div>
+
+    <div class="resource-avatar resource-avatar-sm card">
+      <% if duo && duo.is_legit? %>
+        <%= link_to duo.player2.decorate.avatar_tag(76), duo %>
+      <% end %>
+    </div>
+
+    <div>
+      <h5 class="text-truncate">
+        <% if duo && duo.is_legit? %>
+          <%= link_to duo.name, duo %>
+        <% else %>
+          ?
+        <% end %>
+      </h5>
+    </div>
+  </div>
+  
+  <div class="ranking-reward text-center">
+    <% if duo %>
+      <%== duo.best_reward_badge(is_online: is_online) %>
+    <% end %>
+  </div>
+
+  <div class="ranking-points">
+    <% if duo %>
+      <% if defined?(with_points) && with_points %>
+        <div class="duo-points">
+          <%= duo.points_count(
+          32,
+          is_online: defined?(is_online) && is_online,
+          year: defined?(year) && year,
+          value: defined?(points) && points) %>
+          <% if defined?(reward_condition) && reward_condition %>
+            <span class="text-light">(+<%= reward_condition.points %>)</span>
+          <% end %>
+        </div>
+      <% end %>
+    <% end%>
+    <% if duo && duo.is_legit? %>
+      <%= link_to duo, class: 'resource-link' do %>
+        <span class="sr-only">Voir plus</span>
+      <% end %>
+    <% end %>
+    <% if duo %>
+      <%= admin_edit_link(duo) %>
+    <%end%>
+  </div>
+</article>

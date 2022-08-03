@@ -1,26 +1,4 @@
 .ranking {
-  --grid-template-columns: 1fr 5.6ch 3ch;
-
-  @media (min-width: 360px) {
-    --grid-template-columns: 1.25fr minmax(2.5ch, 0.3fr) minmax(5.6ch, 0.5fr)
-      minmax(3ch, 0.1fr);
-  }
-
-  @media (min-width: 600px) {
-    --grid-template-columns: 10ch 1.5fr minmax(5ch, 0.7fr) minmax(6ch, 0.5fr)
-      minmax(9ch, 0.3fr);
-  }
-
-  @media (min-width: 768px) {
-    --grid-template-columns: 10ch 1.25fr minmax(7ch, 0.7fr) minmax(8ch, 0.5fr)
-      minmax(12ch, 0.3fr);
-  }
-
-  @media (min-width: 1440px) {
-    --grid-template-columns: 12ch 1.25fr minmax(9ch, 0.5fr) minmax(6ch, 0.7fr)
-      minmax(10ch, 0.3fr) minmax(10ch, 0.3fr);
-  }
-
   &-banners {
     position: sticky;
     top: 86px;
@@ -59,23 +37,6 @@
     & > * {
       font-size: 0.75rem;
       min-width: 0;
-    }
-
-    & > :nth-child(1) {
-      display: none;
-
-      @media (min-width: 600px) {
-        display: inline;
-        padding-left: 1.75rem;
-      }
-    }
-
-    & > :nth-child(3) {
-      display: none;
-
-      @media (min-width: 1440px) {
-        display: inline;
-      }
     }
 
     @media (min-width: 600px) {
@@ -140,19 +101,8 @@
       overflow: hidden;
     }
 
-    @media (min-width: 1440px) {
-    }
-
     & > * {
       min-width: 0;
-    }
-
-    & > :nth-child(3) {
-      display: none;
-
-      @media (min-width: 1440px) {
-        display: flex;
-      }
     }
   }
 
@@ -248,56 +198,6 @@
     }
   }
 
-  &-player {
-    display: flex;
-    align-items: center;
-
-    > div {
-      min-width: 0;
-
-      &:last-child {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-    }
-
-    h5 {
-      font-size: 0.875rem;
-      margin-bottom: 0.25rem;
-
-      @media (min-width: 768px) {
-        font-size: 1.125rem;
-      }
-    }
-
-    .flag-icon {
-      font-size: 0.625rem;
-      mix-blend-mode: plus-lighter;
-
-      @media (min-width: 600px) {
-        font-size: 0.75rem;
-      }
-    }
-  }
-
-  &-teams {
-    align-self: stretch;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    .list-team {
-      position: relative;
-      z-index: 10;
-      color: var(--text-color-accent);
-
-      &:hover {
-        color: $white;
-      }
-    }
-  }
-
   &-points {
     font-size: 0.75rem;
 
@@ -313,16 +213,10 @@
   }
 
   &-reward {
-    display: none;
-
     img {
       width: 24px;
       position: relative;
       z-index: 10;
-    }
-
-    @media (min-width: 360px) {
-      display: block;
     }
 
     @media (min-width: 600px) {
@@ -332,21 +226,202 @@
     }
   }
 
-  &-characters {
-    @media (max-width: 599px) {
-      .list-characters-compact {
-        a:not(:first-child) {
-          display: none;
-        }
-      }
-    }
-  }
-
   [has-alt-rank="true"] {
     @media (min-width: 600px) {
       .ranking-header > :first-child,
       .ranking-rank .rank {
         padding-left: 0rem;
+      }
+    }
+  }
+
+  &.players {
+    --grid-template-columns: 1fr 5.6ch 3ch;
+
+    @media (min-width: 360px) {
+      --grid-template-columns: 1.25fr minmax(2.5ch, 0.3fr) minmax(5.6ch, 0.5fr)
+        minmax(3ch, 0.1fr);
+    }
+
+    @media (min-width: 600px) {
+      --grid-template-columns: 10ch 1.5fr minmax(5ch, 0.7fr) minmax(6ch, 0.5fr)
+        minmax(9ch, 0.3fr);
+    }
+
+    @media (min-width: 768px) {
+      --grid-template-columns: 10ch 1.25fr minmax(7ch, 0.7fr) minmax(8ch, 0.5fr)
+        minmax(12ch, 0.3fr);
+    }
+
+    @media (min-width: 1440px) {
+      --grid-template-columns: 12ch 1.25fr minmax(9ch, 0.5fr) minmax(6ch, 0.7fr)
+        minmax(10ch, 0.3fr) minmax(10ch, 0.3fr);
+    }
+
+    .ranking {
+      &-header {
+        & > :nth-child(1) {
+          display: none;
+
+          @media (min-width: 600px) {
+            display: inline;
+            padding-left: 1.75rem;
+          }
+        }
+
+        & > :nth-child(3) {
+          display: none;
+
+          @media (min-width: 1440px) {
+            display: inline;
+          }
+        }
+      }
+
+      &-item {
+        & > :nth-child(3) {
+          display: none;
+
+          @media (min-width: 1440px) {
+            display: flex;
+          }
+        }
+
+        & > :nth-child(4) {
+          display: none;
+
+          @media (min-width: 360px) {
+            display: block;
+          }
+        }
+      }
+
+      &-player {
+        display: flex;
+        align-items: center;
+
+        > div {
+          min-width: 0;
+
+          &:last-child {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+          }
+        }
+
+        h5 {
+          font-size: 0.875rem;
+          margin-bottom: 0.25rem;
+
+          @media (min-width: 768px) {
+            font-size: 1.125rem;
+          }
+        }
+
+        .flag-icon {
+          font-size: 0.625rem;
+          mix-blend-mode: plus-lighter;
+
+          @media (min-width: 600px) {
+            font-size: 0.75rem;
+          }
+        }
+      }
+
+      &-teams {
+        align-self: stretch;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        .list-team {
+          position: relative;
+          z-index: 10;
+          color: var(--text-color-accent);
+
+          &:hover {
+            color: $white;
+          }
+        }
+      }
+
+      &-characters {
+        @media (max-width: 599px) {
+          .list-characters-compact {
+            a:not(:first-child) {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &.duos {
+    --grid-template-columns: 1.25fr minmax(6ch, 0.3fr);
+
+    @media (min-width: 360px) {
+      --grid-template-columns: 1.25fr minmax(5ch, 0.3fr) minmax(6ch, 0.3fr);
+    }
+
+    @media (min-width: 600px) {
+      --grid-template-columns: 12ch 1.25fr minmax(5ch, 0.3fr)
+        minmax(10ch, 0.3fr);
+    }
+
+    .ranking {
+      &-header {
+        & > :nth-child(1) {
+          display: none;
+
+          @media (min-width: 600px) {
+            display: inline;
+            padding-left: 1.75rem;
+          }
+        }
+      }
+
+      &-item {
+        & > :nth-child(3) {
+          display: none;
+
+          @media (min-width: 360px) {
+            display: block;
+          }
+        }
+      }
+
+      &-duo {
+        display: flex;
+        align-items: center;
+
+        > div {
+          min-width: 0;
+
+          &:last-child {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+          }
+        }
+
+        h5 {
+          font-size: 0.875rem;
+          margin-bottom: 0.25rem;
+
+          @media (min-width: 768px) {
+            font-size: 1.125rem;
+          }
+        }
+
+        .resource-avatar {
+          box-shadow: $box-shadow;
+        }
+
+        .resource-avatar:nth-child(2) {
+          margin-left: -26px;
+        }
       }
     }
   }

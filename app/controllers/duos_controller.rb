@@ -58,7 +58,6 @@ class DuosController < PublicController
       @is_online ? 'Online' : 'Offline',
       @year
     ].compact.join(' ')
-    render layout: 'application'
   end
 
   def autocomplete
