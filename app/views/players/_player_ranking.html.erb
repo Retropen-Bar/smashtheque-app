@@ -2,7 +2,7 @@
   <% player_rank = player.rank(is_online: defined?(is_online) && is_online,
                                 year: defined?(year) && year) %>
   <div class="ranking-rank" data-rank="<%= defined?(rank) && rank.present? ? rank : player_rank  %>">
-    <% if defined?(rank) && rank.present? && rank != player_rank%>
+    <% if defined?(rank) && rank.present? %>
       <span class="rank">#<%= rank %></span>&nbsp;
       <span class="rank-alt">(#<%= player_rank %>)</span>
     <% else %>

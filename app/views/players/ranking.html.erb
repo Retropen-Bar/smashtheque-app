@@ -56,13 +56,14 @@
             <span class="text-center">Personnages</span>
           </div>
           <div class="ranking-list list">
+            <% offset = ((params[:page] || 1).to_i - 1) * 25 %>
             <% @players.each_with_index do |player, index| %>
               <%= render  'players/player_ranking',
                           player: player.decorate,
                           year: @year,
                           is_online: @is_online,
                           with_points: true,
-                          rank: has_alt_rank ? index + 1 + ((params[:page] || 1).to_i - 1) * 25 : nil %>
+                          rank: has_alt_rank ? index + 1 + offset : nil %>
             <% end %>
           </div>
           <div class='my-4'>

@@ -51,13 +51,14 @@
             <span>Fragments</span>
           </div>
           <div class="ranking-list list">
+            <% offset = ((params[:page] || 1).to_i - 1) * 25 %>
             <% @duos.each_with_index do |duo, index| %>
               <%= render  'duos/duo_ranking',
                           duo: duo.decorate,
                           year: @year,
                           is_online: @is_online,
                           with_points: true,
-                          rank: has_alt_rank ? index + 1 + ((params[:page] || 1).to_i - 1) * 25 : nil %>
+                          rank: has_alt_rank ? index + 1 + offset : nil %>
             <% end %>
           </div>
           <div class='my-4'>
