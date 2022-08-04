@@ -1,4 +1,69 @@
-<%= render 'players/players',
-           players: @players,
-           title: 'TOs',
-           with_communities: true %>
+<h1 class="page-title index-title sr-only">TOs</h1>
+<div class="container-xl mt-md-3 mt-xxl-4 mt-xxl-4">
+  <div class="row flex-nowrap align-items-start flex-column flex-lg-row">
+
+    <%= render 'layouts/application_v2/community/index_nav' %>
+
+    <div class="col">
+      <div class="row flex-column flex-lg-row align-items-start">
+        <div id="index-filters" class="col-12 col-xl-auto order-xl-1">
+          <section class="index-section my-2 my-md-3 mt-xl-0 py-1 pl-3 pr-1 py-md-2 pr-md-2 pl-md-2 py-xl-0 px-xl-0 d-flex d-xl-block flex-wrap align-items-center shadow-lg bg-bg bg-lg-none rounded-pill">
+            <small class="text-muted d-inline-block d-xl-none"><%= @players.total_count %> résultat(s)</small>
+            <button @click="filtersVisible = true" type="button" class="btn btn-dark btn-sm btn-with-icon rounded-pill players ml-3<%= ' active' if params[:on_abc] %> d-flex d-xl-none ml-auto">
+              <%= svg_icon_tag :filtre %> Filtres
+            </button>
+            <slide-out dock="bottom" :visible.sync="filtersVisible" :size="[0]" :arrow-button="false" title="Filtres">
+              <template #header>
+                <div class="d-flex align-items-center justify-content-between">
+                  <p class="m-0">
+                    <%= svg_icon_tag :filtre %> Filtres
+                  </p>
+                  <button @click="filtersVisible = false" type="button" class="btn btn-sm btn-icon rounded-circle ml-3">
+                    <%= svg_icon_tag :croix %>
+                    <span class="sr-only">Fermer</span>
+                  </button>
+                </div>
+              </template>
+              <section>
+                <h5><%= svg_icon_tag :abcd %> Abécédaire</h5>
+                <%= render 'shared/letters' %>
+                <%= form_tag "?on_abc=#{params[:on_abc]}", method: :get do %>
+                <h5><%= svg_icon_tag :lieu %> Communauté</h5>
+                <div class="mt-4">
+                  <%= text_field_tag :on_abc, params[:on_abc], hidden: true %>
+                  <%= select_tag  :by_closest_community_id,
+                    options_for_select(
+                      community_select_collection,
+                      params[:by_closest_community_id]
+                    ),
+                    prompt: 'Toutes',
+                    class: 'custom-select custom-select-sm mb-1' %>
+                </div>
+                <% end %>
+              </section>
+            </slide-out>
+          </section>
+        </div>
+        <div class="col">
+          <section class="py-3 d-none d-xl-flex flex-wrap align-items-center">
+            <small class="text-muted"><%= @players.total_count %> résultat(s)</small>
+            <div class="ml-auto">
+              <%= render 'shared/pagination_v2', collection: @players %>
+            </div>
+          </section>
+
+          <div class="community-users-list mt-3 mt-xs-0" id="community-users-list">
+            <% @players.each do |player| %>
+              <div class="community-users-list-item">
+                <%= render 'contact', player: player.decorate %>
+              </div>
+            <% end %>
+          </div>
+          <div class='my-4'>
+            <%= render 'shared/pagination_v2', collection: @players %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+<div id="index-nav" class="col-12 col-lg-auto">
+  <section class="index-section">
+    <nav class="section-nav players mt-3 mt-lg-0">
+      <div class="section-nav-wrapper">
+        <div class="section-nav-bg">
+         <%= link_to contacts_recurring_tournaments_path, class: "section-nav-link#{current_class?(contacts_recurring_tournaments_path)}" do %>
+            <%= svg_icon_tag :to %>
+            <span>TOs</span>
+          <% end %>
+          <%= link_to caster_users_path, class: "section-nav-link#{current_class?(caster_users_path)}" do %>
+            <%= svg_icon_tag :caster %>
+            <span>Commentateurs</span>
+          <% end %>
+          <%= link_to coach_users_path, class: "section-nav-link#{current_class?(coach_users_path)}" do %>
+            <%= svg_icon_tag :coach %>
+            <span>Coachs</span>
+          <% end %>
+          <%= link_to graphic_designer_users_path, class: "section-nav-link#{current_class?(graphic_designer_users_path)}" do %>
+            <%= svg_icon_tag :mario %>
+            <span>Graphistes</span>
+          <% end %>
+          <%= link_to twitch_channels_path, class: "section-nav-link#{current_class?(twitch_channels_path)}" do %>
+            <%= svg_icon_tag :twitch %>
+            <span>Chaînes Twitch</span>
+          <% end %>
+          <%= link_to you_tube_channels_path, class: "section-nav-link#{current_class?(you_tube_channels_path)}" do %>
+            <%= svg_icon_tag :yt %>
+            <span>Chaînes YouTube</span>
+          <% end %>
+          <%= link_to discord_guilds_path, class: "section-nav-link#{current_class?(discord_guilds_path)}" do %>
+            <%= svg_icon_tag :discord %>
+            <span>Serveurs discord</span>
+          <% end %>
+        </div>
+      </div>
+    </nav>
+  </section>
+</div>

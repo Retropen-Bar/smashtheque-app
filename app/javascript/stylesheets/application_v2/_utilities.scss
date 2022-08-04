@@ -38,6 +38,7 @@
   .section-#{$section_name} {
     --text-color-accent: #{$color};
     --text-color-accent-100: #{rgba($color, 0.1)};
+    --text-color-accent-400: #{rgba($color, 0.4)};
 
     --hover-bg-color-accent: #{lighten($color, 7.5%)};
     --hover-text-color-accent: #{color-yiq(

@@ -70,6 +70,10 @@ class Player < ApplicationRecord
   has_many :teams,
            through: :players_teams,
            after_remove: :after_remove_team
+  
+  has_many :recurring_tournament_contacts, through: :user
+  has_many :recurring_tournaments,
+           through: :recurring_tournament_contacts
 
   has_many :tournament_events_as_top1_player,
            class_name: :TournamentEvent,

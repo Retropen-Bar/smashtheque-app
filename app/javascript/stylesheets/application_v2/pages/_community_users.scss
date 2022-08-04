@@ -1,0 +1,21 @@
+.community-users-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-auto-flow: dense;
+  gap: 2rem 1.5rem;
+}
+
+.community-users-list-item {
+  display: contents;
+
+  .resource {
+    width: 100%;
+    max-width: 250px;
+    margin: 0 auto;
+  }
+
+  .resource-description {
+    grid-row: span 1 / span 1;
+    grid-column: 1 / -1;
+  }
+}

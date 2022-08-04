@@ -1,0 +1,96 @@
+<% community_desc_toggle_id = "community-user-#{player.id}" %>
+<article class="resource community-user h-100">
+  <div class="card flex-grow-1">
+    <div class="card-body d-flex flex-column align-items-center">
+      <div class="resource-avatar resource-avatar-lg card">
+        <% if player && player.is_legit? %>
+          <%= link_to player.avatar_tag(98), player %>
+        <% end %>
+      </div>
+      <div class="resource-meta flex-grow-1">
+        <h5 class="resource-title card-title text-truncate">
+          <% if player && player.is_legit? %>
+            <%= link_to player.name, player %>
+          <% else %>
+            ?
+          <% end %>
+        </h5>
+
+        <% player_address = player.user&.addresses&.first%>
+        <% if player_address %>
+        <div class="resource-address d-flex list-x justify-content-center">
+          <%= svg_icon_tag(:lieu, class: "fs-xs") %>
+          <small class="player-community">
+            <%= player_address[:name] %>
+          </small>
+        </div>
+        <% end %>
+
+
+        <div class="resource-accounts d-flex list-x justify-content-center">
+          <%= render 'player_accounts_v2', player: player %>
+        </div>
+
+        <div class="list-x justify-content-center mt-2">
+          <% if player.object.recurring_tournaments.any?(&:is_online) %>
+            <span class='badge badge-with-icon badge-primary'>
+              <%= svg_icon_tag(:online, class: 'mr-0 mr-sm-1') %>
+              <span class="d-none d-sm-inline">Online</span>
+            </span>
+          <% end %>
+          <% if player.object.recurring_tournaments.any? { | tournament | tournament.is_online == false } %>
+            <span class='badge badge-with-icon badge-primary'>
+              <%= svg_icon_tag(:offline, class: 'mr-0 mr-sm-1') %>
+              <span class="d-none d-sm-inline">Offline</span>
+            </span>
+          <% end %>
+        </div>
+
+        <div class="resource-bottom">
+          <div class="resource-tags">
+            <% player.object.recurring_tournaments[0..1].each do | recurring_tournament | %>
+              <%= link_to recurring_tournament, class: 'resource-tag' do %>
+                <%= recurring_tournament.decorate.any_image_tag(max_width: 24) %>
+                <span><%= recurring_tournament.name %></span>
+                <%= svg_icon_tag(:flèche, class: "fs-xs") %>
+              <% end %>
+            <% end %>
+          </div>
+          <button for="<%= community_desc_toggle_id %>" class="btn btn-sm btn-dark" data-toggle="collapse" data-target="#<%= community_desc_toggle_id %>" aria-expanded="false" aria-controls="<%= community_desc_toggle_id %>">
+            Voir plus
+          </button>
+        </div>
+      </div>
+      <% if player && player.is_legit? %>
+        <%= link_to player, class: 'resource-link' do %>
+          <span class="sr-only">Voir plus</span>
+        <% end %>
+      <% end %>
+    </div>
+    <% if player %>
+      <%= admin_edit_link(player) %>
+    <%end%>
+  </div>
+</article>
+<div id="<%= community_desc_toggle_id %>" class="resource-description collapse" data-parent="#community-users-list">
+  <div class="resource-description-content card">
+    <div class="card-body">
+      <h5 class="resource-description-title fs-md text-accent d-flex justify-content-between align-items-center">Description du TO <%= player.name %>
+        <button type="button" class="close ml-3 text-body mt-n1" data-toggle="collapse" data-target="#<%= community_desc_toggle_id %>" aria-expanded="false" aria-controls="<%= community_desc_toggle_id %>">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </h5>
+      
+      <p class="resource-description-subtitle fs-sm mt-3 mb-1">Tournois gérés</p>
+      <div class="resource-tags">
+        <% player.object.recurring_tournaments[0..1].each do | recurring_tournament | %>
+          <%= link_to recurring_tournament, class: 'resource-tag' do %>
+            <%= recurring_tournament.decorate.any_image_tag(max_width: 24) %>
+            <span><%= recurring_tournament.name %></span>
+            <%= svg_icon_tag(:flèche, class: "fs-xs") %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

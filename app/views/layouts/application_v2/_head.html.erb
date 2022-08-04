@@ -90,7 +90,7 @@
         </div>
       </li>
       <li class="nav-item dropdown community">
-        <%= link_to '#', class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
+        <%= link_to '#', class: "nav-link dropdown-toggle #{' active' if current_section?(:community)}", data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
           <span>Communauté</span>
         <% end %>
         <div class="dropdown-menu">

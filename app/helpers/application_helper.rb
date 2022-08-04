@@ -36,11 +36,13 @@ module ApplicationHelper
   def current_section?(section_name)
     case section_name
     when :players
-      controller_name =~ /(players|teams|duos|communities|characters)/ && action_name !~ /(ranking)/
+      controller_name =~ /(players|teams|duos|communities|characters)/ && action_name !~ /(ranking)/ && action_name !~ /(contacts)/
     when :tournaments
       controller_name =~ /(tournament)/ || action_name =~ /(planning)/
     when :rosalina
       action_name =~ /(ranking)/
+    when :community
+      controller_name =~ /(caster|coach|twitch_channels|you_tube_channels|discord_guilds)/ || action_name =~ /(contacts)/
     when :guides
       @page.present? && @page.in_header
     else
@@ -49,6 +51,7 @@ module ApplicationHelper
   end
 
   def current_section_name
+    return :community if current_section?(:community)
     return :players if current_section?(:players)
     return :tournaments if current_section?(:tournaments)
     return :rosalina if current_section?(:rosalina)

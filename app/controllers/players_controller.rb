@@ -50,7 +50,7 @@ class PlayersController < PublicController
   def recurring_tournament_contacts_index
     @players = players Player.recurring_tournament_contacts
     @meta_title = 'TOs'
-    render 'recurring_tournaments/contacts', layout: 'application'
+    render 'recurring_tournaments/contacts', layout: 'application_v2'
   end
 
   def show
