@@ -41,6 +41,8 @@ module ApplicationHelper
       controller_name =~ /(tournament)/ || action_name =~ /(planning)/
     when :rosalina
       action_name =~ /(ranking)/
+    when :guides
+      @page.present? && @page.in_header
     else
       false
     end
@@ -50,6 +52,7 @@ module ApplicationHelper
     return :players if current_section?(:players)
     return :tournaments if current_section?(:tournaments)
     return :rosalina if current_section?(:rosalina)
+    return :guides if current_section?(:guides)
   end
 
   def url_with(changes)

@@ -106,8 +106,8 @@
           <%= link_to 'Serveurs Discord', discord_guilds_path, class: 'dropdown-item' %>
         </div>
       </li>
-      <li class="nav-item dropdown guides <%= "mr-xxl-auto" unless admin_user_signed_in? %>">
-        <%= link_to '#', class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
+      <li class="nav-item dropdown guides <%= "mr-xxl-auto" unless admin_user_signed_in? %> ">
+        <%= link_to '#', class: "nav-link dropdown-toggle #{' active' if current_section?(:guides)}", data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
           <span>Guides</span>
         <% end %>
         <div class="dropdown-menu">
