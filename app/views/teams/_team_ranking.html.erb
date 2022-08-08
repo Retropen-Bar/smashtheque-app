@@ -1,0 +1,52 @@
+<article class="ranking-item">
+  <% team_rank = team.rank(is_online: defined?(is_online) && is_online,
+                                year: defined?(year) && year) %>
+  <div class="ranking-rank" data-rank="<%= defined?(rank) && rank.present? ? rank : team_rank  %>">
+    <% if defined?(rank) && rank.present? && rank != team_rank %>
+      <span class="rank">#<%= rank %></span>&nbsp;
+      <span class="rank-alt">(#<%= team_rank %>)</span>
+    <% else %>
+      <span class="rank">#<%= team_rank %></span>
+    <% end %>
+  </div>
+
+  <div class="ranking-team">
+    <div class="resource-avatar resource-avatar-sm card">
+      <%= link_to team.avatar_tag(76), team %>
+    </div>
+
+    <div>
+      <h5 class="text-truncate">
+        <%= link_to team.full_name, team %>
+      </h5>
+      <div>
+        <%= team.badges %>
+      </div>
+    </div>
+  </div>
+
+  <div class="ranking-team-players-count players-count flex-shrink-0 text-center">
+    <%= link_to players_path(by_team_id: team.id) do %>
+      <%= team.players_count %>
+      <%= svg_icon_tag(:groupe2) %>
+    <% end %>
+  </div>
+
+  <div class="ranking-points">
+    <% if team %>
+      <% if defined?(with_points) && with_points %>
+        <div class="team-points">
+          <%= team.points_count(
+          32,
+          is_online: defined?(is_online) && is_online,
+          year: defined?(year) && year,
+          value: defined?(points) && points) %>
+        </div>
+      <% end %>
+    <% end%>
+    <%= link_to team, class: 'resource-link' do %>
+      <span class="sr-only">Voir plus</span>
+    <% end %>
+    <%= admin_edit_link(team) %>
+  </div>
+</article>

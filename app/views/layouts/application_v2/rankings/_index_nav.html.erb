@@ -1,0 +1,22 @@
+<div id="index-nav" class="col-12 col-lg-auto">
+  <section class="index-section">
+    <nav class="section-nav players mt-3 mt-lg-0">
+      <div class="section-nav-wrapper">
+        <div class="section-nav-bg">
+          <%= link_to ranking_players_path, class: "section-nav-link#{current_class?(ranking_players_path)}" do %>
+            <%= svg_icon_tag :telescope %>
+            <span>Observatoire d'Harmonie <strong class="text-white">1v1</strong></span>
+          <% end %>
+          <%= link_to ranking_duos_path, class: "section-nav-link#{current_class?(ranking_duos_path)}" do %>
+            <%= svg_icon_tag :telescope %>
+            <span>Observatoire d'Harmonie <strong class="text-white">2v2</strong></span>
+          <% end %>
+          <%= link_to ranking_teams_path, class: "section-nav-link#{current_class?(ranking_teams_path)}" do %>
+            <%= svg_icon_tag :telescope %>
+            <span>Observatoire d'Harmonie <strong class="text-white">des équipes</strong></span>
+          <% end %>
+        </div>
+      </div>
+    </nav>
+  </section>
+</div>

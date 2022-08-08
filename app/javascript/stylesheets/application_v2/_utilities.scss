@@ -1,3 +1,11 @@
+:root {
+  --text-color-accent: #{$white};
+  --text-color-accent-100: #{rgba($white, 0.1)};
+
+  --hover-bg-color-accent: #{lighten($white, 7.5%)};
+  --hover-text-color-accent: #{color-yiq(lighten($white, 7.5%), $light: $white)};
+}
+
 .fs-sm {
   font-size: $font-size-sm;
 }

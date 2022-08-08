@@ -3,6 +3,7 @@
   @include media-breakpoint-up(lg) {
     position: sticky;
     top: $header-height-tablet + $grid-gutter-width / 2;
+    width: 250px;
   }
 }
 
@@ -104,6 +105,12 @@
           padding-bottom: 1rem;
         }
       }
+    }
+  }
+
+  .index-section {
+    @include media-breakpoint-down(xl) {
+      border: 1px solid $gray-deep;
     }
   }
 }

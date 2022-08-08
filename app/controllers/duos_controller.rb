@@ -45,6 +45,7 @@ class DuosController < PublicController
     @year = params[:year]&.to_i
     @year = nil unless @year&.positive?
     @is_online = params[:is_online]&.to_i != 0
+    @fr_only = params[:by_fr_only]&.to_i == 1
 
     @duos = apply_scopes(
       Duo.ranking(is_online: @is_online, year: @year)
@@ -58,7 +59,6 @@ class DuosController < PublicController
       @is_online ? 'Online' : 'Offline',
       @year
     ].compact.join(' ')
-    render layout: 'application'
   end
 
   def autocomplete
