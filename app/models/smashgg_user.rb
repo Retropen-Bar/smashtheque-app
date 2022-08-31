@@ -106,6 +106,7 @@ class SmashggUser < ApplicationRecord
       user_id: smashgg_id,
       user_slug: slug
     )
+    return if data.nil?
 
     self.smashgg_id = data.id
     self.slug = data.slug
