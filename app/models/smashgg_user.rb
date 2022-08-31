@@ -144,7 +144,7 @@ class SmashggUser < ApplicationRecord
   def self.fetch_unknown
     unknown.find_each do |smashgg_user|
       smashgg_user.fetch_smashgg_data
-      smashgg_user.save!
+      smashgg_user.save
     end
   end
 
