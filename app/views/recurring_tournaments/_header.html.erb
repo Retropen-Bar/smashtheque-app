@@ -21,6 +21,9 @@
       <div class="show-page-main-info">
         <h1 class="show-page-title card-title">
           <%= link_to recurring_tournament.name, recurring_tournament %>
+          <% if recurring_tournament.is_archived? %>
+            <small><%= recurring_tournament.archived_badge %></small>
+          <% end %>
         </h1>
         <div class="list-x mt-3">
           <%= recurring_tournament.badges_v2(with_level: true) %>

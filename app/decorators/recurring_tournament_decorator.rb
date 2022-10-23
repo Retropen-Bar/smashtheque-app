@@ -211,6 +211,15 @@ class RecurringTournamentDecorator < BaseDecorator
     ).html_safe
   end
 
+  def archived_badge
+    h.tag.span(class: 'badge badge-with-icon badge-warning') do
+      [
+        h.svg_icon_tag(:warning, class: 'mr-0 mr-sm-1'),
+        '<span class="d-none d-sm-inline">En pause</span>'
+      ].join(' ').html_safe
+    end
+  end
+
   def badges_v2(with_level: false, with_online: true)
     [
       with_online && !is_online? && h.tag.span(class: 'badge badge-with-icon badge-primary') do
