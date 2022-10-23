@@ -165,7 +165,7 @@ class Player < ApplicationRecord
     smashgg_user = SmashggUser.where(slug: slug).first_or_initialize
     if smashgg_user.persisted?
       # check if SmashggUser was already linked to another player
-      return if smashgg_user.player_id != id
+      return if smashgg_user.player_id && smashgg_user.player_id != id
     else
       smashgg_user.fetch_smashgg_data
       smashgg_user.save!
