@@ -45,13 +45,13 @@ class RecurringTournamentDecorator < BaseDecorator
     model.is_recurring? && !(model.starts_at_hour || 0).zero?
   end
 
-  def starts_at
-    "#{starts_at_hour}h#{(starts_at_min || '').to_s.rjust(2, '0')}"
+  def starts_at(timezone: RecurringTournament::STARTS_AT_TIMEZONE)
+    "#{starts_at_hour_in_time_zone(timezone)}h#{(starts_at_min || '').to_s.rjust(2, '0')}"
   end
 
   def full_date
     if model.is_recurring?
-      "#{wday_text} à #{starts_at}"
+      "#{wday_text} à #{starts_at} (FR)"
     else
       model.date_description
     end
@@ -63,7 +63,7 @@ class RecurringTournamentDecorator < BaseDecorator
     DateTime.new(
       d.year, d.month, d.day,
       starts_at_hour, starts_at_min
-    ) - d.in_time_zone('Paris').utc_offset.seconds
+    ) - d.in_time_zone(RecurringTournament::STARTS_AT_TIMEZONE.name).utc_offset.seconds
   end
 
   def duration
