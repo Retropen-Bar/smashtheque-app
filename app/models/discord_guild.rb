@@ -34,6 +34,10 @@ class DiscordGuild < ApplicationRecord
            inverse_of: :discord_guild,
            dependent: :destroy
 
+  has_many :recurring_tournaments,
+           inverse_of: :discord_guild,
+           dependent: :nullify
+
   # ---------------------------------------------------------------------------
   # VALIDATIONS
   # ---------------------------------------------------------------------------
@@ -93,6 +97,10 @@ class DiscordGuild < ApplicationRecord
 
   def self.related_to_character
     by_related_type(:Character)
+  end
+
+  def self.for_recurring_tournament
+    where(id: RecurringTournament.select(:discord_guild_id))
   end
 
   # ---------------------------------------------------------------------------

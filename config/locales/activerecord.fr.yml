@@ -169,6 +169,7 @@ fr:
         icon: Icône
         invitation_url: URL d'invitation
         name: Nom
+        recurring_tournaments: Tournois
         relateds: Sujets
         related_gids: Sujets
         splash: Bannière
