@@ -230,7 +230,8 @@ class RecurringTournament < ApplicationRecord
                   ignoring: :accents
 
   def self.by_keyword(term)
-    where(id: by_pg_search(term).select(:id))
+    by_pg_search(term)
+    # where(id: by_pg_search(term).select(:id))
   end
 
   def self.by_name(name)
