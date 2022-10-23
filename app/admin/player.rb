@@ -167,9 +167,15 @@ ActiveAdmin.register Player do
     end
     f.inputs 'Smashthèque' do
       f.input :is_accepted
-      f.input :is_banned
+      f.input :is_banned,
+              input_html: {
+                data: {
+                  toggle: '.banned-fields'
+                }
+              }
       f.input :ban_details,
-              input_html: { rows: 5 }
+              input_html: { rows: 5 },
+              wrapper_html: { class: 'banned-fields' }
     end
     f.actions
   end
