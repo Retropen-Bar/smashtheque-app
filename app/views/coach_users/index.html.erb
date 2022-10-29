@@ -1,4 +1,4 @@
-<h1 class="page-title index-title sr-only">Commentateurs</h1>
+<h1 class="page-title index-title sr-only">Coachs</h1>
 <div class="container-xl mt-md-3 mt-xxl-4 mt-xxl-4">
   <div class="row flex-nowrap align-items-start flex-column flex-lg-row">
 
@@ -52,7 +52,7 @@
             </div>
           </section>
 
-          <div class="community-users-list mt-3 mt-xs-0" id="community-users-list">
+          <div class="community-users-list mt-3 mt-md-0" id="community-users-list">
             <% @coach_users.each do |coach_user| %>
               <div class="community-users-list-item">
                 <%= render 'coach_user', coach_user: coach_user.decorate %>

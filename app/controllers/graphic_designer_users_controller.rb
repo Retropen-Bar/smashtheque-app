@@ -1,5 +1,5 @@
 class GraphicDesignerUsersController < PublicController
-
+  layout 'application_v2'
   decorates_assigned :graphic_designer_user
 
   has_scope :page, default: 1

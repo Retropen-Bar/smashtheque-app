@@ -1,18 +1,22 @@
-<% community_desc_toggle_id = "community-user-#{coach_user.id}" %>
+<% community_desc_toggle_id = "community-user-#{graphic_designer_user.id}" %>
 <article class="resource community-user h-100">
   <div class="card flex-grow-1">
     <div class="card-body d-flex flex-column align-items-center">
       <div class="resource-avatar resource-avatar-lg card">
-        <% if coach_user %>
-          <%= link_to coach_user.avatar_tag(98), coach_user.player %>
+        <% if graphic_designer_user %>
+          <%= link_to graphic_designer_user.avatar_tag(98), graphic_designer_user.player %>
         <% end %>
       </div>
       <div class="resource-meta flex-grow-1">
         <h5 class="resource-title card-title text-truncate">
-          <%= link_to coach_user.name, coach_user.player %>
+          <% if graphic_designer_user.player %>
+          <%= link_to graphic_designer_user.name, graphic_designer_user.player %>
+          <% else %>
+          <%= graphic_designer_user.name %>%
+          <% end %>
         </h5>
 
-        <% user_address = coach_user.addresses&.first%>
+        <% user_address = graphic_designer_user.addresses&.first%>
         <% if user_address %>
         <div class="resource-address d-flex list-x justify-content-center">
           <%= svg_icon_tag(:lieu, class: "fs-xs") %>
@@ -22,54 +26,46 @@
         </div>
         <% end %>
 
-        <% if coach_user.coaching_url.present? %>
-          <%= link_to coach_user.coaching_url, class: "resource-link fs-sm text-accent" do %>
+        <% if graphic_designer_user.coaching_url.present? %>
+          <%= link_to graphic_designer_user.coaching_url, class: "resource-link fs-sm text-accent" do %>
             <%= svg_icon_tag(:link, class: "fs-xs") %>
-            Site web
+            Portfolio
           <% end %>
         <% end %>
 
-        <div class="resource-accounts d-flex list-x justify-content-center">
-          <%= render 'players/player_accounts_v2', player: coach_user.player.decorate %>
-        </div>
-
         <div class="resource-bottom resource-bottom-sm">
-          <% player = coach_user.player.decorate %>
-          <% if player && player.characters.present? %>
-            <div class="list-characters-compact flex-shrink-0">
-              <% player.characters[0...3].each do |character| %>
-                <%= character.decorate.link %>
-              <% end %>
-            </div>
+          <% if graphic_designer_user&.player.present? %>
+          <div class="resource-accounts d-flex list-x justify-content-center">
+            <%= render 'players/player_accounts_v2', player: graphic_designer_user&.player&.decorate %>
+          </div>
           <% end %>
-          <% if coach_user&.coaching_details.present? %>
+          <% if graphic_designer_user.graphic_designer_details.present? %>
           <button for="<%= community_desc_toggle_id %>" class="btn btn-sm btn-dark" data-toggle="collapse" data-target="#<%= community_desc_toggle_id %>" aria-expanded="false" aria-controls="<%= community_desc_toggle_id %>">
             Voir plus
           </button>
           <% end %>
         </div>
       </div>
-      <%= link_to coach_user.player, class: 'resource-link' do %>
+      <%= link_to graphic_designer_user.player, class: 'resource-link' do %>
         <span class="sr-only">Voir plus</span>
       <% end %>
     </div>
-    <% if coach_user %>
-      <%= admin_edit_link(coach_user) %>
+    <% if graphic_designer_user %>
+      <%= admin_edit_link(graphic_designer_user) %>
     <%end%>
   </div>
 </article>
-
-<% if coach_user&.coaching_details.present? %>
+<% if graphic_designer_user.graphic_designer_details.present? %>
 <div id="<%= community_desc_toggle_id %>" class="resource-description collapse" data-parent="#community-users-list">
   <div class="resource-description-content card">
     <div class="card-body">
-      <h5 class="resource-description-title fs-md text-accent d-flex justify-content-between align-items-center">Description du coach <%= coach_user.name %>
+      <h5 class="resource-description-title fs-md text-accent d-flex justify-content-between align-items-center">Description du graphiste <%= graphic_designer_user.name %>
         <button type="button" class="close ml-3 text-body mt-n1" data-toggle="collapse" data-target="#<%= community_desc_toggle_id %>" aria-expanded="false" aria-controls="<%= community_desc_toggle_id %>">
           <span aria-hidden="true">&times;</span>
         </button>
       </h5>
       <div>
-        <%= coach_user.coaching_details %>
+        <%= graphic_designer_user.graphic_designer_details %>
       </div>
     </div>
   </div>

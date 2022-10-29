@@ -42,7 +42,7 @@ module ApplicationHelper
     when :rosalina
       action_name =~ /(ranking)/
     when :community
-      controller_name =~ /(caster|coach|twitch_channels|you_tube_channels|discord_guilds)/ || action_name =~ /(contacts)/
+      controller_name =~ /(caster|coach|graphic_designer|twitch_channels|you_tube_channels|discord_guilds)/ || action_name =~ /(contacts)/
     when :guides
       @page.present? && @page.in_header
     else

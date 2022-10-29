@@ -3,13 +3,11 @@
   <div class="card flex-grow-1">
     <div class="card-body d-flex flex-column align-items-center">
       <div class="resource-avatar resource-avatar-lg card">
-        <% if user %>
-          <%= link_to caster_user.avatar_tag(98), user %>
-        <% end %>
+        <%= link_to caster_user.avatar_tag(98), caster_user %>
       </div>
       <div class="resource-meta flex-grow-1">
         <h5 class="resource-title card-title text-truncate">
-          <%= link_to caster_user.name, user %>
+          <%= link_to caster_user.name, caster_user.player %>
         </h5>
 
         <% user_address = caster_user.addresses&.first%>
@@ -33,12 +31,12 @@
           -->
         </div>
       </div>
-      <%= link_to user, class: 'resource-link' do %>
+      <%= link_to caster_user.player, class: 'resource-link' do %>
         <span class="sr-only">Voir plus</span>
       <% end %>
     </div>
-    <% if user %>
-      <%= admin_edit_link(user) %>
+    <% if caster_user %>
+      <%= admin_edit_link(caster_user) %>
     <%end%>
   </div>
 </article>
