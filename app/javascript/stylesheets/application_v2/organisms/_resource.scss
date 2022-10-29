@@ -440,6 +440,10 @@
     min-height: 108px;
     position: relative;
 
+    &-sm {
+      min-height: 80px;
+    }
+
     & > * {
       min-width: 0;
     }
@@ -467,6 +471,14 @@
       border-radius: 0 0 $card-border-radius $card-border-radius;
       position: absolute;
       inset: 0;
+    }
+
+    .resource-accounts {
+      font-size: 1.125rem;
+
+      a + a {
+        margin-left: 0.5em;
+      }
     }
   }
 

@@ -1,0 +1,57 @@
+<% community_desc_toggle_id = "community-user-#{caster_user.id}" %>
+<article class="resource community-user h-100">
+  <div class="card flex-grow-1">
+    <div class="card-body d-flex flex-column align-items-center">
+      <div class="resource-avatar resource-avatar-lg card">
+        <% if user %>
+          <%= link_to caster_user.avatar_tag(98), user %>
+        <% end %>
+      </div>
+      <div class="resource-meta flex-grow-1">
+        <h5 class="resource-title card-title text-truncate">
+          <%= link_to caster_user.name, user %>
+        </h5>
+
+        <% user_address = caster_user.addresses&.first%>
+        <% if user_address %>
+        <div class="resource-address d-flex list-x justify-content-center">
+          <%= svg_icon_tag(:lieu, class: "fs-xs") %>
+          <small class="player-community">
+            <%= user_address[:name] %>
+          </small>
+        </div>
+        <% end %>
+
+        <div class="resource-bottom resource-bottom-sm">
+          <div class="resource-accounts d-flex list-x justify-content-center">
+            <%= render 'players/player_accounts_v2', player: caster_user.player.decorate %>
+          </div>
+          <!--
+          <button for="<%= community_desc_toggle_id %>" class="btn btn-sm btn-dark" data-toggle="collapse" data-target="#<%= community_desc_toggle_id %>" aria-expanded="false" aria-controls="<%= community_desc_toggle_id %>">
+            Voir plus
+          </button>
+          -->
+        </div>
+      </div>
+      <%= link_to user, class: 'resource-link' do %>
+        <span class="sr-only">Voir plus</span>
+      <% end %>
+    </div>
+    <% if user %>
+      <%= admin_edit_link(user) %>
+    <%end%>
+  </div>
+</article>
+<!--
+<div id="<%= community_desc_toggle_id %>" class="resource-description collapse" data-parent="#community-users-list">
+  <div class="resource-description-content card">
+    <div class="card-body">
+      <h5 class="resource-description-title fs-md text-accent d-flex justify-content-between align-items-center">Description du commentateur <%= caster_user.name %>
+        <button type="button" class="close ml-3 text-body mt-n1" data-toggle="collapse" data-target="#<%= community_desc_toggle_id %>" aria-expanded="false" aria-controls="<%= community_desc_toggle_id %>">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </h5>
+    </div>
+  </div>
+</div>
+-->

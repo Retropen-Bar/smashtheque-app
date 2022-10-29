@@ -1,4 +1,5 @@
 class CasterUsersController < PublicController
+  layout 'application_v2'
 
   decorates_assigned :caster_user
 
