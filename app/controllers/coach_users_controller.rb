@@ -1,4 +1,5 @@
 class CoachUsersController < PublicController
+  layout 'application_v2'
 
   decorates_assigned :coach_user
 

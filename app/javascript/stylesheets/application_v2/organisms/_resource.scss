@@ -431,6 +431,15 @@
     }
   }
 
+  .resource-link {
+    position: relative;
+    z-index: 10;
+
+    &:hover {
+      color: $white !important;
+    }
+  }
+
   .resource-bottom {
     display: flex;
     flex-direction: column;
