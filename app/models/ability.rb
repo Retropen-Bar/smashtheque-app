@@ -7,6 +7,7 @@ class Ability
 
   def initialize(_user)
     alias_action :create, :read, :update, :history, :batch_action, to: :cruhb
+    alias_action :create, :read, :update, :destroy, :history, :batch_action, to: :crudhb
     alias_action :read, :history, to: :rh
 
     @user = _user || User.new
@@ -14,10 +15,11 @@ class Ability
     admin_level = user.admin_level || ADMIN_LEVEL_HELP
 
     manage_or_cru = admin_level >= ADMIN_LEVEL_ADMIN ? :manage : :cruhb
+    manage_or_crud = admin_level >= ADMIN_LEVEL_ADMIN ? :manage : :crudhb
     manage_or_read = admin_level >= ADMIN_LEVEL_ADMIN ? :manage : :rh
 
     # User
-    can manage_or_cru, User, { is_root: false }
+    can manage_or_crud, User, { is_root: false }
     can :read, User, { is_root: true }
 
     # ApiRequest
@@ -54,14 +56,14 @@ class Ability
     can :fetch_discord_data, DiscordUser
 
     # Duo
-    can manage_or_cru, Duo
+    can manage_or_crud, Duo
     can :results, Duo
 
     # Page
     can manage_or_cru, Page
 
     # Player
-    can manage_or_cru, Player
+    can manage_or_crud, Player
     can :accept, Player
     can :results, Player
 
@@ -82,12 +84,12 @@ class Ability
     can :fetch_smashgg_data, SmashggUser
 
     # Tournaments
-    can manage_or_cru, RecurringTournament
+    can manage_or_crud, RecurringTournament
     [
       TournamentEvent,
       DuoTournamentEvent
     ].each do |klass|
-      can manage_or_cru, klass
+      can manage_or_crud, klass
       can :complete_with_bracket, klass
       can :compute_rewards, klass
       can :convert_to_duo_tournament_event, klass
@@ -96,14 +98,14 @@ class Ability
     end
 
     # Team
-    can manage_or_cru, Team
+    can manage_or_crud, Team
 
     # TwitchChannel
-    can manage_or_cru, TwitchChannel
+    can manage_or_crud, TwitchChannel
     can :fetch_twitch_data, TwitchChannel
 
     # YouTubeChannel
-    can manage_or_cru, YouTubeChannel
+    can manage_or_crud, YouTubeChannel
 
     # Other admin pages
     can :read, ActiveAdmin::Page, name: 'Dashboard'

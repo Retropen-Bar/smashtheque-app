@@ -239,7 +239,7 @@ class SmashggEvent < ApplicationRecord
   end
 
   def smashgg_url=(url)
-    url = self.class.long_url_from_short_url(url) if is_short_url?(url)
+    url = self.class.long_url_from_short_url(url) if self.class.is_short_url?(url)
     self.slug = self.class.slug_from_url(url)
     self.tournament_slug = self.class.tournament_slug_from_url(url)
   end

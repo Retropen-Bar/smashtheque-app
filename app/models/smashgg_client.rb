@@ -1,7 +1,7 @@
 require 'graphql/client/http'
 
 class SmashggClient
-  HTTP = GraphQL::Client::HTTP.new('https://api.smash.gg/gql/alpha') do
+  HTTP = GraphQL::Client::HTTP.new('https://api.start.gg/gql/alpha') do
     def headers(context)
       {
         Authorization: "Bearer #{ENV['SMASHGG_API_TOKEN']}"

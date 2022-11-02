@@ -95,7 +95,7 @@ ActiveAdmin.register RecurringTournament do
           f.input :is_archived
           f.input :is_hidden
           f.input :ruleset, as: :action_text
-          f.input :lagtest, as: :action_text
+          f.input :lagtest, as: :action_text, wrapper_html: { class: 'online-fields' }
         end
         f.inputs 'Contacts' do
           users_input f, :contacts

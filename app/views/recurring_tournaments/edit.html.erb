@@ -30,7 +30,7 @@
                               required: true %>
                   <%= f.input :is_archived %>
                   <%= f.input :ruleset, as: :simple_action_text %>
-                  <%= f.input :lagtest, as: :simple_action_text %>
+                  <%= f.input :lagtest, as: :simple_action_text, wrapper_html: { class: 'online-fields' } %>
                 </div>
               </section>
 

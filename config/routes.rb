@@ -58,6 +58,7 @@ Rails.application.routes.draw do
       get :players
       get :teams
       get :communities
+      get :recurring_tournaments
       get :others
     end
   end

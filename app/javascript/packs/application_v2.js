@@ -15,9 +15,11 @@ import "../src/shared/maps";
 import "../src/shared/maps_autocomplete";
 import "../src/shared/select2";
 import "../src/shared/global_search";
+import "../src/shared/time_zone"
 import "../src/shared/toastr";
 import "../src/shared/toggles";
 import "../src/shared/tooltips";
+
 import "../src/application_v2/global_search";
 import "../src/application_v2/filters";
 import "../src/application_v2/fullcalendar";

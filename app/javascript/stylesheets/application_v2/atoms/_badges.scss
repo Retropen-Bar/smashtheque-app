@@ -18,3 +18,8 @@
   color: var(--text-color-accent);
   background-color: var(--text-color-accent-100);
 }
+
+.badge-warning {
+  color: $red;
+  background-color: rgba($red, 0.1);
+}

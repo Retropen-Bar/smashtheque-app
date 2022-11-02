@@ -11,6 +11,9 @@
         </h5>
         <div class="resource-badges">
           <%= recurring_tournament.country_flag(class: 'mr-1') %>
+          <% if recurring_tournament.is_archived? %>
+            <%= recurring_tournament.archived_badge %>
+          <% end %>
           <%= recurring_tournament.badges_v2 %>
         </div>
       </div>
@@ -27,4 +30,3 @@
     <%= admin_edit_link(recurring_tournament) %>
   </div>
 </article>
-
