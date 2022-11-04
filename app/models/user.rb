@@ -302,6 +302,10 @@ class User < ApplicationRecord
     )
   end
 
+  def self.by_community_id(community_id)
+    near_community(Community.find(community_id))
+  end
+
   def self.by_main_countrycode(countrycode)
     where(main_countrycode: countrycode)
   end

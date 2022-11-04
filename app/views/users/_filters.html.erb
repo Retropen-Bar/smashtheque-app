@@ -1,0 +1,22 @@
+<%= form_tag "?on_abc=#{params[:on_abc]}", method: :get do %>
+
+  <%= text_field_tag :on_abc, params[:on_abc], hidden: true %>
+
+  <h5><%= svg_icon_tag :lieu %> Communautés FR</h5>
+
+  <div class="mt-4">
+    <%= select_tag  :by_community_id,
+                    options_for_select(
+                      Community.french.order(:name).map do |community|
+                        [
+                          community.name,
+                          community.id
+                        ]
+                      end,
+                      params[:by_community_id]
+                    ),
+                    prompt: 'Toutes',
+                    class: 'custom-select custom-select-sm mb-1' %>
+  </div>
+
+<% end %>

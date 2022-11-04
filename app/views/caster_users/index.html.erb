@@ -27,19 +27,7 @@
               <section>
                 <h5><%= svg_icon_tag :abcd %> Abécédaire</h5>
                 <%= render 'shared/letters' %>
-                <%= form_tag "?on_abc=#{params[:on_abc]}", method: :get do %>
-                <h5><%= svg_icon_tag :lieu %> Communauté</h5>
-                <div class="mt-4">
-                  <%= text_field_tag :on_abc, params[:on_abc], hidden: true %>
-                  <%= select_tag  :by_closest_community_id,
-                    options_for_select(
-                      community_select_collection,
-                      params[:by_closest_community_id]
-                    ),
-                    prompt: 'Toutes',
-                    class: 'custom-select custom-select-sm mb-1' %>
-                </div>
-                <% end %>
+                <%= render 'users/filters' %>
               </section>
             </slide-out>
           </section>
