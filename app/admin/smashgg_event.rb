@@ -91,6 +91,8 @@ ActiveAdmin.register SmashggEvent do
     smashgg_event = SmashggEvent.new(smashgg_id: smashgg_id)
     if (tournament_event = smashgg_event.import)
       redirect_to [:admin, tournament_event]
+    elsif smashgg_event.persisted?
+      redirect_to [:admin, smashgg_event]
     else
       redirect_to request.referer, error: 'Import impossible'
     end
