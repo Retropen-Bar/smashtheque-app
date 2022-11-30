@@ -12,10 +12,16 @@
 #  twitter_username :string
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  parent_id        :bigint
 #
 # Indexes
 #
 #  index_communities_on_countrycode  (countrycode)
+#  index_communities_on_parent_id    (parent_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (parent_id => communities.id)
 #
 class Community < ApplicationRecord
   # ---------------------------------------------------------------------------

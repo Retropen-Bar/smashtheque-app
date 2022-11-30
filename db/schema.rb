@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_14_210009) do
+ActiveRecord::Schema.define(version: 2022_02_06_175138) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -156,7 +156,9 @@ ActiveRecord::Schema.define(version: 2022_01_14_210009) do
     t.string "ranking_url"
     t.string "twitter_username"
     t.string "countrycode"
+    t.bigint "parent_id"
     t.index ["countrycode"], name: "index_communities_on_countrycode"
+    t.index ["parent_id"], name: "index_communities_on_parent_id"
   end
 
   create_table "community_admins", force: :cascade do |t|
@@ -618,6 +620,7 @@ ActiveRecord::Schema.define(version: 2022_01_14_210009) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "characters_players", "characters"
   add_foreign_key "characters_players", "players"
+  add_foreign_key "communities", "communities", column: "parent_id"
   add_foreign_key "discord_guild_admins", "discord_guilds"
   add_foreign_key "discord_guild_admins", "discord_users"
   add_foreign_key "discord_guild_relateds", "discord_guilds"
