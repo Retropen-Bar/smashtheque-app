@@ -359,20 +359,26 @@ class SmashggEvent < ApplicationRecord
 
   def self.import_all(name:, from:, to:, country:)
     lookup(name: name, from: from, to: to, country: country).each do |smashgg_event|
+      next if smashgg_event.already_imported?
+
       sleep 1 # sleep to avoid hitting API rate limits
-      smashgg_event.import
+      unless smashgg_event.import
+        # do not exit on errors, but log them
+        Rails.logger.debug "SmashggEvent errors: #{smashgg_event.errors.full_messages}"
+      end
     end
   end
 
   # returns the existing or created TournamentEvent, or a falsey value
   def import
+    # fetch data because even if some attributes are already here, standings are not fetched yet
     fetch_smashgg_data
     save && create_tournament_event_if_missing
   end
 
   # TODO: handle 2v2 properly
   def create_tournament_event_if_missing
-    return any_tournament_event if any_tournament_event
+    return any_tournament_event if already_imported?
     return nil if top_smashgg_user_ids.count < 4 # we could adjust this threshold
 
     # if we are here, it means no TournamentEvent exists yet for this event
@@ -380,6 +386,10 @@ class SmashggEvent < ApplicationRecord
     tournament_event = TournamentEvent.new(bracket: self)
     tournament_event.use_bracket(true)
     tournament_event.save && tournament_event
+  end
+
+  def already_imported?
+    persisted? && (is_ignored? || any_tournament_event)
   end
 
   def smashgg_user_rank(smashgg_user_id)

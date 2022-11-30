@@ -57,6 +57,11 @@ class SmashggUser < ApplicationRecord
   # CALLBACKS
   # ---------------------------------------------------------------------------
 
+  after_create_commit :fetch_smashgg_data_later
+  def fetch_smashgg_data_later
+    FetchSmashggUserDataJob.perform_later(self)
+  end
+
   after_commit :update_player
   def update_player
     # only if record has new player and twitter_username
@@ -165,11 +170,11 @@ class SmashggUser < ApplicationRecord
 
   def import_missing_smashgg_events
     fetch_smashgg_events.each do |smashgg_event|
-      next if smashgg_event.persisted?
+      next if smashgg_event.already_imported?
 
-      smashgg_event.fetch_smashgg_data # because standings are not fetched yet
-      unless smashgg_event.save
-        # do not exit on errors
+      sleep 1 # sleep to avoid hitting API rate limits
+      unless smashgg_event.import
+        # do not exit on errors, but log them
         Rails.logger.debug "SmashggEvent errors: #{smashgg_event.errors.full_messages}"
       end
     end
