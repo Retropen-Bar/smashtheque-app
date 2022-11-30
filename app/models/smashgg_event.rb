@@ -215,6 +215,12 @@ class SmashggEvent < ApplicationRecord
   # HELPERS
   # ---------------------------------------------------------------------------
 
+  def top_smashgg_user_ids
+    USER_NAMES.filter_map do |user_name|
+      send("#{user_name}_id")
+    end
+  end
+
   def self.long_url_from_short_url(url)
     Net::HTTP.get_response(URI.parse(url))['location']
   rescue StandardError => e
@@ -353,10 +359,27 @@ class SmashggEvent < ApplicationRecord
 
   def self.import_all(name:, from:, to:, country:)
     lookup(name: name, from: from, to: to, country: country).each do |smashgg_event|
-      sleep 1
-      smashgg_event.fetch_smashgg_data
-      smashgg_event.save
+      sleep 1 # sleep to avoid hitting API rate limits
+      smashgg_event.import
     end
+  end
+
+  # returns the existing or created TournamentEvent, or a falsey value
+  def import
+    fetch_smashgg_data
+    save && create_tournament_event_if_missing
+  end
+
+  # TODO: handle 2v2 properly
+  def create_tournament_event_if_missing
+    return any_tournament_event if any_tournament_event
+    return nil if top_smashgg_user_ids.count < 4 # we could adjust this threshold
+
+    # if we are here, it means no TournamentEvent exists yet for this event
+    # and it was not a waiting list since there are players in final standing
+    tournament_event = TournamentEvent.new(bracket: self)
+    tournament_event.use_bracket(true)
+    tournament_event.save && tournament_event
   end
 
   def smashgg_user_rank(smashgg_user_id)
