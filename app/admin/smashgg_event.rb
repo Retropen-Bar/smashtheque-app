@@ -146,6 +146,21 @@ ActiveAdmin.register SmashggEvent do
   end
 
   # ---------------------------------------------------------------------------
+  # MISSINGS
+  # ---------------------------------------------------------------------------
+
+  action_item :import_missing_smashgg_events_which_matter, only: :index do
+    link_to 'Importer les tournois manquants des joueurs',
+            { action: :import_missing_smashgg_events_which_matter },
+            class: :blue
+  end
+
+  collection_action :import_missing_smashgg_events_which_matter do
+    ImportMissingSmashggEventsWhichMatterJob.perform_later
+    redirect_to request.referer, notice: 'Données en cours de récupération'
+  end
+
+  # ---------------------------------------------------------------------------
   # SEARCH
   # ---------------------------------------------------------------------------
 

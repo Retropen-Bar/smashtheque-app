@@ -180,6 +180,11 @@ class SmashggUser < ApplicationRecord
     end
   end
 
+  # import missing events for users linked to a player
+  def self.import_missing_smashgg_events_which_matter
+    with_player.order(:id).each(&:import_missing_smashgg_events)
+  end
+
   # returns [player, reason]
   def suggested_player
     if discord_discriminated_username
