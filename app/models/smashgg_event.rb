@@ -290,7 +290,7 @@ class SmashggEvent < ApplicationRecord
       # sometimes data.standings is nil
       if data.standings.nil?
         Rails.logger.debug 'standings not available (Hash)'
-        Rollbar.log('debug', 'Standings not available (Hash)', slug: data.slug)
+        # Rollbar.log('debug', 'Standings not available (Hash)', slug: data.slug)
         return result
       end
 
@@ -318,7 +318,7 @@ class SmashggEvent < ApplicationRecord
       end
     rescue GraphQL::Client::UnfetchedFieldError
       Rails.logger.debug 'standings not available (GraphQL)'
-      Rollbar.log('debug', 'Standings not available (GraphQL)', slug: data.slug)
+      # Rollbar.log('debug', 'Standings not available (GraphQL)', slug: data.slug)
     end
     result
   end
