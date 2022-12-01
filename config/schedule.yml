@@ -13,7 +13,7 @@ import_latest_smashgg_events:
   queue: :smashgg
   class: 'ImportLatestSmashggEventsJob'
 
-import_latest_smashgg_events:
+import_missing_smashgg_events_which_matter:
   cron: '0 6 * * * Europe/Paris'
   queue: :smashgg
   class: 'ImportMissingSmashggEventsWhichMatterJob'
