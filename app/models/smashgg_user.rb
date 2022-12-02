@@ -160,7 +160,7 @@ class SmashggUser < ApplicationRecord
 
   def fetch_smashgg_events
     data = SmashggClient.new.get_user_events(user_id: smashgg_id)
-    return nil if data.nil?
+    return [] if data.nil?
 
     data.filter_map do |event_data|
       attributes = SmashggEvent.attributes_from_event_data(event_data)
