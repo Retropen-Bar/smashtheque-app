@@ -273,6 +273,8 @@ class SmashggEvent < ApplicationRecord
   end
 
   def self.attributes_from_event_data(data)
+    return {} if data.nil?
+
     result = {
       smashgg_id: data.id,
       slug: data.slug,
@@ -351,9 +353,9 @@ class SmashggEvent < ApplicationRecord
     )
     return nil if data.nil?
 
-    data.map do |event_data|
+    data.filter_map do |event_data|
       attributes = attributes_from_event_data(event_data)
-      where(smashgg_id: attributes[:smashgg_id]).first_or_initialize(attributes)
+      attributes && where(smashgg_id: attributes[:smashgg_id]).first_or_initialize(attributes)
     end
   end
 
