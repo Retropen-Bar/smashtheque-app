@@ -182,7 +182,14 @@ class SmashggUser < ApplicationRecord
 
   # import missing events for users linked to a player
   def self.import_missing_smashgg_events_which_matter
-    with_player.order(:id).each(&:import_missing_smashgg_events)
+    users = with_player.order(id: :desc)
+    logger.debug '*' * 50
+    logger.debug 'IMPORT MISSING SGG EVENTS WHICH MATTER'
+    logger.debug '*' * 50
+    users.each_with_index do |user, idx|
+      logger.debug "Handle sgg user #{idx}/#{users.size}: ##{user.id}"
+      user.import_missing_smashgg_events
+    end
   end
 
   # returns [player, reason]
