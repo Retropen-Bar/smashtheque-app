@@ -255,6 +255,6 @@ class SmashggClient
       variables: {
         userId: user_id
       }
-    ).data.user.events.nodes
+    ).data&.user&.events&.nodes
   end
 end
