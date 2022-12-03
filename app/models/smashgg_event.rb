@@ -172,7 +172,7 @@ class SmashggEvent < ApplicationRecord
           "tournament_events.#{sanitize_sql(player_id)}"
         ).map do |data|
           {
-            rank: rank,
+            rank: rank.to_i,
             smashgg_event_id: data[0],
             smashgg_user_id: data[1],
             smashgg_user_player_id: data[2],
@@ -180,6 +180,18 @@ class SmashggEvent < ApplicationRecord
             tournament_event_player_id: data[4]
           }
         end
+  end
+
+  def self.false_wrong_players?(wrong_player1, wrong_player2)
+    return false unless wrong_player1[:smashgg_event_id] == wrong_player2[:smashgg_event_id]
+    return false unless wrong_player1[:rank] == wrong_player2[:rank]
+    return false unless [5, 7].include?(wrong_player1[:rank])
+
+    (
+      wrong_player1[:smashgg_user_player_id] == wrong_player2[:tournament_event_player_id]
+    ) && (
+      wrong_player1[:tournament_event_player_id] == wrong_player2[:smashgg_user_player_id]
+    )
   end
 
   def self.with_wrong_players

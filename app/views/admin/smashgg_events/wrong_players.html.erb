@@ -9,7 +9,10 @@
     </tr>
   </thead>
   <tbody>
-    <% @wrong_players.each do |wrong_player| %>
+    <% @wrong_players.each_with_index do |wrong_player, idx| %>
+      <% next if idx > 0                       && SmashggEvent.false_wrong_players?(wrong_player, @wrong_players[idx-1]) %>
+      <% next if idx < @wrong_players.size - 1 && SmashggEvent.false_wrong_players?(wrong_player, @wrong_players[idx+1]) %>
+
       <% smashgg_event = SmashggEvent.find(wrong_player[:smashgg_event_id]) %>
       <% rank = wrong_player[:rank] %>
       <% smashgg_user = SmashggUser.find(wrong_player[:smashgg_user_id]) %>

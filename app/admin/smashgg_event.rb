@@ -142,7 +142,9 @@ ActiveAdmin.register SmashggEvent do
   end
 
   collection_action :wrong_players do
-    @wrong_players = SmashggEvent.wrong_players
+    @wrong_players = SmashggEvent.wrong_players.sort_by do |data|
+      [data[:smashgg_event_id], data[:rank]]
+    end
   end
 
   # ---------------------------------------------------------------------------
