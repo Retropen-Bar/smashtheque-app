@@ -1,31 +1,4 @@
-<h2>Suggestions</h2>
-
-<table>
-  <thead>
-    <tr>
-      <th>Compte start.gg</th>
-      <th>Joueur suggéré</th>
-      <th>Tournoi</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @smashgg_users.each do |smashgg_user| %>
-      <% suggested_player = Player.find(smashgg_user['suggested_player_id']) %>
-      <% tournament_event = TournamentEvent.find(smashgg_user['tournament_event_id']) %>
-      <tr>
-        <td><%= smashgg_user.admin_decorate.admin_link %> (<%= smashgg_user.country %>)</td>
-        <td><%= suggested_player.admin_decorate.admin_link(with_teams: true) %></td>
-        <td>
-          <%= tournament_event.admin_decorate.admin_link %>
-        </td>
-        <td>
-          <%= semantic_form_for([:admin, smashgg_user], html: {target: '_blank'}) do |f| %>
-            <%= f.input :player_id, as: :hidden, input_html: {value: suggested_player.id } %>
-            <%= f.submit 'Valider', class: 'button-auto green' %>
-          <% end %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<%= render 'suggestions', reason: 'Tournoi',
+                          display: ->(smashgg_user) {
+                            @tournament_events[smashgg_user['tournament_event_id']].admin_decorate.admin_link
+                          } %>

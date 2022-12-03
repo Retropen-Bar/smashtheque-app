@@ -177,6 +177,10 @@ ActiveAdmin.register SmashggUser do
       INNER JOIN players
               ON players.user_id = users.id
     ").select('smashgg_users.*, players.id AS suggested_player_id').order('unaccent(smashgg_users.gamer_tag)')
+
+    @players = Player.where(
+      id: @smashgg_users.map{|u| u['suggested_player_id']}
+    ).includes(:teams, :smashgg_users, user: :discord_user).index_by(&:id)
   end
 
   collection_action :twitter_suggestions do
@@ -186,6 +190,10 @@ ActiveAdmin.register SmashggUser do
       INNER JOIN players
               ON players.user_id = users.id
     ").select('smashgg_users.*, players.id AS suggested_player_id').order('unaccent(smashgg_users.gamer_tag)')
+
+    @players = Player.where(
+      id: @smashgg_users.map{|u| u['suggested_player_id']}
+    ).includes(:teams, :smashgg_users, user: :discord_user).index_by(&:id)
   end
 
   collection_action :name_suggestions do
@@ -193,6 +201,10 @@ ActiveAdmin.register SmashggUser do
       INNER JOIN players
               ON unaccent(players.name) ILIKE unaccent(smashgg_users.gamer_tag)
     ").select('smashgg_users.*, players.id AS suggested_player_id').order('unaccent(smashgg_users.gamer_tag)')
+
+    @players = Player.where(
+      id: @smashgg_users.map{|u| u['suggested_player_id']}
+    ).includes(:teams, :smashgg_users, user: :discord_user).index_by(&:id)
   end
 
   collection_action :standing_suggestions do
@@ -244,5 +256,12 @@ ActiveAdmin.register SmashggUser do
     ").select(
       'smashgg_users.*, players.id AS suggested_player_id, tournament_events.id AS tournament_event_id'
     ).order('unaccent(smashgg_users.gamer_tag), tournament_event_id')
+
+    @players = Player.where(
+      id: @smashgg_users.map{|u| u['suggested_player_id']}
+    ).includes(:teams, :smashgg_users, user: :discord_user).index_by(&:id)
+    @tournament_events = TournamentEvent.where(
+      id: @smashgg_users.map{|u| u['tournament_event_id']}
+    ).includes(recurring_tournament: [:discord_guild, { logo_attachment: :blob }]).index_by(&:id)
   end
 end

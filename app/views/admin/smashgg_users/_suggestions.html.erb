@@ -13,7 +13,8 @@
   </thead>
   <tbody>
     <% @smashgg_users.each do |smashgg_user| %>
-      <% suggested_player = Player.find(smashgg_user['suggested_player_id']) %>
+      <% suggested_player = @players[smashgg_user['suggested_player_id']] %>
+
       <tr>
         <td><%= smashgg_user.admin_decorate.admin_link %> (<%= smashgg_user.country %>)</td>
         <td><%= suggested_player.admin_decorate.admin_link(with_teams: true) %></td>
