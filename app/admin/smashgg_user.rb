@@ -176,7 +176,9 @@ ActiveAdmin.register SmashggUser do
               ON users.id = discord_users.user_id
       INNER JOIN players
               ON players.user_id = users.id
-    ").select('smashgg_users.*, players.id AS suggested_player_id').order('unaccent(smashgg_users.gamer_tag)')
+    ").select(
+      'smashgg_users.*, players.id AS suggested_player_id'
+    ).order('unaccent(smashgg_users.gamer_tag)').page(params[:page] || 1).per(25)
 
     @players = Player.where(
       id: @smashgg_users.map{|u| u['suggested_player_id']}
@@ -189,7 +191,9 @@ ActiveAdmin.register SmashggUser do
               ON users.twitter_username = smashgg_users.twitter_username
       INNER JOIN players
               ON players.user_id = users.id
-    ").select('smashgg_users.*, players.id AS suggested_player_id').order('unaccent(smashgg_users.gamer_tag)')
+    ").select(
+      'smashgg_users.*, players.id AS suggested_player_id'
+    ).order('unaccent(smashgg_users.gamer_tag)').page(params[:page] || 1).per(25)
 
     @players = Player.where(
       id: @smashgg_users.map{|u| u['suggested_player_id']}
@@ -200,7 +204,9 @@ ActiveAdmin.register SmashggUser do
     @smashgg_users = SmashggUser.without_player.joins("
       INNER JOIN players
               ON unaccent(players.name) ILIKE unaccent(smashgg_users.gamer_tag)
-    ").select('smashgg_users.*, players.id AS suggested_player_id').order('unaccent(smashgg_users.gamer_tag)')
+    ").select(
+      'smashgg_users.*, players.id AS suggested_player_id'
+    ).order('unaccent(smashgg_users.gamer_tag)').page(params[:page] || 1).per(25)
 
     @players = Player.where(
       id: @smashgg_users.map{|u| u['suggested_player_id']}
@@ -255,7 +261,7 @@ ActiveAdmin.register SmashggUser do
       )
     ").select(
       'smashgg_users.*, players.id AS suggested_player_id, tournament_events.id AS tournament_event_id'
-    ).order('unaccent(smashgg_users.gamer_tag), tournament_event_id')
+    ).order('unaccent(smashgg_users.gamer_tag), tournament_event_id').page(params[:page] || 1).per(25)
 
     @players = Player.where(
       id: @smashgg_users.map{|u| u['suggested_player_id']}
