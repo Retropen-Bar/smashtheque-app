@@ -157,10 +157,92 @@ ActiveAdmin.register SmashggUser do
   # SUGGESTIONS
   # ---------------------------------------------------------------------------
 
-  action_item :suggestions, only: :index do
-    link_to 'Suggestions', { action: :suggestions }, class: :blue
+  action_item :suggestions, only: %i[
+    index discord_suggestions twitter_suggestions
+    name_suggestions standing_suggestions] do
+    dropdown_menu 'Suggestions' do
+      item 'Discord', action: :discord_suggestions
+      item 'Twitter', action: :twitter_suggestions
+      item 'Pseudo', action: :name_suggestions
+      item 'Tournoi', action: :standing_suggestions
+    end
   end
-  collection_action :suggestions do
-    @smashgg_users = SmashggUser.without_player
+
+  collection_action :discord_suggestions do
+    @smashgg_users = SmashggUser.without_player.joins("
+      INNER JOIN discord_users
+              ON CONCAT(username, '#', discriminator) = discord_discriminated_username
+      INNER JOIN users
+              ON users.id = discord_users.user_id
+      INNER JOIN players
+              ON players.user_id = users.id
+    ").select('smashgg_users.*, players.id AS suggested_player_id').order('unaccent(smashgg_users.gamer_tag)')
+  end
+
+  collection_action :twitter_suggestions do
+    @smashgg_users = SmashggUser.without_player.joins("
+      INNER JOIN users
+              ON users.twitter_username = smashgg_users.twitter_username
+      INNER JOIN players
+              ON players.user_id = users.id
+    ").select('smashgg_users.*, players.id AS suggested_player_id').order('unaccent(smashgg_users.gamer_tag)')
+  end
+
+  collection_action :name_suggestions do
+    @smashgg_users = SmashggUser.without_player.joins("
+      INNER JOIN players
+              ON unaccent(players.name) ILIKE unaccent(smashgg_users.gamer_tag)
+    ").select('smashgg_users.*, players.id AS suggested_player_id').order('unaccent(smashgg_users.gamer_tag)')
+  end
+
+  collection_action :standing_suggestions do
+    @smashgg_users = SmashggUser.without_player.joins("
+      INNER JOIN smashgg_events
+              ON smashgg_users.id IN (
+                smashgg_events.top1_smashgg_user_id,
+                smashgg_events.top2_smashgg_user_id,
+                smashgg_events.top3_smashgg_user_id,
+                smashgg_events.top4_smashgg_user_id,
+                smashgg_events.top5a_smashgg_user_id,
+                smashgg_events.top5b_smashgg_user_id,
+                smashgg_events.top7a_smashgg_user_id,
+                smashgg_events.top7b_smashgg_user_id
+              )
+      INNER JOIN tournament_events
+              ON tournament_events.bracket_type = 'SmashggEvent' AND tournament_events.bracket_id = smashgg_events.id
+      INNER JOIN players
+              ON players.id IN (
+                tournament_events.top1_player_id,
+                tournament_events.top2_player_id,
+                tournament_events.top3_player_id,
+                tournament_events.top4_player_id,
+                tournament_events.top5a_player_id,
+                tournament_events.top5b_player_id,
+                tournament_events.top7a_player_id,
+                tournament_events.top7b_player_id
+              )
+    ").where("
+      (
+            smashgg_users.id = smashgg_events.top1_smashgg_user_id
+        AND players.id = tournament_events.top1_player_id
+      ) OR (
+            smashgg_users.id = smashgg_events.top2_smashgg_user_id
+        AND players.id = tournament_events.top2_player_id
+      ) OR (
+            smashgg_users.id = smashgg_events.top3_smashgg_user_id
+        AND players.id = tournament_events.top3_player_id
+      ) OR (
+            smashgg_users.id = smashgg_events.top4_smashgg_user_id
+        AND players.id = tournament_events.top4_player_id
+      ) OR (
+            smashgg_users.id IN (smashgg_events.top5a_smashgg_user_id, smashgg_events.top5b_smashgg_user_id)
+        AND players.id IN (tournament_events.top5a_player_id, tournament_events.top5b_player_id)
+      ) OR (
+            smashgg_users.id IN (smashgg_events.top7a_smashgg_user_id, smashgg_events.top7b_smashgg_user_id)
+        AND players.id IN (tournament_events.top7a_player_id, tournament_events.top7b_player_id)
+      )
+    ").select(
+      'smashgg_users.*, players.id AS suggested_player_id, tournament_events.id AS tournament_event_id'
+    ).order('unaccent(smashgg_users.gamer_tag), tournament_event_id')
   end
 end

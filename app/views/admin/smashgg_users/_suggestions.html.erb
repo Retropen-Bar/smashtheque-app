@@ -5,30 +5,23 @@
     <tr>
       <th>Compte start.gg</th>
       <th>Joueur suggéré</th>
-      <th>Raison de la suggestion</th>
+      <% if reason %>
+        <th><%= reason %></th>
+      <% end %>
       <th>Actions</th>
     </tr>
   </thead>
   <tbody>
     <% @smashgg_users.each do |smashgg_user| %>
-      <% suggestion = smashgg_user.suggested_player %>
-      <% next if suggestion.nil? %>
-      <% suggested_player = suggestion.first %>
+      <% suggested_player = Player.find(smashgg_user['suggested_player_id']) %>
       <tr>
         <td><%= smashgg_user.admin_decorate.admin_link %> (<%= smashgg_user.country %>)</td>
         <td><%= suggested_player.admin_decorate.admin_link(with_teams: true) %></td>
-        <td>
-          <% case suggestion.second %>
-          <% when :discord_discriminated_username %>
-            Pseudo Discord : <%= smashgg_user.discord_discriminated_username %>
-          <% when :twitter_username %>
-            Pseudo Twitter : <%= smashgg_user.twitter_username %>
-          <% when :gamer_tag %>
-            Pseudo : <%= smashgg_user.gamer_tag %> &asymp; <%= suggested_player.name %>
-          <% when :smashgg_event %>
-            <%= suggestion.third.admin_decorate.admin_link %>
-          <% end %>
-        </td>
+        <% if reason %>
+          <td>
+            <%= display.call(smashgg_user) %>
+          </td>
+        <% end %>
         <td>
           <%= semantic_form_for([:admin, smashgg_user], html: {target: '_blank'}) do |f| %>
             <%= f.input :player_id, as: :hidden, input_html: {value: suggested_player.id } %>
