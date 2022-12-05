@@ -15,11 +15,16 @@
   </thead>
   <tbody>
     <% @smashgg_users.each do |smashgg_user| %>
-      <% suggested_player = @players[smashgg_user['suggested_player_id']] %>
+      <% suggested_player = @players[smashgg_user['suggested_player_id']].admin_decorate %>
 
       <tr>
         <td><%= smashgg_user.admin_decorate.admin_link %> (<%= smashgg_user.country %>)</td>
-        <td><%= suggested_player.admin_decorate.admin_link(with_teams: true) %></td>
+        <td>
+          <%= suggested_player.admin_link(with_teams: true, with_old_names: true) %>
+          <% if (countrycode = suggested_player.countrycode).present? %>
+            <%= suggested_player.country_flag %> (<%= countrycode %>)
+          <% end %>
+        </td>
         <% if reason %>
           <td>
             <%= display.call(smashgg_user) %>

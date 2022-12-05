@@ -43,8 +43,8 @@ class PlayerDecorator < BaseDecorator
     h.image_url 'default-avatar.svg'
   end
 
-  def name_with_avatar(size: nil, with_teams: false)
-    txt = [name]
+  def name_with_avatar(size: nil, with_teams: false, with_old_names: false)
+    txt = [with_old_names ? name_and_old_names : name]
     txt = teams.map(&:short_name) + txt if with_teams
     [
       avatar_tag(size),
@@ -54,6 +54,10 @@ class PlayerDecorator < BaseDecorator
 
   def default_avatar(size)
     h.image_tag 'default-avatar.svg', width: size, class: :avatar
+  end
+
+  def countrycode
+    user&.decorate&.countrycode
   end
 
   def country_flag(options = {})

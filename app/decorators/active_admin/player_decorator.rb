@@ -31,7 +31,8 @@ module ActiveAdmin
 
     def admin_link(options = {})
       with_teams = options.delete(:with_teams)
-      super({ label: name_with_avatar(size: 32, with_teams: with_teams) }.merge(options))
+      with_old_names = options.delete(:with_old_names)
+      super({ label: name_with_avatar(size: 32, with_teams: with_teams, with_old_names: with_old_names) }.merge(options))
     end
 
     def characters_admin_links
