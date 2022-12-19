@@ -1,0 +1,71 @@
+<%= form_tag "?on_abc=#{params[:on_abc]}", method: :get do %>
+
+  <%= render 'shared/ranking_filters' %>
+
+  <%= render 'shared/ranking_filters_location' %>
+
+  <h5><%= svg_icon_tag :mario %> Personnages</h5>
+
+  <div class="my-4">
+    <%= text_field_tag :on_abc, params[:on_abc], hidden: true %>
+    <%= select_tag  :by_character_id,
+                    options_for_select(
+                      player_characters_select_collection,
+                      params[:by_character_id]
+                    ),
+                    prompt: 'Tous',
+                    class: 'custom-select custom-select-sm mb-2' %>
+    <% unless params[:by_character_id].blank? %>
+      <div class="custom-control custom-radio">
+        <%= radio_button_tag :by_character_id_mains_only,
+                             0,
+                             params[:by_character_id_mains_only]&.to_i != 1,
+                             id: "filter-mains-and-secondaries",
+                             class: 'custom-control-input' %>
+        <label class="custom-control-label" for="filter-mains-and-secondaries">
+          Mains et seconds
+        </label>
+      </div>
+      <div class="custom-control custom-radio">
+        <%= radio_button_tag :by_character_id_mains_only,
+                             1,
+                             params[:by_character_id_mains_only]&.to_i == 1,
+                             id: "filter-mains-only",
+                             class: 'custom-control-input' %>
+        <label class="custom-control-label" for="filter-mains-only">
+          Uniquement les mains
+        </label>
+      </div>
+    <% end %>
+  </div>
+
+  <h5><%= svg_icon_tag :groupe %> Équipes</h5>
+
+  <div class="my-4">
+    <%= select_tag  :by_team_id,
+                    options_for_select(
+                      player_teams_select_collection,
+                      params[:by_team_id]
+                    ),
+                    prompt: 'Toutes',
+                    class: 'custom-select custom-select-sm' %>
+  </div>
+
+  <h5><%= svg_icon_tag :lieu %> Communautés FR</h5>
+
+  <div class="mt-4">
+    <%= select_tag  :by_community_id,
+                    options_for_select(
+                      Community.french.order(:name).map do |community|
+                        [
+                          community.name,
+                          community.id
+                        ]
+                      end,
+                      params[:by_community_id]
+                    ),
+                    prompt: 'Toutes',
+                    class: 'custom-select custom-select-sm mb-1' %>
+  </div>
+
+<% end %>
