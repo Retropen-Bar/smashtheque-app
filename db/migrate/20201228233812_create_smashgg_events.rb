@@ -4,7 +4,7 @@ class CreateSmashggEvents < ActiveRecord::Migration[6.0]
       t.integer :smashgg_id, null: false
       t.string :slug, null: false
 
-      # smash.gg data
+      # data
       t.string :name
       t.datetime :start_at
       t.boolean :is_online

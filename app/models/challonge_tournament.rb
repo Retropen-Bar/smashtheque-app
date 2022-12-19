@@ -39,6 +39,7 @@ class ChallongeTournament < ApplicationRecord
   PARTICIPANT_NAMES = TournamentEvent::TOP_RANKS.map do |rank|
     "top#{rank}_participant_name".to_sym
   end.freeze
+  ICON_URL = 'https://assets.challonge.com/assets/challonge_fireball_orange-a973ff3b12c34c780fc21313ec71aada3b9b779cbd3a62769e9199ce08395692.svg'.freeze
 
   # ---------------------------------------------------------------------------
   # VALIDATIONS
@@ -56,7 +57,7 @@ class ChallongeTournament < ApplicationRecord
     return nil if url.starts_with?('http') && !url.starts_with?('https://challonge.com')
 
     url += '/' unless url.ends_with?('/')
-    url.gsub(%r{https://challonge.com/}, '').gsub(%r{(fr|en)/}, '').gsub(%r{/.*}, '').presence
+    url.gsub(%r{\Ahttps://challonge.com/}, '').gsub(%r{\A(fr|en)/}, '').gsub(%r{/.*}, '').presence
   end
 
   def challonge_url=(url)
@@ -86,7 +87,7 @@ class ChallongeTournament < ApplicationRecord
       participants_count: data['participants_count']
     }
     result[:start_at] = DateTime.parse(data['start_at']) if data['start_at']
-    data['participants'].each do |_participant|
+    (data['participants'] || []).each do |_participant|
       if participant = _participant['participant']
         placement = participant['final_rank']
         if (placement || 0) > 0 && placement < 8

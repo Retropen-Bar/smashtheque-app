@@ -8,7 +8,7 @@ class SmashggEventDecorator < BaseDecorator
 
   def icon_and_full_name(size: 32)
     [
-      h.image_tag('https://smash.gg/images/gg-app-icon.png', height: size, style: 'vertical-align: middle'),
+      h.image_tag(SmashggEvent::ICON_URL, height: size, style: 'vertical-align: middle'),
       full_name
     ].join('&nbsp;').html_safe
   end
@@ -34,7 +34,7 @@ class SmashggEventDecorator < BaseDecorator
 
     h.link_to smashgg_url, target: '_blank', rel: :noopener do
       (
-        h.image_tag 'https://smash.gg/images/gg-app-icon.png', height: 16, class: 'logo'
+        h.image_tag SmashggEvent::ICON_URL, height: 16, class: 'logo'
       ) + ' ' + (
         h.tag.span model.name
       )
@@ -46,7 +46,7 @@ class SmashggEventDecorator < BaseDecorator
 
     h.link_to tournament_smashgg_url, target: '_blank', rel: :noopener do
       (
-        h.image_tag 'https://smash.gg/images/gg-app-icon.png', height: 16, class: 'logo'
+        h.image_tag SmashggEvent::ICON_URL, height: 16, class: 'logo'
       ) + ' ' + (
         h.tag.span model.tournament_name
       )

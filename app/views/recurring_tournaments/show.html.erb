@@ -123,7 +123,7 @@
                   <% if recurring_tournament.contacts.count > 3 %>
                     <div class="text-right mt-3">
                       <%= link_to 'Voir plus',
-                                  contacts_recurring_tournaments_path(by_community_id: recurring_tournament.closest_community&.id),
+                                  contacts_recurring_tournaments_path(by_contact_recurring_tournament_id: recurring_tournament.id),
                                   class: 'btn btn-sm bg-layout rounded-pill' %>
                     </div>
                   <% end %>

@@ -21,6 +21,7 @@ class PlayersController < PublicController
   end
   has_scope :by_team_id
   has_scope :by_community_id
+  has_scope :by_contact_recurring_tournament_id
 
   has_scope :page, default: 1
   has_scope :per

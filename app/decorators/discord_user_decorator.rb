@@ -86,7 +86,7 @@ class DiscordUserDecorator < BaseDecorator
   def discord_badge_logo_only
     h.link_to discord_url, target: '_blank', rel: :noopener do
       [
-        h.content_tag(:span, "Compte smash.gg de #{discriminated_username}", class: 'sr-only'),
+        h.content_tag(:span, "Compte start.gg de #{discriminated_username}", class: 'sr-only'),
         h.svg_icon_tag(:discord)
       ].join('').html_safe
     end

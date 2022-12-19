@@ -234,6 +234,10 @@ class User < ApplicationRecord
     where(id: RecurringTournamentContact.select(:user_id))
   end
 
+  def self.by_contact_recurring_tournament_id(ids)
+    where(id: RecurringTournamentContact.where(recurring_tournament_id: ids).select(:user_id))
+  end
+
   def self.team_admins
     where(id: TeamAdmin.select(:user_id))
   end

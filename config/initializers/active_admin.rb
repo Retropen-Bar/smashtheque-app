@@ -276,12 +276,12 @@ ActiveAdmin.setup do |config|
                priority: 12
 
       menu.add parent: '<i class="fas fa-fw fa-plus"></i>Ajouter'.html_safe,
-               label: '<img src="https://assets.challonge.com/assets/challonge_fireball_orange-a973ff3b12c34c780fc21313ec71aada3b9b779cbd3a62769e9199ce08395692.svg" height="16" class="logo"/>Un bracket Challonge'.html_safe,
+               label: "<img src='#{ChallongeTournament::ICON_URL}' height='16' class='logo'/>Un bracket Challonge".html_safe,
                url: '/admin/challonge_tournaments/new',
                priority: 20
 
       menu.add parent: '<i class="fas fa-fw fa-plus"></i>Ajouter'.html_safe,
-               label: '<img src="https://smash.gg/images/gg-app-icon.png" height="16" class="logo"/>Un bracket smash.gg'.html_safe,
+               label: "<img src='#{SmashggEvent::ICON_URL}' height='16' class='logo'/>Un bracket start.gg".html_safe,
                url: '/admin/smashgg_events/new',
                priority: 21
 

@@ -13,7 +13,7 @@ class SmashggUsersController < PublicController
 
     # refuse if not recognized
     if @smashgg_user.slug.blank?
-      flash[:error] = 'Compte smash.gg non reconnu'
+      flash[:error] = 'Compte start.gg non reconnu'
       redirect_to @player.user and return
     end
 
@@ -22,7 +22,7 @@ class SmashggUsersController < PublicController
 
     # refuse if the account was already known and linked to another player
     if @smashgg_user.player_id
-      flash[:error] = 'Ce compte smash.gg est déjà relié à un autre joueur'
+      flash[:error] = 'Ce compte start.gg est déjà relié à un autre joueur'
       redirect_to @player.user and return
     end
 

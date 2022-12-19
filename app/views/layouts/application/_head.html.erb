@@ -16,7 +16,7 @@
   <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto text-center text-lg-left">
 
-      <li class="nav-item dropdown newpill">
+      <li class="nav-item dropdown">
         <%= link_to players_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
           <%= fas_icon_tag :user %>
           <span>Joueurs & Cie</span>
@@ -24,13 +24,14 @@
         <div class="dropdown-menu">
           <%= link_to 'Abécédaire', players_path, class: 'dropdown-item' %>
           <%= link_to 'Équipes', teams_path, class: 'dropdown-item' %>
-          <%= link_to 'Personnages', characters_path, class: 'dropdown-item' %>
           <%= link_to 'Duos', duos_path, class: 'dropdown-item' %>
+          <div class="dropdown-divider"></div>
+          <%= link_to 'Personnages', characters_path, class: 'dropdown-item' %>
           <%= link_to 'Communautés locales', communities_path, class: 'dropdown-item' %>
         </div>
       </li>
 
-      <li class="nav-item dropdown">
+      <li class="nav-item dropdown newpill">
         <%= link_to recurring_tournaments_path, class: 'nav-link dropdown-toggle', data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
           <%= fas_icon_tag :chess %>
           <span>Tournois</span>
@@ -144,12 +145,12 @@
               Une édition 2v2
             <% end %>
             <%= link_to new_admin_challonge_tournament_path, class: 'dropdown-item' do %>
-              <img src="https://assets.challonge.com/assets/challonge_fireball_orange-a973ff3b12c34c780fc21313ec71aada3b9b779cbd3a62769e9199ce08395692.svg" height="16" class="fa-fw mr-2"/>
+              <img src="<%= ChallongeTournament::ICON_URL %>" height="16" class="fa-fw mr-2"/>
               Un bracket Challonge
             <% end %>
             <%= link_to new_admin_smashgg_event_path, class: 'dropdown-item' do %>
-              <img src="https://smash.gg/images/gg-app-icon.png" height="16" class="fa-fw mr-2"/>
-              Un bracket smash.gg
+              <img src="<%= SmashggEvent::ICON_URL %>" height="16" class="fa-fw mr-2"/>
+              Un bracket start.gg
             <% end %>
             <div class="dropdown-divider"></div>
             <%= link_to new_admin_discord_user_path, class: 'dropdown-item' do %>

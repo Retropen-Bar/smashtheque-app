@@ -98,7 +98,7 @@ class SmashggUser < ApplicationRecord
   end
 
   def smashgg_url
-    slug && "https://smash.gg/#{slug}"
+    slug && "https://www.start.gg/#{slug}"
   end
 
   def fetch_smashgg_data

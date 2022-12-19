@@ -11,13 +11,14 @@
             <%= svg_icon_tag :groupe %>
             <span>Équipes</span>
           <% end %>
-          <%= link_to characters_path, class: "section-nav-link#{current_class?(characters_path)}" do %>
-            <%= svg_icon_tag :mario %>
-            <span>Personnages</span>
-          <% end %>
           <%= link_to duos_path, class: "section-nav-link#{current_class?(duos_path)}" do %>
             <%= svg_icon_tag :duo %>
             <span>Duos</span>
+          <% end %>
+          <div class="dropdown-divider mx-0"></div>
+          <%= link_to characters_path, class: "section-nav-link#{current_class?(characters_path)}" do %>
+            <%= svg_icon_tag :mario %>
+            <span>Personnages</span>
           <% end %>
           <%= link_to communities_path, class: "section-nav-link#{current_class?(communities_path)}" do %>
             <%= svg_icon_tag :lieu %>

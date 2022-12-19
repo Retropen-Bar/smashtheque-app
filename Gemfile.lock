@@ -454,7 +454,7 @@ GEM
     twitch_oauth2 (0.3.0)
       faraday (~> 1.0)
       faraday_middleware (~> 1.0)
-    tzinfo (1.2.9)
+    tzinfo (1.2.10)
       thread_safe (~> 0.1)
     unf (0.1.4)
       unf_ext

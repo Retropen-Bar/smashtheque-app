@@ -37,6 +37,7 @@ class BraacketTournament < ApplicationRecord
   PARTICIPANT_NAMES = TournamentEvent::TOP_RANKS.map do |rank|
     "top#{rank}_participant_name".to_sym
   end.freeze
+  ICON_URL = 'https://braacket.com/favicon.ico'.freeze
 
   # ---------------------------------------------------------------------------
   # VALIDATIONS

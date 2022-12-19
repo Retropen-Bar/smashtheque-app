@@ -1,7 +1,7 @@
 ActiveAdmin.register SmashggUser do
   decorate_with ActiveAdmin::SmashggUserDecorator
 
-  menu parent: '<img src="https://smash.gg/images/gg-app-icon.png" height="16" class="logo"/>smash.gg'.html_safe,
+  menu parent: "<img src='#{SmashggEvent::ICON_URL}' height='16' class='logo'/>start.gg".html_safe,
        label: '<i class="fas fa-fw fa-user"></i>Comptes'.html_safe
 
   # ---------------------------------------------------------------------------
@@ -56,7 +56,7 @@ ActiveAdmin.register SmashggUser do
     f.semantic_errors *f.object.errors.keys
     f.inputs do
       unless f.object.persisted?
-        f.input :smashgg_url, placeholder: 'https://smash.gg/...'
+        f.input :smashgg_url, placeholder: 'https://www.start.gg/...'
       end
       player_input f
     end
@@ -120,7 +120,7 @@ ActiveAdmin.register SmashggUser do
 
   action_item :fetch_smashgg_data,
               only: :show do
-    link_to 'Importer les données de smash.gg', [:fetch_smashgg_data, :admin, resource]
+    link_to 'Importer les données de start.gg', [:fetch_smashgg_data, :admin, resource]
   end
 
   action_item :other_actions, only: :show do

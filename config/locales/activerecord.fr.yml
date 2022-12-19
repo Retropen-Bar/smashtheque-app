@@ -21,8 +21,8 @@ fr:
       recurring_tournament_power_ranking: Power Ranking
       reward: Récompense
       reward_condition: Condition de récompense
-      smashgg_event: Tournoi smash.gg
-      smashgg_user: Compte smash.gg
+      smashgg_event: Tournoi start.gg
+      smashgg_user: Compte start.gg
       team: Équipe
       tournament_event: Édition 1v1
       twitch_channel: Chaîne Twitch
@@ -223,7 +223,7 @@ fr:
         rank_in_2020: Classement 2020
         rank_in_2021: Classement 2021
         rewards: Récompenses
-        smashgg_users: Comptes smash.gg
+        smashgg_users: Comptes start.gg
         teams: Équipes
         team_ids: Équipes
         unique_rewards: Récompenses uniques

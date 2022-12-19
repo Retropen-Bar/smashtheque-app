@@ -7,7 +7,7 @@
 
   <slide-out dock="right" :visible.sync="mainNavVisible" :arrow-button="false" size="273px" title="Menu" class="collapse navbar-collapse" id="navbarSupportedContent">
     <%= link_to page_path(slug: 'liens-utiles'), class: 'btn btn-gradient-pink rounded w-100 d-flex d-xxl-none align-items-center mb-4 border-0 py-2' do %>
-      <%= svg_icon_tag :panneau %>
+      <%= svg_icon_tag :guide %>
       <span class="pl-2">Besoin d'aide ?</span>
     <% end %>
 
@@ -15,12 +15,12 @@
 
       <li class="nav-item dropdown players ml-xxl-auto">
         <%= link_to players_path, class: "nav-link dropdown-toggle#{' active' if current_section?(:players)}", data: {toggle: :dropdown}, role: :button, aria: {haspopup: true, expanded: false} do %>
-          <span>Joueurs & Cie</span>
+          <span>Joueurs</span>
         <% end %>
 
         <div class="dropdown-menu">
           <button type="button" class="btn btn-back btn-sm">
-            <span>Joueurs & Cie</span>
+            <span>Joueurs</span>
           </button>
           <%= link_to players_path, class: 'dropdown-item' do %>
             <%= svg_icon_tag :joueur %>
@@ -30,13 +30,14 @@
             <%= svg_icon_tag :groupe %>
             <span>Équipes</span>
           <% end %>
-          <%= link_to characters_path, class: 'dropdown-item' do %>
-            <%= svg_icon_tag :mario %>
-            <span>Personnages</span>
-          <% end %>
           <%= link_to duos_path, class: 'dropdown-item' do %>
             <%= svg_icon_tag :duo %>
             <span>Duos</span>
+          <% end %>
+          <div class="dropdown-divider"></div>
+          <%= link_to characters_path, class: 'dropdown-item' do %>
+            <%= svg_icon_tag :mario %>
+            <span>Personnages</span>
           <% end %>
           <%= link_to communities_path, class: 'dropdown-item' do %>
             <%= svg_icon_tag :lieu %>
@@ -54,12 +55,27 @@
           <button type="button" class="btn btn-back btn-sm">
             <span>Tournois</span>
           </button>
-          <%= link_to 'Séries de tournois', recurring_tournaments_path, class: 'dropdown-item' %>
-          <%= link_to 'Éditions 1v1', tournament_events_path, class: 'dropdown-item' %>
-          <%= link_to 'Éditions 2v2', duo_tournament_events_path, class: 'dropdown-item' %>
+          <%= link_to recurring_tournaments_path, class: 'dropdown-item' do %>
+            <%= svg_icon_tag :trophee %>
+            Séries de tournois
+          <% end %>
+          <%= link_to tournament_events_path, class: 'dropdown-item' do %>
+            <%= svg_icon_tag :_1v1 %>
+            Éditions 1v1
+          <% end %>
+          <%= link_to duo_tournament_events_path, class: 'dropdown-item' do %>
+            <%= svg_icon_tag :_2v2 %>
+            Éditions 2v2
+          <% end %>
           <div class="dropdown-divider"></div>
-          <%= link_to 'Planning hebdo', planning_recurring_tournaments_path, class: 'dropdown-item' %>
-          <%= link_to 'Carte du offline', map_recurring_tournaments_path, class: 'dropdown-item' %>
+          <%= link_to planning_recurring_tournaments_path, class: 'dropdown-item' do %>
+            <%= svg_icon_tag :calendar %>
+            Planning hebdo
+          <% end %>
+          <%= link_to map_recurring_tournaments_path, class: 'dropdown-item' do %>
+            <%= svg_icon_tag :map %>
+            Carte du offline
+          <% end %>
         </div>
       </li>
 
@@ -172,12 +188,12 @@
               Une édition 2v2
             <% end %>
             <%= link_to new_admin_challonge_tournament_path, class: 'dropdown-item' do %>
-              <img src="https://assets.challonge.com/assets/challonge_fireball_orange-a973ff3b12c34c780fc21313ec71aada3b9b779cbd3a62769e9199ce08395692.svg" height="16" class="fa-fw mr-2"/>
+              <img src="<%= ChallongeTournament::ICON_URL %>" height="16" class="fa-fw mr-2"/>
               Un bracket Challonge
             <% end %>
             <%= link_to new_admin_smashgg_event_path, class: 'dropdown-item' do %>
-              <img src="https://smash.gg/images/gg-app-icon.png" height="16" class="fa-fw mr-2"/>
-              Un bracket smash.gg
+              <img src="<%= SmashggEvent::ICON_URL %>" height="16" class="fa-fw mr-2"/>
+              Un bracket start.gg
             <% end %>
             <div class="dropdown-divider"></div>
             <%= link_to new_admin_discord_user_path, class: 'dropdown-item' do %>

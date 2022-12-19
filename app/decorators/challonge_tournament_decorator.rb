@@ -2,7 +2,7 @@ class ChallongeTournamentDecorator < BaseDecorator
   def name_with_icon(size: 32)
     [
       h.image_tag(
-        'https://assets.challonge.com/assets/challonge_fireball_orange-a973ff3b12c34c780fc21313ec71aada3b9b779cbd3a62769e9199ce08395692.svg',
+        ChallongeTournament::ICON_URL,
         height: size,
         style: 'vertical-align: middle'
       ),
@@ -16,7 +16,7 @@ class ChallongeTournamentDecorator < BaseDecorator
     h.link_to challonge_url, target: '_blank', rel: :noopener do
       (
         h.image_tag(
-          'https://assets.challonge.com/assets/challonge_fireball_orange-a973ff3b12c34c780fc21313ec71aada3b9b779cbd3a62769e9199ce08395692.svg',
+          ChallongeTournament::ICON_URL,
           height: 16,
           class: 'logo'
         )
