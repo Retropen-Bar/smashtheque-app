@@ -88,6 +88,8 @@ class RecurringTournament < ApplicationRecord
     1024
   ]
 
+  STARTS_AT_TIMEZONE = ActiveSupport::TimeZone.new('Europe/Paris')
+
   # ---------------------------------------------------------------------------
   # RELATIONS
   # ---------------------------------------------------------------------------
@@ -228,7 +230,8 @@ class RecurringTournament < ApplicationRecord
                   ignoring: :accents
 
   def self.by_keyword(term)
-    where(id: by_pg_search(term).select(:id))
+    by_pg_search(term)
+    # where(id: by_pg_search(term).select(:id))
   end
 
   def self.by_name(name)
@@ -313,6 +316,14 @@ class RecurringTournament < ApplicationRecord
     results.map do |result|
       [result.awarded, result.total_points]
     end
+  end
+
+  def starts_at_hour_utc
+    starts_at_hour - (STARTS_AT_TIMEZONE.utc_offset / 3600)
+  end
+
+  def starts_at_hour_in_time_zone(timezone)
+    starts_at_hour_utc + (timezone.utc_offset / 3600)
   end
 
   # ---------------------------------------------------------------------------

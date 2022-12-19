@@ -9,7 +9,7 @@ ActiveAdmin.register DiscordGuild do
   # INDEX
   # ---------------------------------------------------------------------------
 
-  includes :admins, discord_guild_relateds: :related
+  includes :admins, :recurring_tournaments, discord_guild_relateds: :related
 
   index do
     selectable_column
@@ -26,6 +26,9 @@ ActiveAdmin.register DiscordGuild do
     column :admins do |decorated|
       decorated.admins_admin_links(size: 32).join('<br/>').html_safe
     end
+    column :recurring_tournaments do |decorated|
+      decorated.recurring_tournaments_admin_links(size: 32).join('<br/>').html_safe
+    end
     column :created_at do |decorated|
       decorated.created_at_date
     end
@@ -40,6 +43,7 @@ ActiveAdmin.register DiscordGuild do
   scope :related_to_community, group: :related
   scope :related_to_player, group: :related
   scope :related_to_team, group: :related
+  scope :for_recurring_tournament, group: :related
 
   filter :discord_id
   filter :name
@@ -101,6 +105,17 @@ ActiveAdmin.register DiscordGuild do
                   }
                 }
               }
+      f.input :recurring_tournaments,
+              collection: recurring_tournament_select_collection,
+              input_html: {
+                multiple: true,
+                data: {
+                  select2: {
+                    placeholder: 'Nom de la série',
+                    allowClear: true
+                  }
+                }
+              }
       f.input :invitation_url
       discord_users_input f, :admins
       f.input :twitter_username
@@ -109,6 +124,7 @@ ActiveAdmin.register DiscordGuild do
   end
 
   permit_params :discord_id, :invitation_url, :twitter_username,
+                recurring_tournament_ids: [],
                 admin_ids: [], related_gids: []
 
   collection_action :related_autocomplete do
@@ -131,6 +147,9 @@ ActiveAdmin.register DiscordGuild do
       end
       row :relateds do |decorated|
         decorated.relateds_admin_links.join('<br/>').html_safe
+      end
+      row :recurring_tournaments do |decorated|
+        decorated.recurring_tournaments_admin_links.join('<br/>').html_safe
       end
       row :invitation_url do |decorated|
         decorated.invitation_link

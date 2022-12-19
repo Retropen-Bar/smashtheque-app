@@ -44,7 +44,7 @@
 
   <% if importable_smashgg_ids.any? %>
     <center>
-      <%= form_tag(bulk_create_admin_smashgg_events_path) do %>
+      <%= form_tag(bulk_import_admin_smashgg_events_path) do %>
         <% importable_smashgg_ids.each do |smashgg_id| %>
           <%= hidden_field_tag 'smashgg_ids[]', smashgg_id %>
         <% end %>

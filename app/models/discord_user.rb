@@ -129,9 +129,10 @@ class DiscordUser < ApplicationRecord
   end
 
   def self.by_keyword(term)
-    by_username_contains_like(term).or(
-      where(id: by_pg_search(term).select(:id))
-    )
+    by_pg_search(term)
+    # by_username_contains_like(term).or(
+    #   where(id: by_pg_search(term).select(:id))
+    # )
   end
 
   # ---------------------------------------------------------------------------

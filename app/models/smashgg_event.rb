@@ -172,7 +172,7 @@ class SmashggEvent < ApplicationRecord
           "tournament_events.#{sanitize_sql(player_id)}"
         ).map do |data|
           {
-            rank: rank,
+            rank: rank.to_i,
             smashgg_event_id: data[0],
             smashgg_user_id: data[1],
             smashgg_user_player_id: data[2],
@@ -180,6 +180,18 @@ class SmashggEvent < ApplicationRecord
             tournament_event_player_id: data[4]
           }
         end
+  end
+
+  def self.false_wrong_players?(wrong_player1, wrong_player2)
+    return false unless wrong_player1[:smashgg_event_id] == wrong_player2[:smashgg_event_id]
+    return false unless wrong_player1[:rank] == wrong_player2[:rank]
+    return false unless [5, 7].include?(wrong_player1[:rank])
+
+    (
+      wrong_player1[:smashgg_user_player_id] == wrong_player2[:tournament_event_player_id]
+    ) && (
+      wrong_player1[:tournament_event_player_id] == wrong_player2[:smashgg_user_player_id]
+    )
   end
 
   def self.with_wrong_players
@@ -215,6 +227,12 @@ class SmashggEvent < ApplicationRecord
   # HELPERS
   # ---------------------------------------------------------------------------
 
+  def top_smashgg_user_ids
+    USER_NAMES.filter_map do |user_name|
+      send("#{user_name}_id")
+    end
+  end
+
   def self.long_url_from_short_url(url)
     Net::HTTP.get_response(URI.parse(url))['location']
   rescue StandardError => e
@@ -239,7 +257,7 @@ class SmashggEvent < ApplicationRecord
   end
 
   def smashgg_url=(url)
-    url = self.class.long_url_from_short_url(url) if is_short_url?(url)
+    url = self.class.long_url_from_short_url(url) if self.class.is_short_url?(url)
     self.slug = self.class.slug_from_url(url)
     self.tournament_slug = self.class.tournament_slug_from_url(url)
   end
@@ -267,6 +285,8 @@ class SmashggEvent < ApplicationRecord
   end
 
   def self.attributes_from_event_data(data)
+    return {} if data.nil?
+
     result = {
       smashgg_id: data.id,
       slug: data.slug,
@@ -284,7 +304,7 @@ class SmashggEvent < ApplicationRecord
       # sometimes data.standings is nil
       if data.standings.nil?
         Rails.logger.debug 'standings not available (Hash)'
-        Rollbar.log('debug', 'Standings not available (Hash)', slug: data.slug)
+        # Rollbar.log('debug', 'Standings not available (Hash)', slug: data.slug)
         return result
       end
 
@@ -312,7 +332,7 @@ class SmashggEvent < ApplicationRecord
       end
     rescue GraphQL::Client::UnfetchedFieldError
       Rails.logger.debug 'standings not available (GraphQL)'
-      Rollbar.log('debug', 'Standings not available (GraphQL)', slug: data.slug)
+      # Rollbar.log('debug', 'Standings not available (GraphQL)', slug: data.slug)
     end
     result
   end
@@ -345,18 +365,45 @@ class SmashggEvent < ApplicationRecord
     )
     return nil if data.nil?
 
-    data.map do |event_data|
+    data.filter_map do |event_data|
       attributes = attributes_from_event_data(event_data)
-      where(smashgg_id: attributes[:smashgg_id]).first_or_initialize(attributes)
+      attributes && where(smashgg_id: attributes[:smashgg_id]).first_or_initialize(attributes)
     end
   end
 
   def self.import_all(name:, from:, to:, country:)
     lookup(name: name, from: from, to: to, country: country).each do |smashgg_event|
-      sleep 1
-      smashgg_event.fetch_smashgg_data
-      smashgg_event.save
+      next if smashgg_event.already_imported?
+
+      sleep 1 # sleep to avoid hitting API rate limits
+      unless smashgg_event.import
+        # do not exit on errors, but log them
+        Rails.logger.debug "SmashggEvent errors: #{smashgg_event.errors.full_messages}"
+      end
     end
+  end
+
+  # returns the existing or created TournamentEvent, or a falsey value
+  def import
+    # fetch data because even if some attributes are already here, standings are not fetched yet
+    fetch_smashgg_data
+    save && create_tournament_event_if_missing
+  end
+
+  # TODO: handle 2v2 properly
+  def create_tournament_event_if_missing
+    return any_tournament_event if already_imported?
+    return nil if top_smashgg_user_ids.count < 4 # we could adjust this threshold
+
+    # if we are here, it means no TournamentEvent exists yet for this event
+    # and it was not a waiting list since there are players in final standing
+    tournament_event = TournamentEvent.new(bracket: self)
+    tournament_event.use_bracket(true)
+    tournament_event.save && tournament_event
+  end
+
+  def already_imported?
+    persisted? && (is_ignored? || any_tournament_event)
   end
 
   def smashgg_user_rank(smashgg_user_id)

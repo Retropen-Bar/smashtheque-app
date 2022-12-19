@@ -57,6 +57,11 @@ class SmashggUser < ApplicationRecord
   # CALLBACKS
   # ---------------------------------------------------------------------------
 
+  after_create_commit :fetch_smashgg_data_later
+  def fetch_smashgg_data_later
+    FetchSmashggUserDataJob.perform_later(self)
+  end
+
   after_commit :update_player
   def update_player
     # only if record has new player and twitter_username
@@ -106,6 +111,7 @@ class SmashggUser < ApplicationRecord
       user_id: smashgg_id,
       user_slug: slug
     )
+    return if data.nil?
 
     self.smashgg_id = data.id
     self.slug = data.slug
@@ -144,7 +150,7 @@ class SmashggUser < ApplicationRecord
   def self.fetch_unknown
     unknown.find_each do |smashgg_user|
       smashgg_user.fetch_smashgg_data
-      smashgg_user.save!
+      smashgg_user.save
     end
   end
 
@@ -154,69 +160,35 @@ class SmashggUser < ApplicationRecord
 
   def fetch_smashgg_events
     data = SmashggClient.new.get_user_events(user_id: smashgg_id)
-    return nil if data.nil?
+    return [] if data.nil?
 
-    data.map do |event_data|
+    data.filter_map do |event_data|
       attributes = SmashggEvent.attributes_from_event_data(event_data)
-      SmashggEvent.where(smashgg_id: attributes[:smashgg_id]).first_or_initialize(attributes)
+      attributes && SmashggEvent.where(smashgg_id: attributes[:smashgg_id]).first_or_initialize(attributes)
     end
   end
 
   def import_missing_smashgg_events
     fetch_smashgg_events.each do |smashgg_event|
-      next if smashgg_event.persisted?
+      next if smashgg_event.already_imported?
 
-      smashgg_event.fetch_smashgg_data # because standings are not fetched yet
-      unless smashgg_event.save
-        # do not exit on errors
+      sleep 1 # sleep to avoid hitting API rate limits
+      unless smashgg_event.import
+        # do not exit on errors, but log them
         Rails.logger.debug "SmashggEvent errors: #{smashgg_event.errors.full_messages}"
       end
     end
   end
 
-  # returns [player, reason]
-  def suggested_player
-    if discord_discriminated_username
-      discord_user = DiscordUser.by_discriminated_username(
-        discord_discriminated_username
-      ).first
-      if discord_user && discord_user.player
-        return [discord_user.player, :discord_discriminated_username]
-      end
+  # import missing events for users linked to a player
+  def self.import_missing_smashgg_events_which_matter
+    users = with_player.order(id: :desc)
+    logger.debug '*' * 50
+    logger.debug 'IMPORT MISSING SGG EVENTS WHICH MATTER'
+    logger.debug '*' * 50
+    users.each_with_index do |user, idx|
+      logger.debug "Handle sgg user #{idx}/#{users.size}: ##{user.id}"
+      user.import_missing_smashgg_events
     end
-    if twitter_username
-      user = User.where(twitter_username: twitter_username).first
-      player = user&.player
-      return [player, :twitter_username] if player
-    end
-    if gamer_tag
-      if Player.by_name_like(gamer_tag).count == 1
-        return [Player.by_name_like(gamer_tag).first, :gamer_tag]
-      end
-    end
-    smashgg_events.each do |smashgg_event|
-      if tournament_event = smashgg_event.tournament_event
-        smashgg_event_rank = SmashggEvent::USER_NAME_RANK[
-          smashgg_event.smashgg_user_rank(id)
-        ]
-        player_names =
-          case smashgg_event_rank
-          when 5
-            %i(top5a_player top5b_player)
-          when 7
-            %i(top7a_player top7b_player)
-          else
-            ["top#{smashgg_event_rank}_player".to_sym]
-          end
-        player_names.each do |player_name|
-          player = tournament_event.send(player_name)
-          if player && player.smashgg_users.none?
-            return [player, :smashgg_event, smashgg_event]
-          end
-        end
-      end
-    end
-    nil
   end
-
 end

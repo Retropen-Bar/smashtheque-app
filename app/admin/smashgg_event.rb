@@ -71,12 +71,12 @@ ActiveAdmin.register SmashggEvent do
 
   permit_params :smashgg_id, :smashgg_url
 
-  collection_action :bulk_create, method: :post do
+  collection_action :bulk_import, method: :post do
     creations_count = 0
     (params[:smashgg_ids] || []).each do |smashgg_id|
+      sleep 1 # sleep to avoid hitting API rate limits
       smashgg_event = SmashggEvent.new(smashgg_id: smashgg_id)
-      smashgg_event.fetch_provider_data
-      if smashgg_event.save
+      if smashgg_event.import
         creations_count += 1
       else
         # do not exit on errors
@@ -84,6 +84,18 @@ ActiveAdmin.register SmashggEvent do
       end
     end
     redirect_to request.referer, notice: "#{creations_count} imports effectués"
+  end
+
+  collection_action :import, method: :post do
+    smashgg_id = params[:smashgg_id]
+    smashgg_event = SmashggEvent.new(smashgg_id: smashgg_id)
+    if (tournament_event = smashgg_event.import)
+      redirect_to [:admin, tournament_event]
+    elsif smashgg_event.persisted?
+      redirect_to [:admin, smashgg_event]
+    else
+      redirect_to request.referer, error: 'Import impossible'
+    end
   end
 
   # ---------------------------------------------------------------------------
@@ -130,7 +142,24 @@ ActiveAdmin.register SmashggEvent do
   end
 
   collection_action :wrong_players do
-    @wrong_players = SmashggEvent.wrong_players
+    @wrong_players = SmashggEvent.wrong_players.sort_by do |data|
+      [data[:smashgg_event_id], data[:rank]]
+    end
+  end
+
+  # ---------------------------------------------------------------------------
+  # MISSINGS
+  # ---------------------------------------------------------------------------
+
+  action_item :import_missing_smashgg_events_which_matter, only: :index do
+    link_to 'Importer les tournois manquants des joueurs',
+            { action: :import_missing_smashgg_events_which_matter },
+            class: :blue
+  end
+
+  collection_action :import_missing_smashgg_events_which_matter do
+    ImportMissingSmashggEventsWhichMatterJob.perform_later
+    redirect_to request.referer, notice: 'Données en cours de récupération'
   end
 
   # ---------------------------------------------------------------------------

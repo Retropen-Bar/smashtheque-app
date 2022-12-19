@@ -1,0 +1,4 @@
+<%= render 'suggestions', reason: 'Tournoi',
+                          display: ->(smashgg_user) {
+                            @tournament_events[smashgg_user['tournament_event_id']].admin_decorate.admin_link
+                          } %>

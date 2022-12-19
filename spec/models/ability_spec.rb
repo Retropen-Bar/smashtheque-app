@@ -71,10 +71,7 @@ RSpec.describe Ability, type: :model do
 
   context 'helps cannot' do
     it 'destroy admins' do
-      expect(@help.can?(:destroy, User)).to be_falsy
-    end
-    it 'destroy a player' do
-      expect(@help.can?(:destroy, Player)).to be_falsy
+      expect(@help.can?(:destroy, @admin)).to be_falsy
     end
     it 'destroy a Community' do
       expect(@help.can?(:destroy, Community)).to be_falsy

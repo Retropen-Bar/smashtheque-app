@@ -271,9 +271,10 @@ class User < ApplicationRecord
   end
 
   def self.by_keyword(term)
-    by_name_contains_like(term).or(
-      where(id: by_pg_search(term).select(:id))
-    )
+    by_pg_search(term)
+    # by_name_contains_like(term).or(
+    #   where(id: by_pg_search(term).select(:id))
+    # )
   end
 
   def self.with_main_address
