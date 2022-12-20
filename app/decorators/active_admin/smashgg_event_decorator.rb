@@ -26,6 +26,10 @@ module ActiveAdmin
       any_tournament_event&.admin_decorate&.admin_link(options)
     end
 
+    def tournament_owner_admin_link(options = {})
+      tournament_owner&.admin_decorate&.admin_link(options)
+    end
+
     SmashggEvent::USER_NAMES.each do |user_name|
       define_method "#{user_name}_admin_link" do
         send(user_name)&.admin_decorate&.admin_link

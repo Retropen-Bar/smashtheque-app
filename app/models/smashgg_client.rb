@@ -80,6 +80,10 @@ class SmashggClient
         id
         slug
         name
+        owner {
+          id
+          slug
+        }
       }
     GRAPHQL
 

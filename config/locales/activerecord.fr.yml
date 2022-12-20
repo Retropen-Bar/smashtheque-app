@@ -337,6 +337,7 @@ fr:
         tournament_event: Édition 1v1
         tournament_id: ID du tournoi
         tournament_name: Nom du tournoi
+        tournament_owner: Organisateur
         tournament_slug: Slug du tournoi
       smashgg_event/rank:
         top1_smashgg_user: Top 1

@@ -23,6 +23,7 @@
 #  top7a_smashgg_user_id :bigint
 #  top7b_smashgg_user_id :bigint
 #  tournament_id         :integer
+#  tournament_owner_id   :bigint
 #
 # Indexes
 #
@@ -36,6 +37,7 @@
 #  index_smashgg_events_on_top5b_smashgg_user_id  (top5b_smashgg_user_id)
 #  index_smashgg_events_on_top7a_smashgg_user_id  (top7a_smashgg_user_id)
 #  index_smashgg_events_on_top7b_smashgg_user_id  (top7b_smashgg_user_id)
+#  index_smashgg_events_on_tournament_owner_id    (tournament_owner_id)
 #
 # Foreign Keys
 #
@@ -47,6 +49,7 @@
 #  fk_rails_...  (top5b_smashgg_user_id => smashgg_users.id)
 #  fk_rails_...  (top7a_smashgg_user_id => smashgg_users.id)
 #  fk_rails_...  (top7b_smashgg_user_id => smashgg_users.id)
+#  fk_rails_...  (tournament_owner_id => smashgg_users.id)
 #
 require 'rails_helper'
 

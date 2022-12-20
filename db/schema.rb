@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_06_175138) do
+ActiveRecord::Schema.define(version: 2022_12_20_150151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -428,6 +428,7 @@ ActiveRecord::Schema.define(version: 2022_02_06_175138) do
     t.bigint "top7a_smashgg_user_id"
     t.bigint "top7b_smashgg_user_id"
     t.boolean "is_ignored", default: false, null: false
+    t.bigint "tournament_owner_id"
     t.index ["slug"], name: "index_smashgg_events_on_slug", unique: true
     t.index ["smashgg_id"], name: "index_smashgg_events_on_smashgg_id", unique: true
     t.index ["top1_smashgg_user_id"], name: "index_smashgg_events_on_top1_smashgg_user_id"
@@ -438,6 +439,7 @@ ActiveRecord::Schema.define(version: 2022_02_06_175138) do
     t.index ["top5b_smashgg_user_id"], name: "index_smashgg_events_on_top5b_smashgg_user_id"
     t.index ["top7a_smashgg_user_id"], name: "index_smashgg_events_on_top7a_smashgg_user_id"
     t.index ["top7b_smashgg_user_id"], name: "index_smashgg_events_on_top7b_smashgg_user_id"
+    t.index ["tournament_owner_id"], name: "index_smashgg_events_on_tournament_owner_id"
   end
 
   create_table "smashgg_users", force: :cascade do |t|
@@ -659,6 +661,7 @@ ActiveRecord::Schema.define(version: 2022_02_06_175138) do
   add_foreign_key "smashgg_events", "smashgg_users", column: "top5b_smashgg_user_id"
   add_foreign_key "smashgg_events", "smashgg_users", column: "top7a_smashgg_user_id"
   add_foreign_key "smashgg_events", "smashgg_users", column: "top7b_smashgg_user_id"
+  add_foreign_key "smashgg_events", "smashgg_users", column: "tournament_owner_id"
   add_foreign_key "smashgg_users", "players"
   add_foreign_key "team_admins", "teams"
   add_foreign_key "team_admins", "users"
