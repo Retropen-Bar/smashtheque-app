@@ -15,12 +15,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <%= stylesheet_pack_tag 'application_v2', media: 'all' %>
-    
+
     <%= google_places_api_tag %>
   </head>
   <body class="<%= controller.controller_name %> <%= controller.action_name %> <%= "section-#{current_section_name}" %><% if @static %> static<% end %>">
     <div id="app">
-      <%= render partial: 'layouts/application_v2/flash', flash: flash %>
       <%= render partial: 'layouts/application_v2/head' %>
 
       <% if @static %>
@@ -41,5 +40,6 @@
     </div>
     <%= javascript_pack_tag 'application_v2' %>
     <%= yield :script %>
+    <%= render partial: 'layouts/application_v2/flash', flash: flash %>
   </body>
 </html>

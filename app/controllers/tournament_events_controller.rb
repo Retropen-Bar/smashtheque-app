@@ -34,10 +34,27 @@ class TournamentEventsController < PublicController
     # auto-complete with data from bracket API
     @tournament_event.complete_with_bracket
 
-    if (bracket = @tournament_event.bracket) && TournamentEvent.where(bracket: bracket).any?
-      # this tournament is already known: display an error
-      @tournament_event.errors.add(:bracket_url, :unique)
-      render :new and return
+    bracket = @tournament_event.bracket
+    if bracket && (existing_tournament = TournamentEvent.where(bracket: bracket).first)
+      # this tournament is already known: multiple possibilities
+      # 1. it is linked to this recurring tournament: go to edit
+      if existing_tournament.recurring_tournament == @recurring_tournament
+        flash[:info] = 'Édition déjà connue pour cette série'
+        redirect_to [:edit, existing_tournament] and return
+      end
+
+      # 2. it is linked to another recurring tournament: display an error
+      if existing_tournament.recurring_tournament
+        flash[:error] = 'Ce bracket est déjà connu et lié à une autre série'
+        redirect_to existing_tournament and return
+      end
+
+      # 3. it is not linked to any recurring tournament (it has probably been auto created nightly)
+      # => link it to this recurring tournament before trying to save it
+      existing_tournament.recurring_tournament = @recurring_tournament
+      existing_tournament.save # no matter the success or not
+      flash[:info] = 'Édition déjà connue, lien ajouté avec cette série'
+      redirect_to [:edit, existing_tournament] and return
     end
 
     if @tournament_event.save
