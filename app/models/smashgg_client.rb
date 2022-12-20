@@ -14,6 +14,7 @@ class SmashggClient
   CLIENT = GraphQL::Client.new(schema: SCHEMA, execute: HTTP)
 
   SMASH_ULTIMATE_ID = '1386'.freeze
+  EVENT_TYPE_1V1 = 1
 
   UserData =
     <<-GRAPHQL
@@ -71,6 +72,7 @@ class SmashggClient
       startAt
       isOnline
       numEntrants
+      type
       videogame {
         id
       }
@@ -103,7 +105,10 @@ class SmashggClient
     CLIENT.parse <<-GRAPHQL
       query($tournamentSlug: String) {
         tournament(slug: $tournamentSlug) {
-          events {
+          events(filter: {
+            videogameId: #{SMASH_ULTIMATE_ID}
+            type: #{EVENT_TYPE_1V1}
+          }) {
             #{EventDataWithStandings}
           }
         }
@@ -135,7 +140,6 @@ class SmashggClient
           perPage: 100
           sortBy: "startAt asc"
           filter: {
-            videogameIds: [#{SMASH_ULTIMATE_ID}]
             name: $name
             afterDate: $dateMin
             beforeDate: $dateMax
@@ -143,7 +147,10 @@ class SmashggClient
           }
         }) {
           nodes {
-            events {
+            events(filter: {
+              videogameId: #{SMASH_ULTIMATE_ID}
+              type: #{EVENT_TYPE_1V1}
+            }) {
               #{EventData}
             }
           }
@@ -161,6 +168,7 @@ class SmashggClient
             sortBy: "startAt asc"
             filter: {
               videogameId: #{SMASH_ULTIMATE_ID}
+              eventType: #{EVENT_TYPE_1V1}
             }
           }) {
             nodes {
