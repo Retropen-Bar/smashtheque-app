@@ -5,34 +5,32 @@
     <section class="show-page-body card">
       <div class="show-page-content card-body">
 
-        <%= simple_form_for([event.recurring_tournament, event.model]) do |f| %>
+        <new-tournament-event-form inline-template>
+          <%= simple_form_for([event.recurring_tournament, event.model]) do |f| %>
 
-          <%= render 'shared/form_errors', f: f %>
+            <%= render 'shared/form_errors', f: f %>
 
-          <section class="show-page-section">
-            <div class="show-page-section-title">
-              <h2>Nouvelle édition <%= event.model.class.name =~ /duo/i ? '2v2' : '1v1' %></h2>
-              <span class="show-page-section-title-separator"></span>
-            </div>
-            <div class="show-page-section-content">
-              <div class="row">
-                <div class="col-6">
-                  <%= f.input :bracket_url %>
-                </div>
-                <div class="col-6">
+            <section class="show-page-section">
+              <div class="show-page-section-title">
+                <h2>Nouvelle édition <%= event.model.class.name =~ /duo/i ? '2v2' : '1v1' %></h2>
+                <span class="show-page-section-title-separator"></span>
+              </div>
+              <div class="show-page-section-content">
+                <%= f.input :bracket_url %>
+                <div class="custom-bracket-details">
                   <%= f.input :name, required: false, hint: "Laissez vide si start.gg ou Challonge" %>
                   <%= f.input :date, required: false, hint: "Laissez vide si start.gg ou Challonge" %>
                 </div>
               </div>
+            </section>
+
+            <div class="form-actions text-center my-5">
+              <%= link_to 'Annuler', event.recurring_tournament, class: 'btn btn-secondary mr-3' %>
+              <%= f.button :submit, 'Valider', class: 'btn btn-primary' %>
             </div>
-          </section>
 
-          <div class="form-actions text-center my-5">
-            <%= link_to 'Annuler', event.recurring_tournament, class: 'btn btn-secondary mr-3' %>
-            <%= f.button :submit, 'Valider', class: 'btn btn-primary' %>
-          </div>
-
-        <% end %>
+          <% end %>
+        </new-tournament-event-form>
 
       </div>
     </section>
