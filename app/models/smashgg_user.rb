@@ -101,6 +101,10 @@ class SmashggUser < ApplicationRecord
     where(id: SmashggEvent.select(:tournament_owner_id))
   end
 
+  def self.not_recently_imported(timespan = 7.days)
+    where(events_last_imported_at: [nil, ..timespan.ago])
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------
@@ -201,7 +205,7 @@ class SmashggUser < ApplicationRecord
 
   # import missing events for users linked to a player
   def self.import_missing_smashgg_events_which_matter
-    users = with_player.order(id: :desc)
+    users = with_player.not_recently_imported.order(id: :desc)
     logger.debug '*' * 50
     logger.debug 'IMPORT MISSING SGG EVENTS WHICH MATTER'
     logger.debug '*' * 50
