@@ -36,7 +36,7 @@ module ActiveAdmin
 
     def contacts_admin_links(options = {})
       model.contacts.map do |user|
-        user.admin_decorate.admin_link(options)
+        user.admin_decorate.admin_link(options.clone)
       end
     end
 

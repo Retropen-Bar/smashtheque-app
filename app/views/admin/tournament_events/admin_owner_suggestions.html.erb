@@ -1,0 +1,31 @@
+<p>
+  Ici le TO principal du tournoi (créateur du bracket start.gg) est dans la liste des TOs de la série.
+</p>
+
+<%= render  'suggestions',
+            display_tournament_event: ->(tournament_event) {
+              smashgg_event = tournament_event.bracket.admin_decorate
+              smashgg_user = smashgg_event.tournament_owner.admin_decorate
+
+              <<-HTML
+              <div class="linked-to">
+                #{smashgg_event.tournament_smashgg_link}
+                <div class="linked-to">
+                  #{smashgg_user.admin_link(size: 16)}
+                </div>
+              </div>
+              HTML
+            },
+            display_suggested_recurring_tournament: ->(tournament_event) {
+              contact = @users[tournament_event['suggested_recurring_tournament_contact_user_id']].admin_decorate
+              smashgg_user = @smashgg_users[tournament_event['suggested_recurring_tournament_contact_smashgg_user_id']].admin_decorate
+
+              <<-HTML
+              <div class="linked-to">
+                #{contact.admin_link(size: 16)}
+                <div class="linked-to">
+                  #{smashgg_user.admin_link(size: 16)}
+                </div>
+              </div>
+              HTML
+            } %>

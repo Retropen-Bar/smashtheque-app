@@ -22,7 +22,7 @@ module ActiveAdmin
 
     # compatibility
     def admin_link(options = {})
-      super({ label: avatar_and_name(size: 32) }.merge(options))
+      super({ label: avatar_and_name(size: options.delete(:size) || 32) }.merge(options))
     end
 
     ADMIN_LEVEL_COLORS = {
