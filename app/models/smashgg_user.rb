@@ -102,7 +102,7 @@ class SmashggUser < ApplicationRecord
   end
 
   def self.not_recently_imported(timespan = 7.days)
-    where(events_last_imported_at: [nil, ..timespan.ago])
+    where(events_last_imported_at: [nil, Range.new(nil, timespan.ago)])
   end
 
   # ---------------------------------------------------------------------------
