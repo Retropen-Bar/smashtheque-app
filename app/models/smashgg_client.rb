@@ -142,7 +142,7 @@ class SmashggClient
       query($name: String, $dateMin: Timestamp, $dateMax: Timestamp, $country: String) {
         tournaments(query: {
           perPage: 100
-          sortBy: "startAt asc"
+          sortBy: "startAt desc"
           filter: {
             name: $name
             afterDate: $dateMin
@@ -162,20 +162,42 @@ class SmashggClient
       }
     GRAPHQL
 
-  UserTournamentsSearchQuery =
+  UserCompetedTournamentsSearchQuery =
     CLIENT.parse <<-GRAPHQL
       query($userId: ID) {
         user(id: $userId) {
           id
           events(query: {
             perPage: 100
-            sortBy: "startAt asc"
+            sortBy: "startAt desc"
             filter: {
               videogameId: #{SMASH_ULTIMATE_ID}
               eventType: #{EVENT_TYPE_1V1}
             }
           }) {
             nodes {
+              #{EventData}
+            }
+          }
+        }
+      }
+    GRAPHQL
+
+  UserOwnedTournamentsSearchQuery =
+    CLIENT.parse <<-GRAPHQL
+      query($userId: ID) {
+        tournaments(query: {
+          perPage: 100
+          sortBy: "startAt desc"
+          filter: {
+            ownerId: $userId
+          }
+        }) {
+          nodes {
+            events(filter: {
+              videogameId: #{SMASH_ULTIMATE_ID}
+              type: #{EVENT_TYPE_1V1}
+            }) {
               #{EventData}
             }
           }
@@ -255,18 +277,41 @@ class SmashggClient
     result = []
     response.data.tournaments&.nodes&.each do |node|
       node.events&.each do |event|
-        result << event if event.videogame.id == SMASH_ULTIMATE_ID
+        result << event
       end
     end
     result
   end
 
-  def get_user_events(user_id:)
+  # always respond with an enumerable
+  def get_user_competed_events(user_id:)
     CLIENT.query(
-      UserTournamentsSearchQuery,
+      UserCompetedTournamentsSearchQuery,
       variables: {
         userId: user_id
       }
-    ).data&.user&.events&.nodes
+    ).data&.user&.events&.nodes || []
+  end
+
+  # always respond with an enumerable
+  def get_user_owned_events(user_id:)
+    response = CLIENT.query(
+      UserOwnedTournamentsSearchQuery,
+      variables: {
+        userId: user_id
+      }
+    )
+    result = []
+    response.data&.tournaments&.nodes&.each do |node|
+      node.events&.each do |event|
+        result << event
+      end
+    end
+    result
+  end
+
+  # always respond with an enumerable
+  def get_user_events(user_id:)
+    get_user_competed_events(user_id: user_id) + get_user_owned_events(user_id: user_id)
   end
 end

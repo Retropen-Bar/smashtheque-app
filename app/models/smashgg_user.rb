@@ -46,6 +46,12 @@ class SmashggUser < ApplicationRecord
 
   has_one :user, through: :player
 
+  has_many  :owned_smashgg_events,
+            class_name: :SmashggEvent,
+            foreign_key: :tournament_owner_id,
+            inverse_of: :tournament_owner,
+            dependent: :nullify
+
   # ---------------------------------------------------------------------------
   # VALIDATIONS
   # ---------------------------------------------------------------------------
@@ -90,6 +96,10 @@ class SmashggUser < ApplicationRecord
     where(gamer_tag: nil)
   end
 
+  def self.with_owned_events
+    where(id: SmashggEvent.select(:tournament_owner_id))
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------
@@ -114,7 +124,7 @@ class SmashggUser < ApplicationRecord
     return if data.nil?
 
     self.smashgg_id = data.id
-    self.slug = data.slug
+    self.slug = data.slug || data.id # sometimes slug doesn't exist
     self.name = data.name
     self.bio = data.bio
     self.birthday = data.birthday
@@ -145,6 +155,12 @@ class SmashggUser < ApplicationRecord
         self.discord_discriminated_username = authorization.external_username
       end
     end
+    data
+  end
+
+  def self.from_data(smashgg_id:, slug:)
+    # sometimes slug doesn't exist, so we cheat a bit here
+    where(smashgg_id: smashgg_id).first_or_create!(slug: slug || smashgg_id)
   end
 
   def self.fetch_unknown

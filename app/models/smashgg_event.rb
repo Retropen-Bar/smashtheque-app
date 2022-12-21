@@ -306,10 +306,10 @@ class SmashggEvent < ApplicationRecord
     }
 
     # owner
-    owner_id = data.tournament.owner.id
-    owner_slug = data.tournament.owner.slug
-    owner_smashgg_user = SmashggUser.where(smashgg_id: owner_id).first_or_create!(slug: owner_slug)
-    result[:tournament_owner] = owner_smashgg_user
+    result[:tournament_owner] = SmashggUser.from_data(
+      smashgg_id: data.tournament.owner.id,
+      slug: data.tournament.owner.slug
+    )
 
     begin
       # sometimes data.standings is nil
@@ -338,8 +338,10 @@ class SmashggEvent < ApplicationRecord
         slug = standing.entrant.participants.first&.user&.slug
         next if slug.blank?
 
-        smashgg_user = SmashggUser.where(smashgg_id: smashgg_id).first_or_create!(slug: slug)
-        result["top#{idx}_smashgg_user".to_sym] = smashgg_user
+        result["top#{idx}_smashgg_user".to_sym] = SmashggUser.from_data(
+          smashgg_id: smashgg_id,
+          slug: slug
+        )
       end
     rescue GraphQL::Client::UnfetchedFieldError
       Rails.logger.debug 'standings not available (GraphQL)'

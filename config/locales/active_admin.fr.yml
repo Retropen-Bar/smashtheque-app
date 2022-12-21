@@ -52,6 +52,7 @@ fr:
       with_missing_duos: Équipe manquante
       with_missing_graph: Graph manquant
       with_missing_players: Joueur manquant
+      with_owned_events: TO
       with_player: Lié à un joueur
       with_tournament_event: Avec édition 1v1
       without_any_link: Sans aucun lien

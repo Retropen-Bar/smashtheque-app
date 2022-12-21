@@ -13,18 +13,10 @@ ActiveAdmin.register SmashggUser do
   index do
     selectable_column
     id_column
-    column :slug do |decorated|
-      decorated.smashgg_link
-    end
-    column :gamer_tag do |decorated|
-      decorated.avatar_and_name(size: 32)
-    end
-    column :player do |decorated|
-      decorated.player_admin_link
-    end
-    column :created_at do |decorated|
-      decorated.created_at_date
-    end
+    column :slug, &:smashgg_link
+    column :gamer_tag, &:avatar_and_name
+    column :player, sortable: :player_id, &:player_admin_link
+    column :created_at, &:created_at_date
     actions
   end
 
@@ -32,6 +24,7 @@ ActiveAdmin.register SmashggUser do
   scope :unknown
   scope :with_player
   scope :without_player
+  scope :with_owned_events
 
   filter :smashgg_id
   filter :gamer_tag
@@ -108,12 +101,25 @@ ActiveAdmin.register SmashggUser do
     panel 'Tournois placés', style: 'margin-top: 50px' do
       table_for resource.smashgg_events.admin_decorate,
                 i18n: SmashggEvent do
-        column :slug do |decorated|
-          decorated.smashgg_link
-        end
+        column :slug, &:smashgg_link
         column 'Placement' do |decorated|
           decorated.smashgg_user_rank_name(resource.id)
         end
+      end
+    end
+    panel 'Tournois organisés', style: 'margin-top: 50px' do
+      table_for resource.owned_smashgg_events.admin_decorate,
+                i18n: SmashggEvent do
+        column 'Tournoi', sortable: :tournament_slug do |decorated|
+          decorated.tournament_smashgg_link
+        end
+        column 'Événement', sortable: :slug do |decorated|
+          decorated.smashgg_link
+        end
+        column :start_at do |decorated|
+          decorated.start_at_date
+        end
+        column :num_entrants
       end
     end
   end
