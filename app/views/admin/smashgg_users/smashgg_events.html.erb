@@ -14,6 +14,7 @@
         <th>Événement</th>
         <th class="text-center">Online?</th>
         <th class="text-center">Participants</th>
+        <th class="text-center">Type</th>
         <th class="text-center">Actions</th>
       </tr>
     </thead>
@@ -26,6 +27,13 @@
           <td><%= decorated.smashgg_link %></td>
           <td class="text-center"><%= decorated.online_status %></td>
           <td class="text-center"><%= smashgg_event.num_entrants %></td>
+          <td class="text-center">
+            <% if smashgg_event.tournament_owner_id == resource.id %>
+              <span class="status_tag blue">TO</span>
+            <% else %>
+              <span class="status_tag rose">Joueur</span>
+            <% end %>
+          </td>
           <td class="text-center">
             <% if smashgg_event.persisted? %>
               <%= link_to 'Voir', [:admin, smashgg_event], target: '_blank' %>

@@ -1,0 +1,41 @@
+<h2>Suggestions</h2>
+
+<div style="margin: 50px 0; text-align: center"><%= paginate @tournament_events %></div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Édition</th>
+      <th>Série suggérée</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @tournament_events.each do |tournament_event| %>
+      <% suggested_recurring_tournament = @recurring_tournaments[tournament_event['suggested_recurring_tournament_id']].admin_decorate %>
+
+      <tr>
+        <td>
+          <%= tournament_event.admin_decorate.admin_link %>
+          <% if display_tournament_event %>
+            <%== display_tournament_event.call(tournament_event) %>
+          <% end %>
+        </td>
+        <td>
+          <%= suggested_recurring_tournament.admin_link %>
+          <% if display_suggested_recurring_tournament %>
+            <%== display_suggested_recurring_tournament.call(tournament_event) %>
+          <% end %>
+        </td>
+        <td>
+          <%= semantic_form_for([:admin, tournament_event], html: {target: '_blank'}) do |f| %>
+            <%= f.input :recurring_tournament_id, as: :hidden, input_html: {value: suggested_recurring_tournament.id } %>
+            <%= f.submit 'Valider', class: 'button-auto green' %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div style="margin: 50px 0; text-align: center"><%= paginate @tournament_events %></div>

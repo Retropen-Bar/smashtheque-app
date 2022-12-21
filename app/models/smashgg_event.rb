@@ -23,6 +23,7 @@
 #  top7a_smashgg_user_id :bigint
 #  top7b_smashgg_user_id :bigint
 #  tournament_id         :integer
+#  tournament_owner_id   :bigint
 #
 # Indexes
 #
@@ -36,6 +37,7 @@
 #  index_smashgg_events_on_top5b_smashgg_user_id  (top5b_smashgg_user_id)
 #  index_smashgg_events_on_top7a_smashgg_user_id  (top7a_smashgg_user_id)
 #  index_smashgg_events_on_top7b_smashgg_user_id  (top7b_smashgg_user_id)
+#  index_smashgg_events_on_tournament_owner_id    (tournament_owner_id)
 #
 # Foreign Keys
 #
@@ -47,6 +49,7 @@
 #  fk_rails_...  (top5b_smashgg_user_id => smashgg_users.id)
 #  fk_rails_...  (top7a_smashgg_user_id => smashgg_users.id)
 #  fk_rails_...  (top7b_smashgg_user_id => smashgg_users.id)
+#  fk_rails_...  (tournament_owner_id => smashgg_users.id)
 #
 class SmashggEvent < ApplicationRecord
   # ---------------------------------------------------------------------------
@@ -81,6 +84,7 @@ class SmashggEvent < ApplicationRecord
   # RELATIONS
   # ---------------------------------------------------------------------------
 
+  belongs_to :tournament_owner, class_name: :SmashggUser, optional: true
   belongs_to :top1_smashgg_user, class_name: :SmashggUser, optional: true
   belongs_to :top2_smashgg_user, class_name: :SmashggUser, optional: true
   belongs_to :top3_smashgg_user, class_name: :SmashggUser, optional: true
@@ -300,6 +304,13 @@ class SmashggEvent < ApplicationRecord
       tournament_slug: data.tournament.slug,
       tournament_name: data.tournament.name
     }
+
+    # owner
+    result[:tournament_owner] = SmashggUser.from_data(
+      smashgg_id: data.tournament.owner.id,
+      slug: data.tournament.owner.slug
+    )
+
     begin
       # sometimes data.standings is nil
       if data.standings.nil?
@@ -327,8 +338,10 @@ class SmashggEvent < ApplicationRecord
         slug = standing.entrant.participants.first&.user&.slug
         next if slug.blank?
 
-        smashgg_user = SmashggUser.where(smashgg_id: smashgg_id).first_or_create!(slug: slug)
-        result["top#{idx}_smashgg_user".to_sym] = smashgg_user
+        result["top#{idx}_smashgg_user".to_sym] = SmashggUser.from_data(
+          smashgg_id: smashgg_id,
+          slug: slug
+        )
       end
     rescue GraphQL::Client::UnfetchedFieldError
       Rails.logger.debug 'standings not available (GraphQL)'

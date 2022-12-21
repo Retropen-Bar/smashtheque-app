@@ -112,6 +112,7 @@ ActiveAdmin.register SmashggEvent do
       row 'Événement' do |decorated|
         decorated.smashgg_link
       end
+      row :tournament_owner, &:tournament_owner_admin_link
       row :is_online
       row :start_at
       row :num_entrants
@@ -120,12 +121,8 @@ ActiveAdmin.register SmashggEvent do
           decorated.send("#{user_name}_admin_link")
         end
       end
-      row :tournament_event do |decorated|
-        decorated.tournament_event_admin_link
-      end
-      row :duo_tournament_event do |decorated|
-        decorated.duo_tournament_event_admin_link
-      end
+      row :tournament_event, &:tournament_event_admin_link
+      row :duo_tournament_event, &:duo_tournament_event_admin_link
       row :is_ignored
       row :created_at
       row :updated_at

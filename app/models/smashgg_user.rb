@@ -10,6 +10,7 @@
 #  city                           :string
 #  country                        :string
 #  discord_discriminated_username :string
+#  events_last_imported_at        :datetime
 #  gamer_tag                      :string
 #  gender_pronoun                 :string
 #  name                           :string
@@ -45,6 +46,12 @@ class SmashggUser < ApplicationRecord
   belongs_to :player, optional: true
 
   has_one :user, through: :player
+
+  has_many  :owned_smashgg_events,
+            class_name: :SmashggEvent,
+            foreign_key: :tournament_owner_id,
+            inverse_of: :tournament_owner,
+            dependent: :nullify
 
   # ---------------------------------------------------------------------------
   # VALIDATIONS
@@ -90,6 +97,14 @@ class SmashggUser < ApplicationRecord
     where(gamer_tag: nil)
   end
 
+  def self.with_owned_events
+    where(id: SmashggEvent.select(:tournament_owner_id))
+  end
+
+  def self.not_recently_imported(timespan = 7.days)
+    where(events_last_imported_at: [nil, Range.new(nil, timespan.ago)])
+  end
+
   # ---------------------------------------------------------------------------
   # HELPERS
   # ---------------------------------------------------------------------------
@@ -114,7 +129,7 @@ class SmashggUser < ApplicationRecord
     return if data.nil?
 
     self.smashgg_id = data.id
-    self.slug = data.slug
+    self.slug = data.slug || data.id # sometimes slug doesn't exist
     self.name = data.name
     self.bio = data.bio
     self.birthday = data.birthday
@@ -145,6 +160,12 @@ class SmashggUser < ApplicationRecord
         self.discord_discriminated_username = authorization.external_username
       end
     end
+    data
+  end
+
+  def self.from_data(smashgg_id:, slug:)
+    # sometimes slug doesn't exist, so we cheat a bit here
+    where(smashgg_id: smashgg_id).first_or_create!(slug: slug || smashgg_id)
   end
 
   def self.fetch_unknown
@@ -178,11 +199,13 @@ class SmashggUser < ApplicationRecord
         Rails.logger.debug "SmashggEvent errors: #{smashgg_event.errors.full_messages}"
       end
     end
+    # remember we did this
+    touch :events_last_imported_at
   end
 
   # import missing events for users linked to a player
   def self.import_missing_smashgg_events_which_matter
-    users = with_player.order(id: :desc)
+    users = with_player.not_recently_imported.order(id: :desc)
     logger.debug '*' * 50
     logger.debug 'IMPORT MISSING SGG EVENTS WHICH MATTER'
     logger.debug '*' * 50

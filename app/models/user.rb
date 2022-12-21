@@ -88,6 +88,9 @@ class User < ApplicationRecord
   has_one :discord_user, dependent: :nullify
   has_one :player, dependent: :nullify
 
+  has_many :smashgg_users,
+           through: :player
+
   has_many :created_players,
            class_name: :Player,
            foreign_key: :creator_user_id

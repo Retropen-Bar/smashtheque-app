@@ -331,4 +331,94 @@ ActiveAdmin.register TournamentEvent do
       head :unprocessable_entity
     end
   end
+
+  # ---------------------------------------------------------------------------
+  # SUGGESTIONS
+  # ---------------------------------------------------------------------------
+
+  action_item :suggestions, only: %i[
+    index admin_owner_suggestions owner_owner_suggestions
+  ] do
+    dropdown_menu 'Suggestions' do
+      item 'TO de la série', action: :admin_owner_suggestions
+      item 'TO d\'une édition', action: :owner_owner_suggestions
+    end
+  end
+
+  collection_action :admin_owner_suggestions do
+    @tournament_events = TournamentEvent.without_recurring_tournament.joins(
+      <<-SQL.squish
+      INNER JOIN smashgg_events
+              ON smashgg_events.id = bracket_id AND bracket_type = 'SmashggEvent'
+      INNER JOIN smashgg_users
+              ON smashgg_users.id = smashgg_events.tournament_owner_id
+      INNER JOIN players
+              ON players.id = smashgg_users.player_id
+      INNER JOIN users
+              ON users.id = players.user_id
+      INNER JOIN recurring_tournament_contacts
+              ON recurring_tournament_contacts.user_id = users.id
+      SQL
+    ).select(
+      <<-SQL.squish
+      tournament_events.*,
+      recurring_tournament_contacts.recurring_tournament_id AS suggested_recurring_tournament_id,
+      users.id AS suggested_recurring_tournament_contact_user_id,
+      smashgg_users.id AS suggested_recurring_tournament_contact_smashgg_user_id
+      SQL
+    ).includes(
+      :recurring_tournament,
+      bracket: :tournament_owner
+    ).order('unaccent(tournament_events.name)').page(params[:page] || 1).per(25)
+
+    @recurring_tournaments = RecurringTournament.where(
+      id: @tournament_events.map { |e| e['suggested_recurring_tournament_id'] }
+    ).includes(:discord_guild, logo_attachment: :blob).index_by(&:id)
+    @users = User.where(
+      id: @tournament_events.map { |e| e['suggested_recurring_tournament_contact_user_id'] }
+    ).includes(:discord_user).index_by(&:id)
+    @smashgg_users = SmashggUser.where(
+      id: @tournament_events.map { |e| e['suggested_recurring_tournament_contact_smashgg_user_id'] }
+    ).index_by(&:id)
+  end
+
+  collection_action :owner_owner_suggestions do
+    recurring_tournament_owners =
+      <<-SQL.squish
+      SELECT recurring_tournament_id,
+             tournament_owner_id,
+             min(tournament_events.id) AS example_tournament_event_id
+      FROM tournament_events
+      INNER JOIN smashgg_events
+              ON bracket_type = 'SmashggEvent' AND smashgg_events.id = bracket_id
+      WHERE recurring_tournament_id IS NOT NULL
+        AND tournament_owner_id IS NOT NULL
+      GROUP BY recurring_tournament_id, tournament_owner_id
+      SQL
+
+    @tournament_events = TournamentEvent.without_recurring_tournament.joins(
+      <<-SQL.squish
+      INNER JOIN smashgg_events
+              ON smashgg_events.id = bracket_id AND bracket_type = 'SmashggEvent'
+      INNER JOIN (#{recurring_tournament_owners}) recurring_tournament_owners
+              ON smashgg_events.tournament_owner_id = recurring_tournament_owners.tournament_owner_id
+      SQL
+    ).select(
+      <<-SQL.squish
+      tournament_events.*,
+      recurring_tournament_owners.recurring_tournament_id AS suggested_recurring_tournament_id,
+      recurring_tournament_owners.example_tournament_event_id AS example_tournament_event_id
+      SQL
+    ).includes(
+      :recurring_tournament,
+      bracket: :tournament_owner
+    ).order('unaccent(tournament_events.name)').page(params[:page] || 1).per(25)
+
+    @recurring_tournaments = RecurringTournament.where(
+      id: @tournament_events.map { |e| e['suggested_recurring_tournament_id'] }
+    ).includes(:discord_guild, logo_attachment: :blob).index_by(&:id)
+    @example_tournament_events = TournamentEvent.where(
+      id: @tournament_events.map { |e| e['example_tournament_event_id'] }
+    ).includes(:recurring_tournament, bracket: :tournament_owner).index_by(&:id)
+  end
 end
