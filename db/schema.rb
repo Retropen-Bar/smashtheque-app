@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_20_150151) do
+ActiveRecord::Schema.define(version: 2022_12_21_102355) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -465,6 +465,7 @@ ActiveRecord::Schema.define(version: 2022_12_20_150151) do
     t.string "twitter_username"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "events_last_imported_at"
     t.index ["player_id"], name: "index_smashgg_users_on_player_id"
     t.index ["slug"], name: "index_smashgg_users_on_slug", unique: true
     t.index ["smashgg_id"], name: "index_smashgg_users_on_smashgg_id", unique: true

@@ -10,6 +10,7 @@
 #  city                           :string
 #  country                        :string
 #  discord_discriminated_username :string
+#  events_last_imported_at        :datetime
 #  gamer_tag                      :string
 #  gender_pronoun                 :string
 #  name                           :string
@@ -194,6 +195,8 @@ class SmashggUser < ApplicationRecord
         Rails.logger.debug "SmashggEvent errors: #{smashgg_event.errors.full_messages}"
       end
     end
+    # remember we did this
+    touch :events_last_imported_at
   end
 
   # import missing events for users linked to a player
