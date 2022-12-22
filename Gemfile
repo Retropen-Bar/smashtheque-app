@@ -145,7 +145,7 @@ group :production do
 end
 
 # security fixes
-gem 'loofah', '2.9.1'
+gem 'loofah', '2.19.1'
 gem 'nokogiri', '>= 1.11.0.rc4'
 
 # datadog logs
