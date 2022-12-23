@@ -1,5 +1,9 @@
 require 'graphql/client/http'
 
+# ideas:
+# - use "state" to fetch only COMPLETED events
+# - fetch more than 100 events (maybe useless now since we fetch most recent first)
+
 class SmashggClient
   HTTP = GraphQL::Client::HTTP.new('https://api.start.gg/gql/alpha') do
     def headers(context)
