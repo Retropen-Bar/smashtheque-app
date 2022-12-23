@@ -337,15 +337,17 @@ ActiveAdmin.register TournamentEvent do
   # ---------------------------------------------------------------------------
 
   action_item :suggestions, only: %i[
-    index discord_suggestions admin_owner_suggestions owner_owner_suggestions
+    index
+    discord_suggestions location_suggestions
+    admin_owner_suggestions owner_owner_suggestions
   ] do
     dropdown_menu 'Suggestions' do
       item 'Discord', action: :discord_suggestions
+      item 'Localisation', action: :location_suggestions
       item 'TO de la série', action: :admin_owner_suggestions
       item 'TO d\'une édition', action: :owner_owner_suggestions
       # other ideas:
       # - one word in common in name
-      # - location very close
     end
   end
 
@@ -374,6 +376,41 @@ ActiveAdmin.register TournamentEvent do
     @discord_guilds = DiscordGuild.where(
       id: @tournament_events.map { |e| e['suggested_recurring_tournament_discord_guild_id'] }
     ).index_by(&:id)
+  end
+
+  collection_action :location_suggestions do
+    @tournament_events = TournamentEvent.without_recurring_tournament.joins(
+      <<-SQL.squish
+      INNER JOIN smashgg_events
+              ON smashgg_events.id = bracket_id AND bracket_type = 'SmashggEvent'
+      INNER JOIN recurring_tournaments
+              ON (
+                   recurring_tournaments.latitude BETWEEN (smashgg_events.latitude - 0.01) AND (smashgg_events.latitude + 0.01)
+                 ) AND (
+                   recurring_tournaments.longitude BETWEEN (smashgg_events.longitude - 0.01) AND (smashgg_events.longitude + 0.01)
+                 )
+      SQL
+    ).where(
+      # we ignore <46.227638, 2.213749> which is the location of "France"
+      <<-SQL.squish
+      smashgg_events.latitude IS NOT NULL AND smashgg_events.longitude IS NOT NULL
+      AND smashgg_events.latitude != 46.227638 AND smashgg_events.longitude != 2.213749
+      AND recurring_tournaments.latitude IS NOT NULL AND recurring_tournaments.longitude IS NOT NULL
+      AND recurring_tournaments.latitude != 46.227638 AND recurring_tournaments.longitude != 2.213749
+      SQL
+    ).select(
+      <<-SQL.squish
+      tournament_events.*,
+      recurring_tournaments.id AS suggested_recurring_tournament_id
+      SQL
+    ).includes(
+      :recurring_tournament,
+      bracket: :tournament_owner
+    ).order('unaccent(tournament_events.name)').page(params[:page] || 1).per(25)
+
+    @recurring_tournaments = RecurringTournament.where(
+      id: @tournament_events.map { |e| e['suggested_recurring_tournament_id'] }
+    ).includes(:discord_guild, logo_attachment: :blob).index_by(&:id)
   end
 
   collection_action :admin_owner_suggestions do

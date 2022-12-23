@@ -1,0 +1,28 @@
+<p>
+  Ici les coordonnées GPS indiquées sur le tournoi sont très proches de celles de la série.
+</p>
+
+<%= render  'suggestions',
+            display_tournament_event: ->(tournament_event) {
+              smashgg_event = tournament_event.bracket.admin_decorate
+
+              <<-HTML
+              <div class="linked-to">
+                #{smashgg_event.tournament_smashgg_link}
+                <div class="linked-to">
+                  Lat : #{smashgg_event.latitude}<br/>
+                  Lng : #{smashgg_event.longitude}
+                </div>
+              </div>
+              HTML
+            },
+            display_suggested_recurring_tournament: ->(tournament_event) {
+              recurring_tournament = @recurring_tournaments[tournament_event['suggested_recurring_tournament_id']].admin_decorate
+
+              <<-HTML
+              <div class="linked-to">
+                Lat : #{recurring_tournament.latitude}<br/>
+                Lng : #{recurring_tournament.longitude}
+              </div>
+              HTML
+            } %>
