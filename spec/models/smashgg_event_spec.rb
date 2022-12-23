@@ -5,6 +5,7 @@
 #  id                    :bigint           not null, primary key
 #  is_ignored            :boolean          default(FALSE), not null
 #  is_online             :boolean
+#  last_imported_at      :datetime
 #  latitude              :float
 #  longitude             :float
 #  name                  :string

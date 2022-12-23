@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_23_162209) do
+ActiveRecord::Schema.define(version: 2022_12_23_213034) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -434,6 +434,7 @@ ActiveRecord::Schema.define(version: 2022_12_23_162209) do
     t.string "primary_contact_type"
     t.string "primary_contact"
     t.bigint "discord_guild_id"
+    t.datetime "last_imported_at"
     t.index ["discord_guild_id"], name: "index_smashgg_events_on_discord_guild_id"
     t.index ["slug"], name: "index_smashgg_events_on_slug", unique: true
     t.index ["smashgg_id"], name: "index_smashgg_events_on_smashgg_id", unique: true

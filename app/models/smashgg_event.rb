@@ -5,6 +5,7 @@
 #  id                    :bigint           not null, primary key
 #  is_ignored            :boolean          default(FALSE), not null
 #  is_online             :boolean
+#  last_imported_at      :datetime
 #  latitude              :float
 #  longitude             :float
 #  name                  :string
@@ -426,7 +427,9 @@ class SmashggEvent < ApplicationRecord
   def import
     # fetch data because even if some attributes are already here, standings are not fetched yet
     fetch_smashgg_data
-    save && create_tournament_event_if_missing
+    result = save && create_tournament_event_if_missing
+    touch :last_imported_at
+    result
   end
 
   # TODO: handle 2v2 properly
