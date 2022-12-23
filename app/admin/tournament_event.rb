@@ -337,12 +337,43 @@ ActiveAdmin.register TournamentEvent do
   # ---------------------------------------------------------------------------
 
   action_item :suggestions, only: %i[
-    index admin_owner_suggestions owner_owner_suggestions
+    index discord_suggestions admin_owner_suggestions owner_owner_suggestions
   ] do
     dropdown_menu 'Suggestions' do
+      item 'Discord', action: :discord_suggestions
       item 'TO de la série', action: :admin_owner_suggestions
       item 'TO d\'une édition', action: :owner_owner_suggestions
+      # other ideas:
+      # - one word in common in name
+      # - location very close
     end
+  end
+
+  collection_action :discord_suggestions do
+    @tournament_events = TournamentEvent.without_recurring_tournament.joins(
+      <<-SQL.squish
+      INNER JOIN smashgg_events
+              ON smashgg_events.id = bracket_id AND bracket_type = 'SmashggEvent'
+      INNER JOIN recurring_tournaments
+              ON recurring_tournaments.discord_guild_id = smashgg_events.discord_guild_id
+      SQL
+    ).select(
+      <<-SQL.squish
+      tournament_events.*,
+      recurring_tournaments.id AS suggested_recurring_tournament_id,
+      recurring_tournaments.discord_guild_id AS suggested_recurring_tournament_discord_guild_id
+      SQL
+    ).includes(
+      :recurring_tournament,
+      bracket: :tournament_owner
+    ).order('unaccent(tournament_events.name)').page(params[:page] || 1).per(25)
+
+    @recurring_tournaments = RecurringTournament.where(
+      id: @tournament_events.map { |e| e['suggested_recurring_tournament_id'] }
+    ).includes(:discord_guild, logo_attachment: :blob).index_by(&:id)
+    @discord_guilds = DiscordGuild.where(
+      id: @tournament_events.map { |e| e['suggested_recurring_tournament_discord_guild_id'] }
+    ).index_by(&:id)
   end
 
   collection_action :admin_owner_suggestions do
