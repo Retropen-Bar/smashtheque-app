@@ -1,4 +1,4 @@
-<div class='map-container' data-url="<%= url_with(format: :json) %>">
+<div class='map-container' data-url="<%= options[:data_url] || url_with(format: :json) %>">
   <div class='map' id='<%= container_id %>'></div>
 
   <% if layers.any? %>

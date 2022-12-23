@@ -202,4 +202,11 @@ class DiscordGuild < ApplicationRecord
     result
   end
 
+  def self.from_data(invitation_url:)
+    client = DiscordClient.new
+    data = client.get_guild_from_invitation(invitation_url)
+    return nil unless data.key?('guild') && data['guild'].key?('id')
+
+    where(discord_id: data['guild']['id']).first_or_create!(invitation_url: invitation_url)
+  end
 end

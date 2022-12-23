@@ -5,14 +5,19 @@
 #  id                    :bigint           not null, primary key
 #  is_ignored            :boolean          default(FALSE), not null
 #  is_online             :boolean
+#  latitude              :float
+#  longitude             :float
 #  name                  :string
 #  num_entrants          :integer
+#  primary_contact       :string
+#  primary_contact_type  :string
 #  slug                  :string           not null
 #  start_at              :datetime
 #  tournament_name       :string
 #  tournament_slug       :string
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
+#  discord_guild_id      :bigint
 #  smashgg_id            :integer          not null
 #  top1_smashgg_user_id  :bigint
 #  top2_smashgg_user_id  :bigint
@@ -27,6 +32,7 @@
 #
 # Indexes
 #
+#  index_smashgg_events_on_discord_guild_id       (discord_guild_id)
 #  index_smashgg_events_on_slug                   (slug) UNIQUE
 #  index_smashgg_events_on_smashgg_id             (smashgg_id) UNIQUE
 #  index_smashgg_events_on_top1_smashgg_user_id   (top1_smashgg_user_id)
@@ -41,6 +47,7 @@
 #
 # Foreign Keys
 #
+#  fk_rails_...  (discord_guild_id => discord_guilds.id)
 #  fk_rails_...  (top1_smashgg_user_id => smashgg_users.id)
 #  fk_rails_...  (top2_smashgg_user_id => smashgg_users.id)
 #  fk_rails_...  (top3_smashgg_user_id => smashgg_users.id)
@@ -57,6 +64,12 @@ class SmashggEvent < ApplicationRecord
   # ---------------------------------------------------------------------------
 
   include IsBracket
+
+  # ---------------------------------------------------------------------------
+  # MODULES
+  # ---------------------------------------------------------------------------
+
+  geocoded_by :address
 
   # ---------------------------------------------------------------------------
   # CONSTANTS
@@ -84,6 +97,7 @@ class SmashggEvent < ApplicationRecord
   # RELATIONS
   # ---------------------------------------------------------------------------
 
+  belongs_to :discord_guild, optional: true
   belongs_to :tournament_owner, class_name: :SmashggUser, optional: true
   belongs_to :top1_smashgg_user, class_name: :SmashggUser, optional: true
   belongs_to :top2_smashgg_user, class_name: :SmashggUser, optional: true
@@ -302,7 +316,12 @@ class SmashggEvent < ApplicationRecord
 
       tournament_id: data.tournament.id,
       tournament_slug: data.tournament.slug,
-      tournament_name: data.tournament.name
+      tournament_name: data.tournament.name,
+
+      latitude: data.tournament.lat,
+      longitude: data.tournament.lng,
+      primary_contact_type: data.tournament.primary_contact_type,
+      primary_contact: data.tournament.primary_contact
     }
 
     # owner
@@ -310,6 +329,13 @@ class SmashggEvent < ApplicationRecord
       smashgg_id: data.tournament.owner.id,
       slug: data.tournament.owner.slug
     )
+
+    # Discord guild
+    if data.tournament.primary_contact_type == 'discord'
+      result[:discord_guild] = DiscordGuild.from_data(
+        invitation_url: data.tournament.primary_contact
+      )
+    end
 
     begin
       # sometimes data.standings is nil
@@ -424,6 +450,10 @@ class SmashggEvent < ApplicationRecord
       return user_name if send("#{user_name}_id") == smashgg_user_id
     end
     nil
+  end
+
+  def is_offline?
+    !is_online?
   end
 
   # ---------------------------------------------------------------------------

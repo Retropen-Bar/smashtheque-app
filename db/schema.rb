@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_21_102355) do
+ActiveRecord::Schema.define(version: 2022_12_23_162209) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -429,6 +429,12 @@ ActiveRecord::Schema.define(version: 2022_12_21_102355) do
     t.bigint "top7b_smashgg_user_id"
     t.boolean "is_ignored", default: false, null: false
     t.bigint "tournament_owner_id"
+    t.float "latitude"
+    t.float "longitude"
+    t.string "primary_contact_type"
+    t.string "primary_contact"
+    t.bigint "discord_guild_id"
+    t.index ["discord_guild_id"], name: "index_smashgg_events_on_discord_guild_id"
     t.index ["slug"], name: "index_smashgg_events_on_slug", unique: true
     t.index ["smashgg_id"], name: "index_smashgg_events_on_smashgg_id", unique: true
     t.index ["top1_smashgg_user_id"], name: "index_smashgg_events_on_top1_smashgg_user_id"
@@ -654,6 +660,7 @@ ActiveRecord::Schema.define(version: 2022_12_21_102355) do
   add_foreign_key "recurring_tournaments", "communities", column: "closest_community_id"
   add_foreign_key "recurring_tournaments", "discord_guilds"
   add_foreign_key "reward_conditions", "rewards"
+  add_foreign_key "smashgg_events", "discord_guilds"
   add_foreign_key "smashgg_events", "smashgg_users", column: "top1_smashgg_user_id"
   add_foreign_key "smashgg_events", "smashgg_users", column: "top2_smashgg_user_id"
   add_foreign_key "smashgg_events", "smashgg_users", column: "top3_smashgg_user_id"

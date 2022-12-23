@@ -129,6 +129,10 @@ module MapsHelper
                 options: map_options || {}
   end
 
+  def remote_single_address_map(data_url)
+    single_address_map({}, map_options: { data_url: data_url })
+  end
+
   private
 
   def france_map(markers:, layers: {}, icons: {}, options: {}, &block)

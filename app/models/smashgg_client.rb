@@ -88,6 +88,10 @@ class SmashggClient
           id
           slug
         }
+        lat
+        lng
+        primaryContactType
+        primaryContact
       }
     GRAPHQL
 

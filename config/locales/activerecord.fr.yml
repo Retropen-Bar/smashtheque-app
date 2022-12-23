@@ -318,6 +318,7 @@ fr:
       smashgg_event:
         << : *SHARED
         any_tournament_event: Édition
+        discord_guild: Serveur Discord
         duo_tournament_event: Édition 2v2
         is_ignored: Ignoré ?
         is_online: Online ?

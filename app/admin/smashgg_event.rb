@@ -103,29 +103,33 @@ ActiveAdmin.register SmashggEvent do
   # ---------------------------------------------------------------------------
 
   show do
-    attributes_table do
-      row :smashgg_id
-      row :slug
-      row 'Tournoi' do |decorated|
-        decorated.tournament_smashgg_link
-      end
-      row 'Événement' do |decorated|
-        decorated.smashgg_link
-      end
-      row :tournament_owner, &:tournament_owner_admin_link
-      row :is_online
-      row :start_at
-      row :num_entrants
-      SmashggEvent::USER_NAMES.each do |user_name|
-        row user_name do |decorated|
-          decorated.send("#{user_name}_admin_link")
+    columns do
+      column do
+        attributes_table do
+          row :smashgg_id
+          row :slug
+          row 'Tournoi', &:tournament_smashgg_link
+          row 'Événement', &:smashgg_link
+          row :tournament_owner, &:tournament_owner_admin_link
+          row :discord_guild, &:discord_guild_admin_link
+          row :is_online
+          row :start_at
+          row :num_entrants
+          SmashggEvent::USER_NAMES.each do |user_name|
+            row user_name do |decorated|
+              decorated.send("#{user_name}_admin_link")
+            end
+          end
+          row :tournament_event, &:tournament_event_admin_link
+          row :duo_tournament_event, &:duo_tournament_event_admin_link
+          row :is_ignored
+          row :created_at
+          row :updated_at
         end
       end
-      row :tournament_event, &:tournament_event_admin_link
-      row :duo_tournament_event, &:duo_tournament_event_admin_link
-      row :is_ignored
-      row :created_at
-      row :updated_at
+      column do
+        render 'map' if resource.is_offline? && resource.geocoded?
+      end
     end
   end
 
@@ -180,4 +184,6 @@ ActiveAdmin.register SmashggEvent do
       country: @country
     )
   end
+
+  member_action :map
 end

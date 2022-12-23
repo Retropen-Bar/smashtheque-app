@@ -5,14 +5,19 @@
 #  id                    :bigint           not null, primary key
 #  is_ignored            :boolean          default(FALSE), not null
 #  is_online             :boolean
+#  latitude              :float
+#  longitude             :float
 #  name                  :string
 #  num_entrants          :integer
+#  primary_contact       :string
+#  primary_contact_type  :string
 #  slug                  :string           not null
 #  start_at              :datetime
 #  tournament_name       :string
 #  tournament_slug       :string
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
+#  discord_guild_id      :bigint
 #  smashgg_id            :integer          not null
 #  top1_smashgg_user_id  :bigint
 #  top2_smashgg_user_id  :bigint
@@ -27,6 +32,7 @@
 #
 # Indexes
 #
+#  index_smashgg_events_on_discord_guild_id       (discord_guild_id)
 #  index_smashgg_events_on_slug                   (slug) UNIQUE
 #  index_smashgg_events_on_smashgg_id             (smashgg_id) UNIQUE
 #  index_smashgg_events_on_top1_smashgg_user_id   (top1_smashgg_user_id)
@@ -41,6 +47,7 @@
 #
 # Foreign Keys
 #
+#  fk_rails_...  (discord_guild_id => discord_guilds.id)
 #  fk_rails_...  (top1_smashgg_user_id => smashgg_users.id)
 #  fk_rails_...  (top2_smashgg_user_id => smashgg_users.id)
 #  fk_rails_...  (top3_smashgg_user_id => smashgg_users.id)

@@ -221,13 +221,7 @@ ActiveAdmin.register RecurringTournament do
         end
       end
       column do
-        if resource.geocoded?
-          single_address_map({
-            name: resource.full_address.html_safe,
-            latitude: resource.latitude,
-            longitude: resource.longitude
-          })
-        end
+        render 'map' if resource.is_offline? && resource.geocoded?
       end
     end
     active_admin_comments
@@ -249,4 +243,6 @@ ActiveAdmin.register RecurringTournament do
   action_item :public, only: :show do
     link_to 'Page publique', resource, class: 'green'
   end
+
+  member_action :map
 end

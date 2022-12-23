@@ -326,6 +326,10 @@ class RecurringTournament < ApplicationRecord
     starts_at_hour_utc + (timezone.utc_offset / 3600)
   end
 
+  def is_offline?
+    !is_online?
+  end
+
   # ---------------------------------------------------------------------------
   # global search
   # ---------------------------------------------------------------------------
