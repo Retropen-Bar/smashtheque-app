@@ -282,6 +282,8 @@ class DiscordClient
     response = https.request(request)
 
     JSON.parse(response.read_body)
+  rescue JSON::ParserError
+    {}
   end
 
   def api_post(path, params)
