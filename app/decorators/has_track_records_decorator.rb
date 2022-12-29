@@ -4,13 +4,10 @@ module HasTrackRecordsDecorator
     is_online = options.delete(:is_online)
     year = options.delete(:year)
     value = options.delete(:value) || points(is_online: is_online, year: year)
-    emoji = is_online ? RetropenBot::EMOJI_POINTS_ONLINE : RetropenBot::EMOJI_POINTS_OFFLINE
+    emoji = is_online ? 'fragments-online.png' : 'fragments-offline.svg'
     delimiter = options.delete(:delimiter) || ''
     [
-      h.image_tag(
-        "https://cdn.discordapp.com/emojis/#{emoji}.png",
-        options
-      ),
+      h.image_tag(emoji, options),
       h.content_tag(:span, h.number_with_delimiter(value))
     ].join(delimiter).html_safe
   end

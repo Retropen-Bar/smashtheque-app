@@ -44,15 +44,6 @@ class YouTubeChannel < ApplicationRecord
   validates :name, presence: true, uniqueness: true
 
   # ---------------------------------------------------------------------------
-  # CALLBACKS
-  # ---------------------------------------------------------------------------
-
-  after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] }
-  def update_discord
-    RetropenBotScheduler.rebuild_youtube
-  end
-
-  # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
 

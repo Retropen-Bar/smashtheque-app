@@ -53,16 +53,6 @@ ActiveAdmin.register TwitchChannel do
   filter :name
   filter :is_french
 
-  action_item :rebuild,
-              only: :index,
-              if: proc { current_user.is_root? } do
-    link_to 'Rebuild', [:rebuild, :admin, :twitch_channels], class: 'blue'
-  end
-  collection_action :rebuild do
-    RetropenBotScheduler.rebuild_twitch
-    redirect_to request.referer, notice: 'Demande effectuée'
-  end
-
   # ---------------------------------------------------------------------------
   # FORM
   # ---------------------------------------------------------------------------

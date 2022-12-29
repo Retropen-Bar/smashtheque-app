@@ -145,8 +145,8 @@ class RecurringTournament < ApplicationRecord
     self.closest_community = geocoded? && Community.near([latitude, longitude], 100, units: :km).first
   end
 
-  after_commit :update_discord, unless: proc { ENV['NO_DISCORD'] }
-  def update_discord
+  after_commit :update_discord_roles, unless: proc { ENV['NO_DISCORD'] }
+  def update_discord_roles
     return true unless previous_changes.has_key?('is_online')
 
     contacts.each do |user|

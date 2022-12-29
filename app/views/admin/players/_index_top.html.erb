@@ -31,7 +31,7 @@
 
   <div class="big-number txt-green">
     <div class="big-number--value">
-      <img src="https://cdn.discordapp.com/emojis/<%= RetropenBot::EMOJI_POINTS_ONLINE %>.png?size=32"/>
+      <%= image_tag 'fragments-online.png', width: 32 %>
       <%= stats[:online_points] %>
     </div>
     <div class="big-number--title">
@@ -41,7 +41,7 @@
 
   <div class="big-number txt-yellow">
     <div class="big-number--value">
-      <img src="https://cdn.discordapp.com/emojis/<%= RetropenBot::EMOJI_POINTS_OFFLINE %>.png?size=32"/>
+      <%= image_tag 'fragments-offline.svg', width: 32 %>
       <%= stats[:offline_points] %>
     </div>
     <div class="big-number--title">

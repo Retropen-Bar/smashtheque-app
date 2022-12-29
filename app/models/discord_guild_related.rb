@@ -38,15 +38,6 @@ class DiscordGuildRelated < ApplicationRecord
   belongs_to :related, polymorphic: true
 
   # ---------------------------------------------------------------------------
-  # CALLBACKS
-  # ---------------------------------------------------------------------------
-
-  # after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] }
-  def update_discord
-    RetropenBotScheduler.rebuild_discord_guilds_chars_list
-  end
-
-  # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
 

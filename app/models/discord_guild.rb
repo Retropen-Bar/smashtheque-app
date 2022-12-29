@@ -56,11 +56,6 @@ class DiscordGuild < ApplicationRecord
     FetchDiscordGuildDataJob.perform_later(self)
   end
 
-  after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] }
-  def update_discord
-    RetropenBotScheduler.rebuild_discord_guilds_chars_list
-  end
-
   # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
@@ -160,34 +155,28 @@ class DiscordGuild < ApplicationRecord
 
   def self.fetch_unknown
     Rails.logger.info "[DiscordGuild] fetch_unknown"
-    without_discord do
-      unknown.find_each do |discord_guild|
-        Rails.logger.debug "Guild ##{discord_guild.id} is unknown"
+    unknown.find_each do |discord_guild|
+      Rails.logger.debug "Guild ##{discord_guild.id} is unknown"
+      discord_guild.fetch_discord_data
+      discord_guild.save!
+      # we need to wait a bit between each request,
+      # otherwise Discord returns empty results
+      sleep 1
+    end
+  end
+
+  def self.fetch_broken
+    Rails.logger.info "[DiscordGuild] fetch_broken"
+    find_each do |discord_guild|
+      if discord_guild.needs_fetching?
+        Rails.logger.debug "Guild ##{discord_guild.id} needs fetching"
         discord_guild.fetch_discord_data
-        discord_guild.save!
+        discord_guild.save
         # we need to wait a bit between each request,
         # otherwise Discord returns empty results
         sleep 1
       end
     end
-    last.update_discord unless ENV['NO_DISCORD']
-  end
-
-  def self.fetch_broken
-    Rails.logger.info "[DiscordGuild] fetch_broken"
-    without_discord do
-      find_each do |discord_guild|
-        if discord_guild.needs_fetching?
-          Rails.logger.debug "Guild ##{discord_guild.id} needs fetching"
-          discord_guild.fetch_discord_data
-          discord_guild.save
-          # we need to wait a bit between each request,
-          # otherwise Discord returns empty results
-          sleep 1
-        end
-      end
-    end
-    last.update_discord unless ENV['NO_DISCORD']
   end
 
   def is_known?

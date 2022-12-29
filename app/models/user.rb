@@ -130,33 +130,6 @@ class User < ApplicationRecord
             }
 
   # ---------------------------------------------------------------------------
-  # CALLBACKS
-  # ---------------------------------------------------------------------------
-
-  after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] }
-  def update_discord
-    # on create: previous_changes = {"id"=>[nil, <id>], "name"=>[nil, <name>], ...}
-    # on update: previous_changes = {"name"=>["old_name", "new_name"], ...}
-    # on delete: destroyed? = true and old attributes are available
-
-    if destroyed?
-      RetropenBotScheduler.rebuild_casters_list if is_caster?
-      RetropenBotScheduler.rebuild_coaches_list if is_coach?
-      RetropenBotScheduler.rebuild_graphic_designers_list if is_graphic_designer?
-    else
-      if is_caster? || previous_changes.has_key?('is_caster')
-        RetropenBotScheduler.rebuild_casters_list
-      end
-      if is_coach? || previous_changes.has_key?('is_coach')
-        RetropenBotScheduler.rebuild_coaches_list
-      end
-      if is_graphic_designer? || previous_changes.has_key?('is_graphic_designer')
-        RetropenBotScheduler.rebuild_graphic_designers_list
-      end
-    end
-  end
-
-  # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
 

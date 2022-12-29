@@ -48,10 +48,10 @@ ActiveAdmin.register Duo do
     column :player2 do |decorated|
       decorated.player2_admin_link
     end
-    column "<img src=\"https://cdn.discordapp.com/emojis/#{RetropenBot::EMOJI_POINTS_ONLINE}.png?size=16\"/>".html_safe,
+    column image_tag('fragments-online.png', width: 16).html_safe,
            sortable: :points_online_all_time,
            &:points_online_all_time
-    column "<img src=\"https://cdn.discordapp.com/emojis/#{RetropenBot::EMOJI_POINTS_OFFLINE}.png?size=16\"/>".html_safe,
+    column image_tag('fragments-offline.svg', width: 16).html_safe,
            sortable: :points_offline_all_time,
            &:points_offline_all_time
     column :created_at do |decorated|

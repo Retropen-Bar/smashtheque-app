@@ -49,15 +49,6 @@ class TwitchChannel < ApplicationRecord
   validates :slug, presence: true, uniqueness: true
 
   # ---------------------------------------------------------------------------
-  # CALLBACKS
-  # ---------------------------------------------------------------------------
-
-  after_commit :update_discord, unless: Proc.new { ENV['NO_DISCORD'] }
-  def update_discord
-    RetropenBotScheduler.rebuild_twitch
-  end
-
-  # ---------------------------------------------------------------------------
   # SCOPES
   # ---------------------------------------------------------------------------
 

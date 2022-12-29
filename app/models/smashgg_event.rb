@@ -333,9 +333,8 @@ class SmashggEvent < ApplicationRecord
 
     # Discord guild
     if data.tournament.primary_contact_type == 'discord'
-      result[:discord_guild] = DiscordGuild.from_data(
-        invitation_url: data.tournament.primary_contact
-      )
+      found_discord_guild = DiscordGuild.from_data(invitation_url: data.tournament.primary_contact)
+      result[:discord_guild] = found_discord_guild if found_discord_guild
     end
 
     begin

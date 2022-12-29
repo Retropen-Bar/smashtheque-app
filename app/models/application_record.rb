@@ -25,12 +25,4 @@ class ApplicationRecord < ActiveRecord::Base
       raise Draper::UninferrableDecoratorError.new(called_on)
     end
   end
-
-  def self.without_discord(&block)
-    no_discord = ENV['NO_DISCORD']
-    ENV['NO_DISCORD'] = '1'
-    yield
-    ENV['NO_DISCORD'] = no_discord
-  end
-
 end
