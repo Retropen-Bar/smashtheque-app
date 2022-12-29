@@ -390,13 +390,17 @@ ActiveAdmin.register TournamentEvent do
                    recurring_tournaments.longitude BETWEEN (smashgg_events.longitude - 0.01) AND (smashgg_events.longitude + 0.01)
                  )
       SQL
-    ).where(
-      # we ignore <46.227638, 2.213749> which is the location of "France"
+    ).where.not(is_online: true).where(
+      # we ignore:
+      # - <46.227638, 2.213749> which is the location of "France"
+      # - <37.09024, -95.712891> which is the location of "United States"
       <<-SQL.squish
       smashgg_events.latitude IS NOT NULL AND smashgg_events.longitude IS NOT NULL
-      AND smashgg_events.latitude != 46.227638 AND smashgg_events.longitude != 2.213749
+      AND (smashgg_events.latitude != 46.227638 OR smashgg_events.longitude != 2.213749)
+      AND (smashgg_events.latitude != 37.09024 OR smashgg_events.longitude != -95.712891)
       AND recurring_tournaments.latitude IS NOT NULL AND recurring_tournaments.longitude IS NOT NULL
-      AND recurring_tournaments.latitude != 46.227638 AND recurring_tournaments.longitude != 2.213749
+      AND (recurring_tournaments.latitude != 46.227638 OR recurring_tournaments.longitude != 2.213749)
+      AND (recurring_tournaments.latitude != 37.09024 OR recurring_tournaments.longitude != -95.712891)
       SQL
     ).select(
       <<-SQL.squish
