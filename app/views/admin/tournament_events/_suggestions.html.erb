@@ -1,5 +1,13 @@
 <h2>Suggestions</h2>
 
+<div style="padding: 20px">
+  <%= form_tag(nil, method: :get) do %>
+
+    <label>Nom (SQL -> mettre des "%") :</label> <%= text_field_tag(:name, @name, class: 'inline-date-field') %>
+    <button type="submit" style="margin-left: 20px">Rechercher</button>
+  <% end %>
+</div>
+
 <div style="margin: 50px 0; text-align: center"><%= paginate @tournament_events %></div>
 
 <table>

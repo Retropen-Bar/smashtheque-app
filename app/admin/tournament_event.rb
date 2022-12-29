@@ -352,6 +352,8 @@ ActiveAdmin.register TournamentEvent do
   end
 
   collection_action :discord_suggestions do
+    @name = params[:name]
+
     @tournament_events = TournamentEvent.without_recurring_tournament.joins(
       <<-SQL.squish
       INNER JOIN smashgg_events
@@ -359,6 +361,8 @@ ActiveAdmin.register TournamentEvent do
       INNER JOIN recurring_tournaments
               ON recurring_tournaments.discord_guild_id = smashgg_events.discord_guild_id
       SQL
+    ).where(
+      'tournament_events.name ILIKE ?', @name || '%%'
     ).select(
       <<-SQL.squish
       tournament_events.*,
@@ -379,6 +383,8 @@ ActiveAdmin.register TournamentEvent do
   end
 
   collection_action :location_suggestions do
+    @name = params[:name]
+
     @tournament_events = TournamentEvent.without_recurring_tournament.joins(
       <<-SQL.squish
       INNER JOIN smashgg_events
@@ -390,6 +396,8 @@ ActiveAdmin.register TournamentEvent do
                    recurring_tournaments.longitude BETWEEN (smashgg_events.longitude - 0.01) AND (smashgg_events.longitude + 0.01)
                  )
       SQL
+    ).where(
+      'tournament_events.name ILIKE ?', @name || '%%'
     ).where.not(is_online: true).where(
       # we ignore:
       # - <46.227638, 2.213749> which is the location of "France"
@@ -418,6 +426,8 @@ ActiveAdmin.register TournamentEvent do
   end
 
   collection_action :admin_owner_suggestions do
+    @name = params[:name]
+
     @tournament_events = TournamentEvent.without_recurring_tournament.joins(
       <<-SQL.squish
       INNER JOIN smashgg_events
@@ -431,6 +441,8 @@ ActiveAdmin.register TournamentEvent do
       INNER JOIN recurring_tournament_contacts
               ON recurring_tournament_contacts.user_id = users.id
       SQL
+    ).where(
+      'tournament_events.name ILIKE ?', @name || '%%'
     ).select(
       <<-SQL.squish
       tournament_events.*,
@@ -455,6 +467,8 @@ ActiveAdmin.register TournamentEvent do
   end
 
   collection_action :owner_owner_suggestions do
+    @name = params[:name]
+
     recurring_tournament_owners =
       <<-SQL.squish
       SELECT recurring_tournament_id,
@@ -475,6 +489,8 @@ ActiveAdmin.register TournamentEvent do
       INNER JOIN (#{recurring_tournament_owners}) recurring_tournament_owners
               ON smashgg_events.tournament_owner_id = recurring_tournament_owners.tournament_owner_id
       SQL
+    ).where(
+      'tournament_events.name ILIKE ?', @name || '%%'
     ).select(
       <<-SQL.squish
       tournament_events.*,
