@@ -352,7 +352,7 @@ ActiveAdmin.register TournamentEvent do
   end
 
   collection_action :discord_suggestions do
-    @name = params[:name]
+    @name = params[:name].presence
 
     @tournament_events = TournamentEvent.without_recurring_tournament.joins(
       <<-SQL.squish
@@ -383,7 +383,7 @@ ActiveAdmin.register TournamentEvent do
   end
 
   collection_action :location_suggestions do
-    @name = params[:name]
+    @name = params[:name].presence
 
     @tournament_events = TournamentEvent.without_recurring_tournament.joins(
       <<-SQL.squish
@@ -426,7 +426,7 @@ ActiveAdmin.register TournamentEvent do
   end
 
   collection_action :admin_owner_suggestions do
-    @name = params[:name]
+    @name = params[:name].presence
 
     @tournament_events = TournamentEvent.without_recurring_tournament.joins(
       <<-SQL.squish
@@ -467,7 +467,7 @@ ActiveAdmin.register TournamentEvent do
   end
 
   collection_action :owner_owner_suggestions do
-    @name = params[:name]
+    @name = params[:name].presence
 
     recurring_tournament_owners =
       <<-SQL.squish
