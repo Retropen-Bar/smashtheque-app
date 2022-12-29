@@ -15,20 +15,13 @@ class DiscordClient
     api_get "/guilds/#{guild_id}"
   end
 
+  def self.invitation_code_from_invitation_url(invitation_url)
+    (invitation_url || '').strip.gsub(%r{.*/}, '')
+  end
+
   def get_guild_from_invitation(invitation_url)
-    invitation_code = invitation_url.strip.gsub(
-      'https://discord.gg/invite/', ''
-    ).gsub(
-      'https://discord.gg/', ''
-    ).gsub(
-      'https://discord.com/invite/', ''
-    ).gsub(
-      'https://discord.com/', ''
-    ).gsub(
-      'https://discordapp.com/invite/', ''
-    ).gsub(
-      'https://discordapp.com/', ''
-    )
+    invitation_code = self.class.invitation_code_from_invitation_url(invitation_url)
+    return {} if invitation_code.blank?
 
     api_get "/invites/#{invitation_code}"
   end
