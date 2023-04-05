@@ -1,6 +1,6 @@
 FROM levraipixel/rails-pg:ruby-3.0.1-slim-buster
 
-MAINTAINER Yann Hourdel "yann@hourdel.fr"
+LABEL org.opencontainers.image.authors="yann@hourdel.fr"
 
 ENV INSTALL_PATH /app
 ENV RAILS_ENV production
