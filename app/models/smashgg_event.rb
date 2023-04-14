@@ -411,7 +411,7 @@ class SmashggEvent < ApplicationRecord
   end
 
   def self.import_all(name:, from:, to:, country:)
-    lookup(name: name, from: from, to: to, country: country).each do |smashgg_event|
+    lookup(name: name, from: from, to: to, country: country)&.each do |smashgg_event|
       next if smashgg_event.already_imported?
 
       sleep 1 # sleep to avoid hitting API rate limits
