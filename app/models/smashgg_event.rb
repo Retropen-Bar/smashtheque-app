@@ -427,7 +427,7 @@ class SmashggEvent < ApplicationRecord
     # fetch data because even if some attributes are already here, standings are not fetched yet
     fetch_smashgg_data
     result = save && create_tournament_event_if_missing
-    touch :last_imported_at
+    touch :last_imported_at if result
     result
   end
 
