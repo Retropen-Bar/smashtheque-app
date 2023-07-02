@@ -106,6 +106,8 @@ class Player < ApplicationRecord
 
   has_many :smashgg_users, dependent: :nullify
 
+  has_many :players_recurring_tournaments, dependent: :destroy
+
   # ---------------------------------------------------------------------------
   # VALIDATIONS
   # ---------------------------------------------------------------------------

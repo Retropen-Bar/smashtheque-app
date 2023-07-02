@@ -38,7 +38,8 @@ class UsersController < PublicController
 
     @user.create_player!(
       name: @user.name,
-      creator_user: @user
+      creator_user: @user,
+      is_accepted: @user == current_user
     )
     redirect_to action: :edit
   end
